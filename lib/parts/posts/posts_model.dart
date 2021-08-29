@@ -41,6 +41,7 @@ class PostsModel extends ChangeNotifier {
   List<String> mutesUids = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  
   void init() async {
     audioPlayer = AudioPlayer();
     setCurrentUser();
