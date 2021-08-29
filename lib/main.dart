@@ -5,9 +5,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'themes/themes.dart';
-import 'package:whisper/main_model.dart';
+import 'parts/main_bottom_navigation_bar.dart';
+import 'package:whisper/constants/tab_bar_elements.dart';
 
 import 'auth/login/login_page.dart';
+
+import 'package:whisper/parts/feeds/feeds_page.dart';
+import 'package:whisper/parts/recommenders/recommenders_page.dart';
+import 'package:whisper/parts/whisper_drawer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
       home: currentUser == null ? 
       LoginPage()
@@ -32,10 +38,29 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Whisper'),
+    return DefaultTabController(
+      length: tabBarElements.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Whisper'),
+          bottom: TabBar(
+            tabs: tabBarElements.map((tabBarElement) {
+              return Tab(
+                text: tabBarElement.title
+              );
+            }).toList()
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            FeedsPage(),
+            RecommendersPage()
+          ],
+        ),
+        drawer: WhisperDrawer(),
+        bottomNavigationBar: MainBottomNavigationbar(),
       ),
     );
   }
 }
+
