@@ -20,6 +20,14 @@ class MainBottomNavigationbar extends ConsumerWidget {
           )
         ),
         BottomNavigationBarItem(
+          label: 'Add',
+          icon: InkWell(
+            child: Icon(Icons.new_label),
+            onTap: () {routes.toAddPostsPage(context);},
+          )
+        ),
+        
+        BottomNavigationBarItem(
           label: 'Logout',
           icon: InkWell(
             child: Icon(Icons.logout),
