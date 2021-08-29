@@ -10,8 +10,8 @@ import 'package:whisper/constants/tab_bar_elements.dart';
 
 import 'auth/login/login_page.dart';
 
-import 'package:whisper/parts/feeds/feeds_page.dart';
-import 'package:whisper/parts/recommenders/recommenders_page.dart';
+import 'package:whisper/parts/posts/feeds/feeds_page.dart';
+import 'package:whisper/parts/posts/recommenders/recommenders_page.dart';
 import 'package:whisper/parts/whisper_drawer.dart';
 
 void main() async {
