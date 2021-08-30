@@ -9,7 +9,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/repeat_button_notifier.dart';
-
 final postsProvider = ChangeNotifierProvider(
   (ref) => PostsModel()
 ); 
@@ -30,16 +29,14 @@ class PostsModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
   late ConcatenatingAudioSource playlist;
-  // showPage(just_audio)
-  bool isShowModel = false;
   // FirebaseAuth
   User? currentUser;
   // Cloud_Firestore
   late QuerySnapshot<Map<String, dynamic>> follows;
   late QuerySnapshot<Map<String, dynamic>> snapshots;
+  final oneTimeReadCount = 2;
   int feedsCount = -1;
   int recommendersCount = -1;
-  final oneTimeReadCount = 2;
   
 
   bool isLoading = false;
@@ -55,7 +52,7 @@ class PostsModel extends ChangeNotifier {
     init();
   }
   void init() async {
-    startLoaing();
+    startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
     await setFollowUids();
@@ -66,7 +63,7 @@ class PostsModel extends ChangeNotifier {
     endLoading();
   }
 
-  void startLoaing () {
+  void startLoading () {
     isLoading = true;
     notifyListeners();
   }
@@ -78,6 +75,162 @@ class PostsModel extends ChangeNotifier {
 
   void setCurrentUser()  {
     currentUser = FirebaseAuth.instance.currentUser;
+  }
+
+  void play()  {
+    audioPlayer.play();
+    notifyListeners();
+  }
+
+  void pause() {
+    audioPlayer.pause();
+    notifyListeners();
+  }
+
+  void seek(Duration position) {
+    audioPlayer.seek(position);
+  }
+  // showPage
+  void onRepeatButtonPressed() {
+    repeatButtonNotifier.nextState();
+    switch (repeatButtonNotifier.value) {
+      case RepeatState.off:
+        audioPlayer.setLoopMode(LoopMode.off);
+        break;
+      case RepeatState.repeatSong:
+        audioPlayer.setLoopMode(LoopMode.one);
+        break;
+      case RepeatState.repeatPlaylist:
+        audioPlayer.setLoopMode(LoopMode.all);
+    }
+  }
+
+  void onPreviousSongButtonPressed() {
+    audioPlayer.seekToPrevious();
+  }
+
+  void onNextSongButtonPressed() {
+    audioPlayer.seekToNext();
+  }
+  // CloudFirestore
+  Future setFollowUids() async {
+    
+    try {
+      follows = await FirebaseFirestore.instance
+      .collection('follows')
+      .where('activeUserId', isEqualTo: currentUser!.uid)
+      .get();
+      follows.docs.forEach((DocumentSnapshot doc) {
+        followUids.add(doc['passiveUserId']);
+      });
+      followUids.add(currentUser!.uid);
+    } catch(e) {
+      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+  }
+  // muteList設定
+  Future setMutesList() async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('mutes')
+      .where('activeUserId', isEqualTo: currentUser!.uid)
+      .get()
+      .then((snapshot){
+        snapshot.docs.forEach((DocumentSnapshot doc) {
+          mutesUids.add(doc['passiveUserId']);
+        });
+      } );
+
+    } catch(e){
+      print(e.toString());
+    }
+  }
+
+  // getFeeds
+  Future getFeeds() async {
+
+    try{
+      snapshots = await FirebaseFirestore.instance
+      .collection('posts')
+      .where('uid',whereIn: followUids)
+      .get();
+      snapshots.docs.forEach((DocumentSnapshot doc) {
+        feedDocuments.add(doc);
+        song = Uri.parse(doc['audioURL']);
+        source = AudioSource.uri(song, tag: doc);
+        afterUris.add(source);
+        playlist = ConcatenatingAudioSource(children: afterUris);
+      });
+      await audioPlayer.setAudioSource(playlist);
+    } catch(e) {
+      print(e.toString());
+    }
+    notifyListeners();
+  }
+
+  // recommenders
+  Future getRecommendes() async {
+    final now = DateTime.now();
+    final range = now.subtract(Duration(days: 5));
+    
+    try {
+
+      if (recommendersCount == -1) {
+        snapshots =  await FirebaseFirestore.instance
+        .collection('posts')
+        .where('createdAt', isGreaterThanOrEqualTo: range)
+        .orderBy('createdAt', descending: true)
+        .orderBy('score', descending: true)
+        .limit(oneTimeReadCount)
+        .get();
+        snapshots.docs.forEach((DocumentSnapshot doc) {
+          recommenderDocuments.add(doc);
+          song = Uri.parse(doc['audioURL']);
+          source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+          playlist = ConcatenatingAudioSource(children: afterUris);
+        });
+        await audioPlayer.setAudioSource(playlist);
+      } else {
+        snapshots =  await FirebaseFirestore.instance
+        .collection('posts')
+        // .where('uid',whereNotIn: mutesUids)
+        .where('createdAt', isGreaterThanOrEqualTo: range)
+        .orderBy('createdAt', descending: true)
+        .orderBy('score', descending: true)
+        .startAfterDocument(recommenderDocuments[recommendersCount])
+        .limit(oneTimeReadCount)
+        .get();
+        snapshots.docs.forEach((DocumentSnapshot doc) {
+          recommenderDocuments.add(doc);
+        });
+      }
+      
+      print(recommenderDocuments.length.toString() + "!!!!!!!!!");
+      recommendersCount += oneTimeReadCount;
+    } catch(e) {
+      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
+    }
+    notifyListeners();
+  }
+
+  Future repost(DocumentSnapshot doc) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('posts')
+      .add({
+        'uid': currentUser!.uid,
+        'repostedPostId': doc.id,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+        
+      });
+      print('repostTryPass!!!!');
+      isReposted = true;
+      notifyListeners();
+    } catch(e) {
+      print(e.toString() + "repostRepostRepost");
+    }
   }
 
   void listenForStates() {
@@ -165,164 +318,5 @@ class PostsModel extends ChangeNotifier {
       }
     });
     notifyListeners();
-  }
-
-  void play()  {
-    audioPlayer.play();
-    notifyListeners();
-  }
-
-  void pause() {
-    audioPlayer.pause();
-    notifyListeners();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
-  }
-  // showPage
-  void onRepeatButtonPressed() {
-    repeatButtonNotifier.nextState();
-    switch (repeatButtonNotifier.value) {
-      case RepeatState.off:
-        audioPlayer.setLoopMode(LoopMode.off);
-        break;
-      case RepeatState.repeatSong:
-        audioPlayer.setLoopMode(LoopMode.one);
-        break;
-      case RepeatState.repeatPlaylist:
-        audioPlayer.setLoopMode(LoopMode.all);
-    }
-  }
-
-  void onPreviousSongButtonPressed() {
-    audioPlayer.seekToPrevious();
-  }
-
-  void onNextSongButtonPressed() {
-    audioPlayer.seekToNext();
-  }
-
-  // CloudFirestore
-  Future setFollowUids() async {
-    
-    try {
-      follows = await FirebaseFirestore.instance
-      .collection('follows')
-      .where('activeUserId', isEqualTo: currentUser!.uid)
-      .get();
-      follows.docs.forEach((DocumentSnapshot doc) {
-        followUids.add(doc['passiveUserId']);
-      });
-      print(followUids.length.toString() + "!!!!!!!!!!!!!!!");
-    } catch(e) {
-      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-  }
-  // muteList設定
-  Future setMutesList() async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('mutes')
-      .where('activeUserId', isEqualTo: currentUser!.uid)
-      .get()
-      .then((snapshot){
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          mutesUids.add(doc['passiveUserId']);
-        });
-      } );
-
-    } catch(e){
-      print(e.toString());
-    }
-  }
-
-  // getFeeds
-  Future getFeeds() async {
-
-    try{
-      snapshots = await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',whereIn: followUids)
-      // .where('uid',whereNotIn: mutesUids)
-      .where('uid',isEqualTo: currentUser!.uid)
-      .get();
-      snapshots.docs.forEach((DocumentSnapshot doc) {
-        feedDocuments.add(doc);
-        song = Uri.parse(doc['audioURL']);
-        source = AudioSource.uri(song, tag: doc);
-        afterUris.add(source);
-        playlist = ConcatenatingAudioSource(children: afterUris);
-      });
-      await audioPlayer.setAudioSource(playlist);
-    } catch(e) {
-      print(e.toString());
-    }
-    notifyListeners();
-  }
-
-  // recommenders
-  Future getRecommendes() async {
-    final now = DateTime.now();
-    final range = now.subtract(Duration(days: 5));
-    
-    try {
-
-      if (recommendersCount == -1) {
-        snapshots =  await FirebaseFirestore.instance
-        .collection('posts')
-        .where('createdAt', isGreaterThanOrEqualTo: range)
-        .orderBy('createdAt', descending: true)
-        .orderBy('score', descending: true)
-        .limit(oneTimeReadCount)
-        .get();
-        snapshots.docs.forEach((DocumentSnapshot doc) {
-          recommenderDocuments.add(doc);
-          song = Uri.parse(doc['audioURL']);
-          source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
-          playlist = ConcatenatingAudioSource(children: afterUris);
-        });
-        await audioPlayer.setAudioSource(playlist);
-      } else {
-        snapshots =  await FirebaseFirestore.instance
-        .collection('posts')
-        // .where('uid',whereNotIn: mutesUids)
-        .where('createdAt', isGreaterThanOrEqualTo: range)
-        .orderBy('createdAt', descending: true)
-        .orderBy('score', descending: true)
-        .startAfterDocument(recommenderDocuments[recommendersCount])
-        .limit(oneTimeReadCount)
-        .get();
-        snapshots.docs.forEach((DocumentSnapshot doc) {
-          recommenderDocuments.add(doc);
-        });
-      }
-      
-      print(recommenderDocuments.length.toString() + "!!!!!!!!!");
-      recommendersCount += oneTimeReadCount;
-    } catch(e) {
-      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
-    }
-    notifyListeners();
-  }
-
-  Future repost(DocumentSnapshot doc) async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .add({
-        'uid': currentUser!.uid,
-        'repostedPostId': doc.id,
-        'createdAt': Timestamp.now(),
-        'updatedAt': Timestamp.now(),
-        
-      });
-      print('repostTryPass!!!!');
-      isReposted = true;
-      notifyListeners();
-    } catch(e) {
-      print(e.toString() + "repostRepostRepost");
-    }
   }
 }
