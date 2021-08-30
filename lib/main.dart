@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/main_model.dart';
 
 import 'themes/themes.dart';
 import 'parts/main_bottom_navigation_bar.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
+    final _mainProvider = watch(mainProvider);
     final _postsProvider = watch(postsProvider);
     return DefaultTabController(
       length: tabBarElements.length,
@@ -78,9 +80,12 @@ class MyHomePage extends ConsumerWidget {
                 AudioStateDesign(postsProvider: _postsProvider)
               ],
             ),
+            
           ],
         ),
-        drawer: WhisperDrawer(),
+        drawer: _mainProvider.isLoading ? 
+        Drawer()
+        : WhisperDrawer(mainProvider: _mainProvider),
         bottomNavigationBar: MainBottomNavigationbar(),
       ),
     );

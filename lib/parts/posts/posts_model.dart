@@ -70,7 +70,7 @@ class PostsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentUser() {
+  void setCurrentUser()  {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
