@@ -6,6 +6,7 @@ import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/preservations/preservations_page.dart';
 import 'package:whisper/add_post/add_post_page.dart';
 import 'package:whisper/user_show_page.dart';
+import 'package:whisper/parts/posts/post_show_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -29,6 +30,16 @@ void toAddPostsPage(context) {
 
 void toUserShowPage(context,userDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(userDoc)));
+}
+
+void toPostShowPage(context,postDoc) {
+  Navigator.push(
+    context, 
+    MaterialPageRoute(
+      builder: (context) => PostShowPage(postDoc),
+      fullscreenDialog: true,
+    )
+  );
 }
 
 

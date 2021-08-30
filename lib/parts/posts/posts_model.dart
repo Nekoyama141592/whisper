@@ -15,8 +15,9 @@ final postsProvider = ChangeNotifierProvider(
 ); 
 class PostsModel extends ChangeNotifier {
   // notifiers
-  final currentSongTitleNotifier = ValueNotifier<String>('');
-  final playlistNotifier = ValueNotifier<List<String>>([]);
+  late DocumentSnapshot currentSongDoc;
+  // final playlistNotifier = ValueNotifier<List<DocumentSnapshot>>([]);
+  List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -24,7 +25,10 @@ class PostsModel extends ChangeNotifier {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
   // just_audio
+  late Uri song;
+  late UriAudioSource source;
   late AudioPlayer audioPlayer;
+  final List<AudioSource> afterUris = [];
   late ConcatenatingAudioSource playlist;
   // showPage(just_audio)
   bool isShowModel = false;
@@ -37,6 +41,7 @@ class PostsModel extends ChangeNotifier {
   int recommendersCount = -1;
   final oneTimeReadCount = 2;
   
+
   bool isLoading = false;
   List<DocumentSnapshot> feedDocuments = [];
   List<DocumentSnapshot> recommenderDocuments = [];
@@ -57,6 +62,7 @@ class PostsModel extends ChangeNotifier {
     await setMutesList();
     await getFeeds();
     await getRecommendes();
+    listenForStates();
     endLoading();
   }
 
@@ -135,20 +141,21 @@ class PostsModel extends ChangeNotifier {
   void listenForChangesInSequenceState() {
     audioPlayer.sequenceStateStream.listen((sequenceState) {
       if (sequenceState == null) return;
-      // TODO: update current song title
+      // update current song doc
       final currentItem = sequenceState.currentSource;
-      // final DocumentSnapshot currentDoc = currentItem?.tag;
-      // final title = currentDoc['title]
-      final title = currentItem?.tag as String?;
-      currentSongTitleNotifier.value = title ?? '';
-      // TODO: update playlist
+      currentSongDoc = currentItem?.tag;
+      
+      // update playlist
       final playlist = sequenceState.effectiveSequence;
-      final titles = playlist.map((item) => item.tag as String).toList();
-      playlistNotifier.value = titles;
-      // TODO: update shuffle mode
+      // final currentSongDocs = playlist.map((item) => item.tag).toList();
+      // playlistNotifier.value = currentSongDocs;
+      playlist.map((item) {
+        currentSongDocs.add(item.tag);
+      });
+      // update shuffle mode
       isShuffleModeEnabledNotifier.value = 
       sequenceState.shuffleModeEnabled;
-      // TODO: update previous and next buttons
+      // update previous and next buttons
       if (playlist.isEmpty || currentItem == null) {
         isFirstSongNotifier.value = true;
         isLastSongNotifier.value = true; 
@@ -160,12 +167,14 @@ class PostsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void play() async {
+  void play()  {
     audioPlayer.play();
+    notifyListeners();
   }
 
   void pause() {
     audioPlayer.pause();
+    notifyListeners();
   }
 
   void seek(Duration position) {
@@ -236,10 +245,16 @@ class PostsModel extends ChangeNotifier {
       .collection('posts')
       .where('uid',whereIn: followUids)
       // .where('uid',whereNotIn: mutesUids)
+      .where('uid',isEqualTo: currentUser!.uid)
       .get();
       snapshots.docs.forEach((DocumentSnapshot doc) {
         feedDocuments.add(doc);
+        song = Uri.parse(doc['audioURL']);
+        source = AudioSource.uri(song, tag: doc);
+        afterUris.add(source);
+        playlist = ConcatenatingAudioSource(children: afterUris);
       });
+      await audioPlayer.setAudioSource(playlist);
     } catch(e) {
       print(e.toString());
     }
@@ -263,7 +278,12 @@ class PostsModel extends ChangeNotifier {
         .get();
         snapshots.docs.forEach((DocumentSnapshot doc) {
           recommenderDocuments.add(doc);
+          song = Uri.parse(doc['audioURL']);
+          source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+          playlist = ConcatenatingAudioSource(children: afterUris);
         });
+        await audioPlayer.setAudioSource(playlist);
       } else {
         snapshots =  await FirebaseFirestore.instance
         .collection('posts')
@@ -284,6 +304,7 @@ class PostsModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
     }
+    notifyListeners();
   }
 
   Future repost(DocumentSnapshot doc) async {

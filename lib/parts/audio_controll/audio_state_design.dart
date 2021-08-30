@@ -6,6 +6,7 @@ import 'package:whisper/parts/audio_controll/audio_controll_buttons.dart';
 import 'package:whisper/parts/audio_controll/audio_progress_bar.dart';
 import 'package:whisper/parts/audio_controll/current_song_title.dart';
 
+import 'package:whisper/constants/routes.dart' as routes;
 class AudioStateDesign extends StatelessWidget {
   const AudioStateDesign({
     Key? key,
@@ -18,7 +19,7 @@ class AudioStateDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print('onTap');
+        routes.toPostShowPage(context, _postsProvider.currentSongDoc);
       },
       child: Container(
         height: 130,
