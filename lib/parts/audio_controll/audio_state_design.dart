@@ -16,12 +16,20 @@ class AudioStateDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AudioControllButtons(postsProvider: _postsProvider),
-        AudioProgressBar(postsProvider: _postsProvider),
-        CurrentSongTitle(postsProvider: _postsProvider)
-      ],
+    return InkWell(
+      onTap: () {
+        print('onTap');
+      },
+      child: Container(
+        height: 130,
+        child: Column(
+          children: [
+            AudioControllButtons(postsProvider: _postsProvider),
+            AudioProgressBar(postsProvider: _postsProvider),
+            CurrentSongTitle(postsProvider: _postsProvider)
+          ],
+        ),
+      ),
     );
   }
 }
