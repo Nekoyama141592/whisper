@@ -14,6 +14,8 @@ import 'package:whisper/parts/posts/feeds/feeds_page.dart';
 import 'package:whisper/parts/posts/recommenders/recommenders_page.dart';
 import 'package:whisper/parts/whisper_drawer.dart';
 
+import 'package:whisper/parts/posts/posts_model.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
+    final _postsProvider = watch(postsProvider);
     return DefaultTabController(
       length: tabBarElements.length,
       child: Scaffold(
@@ -53,8 +56,8 @@ class MyHomePage extends ConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(),
-            RecommendersPage()
+            FeedsPage(postsProvider: _postsProvider),
+            RecommendersPage(postsProvider: _postsProvider)
           ],
         ),
         drawer: WhisperDrawer(),
@@ -63,4 +66,3 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 }
-
