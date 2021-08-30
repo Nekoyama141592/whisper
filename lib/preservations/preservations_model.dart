@@ -16,9 +16,7 @@ final preservationsProvider = ChangeNotifierProvider(
 class PreservationsModel extends ChangeNotifier {
   bool isLoading = false;
   User? currentUser;
-  List<String> preservationPostIds = [];
-  List<DocumentSnapshot> preservationDocs = [];
-  late QuerySnapshot<Map<String, dynamic>> posts;
+  
   // notifiers
   late DocumentSnapshot currentSongDoc;
   List<DocumentSnapshot> currentSongDocs = [];
@@ -36,6 +34,8 @@ class PreservationsModel extends ChangeNotifier {
   late ConcatenatingAudioSource playlist;
   // cloudFirestore
   late QuerySnapshot<Map<String, dynamic>> follows;
+  List<String> preservationPostIds = [];
+  List<DocumentSnapshot> preservationDocs = [];
   late QuerySnapshot<Map<String, dynamic>> snapshots;
   final oneTimeReadCount = 2;
   PreservationsModel() {
@@ -83,11 +83,11 @@ class PreservationsModel extends ChangeNotifier {
 
   Future getPreservations () async {
     try{
-      posts = await FirebaseFirestore.instance
+      snapshots = await FirebaseFirestore.instance
       .collection('post')
       .where('postId', whereIn: preservationPostIds)
       .get();
-      posts.docs.forEach((DocumentSnapshot doc) {
+      snapshots.docs.forEach((DocumentSnapshot doc) {
         preservationDocs.add(doc);
         song = Uri.parse(doc['audioURL']);
         source = AudioSource.uri(song, tag: doc);
