@@ -137,6 +137,8 @@ class PostsModel extends ChangeNotifier {
       if (sequenceState == null) return;
       // TODO: update current song title
       final currentItem = sequenceState.currentSource;
+      // final DocumentSnapshot currentDoc = currentItem?.tag;
+      // final title = currentDoc['title]
       final title = currentItem?.tag as String?;
       currentSongTitleNotifier.value = title ?? '';
       // TODO: update playlist
