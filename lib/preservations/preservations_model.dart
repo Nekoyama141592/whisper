@@ -75,6 +75,7 @@ class PreservationsModel extends ChangeNotifier {
           preservationPostIds.add(doc['postId']);
         });
       });
+      print(preservationPostIds);
       notifyListeners();
     } catch(e) {
       print(e.toString());
@@ -84,7 +85,7 @@ class PreservationsModel extends ChangeNotifier {
   Future getPreservations () async {
     try{
       snapshots = await FirebaseFirestore.instance
-      .collection('post')
+      .collection('posts')
       .where('postId', whereIn: preservationPostIds)
       .get();
       snapshots.docs.forEach((DocumentSnapshot doc) {
@@ -98,6 +99,8 @@ class PreservationsModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
+    print(snapshots.docs.length.toString() + "snapshot_length");
+    print(afterUris.length.toString() + "  afterUri_length");
     notifyListeners();
   }
 

@@ -32,7 +32,7 @@ void toUserShowPage(context,userDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(userDoc)));
 }
 
-void toPostShowPage(context,postDoc) {
+void toPostShowPage(context,postDoc,postModel) {
   Navigator.push(
     context, 
     MaterialPageRoute(

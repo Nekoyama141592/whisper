@@ -25,6 +25,8 @@ class SignupModel extends ChangeNotifier {
   XFile? xfile;
   late File imageFile;
   String downloadURL = '';
+
+  String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
   startLoading() {
     isLoading = true;
     notifyListeners();
@@ -50,12 +52,12 @@ class SignupModel extends ChangeNotifier {
       await FirebaseStorage.instance
       .ref()
       .child('users')
-      .child('$userName' + '.png')
+      .child('$userName' +'$dateTime' + '.png')
       .putFile(imageFile);
       downloadURL = await FirebaseStorage.instance
       .ref()
       .child('users')
-      .child('$userName' + '.png')
+      .child('$userName' +'$dateTime' + '.png')
       .getDownloadURL();
     } catch(e) {
       print(e.toString());

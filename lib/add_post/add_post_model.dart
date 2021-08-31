@@ -57,7 +57,7 @@ class AddPostModel extends ChangeNotifier {
       Directory directory = await getApplicationDocumentsDirectory();
       String setFilePath = directory.path + '/'
       + currentUser!.uid
-      +  DateTime.now().millisecondsSinceEpoch.toString() 
+      +  DateTime.now().microsecondsSinceEpoch.toString() 
       + '.aac';
       audioRecorder = FlutterAudioRecorder2(setFilePath, audioFormat: AudioFormat.AAC);
       await audioRecorder.initialized;
@@ -128,7 +128,7 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  void onAddButtonPressed(context) async {
+  Future onAddButtonPressed(context) async {
     startLoading();
     await addPostToFirebase(context);
     endLoading();
@@ -160,9 +160,11 @@ class AddPostModel extends ChangeNotifier {
           'likes': 0,
           'preservations': 0,
           'title': postTitle,
+          'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
         });
         isUploading = false;
         notifyListeners();
+        
       } catch(e) {
         print(e.toString());
       }

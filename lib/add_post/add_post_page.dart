@@ -62,8 +62,9 @@ class AudioButtons extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.upload_file),
-          onPressed: () {
-            _addPostProvider.onAddButtonPressed(context);
+          onPressed: () async {
+            await _addPostProvider.onAddButtonPressed(context);
+            Navigator.pop(context);
           }, 
         )
       ],

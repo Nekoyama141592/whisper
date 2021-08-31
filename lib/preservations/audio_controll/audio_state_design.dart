@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../preservations_model.dart';
-import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/preservations/preservation_show_page.dart';
 
 import 'audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
@@ -13,7 +13,10 @@ class AudioStateDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        routes.toPostShowPage(context, preservationsProvider.currentSongDoc);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PreservationShowPage(preservationsProvider.currentSongDoc,preservationsProvider))
+        );
       },
       child: Container(
         height: 130,

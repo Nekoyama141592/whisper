@@ -10,6 +10,9 @@ class PreservationsPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _preservationsProvider = watch(preservationsProvider);
     return Scaffold(
+      appBar: AppBar(
+        title: Text('preservations'),
+      ),
       body: _preservationsProvider.isLoading ?
       Container(
         color: Colors.grey.withOpacity(0.7),

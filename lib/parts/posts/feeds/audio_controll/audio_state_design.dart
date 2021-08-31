@@ -19,7 +19,7 @@ class AudioStateDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        routes.toPostShowPage(context, _postsProvider.feedsCurrentSongDoc);
+        routes.toPostShowPage(context, _postsProvider.feedsCurrentSongDoc,_postsProvider);
       },
       child: Container(
         height: 130,

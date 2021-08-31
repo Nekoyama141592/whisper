@@ -15,7 +15,7 @@ class UserShowPage extends StatelessWidget {
         children: [
           Center(
             // image
-            child: Text(doc.id),
+            child: Text(doc['email']),
           ),
         ],
       ),
