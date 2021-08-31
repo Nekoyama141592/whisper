@@ -14,9 +14,12 @@ final postsProvider = ChangeNotifierProvider(
 ); 
 class PostsModel extends ChangeNotifier {
   // notifiers
-  late DocumentSnapshot currentSongDoc;
-  // final playlistNotifier = ValueNotifier<List<DocumentSnapshot>>([]);
-  List<DocumentSnapshot> currentSongDocs = [];
+  final feedsCurrentSongTitleNotifier = ValueNotifier<String>('');
+  final recommendersCurrentSongTitleNotifier = ValueNotifier<String>('');
+  late DocumentSnapshot feedsCurrentSongDoc;
+  List<DocumentSnapshot> feedsCurrentSongDocs = [];
+  late DocumentSnapshot recommendersCurrentSongDoc;
+  List<DocumentSnapshot> recommendersCurrentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -26,7 +29,8 @@ class PostsModel extends ChangeNotifier {
   // just_audio
   late Uri song;
   late UriAudioSource source;
-  late AudioPlayer audioPlayer;
+  late AudioPlayer feedsAudioPlayer;
+  late AudioPlayer recommendersAudioPlayer;
   final List<AudioSource> afterUris = [];
   late ConcatenatingAudioSource playlist;
   // FirebaseAuth
@@ -53,13 +57,15 @@ class PostsModel extends ChangeNotifier {
   }
   void init() async {
     startLoading();
-    audioPlayer = AudioPlayer();
+    feedsAudioPlayer = AudioPlayer();
+    recommendersAudioPlayer = AudioPlayer();
     setCurrentUser();
     await setFollowUids();
     await setMutesList();
     await getFeeds();
     await getRecommendes();
-    listenForStates();
+    listenForStates(feedsAudioPlayer);
+    listenForStates(recommendersAudioPlayer);
     endLoading();
   }
 
@@ -77,21 +83,25 @@ class PostsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  void play()  {
+  void play(audioPlayer)  {
     audioPlayer.play();
     notifyListeners();
   }
 
-  void pause() {
+  void pause(audioPlayer) {
     audioPlayer.pause();
     notifyListeners();
   }
 
-  void seek(Duration position) {
-    audioPlayer.seek(position);
+  void seekInFeedsAudioPlayer(Duration position) {
+    feedsAudioPlayer.seek(position);
+  }
+  
+  void seekInRecommendersAudioPlayer(Duration position) {
+    recommendersAudioPlayer.seek(position);
   }
   // showPage
-  void onRepeatButtonPressed() {
+  void onRepeatButtonPressed(audioPlayer) {
     repeatButtonNotifier.nextState();
     switch (repeatButtonNotifier.value) {
       case RepeatState.off:
@@ -105,11 +115,11 @@ class PostsModel extends ChangeNotifier {
     }
   }
 
-  void onPreviousSongButtonPressed() {
+  void onPreviousSongButtonPressed(audioPlayer) {
     audioPlayer.seekToPrevious();
   }
 
-  void onNextSongButtonPressed() {
+  void onNextSongButtonPressed(audioPlayer) {
     audioPlayer.seekToNext();
   }
   // CloudFirestore
@@ -161,7 +171,7 @@ class PostsModel extends ChangeNotifier {
         afterUris.add(source);
         playlist = ConcatenatingAudioSource(children: afterUris);
       });
-      await audioPlayer.setAudioSource(playlist);
+      await feedsAudioPlayer.setAudioSource(playlist);
     } catch(e) {
       print(e.toString());
     }
@@ -190,7 +200,7 @@ class PostsModel extends ChangeNotifier {
           afterUris.add(source);
           playlist = ConcatenatingAudioSource(children: afterUris);
         });
-        await audioPlayer.setAudioSource(playlist);
+        await recommendersAudioPlayer.setAudioSource(playlist);
       } else {
         snapshots =  await FirebaseFirestore.instance
         .collection('posts')
@@ -233,14 +243,14 @@ class PostsModel extends ChangeNotifier {
     }
   }
 
-  void listenForStates() {
-    listenForChangesInPlayerState();
-    listenForChangesInPlayerPosition();
-    listenForChangesInBufferedPosition();
-    listenForChangesInTotalDuration();
-    listenForChangesInSequenceState();
+  void listenForStates(audioPlayer) {
+    listenForChangesInPlayerState(audioPlayer);
+    listenForChangesInPlayerPosition(audioPlayer);
+    listenForChangesInBufferedPosition(audioPlayer);
+    listenForChangesInTotalDuration(audioPlayer);
+    listenForChangesInSequenceState(audioPlayer);
   }
-  void listenForChangesInPlayerState() {
+  void listenForChangesInPlayerState(audioPlayer) {
     audioPlayer.playerStateStream.listen((playerState) {
       final isPlaying = playerState.playing;
       final processingState = playerState.processingState;
@@ -258,7 +268,7 @@ class PostsModel extends ChangeNotifier {
     });
   }
 
-  void listenForChangesInPlayerPosition() {
+  void listenForChangesInPlayerPosition(audioPlayer) {
     audioPlayer.positionStream.listen((position) {
       final oldState = progressNotifier.value;
       progressNotifier.value = ProgressBarState(
@@ -269,7 +279,7 @@ class PostsModel extends ChangeNotifier {
     });
   }
 
-  void listenForChangesInBufferedPosition() {
+  void listenForChangesInBufferedPosition(audioPlayer) {
     audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
       final oldState = progressNotifier.value;
       progressNotifier.value = ProgressBarState(
@@ -280,7 +290,7 @@ class PostsModel extends ChangeNotifier {
     });
   }
 
-  void listenForChangesInTotalDuration() {
+  void listenForChangesInTotalDuration(audioPlayer) {
     audioPlayer.durationStream.listen((totalDuration) {
       final oldState = progressNotifier.value;
       progressNotifier.value = ProgressBarState(
@@ -291,19 +301,31 @@ class PostsModel extends ChangeNotifier {
     });
   }
 
-  void listenForChangesInSequenceState() {
+  void listenForChangesInSequenceState(audioPlayer) {
     audioPlayer.sequenceStateStream.listen((sequenceState) {
       if (sequenceState == null) return;
       // update current song doc
       final currentItem = sequenceState.currentSource;
-      currentSongDoc = currentItem?.tag;
-      
+        if (audioPlayer == feedsAudioPlayer) {
+          feedsCurrentSongDoc = currentItem?.tag;
+          final title = currentItem?.tag['title'];
+          feedsCurrentSongTitleNotifier.value = title ?? '';
+        } else {
+          recommendersCurrentSongDoc = currentItem?.tag;
+          final title = currentItem?.tag['title'];
+          recommendersCurrentSongTitleNotifier.value = title ?? '';
+        }
+        notifyListeners();
       // update playlist
       final playlist = sequenceState.effectiveSequence;
-      // final currentSongDocs = playlist.map((item) => item.tag).toList();
-      // playlistNotifier.value = currentSongDocs;
+      
       playlist.map((item) {
-        currentSongDocs.add(item.tag);
+        if (audioPlayer == feedsAudioPlayer) {
+          feedsCurrentSongDocs.add(item.tag);
+        } else {
+          recommendersCurrentSongDocs.add(item.tag);
+        }
+        notifyListeners();
       });
       // update shuffle mode
       isShuffleModeEnabledNotifier.value = 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/parts/posts/posts_model.dart';
-import 'package:whisper/parts/audio_controll/audio_state_design.dart';
+import 'audio_controll/audio_state_design.dart';
 
 class PostCard extends StatelessWidget{
   PostCard(this.documents,this.postsProvider);

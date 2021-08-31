@@ -17,7 +17,6 @@ import 'package:whisper/parts/whisper_drawer.dart';
 
 import 'package:whisper/parts/posts/posts_model.dart';
 
-import 'package:whisper/parts/audio_controll/audio_state_design.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
