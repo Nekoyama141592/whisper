@@ -5,7 +5,7 @@ import 'package:whisper/auth/login/login_page.dart';
 import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/preservations/preservations_page.dart';
 import 'package:whisper/add_post/add_post_page.dart';
-import 'package:whisper/user_show_page.dart';
+import 'package:whisper/users/user_show/user_show_page.dart';
 import 'package:whisper/parts/posts/feeds/components/feed_show_page.dart';
 import 'package:whisper/parts/posts/recommenders/components/recommender_show_page.dart';
 

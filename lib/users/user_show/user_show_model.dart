@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,11 +10,12 @@ import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/repeat_button_notifier.dart';
 
-final preservationsProvider = ChangeNotifierProvider(
-  (ref) => PreservationsModel()
+final userShowProvider = ChangeNotifierProvider(
+  (ref) => UserShowModel()
 );
 
-class PreservationsModel extends ChangeNotifier {
+class UserShowModel extends ChangeNotifier {
+
   bool isLoading = false;
   User? currentUser;
   
@@ -34,21 +36,21 @@ class PreservationsModel extends ChangeNotifier {
   final List<AudioSource> afterUris = [];
   late ConcatenatingAudioSource playlist;
   // cloudFirestore
-  List<String> preservationPostIds = [];
-  List<DocumentSnapshot> preservationDocs = [];
-  late QuerySnapshot<Map<String, dynamic>> snapshots;
+  List<String> postIds = [];
+  List<DocumentSnapshot> postDocs = [];
+  // late QuerySnapshot<Map<String, dynamic>> snapshots;
   int postCount = -1;
   final oneTimeReadCount = 2;
-  
-  PreservationsModel() {
+
+  UserShowModel() {
     init();
   }
+
   void init() async {
     startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
-    await getPreservationRelations();
-    await getPreservations();
+    await getPosts();
     listenForStates();
     endLoading();
   }
@@ -66,36 +68,22 @@ class PreservationsModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
-  Future getPreservationRelations() async {
-    try{
+
+  Future getPosts() async {
+
+    try {
       await FirebaseFirestore.instance
-      .collection('preservations')
-      .where('uid', isEqualTo: currentUser!.uid)
+      .collection('posts')
+      .where('uid',isEqualTo: currentUser!.uid)
       .get()
       .then((qshot) {
         qshot.docs.forEach((DocumentSnapshot doc) {
-          preservationPostIds.add(doc['postId']);
+          postDocs.add(doc);
+          song = Uri.parse(doc['audioURL']);
+          source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+          playlist = ConcatenatingAudioSource(children: afterUris);
         });
-      });
-      print(preservationPostIds);
-      notifyListeners();
-    } catch(e) {
-      print(e.toString());
-    }
-  }
-
-  Future getPreservations () async {
-    try{
-      snapshots = await FirebaseFirestore.instance
-      .collection('posts')
-      .where('postId', whereIn: preservationPostIds)
-      .get();
-      snapshots.docs.forEach((DocumentSnapshot doc) {
-        preservationDocs.add(doc);
-        song = Uri.parse(doc['audioURL']);
-        source = AudioSource.uri(song, tag: doc);
-        afterUris.add(source);
-        playlist = ConcatenatingAudioSource(children: afterUris);
       });
       await audioPlayer.setAudioSource(playlist);
     } catch(e) {
