@@ -15,11 +15,29 @@ class MainModel extends ChangeNotifier {
   User? currentUser;
   late DocumentSnapshot currentUserdoc;
   bool isLoading = true;
+  List<String> likedPostIds = [];
+  List<String> preservatedPostIds = [];
   MainModel() {
     init();
   }
   void init() async {
     startLoading();
+    await getLikedPostIds();
+    await getLikedPostIds();
+    endLoading();
+  }
+
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  void endLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
     try{
       await FirebaseFirestore.instance
@@ -35,17 +53,35 @@ class MainModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
-    endLoading();
-  }
-
-  void startLoading() {
-    isLoading = true;
     notifyListeners();
   }
 
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
+  Future getLikedPostIds() async {
+    try{
+      await FirebaseFirestore.instance
+      .collection('likes')
+      .where('uid',isEqualTo: currentUser!.uid)
+      .get()
+      .then((qshot) {
+        qshot.docs.forEach((doc) {
+          likedPostIds.add(doc['postId']);
+        });
+      });
+    } catch(e) {
+      print(e.toString());
+    }
+  }
+
+  Future getPreservatedPostIds() async {
+    await FirebaseFirestore.instance
+    .collection('preservations')
+    .where('uid',isEqualTo: currentUser!.uid)
+    .get()
+    .then((qshot) {
+      qshot.docs.forEach((doc) {
+        preservatedPostIds.add(doc['postId']);
+      });
+    });
   }
   Future logout(context) async {
     await FirebaseAuth.instance.signOut();
