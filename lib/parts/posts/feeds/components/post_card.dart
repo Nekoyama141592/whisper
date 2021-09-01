@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
-import '../audio_controll/audio_state_design.dart';
+import 'package:whisper/parts/posts/feeds/audio_controll/audio_window.dart';
 
 class PostCard extends StatelessWidget{
   PostCard(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
@@ -22,7 +22,7 @@ class PostCard extends StatelessWidget{
               )
           ),
         ),
-        AudioStateDesign(feedsProvider,preservatedPostIds,likedPostIds)
+        AudioWindow(feedsProvider, preservatedPostIds, likedPostIds)
       ]
     );
   }

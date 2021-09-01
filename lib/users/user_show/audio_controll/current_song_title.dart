@@ -7,9 +7,15 @@ class CurrentSongTitle extends StatelessWidget {
   final UserShowModel userShowProvider;
   @override  
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: SingleChildScrollView(child: Text(userShowProvider.currentSongDoc['title'])),
+    return ValueListenableBuilder<String>(
+      valueListenable: userShowProvider.currentSongTitleNotifier, 
+      builder: (_, title, __) {
+        return Text(
+          title, 
+          style: TextStyle(fontSize: 20),
+          overflow: TextOverflow.ellipsis,
+        );
+      }
     );
   }
 }

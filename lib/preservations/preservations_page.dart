@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/preservations/preservations_model.dart';
-import 'package:whisper/preservations/audio_controll/audio_state_design.dart';
+import 'package:whisper/preservations/audio_controll/audio_window.dart';
 
 class PreservationsPage extends ConsumerWidget {
   PreservationsPage(this.preservatedPostIds,this.likedPostIds);
@@ -42,7 +42,7 @@ class PreservationsPage extends ConsumerWidget {
                   )
               ),
             ),
-            AudioStateDesign(_preservationsProvider,preservatedPostIds,likedPostIds)
+            AudioWindow(_preservationsProvider,preservatedPostIds,likedPostIds)
           ],
         )
     );

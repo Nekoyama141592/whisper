@@ -9,7 +9,7 @@ import 'package:whisper/users/user_show/user_show_page.dart';
 import 'package:whisper/parts/posts/feeds/components/feed_show_page.dart';
 import 'package:whisper/parts/posts/recommenders/components/recommender_show_page.dart';
 import 'package:whisper/users/user_show/user_show_post_show_page.dart';
-
+import 'package:whisper/preservations/preservation_show_page.dart';
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
 }
@@ -24,6 +24,10 @@ void toSignupPage(context) {
 
 void toPreservationsPage(context,preservatedPostIds,likedPostIds) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationsPage(preservatedPostIds,likedPostIds)));
+}
+
+void toPreservationsShowPage(context,doc,preservationsProvider,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(doc,preservationsProvider,preservatedPostIds,likedPostIds)));
 }
 
 void toAddPostsPage(context) {

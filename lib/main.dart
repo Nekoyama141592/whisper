@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/main_model.dart';
 
 import 'themes/themes.dart';
@@ -45,6 +46,7 @@ class MyHomePage extends ConsumerWidget {
     return DefaultTabController(
       length: tabBarElements.length,
       child: Scaffold(
+        
         appBar: AppBar(
           title: Text('Whisper'),
           bottom: TabBar(

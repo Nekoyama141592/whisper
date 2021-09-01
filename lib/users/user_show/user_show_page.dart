@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'user_show_model.dart';
-import 'package:whisper/users/user_show/audio_controll/audio_state_design.dart';
+import 'package:whisper/users/user_show/audio_controll/audio_window.dart';
 
 class UserShowPage extends ConsumerWidget {
   final DocumentSnapshot doc;
@@ -46,8 +46,7 @@ class UserShowPage extends ConsumerWidget {
               )
             )
           ),
-          
-          AudioStateDesign(_userShowProvider,preservatedPostIds,likedPostIds)
+          AudioWindow(_userShowProvider,preservatedPostIds,likedPostIds)
         ],
       ),
     );

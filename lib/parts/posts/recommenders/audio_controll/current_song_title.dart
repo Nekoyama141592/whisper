@@ -10,9 +10,10 @@ class CurrentSongTitle extends StatelessWidget {
     return ValueListenableBuilder<String>(
       valueListenable: recommendersProvider.currentSongTitleNotifier, 
       builder: (_, title, __) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(title, style: TextStyle(fontSize: 20)),
+        return Text(
+          title, 
+          style: TextStyle(fontSize: 20),
+          overflow: TextOverflow.ellipsis,
         );
       }
     );
