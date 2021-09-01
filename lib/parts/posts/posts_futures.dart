@@ -32,4 +32,8 @@ class PostsFeaturesModel extends ChangeNotifier{
       print(e.toString());
     }
   }
+
+  void reload() {
+    notifyListeners();
+  }
 }

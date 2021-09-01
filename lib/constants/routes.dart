@@ -22,27 +22,27 @@ void toSignupPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
 }
 
-void toPreservationsPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationsPage()));
+void toPreservationsPage(context,preservatedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationsPage(preservatedPostIds)));
 }
 
 void toAddPostsPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage()));
 }
 
-void toUserShowPage(context,userDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(userDoc)));
+void toUserShowPage(context,userDoc,preservatedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(userDoc,preservatedPostIds)));
 }
-void toFeedShowPage(context,userDoc,feedsProvider) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(userDoc,feedsProvider)));
-}
-
-void toRecommenderShowPage(context,userDoc,recommendersProvider) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(userDoc,recommendersProvider)));
+void toFeedShowPage(context,userDoc,feedsProvider,preservatedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(userDoc,feedsProvider,preservatedPostIds)));
 }
 
-void toUserShowPostShowPage(context,userDoc,userShowProvider) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(userDoc,userShowProvider)));
+void toRecommenderShowPage(context,userDoc,recommendersProvider,preservatedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(userDoc,recommendersProvider,preservatedPostIds)));
+}
+
+void toUserShowPostShowPage(context,userDoc,userShowProvider,preservatedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(userDoc,userShowProvider,preservatedPostIds)));
 }
 
 

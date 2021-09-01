@@ -9,7 +9,8 @@ import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 class RecommenderShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final RecommendersModel recommendersProvider;
-  RecommenderShowPage(this.doc,this.recommendersProvider);
+  final List preservatedPostIds;
+  RecommenderShowPage(this.doc,this.recommendersProvider,this.preservatedPostIds);
   @override
   Widget build(BuildContext context) {
     return 
@@ -41,9 +42,10 @@ class RecommenderShowPage extends StatelessWidget{
                 ),
                 PostButtons(
                   recommendersProvider.currentUser!.uid,
-                  doc
+                  doc,
+                  preservatedPostIds
                 ),
-                AudioStateDesign(recommendersProvider),
+                AudioStateDesign(recommendersProvider,preservatedPostIds),
                 
               ],
             ),

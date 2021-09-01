@@ -3,11 +3,10 @@ import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
 import '../audio_controll/audio_state_design.dart';
 
-
-
 class PostCard extends StatelessWidget{
-  PostCard(this.feedsProvider);
+  PostCard(this.feedsProvider,this.preservatedPostIds);
   final FeedsModel feedsProvider;
+  final List preservatedPostIds;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,7 +21,7 @@ class PostCard extends StatelessWidget{
               )
           ),
         ),
-        AudioStateDesign(feedsProvider)
+        AudioStateDesign(feedsProvider,preservatedPostIds)
       ]
     );
   }

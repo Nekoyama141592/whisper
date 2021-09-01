@@ -5,6 +5,8 @@ import 'package:whisper/preservations/preservations_model.dart';
 import 'package:whisper/preservations/audio_controll/audio_state_design.dart';
 
 class PreservationsPage extends ConsumerWidget {
+  PreservationsPage(this.preservatedPostIds);
+  final List preservatedPostIds;
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final _preservationsProvider = watch(preservationsProvider);
@@ -39,7 +41,7 @@ class PreservationsPage extends ConsumerWidget {
                   )
               ),
             ),
-            AudioStateDesign(_preservationsProvider)
+            AudioStateDesign(_preservationsProvider,preservatedPostIds)
           ],
         )
     );

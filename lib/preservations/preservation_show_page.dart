@@ -9,7 +9,8 @@ import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 class PreservationShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final PreservationsModel preservationsProvider;
-  PreservationShowPage(this.doc,this.preservationsProvider);
+  final List preservatedPostIds;
+  PreservationShowPage(this.doc,this.preservationsProvider,this.preservatedPostIds);
   @override
   Widget build(BuildContext context) {
     return 
@@ -41,9 +42,10 @@ class PreservationShowPage extends StatelessWidget{
                 ),
                 PostButtons(
                   preservationsProvider.currentUser!.uid,
-                  doc
+                  doc,
+                  preservatedPostIds
                 ),
-                AudioStateDesign(preservationsProvider),
+                AudioStateDesign(preservationsProvider,preservatedPostIds),
                 
               ],
             ),

@@ -7,14 +7,15 @@ import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
 
 class AudioStateDesign extends StatelessWidget {
-  AudioStateDesign(this.userShowProvider);
+  AudioStateDesign(this.userShowProvider,this.preservatedPostIds);
+  final List preservatedPostIds;
   final UserShowModel userShowProvider;
   @override  
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         // toUser show post show
-        routes.toUserShowPostShowPage(context, userShowProvider.currentSongDoc, userShowProvider);
+        routes.toUserShowPostShowPage(context, userShowProvider.currentSongDoc, userShowProvider,preservatedPostIds);
       },
       child: Container(
         height: 130,

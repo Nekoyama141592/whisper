@@ -8,7 +8,8 @@ import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 import 'components/post_card.dart';
 
 class FeedsPage extends ConsumerWidget {
-
+  FeedsPage(this.preservatedPostIds);
+  final List preservatedPostIds;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _feedsProvider = watch(feedsProvider);
@@ -27,7 +28,8 @@ class FeedsPage extends ConsumerWidget {
       ],
     )
     : PostCard(
-      _feedsProvider
+      _feedsProvider,
+      preservatedPostIds
     );
   }
 }

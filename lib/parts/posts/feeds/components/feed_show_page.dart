@@ -9,7 +9,8 @@ import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 class FeedShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final FeedsModel feedsProvider;
-  FeedShowPage(this.doc,this.feedsProvider);
+  final List preservatedPostIds;
+  FeedShowPage(this.doc,this.feedsProvider,this.preservatedPostIds);
   @override
   Widget build(BuildContext context) {
     return 
@@ -41,9 +42,10 @@ class FeedShowPage extends StatelessWidget{
                 ),
                 PostButtons(
                   feedsProvider.currentUser!.uid,
-                  doc
+                  doc,
+                  preservatedPostIds
                 ),
-                AudioStateDesign(feedsProvider),
+                AudioStateDesign(feedsProvider,preservatedPostIds),
               ],
             ),
           ],

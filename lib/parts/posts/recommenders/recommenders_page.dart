@@ -5,7 +5,8 @@ import 'recommenders_model.dart';
 
 import 'components/post_card.dart';
 class RecommendersPage extends ConsumerWidget {
-  
+  RecommendersPage(this.preservatedPostIds);
+  final List preservatedPostIds;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _recommendersProvider = watch(recommendersProvider);
@@ -16,6 +17,7 @@ class RecommendersPage extends ConsumerWidget {
     )
     : PostCard(
       _recommendersProvider,
+      preservatedPostIds
     );
   }
 }

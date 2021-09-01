@@ -12,7 +12,8 @@ import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 class UserShowPage extends ConsumerWidget {
   final DocumentSnapshot doc;
-  UserShowPage(this.doc);
+  final List preservatedPostIds;
+  UserShowPage(this.doc,this.preservatedPostIds);
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _userShowProvider = watch(userShowProvider);
@@ -48,7 +49,7 @@ class UserShowPage extends ConsumerWidget {
             )
           ),
           
-          AudioStateDesign(_userShowProvider)
+          AudioStateDesign(_userShowProvider,preservatedPostIds)
         ],
       ),
     );

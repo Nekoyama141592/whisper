@@ -8,15 +8,16 @@ import 'current_song_title.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 class AudioStateDesign extends StatelessWidget {
-  AudioStateDesign(this.recommendersProvider);
+  AudioStateDesign(this.recommendersProvider,this.preservatedPostIds);
   final RecommendersModel recommendersProvider;
+  final List preservatedPostIds;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         // toShowPage
-        routes.toRecommenderShowPage(context, recommendersProvider.currentSongDoc, recommendersProvider);
+        routes.toRecommenderShowPage(context, recommendersProvider.currentSongDoc, recommendersProvider,preservatedPostIds);
       },
       child: Container(
         height: 130,
