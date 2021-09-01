@@ -24,7 +24,7 @@ class MainModel extends ChangeNotifier {
     startLoading();
     await setCurrentUser();
     await getLikedPostIds();
-    await getLikedPostIds();
+    await getPreservatedPostIds();
     endLoading();
   }
 

@@ -13,11 +13,19 @@ class LikeButton extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _postFeaturesProvider = watch(postsFeaturesProvider);
-    return IconButton(
+    return likedPostIds.contains(postDoc['postId']) ?
+    IconButton(
+      icon: Icon(
+        Icons.favorite,
+        color: Colors.red,
+      ),
+      onPressed: (){}, 
+    )
+    : IconButton(
       icon: Icon(Icons.favorite),
       onPressed: () async {
         await _postFeaturesProvider.like(uid, postDoc);
-        likedPostIds.add(postDoc.id);
+        likedPostIds.add(postDoc['postId']);
         _postFeaturesProvider.reload();
       }, 
     );

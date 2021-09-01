@@ -12,11 +12,19 @@ class PreservateButton extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _postsFeaturesProvider = watch(postsFeaturesProvider);
-    return IconButton(
+    return preservatedPostIds.contains(postDoc['postId']) ?
+    IconButton(
+      icon: Icon(
+        Icons.inventory_2,
+        color: Colors.red,
+      ),
+      onPressed: (){}, 
+    )
+    : IconButton(
       icon: Icon(Icons.inventory_2),
       onPressed: () async {
         await _postsFeaturesProvider.preservate(uid, postDoc);
-        preservatedPostIds.add(postDoc.id);
+        preservatedPostIds.add(postDoc['postId']);
         _postsFeaturesProvider.reload();
       }, 
     );
