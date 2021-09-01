@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:whisper/parts/posts/posts_model.dart';
 
-import 'post_card.dart';
-class RecommendersPage extends StatelessWidget {
-  const RecommendersPage({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'recommenders_model.dart';
 
-  final PostsModel _postsProvider;
-
+import 'components/post_card.dart';
+class RecommendersPage extends ConsumerWidget {
+  
   @override
-  Widget build(BuildContext context) {
-    return _postsProvider.isLoading ?
+  Widget build(BuildContext context, ScopedReader watch) {
+    final _recommendersProvider = watch(recommendersProvider);
+    return _recommendersProvider.isLoading ?
     Container(
       color: Colors.grey.withOpacity(0.7),
       child: Text('Loading'),
     )
     : PostCard(
-      _postsProvider.recommenderDocuments, 
-      _postsProvider,
+      _recommendersProvider,
     );
   }
 }

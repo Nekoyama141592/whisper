@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/repeat_button_notifier.dart';
 
-import 'package:whisper/parts/posts/posts_model.dart';
+import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
 
 class AudioControllButtons extends StatelessWidget {
-  const AudioControllButtons({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
-
-  final PostsModel _postsProvider;
-
+  
+  AudioControllButtons(this.recommendersProvider);
+  final RecommendersModel recommendersProvider;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,10 +16,10 @@ class AudioControllButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          RepeatButton(postsProvider: _postsProvider),
-          PreviousSongButton(postsProvider: _postsProvider),
-          PlayButton(postsProvider: _postsProvider),
-          NextSongButton(postsProvider: _postsProvider)
+          RepeatButton(recommendersProvider),
+          PreviousSongButton(recommendersProvider),
+          PlayButton(recommendersProvider),
+          NextSongButton(recommendersProvider)
         ],
       ),
     );
@@ -31,24 +27,21 @@ class AudioControllButtons extends StatelessWidget {
 }
 
 class NextSongButton extends StatelessWidget {
-  const NextSongButton({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
-
-  final PostsModel _postsProvider;
+  
+  NextSongButton(this.recommendersProvider);
+  final RecommendersModel recommendersProvider;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-      valueListenable: _postsProvider.isLastSongNotifier,
+      valueListenable: recommendersProvider.isLastSongNotifier,
       builder: (_, isLast, __) {
         return IconButton(
           icon: Icon(Icons.skip_next),
           onPressed: isLast ?
           null
           : () {
-            _postsProvider.onNextSongButtonPressed(_postsProvider.recommendersAudioPlayer);
+            recommendersProvider.onNextSongButtonPressed();
           }, 
         );
       },
@@ -57,17 +50,14 @@ class NextSongButton extends StatelessWidget {
 }
 
 class PlayButton extends StatelessWidget {
-  const PlayButton({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
-
-  final PostsModel _postsProvider;
+  
+  PlayButton(this.recommendersProvider);
+  final RecommendersModel recommendersProvider;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ButtonState>(
-      valueListenable: _postsProvider.playButtonNotifier,
+      valueListenable: recommendersProvider.playButtonNotifier,
       builder: (_, value, __){
         switch (value) {
           case ButtonState.loading:
@@ -82,7 +72,7 @@ class PlayButton extends StatelessWidget {
               icon: Icon(Icons.play_arrow),
               iconSize: 32.0,
               onPressed: (){
-                _postsProvider.play(_postsProvider.recommendersAudioPlayer);
+                recommendersProvider.play();
               },
             );
           case ButtonState.playing:
@@ -90,7 +80,7 @@ class PlayButton extends StatelessWidget {
               icon: Icon(Icons.pause),
               iconSize: 32.0,
               onPressed: () {
-                _postsProvider.pause(_postsProvider.recommendersAudioPlayer);
+                recommendersProvider.pause();
               },
             );
         }
@@ -100,23 +90,20 @@ class PlayButton extends StatelessWidget {
 }
 
 class PreviousSongButton extends StatelessWidget {
-  const PreviousSongButton({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
-
-  final PostsModel _postsProvider;
+  
+  PreviousSongButton(this.recommendersProvider);
+  final RecommendersModel recommendersProvider;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-      valueListenable: _postsProvider.isFirstSongNotifier,
+      valueListenable: recommendersProvider.isFirstSongNotifier,
       builder: (_, isFirst, __){
         return IconButton(
           onPressed: (isFirst) ? 
           null
           : (){
-            _postsProvider.onPreviousSongButtonPressed(_postsProvider.recommendersAudioPlayer);
+            recommendersProvider.onPreviousSongButtonPressed();
           },
           icon: Icon(Icons.skip_previous)
         );
@@ -126,17 +113,14 @@ class PreviousSongButton extends StatelessWidget {
 }
 
 class RepeatButton extends StatelessWidget {
-  const RepeatButton({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
-
-  final PostsModel _postsProvider;
+  
+  RepeatButton(this.recommendersProvider);
+  final RecommendersModel recommendersProvider;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<RepeatState>(
-      valueListenable: _postsProvider.repeatButtonNotifier,
+      valueListenable: recommendersProvider.repeatButtonNotifier,
       builder: (context, value, child) {
         Icon icon;
         switch (value) {
@@ -153,7 +137,7 @@ class RepeatButton extends StatelessWidget {
         return IconButton(
           icon: icon,
           onPressed: () {
-            _postsProvider.onRepeatButtonPressed(_postsProvider.recommendersAudioPlayer);
+            recommendersProvider.onRepeatButtonPressed();
           }, 
         );
       },

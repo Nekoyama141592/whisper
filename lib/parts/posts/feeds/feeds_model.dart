@@ -4,19 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/repeat_button_notifier.dart';
 
-final preservationsProvider = ChangeNotifierProvider(
-  (ref) => PreservationsModel()
-);
 
-class PreservationsModel extends ChangeNotifier {
+final feedsProvider = ChangeNotifierProvider(
+  (ref) => FeedsModel()
+);
+class FeedsModel extends ChangeNotifier {
+
   bool isLoading = false;
   User? currentUser;
-  
+
   // notifiers
   final currentSongTitleNotifier = ValueNotifier<String>('');
   late DocumentSnapshot currentSongDoc;
@@ -35,20 +37,28 @@ class PreservationsModel extends ChangeNotifier {
   late ConcatenatingAudioSource playlist;
   // cloudFirestore
   late QuerySnapshot<Map<String, dynamic>> follows;
-  List<String> preservationPostIds = [];
-  List<DocumentSnapshot> preservationDocs = [];
+  List<String> followUids = [];
+  List<String> mutesUids = [];
+  List<String> feedPostIds = [];
+  List<DocumentSnapshot> feedDocs = [];
   late QuerySnapshot<Map<String, dynamic>> snapshots;
-  int postCount = -1;
+  //repost
+  bool isReposted = false;
+  // refresh
+  RefreshController refreshController = RefreshController(initialRefresh: false);
   final oneTimeReadCount = 2;
-  PreservationsModel() {
+  int postsCount = -1;
+  FeedsModel() {
     init();
   }
+
   void init() async {
     startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
-    await getPreservationRelations();
-    await getPreservations();
+    // await
+    await setFollowUids();
+    await getFeeds();
     listenForStates();
     endLoading();
   }
@@ -66,32 +76,50 @@ class PreservationsModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
-  Future getPreservationRelations() async {
-    try{
-      await FirebaseFirestore.instance
-      .collection('preservations')
-      .where('uid', isEqualTo: currentUser!.uid)
-      .get()
-      .then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot doc) {
-          preservationPostIds.add(doc['postId']);
-        });
+
+  Future setFollowUids() async {
+    
+    try {
+      follows = await FirebaseFirestore.instance
+      .collection('follows')
+      .where('activeUserId', isEqualTo: currentUser!.uid)
+      .get();
+      follows.docs.forEach((DocumentSnapshot doc) {
+        followUids.add(doc['passiveUserId']);
       });
-      print(preservationPostIds);
-      notifyListeners();
+      followUids.add(currentUser!.uid);
     } catch(e) {
+      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+  }
+
+  Future setMutesList() async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('mutes')
+      .where('activeUserId', isEqualTo: currentUser!.uid)
+      .get()
+      .then((snapshot){
+        snapshot.docs.forEach((DocumentSnapshot doc) {
+          mutesUids.add(doc['passiveUserId']);
+        });
+      } );
+
+    } catch(e){
       print(e.toString());
     }
   }
 
-  Future getPreservations () async {
+  // getFeeds
+  Future getFeeds() async {
+
     try{
       snapshots = await FirebaseFirestore.instance
       .collection('posts')
-      .where('postId', whereIn: preservationPostIds)
+      .where('uid',whereIn: followUids)
       .get();
       snapshots.docs.forEach((DocumentSnapshot doc) {
-        preservationDocs.add(doc);
+        feedDocs.add(doc);
         song = Uri.parse(doc['audioURL']);
         source = AudioSource.uri(song, tag: doc);
         afterUris.add(source);
@@ -101,9 +129,26 @@ class PreservationsModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
-    print(snapshots.docs.length.toString() + "snapshot_length");
-    print(afterUris.length.toString() + "  afterUri_length");
     notifyListeners();
+  }
+
+  Future repost(DocumentSnapshot doc) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('posts')
+      .add({
+        'uid': currentUser!.uid,
+        'repostedPostId': doc.id,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+        
+      });
+      print('repostTryPass!!!!');
+      isReposted = true;
+      notifyListeners();
+    } catch(e) {
+      print(e.toString() + "repostRepostRepost");
+    }
   }
 
   void play()  {

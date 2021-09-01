@@ -1,26 +1,23 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/posts/posts_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'post_card.dart';
+import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
-class FeedsPage extends StatelessWidget {
-  const FeedsPage({
-    Key? key,
-    required PostsModel postsProvider,
-  }) : _postsProvider = postsProvider, super(key: key);
+import 'components/post_card.dart';
 
-  final PostsModel _postsProvider;
+class FeedsPage extends ConsumerWidget {
 
   @override
-  Widget build(BuildContext context) {
-    return _postsProvider.isLoading ?
+  Widget build(BuildContext context, ScopedReader watch) {
+    final _feedsProvider = watch(feedsProvider);
+    return _feedsProvider.isLoading ?
     Container(
       color: Colors.grey.withOpacity(0.7),
       child: Text('Loading'),
     )
-    : _postsProvider.feedDocuments.isEmpty ?
+    : _feedsProvider.feedDocs.isEmpty ?
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -30,8 +27,7 @@ class FeedsPage extends StatelessWidget {
       ],
     )
     : PostCard(
-      _postsProvider.feedDocuments, 
-      _postsProvider
+      _feedsProvider
     );
   }
 }

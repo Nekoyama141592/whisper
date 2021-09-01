@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whisper/parts/posts/posts_model.dart';
-import 'audio_controll/audio_state_design.dart';
+import 'package:whisper/parts/posts/feeds/feeds_model.dart';
+
+import '../audio_controll/audio_state_design.dart';
 
 class PostCard extends StatelessWidget{
-  PostCard(this.documents,this.postsProvider);
-  final List<DocumentSnapshot> documents;
-  final PostsModel postsProvider;
+  PostCard(this.feedsProvider);
+  final FeedsModel feedsProvider;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: documents.length,
+            itemCount: feedsProvider.feedDocs.length,
             itemBuilder: (BuildContext context, int i) =>
               ListTile(
-                title: Text(documents[i]['title']),
+                title: Text(feedsProvider.feedDocs[i]['title']),
                 trailing: IconButton(
                   icon: Icon(Icons.recommend),
                   onPressed: (){},
@@ -24,7 +23,7 @@ class PostCard extends StatelessWidget{
               )
           ),
         ),
-        AudioStateDesign(postsProvider: postsProvider)
+        AudioStateDesign(feedsProvider)
       ]
     );
   }
