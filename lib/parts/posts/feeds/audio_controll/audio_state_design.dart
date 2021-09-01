@@ -9,15 +9,16 @@ import 'current_song_title.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 class AudioStateDesign extends StatelessWidget {
   
-  AudioStateDesign(this.feedsProvider,this.preservatedPostIds);
+  AudioStateDesign(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
   final FeedsModel feedsProvider;
   final List preservatedPostIds;
+  final List likedPostIds;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         // feeds_show
-        routes.toFeedShowPage(context, feedsProvider.currentSongDoc, feedsProvider,preservatedPostIds);
+        routes.toFeedShowPage(context, feedsProvider.currentSongDoc, feedsProvider,preservatedPostIds,likedPostIds);
       },
       child: Container(
         height: 130,

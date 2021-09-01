@@ -4,9 +4,10 @@ import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
 import '../audio_controll/audio_state_design.dart';
 
 class PostCard extends StatelessWidget{
-  PostCard(this.recommendersProvider,this.preservatedPostIds);
+  PostCard(this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
   final RecommendersModel recommendersProvider;
   final List preservatedPostIds;
+  final List likedPostIds;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +22,7 @@ class PostCard extends StatelessWidget{
               )
           ),
         ),
-        AudioStateDesign(recommendersProvider,preservatedPostIds)
+        AudioStateDesign(recommendersProvider,preservatedPostIds,likedPostIds)
       ]
     );
   }

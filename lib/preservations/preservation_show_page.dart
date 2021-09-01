@@ -10,7 +10,8 @@ class PreservationShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final PreservationsModel preservationsProvider;
   final List preservatedPostIds;
-  PreservationShowPage(this.doc,this.preservationsProvider,this.preservatedPostIds);
+  final List likedPostIds;
+  PreservationShowPage(this.doc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return 
@@ -43,9 +44,10 @@ class PreservationShowPage extends StatelessWidget{
                 PostButtons(
                   preservationsProvider.currentUser!.uid,
                   doc,
-                  preservatedPostIds
+                  preservatedPostIds,
+                  likedPostIds
                 ),
-                AudioStateDesign(preservationsProvider,preservatedPostIds),
+                AudioStateDesign(preservationsProvider,preservatedPostIds,likedPostIds),
                 
               ],
             ),

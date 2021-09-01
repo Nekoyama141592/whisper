@@ -10,7 +10,8 @@ class RecommenderShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final RecommendersModel recommendersProvider;
   final List preservatedPostIds;
-  RecommenderShowPage(this.doc,this.recommendersProvider,this.preservatedPostIds);
+  final List likedPostIds;
+  RecommenderShowPage(this.doc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return 
@@ -43,9 +44,10 @@ class RecommenderShowPage extends StatelessWidget{
                 PostButtons(
                   recommendersProvider.currentUser!.uid,
                   doc,
-                  preservatedPostIds
+                  preservatedPostIds,
+                  likedPostIds
                 ),
-                AudioStateDesign(recommendersProvider,preservatedPostIds),
+                AudioStateDesign(recommendersProvider,preservatedPostIds,likedPostIds),
                 
               ],
             ),

@@ -10,7 +10,8 @@ class FeedShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final FeedsModel feedsProvider;
   final List preservatedPostIds;
-  FeedShowPage(this.doc,this.feedsProvider,this.preservatedPostIds);
+  final List likedPostIds;
+  FeedShowPage(this.doc,this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return 
@@ -43,9 +44,10 @@ class FeedShowPage extends StatelessWidget{
                 PostButtons(
                   feedsProvider.currentUser!.uid,
                   doc,
-                  preservatedPostIds
+                  preservatedPostIds,
+                  likedPostIds
                 ),
-                AudioStateDesign(feedsProvider,preservatedPostIds),
+                AudioStateDesign(feedsProvider,preservatedPostIds,likedPostIds),
               ],
             ),
           ],

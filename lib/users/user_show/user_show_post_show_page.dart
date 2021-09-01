@@ -10,10 +10,11 @@ import 'package:whisper/users/user_show/user_show_model.dart';
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 class UserShowPostShowPage extends StatelessWidget {
-  UserShowPostShowPage(this.doc,this.userShowProvider,this.preservatedPostIds);
+  UserShowPostShowPage(this.doc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
   final UserShowModel userShowProvider;
   final DocumentSnapshot doc;
   final List preservatedPostIds;
+  final List likedPostIds;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +46,10 @@ class UserShowPostShowPage extends StatelessWidget {
                 PostButtons(
                   userShowProvider.currentUser!.uid,
                   doc,
-                  preservatedPostIds
+                  preservatedPostIds,
+                  likedPostIds
                 ),
-                AudioStateDesign(userShowProvider,preservatedPostIds),
+                AudioStateDesign(userShowProvider,preservatedPostIds,likedPostIds),
                 
               ],
             ),

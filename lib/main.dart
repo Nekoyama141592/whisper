@@ -57,14 +57,14 @@ class MyHomePage extends ConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(_mainProvider.preservatedPostIds),
-            RecommendersPage(_mainProvider.preservatedPostIds)
+            FeedsPage(_mainProvider.preservatedPostIds,_mainProvider.likedPostIds),
+            RecommendersPage(_mainProvider.preservatedPostIds,_mainProvider.likedPostIds)
             
           ],
         ),
         drawer: _mainProvider.isLoading ? 
         Drawer()
-        : WhisperDrawer(_mainProvider,_mainProvider.preservatedPostIds),
+        : WhisperDrawer(_mainProvider,_mainProvider.preservatedPostIds,_mainProvider.likedPostIds),
         bottomNavigationBar: MainBottomNavigationbar(),
       ),
     );

@@ -7,8 +7,9 @@ import 'package:whisper/main_model.dart';
 class WhisperDrawer extends StatelessWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
   final List preservatedPostIds;
+  final List likedPostIds;
   
-  WhisperDrawer(this.mainProvider,this.preservatedPostIds);
+  WhisperDrawer(this.mainProvider,this.preservatedPostIds,this.likedPostIds);
 
   final MainModel mainProvider;
   @override  
@@ -19,7 +20,7 @@ class WhisperDrawer extends StatelessWidget {
           ListTile(
             title: Text('Preservations'),
             onTap: () {
-              routes.toPreservationsPage(context,preservatedPostIds);
+              routes.toPreservationsPage(context,preservatedPostIds,likedPostIds);
             },
           ),
           ListTile(
@@ -31,7 +32,7 @@ class WhisperDrawer extends StatelessWidget {
           ListTile(
             title: Text('User Show'),
             onTap: () {
-              routes.toUserShowPage(context, mainProvider.currentUserdoc,preservatedPostIds);
+              routes.toUserShowPage(context, mainProvider.currentUserdoc,preservatedPostIds,likedPostIds);
             },
           ),
         ],

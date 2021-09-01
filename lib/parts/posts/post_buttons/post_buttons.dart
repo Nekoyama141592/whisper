@@ -7,16 +7,17 @@ import 'package:whisper/parts/posts/post_buttons/components/preservate_button.da
 
 class PostButtons extends StatelessWidget {
 
-  PostButtons(this.uid,this.postDoc,this.preservatedPostIds);
+  PostButtons(this.uid,this.postDoc,this.preservatedPostIds,this.likedPostIds);
   final String uid;
   final DocumentSnapshot postDoc;
   final List preservatedPostIds;
+  final List likedPostIds;
   @override  
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        LikeButton(uid, postDoc),
+        LikeButton(uid, postDoc,likedPostIds),
         PreservateButton(uid, postDoc,preservatedPostIds)
       ],
     );
