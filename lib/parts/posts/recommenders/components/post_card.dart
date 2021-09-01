@@ -16,10 +16,7 @@ class PostCard extends StatelessWidget{
             itemBuilder: (BuildContext context, int i) =>
               ListTile(
                 title: Text(recommendersProvider.recommenderDocs[i]['title']),
-                trailing: IconButton(
-                  icon: Icon(Icons.recommend),
-                  onPressed: (){},
-                ),
+                
               )
           ),
         ),

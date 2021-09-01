@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 import 'package:whisper/preservations/audio_controll/audio_state_design.dart';
 
-
 class PreservationsPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
@@ -35,10 +34,7 @@ class PreservationsPage extends ConsumerWidget {
                 itemBuilder: (BuildContext context, int i) =>
                   ListTile(
                     title: Text(_preservationsProvider.preservationDocs[i]['title']),
-                    trailing: IconButton(
-                      icon: Icon(Icons.recommend),
-                      onPressed: (){}, 
-                    ),
+                    
                     
                   )
               ),

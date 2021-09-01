@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
+
 import 'package:whisper/parts/posts/recommenders/audio_controll/audio_state_design.dart';
 import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
+
+import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 class RecommenderShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final RecommendersModel recommendersProvider;
@@ -36,7 +39,12 @@ class RecommenderShowPage extends StatelessWidget{
                 Center(
                   child: Text(doc['title']),
                 ),
-                AudioStateDesign(recommendersProvider)
+                PostButtons(
+                  recommendersProvider.currentUser!.uid,
+                  doc
+                ),
+                AudioStateDesign(recommendersProvider),
+                
               ],
             ),
           ],

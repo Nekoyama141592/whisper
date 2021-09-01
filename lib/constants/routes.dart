@@ -8,6 +8,7 @@ import 'package:whisper/add_post/add_post_page.dart';
 import 'package:whisper/users/user_show/user_show_page.dart';
 import 'package:whisper/parts/posts/feeds/components/feed_show_page.dart';
 import 'package:whisper/parts/posts/recommenders/components/recommender_show_page.dart';
+import 'package:whisper/users/user_show/user_show_post_show_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -35,8 +36,13 @@ void toUserShowPage(context,userDoc) {
 void toFeedShowPage(context,userDoc,feedsProvider) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(userDoc,feedsProvider)));
 }
+
 void toRecommenderShowPage(context,userDoc,recommendersProvider) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(userDoc,recommendersProvider)));
+}
+
+void toUserShowPostShowPage(context,userDoc,userShowProvider) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(userDoc,userShowProvider)));
 }
 
 

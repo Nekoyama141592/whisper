@@ -7,6 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_show_model.dart';
 import 'package:whisper/users/user_show/audio_controll/audio_state_design.dart';
 
+
+import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
+
 class UserShowPage extends ConsumerWidget {
   final DocumentSnapshot doc;
   UserShowPage(this.doc);
@@ -40,9 +43,11 @@ class UserShowPage extends ConsumerWidget {
               itemBuilder: (BuildContext context, int i) =>
               ListTile(
                 title: Text(_userShowProvider.postDocs[i]['title']),
+                
               )
             )
           ),
+          
           AudioStateDesign(_userShowProvider)
         ],
       ),

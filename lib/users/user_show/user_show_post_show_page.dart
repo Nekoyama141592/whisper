@@ -6,6 +6,9 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/users/user_show/audio_controll/audio_state_design.dart';
 import 'package:whisper/users/user_show/user_show_model.dart';
 
+
+import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
+
 class UserShowPostShowPage extends StatelessWidget {
   UserShowPostShowPage(this.doc,this.userShowProvider);
   final UserShowModel userShowProvider;
@@ -38,7 +41,12 @@ class UserShowPostShowPage extends StatelessWidget {
                 Center(
                   child: Text(doc['title']),
                 ),
-                AudioStateDesign(userShowProvider)
+                PostButtons(
+                  userShowProvider.currentUser!.uid,
+                  doc
+                ),
+                AudioStateDesign(userShowProvider),
+                
               ],
             ),
         ],

@@ -3,6 +3,8 @@ import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
 import '../audio_controll/audio_state_design.dart';
 
+
+
 class PostCard extends StatelessWidget{
   PostCard(this.feedsProvider);
   final FeedsModel feedsProvider;
@@ -16,10 +18,7 @@ class PostCard extends StatelessWidget{
             itemBuilder: (BuildContext context, int i) =>
               ListTile(
                 title: Text(feedsProvider.feedDocs[i]['title']),
-                trailing: IconButton(
-                  icon: Icon(Icons.recommend),
-                  onPressed: (){},
-                ),
+                
               )
           ),
         ),

@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 import 'package:whisper/parts/posts/feeds/audio_controll/audio_state_design.dart';
+
+import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
+
 class FeedShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final FeedsModel feedsProvider;
@@ -36,7 +39,11 @@ class FeedShowPage extends StatelessWidget{
                 Center(
                   child: Text(doc['title']),
                 ),
-                AudioStateDesign(feedsProvider)
+                PostButtons(
+                  feedsProvider.currentUser!.uid,
+                  doc
+                ),
+                AudioStateDesign(feedsProvider),
               ],
             ),
           ],

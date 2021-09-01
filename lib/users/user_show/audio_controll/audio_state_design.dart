@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../user_show_model.dart';
-import 'package:whisper/preservations/preservation_show_page.dart';
 
+import '../user_show_model.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 import 'audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
@@ -14,6 +14,7 @@ class AudioStateDesign extends StatelessWidget {
     return InkWell(
       onTap: () {
         // toUser show post show
+        routes.toUserShowPostShowPage(context, userShowProvider.currentSongDoc, userShowProvider);
       },
       child: Container(
         height: 130,
