@@ -7,7 +7,6 @@ import 'package:whisper/parts/posts/feeds/audio_controll/audio_state_design.dart
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
-
 class FeedShowPage extends StatelessWidget{
   final DocumentSnapshot doc;
   final FeedsModel feedsProvider;
@@ -16,46 +15,53 @@ class FeedShowPage extends StatelessWidget{
   FeedShowPage(this.doc,this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
-    return 
-      Scaffold(
+    return Scaffold(
         backgroundColor: kBackgroundColor,
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 10
-              ),
-              child: IconButton(
-                icon: Icon(Icons.keyboard_arrow_down),
-                onPressed: (){
-                  Navigator.pop(context);
-                }, 
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    // image
-                    child: Text(doc.id),
+        extendBodyBehindAppBar: false,
+        
+        body: SafeArea(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20,
+                    
                   ),
-                  Center(
-                    child: Text(doc['title']),
-                  ),
-                  PostButtons(
-                    feedsProvider.currentUser!.uid,
-                    doc,
-                    preservatedPostIds,
-                    likedPostIds
-                  ),
-                  AudioStateDesign(feedsProvider,preservatedPostIds,likedPostIds),
-                  Comments(feedsProvider.currentSongDoc['postId'])
-                ],
+                  color: Colors.blue,
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  }, 
+                ),
               ),
-            ),
-          ],
+              SingleChildScrollView(
+                child: Container(
+                  // margin: EdgeInsets.only(top: 100),
+                  child: Column(
+                    children: [
+                      Center(
+                        // image
+                        child: Text(doc.id),
+                      ),
+                      Center(
+                        child: Text(doc['title']),
+                      ),
+                      PostButtons(
+                        feedsProvider.currentUser!.uid,
+                        doc,
+                        preservatedPostIds,
+                        likedPostIds
+                      ),
+                      AudioStateDesign(feedsProvider,preservatedPostIds,likedPostIds),
+                      Comments(feedsProvider.currentSongDoc['postId'])
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       

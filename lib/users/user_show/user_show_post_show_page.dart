@@ -9,6 +9,8 @@ import 'package:whisper/users/user_show/user_show_model.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
+import 'package:whisper/parts/comments/comments.dart';
+
 class UserShowPostShowPage extends StatelessWidget {
   UserShowPostShowPage(this.doc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
   final UserShowModel userShowProvider;
@@ -18,43 +20,53 @@ class UserShowPostShowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 10
-            ),
-            child: IconButton(
-              icon: Icon(Icons.keyboard_arrow_down),
-              onPressed: (){
-                Navigator.pop(context);
-              }, 
-            ),
+        backgroundColor: kBackgroundColor,
+        extendBodyBehindAppBar: false,
+        
+        body: SafeArea(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20,
+                    
+                  ),
+                  color: Colors.blue,
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  }, 
+                ),
+              ),
+              SingleChildScrollView(
+                child: Container(
+                  // margin: EdgeInsets.only(top: 100),
+                  child: Column(
+                    children: [
+                      Center(
+                        // image
+                        child: Text(doc.id),
+                      ),
+                      Center(
+                        child: Text(doc['title']),
+                      ),
+                      PostButtons(
+                        userShowProvider.currentUser!.uid,
+                        doc,
+                        preservatedPostIds,
+                        likedPostIds
+                      ),
+                      AudioStateDesign(userShowProvider,preservatedPostIds,likedPostIds),
+                      Comments(userShowProvider.currentSongDoc['postId'])
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  // image
-                  child: Text(doc.id),
-                ),
-                Center(
-                  child: Text(doc['title']),
-                ),
-                PostButtons(
-                  userShowProvider.currentUser!.uid,
-                  doc,
-                  preservatedPostIds,
-                  likedPostIds
-                ),
-                AudioStateDesign(userShowProvider,preservatedPostIds,likedPostIds),
-                
-              ],
-            ),
-        ],
-      ),
-    );
+        ),
+      );
   }
 }
