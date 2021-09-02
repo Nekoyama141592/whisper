@@ -12,22 +12,24 @@ final verifyProvider = ChangeNotifierProvider(
 
 class VerifyModel extends ChangeNotifier {
   User? currentUser;
+  int verifyTimes = 0;
 
-VerifyModel() {
-  init();
-}
-void init() {
-  setCurrentUser();
-  currentUser!.sendEmailVerification();
-}
+  VerifyModel() {
+    init();
+  }
+  void init() {
+    setCurrentUser();
+    currentUser!.sendEmailVerification();
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      await currentUser!.reload();
+    });
+  }
 
-void setCurrentUser() {
-  currentUser = FirebaseAuth.instance.currentUser;
-}
-
-  Future checkEmailVerified(context) async {
+  void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
-    await currentUser!.reload();
+  }
+
+  void checkEmailVerified(context)  {
     if (currentUser!.emailVerified) {
       routes.toMyApp(context);
     } else {
