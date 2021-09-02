@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:whisper/parts/posts/posts_futures.dart';
+import 'package:whisper/parts/posts/post_buttons/posts_futures.dart';
 
 class LikeButton extends ConsumerWidget {
   LikeButton(this.uid,this.postDoc,this.likedPostIds);

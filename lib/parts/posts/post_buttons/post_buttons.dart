@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 import 'package:whisper/parts/posts/post_buttons/components/preservate_button.dart';
+import 'package:whisper/parts/posts/post_buttons/components/comment_button.dart';
 
 class PostButtons extends StatelessWidget {
 
@@ -18,7 +19,8 @@ class PostButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         LikeButton(uid, postDoc,likedPostIds),
-        PreservateButton(uid, postDoc,preservatedPostIds)
+        PreservateButton(uid, postDoc,preservatedPostIds),
+        CommentButton(uid,postDoc)
       ],
     );
   }

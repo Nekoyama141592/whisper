@@ -7,6 +7,9 @@ final postsFeaturesProvider = ChangeNotifierProvider(
 );
 
 class PostsFeaturesModel extends ChangeNotifier{
+  
+  String comment = '';
+
   Future like(String uid, DocumentSnapshot postDoc) async {
     try {
       await FirebaseFirestore.instance
@@ -30,6 +33,26 @@ class PostsFeaturesModel extends ChangeNotifier{
       });
     } catch(e) {
       print(e.toString());
+    }
+  }
+
+  Future makeComment(BuildContext context, String uid, DocumentSnapshot postDoc) async {
+    if (comment.isEmpty) {
+      throw('入力してください');
+    } else {
+      try{
+        FirebaseFirestore.instance
+        .collection('comments')
+        .add({
+          'uid': uid,
+          'postId': postDoc['postId'],
+          'comment': comment,
+        }).then((_) {
+          Navigator.pop(context);
+        });
+      } catch(e) {
+
+      }
     }
   }
 
