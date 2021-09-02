@@ -74,7 +74,7 @@ class SignupModel extends ChangeNotifier {
       );
       user = result.user;
       addUserToFireStore(user!.uid);
-      routes.toMyApp(context);
+      routes.toVerifyPage(context);
     } on FirebaseAuthException catch(e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
