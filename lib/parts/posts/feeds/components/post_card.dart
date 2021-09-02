@@ -22,7 +22,8 @@ class PostCard extends StatelessWidget{
               )
           ),
         ),
-        AudioWindow(feedsProvider, preservatedPostIds, likedPostIds)
+        AudioWindow(feedsProvider, preservatedPostIds, likedPostIds),
+       
       ]
     );
   }

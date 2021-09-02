@@ -7,6 +7,7 @@ import 'current_song_title.dart';
 import 'audio_controll_buttons.dart';
 import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 
+
 import 'package:whisper/constants/routes.dart' as routes;
 
 class AudioWindow extends StatelessWidget {
@@ -73,7 +74,8 @@ class AudioWindow extends StatelessWidget {
                   
                 )
               ],
-            )
+            ),
+           
           ],
         ),
       ),
