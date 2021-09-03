@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:whisper/constants/colors.dart';
+
 import 'package:whisper/main_model.dart';
 
 import 'themes/themes.dart';
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      
       theme: lightThemeData(context),
       home: currentUser == null ? 
       LoginPage()
