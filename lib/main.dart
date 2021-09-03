@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:whisper/main_model.dart';
 
 import 'themes/themes.dart';
-import 'parts/whisper_bottom_navigation_bar.dart';
+import 'parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
 
 
 import 'auth/signup/signup_page.dart';
@@ -15,7 +15,7 @@ import 'auth/signup/signup_page.dart';
 import 'package:whisper/parts/whisper_tab_bar.dart';
 import 'package:whisper/parts/whisper_drawer.dart';
 
-
+import 'package:whisper/parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -42,18 +42,32 @@ class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _mainProvider = watch(mainProvider);
-    
+    final _provider = watch(whisperBottomNavigationbarProvider);
     return Scaffold(
       
-      body: WhisperTabBar(
-        _mainProvider.preservatedPostIds,
-        _mainProvider.likedPostIds
+      body: 
+      PageView(
+        controller: _provider.pageController,
+        onPageChanged: (index){
+          _provider.onPageChanged(index);
+        },
+        children: [
+          Scaffold(
+            body: Text('add')
+          ),
+          WhisperTabBar(
+            _mainProvider.preservatedPostIds,
+            _mainProvider.likedPostIds
+          ),
+          
+          Scaffold(body: Text('sample'))
+        ],
       ),
 
       drawer: _mainProvider.isLoading ? 
       Drawer()
       : WhisperDrawer(_mainProvider,_mainProvider.preservatedPostIds,_mainProvider.likedPostIds),
-      bottomNavigationBar: WhisperButtomNavigationbar(),
+      bottomNavigationBar: WhisperBottomNavigationbar(_provider),
     );
   }
 }
