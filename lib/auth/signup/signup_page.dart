@@ -65,29 +65,37 @@ class SignupPage extends ConsumerWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            InkWell(
-                              child: _signupProvider.xfile != null ?
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                  vertical: 25
-                                ),
-                                width: 160,
-                                height: 160,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: FileImage(_signupProvider.imageFile),
+                            Column(
+                              children: [
+                                InkWell(
+                                  child: _signupProvider.xfile != null ?
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: 25
+                                    ),
+                                    width: 160,
+                                    height: 160,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: FileImage(_signupProvider.imageFile),
+                                      )
+                                    ),
                                   )
+                                  : Icon(
+                                    Icons.image,
+                                    size: 160,
+                                  ),
+                                  onTap: () async {
+                                    await _signupProvider.showImagePicker();
+                                  },
                                 ),
-                              )
-                              : Icon(
-                                Icons.image,
-                                size: 160,
-                              ),
-                              onTap: () async {
-                                await _signupProvider.showImagePicker();
-                              },
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text('アイコンをタップしてプロフィール画像を設定'),
+                                )
+                              ],
                             ),
                             RoundedInputField(
                               "Your Email",

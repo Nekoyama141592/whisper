@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/main_model.dart';
 
@@ -50,7 +51,13 @@ class MyHomePage extends ConsumerWidget {
         
         appBar: AppBar(
           title: Text('Whisper'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30)
+            )
+          ),
           bottom: TabBar(
+            indicatorSize: TabBarIndicatorSize.label,
             tabs: tabBarElements.map((tabBarElement) {
               return Tab(
                 text: tabBarElement.title
