@@ -17,6 +17,8 @@ class MainModel extends ChangeNotifier {
   bool isLoading = true;
   List<String> likedPostIds = [];
   List<String> preservatedPostIds = [];
+
+  int currentIndex = 0;
   MainModel() {
     init();
   }
@@ -36,6 +38,10 @@ class MainModel extends ChangeNotifier {
   void endLoading() {
     isLoading = false;
     notifyListeners();
+  }
+
+  void onTabTapped(int i) {
+    currentIndex = i;
   }
 
   Future setCurrentUser() async {
