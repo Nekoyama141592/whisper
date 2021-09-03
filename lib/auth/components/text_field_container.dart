@@ -3,7 +3,8 @@ import 'package:whisper/constants/colors.dart';
 
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
-  TextFieldContainer(this.child);
+  final Color fieldColor;
+  TextFieldContainer(this.child,this.fieldColor);
 
   @override  
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class TextFieldContainer extends StatelessWidget {
       ),
       width: size.width * 0.8 ,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.7),
+        color: fieldColor.withOpacity(0.7),
         borderRadius: BorderRadius.circular(30)
       ),
       child: child,

@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/auth/components/rounded_password_field/rounded_password_field_model.dart';
+
 import 'package:whisper/auth/components/text_field_container.dart';
 import 'package:whisper/constants/colors.dart';
 
-class RoundedPasswordField extends StatelessWidget {
+class RoundedPasswordField extends ConsumerWidget {
   final String hintText;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final Color formColor;
+  
+  
   RoundedPasswordField(
     this.hintText,
     this.controller,
-    this.onChanged
+    this.onChanged,
+    this.formColor,
   );
 
   @override  
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final _provider = watch(roundedPasswordFieldProvider);
     return TextFieldContainer(
       TextField(
         style: TextStyle(fontSize: 20),
-        obscureText: true,
+        obscureText: _provider.isObscure,
         onChanged: onChanged,
         cursorColor: kPrimaryColor.withOpacity(0.7),
         decoration: InputDecoration(
@@ -26,12 +35,17 @@ class RoundedPasswordField extends StatelessWidget {
             Icons.lock,
             color: Colors.white,
           ),
-          suffixIcon: Icon(
-            Icons.visibility_off
+          suffixIcon: IconButton(
+            color: Colors.black,
+            onPressed: (){_provider.toggleIsObscure();}, 
+            icon: _provider.isObscure ?
+            Icon(Icons.visibility_off)
+            : Icon(Icons.visibility)
           ),
           border: InputBorder.none
         ),
-      )
+      ),
+      formColor
     );
   }
 }

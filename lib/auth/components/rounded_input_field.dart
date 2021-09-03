@@ -7,11 +7,13 @@ class RoundedInputField extends StatelessWidget {
   final IconData icon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final Color formColor;
   RoundedInputField(
     this.hintText,
     this.icon,
     this.controller,
     this.onChanged,
+    this.formColor
   );
 
   @override  
@@ -31,7 +33,9 @@ class RoundedInputField extends StatelessWidget {
           hintText: hintText,
           border: InputBorder.none
         ),
-      )
+      ),
+      formColor
     );
   }
+  
 }

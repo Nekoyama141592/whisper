@@ -10,7 +10,7 @@ import 'themes/themes.dart';
 import 'parts/main_bottom_navigation_bar.dart';
 import 'package:whisper/constants/tab_bar_elements.dart';
 
-import 'auth/login/login_page.dart';
+import 'auth/signup/signup_page.dart';
 
 import 'package:whisper/parts/posts/feeds/feeds_page.dart';
 import 'package:whisper/parts/posts/recommenders/recommenders_page.dart';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       
       theme: lightThemeData(context),
       home: currentUser == null ? 
-      LoginPage()
+      SignupPage()
       : MyHomePage(),
     );
   }

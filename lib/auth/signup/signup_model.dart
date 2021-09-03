@@ -22,6 +22,7 @@ class SignupModel extends ChangeNotifier {
   late User? user;
   // image
   bool isLoading = false;
+  bool isObscure = true;
   XFile? xfile;
   late File imageFile;
   String downloadURL = '';
@@ -34,6 +35,11 @@ class SignupModel extends ChangeNotifier {
 
   endLoading() {
     isLoading = false;
+    notifyListeners();
+  }
+
+  void toggleIsObsucure() {
+    isObscure = !isObscure;
     notifyListeners();
   }
 

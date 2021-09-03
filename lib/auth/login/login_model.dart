@@ -11,7 +11,24 @@ final loginProvider = ChangeNotifierProvider(
 class LoginModel extends ChangeNotifier {
   String email = "";
   String password = "";
+  bool isLoading = false;
+  bool isObscure = true;
   
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  void endLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
+
+  void toggleIsObsucure() {
+    isObscure = !isObscure;
+    notifyListeners();
+  }
+
   Future login(context) async {
     try {
       await FirebaseAuth.instance

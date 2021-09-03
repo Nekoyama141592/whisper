@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:whisper/auth/components/rounded_input_field.dart';
-import 'package:whisper/auth/components/rounded_password_field.dart';
+import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/auth/components/rounded_button.dart';
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/auth/components/already_have_an_account.dart';
 
 import 'signup_model.dart';
 
@@ -36,16 +37,7 @@ class SignupPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      color: Colors.black,
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      }, 
-                    ),
-                  ),
+                  // back arrow
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 20,
@@ -56,7 +48,7 @@ class SignupPage extends ConsumerWidget {
                       children: [
                         Text("新規登録", style: TextStyle(color: Colors.white, fontSize: 30)),
                         SizedBox(height: 10,),
-                        Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)
+                        Text("ようこそWhisperへ！", style: TextStyle(color: Colors.white, fontSize: 18),)
                       ],
                     ),
                   ),
@@ -79,8 +71,8 @@ class SignupPage extends ConsumerWidget {
                                 margin: EdgeInsets.symmetric(
                                   vertical: 25
                                 ),
-                                width: 100,
-                                height: 100,
+                                width: 160,
+                                height: 160,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
@@ -89,10 +81,9 @@ class SignupPage extends ConsumerWidget {
                                   )
                                 ),
                               )
-                              : Container(
-                                width: 100,
-                                height: 160,
-                                child:  Icon(Icons.image)
+                              : Icon(
+                                Icons.image,
+                                size: 160,
                               ),
                               onTap: () async {
                                 await _signupProvider.showImagePicker();
@@ -105,13 +96,16 @@ class SignupPage extends ConsumerWidget {
                               (text) {
                                 _signupProvider.email = text;
                               },
+                              kPrimaryColor
                             ),
                             RoundedPasswordField(
                               "Your password",
                               passwordInputController,
                               (text) {
                                 _signupProvider.password = text;
-                              }
+                              },
+                              kPrimaryColor,
+                              
                             ),
                             
                             SizedBox(height: 24),
@@ -121,9 +115,11 @@ class SignupPage extends ConsumerWidget {
                                 () async {
                                   await _signupProvider.signup(context);
                                 },
-                                Colors.white
+                                Colors.white,
+                                kSecondaryColor
                               ),
-                            )
+                            ),
+                            AlreadyHaveAnAccount(kTertiaryColor)
                           ]
                         ),
                       ),

@@ -5,12 +5,12 @@ class RoundedButton extends StatelessWidget {
   
   final String text;
   Function()? press;
-  final Color textColor;
-
+  final Color textColor, buttonColor;
   RoundedButton(
     this.text,
     this.press,
     this.textColor,
+    this.buttonColor
   );
 
   @override
@@ -36,7 +36,7 @@ class RoundedButton extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            primary: kSecondaryColor.withOpacity(0.9)
+            primary: buttonColor.withOpacity(0.9)
           ),
           onPressed: press, 
         ),
