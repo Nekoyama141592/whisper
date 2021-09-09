@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/parts/nothing.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 import 'package:whisper/preservations/audio_controll/audio_window.dart';
 
@@ -20,14 +21,7 @@ class PreservationsPage extends ConsumerWidget {
       body: _preservationsProvider.isLoading ?
       Loading()
       : _preservationsProvider.preservationDocs.isEmpty ?
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text('Nothing')
-          )
-        ],
-      )
+      Nothing()
       : Column(
           children: [
             Expanded(
@@ -36,8 +30,6 @@ class PreservationsPage extends ConsumerWidget {
                 itemBuilder: (BuildContext context, int i) =>
                   ListTile(
                     title: Text(_preservationsProvider.preservationDocs[i]['title']),
-                    
-                    
                   )
               ),
             ),

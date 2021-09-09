@@ -97,7 +97,9 @@ class PreservationsModel extends ChangeNotifier {
         afterUris.add(source);
         playlist = ConcatenatingAudioSource(children: afterUris);
       });
-      await audioPlayer.setAudioSource(playlist);
+      if (afterUris.isNotEmpty) {
+        await audioPlayer.setAudioSource(playlist);
+      }
     } catch(e) {
       print(e.toString());
     }
