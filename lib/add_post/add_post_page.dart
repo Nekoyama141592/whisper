@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/colors.dart';
 
+import 'package:whisper/parts/rounded_input_field.dart';
 import 'add_post_model.dart';
 
 class AddPostPage extends ConsumerWidget {
@@ -10,20 +12,22 @@ class AddPostPage extends ConsumerWidget {
     final _addPostProvider = watch(addPostProvider);
     final postTitleController = TextEditingController();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('add'),
-      ),
+      
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _addPostProvider.isUploading ?
             Indicator()
             : AudioButtons(addPostProvider: _addPostProvider),
-            TextField(
-              controller: postTitleController,
-              onChanged: (text) {
+            RoundedInputField(
+              "Post title", 
+              Icons.graphic_eq, 
+              postTitleController, 
+              (text) {
                 _addPostProvider.postTitle = text;
-              },
+              }, 
+              kPrimaryColor
             )
           ],
         ),
@@ -42,30 +46,33 @@ class AudioButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        IconButton(
-          icon: Icon(Icons.replay),
-          onPressed: () {
-            _addPostProvider.onRecordAgainButtonPressed();
-          }, 
+        AudioButton(
+          'リトライ',
+          Icon(Icons.replay),
+          (){_addPostProvider.onRecordAgainButtonPressed();}
         ),
-        IconButton(
-          icon: _addPostProvider.isRecording ?
+
+        AudioButton(
+          '録音する',
+          _addPostProvider.isLoading ?
           Icon(Icons.pause)
           : Icon(Icons.fiber_manual_record),
-          onPressed: () async {
+          () async {
             _addPostProvider.onRecordButtonPressed(context);
-          }, 
+          }
         ),
-        IconButton(
-          icon: Icon(Icons.upload_file),
-          onPressed: () async {
+        
+        AudioButton(
+          '公開する',
+          Icon(Icons.upload_file),
+          () async {
             await _addPostProvider.onAddButtonPressed(context);
-            Navigator.pop(context);
-          }, 
+          }
         )
       ],
     );
@@ -86,6 +93,33 @@ class Indicator extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: LinearProgressIndicator(),
+        )
+      ],
+    );
+  }
+}
+
+class AudioButton extends StatelessWidget {
+
+  AudioButton(this.description,this.icon,this.press);
+  final String description;
+  final Widget icon;
+  final void Function()? press;
+  @override 
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          iconSize: 100,
+          tooltip: description,
+          icon: icon,
+          onPressed: press, 
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10
+          ),
+          child: Text(description),
         )
       ],
     );

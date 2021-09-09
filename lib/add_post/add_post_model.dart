@@ -161,6 +161,9 @@ class AddPostModel extends ChangeNotifier {
           'preservations': 0,
           'title': postTitle,
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+        })
+        .then((_) {
+          Navigator.pop(context);
         });
         isUploading = false;
         notifyListeners();

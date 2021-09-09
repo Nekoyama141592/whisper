@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:whisper/auth/components/rounded_input_field.dart';
+import 'package:whisper/parts/rounded_input_field.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
-import 'package:whisper/auth/components/rounded_button.dart';
+import 'package:whisper/parts/rounded_button.dart';
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/auth/login/login_model.dart';
