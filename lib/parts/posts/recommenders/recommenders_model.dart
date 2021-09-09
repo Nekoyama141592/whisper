@@ -57,7 +57,7 @@ class RecommendersModel extends ChangeNotifier {
     setCurrentUser();
     // await
     await setFollowUids();
-    await getRecommendes();
+    await getRecommenders();
     listenForStates();
     endLoading();
   }
@@ -109,7 +109,7 @@ class RecommendersModel extends ChangeNotifier {
     }
   }
 
-  Future getRecommendes() async {
+  Future getRecommenders() async {
     final now = DateTime.now();
     final range = now.subtract(Duration(days: 5));
     
