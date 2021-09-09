@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/main_model.dart';
 
 import 'package:whisper/parts/posts/feeds/feeds_page.dart';
 import 'package:whisper/parts/posts/recommenders/recommenders_page.dart';
-import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/constants/tab_bar_elements.dart';
 
+import 'package:whisper/parts/whisper_drawer.dart';
+
 class WhisperTabBar extends StatelessWidget {
 
-  WhisperTabBar(this.preservatedPostIds,this.likedPostIds);
+  WhisperTabBar(this.mainProvider, this.preservatedPostIds,this.likedPostIds);
+  
+  final MainModel mainProvider;
   final List preservatedPostIds;
   final List likedPostIds;
   @override  
@@ -31,6 +35,13 @@ class WhisperTabBar extends StatelessWidget {
               );
             }).toList()
           ),
+        ),
+        drawer: mainProvider.isLoading ?
+        Drawer()
+        : WhisperDrawer(
+          mainProvider,
+          preservatedPostIds,
+          likedPostIds
         ),
         body: TabBarView(
           children: [

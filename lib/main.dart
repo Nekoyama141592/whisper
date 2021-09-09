@@ -44,7 +44,6 @@ class MyHomePage extends ConsumerWidget {
     final _mainProvider = watch(mainProvider);
     final _provider = watch(whisperBottomNavigationbarProvider);
     return Scaffold(
-      
       body: 
       PageView(
         controller: _provider.pageController,
@@ -53,6 +52,7 @@ class MyHomePage extends ConsumerWidget {
         },
         children: [
           WhisperTabBar(
+            _mainProvider,
             _mainProvider.preservatedPostIds,
             _mainProvider.likedPostIds
           ),
@@ -63,10 +63,6 @@ class MyHomePage extends ConsumerWidget {
           Scaffold(body: Text('sample'))
         ],
       ),
-
-      drawer: _mainProvider.isLoading ? 
-      Drawer()
-      : WhisperDrawer(_mainProvider,_mainProvider.preservatedPostIds,_mainProvider.likedPostIds),
       bottomNavigationBar: WhisperBottomNavigationbar(_provider),
     );
   }
