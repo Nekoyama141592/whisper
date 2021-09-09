@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 import 'package:whisper/preservations/audio_controll/audio_window.dart';
 
+import 'package:whisper/parts/loading.dart';
+
 class PreservationsPage extends ConsumerWidget {
   PreservationsPage(this.preservatedPostIds,this.likedPostIds);
   final List preservatedPostIds;
@@ -16,10 +18,7 @@ class PreservationsPage extends ConsumerWidget {
         title: Text('preservations'),
       ),
       body: _preservationsProvider.isLoading ?
-      Container(
-        color: Colors.grey.withOpacity(0.7),
-        child: Text('Loading'),
-      )
+      Loading()
       : _preservationsProvider.preservationDocs.isEmpty ?
       Column(
         mainAxisAlignment: MainAxisAlignment.center,

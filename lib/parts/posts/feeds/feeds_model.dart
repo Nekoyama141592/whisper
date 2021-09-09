@@ -114,18 +114,21 @@ class FeedsModel extends ChangeNotifier {
   Future getFeeds() async {
 
     try{
-      snapshots = await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',whereIn: followUids)
-      .get();
-      snapshots.docs.forEach((DocumentSnapshot doc) {
-        feedDocs.add(doc);
-        song = Uri.parse(doc['audioURL']);
-        source = AudioSource.uri(song, tag: doc);
-        afterUris.add(source);
-        playlist = ConcatenatingAudioSource(children: afterUris);
-      });
-      await audioPlayer.setAudioSource(playlist);
+      if (followUids.isNotEmpty) {
+
+        snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid',whereIn: followUids)
+        .get();
+        snapshots.docs.forEach((DocumentSnapshot doc) {
+          feedDocs.add(doc);
+          song = Uri.parse(doc['audioURL']);
+          source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+          playlist = ConcatenatingAudioSource(children: afterUris);
+        });
+        await audioPlayer.setAudioSource(playlist);
+      }
     } catch(e) {
       print(e.toString());
     }

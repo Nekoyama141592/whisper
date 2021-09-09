@@ -52,12 +52,12 @@ class MyHomePage extends ConsumerWidget {
           _provider.onPageChanged(index);
         },
         children: [
-          Scaffold(
-            body: Text('add')
-          ),
           WhisperTabBar(
             _mainProvider.preservatedPostIds,
             _mainProvider.likedPostIds
+          ),
+          Scaffold(
+            body: Text('add')
           ),
           
           Scaffold(body: Text('sample'))

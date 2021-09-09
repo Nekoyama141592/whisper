@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/parts/loading.dart';
 
 import 'user_show_model.dart';
 import 'package:whisper/users/user_show/audio_controll/audio_window.dart';
@@ -20,10 +21,7 @@ class UserShowPage extends ConsumerWidget {
         title: Text('userShow'),
       ),
       body: _userShowProvider.isLoading ?
-      Container(
-        color: Colors.grey.withOpacity(0.7),
-        child: Text('Loading'),
-      )
+      Loading()
       : _userShowProvider.postDocs.isEmpty ?
       Column(
         mainAxisAlignment: MainAxisAlignment.center,

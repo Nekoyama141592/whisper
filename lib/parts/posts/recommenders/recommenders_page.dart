@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'recommenders_model.dart';
 
-import 'components/post_card.dart';
+import 'components/recommenders_card.dart';
+import 'package:whisper/parts/loading.dart';
+
 class RecommendersPage extends ConsumerWidget {
   RecommendersPage(this.preservatedPostIds,this.likedPostIds);
   final List preservatedPostIds;
@@ -12,11 +14,8 @@ class RecommendersPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _recommendersProvider = watch(recommendersProvider);
     return _recommendersProvider.isLoading ?
-    Container(
-      color: Colors.grey.withOpacity(0.7),
-      child: Text('Loading'),
-    )
-    : PostCard(
+    Loading()
+    : RecommendersCard(
       _recommendersProvider,
       preservatedPostIds,
       likedPostIds

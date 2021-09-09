@@ -3,8 +3,9 @@ import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
 import 'package:whisper/parts/posts/feeds/audio_controll/audio_window.dart';
 
-class PostCard extends StatelessWidget{
-  PostCard(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
+
+class FeedsCard extends StatelessWidget{
+  FeedsCard(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
   final FeedsModel feedsProvider;
   final List preservatedPostIds;
   final List likedPostIds;
