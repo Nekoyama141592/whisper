@@ -23,18 +23,7 @@ class WhisperDrawer extends StatelessWidget {
               routes.toPreservationsPage(context,preservatedPostIds,likedPostIds);
             },
           ),
-          ListTile(
-            title: Text('Add Post'),
-            onTap: () {
-              routes.toAddPostsPage(context);
-            },
-          ),
-          ListTile(
-            title: Text('User Show'),
-            onTap: () {
-              routes.toUserShowPage(context, mainProvider.currentUserdoc,preservatedPostIds,likedPostIds);
-            },
-          ),
+          
         ],
       ),
     );

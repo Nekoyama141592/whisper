@@ -150,6 +150,7 @@ class AddPostModel extends ChangeNotifier {
         final audioURL = await onFileUploadButtonPressed(context);
         await FirebaseFirestore.instance.collection('posts')
         .add({
+          'userImageURL'
           'imageURL': '',
           'ImageExist': false,
           'audioURL': audioURL,

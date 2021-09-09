@@ -18,28 +18,46 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _userShowProvider = watch(userShowProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('userShow'),
-      ),
-      body: _userShowProvider.isLoading ?
-      Loading()
-      : _userShowProvider.postDocs.isEmpty ?
-      Nothing()
-      : Column(
-        
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _userShowProvider.postDocs.length,
-              itemBuilder: (BuildContext context, int i) =>
-              ListTile(
-                title: Text(_userShowProvider.postDocs[i]['title']),
-                
-              )
-            )
-          ),
-          AudioWindow(_userShowProvider,preservatedPostIds,likedPostIds)
-        ],
+      extendBodyBehindAppBar: false,
+      body: 
+      SafeArea(
+        child: Column(
+          
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 25,
+              ),
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(doc['imageURL'])
+                ),
+              ),
+            ),
+            _userShowProvider.isLoading ?
+            Loading()
+            : _userShowProvider.postDocs.isEmpty ?
+            Nothing()
+            : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _userShowProvider.postDocs.length,
+                    itemBuilder: (BuildContext context, int i) =>
+                    ListTile(
+                      title: Text(_userShowProvider.postDocs[i]['title']),
+                    )
+                  )
+                ),
+                AudioWindow(_userShowProvider,preservatedPostIds,likedPostIds)
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

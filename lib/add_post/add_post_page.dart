@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,10 @@ import 'package:whisper/parts/rounded_input_field.dart';
 import 'add_post_model.dart';
 
 class AddPostPage extends ConsumerWidget {
+
+  AddPostPage(this.currentUserDoc);
+  final DocumentSnapshot currentUserDoc;
+  
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _addPostProvider = watch(addPostProvider);

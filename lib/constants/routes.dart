@@ -35,10 +35,6 @@ void toPreservationsShowPage(context,doc,preservationsProvider,preservatedPostId
   Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(doc,preservationsProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toAddPostsPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage()));
-}
-
 void toUserShowPage(context,userDoc,preservatedPostIds,likedPostIds) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(userDoc,preservatedPostIds,likedPostIds)));
 }

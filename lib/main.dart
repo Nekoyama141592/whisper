@@ -60,7 +60,7 @@ class MyHomePage extends ConsumerWidget {
             _mainProvider.likedPostIds
           ),
           Scaffold(body: Text('search')),
-          AddPostPage(),
+          AddPostPage(_mainProvider.currentUserdoc),
           Scaffold(body: Text('notifications'),),
           UserShowPage(
             _mainProvider.currentUserdoc, 
