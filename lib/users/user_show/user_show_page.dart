@@ -51,7 +51,12 @@ class UserShowPage extends ConsumerWidget {
                   children: [
                     Text(doc['userName'],style: TextStyle(color: Colors.white, fontSize: 20)),
                     SizedBox(height: 10),
-                    UserImage(doc: doc),
+                    Row(
+                      children: [
+                        UserImage(doc: doc),
+                        Text(doc['description'])
+                      ],
+                    ),
                   ],
                 ),
               ),
