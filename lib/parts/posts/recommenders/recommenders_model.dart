@@ -29,18 +29,14 @@ class RecommendersModel extends ChangeNotifier {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
   // just_audio
-  late Uri song;
-  late UriAudioSource source;
+  
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
-  late ConcatenatingAudioSource playlist;
   // cloudFirestore
-  late QuerySnapshot<Map<String, dynamic>> follows;
   List<String> recommenderPostIds = [];
   List<String> followUids = [];
   List<String> mutesUids = [];
   List<DocumentSnapshot> recommenderDocs = [];
-  late QuerySnapshot<Map<String, dynamic>> snapshots;
   final oneTimeReadCount = 2;
   int postsCount = -1;
   //repost
@@ -79,7 +75,7 @@ class RecommendersModel extends ChangeNotifier {
   Future setFollowUids() async {
     
     try {
-      follows = await FirebaseFirestore.instance
+      QuerySnapshot<Map<String, dynamic>> follows = await FirebaseFirestore.instance
       .collection('follows')
       .where('activeUserId', isEqualTo: currentUser!.uid)
       .get();
@@ -116,7 +112,7 @@ class RecommendersModel extends ChangeNotifier {
     try {
 
       if (postsCount == -1) {
-        snapshots =  await FirebaseFirestore.instance
+        QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
         .where('createdAt', isGreaterThanOrEqualTo: range)
         .orderBy('createdAt', descending: true)
@@ -125,14 +121,14 @@ class RecommendersModel extends ChangeNotifier {
         .get();
         snapshots.docs.forEach((DocumentSnapshot doc) {
           recommenderDocs.add(doc);
-          song = Uri.parse(doc['audioURL']);
-          source = AudioSource.uri(song, tag: doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
           afterUris.add(source);
-          playlist = ConcatenatingAudioSource(children: afterUris);
         });
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
         await audioPlayer.setAudioSource(playlist);
       } else {
-        snapshots =  await FirebaseFirestore.instance
+        QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
         // .where('uid',whereNotIn: mutesUids)
         .where('createdAt', isGreaterThanOrEqualTo: range)

@@ -28,15 +28,12 @@ class PreservationsModel extends ChangeNotifier {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
   // just_audio
-  late Uri song;
-  late UriAudioSource source;
+  
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
-  late ConcatenatingAudioSource playlist;
   // cloudFirestore
   List<String> preservationPostIds = [];
   List<DocumentSnapshot> preservationDocs = [];
-  late QuerySnapshot<Map<String, dynamic>> snapshots;
   int postCount = -1;
   final oneTimeReadCount = 2;
   
@@ -86,18 +83,18 @@ class PreservationsModel extends ChangeNotifier {
 
   Future getPreservations () async {
     try{
-      snapshots = await FirebaseFirestore.instance
+      QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
       .collection('posts')
       .where('postId', whereIn: preservationPostIds)
       .get();
       snapshots.docs.forEach((DocumentSnapshot doc) {
         preservationDocs.add(doc);
-        song = Uri.parse(doc['audioURL']);
-        source = AudioSource.uri(song, tag: doc);
+        Uri song = Uri.parse(doc['audioURL']);
+        UriAudioSource source = AudioSource.uri(song, tag: doc);
         afterUris.add(source);
-        playlist = ConcatenatingAudioSource(children: afterUris);
       });
       if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
         await audioPlayer.setAudioSource(playlist);
       }
     } catch(e) {

@@ -30,18 +30,13 @@ class FeedsModel extends ChangeNotifier {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
   // just_audio
-  late Uri song;
-  late UriAudioSource source;
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
-  late ConcatenatingAudioSource playlist;
   // cloudFirestore
-  late QuerySnapshot<Map<String, dynamic>> follows;
   List<String> followUids = [];
   List<String> mutesUids = [];
   List<String> feedPostIds = [];
   List<DocumentSnapshot> feedDocs = [];
-  late QuerySnapshot<Map<String, dynamic>> snapshots;
   //repost
   bool isReposted = false;
   // refresh
@@ -80,7 +75,7 @@ class FeedsModel extends ChangeNotifier {
   Future setFollowUids() async {
     
     try {
-      follows = await FirebaseFirestore.instance
+      QuerySnapshot<Map<String, dynamic>> follows = await FirebaseFirestore.instance
       .collection('follows')
       .where('activeUserId', isEqualTo: currentUser!.uid)
       .get();
@@ -115,8 +110,7 @@ class FeedsModel extends ChangeNotifier {
 
     try{
       
-
-      snapshots = await FirebaseFirestore.instance
+      QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
       .collection('posts')
       .where('uid',whereIn: followUids)
       .get();
@@ -124,11 +118,11 @@ class FeedsModel extends ChangeNotifier {
 
         snapshots.docs.forEach((DocumentSnapshot doc) {
           feedDocs.add(doc);
-          song = Uri.parse(doc['audioURL']);
-          source = AudioSource.uri(song, tag: doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
           afterUris.add(source);
         });
-        playlist = ConcatenatingAudioSource(children: afterUris);
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
         await audioPlayer.setAudioSource(playlist);
       }
       
