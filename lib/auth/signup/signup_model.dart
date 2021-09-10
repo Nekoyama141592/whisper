@@ -101,6 +101,7 @@ class SignupModel extends ChangeNotifier {
       'point': 0,
       'imageURL': imageURL,
       'userName': userName,
+      'isAdmin': false,
     });
   }
 }

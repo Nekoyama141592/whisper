@@ -18,7 +18,27 @@ class PreservationsPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('preservations'),
       ),
-      body: _preservationsProvider.isLoading ?
+      body: PostScreen(preservationsProvider: _preservationsProvider, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds)
+    );
+  }
+}
+
+class PostScreen extends StatelessWidget {
+  const PostScreen({
+    Key? key,
+    required PreservationsModel preservationsProvider,
+    required this.preservatedPostIds,
+    required this.likedPostIds,
+  }) : _preservationsProvider = preservationsProvider, super(key: key);
+
+  final PreservationsModel _preservationsProvider;
+  final List preservatedPostIds;
+  final List likedPostIds;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: _preservationsProvider.isLoading ?
       Loading()
       : _preservationsProvider.preservationDocs.isEmpty ?
       Nothing()
@@ -35,7 +55,7 @@ class PreservationsPage extends ConsumerWidget {
             ),
             AudioWindow(_preservationsProvider,preservatedPostIds,likedPostIds)
           ],
-        )
+        ),
     );
   }
 }

@@ -23,7 +23,14 @@ class WhisperDrawer extends StatelessWidget {
               routes.toPreservationsPage(context,preservatedPostIds,likedPostIds);
             },
           ),
-          
+          mainProvider.currentUserdoc['isAdmin'] ?
+          ListTile(
+            title: Text('Admin'),
+            onTap: () {
+              routes.toAdminPage(context);
+            },
+          )
+          : SizedBox()
         ],
       ),
     );
