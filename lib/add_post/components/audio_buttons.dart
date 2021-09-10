@@ -12,35 +12,57 @@ class AudioButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(
       children: [
-        AudioButton(
-          'リトライ',
-          Icon(Icons.replay),
-          (){_addPostProvider.onRecordAgainButtonPressed();}
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AudioButton(
+              'リトライ',
+              Icon(Icons.replay),
+              (){_addPostProvider.onRecordAgainButtonPressed();}
+            ),
 
-        AudioButton(
-          _addPostProvider.isRecording ?
-          '停止する'
-          : '録音する',
-          _addPostProvider.isRecording ?
-          Icon(Icons.pause)
-          : Icon(Icons.fiber_manual_record),
-          () async {
-            _addPostProvider.onRecordButtonPressed(context);
-          }
+            AudioButton(
+              _addPostProvider.isRecording ?
+              '停止する'
+              : '録音する',
+              _addPostProvider.isRecording ?
+              Icon(Icons.pause)
+              : Icon(Icons.fiber_manual_record),
+              () async {
+                _addPostProvider.onRecordButtonPressed(context);
+              }
+            ),
+            
+            AudioButton(
+              '公開する',
+              Icon(Icons.upload_file),
+              () async {
+                await _addPostProvider.onAddButtonPressed(context);
+              }
+            ),
+            
+          ],
         ),
-        
-        AudioButton(
-          '公開する',
-          Icon(Icons.upload_file),
-          () async {
-            await _addPostProvider.onAddButtonPressed(context);
-          }
-        )
+        // _addPostProvider.isRecorded ?
+        // !_addPostProvider.isPlaying ?
+        // AudioButton(
+        //   '再生する', 
+        //   Icon(Icons.play_arrow), 
+        //   () {
+        //     _addPostProvider.play();
+        //   }
+        // )
+        // : AudioButton(
+        //   '停止する', 
+        //   Icon(Icons.pause), 
+        //   () {
+        //     _addPostProvider.pause();
+        //   }
+        // )
+        // : SizedBox()
       ],
     );
   }
@@ -86,7 +108,12 @@ class AudioButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             vertical: 10
           ),
-          child: Text(description),
+          child: Text(
+            description,
+            style: TextStyle(
+              fontWeight: FontWeight.bold
+            ),
+          ),
         )
       ],
     );

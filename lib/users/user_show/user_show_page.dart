@@ -10,6 +10,7 @@ import 'package:whisper/parts/nothing.dart';
 import 'user_show_model.dart';
 import 'package:whisper/users/user_show/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';
+import 'package:whisper/parts/posts/user_image.dart';
 
 class UserShowPage extends ConsumerWidget {
   final DocumentSnapshot doc;
@@ -87,31 +88,6 @@ class UserShowPage extends ConsumerWidget {
               
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class UserImage extends StatelessWidget {
-  const UserImage({
-    Key? key,
-    required this.doc,
-  }) : super(key: key);
-
-  final DocumentSnapshot doc;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(25),
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: NetworkImage(doc['imageURL'])
         ),
       ),
     );

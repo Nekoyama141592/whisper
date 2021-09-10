@@ -8,6 +8,7 @@ import 'package:whisper/parts/rounded_input_field.dart';
 import 'add_post_model.dart';
 
 import 'package:whisper/add_post/components/audio_buttons.dart';
+import 'package:whisper/add_post/audio_controll/audio_window.dart';
 
 class AddPostPage extends ConsumerWidget {
 
@@ -17,26 +18,48 @@ class AddPostPage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _addPostProvider = watch(addPostProvider);
-    final postTitleController = TextEditingController();
+    final postTitleController = TextEditingController(text: _addPostProvider.postTitle);
     return Scaffold(
       
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _addPostProvider.isUploading ?
-            Indicator()
-            : AudioButtons(addPostProvider: _addPostProvider),
-            RoundedInputField(
-              "Post title", 
-              Icons.graphic_eq, 
-              postTitleController, 
-              (text) {
-                _addPostProvider.postTitle = text;
-              }, 
-              kPrimaryColor
-            )
-          ],
+        child: InkWell(
+          onTap: (){
+            _addPostProvider.reload();
+          },
+          child: Column(
+        
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _addPostProvider.isUploading ?
+              Indicator()
+              : AudioButtons(addPostProvider: _addPostProvider),
+              RoundedInputField(
+                "Post title", 
+                Icons.graphic_eq, 
+                postTitleController, 
+                (text) {
+                  _addPostProvider.postTitle = text;
+                }, 
+                kPrimaryColor
+              ),
+              // _addPostProvider.filePath.isNotEmpty ?
+              _addPostProvider.isRecorded ?
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20
+                ),
+                child: Center(
+                  child: Text(
+                    '画面をタップすると名前の下のPost Titleが更新されます',
+                  ),
+                ),
+              )
+              : SizedBox(),
+              _addPostProvider.isRecorded ?
+              AudioWindow(_addPostProvider,currentUserDoc)
+              : SizedBox()
+            ],
+          ),
         ),
       ),
     );

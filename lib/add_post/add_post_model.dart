@@ -10,6 +10,9 @@ import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
+
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
 );
@@ -21,13 +24,16 @@ class AddPostModel extends ChangeNotifier {
   late bool isRecorded;
   late bool isRecording;
   late AudioPlayer audioPlayer;
-  late String filePath;
+  String filePath = "";
   late File audioFile;
   late FlutterAudioRecorder2 audioRecorder;
   Recording? current;
   User? currentUser;
   late QuerySnapshot<Map<String, dynamic>> userDocument;
-  
+
+  // notifiers
+  final progressNotifier = ProgressNotifier();
+  final playButtonNotifier = PlayButtonNotifier();
   AddPostModel() {
     init();
   }
@@ -50,6 +56,27 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  reload() {
+    notifyListeners();
+  }
+  Future setAudio(String filepath) async {
+    await audioPlayer.setFilePath(filePath);
+  }
+
+  play() {
+    audioPlayer.play();
+    notifyListeners();
+  }
+
+  pause() {
+    audioPlayer.pause();
+    notifyListeners();
+  }
+
+  seek(Duration position) {
+    audioPlayer.seek(position);
+  }
+
   Future startRecording(BuildContext context) async {
     final bool? hasRecordingPermission =
     await FlutterAudioRecorder2.hasPermissions;
@@ -65,6 +92,7 @@ class AddPostModel extends ChangeNotifier {
       current = await audioRecorder.current(channel: 0);
       filePath = setFilePath;
       audioFile = File(filePath);
+      isRecorded = true;
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context)
@@ -83,6 +111,8 @@ class AddPostModel extends ChangeNotifier {
       audioRecorder.stop();
       isRecording = false;
       isRecorded = true;
+      setAudio(filePath);
+      listenForStates();
       notifyListeners();
     }
   }
@@ -174,4 +204,63 @@ class AddPostModel extends ChangeNotifier {
       }
     }
   }
+
+  void listenForStates() {
+    listenForChangesInPlayerState();
+    listenForChangesInPlayerPosition();
+    listenForChangesInBufferedPosition();
+    listenForChangesInTotalDuration();
+  }
+  void listenForChangesInPlayerState() {
+    audioPlayer.playerStateStream.listen((playerState) {
+      final isPlaying = playerState.playing;
+      final processingState = playerState.processingState;
+      if (processingState == ProcessingState.loading ||
+          processingState == ProcessingState.buffering) {
+        playButtonNotifier.value = ButtonState.loading;
+      } else if (!isPlaying) {
+        playButtonNotifier.value = ButtonState.paused;
+      } else if (processingState != ProcessingState.completed) {
+        playButtonNotifier.value = ButtonState.playing;
+      } else {
+        audioPlayer.seek(Duration.zero);
+        audioPlayer.pause();
+      }
+    });
+  }
+
+  void listenForChangesInPlayerPosition() {
+    audioPlayer.positionStream.listen((position) {
+      final oldState = progressNotifier.value;
+      progressNotifier.value = ProgressBarState(
+        current: position,
+        buffered: oldState.buffered,
+        total: oldState.total,
+      );
+    });
+  }
+
+  void listenForChangesInBufferedPosition() {
+    audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
+      final oldState = progressNotifier.value;
+      progressNotifier.value = ProgressBarState(
+        current: oldState.current,
+        buffered: bufferedPosition,
+        total: oldState.total,
+      );
+    });
+  }
+
+  void listenForChangesInTotalDuration() {
+    audioPlayer.durationStream.listen((totalDuration) {
+      final oldState = progressNotifier.value;
+      progressNotifier.value = ProgressBarState(
+        current: oldState.current,
+        buffered: oldState.buffered,
+        total: totalDuration ?? Duration.zero,
+      );
+    });
+  }
+
+  
 }

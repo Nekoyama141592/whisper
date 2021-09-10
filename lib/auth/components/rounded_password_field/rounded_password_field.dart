@@ -25,7 +25,10 @@ class RoundedPasswordField extends ConsumerWidget {
     final _provider = watch(roundedPasswordFieldProvider);
     return TextFieldContainer(
       TextField(
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold
+        ),
         obscureText: _provider.isObscure,
         onChanged: onChanged,
         cursorColor: kPrimaryColor.withOpacity(0.7),
