@@ -14,7 +14,13 @@ class Nothing extends StatelessWidget {
             'assets/svgs/Search-rafiki.svg',
             height: size.height * 0.30,
           ),
-          Text('Nothing')
+          Text(
+            'Nothing',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24
+            ),
+          )
         ],
       ),
     );

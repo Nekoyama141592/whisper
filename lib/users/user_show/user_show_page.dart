@@ -49,12 +49,22 @@ class UserShowPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(doc['userName'],style: TextStyle(color: Colors.white, fontSize: 20)),
+                    Text(doc['userName'],style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)),
                     SizedBox(height: 10),
+                    Text(doc['subUserName'],style: TextStyle(color: Colors.white, fontSize: 15)),
                     Row(
                       children: [
                         UserImage(doc: doc),
-                        Text(doc['description'])
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            doc['description'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ],
@@ -65,10 +75,10 @@ class UserShowPage extends ConsumerWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: kBackgroundColor,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(60),
-                      topRight: Radius.circular(50)
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35)
                     )
                   ),
                   child: UserShowPostScreen(userShowProvider: _userShowProvider, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds),

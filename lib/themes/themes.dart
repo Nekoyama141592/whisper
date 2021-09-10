@@ -8,7 +8,7 @@ ThemeData lightThemeData(BuildContext context) {
     scaffoldBackgroundColor: kBackgroundColor,
     // appBarTheme: AppBarTheme(),
     iconTheme: IconThemeData(color: kContentColorLightTheme),
-    textTheme: GoogleFonts.interTextTheme(
+    textTheme: GoogleFonts.ibmPlexSansTextTheme(
       Theme.of(context)
       .textTheme
     ).apply(bodyColor: kContentColorLightTheme),
