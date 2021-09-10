@@ -51,8 +51,8 @@ void toUserShowPostShowPage(context,userDoc,userShowProvider,preservatedPostIds,
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(userDoc,userShowProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toAdminPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage()));
+void toAdminPage(context,currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc)));
 }
 
 

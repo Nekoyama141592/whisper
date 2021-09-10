@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,8 +6,13 @@ import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/parts/rounded_button.dart';
 import 'admin_model.dart';
+import 'package:whisper/parts/no_right.dart';
 
 class AdminPage extends ConsumerWidget {
+
+  AdminPage(this.currentUserDoc);
+  final DocumentSnapshot currentUserDoc;
+
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final _adminProvider = watch(adminProvider);
@@ -14,21 +20,26 @@ class AdminPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('Admin Page'),
       ),
-      body: Column(
+      body: currentUserDoc['isAdmin'] ?
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: RoundedButton(
-              'add description to users', 
-              (){
-                _adminProvider.addDescriptionToUser();
-              }, 
-              Colors.white, 
-              kSecondaryColor
+          Tooltip(
+            message: '特になし',
+            child: Center(
+              child: RoundedButton(
+                'nothing', 
+                (){
+                  
+                }, 
+                Colors.white, 
+                kSecondaryColor
+              ),
             ),
           )
         ],
-      ),
+      )
+      : NoRight(),
     );
   }
 }
