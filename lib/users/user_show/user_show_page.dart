@@ -53,6 +53,7 @@ class UserShowPage extends ConsumerWidget {
                     Text(doc['userName'],style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)),
                     SizedBox(height: 10),
                     Text(doc['subUserName'],style: TextStyle(color: Colors.white, fontSize: 15)),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         UserImage(doc: doc),

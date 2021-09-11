@@ -17,12 +17,7 @@ class WhisperDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          ListTile(
-            title: Text('Preservations'),
-            onTap: () {
-              routes.toPreservationsPage(context,preservatedPostIds,likedPostIds);
-            },
-          ),
+          
           mainProvider.currentUserdoc['isAdmin'] ?
           ListTile(
             title: Text('Admin'),

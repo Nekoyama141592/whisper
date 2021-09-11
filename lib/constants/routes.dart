@@ -11,6 +11,7 @@ import 'package:whisper/users/user_show/user_show_post_show_page.dart';
 import 'package:whisper/preservations/preservation_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
+import 'package:whisper/parts/notifications/notifications_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -53,6 +54,10 @@ void toUserShowPostShowPage(context,userDoc,userShowProvider,preservatedPostIds,
 
 void toAdminPage(context,currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc)));
+}
+
+void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainProvider,preservatedPostIds,likedPostIds)));
 }
 
 

@@ -17,6 +17,8 @@ import 'package:whisper/parts/whisper_tab_bar.dart';
 import 'package:whisper/add_post/add_post_page.dart';
 import 'package:whisper/users/user_show/user_show_page.dart';
 
+import 'package:whisper/preservations/preservations_page.dart';
+
 import 'package:whisper/parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +63,10 @@ class MyHomePage extends ConsumerWidget {
           ),
           Scaffold(body: Text('search')),
           AddPostPage(_mainProvider.currentUserdoc),
-          Scaffold(body: Text('notifications'),),
+          PreservationsPage(
+            _mainProvider.preservatedPostIds, 
+            _mainProvider.likedPostIds
+          ),
           UserShowPage(
             _mainProvider.currentUserdoc, 
             _mainProvider.preservatedPostIds, 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/colors.dart';
 
 final List<BottomNavigationBarItem> buttonNavigationBarElements = [
   BottomNavigationBarItem(
@@ -14,8 +15,8 @@ final List<BottomNavigationBarItem> buttonNavigationBarElements = [
     icon: Icon(Icons.new_label)
   ),
   BottomNavigationBarItem(
-    label: 'notifications',
-    icon: Icon(Icons.notifications)
+    label: 'BookMarks',
+    icon: Icon(Icons.bookmarks)
   ),
   
   BottomNavigationBarItem(
@@ -23,3 +24,4 @@ final List<BottomNavigationBarItem> buttonNavigationBarElements = [
     icon: Icon(Icons.person)
   ),
 ];
+
