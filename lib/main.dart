@@ -16,11 +16,15 @@ import 'auth/signup/signup_page.dart';
 import 'package:whisper/parts/whisper_tab_bar.dart';
 import 'package:whisper/add_post/add_post_page.dart';
 import 'package:whisper/users/user_show/user_show_page.dart';
-
+import 'package:whisper/parts/algolia/search_page.dart';
 import 'package:whisper/preservations/preservations_page.dart';
 
 import 'package:whisper/parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 void main() async {
+  await dotenv.load(fileName: '.env',);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(ProviderScope(child: MyApp()));
@@ -61,7 +65,7 @@ class MyHomePage extends ConsumerWidget {
             _mainProvider.preservatedPostIds,
             _mainProvider.likedPostIds
           ),
-          Scaffold(body: Text('search')),
+          SearchPage(),
           AddPostPage(_mainProvider.currentUserdoc),
           PreservationsPage(
             _mainProvider.preservatedPostIds, 
