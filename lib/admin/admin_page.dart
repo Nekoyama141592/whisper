@@ -28,9 +28,10 @@ class AdminPage extends ConsumerWidget {
             message: '特になし',
             child: Center(
               child: RoundedButton(
-                'nothing', 
+                'Nothing', 
                 (){
-                  
+                 
+                 
                 }, 
                 Colors.white, 
                 kSecondaryColor

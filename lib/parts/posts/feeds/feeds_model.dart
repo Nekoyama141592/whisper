@@ -19,6 +19,7 @@ class FeedsModel extends ChangeNotifier {
   bool isLoading = false;
   User? currentUser;
 
+  late QuerySnapshot<Map<String, dynamic>> currentUserDoc;
   // notifiers
   final currentSongTitleNotifier = ValueNotifier<String>('');
   late DocumentSnapshot currentSongDoc;
@@ -33,7 +34,7 @@ class FeedsModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<String> followUids = [];
+  List followUids = [];
   List<String> mutesUids = [];
   List<String> feedPostIds = [];
   List<DocumentSnapshot> feedDocs = [];
@@ -52,7 +53,8 @@ class FeedsModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     // await
-    await setFollowUids();
+    await setCurrentUserDoc();
+    setFollowUids();
     await getFeeds();
     listenForStates();
     endLoading();
@@ -72,33 +74,33 @@ class FeedsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  Future setFollowUids() async {
+  Future setCurrentUserDoc() async {
+    try{
+      currentUserDoc = await FirebaseFirestore.instance
+      .collection('users')
+      .where('uid',isEqualTo: currentUser!.uid)
+      .limit(1)
+      .get();
+    } catch(e) {
+      print(e.toString());
+    }
+  }
+
+  void setFollowUids() {
     
     try {
-      QuerySnapshot<Map<String, dynamic>> follows = await FirebaseFirestore.instance
-      .collection('follows')
-      .where('activeUserId', isEqualTo: currentUser!.uid)
-      .get();
-      follows.docs.forEach((DocumentSnapshot doc) {
-        followUids.add(doc['passiveUserId']);
-      });
+      followUids = currentUserDoc.docs[0]['followUids'];
       followUids.add(currentUser!.uid);
+      notifyListeners();
+      print(followUids);
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
   }
 
-  Future setMutesList() async {
+  void setMutesList() async {
     try {
-      await FirebaseFirestore.instance
-      .collection('mutes')
-      .where('activeUserId', isEqualTo: currentUser!.uid)
-      .get()
-      .then((snapshot){
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          mutesUids.add(doc['passiveUserId']);
-        });
-      } );
+      mutesUids = currentUserDoc.docs[0]['followUids'];
 
     } catch(e){
       print(e.toString());
@@ -130,25 +132,6 @@ class FeedsModel extends ChangeNotifier {
       print(e.toString());
     }
     notifyListeners();
-  }
-
-  Future repost(DocumentSnapshot doc) async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .add({
-        'uid': currentUser!.uid,
-        'repostedPostId': doc.id,
-        'createdAt': Timestamp.now(),
-        'updatedAt': Timestamp.now(),
-        
-      });
-      print('repostTryPass!!!!');
-      isReposted = true;
-      notifyListeners();
-    } catch(e) {
-      print(e.toString() + "repostRepostRepost");
-    }
   }
 
   void play()  {

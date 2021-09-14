@@ -9,21 +9,30 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addDescriptionToUser() async {
+  Future addPreservationsToUser() async {
    
-  //   await FirebaseFirestore.instance
-  //   .collection('users')
-  //   .get()
-  //   .then((qshot) {
-  //     qshot.docs.forEach((DocumentSnapshot doc) async {
-  //       await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(doc.id)
-  //       .update({
-  //         'description': "",
-  //       });
-  //     });
-  //   });
-    
+    try{
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      Map<String, dynamic> map = {
+        'postId': '',
+        'createdAt': Timestamp.now(),
+      };
+      final List preservations = [map];
+      return FirebaseFirestore.instance.collection('users')
+      .get()
+      .then((qshot) {
+        qshot.docs.forEach((doc) {
+          batch.update(
+            doc.reference, 
+            {
+              'preservations': preservations,
+            }
+          );
+        });
+        return batch.commit();
+      });
+    } catch(e) {
+      print(e.toString());
+    }
   }
 }
