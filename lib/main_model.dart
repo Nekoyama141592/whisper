@@ -13,7 +13,7 @@ final mainProvider = ChangeNotifierProvider(
 class MainModel extends ChangeNotifier {
 
   User? currentUser;
-  late DocumentSnapshot currentUserdoc;
+  late DocumentSnapshot currentUserDoc;
   bool isLoading = true;
   List<String> likedPostIds = [];
   List<String> preservatedPostIds = [];
@@ -24,8 +24,8 @@ class MainModel extends ChangeNotifier {
   void init() async {
     startLoading();
     await setCurrentUser();
-    await getLikedPostIds();
-    await getPreservatedPostIds();
+    getLikedPostIds();
+    getPreservatedPostIds();
     endLoading();
   }
 
@@ -49,7 +49,7 @@ class MainModel extends ChangeNotifier {
       .get()
       .then((qshot){
         qshot.docs.forEach((DocumentSnapshot doc) {
-          currentUserdoc = doc;
+          currentUserDoc = doc;
         });
       });
     } catch(e) {
@@ -58,32 +58,33 @@ class MainModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getLikedPostIds() async {
+  void getLikedPostIds() {
     try{
-      await FirebaseFirestore.instance
-      .collection('likes')
-      .where('uid',isEqualTo: currentUser!.uid)
-      .get()
-      .then((qshot) {
-        qshot.docs.forEach((doc) {
-          likedPostIds.add(doc['postId']);
-        });
+      List likes = currentUserDoc['likes'];
+      print(likes.length.toString() + "  likesLength");
+      likes.forEach((like) {
+        likedPostIds.add(like['likedPostId']);
       });
+      notifyListeners();
     } catch(e) {
       print(e.toString());
     }
+    print(likedPostIds.length.toString() + "  likedPostIds");
+    
   }
 
-  Future getPreservatedPostIds() async {
-    await FirebaseFirestore.instance
-    .collection('preservations')
-    .where('uid',isEqualTo: currentUser!.uid)
-    .get()
-    .then((qshot) {
-      qshot.docs.forEach((doc) {
-        preservatedPostIds.add(doc['postId']);
+  void getPreservatedPostIds() {
+    try{
+      List preservations = currentUserDoc['preservations'];
+      print(preservations.length.toString() + "  preservationsLength");
+      preservations.forEach((preservation) {
+        preservatedPostIds.add(preservation['postId']);
       });
-    });
+      notifyListeners();
+    } catch(e) {
+      print(e.toString());
+    }
+    print(preservatedPostIds.length.toString() + '  preservatedPostIds');
   }
   Future logout(context) async {
     await FirebaseAuth.instance.signOut();

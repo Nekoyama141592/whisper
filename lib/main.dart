@@ -66,13 +66,13 @@ class MyHomePage extends ConsumerWidget {
             _mainProvider.likedPostIds
           ),
           SearchPage(),
-          AddPostPage(_mainProvider.currentUserdoc),
+          AddPostPage(_mainProvider.currentUserDoc),
           PreservationsPage(
             _mainProvider.preservatedPostIds, 
             _mainProvider.likedPostIds
           ),
           UserShowPage(
-            _mainProvider.currentUserdoc, 
+            _mainProvider.currentUserDoc, 
             _mainProvider.preservatedPostIds, 
             _mainProvider.likedPostIds
           )

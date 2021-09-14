@@ -18,11 +18,11 @@ class WhisperDrawer extends StatelessWidget {
       child: ListView(
         children: [
           
-          mainProvider.currentUserdoc['isAdmin'] ?
+          mainProvider.currentUserDoc['isAdmin'] ?
           ListTile(
             title: Text('Admin'),
             onTap: () {
-              routes.toAdminPage(context,mainProvider.currentUserdoc);
+              routes.toAdminPage(context,mainProvider.currentUserDoc);
             },
           )
           : SizedBox()
