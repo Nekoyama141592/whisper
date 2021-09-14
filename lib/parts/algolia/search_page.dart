@@ -27,9 +27,8 @@ class SearchPage extends ConsumerWidget {
           children: [
             TextField(
               controller: searchController,
-              onChanged: (text) async {
+              onChanged: (text) {
                 _searchProvider.searchTerm = text;
-                await _searchProvider.operation(text);
               },
               style: TextStyle(
                 color: Colors.black
@@ -38,34 +37,54 @@ class SearchPage extends ConsumerWidget {
                 
                 border: InputBorder.none,
                  hintText: 'Search ...',
-                hintStyle: TextStyle(
+                 hintStyle: TextStyle(
                   color: Colors.black
                 ),
-                prefixIcon: Icon(Icons.search, color: Colors.black,)
+                prefixIcon: Icon(Icons.search, color: Colors.black,),
+                suffixIcon: ElevatedButton(
+                  child: Text('検索'),
+                  onPressed: () async {
+                    await _searchProvider.operation(
+                      _searchProvider.searchTerm
+                    );
+                  }, 
+                )
               ),
             ),
-            StreamBuilder<AlgoliaQuerySnapshot>(
-              stream: Stream.fromFuture(
-                _searchProvider.operation(_searchProvider.searchTerm)
-              ),
-              builder: (context, snapshot) {
-                if(!snapshot.hasData) return Text("Start Typing", style: TextStyle(color: Colors.black ),);
-                else {
-                  return Expanded(
-                    child: _searchProvider.searchTerm.length > 0 ?
-                    ListView(
-                      children: snapshot.data!.hits.map((hit){
-                        return 
-                        ListTile(
-                          title: Text(hit.data['title']),
-                        );
-                      }).toList()
+            // StreamBuilder<AlgoliaQuerySnapshot>(
+            //   stream: Stream.fromFuture(
+            //     _searchProvider.operation(_searchProvider.searchTerm)
+            //   ),
+            //   builder: (context, snapshot) {
+            //     if(!snapshot.hasData) return Text("Start Typing", style: TextStyle(color: Colors.black ),);
+            //     else {
+            //       return Expanded(
+            //         child: _searchProvider.searchTerm.length > 0 ?
+            //         ListView(
+            //           children: snapshot.data!.hits.map((hit){
+            //             return 
+            //             ListTile(
+            //               title: Text(hit.data['title']),
+            //             );
+            //           }).toList()
                       
-                    )
-                    : SizedBox()
-                  );
+            //         )
+            //         : SizedBox()
+            //       );
+            //     }
+            //   }
+            // )
+            Expanded(
+              child:  _searchProvider.searchTerm.length > 0 ?
+              ListView.builder(
+                itemCount: _searchProvider.results.length,
+                itemBuilder: (context, i) {
+                  return ListTile(
+                    title: Text(_searchProvider.results[i].data['title']),
+                  ); 
                 }
-              }
+              )
+              : SizedBox(),
             )
           ]
         ),

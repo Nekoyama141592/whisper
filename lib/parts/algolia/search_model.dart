@@ -22,6 +22,9 @@ class SearchModel extends ChangeNotifier {
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(input);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
     // Checking if has [AlgoliaQuerySnapshot]
+    querySnap.hits.forEach((hit) {
+      results.add(hit);
+    });
     print('Hits count: ${querySnap.nbHits}');
     notifyListeners();
     return querySnap;
