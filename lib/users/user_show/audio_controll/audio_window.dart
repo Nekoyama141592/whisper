@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:whisper/users/user_show/user_show_model.dart';
 
 import 'audio_progress_bar.dart';
@@ -10,7 +12,9 @@ import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class AudioWindow extends StatelessWidget {
-  AudioWindow(this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  AudioWindow(this.currentUserDoc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  
+  final DocumentSnapshot currentUserDoc;
   final UserShowModel userShowProvider;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -20,7 +24,7 @@ class AudioWindow extends StatelessWidget {
     final audioWindowHeight = size.height * 0.12;
     return InkWell(
       onTap: () {
-        routes.toUserShowPostShowPage(context, userShowProvider.currentSongDoc, userShowProvider, preservatedPostIds, likedPostIds);
+        routes.toUserShowPostShowPage(context,currentUserDoc,userShowProvider.currentSongDoc, userShowProvider, preservatedPostIds, likedPostIds);
       },
       child: Container(
         height: audioWindowHeight,
@@ -59,7 +63,7 @@ class AudioWindow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           LikeButton(
-                            userShowProvider.currentUser!.uid,
+                            currentUserDoc,
                             userShowProvider.currentSongDoc,
                             likedPostIds
                           ),

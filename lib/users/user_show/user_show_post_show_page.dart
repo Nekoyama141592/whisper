@@ -12,8 +12,10 @@ import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 import 'package:whisper/parts/comments/comments.dart';
 
 class UserShowPostShowPage extends StatelessWidget {
-  UserShowPostShowPage(this.doc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  UserShowPostShowPage(this.currentUserDoc,this.doc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  
   final UserShowModel userShowProvider;
+  final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot doc;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -53,12 +55,12 @@ class UserShowPostShowPage extends StatelessWidget {
                         child: Text(doc['title']),
                       ),
                       PostButtons(
-                        userShowProvider.currentUser!.uid,
+                        currentUserDoc,
                         doc,
                         preservatedPostIds,
                         likedPostIds
                       ),
-                      AudioStateDesign(userShowProvider,preservatedPostIds,likedPostIds),
+                      AudioStateDesign(currentUserDoc,userShowProvider,preservatedPostIds,likedPostIds),
                       Comments(userShowProvider.currentSongDoc['postId'])
                     ],
                   ),

@@ -29,27 +29,27 @@ void toVerifyPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPage()));
 }
 
-void toPreservationsPage(context,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationsPage(preservatedPostIds,likedPostIds)));
+void toPreservationsPage(context,currentUserDoc,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationsPage(currentUserDoc,preservatedPostIds,likedPostIds)));
 }
 
-void toPreservationsShowPage(context,doc,preservationsProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(doc,preservationsProvider,preservatedPostIds,likedPostIds)));
+void toPreservationsShowPage(context,currentUserDoc,doc,preservationsProvider,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(currentUserDoc,doc,preservationsProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toUserShowPage(context,userDoc,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(userDoc,preservatedPostIds,likedPostIds)));
+void toUserShowPage(context,currentUserDoc,userDoc,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc,userDoc,preservatedPostIds,likedPostIds)));
 }
 void toFeedShowPage(context,userDoc,feedsProvider,preservatedPostIds,likedPostIds) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(userDoc,feedsProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toRecommenderShowPage(context,userDoc,recommendersProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(userDoc,recommendersProvider,preservatedPostIds,likedPostIds)));
+void toRecommenderShowPage(context,currentUserDoc,userDoc,recommendersProvider,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(currentUserDoc,userDoc,recommendersProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toUserShowPostShowPage(context,userDoc,userShowProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(userDoc,userShowProvider,preservatedPostIds,likedPostIds)));
+void toUserShowPostShowPage(context,currentUserDoc,userDoc,userShowProvider,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(currentUserDoc,userDoc,userShowProvider,preservatedPostIds,likedPostIds)));
 }
 
 void toAdminPage(context,currentUserDoc) {

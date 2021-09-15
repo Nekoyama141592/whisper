@@ -13,10 +13,11 @@ import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/parts/posts/user_image.dart';
 
 class UserShowPage extends ConsumerWidget {
+  final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot doc;
   final List preservatedPostIds;
   final List likedPostIds;
-  UserShowPage(this.doc,this.preservatedPostIds,this.likedPostIds);
+  UserShowPage(this.currentUserDoc,this.doc,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _userShowProvider = watch(userShowProvider);
@@ -83,7 +84,12 @@ class UserShowPage extends ConsumerWidget {
                       topRight: Radius.circular(35)
                     )
                   ),
-                  child: UserShowPostScreen(userShowProvider: _userShowProvider, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds),
+                  child: UserShowPostScreen(
+                    currentUserDoc: currentUserDoc,
+                    userShowProvider: _userShowProvider, 
+                    preservatedPostIds: preservatedPostIds, 
+                    likedPostIds: likedPostIds
+                  ),
                 ),
               ),
               
@@ -99,10 +105,12 @@ class UserShowPostScreen extends StatelessWidget {
   const UserShowPostScreen({
     Key? key,
     required UserShowModel userShowProvider,
+    required this.currentUserDoc,
     required this.preservatedPostIds,
     required this.likedPostIds,
   }) : _userShowProvider = userShowProvider, super(key: key);
 
+  final DocumentSnapshot currentUserDoc;
   final UserShowModel _userShowProvider;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -125,7 +133,12 @@ class UserShowPostScreen extends StatelessWidget {
                 PostCard(_userShowProvider.postDocs[i])
               )
             ),
-            AudioWindow(_userShowProvider,preservatedPostIds,likedPostIds)
+            AudioWindow(
+              currentUserDoc,
+              _userShowProvider,
+              preservatedPostIds,
+              likedPostIds
+            )
           ],
         ),
       ),

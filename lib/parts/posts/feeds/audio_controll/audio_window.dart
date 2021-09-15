@@ -61,7 +61,7 @@ class AudioWindow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           LikeButton(
-                            feedsProvider.currentUser!.uid,
+                            feedsProvider.currentUserDoc,
                             feedsProvider.currentSongDoc,
                             likedPostIds
                           ),

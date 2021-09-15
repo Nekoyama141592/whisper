@@ -19,7 +19,7 @@ class FeedsModel extends ChangeNotifier {
   bool isLoading = false;
   User? currentUser;
 
-  late QuerySnapshot<Map<String, dynamic>> currentUserDoc;
+  late DocumentSnapshot currentUserDoc;
   // notifiers
   final currentSongTitleNotifier = ValueNotifier<String>('');
   late DocumentSnapshot currentSongDoc;
@@ -76,11 +76,14 @@ class FeedsModel extends ChangeNotifier {
 
   Future setCurrentUserDoc() async {
     try{
-      currentUserDoc = await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
       .collection('users')
       .where('uid',isEqualTo: currentUser!.uid)
       .limit(1)
-      .get();
+      .get()
+      .then((qshot) {
+        currentUserDoc = qshot.docs[0];
+      });
     } catch(e) {
       print(e.toString());
     }
@@ -89,10 +92,10 @@ class FeedsModel extends ChangeNotifier {
   void setFollowUids() {
     
     try {
-      followUids = currentUserDoc.docs[0]['followUids'];
+      followUids = currentUserDoc['followUids'];
       followUids.add(currentUser!.uid);
       notifyListeners();
-      print(followUids);
+      print(followUids.length.toString() + "followUidsLength");
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
@@ -100,8 +103,7 @@ class FeedsModel extends ChangeNotifier {
 
   void setMutesList() async {
     try {
-      mutesUids = currentUserDoc.docs[0]['followUids'];
-
+      mutesUids = currentUserDoc['followUids'];
     } catch(e){
       print(e.toString());
     }

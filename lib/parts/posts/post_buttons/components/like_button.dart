@@ -6,14 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/parts/posts/post_buttons/posts_futures.dart';
 
 class LikeButton extends ConsumerWidget {
-  LikeButton(this.uid,this.postDoc,this.likedPostIds);
-  final String uid;
+  LikeButton(this.currentUserDoc,this.postDoc,this.likedPostIds);
+  final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot postDoc;
   final List likedPostIds;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _postFeaturesProvider = watch(postsFeaturesProvider);
-    return likedPostIds.contains(postDoc['postId']) ?
+    return likedPostIds.contains(postDoc.id) ?
     IconButton(
       icon: Icon(
         Icons.favorite,
@@ -24,8 +24,8 @@ class LikeButton extends ConsumerWidget {
     : IconButton(
       icon: Icon(Icons.favorite),
       onPressed: () async {
-        await _postFeaturesProvider.like(uid, postDoc);
-        likedPostIds.add(postDoc['postId']);
+        await _postFeaturesProvider.like(currentUserDoc, postDoc);
+        likedPostIds.add(postDoc.id);
         _postFeaturesProvider.reload();
       }, 
     );

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:whisper/preservations/preservations_model.dart';
@@ -9,7 +10,8 @@ import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class AudioWindow extends StatelessWidget {
-  AudioWindow(this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
+  AudioWindow(this.currentUserDoc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
+  final DocumentSnapshot currentUserDoc;
   final PreservationsModel preservationsProvider;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -20,7 +22,7 @@ class AudioWindow extends StatelessWidget {
     return InkWell(
       onTap: () {
         
-        routes.toPreservationsShowPage(context, preservationsProvider.currentSongDoc, preservationsProvider, preservatedPostIds, likedPostIds);
+        routes.toPreservationsShowPage(context,currentUserDoc,preservationsProvider.currentSongDoc, preservationsProvider, preservatedPostIds, likedPostIds);
       },
       child: Container(
         height: audioWindowHeight,
@@ -59,7 +61,7 @@ class AudioWindow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           LikeButton(
-                            preservationsProvider.currentUser!.uid,
+                            currentUserDoc,
                             preservationsProvider.currentSongDoc,
                             likedPostIds
                           ),

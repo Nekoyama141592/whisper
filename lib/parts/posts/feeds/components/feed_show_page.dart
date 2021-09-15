@@ -8,11 +8,11 @@ import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
 class FeedShowPage extends StatelessWidget{
-  final DocumentSnapshot doc;
+  final DocumentSnapshot postDoc;
   final FeedsModel feedsProvider;
   final List preservatedPostIds;
   final List likedPostIds;
-  FeedShowPage(this.doc,this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
+  FeedShowPage(this.postDoc,this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,14 +43,14 @@ class FeedShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: Text(doc.id),
+                        child: Text(postDoc.id),
                       ),
                       Center(
-                        child: Text(doc['title']),
+                        child: Text(postDoc['title']),
                       ),
                       PostButtons(
-                        feedsProvider.currentUser!.uid,
-                        doc,
+                        feedsProvider.currentUserDoc,
+                        postDoc,
                         preservatedPostIds,
                         likedPostIds
                       ),

@@ -11,11 +11,12 @@ import 'package:whisper/parts/comments/comments.dart';
 
 
 class PreservationShowPage extends StatelessWidget{
+  final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot doc;
   final PreservationsModel preservationsProvider;
   final List preservatedPostIds;
   final List likedPostIds;
-  PreservationShowPage(this.doc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
+  PreservationShowPage(this.currentUserDoc,this.doc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,12 +53,12 @@ class PreservationShowPage extends StatelessWidget{
                         child: Text(doc['title']),
                       ),
                       PostButtons(
-                        preservationsProvider.currentUser!.uid,
+                        currentUserDoc,
                         doc,
                         preservatedPostIds,
                         likedPostIds
                       ),
-                      AudioStateDesign(preservationsProvider,preservatedPostIds,likedPostIds),
+                      AudioStateDesign(currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds),
                       Comments(preservationsProvider.currentSongDoc['postId'])
                     ],
                   ),

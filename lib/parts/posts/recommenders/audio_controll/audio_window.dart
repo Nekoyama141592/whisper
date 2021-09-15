@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
@@ -10,7 +11,9 @@ import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class AudioWindow extends StatelessWidget {
-  AudioWindow(this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
+  AudioWindow(this.currentUserDoc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
+  
+  final DocumentSnapshot currentUserDoc;
   final RecommendersModel recommendersProvider;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -21,7 +24,7 @@ class AudioWindow extends StatelessWidget {
     return InkWell(
       onTap: () {
         
-        routes.toRecommenderShowPage(context, recommendersProvider.currentSongDoc, recommendersProvider, preservatedPostIds, likedPostIds);
+        routes.toRecommenderShowPage(context,currentUserDoc,recommendersProvider.currentSongDoc, recommendersProvider, preservatedPostIds, likedPostIds);
       },
       child: Container(
         height: audioWindowHeight,
@@ -60,7 +63,7 @@ class AudioWindow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           LikeButton(
-                            recommendersProvider.currentUser!.uid,
+                            currentUserDoc,
                             recommendersProvider.currentSongDoc,
                             likedPostIds
                           ),

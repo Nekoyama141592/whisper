@@ -188,8 +188,8 @@ class AddPostModel extends ChangeNotifier {
           'createdAt': Timestamp.now(),
           'updatedAt': Timestamp.now(),
           'score': 0,
-          'likes': 0,
-          'preservations': 0,
+          'likesCount': 0,
+          'preservationsCount': 0,
           'title': postTitle,
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
         })

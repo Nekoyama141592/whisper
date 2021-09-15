@@ -54,7 +54,7 @@ class WhisperTabBar extends StatelessWidget {
         body: TabBarView(
           children: [
             FeedsPage(preservatedPostIds,likedPostIds),
-            RecommendersPage(preservatedPostIds,likedPostIds),
+            RecommendersPage(mainProvider.currentUserDoc,preservatedPostIds,likedPostIds),
           ],
         ),
         

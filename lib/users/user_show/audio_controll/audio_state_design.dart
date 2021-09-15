@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../user_show_model.dart';
@@ -7,7 +8,8 @@ import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
 
 class AudioStateDesign extends StatelessWidget {
-  AudioStateDesign(this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  AudioStateDesign(this.currentUserDoc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  final DocumentSnapshot currentUserDoc;
   final List preservatedPostIds;
   final List likedPostIds;
   final UserShowModel userShowProvider;
@@ -16,7 +18,7 @@ class AudioStateDesign extends StatelessWidget {
     return InkWell(
       onTap: () {
         // toUser show post show
-        routes.toUserShowPostShowPage(context, userShowProvider.currentSongDoc, userShowProvider,preservatedPostIds,likedPostIds);
+        routes.toUserShowPostShowPage(context,currentUserDoc,userShowProvider.currentSongDoc, userShowProvider,preservatedPostIds,likedPostIds);
       },
       child: Container(
         height: 130,

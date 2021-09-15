@@ -31,7 +31,6 @@ class AdminPage extends ConsumerWidget {
                 'Nothing', 
                 (){
                  
-                 
                 }, 
                 Colors.white, 
                 kSecondaryColor

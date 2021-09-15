@@ -8,13 +8,21 @@ import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
-import 'package:whisper/constants/routes.dart' as routes;
+
 class RecommenderShowPage extends StatelessWidget{
-  final DocumentSnapshot doc;
+
+  final DocumentSnapshot currentUserDoc;
+  final DocumentSnapshot postDoc;
   final RecommendersModel recommendersProvider;
   final List preservatedPostIds;
   final List likedPostIds;
-  RecommenderShowPage(this.doc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
+  RecommenderShowPage(
+    this.currentUserDoc,
+    this.postDoc,
+    this.recommendersProvider,
+    this.preservatedPostIds,
+    this.likedPostIds
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,18 +53,18 @@ class RecommenderShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: Text(doc.id),
+                        child: Text(postDoc.id),
                       ),
                       Center(
-                        child: Text(doc['title']),
+                        child: Text(postDoc['title']),
                       ),
                       PostButtons(
-                        recommendersProvider.currentUser!.uid,
-                        doc,
+                        currentUserDoc,
+                        postDoc,
                         preservatedPostIds,
                         likedPostIds
                       ),
-                      AudioStateDesign(recommendersProvider,preservatedPostIds,likedPostIds),
+                      AudioStateDesign(currentUserDoc,recommendersProvider,preservatedPostIds,likedPostIds),
                       Comments(recommendersProvider.currentSongDoc['postId'])
                     ],
                   ),

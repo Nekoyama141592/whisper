@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
@@ -8,7 +9,8 @@ import 'current_song_title.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 class AudioStateDesign extends StatelessWidget {
-  AudioStateDesign(this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
+  AudioStateDesign(this.currentUserDoc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
+  final DocumentSnapshot currentUserDoc;
   final RecommendersModel recommendersProvider;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -17,7 +19,7 @@ class AudioStateDesign extends StatelessWidget {
     return InkWell(
       onTap: () {
         // toShowPage
-        routes.toRecommenderShowPage(context, recommendersProvider.currentSongDoc, recommendersProvider,preservatedPostIds,likedPostIds);
+        routes.toRecommenderShowPage(context,currentUserDoc,recommendersProvider.currentSongDoc, recommendersProvider,preservatedPostIds,likedPostIds);
       },
       child: Container(
         height: 130,

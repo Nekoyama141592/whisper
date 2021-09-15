@@ -9,23 +9,23 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addPreservationsToUser() async {
+  Future addLikesToPost() async {
    
     try{
       WriteBatch batch = FirebaseFirestore.instance.batch();
       Map<String, dynamic> map = {
-        'postId': '',
+        'uid': '',
         'createdAt': Timestamp.now(),
       };
-      final List preservations = [map];
-      return FirebaseFirestore.instance.collection('users')
+      final List likes = [map];
+      return FirebaseFirestore.instance.collection('posts')
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(
             doc.reference, 
             {
-              'preservations': preservations,
+              'likes': likes,
             }
           );
         });
