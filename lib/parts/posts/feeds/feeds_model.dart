@@ -90,7 +90,6 @@ class FeedsModel extends ChangeNotifier {
   }
 
   void setFollowUids() {
-    
     try {
       followUids = currentUserDoc['followUids'];
       followUids.add(currentUser!.uid);

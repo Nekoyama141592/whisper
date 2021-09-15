@@ -16,7 +16,7 @@ final preservationsProvider = ChangeNotifierProvider(
 class PreservationsModel extends ChangeNotifier {
   bool isLoading = false;
   User? currentUser;
-  
+  late DocumentSnapshot currentUserDoc;
   // notifiers
   final currentSongTitleNotifier = ValueNotifier<String>('');
   late DocumentSnapshot currentSongDoc;
@@ -44,7 +44,8 @@ class PreservationsModel extends ChangeNotifier {
     startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
-    await getPreservationRelations();
+    await setCurrentUserDoc();
+    setPreservationPostIds();
     await getPreservations();
     listenForStates();
     endLoading();
@@ -63,22 +64,28 @@ class PreservationsModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
-  Future getPreservationRelations() async {
+  
+  Future setCurrentUserDoc() async {
     try{
       await FirebaseFirestore.instance
-      .collection('preservations')
-      .where('uid', isEqualTo: currentUser!.uid)
+      .collection('users')
+      .where('uid',isEqualTo: currentUser!.uid)
+      .limit(1)
       .get()
       .then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot doc) {
-          preservationPostIds.add(doc['postId']);
-        });
+        currentUserDoc = qshot.docs[0];
       });
-      print(preservationPostIds);
-      notifyListeners();
     } catch(e) {
       print(e.toString());
     }
+  }
+
+  void setPreservationPostIds() {
+    List maps = currentUserDoc['preservations'];
+    maps.forEach((map) {
+      preservationPostIds.add(map['postId']);
+    });
+    notifyListeners();
   }
 
   Future getPreservations () async {
