@@ -114,17 +114,20 @@ class UserShowPostScreen extends StatelessWidget {
       Loading()
       : _userShowProvider.postDocs.isEmpty ?
       Nothing()
-      : Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _userShowProvider.postDocs.length,
-              itemBuilder: (BuildContext context, int i) =>
-              PostCard(_userShowProvider.postDocs[i])
-            )
-          ),
-          AudioWindow(_userShowProvider,preservatedPostIds,likedPostIds)
-        ],
+      : Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: _userShowProvider.postDocs.length,
+                itemBuilder: (BuildContext context, int i) =>
+                PostCard(_userShowProvider.postDocs[i])
+              )
+            ),
+            AudioWindow(_userShowProvider,preservatedPostIds,likedPostIds)
+          ],
+        ),
       ),
     );
   }
