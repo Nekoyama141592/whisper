@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
 import 'package:whisper/parts/posts/feeds/audio_controll/audio_window.dart';
+import 'package:whisper/parts/posts/components/post_card.dart';
 
 
 class FeedsCard extends StatelessWidget{
@@ -17,10 +18,7 @@ class FeedsCard extends StatelessWidget{
           child: ListView.builder(
             itemCount: feedsProvider.feedDocs.length,
             itemBuilder: (BuildContext context, int i) =>
-              ListTile(
-                title: Text(feedsProvider.feedDocs[i]['title']),
-                
-              )
+              PostCard(feedsProvider.feedDocs[i])
           ),
         ),
         AudioWindow(feedsProvider, preservatedPostIds, likedPostIds),
