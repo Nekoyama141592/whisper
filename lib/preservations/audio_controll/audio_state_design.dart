@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../preservations_model.dart';
-import 'package:whisper/preservations/preservation_show_page.dart';
+import 'package:whisper/preservations/components/preservation_show_page.dart';
 
 import 'audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';

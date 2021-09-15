@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/parts/nothing.dart';
 import 'package:whisper/preservations/preservations_model.dart';
-import 'package:whisper/preservations/audio_controll/audio_window.dart';
+import 'package:whisper/preservations/components/preservation_card.dart';
 
 import 'package:whisper/parts/loading.dart';
 
@@ -51,20 +51,11 @@ class PostScreen extends StatelessWidget {
       Loading()
       : _preservationsProvider.preservationDocs.isEmpty ?
       Nothing()
-      : Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: _preservationsProvider.preservationDocs.length,
-                itemBuilder: (BuildContext context, int i) =>
-                  ListTile(
-                    title: Text(_preservationsProvider.preservationDocs[i]['title']),
-                  )
-              ),
-            ),
-            AudioWindow(currentUserDoc,_preservationsProvider,preservatedPostIds,likedPostIds)
-          ],
-        ),
+      : PreservationCard(
+        _preservationsProvider, 
+        preservatedPostIds, 
+        likedPostIds
+      )
     );
   }
 }

@@ -8,7 +8,7 @@ import 'package:whisper/users/user_show/user_show_page.dart';
 import 'package:whisper/parts/posts/feeds/components/feed_show_page.dart';
 import 'package:whisper/parts/posts/recommenders/components/recommender_show_page.dart';
 import 'package:whisper/users/user_show/user_show_post_show_page.dart';
-import 'package:whisper/preservations/preservation_show_page.dart';
+import 'package:whisper/preservations/components/preservation_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/parts/notifications/notifications_page.dart';
