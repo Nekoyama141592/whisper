@@ -9,6 +9,7 @@ import 'add_post_model.dart';
 
 import 'package:whisper/add_post/components/audio_buttons.dart';
 import 'package:whisper/add_post/audio_controll/audio_window.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 class AddPostPage extends ConsumerWidget {
 
@@ -29,9 +30,16 @@ class AddPostPage extends ConsumerWidget {
             _addPostProvider.reload();
           },
           child: Column(
-        
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              _addPostProvider.isUploaded ?
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomSnackBar.success(
+                  message: '投稿、お疲れ様です！'
+                ),
+              )
+              : SizedBox(),
               _addPostProvider.isUploading ?
               Indicator()
               : AudioButtons(addPostProvider: _addPostProvider),

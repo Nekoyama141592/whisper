@@ -20,9 +20,10 @@ final addPostProvider = ChangeNotifierProvider(
 class AddPostModel extends ChangeNotifier {
   
   String postTitle = "";
-  late bool isUploading;
-  late bool isRecorded;
-  late bool isRecording;
+  bool isUploading = false;
+  bool isRecording = false;
+  bool isRecorded = false;
+  bool isUploaded = false;
   late AudioPlayer audioPlayer;
   String filePath = "";
   late File audioFile;
@@ -37,20 +38,19 @@ class AddPostModel extends ChangeNotifier {
   }
 
   void init() {
-    isUploading = false;
-    isRecorded = false;
-    isRecording = false;
     audioPlayer = AudioPlayer();
     setCurrentUser();
   }
 
   startLoading() {
+    isUploaded = false;
     isUploading = true;
     notifyListeners();
   }
 
   endLoading() {
     isUploading = false;
+    isUploaded = true;
     notifyListeners();
   }
 
@@ -159,6 +159,7 @@ class AddPostModel extends ChangeNotifier {
     startLoading();
     await addPostToFirebase(context);
     endLoading();
+    
   }
 
   Future setCurrentUser() async {
