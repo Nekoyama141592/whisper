@@ -12,9 +12,9 @@ class TextFieldContainer extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.symmetric(
         horizontal: 20,
-        vertical: 10,
+        vertical: 5,
       ),
-      width: size.width * 0.8 ,
+      width: size.width * 0.9 ,
       decoration: BoxDecoration(
         // color: fieldColor.withOpacity(0.7),
         color: Colors.white,
