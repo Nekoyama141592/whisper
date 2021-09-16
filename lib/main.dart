@@ -14,11 +14,10 @@ import 'parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
 import 'auth/signup/signup_page.dart';
 
 import 'package:whisper/parts/whisper_tab_bar.dart';
-import 'package:whisper/add_post/add_post_page.dart';
 import 'package:whisper/users/user_show/user_show_page.dart';
 import 'package:whisper/parts/algolia/search_page.dart';
 import 'package:whisper/preservations/preservations_page.dart';
-
+import 'package:whisper/add_post/which_type.dart';
 import 'package:whisper/parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -66,7 +65,7 @@ class MyHomePage extends ConsumerWidget {
             _mainProvider.likedPostIds
           ),
           SearchPage(),
-          AddPostPage(_mainProvider.currentUserDoc),
+          WhichType(_mainProvider.currentUserDoc),
           PreservationsPage(
             _mainProvider.currentUserDoc,
             _mainProvider.preservatedPostIds, 

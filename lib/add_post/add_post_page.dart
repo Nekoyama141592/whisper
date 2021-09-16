@@ -20,7 +20,9 @@ class AddPostPage extends ConsumerWidget {
     final _addPostProvider = watch(addPostProvider);
     final postTitleController = TextEditingController(text: _addPostProvider.postTitle);
     return Scaffold(
-      
+      appBar: AppBar(
+        title: Text('AddPost'),
+      ),
       body: Center(
         child: InkWell(
           onTap: (){

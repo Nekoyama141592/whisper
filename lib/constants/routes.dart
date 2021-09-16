@@ -12,7 +12,7 @@ import 'package:whisper/preservations/components/preservation_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/parts/notifications/notifications_page.dart';
-
+import 'package:whisper/add_post/add_post_page.dart';
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
 }
@@ -60,6 +60,9 @@ void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainProvider,preservatedPostIds,likedPostIds)));
 }
 
+void toAddPostPage(context,currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage(currentUserDoc)));
+}
 
 
 
