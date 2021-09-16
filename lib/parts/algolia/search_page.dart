@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:algolia/algolia.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:whisper/parts/algolia/components/post_card.dart';
 import 'search_model.dart';
 
 class SearchPage extends ConsumerWidget {
@@ -51,37 +50,16 @@ class SearchPage extends ConsumerWidget {
                 )
               ),
             ),
-            // StreamBuilder<AlgoliaQuerySnapshot>(
-            //   stream: Stream.fromFuture(
-            //     _searchProvider.operation(_searchProvider.searchTerm)
-            //   ),
-            //   builder: (context, snapshot) {
-            //     if(!snapshot.hasData) return Text("Start Typing", style: TextStyle(color: Colors.black ),);
-            //     else {
-            //       return Expanded(
-            //         child: _searchProvider.searchTerm.length > 0 ?
-            //         ListView(
-            //           children: snapshot.data!.hits.map((hit){
-            //             return 
-            //             ListTile(
-            //               title: Text(hit.data['title']),
-            //             );
-            //           }).toList()
-                      
-            //         )
-            //         : SizedBox()
-            //       );
-            //     }
-            //   }
-            // )
             Expanded(
               child:  _searchProvider.searchTerm.length > 0 ?
               ListView.builder(
                 itemCount: _searchProvider.results.length,
                 itemBuilder: (context, i) {
-                  return ListTile(
-                    title: Text(_searchProvider.results[i].data['title']),
-                  ); 
+                  return _searchProvider.results.isNotEmpty ?
+                  PostCard(
+                    _searchProvider.results[i].data
+                  )
+                  : SizedBox();
                 }
               )
               : SizedBox(),
