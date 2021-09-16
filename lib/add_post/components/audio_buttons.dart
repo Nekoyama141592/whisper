@@ -40,29 +40,14 @@ class AudioButtons extends StatelessWidget {
               '公開する',
               Icon(Icons.upload_file),
               () async {
-                await _addPostProvider.onAddButtonPressed(context);
+                await _addPostProvider.onUploadButtonPressed(context);
+                
               }
             ),
             
           ],
         ),
-        // _addPostProvider.isRecorded ?
-        // !_addPostProvider.isPlaying ?
-        // AudioButton(
-        //   '再生する', 
-        //   Icon(Icons.play_arrow), 
-        //   () {
-        //     _addPostProvider.play();
-        //   }
-        // )
-        // : AudioButton(
-        //   '停止する', 
-        //   Icon(Icons.pause), 
-        //   () {
-        //     _addPostProvider.pause();
-        //   }
-        // )
-        // : SizedBox()
+        
       ],
     );
   }

@@ -44,7 +44,7 @@ class AddPostPage extends ConsumerWidget {
                 }, 
                 kPrimaryColor
               ),
-              // _addPostProvider.filePath.isNotEmpty ?
+              
               _addPostProvider.isRecorded ?
               Padding(
                 padding: const EdgeInsets.symmetric(

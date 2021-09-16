@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
+import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -18,18 +18,16 @@ final addPostProvider = ChangeNotifierProvider(
 );
 
 class AddPostModel extends ChangeNotifier {
+  
   String postTitle = "";
-  bool isLoading = false;
   late bool isUploading;
   late bool isRecorded;
   late bool isRecording;
   late AudioPlayer audioPlayer;
   String filePath = "";
   late File audioFile;
-  late FlutterAudioRecorder2 audioRecorder;
-  Recording? current;
+  late Record audioRecorder;
   User? currentUser;
-  late QuerySnapshot<Map<String, dynamic>> userDocument;
 
   // notifiers
   final progressNotifier = ProgressNotifier();
@@ -47,12 +45,12 @@ class AddPostModel extends ChangeNotifier {
   }
 
   startLoading() {
-    isLoading = true;
+    isUploading = true;
     notifyListeners();
   }
 
   endLoading() {
-    isLoading = false;
+    isUploading = false;
     notifyListeners();
   }
 
@@ -78,21 +76,21 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future startRecording(BuildContext context) async {
-    final bool? hasRecordingPermission =
-    await FlutterAudioRecorder2.hasPermissions;
+    audioRecorder = Record();
+    bool hasRecordingPermission = await audioRecorder.hasPermission();
+
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
       String setFilePath = directory.path + '/'
       + currentUser!.uid
       +  DateTime.now().microsecondsSinceEpoch.toString() 
       + '.aac';
-      audioRecorder = FlutterAudioRecorder2(setFilePath, audioFormat: AudioFormat.AAC);
-      await audioRecorder.initialized;
-      audioRecorder.start();
-      current = await audioRecorder.current(channel: 0);
+
+      await audioRecorder.start(
+        path: setFilePath,
+      );
       filePath = setFilePath;
       audioFile = File(filePath);
-      isRecorded = true;
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context)
@@ -117,9 +115,8 @@ class AddPostModel extends ChangeNotifier {
     }
   }
 
-  Future<String> onFileUploadButtonPressed(context) async {
+  Future<String> getPostUrl(context) async {
     FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-    isUploading = true;
     try {
       await firebaseStorage
       .ref('posts')
@@ -158,7 +155,7 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  Future onAddButtonPressed(context) async {
+  Future onUploadButtonPressed(context) async {
     startLoading();
     await addPostToFirebase(context);
     endLoading();
@@ -177,7 +174,7 @@ class AddPostModel extends ChangeNotifier {
     } else {
       try {
         
-        final audioURL = await onFileUploadButtonPressed(context);
+        final audioURL = await getPostUrl(context);
         await FirebaseFirestore.instance.collection('posts')
         .add({
           'userImageURL'
@@ -192,12 +189,7 @@ class AddPostModel extends ChangeNotifier {
           'preservationsCount': 0,
           'title': postTitle,
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
-        })
-        .then((_) {
-          Navigator.pop(context);
         });
-        isUploading = false;
-        notifyListeners();
         
       } catch(e) {
         print(e.toString());
