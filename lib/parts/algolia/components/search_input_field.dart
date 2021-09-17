@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/parts/text_field_container.dart';
-
+import 'package:whisper/parts/algolia/search_model.dart';
 class SearchInputField extends StatelessWidget {
 
-  SearchInputField(this.controller,this.press);
+  SearchInputField(this.searchProvider,this.controller,this.press);
   
+  final SearchModel searchProvider;
   final void Function()? press;
   final TextEditingController controller;
   @override 
@@ -20,7 +21,7 @@ class SearchInputField extends StatelessWidget {
         ),
         keyboardType: TextInputType.text,
         onChanged: (text){
-
+          searchProvider.searchTerm = text;
         },
         controller: controller,
         cursorColor: kTertiaryColor,

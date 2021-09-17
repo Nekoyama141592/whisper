@@ -14,10 +14,19 @@ final searchProvider = ChangeNotifierProvider(
 class SearchModel extends ChangeNotifier {
   final Algolia algoliaApp = AlgoliaApplication.algolia;
   String searchTerm = "";
-
+  bool isLoading = false;
   List<AlgoliaObjectSnapshot> results = [];
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
 
-  Future<AlgoliaQuerySnapshot> operation(String input) async {
+  void endLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
+  Future operation(String input) async {
+    startLoading();
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(input);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
@@ -26,8 +35,9 @@ class SearchModel extends ChangeNotifier {
       results.add(hit);
     });
     print('Hits count: ${querySnap.nbHits}');
-    notifyListeners();
-    return querySnap;
+    print(results.length.toString() + 'resultsLength');
+    endLoading();
+    // return querySnap;
   }
 
 }

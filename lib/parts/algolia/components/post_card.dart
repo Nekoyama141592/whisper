@@ -17,8 +17,8 @@ class PostCard extends StatelessWidget {
             leading: CircleAvatar(
               radius: 24,
             ),
-            title: Text(result['title'].toString()),
-            // subtitle: Text(result['subTitle'].toString()),
+            title: Text(result['title']),
+            subtitle: Text('sample'),
           )
         ],
       ),

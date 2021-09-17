@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/colors.dart';
 
 final List<BottomNavigationBarItem> buttonNavigationBarElements = [
   BottomNavigationBarItem(

@@ -26,6 +26,7 @@ class SearchPage extends ConsumerWidget {
         body: Column(
           children: [
             SearchInputField(
+              _searchProvider,
               searchController,
               () async {
                 await _searchProvider.operation(
@@ -33,8 +34,10 @@ class SearchPage extends ConsumerWidget {
                 );
               }
             ),
+            !_searchProvider.isLoading ?
             Expanded(
-              child:  _searchProvider.searchTerm.length > 0 ?
+              // child:  _searchProvider.searchTerm.length > 0 ?
+              child:
               ListView.builder(
                 itemCount: _searchProvider.results.length,
                 itemBuilder: (context, i) {
@@ -42,10 +45,16 @@ class SearchPage extends ConsumerWidget {
                   PostCard(
                     _searchProvider.results[i].data
                   )
-                  : SizedBox();
+                  : Text('Something is wrond');
                 }
               )
-              : SizedBox(),
+              
+            )
+            : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Loading')
+              ],
             )
           ]
         ),
