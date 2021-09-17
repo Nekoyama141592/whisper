@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/preservations/audio_controll/audio_window.dart';
+import 'package:whisper/parts/nothing.dart';
+import 'package:whisper/parts/loading.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 class PreservationCard extends StatelessWidget {
   
@@ -17,22 +19,33 @@ class PreservationCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: preservationsProvider.preservationDocs.length,
-            itemBuilder: (BuildContext context, int i) =>
-              PostCard(preservationsProvider.preservationDocs[i])
-          ),
+    return Container(
+      child: 
+      preservationsProvider.isLoading ?
+      Loading()
+      : preservationsProvider.preservationDocs.isEmpty ?
+      Nothing()
+      : 
+      Padding(
+        padding: const EdgeInsets.only(top:20,),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: preservationsProvider.preservationDocs.length,
+                itemBuilder: (BuildContext context, int i) =>
+                  PostCard(preservationsProvider.preservationDocs[i])
+              ),
+            ),
+            AudioWindow(
+              preservationsProvider.currentSongDoc,
+              preservationsProvider,
+              preservatedPostIds,
+              likedPostIds
+            )
+          ],
         ),
-        AudioWindow(
-          preservationsProvider.currentSongDoc,
-          preservationsProvider,
-          preservatedPostIds,
-          likedPostIds
-        )
-      ],
+      ),
     );
   }
 }

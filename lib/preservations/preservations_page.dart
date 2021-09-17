@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/parts/nothing.dart';
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 import 'package:whisper/preservations/components/preservation_card.dart';
-
-import 'package:whisper/parts/loading.dart';
 
 class PreservationsPage extends ConsumerWidget {
   PreservationsPage(this.currentUserDoc,this.preservatedPostIds,this.likedPostIds);
@@ -17,9 +15,6 @@ class PreservationsPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _preservationsProvider = watch(preservationsProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('preservations'),
-      ),
       body: PostScreen(
         preservationsProvider: _preservationsProvider,
         currentUserDoc: currentUserDoc, 
@@ -47,14 +42,61 @@ class PostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: _preservationsProvider.isLoading ?
-      Loading()
-      : _preservationsProvider.preservationDocs.isEmpty ?
-      Nothing()
-      : PreservationCard(
-        _preservationsProvider, 
-        preservatedPostIds, 
-        likedPostIds
+      child: 
+      
+      SafeArea(
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              colors: [
+                kPrimaryColor.withOpacity(0.9),
+                kPrimaryColor.withOpacity(0.8),
+                kPrimaryColor.withOpacity(0.4),
+              ]
+            )
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'BookMarks',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                  ]
+                ),
+              ),
+              SizedBox(height:5),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35)
+                    )
+                  ),
+                  child: PreservationCard(
+                    _preservationsProvider,
+                    preservatedPostIds,
+                    likedPostIds
+                  ),
+                )
+              )
+            ],
+          ),
+        ),
       )
     );
   }
