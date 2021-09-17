@@ -8,29 +8,31 @@ class TextFieldContainer extends StatelessWidget {
   @override  
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 5,
-      ),
-      width: size.width * 0.9 ,
-      decoration: BoxDecoration(
-        // color: fieldColor.withOpacity(0.7),
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black.withOpacity(0.5)
+    return Align(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 5,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: fieldColor.withOpacity(0.3),
-            blurRadius: 20,
-            offset: Offset(0, 10)
-          )
-        ],
-        borderRadius: BorderRadius.circular(30)
+        width: size.width * 0.9 ,
+        decoration: BoxDecoration(
+          // color: fieldColor.withOpacity(0.7),
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black.withOpacity(0.5)
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: fieldColor.withOpacity(0.3),
+              blurRadius: 20,
+              offset: Offset(0, 10)
+            )
+          ],
+          borderRadius: BorderRadius.circular(30)
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }
