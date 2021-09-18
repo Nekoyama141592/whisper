@@ -10,9 +10,13 @@ class PostsFeaturesModel extends ChangeNotifier{
   
   String comment = '';
 
+  late DocumentSnapshot owner;
+  
   Future like(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
     await updateLikesOfPost(currentUserDoc, postDoc);
     await updateLikesOfUser(currentUserDoc, postDoc);
+    await findOwner(postDoc);
+    await updateLikeNotificationsOfUser(currentUserDoc, postDoc);
   }
 
   Future preservate(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
@@ -56,6 +60,51 @@ class PostsFeaturesModel extends ChangeNotifier{
       });
     } catch(e) {
       print(e.toString());
+    }
+  }
+
+  Future findOwner(DocumentSnapshot postDoc) async {
+    FirebaseFirestore.instance
+    .collection('users')
+    .where('uid',isEqualTo: postDoc['uid'])
+    .get()
+    .then((qshot) {
+      qshot.docs.forEach((DocumentSnapshot doc) {
+        owner = doc;
+      });
+    });
+  }
+
+  Future updateLikeNotificationsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+    try{
+      List list = owner['likeNotifications'];
+      
+      Map<String,dynamic> map = {
+        'uid': currentUserDoc['uid'],
+        'createdAt': Timestamp.now(),
+        'isRead': false,
+      };
+      list.add(map);
+
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      return FirebaseFirestore.instance
+      .collection('users')
+      .where('uid',isEqualTo: postDoc['uid'])
+      .get()
+      .then((qshot) {
+        qshot.docs.forEach((doc) {
+          batch.update(
+            doc.reference,
+            {
+              'likeNotifications': list,
+            }
+          );
+        });
+        return batch.commit();
+      });
+    } catch(e) {
+
     }
   }
 
