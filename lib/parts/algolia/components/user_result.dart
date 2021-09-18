@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class PostCard extends StatelessWidget {
+class UserResult extends StatelessWidget {
 
-  PostCard(this.result);
+  UserResult(this.result);
   final Map<String,dynamic> result;
 
   @override 
@@ -17,7 +17,7 @@ class PostCard extends StatelessWidget {
             leading: CircleAvatar(
               radius: 24,
             ),
-            title: Text(result['title']),
+            title: Text(result['uid']),
             subtitle: Text('sample'),
           )
         ],
