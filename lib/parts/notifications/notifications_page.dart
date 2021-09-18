@@ -51,8 +51,6 @@ class NotificationsPage extends StatelessWidget {
         Drawer()
         : WhisperDrawer(
           mainProvider,
-          preservatedPostIds,
-          likedPostIds
         ),
         body: TabBarView(
           children: [

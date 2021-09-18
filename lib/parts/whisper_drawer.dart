@@ -7,11 +7,10 @@ import 'package:whisper/main_model.dart';
 class WhisperDrawer extends StatelessWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
   
-  WhisperDrawer(this.mainProvider,this.preservatedPostIds,this.likedPostIds);
+  WhisperDrawer(this.mainProvider);
 
   final MainModel mainProvider;
-  final List preservatedPostIds;
-  final List likedPostIds;
+  
   @override  
   Widget build(BuildContext context) {
     return Drawer(

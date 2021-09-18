@@ -48,8 +48,7 @@ class WhisperTabBar extends StatelessWidget {
         Drawer()
         : WhisperDrawer(
           mainProvider,
-          preservatedPostIds,
-          likedPostIds
+          
         ),
         body: TabBarView(
           children: [
