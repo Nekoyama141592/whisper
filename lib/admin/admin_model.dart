@@ -9,23 +9,24 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addLikesToPost() async {
+  Future addFollowNotificationsToUser() async {
    
     try{
       WriteBatch batch = FirebaseFirestore.instance.batch();
       Map<String, dynamic> map = {
         'uid': '',
         'createdAt': Timestamp.now(),
+        'isRead': false,
       };
-      final List likes = [map];
-      return FirebaseFirestore.instance.collection('posts')
+      final List followNotifications = [map];
+      return FirebaseFirestore.instance.collection('users')
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(
             doc.reference, 
             {
-              'likes': likes,
+              'followNotifications': followNotifications,
             }
           );
         });
