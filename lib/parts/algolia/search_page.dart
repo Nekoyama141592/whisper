@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:whisper/parts/algolia/components/post_result.dart';
+import 'package:whisper/parts/algolia/post_search/components/post_result.dart';
 import 'package:whisper/parts/algolia/components/search_input_field.dart';
 import 'search_model.dart';
 

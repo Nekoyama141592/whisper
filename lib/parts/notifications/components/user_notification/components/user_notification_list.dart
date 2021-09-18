@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/notifications/components/user_notification/user_notification_card.dart';
+import 'package:whisper/parts/notifications/components/user_notification/components/user_notification_card.dart';
 class UserNotificationList extends StatelessWidget {
 
   UserNotificationList(this.notification);

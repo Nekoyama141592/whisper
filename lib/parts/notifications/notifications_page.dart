@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'tab_bar_elements.dart';
+import 'components/tab_bar_elements.dart';
 
 import 'package:whisper/main_model.dart';
 import 'package:whisper/parts/whisper_drawer.dart';

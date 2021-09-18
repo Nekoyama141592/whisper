@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/notifications/components/post_notification/post_notification_card.dart';
+import 'package:whisper/parts/notifications/components/post_notification/components/post_notification_card.dart';
 class PostNotificationList extends StatelessWidget {
 
   PostNotificationList(this.notification);
