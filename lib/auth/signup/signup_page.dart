@@ -26,7 +26,7 @@ class SignupPage extends ConsumerWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
+                  begin: Alignment.topLeft,
                   colors: [
                     kPrimaryColor.withOpacity(0.9),
                     kPrimaryColor.withOpacity(0.8),
