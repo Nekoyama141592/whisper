@@ -102,6 +102,7 @@ class SignupModel extends ChangeNotifier {
       'imageURL': imageURL,
       'userName': userName,
       'isAdmin': false,
+      'followingUids': [],
     });
   }
 }

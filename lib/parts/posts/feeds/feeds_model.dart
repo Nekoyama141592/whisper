@@ -91,7 +91,7 @@ class FeedsModel extends ChangeNotifier {
 
   void setFollowUids() {
     try {
-      followUids = currentUserDoc['followUids'];
+      followUids = currentUserDoc['followingUids'];
       followUids.add(currentUser!.uid);
       notifyListeners();
       print(followUids.length.toString() + "followUidsLength");
@@ -102,7 +102,7 @@ class FeedsModel extends ChangeNotifier {
 
   void setMutesList() async {
     try {
-      mutesUids = currentUserDoc['followUids'];
+      mutesUids = [];
     } catch(e){
       print(e.toString());
     }

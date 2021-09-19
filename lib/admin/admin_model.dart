@@ -9,24 +9,39 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addFollowNotificationsToUser() async {
+  Future addFollowerUidsToUser() async {
    
     try{
       WriteBatch batch = FirebaseFirestore.instance.batch();
-      Map<String, dynamic> map = {
-        'uid': '',
-        'createdAt': Timestamp.now(),
-        'isRead': false,
-      };
-      final List followNotifications = [map];
-      return FirebaseFirestore.instance.collection('users')
+      // Map<String, dynamic> map = {
+      //   'uid': '',
+      //   'createdAt': Timestamp.now(),
+      //   'isRead': false,
+      // };
+      // final List followNotifications = [map];
+      // return FirebaseFirestore.instance.collection('users')
+      // .get()
+      // .then((qshot) {
+      //   qshot.docs.forEach((doc) {
+      //     batch.update(
+      //       doc.reference, 
+      //       {
+      //         'followNotifications': followNotifications,
+      //       }
+      //     );
+      //   });
+      //   return batch.commit();
+      // });
+      final List followerUids = [''];
+      return FirebaseFirestore.instance
+      .collection('users')
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(
             doc.reference, 
             {
-              'followNotifications': followNotifications,
+              'followerUids': followerUids,
             }
           );
         });

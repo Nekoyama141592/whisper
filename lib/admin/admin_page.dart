@@ -29,8 +29,9 @@ class AdminPage extends ConsumerWidget {
             child: Center(
               child: RoundedButton(
                 'Nothing', 
+                0.8,
                 (){
-                 _adminProvider.addFollowNotificationsToUser();
+                 
                 }, 
                 Colors.white, 
                 kSecondaryColor

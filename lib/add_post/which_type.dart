@@ -18,6 +18,7 @@ class WhichType extends StatelessWidget {
         Text('Which type?'),
         RoundedButton(
           '普通の投稿', 
+          0.8,
           () {
             routes.toAddPostPage(context, currentUserDoc);
           }, 
@@ -26,6 +27,7 @@ class WhichType extends StatelessWidget {
         ),
         RoundedButton(
           '広告の投稿',
+          0.8,
           () {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

@@ -11,7 +11,8 @@ import 'user_show_model.dart';
 import 'package:whisper/users/user_show/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/parts/posts/user_image.dart';
-
+import 'package:whisper/parts/rounded_button.dart';
+import 'package:whisper/users/follow/follow_model.dart';
 class UserShowPage extends ConsumerWidget {
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot doc;
@@ -21,6 +22,8 @@ class UserShowPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _userShowProvider = watch(userShowProvider);
+    final _followProvider = watch(followProvider);
+    final List<dynamic> followingUids = currentUserDoc['followingUids'];
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: 
@@ -54,6 +57,7 @@ class UserShowPage extends ConsumerWidget {
                     Text(doc['userName'],style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)),
                     SizedBox(height: 10),
                     Text(doc['subUserName'],style: TextStyle(color: Colors.white, fontSize: 15)),
+                    
                     SizedBox(height: 10),
                     Row(
                       children: [
@@ -67,6 +71,25 @@ class UserShowPage extends ConsumerWidget {
                               fontWeight: FontWeight.bold
                             ),
                           ),
+                        ),
+                        !followingUids.contains(doc['uid']) ?
+                        RoundedButton(
+                          'follow', 
+                          0.4, 
+                          () async {
+                            await _followProvider.follow(followingUids, currentUserDoc, doc);
+                            followingUids.add(doc['uid']);
+                            _followProvider.reload();
+                          },
+                          Colors.white, 
+                          kTertiaryColor
+                        )
+                        : RoundedButton(
+                          'unfollow', 
+                          0.4, 
+                          () => null, 
+                          Colors.white, 
+                          kSecondaryColor
                         )
                       ],
                     ),
