@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class PostNotificationCard extends StatelessWidget {
+class LikeNotificationCard extends StatelessWidget {
 
-  PostNotificationCard(this.notification);
+  LikeNotificationCard(this.notification);
   final Map<String,dynamic> notification;
 
   @override 
@@ -18,7 +18,7 @@ class PostNotificationCard extends StatelessWidget {
               radius: 24,
             ),
             title: Text(notification['uid']),
-            subtitle: Text('sample'),
+            subtitle: Text(notification['isRead'].toString()),
           )
         ],
       ),

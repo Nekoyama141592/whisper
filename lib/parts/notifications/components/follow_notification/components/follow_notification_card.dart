@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class UserNotificationCard extends StatelessWidget {
+class FollowNotificationCard extends StatelessWidget {
 
-  UserNotificationCard(this.notification);
+  FollowNotificationCard(this.notification);
 
   final Map<String,dynamic> notification;
   @override  
@@ -18,7 +18,7 @@ class UserNotificationCard extends StatelessWidget {
               radius: 24,
             ),
             title: Text(notification['uid']),
-            subtitle: Text('sample'),
+            subtitle: Text(notification['isRead'].toString()),
           )
         ],
       ),
