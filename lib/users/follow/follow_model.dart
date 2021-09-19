@@ -20,8 +20,6 @@ class FollowModel extends ChangeNotifier {
   }
   Future addFollowingUidOfActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
-      // final String newFollowingUid = passiveUserDoc['uid'];
-      // followingUids.add(newFollowingUid);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -51,8 +49,6 @@ class FollowModel extends ChangeNotifier {
 
   Future removeFollowingUidOfActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
-      // final String removeFollowingUid = passiveUserDoc['uid'];
-      // followingUids.remove(removeFollowingUid);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
