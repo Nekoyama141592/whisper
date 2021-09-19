@@ -28,7 +28,8 @@ class NotificationIcon extends StatelessWidget {
             likedPostIds
           );
         },
-        child: Stack(
+        child: mainProvider.newNotifications.length > 0 ?
+        Stack(
           children: [
             Icon(Icons.notifications),
             Positioned(
@@ -44,7 +45,8 @@ class NotificationIcon extends StatelessWidget {
               )
             )
           ],
-        ),
+        )
+        : Icon(Icons.notifications),
       ),
     );
   }

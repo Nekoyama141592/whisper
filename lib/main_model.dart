@@ -17,7 +17,8 @@ class MainModel extends ChangeNotifier {
   bool isLoading = true;
   List<String> likedPostIds = [];
   List<String> preservatedPostIds = [];
-  
+  List<dynamic> newNotifications = [];
+
   MainModel() {
     init();
   }
@@ -26,6 +27,7 @@ class MainModel extends ChangeNotifier {
     await setCurrentUser();
     getLikedPostIds();
     getPreservatedPostIds();
+    getNewNotifications();
     endLoading();
   }
 
@@ -85,6 +87,22 @@ class MainModel extends ChangeNotifier {
       print(e.toString());
     }
     print(preservatedPostIds.length.toString() + '  preservatedPostIds');
+  }
+
+  void getNewNotifications () {
+    List<dynamic> likeNotifications = currentUserDoc['likeNotifications'];
+    List<dynamic> followNotifications = currentUserDoc['followNotifications'];
+    likeNotifications.forEach((likeNotification){
+      if (likeNotification['isRead'] == false) {
+        newNotifications.add(likeNotification);
+      }
+    });
+    followNotifications.forEach((followNotification){
+      if (followNotification['isRead'] == false) {
+        newNotifications.add(followNotification);
+      }
+    });
+    notifyListeners();
   }
   Future logout(context) async {
     await FirebaseAuth.instance.signOut();
