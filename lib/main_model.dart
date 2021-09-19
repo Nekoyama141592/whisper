@@ -17,8 +17,9 @@ class MainModel extends ChangeNotifier {
   bool isLoading = true;
   List<String> likedPostIds = [];
   List<String> preservatedPostIds = [];
-  List<dynamic> newNotifications = [];
-
+  List<dynamic> newLikeNotifications = [];
+  List<dynamic> newFollowNotifications = [];
+  
   MainModel() {
     init();
   }
@@ -94,12 +95,12 @@ class MainModel extends ChangeNotifier {
     List<dynamic> followNotifications = currentUserDoc['followNotifications'];
     likeNotifications.forEach((likeNotification){
       if (likeNotification['isRead'] == false) {
-        newNotifications.add(likeNotification);
+        newLikeNotifications.add(likeNotification);
       }
     });
     followNotifications.forEach((followNotification){
       if (followNotification['isRead'] == false) {
-        newNotifications.add(followNotification);
+        newFollowNotifications.add(followNotification);
       }
     });
     notifyListeners();

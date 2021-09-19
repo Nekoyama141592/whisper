@@ -56,8 +56,12 @@ class NotificationsPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            LikeNotification(),
-            FollowNotification()
+            LikeNotification(
+              mainProvider.newLikeNotifications
+            ),
+            FollowNotification(
+              mainProvider.newFollowNotifications
+            )
           ]
         ),
       ),
