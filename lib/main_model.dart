@@ -19,7 +19,8 @@ class MainModel extends ChangeNotifier {
   List<String> preservatedPostIds = [];
   List<dynamic> newLikeNotifications = [];
   List<dynamic> newFollowNotifications = [];
-  
+  List<dynamic> followingUids = [];
+
   MainModel() {
     init();
   }
@@ -28,6 +29,7 @@ class MainModel extends ChangeNotifier {
     await setCurrentUser();
     getLikedPostIds();
     getPreservatedPostIds();
+    getFollowingUids();
     getNewNotifications();
     endLoading();
   }
@@ -88,6 +90,10 @@ class MainModel extends ChangeNotifier {
       print(e.toString());
     }
     print(preservatedPostIds.length.toString() + '  preservatedPostIds');
+  }
+
+  void getFollowingUids() {
+    followingUids = currentUserDoc['followingUids'];
   }
 
   void getNewNotifications () {

@@ -18,12 +18,18 @@ class UserShowPage extends ConsumerWidget {
   final DocumentSnapshot doc;
   final List preservatedPostIds;
   final List likedPostIds;
-  UserShowPage(this.currentUserDoc,this.doc,this.preservatedPostIds,this.likedPostIds);
+  final List followingUids;
+  UserShowPage(
+    this.currentUserDoc,
+    this.doc,
+    this.preservatedPostIds,
+    this.likedPostIds,
+    this.followingUids
+  );
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _userShowProvider = watch(userShowProvider);
     final _followProvider = watch(followProvider);
-    final List<dynamic> followingUids = currentUserDoc['followingUids'];
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: 
@@ -75,19 +81,33 @@ class UserShowPage extends ConsumerWidget {
                         !followingUids.contains(doc['uid']) ?
                         RoundedButton(
                           'follow', 
-                          0.4, 
+                          0.35, 
                           () async {
-                            await _followProvider.follow(followingUids, currentUserDoc, doc);
-                            followingUids.add(doc['uid']);
-                            _followProvider.reload();
+                            try{
+                              followingUids.add(doc['uid']);
+                              _followProvider.reload();
+                              await _followProvider.follow(followingUids, currentUserDoc, doc);
+                              print(followingUids);
+                            } catch(e) {
+                              print(e.toString());
+                            }
                           },
                           Colors.white, 
                           kTertiaryColor
                         )
                         : RoundedButton(
                           'unfollow', 
-                          0.4, 
-                          () => null, 
+                          0.35, 
+                          () async {
+                            try{
+                              followingUids.remove(doc['uid']);
+                              _followProvider.reload();
+                              await _followProvider.unfollow(followingUids, currentUserDoc, doc);
+                              print(followingUids);
+                            } catch(e) {
+                              print(e.toString());
+                            }
+                          }, 
                           Colors.white, 
                           kSecondaryColor
                         )

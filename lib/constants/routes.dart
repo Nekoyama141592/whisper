@@ -37,8 +37,8 @@ void toPreservationsShowPage(context,currentUserDoc,doc,preservationsProvider,pr
   Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(currentUserDoc,doc,preservationsProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toUserShowPage(context,currentUserDoc,userDoc,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc,userDoc,preservatedPostIds,likedPostIds)));
+void toUserShowPage(context,currentUserDoc,userDoc,preservatedPostIds,likedPostIds,followingUids) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc,userDoc,preservatedPostIds,likedPostIds,followingUids)));
 }
 void toFeedShowPage(context,userDoc,feedsProvider,preservatedPostIds,likedPostIds) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(userDoc,feedsProvider,preservatedPostIds,likedPostIds)));

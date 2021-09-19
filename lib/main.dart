@@ -77,7 +77,8 @@ class MyHomePage extends ConsumerWidget {
             _mainProvider.currentUserDoc,
             _mainProvider.currentUserDoc, 
             _mainProvider.preservatedPostIds, 
-            _mainProvider.likedPostIds
+            _mainProvider.likedPostIds,
+            _mainProvider.followingUids
           )
         ],
       ),
