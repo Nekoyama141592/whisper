@@ -48,6 +48,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     });
   }
 
+ 
   Future addLikesToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
     try {
       final List likes = postDoc['likes'];
@@ -69,17 +70,17 @@ class PostsFeaturesModel extends ChangeNotifier{
   
   Future addLikesToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
     try{
-      final List likes = currentUserDoc['likes'];
+      final List likeList = currentUserDoc['likes'];
       final Map<String, dynamic> map = {
-        'postId': postDoc.id,
+        'likedPostId': postDoc['postId'],
         'createdAt': Timestamp.now(),
       };
-      likes.add(map);
+      likeList.add(map);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
       .update({
-        'likes': likes,
+        'likes': likeList,
       });
     } catch(e) {
       print(e.toString());
@@ -143,7 +144,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     try{
       final List preservations = currentUserDoc['preservations'];
       final Map<String, dynamic> map = {
-        'postId': postDoc.id,
+        'postId': postDoc['postId'],
         'createdAt': Timestamp.now(),
       };
       preservations.add(map);
@@ -176,7 +177,7 @@ class PostsFeaturesModel extends ChangeNotifier{
   Future removePreservationsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
     try{
       final List preservations = currentUserDoc['preservations'];
-      preservations.removeWhere((preservation) => preservation['uid'] == postDoc['uid']);
+      preservations.removeWhere((preservation) => preservation['postId'] == postDoc['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -206,7 +207,7 @@ class PostsFeaturesModel extends ChangeNotifier{
   Future removeLikeOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
     try{
       final List likes = currentUserDoc['likes'];
-      likes.removeWhere((like) => like['uid'] == postDoc['uid']);
+      likes.removeWhere((like) => like['likedPostId'] == postDoc['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)

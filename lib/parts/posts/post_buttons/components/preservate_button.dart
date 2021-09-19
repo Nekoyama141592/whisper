@@ -18,14 +18,18 @@ class PreservateButton extends ConsumerWidget {
         Icons.inventory_2,
         color: Colors.red,
       ),
-      onPressed: (){}, 
+      onPressed: () async {
+        preservatedPostIds.remove(postDoc.id);
+        _postsFeaturesProvider.reload();
+        await _postsFeaturesProvider.unpreservate(currentUserDoc, postDoc);
+      }, 
     )
     : IconButton(
       icon: Icon(Icons.inventory_2),
       onPressed: () async {
-        await _postsFeaturesProvider.preservate(currentUserDoc, postDoc);
         preservatedPostIds.add(postDoc.id);
         _postsFeaturesProvider.reload();
+        await _postsFeaturesProvider.preservate(currentUserDoc, postDoc);
       }, 
     );
   }
