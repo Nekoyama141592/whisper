@@ -178,18 +178,19 @@ class AddPostModel extends ChangeNotifier {
         final audioURL = await getPostUrl(context);
         await FirebaseFirestore.instance.collection('posts')
         .add({
-          'userImageURL'
-          'imageURL': '',
           'ImageExist': false,
           'audioURL': audioURL,
-          'uid': currentUser!.uid,
+          'comments': [],
           'createdAt': Timestamp.now(),
-          'updatedAt': Timestamp.now(),
-          'score': 0,
           'likesCount': 0,
-          'preservationsCount': 0,
-          'title': postTitle,
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+          'preservationsCount': 0,
+          'score': 0,
+          'title': postTitle,
+          'imageURL': '',
+          'uid': currentUser!.uid,
+          'updatedAt': Timestamp.now(),
+          'userImageURL': '',
         });
         
       } catch(e) {

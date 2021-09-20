@@ -28,10 +28,10 @@ class AdminPage extends ConsumerWidget {
             message: '特になし',
             child: Center(
               child: RoundedButton(
-                'UpdateComment', 
+                'replyNotification', 
                 0.8,
                 (){
-                 
+                  _adminProvider.replyNotificationOfUser();
                 }, 
                 Colors.white, 
                 kSecondaryColor

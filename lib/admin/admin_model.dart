@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,32 +9,28 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addCommentToPost() async {
+  Future replyNotificationOfUser() async {
    
     try{
-      final String num = Random().nextDouble().toString();
+      
       WriteBatch batch = FirebaseFirestore.instance.batch();
-      Map<String,dynamic> likeMap = {
-        'uid': '',
-        'createdAt': Timestamp.now(),
-      };
-      List likes = [likeMap];
-      Map<String, dynamic> commentMap = {
-        'uid': '',
-        'createdAt': Timestamp.now(),
-        'likes': likes,
+      Map<String,dynamic> map = {
+        'commentId': '',
         'comment': '',
-        'commentId': num,
+        'createdAt': Timestamp.now(),
+        'isRead': false,
+        'uid': '',
       };
-      final List comments = [commentMap];
-      return FirebaseFirestore.instance.collection('posts')
+      List replyNotifications = [map];
+
+      return FirebaseFirestore.instance.collection('users')
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(
             doc.reference, 
             {
-              'comments': comments,
+              'replyNotifications': replyNotifications,
             }
           );
         });

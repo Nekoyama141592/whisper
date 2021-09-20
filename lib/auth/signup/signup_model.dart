@@ -95,14 +95,23 @@ class SignupModel extends ChangeNotifier {
     final imageURL = await uploadImage();
     await FirebaseFirestore.instance
     .collection('users').add({
+      'desciption': '',
       'email': email,
-      'uid' : uid,
-      'subUserName': uid,
-      'point': 0,
-      'imageURL': imageURL,
-      'userName': userName,
-      'isAdmin': false,
+      'followNotifications': [],
       'followingUids': [],
+      'imageURL': imageURL,
+      'isAdmin': false,
+      'isLikedNotifications':[],
+      'likeNotifications': [],
+      'likedComments': [],
+      'likes': [],
+      'mutes': [],
+      'point': 0,
+      'preservations': [],
+      'replyNotifications': [],
+      'subUserName': uid,
+      'uid' : uid,
+      'userName': userName,
     });
   }
 }
