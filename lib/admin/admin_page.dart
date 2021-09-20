@@ -31,7 +31,6 @@ class AdminPage extends ConsumerWidget {
                 'replyNotification', 
                 0.8,
                 (){
-                  _adminProvider.replyNotificationOfUser();
                 }, 
                 Colors.white, 
                 kSecondaryColor

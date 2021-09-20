@@ -50,7 +50,7 @@ class CommentButton extends ConsumerWidget {
                 ElevatedButton(
                   child: Text('送信'),
                   onPressed: ()async {
-                    _commentsProvider.makeComment(postDocId, postComments);
+                    // _commentsProvider.makeComment(postDocId, postComments);
                   }, 
                 )
               ],
