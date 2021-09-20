@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,39 +11,32 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addFollowerUidsToUser() async {
+  Future addCommentToPost() async {
    
     try{
+      final String num = Random().nextDouble().toString();
       WriteBatch batch = FirebaseFirestore.instance.batch();
-      // Map<String, dynamic> map = {
-      //   'uid': '',
-      //   'createdAt': Timestamp.now(),
-      //   'isRead': false,
-      // };
-      // final List followNotifications = [map];
-      // return FirebaseFirestore.instance.collection('users')
-      // .get()
-      // .then((qshot) {
-      //   qshot.docs.forEach((doc) {
-      //     batch.update(
-      //       doc.reference, 
-      //       {
-      //         'followNotifications': followNotifications,
-      //       }
-      //     );
-      //   });
-      //   return batch.commit();
-      // });
-      final List followerUids = [''];
-      return FirebaseFirestore.instance
-      .collection('users')
+      Map<String,dynamic> likeMap = {
+        'uid': '',
+        'createdAt': Timestamp.now(),
+      };
+      List likes = [likeMap];
+      Map<String, dynamic> commentMap = {
+        'uid': '',
+        'createdAt': Timestamp.now(),
+        'likes': likes,
+        'comment': '',
+        'commentId': num,
+      };
+      final List comments = [commentMap];
+      return FirebaseFirestore.instance.collection('posts')
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(
             doc.reference, 
             {
-              'followerUids': followerUids,
+              'comments': comments,
             }
           );
         });

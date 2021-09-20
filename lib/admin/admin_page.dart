@@ -28,7 +28,7 @@ class AdminPage extends ConsumerWidget {
             message: '特になし',
             child: Center(
               child: RoundedButton(
-                'Nothing', 
+                'UpdateComment', 
                 0.8,
                 (){
                  

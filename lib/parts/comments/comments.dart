@@ -11,11 +11,11 @@ class Comments extends ConsumerWidget {
     final _commentsProvider = watch(commentsProvider);
     return _commentsProvider.isLoading ?
     Text('Loading')
-    : _commentsProvider.commentList.isEmpty ?
+    // : _commentsProvider.commentList.isEmpty ?
+    : 1 == 1 ?
     ElevatedButton(
       child: Text('コメントを見る'),
       onPressed: () {
-        _commentsProvider.onCommentsButtonPressed(postId);
       }, 
     )
     : Text('something');
