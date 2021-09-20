@@ -59,7 +59,7 @@ class AudioWindow extends StatelessWidget {
                         children: [
                           LikeButton(
                             currentUserDoc,
-                            preservationsProvider.currentSongPostIdNotifier.value,
+                            preservationsProvider.currentSongPostIdNotifier,
                             likedPostIds
                           ),
                           

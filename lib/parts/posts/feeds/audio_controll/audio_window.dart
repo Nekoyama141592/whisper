@@ -60,7 +60,7 @@ class AudioWindow extends StatelessWidget {
                         children: [
                           LikeButton(
                             feedsProvider.currentUserDoc,
-                            feedsProvider.currentSongPostIdNotifier.value,
+                            feedsProvider.currentSongPostIdNotifier,
                             likedPostIds
                           ),
                           

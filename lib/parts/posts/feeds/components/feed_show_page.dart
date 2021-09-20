@@ -49,7 +49,7 @@ class FeedShowPage extends StatelessWidget{
                       ),
                       PostButtons(
                         feedsProvider.currentUserDoc,
-                        feedsProvider.currentSongPostIdNotifier.value,
+                        feedsProvider.currentSongPostIdNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),

@@ -59,7 +59,7 @@ class RecommenderShowPage extends StatelessWidget{
                       ),
                       PostButtons(
                         currentUserDoc,
-                        recommendersProvider.currentSongPostIdNotifier.value,
+                        recommendersProvider.currentSongPostIdNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),

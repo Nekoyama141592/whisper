@@ -54,7 +54,7 @@ class PreservationShowPage extends StatelessWidget{
                       ),
                       PostButtons(
                         currentUserDoc,
-                        preservationsProvider.currentSongPostIdNotifier.value,
+                        preservationsProvider.currentSongPostIdNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),

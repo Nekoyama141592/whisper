@@ -55,7 +55,7 @@ class UserShowPostShowPage extends StatelessWidget {
                       ),
                       PostButtons(
                         currentUserDoc,
-                        userShowProvider.currentSongPostIdNotifier.value,
+                        userShowProvider.currentSongPostIdNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
