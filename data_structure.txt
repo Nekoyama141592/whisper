@@ -1,0 +1,83 @@
+db{
+    posts{
+        ImageExist: bool,
+        audioURL: String,
+        comments: [{
+            comment: String,
+            commentId: String,
+            createdAt: TimeStamp,
+            likes: [{
+                createdAt: TimeStamp,
+                uid: String,
+            }],
+            uid: String,
+        }],
+        createdAt: TimeStamp,
+        likes: [{
+            createdAt: TimeStamp,
+            uid: String,
+            
+        }],
+        postId: String,
+        preservations: [{
+            createdAt: TimeStamp,
+            uid: String,
+        }],
+        score: int,
+        title: String,
+        updatedAt: TimeStamp,
+    }
+    users{
+        description: String,
+        email: String,
+        followNotifications: [{
+            createdAt: TimeStamp,
+            isRead: bool,
+            uid: String,
+        }],
+        followerUids:[
+            String
+        ],
+        followingUids: [
+            String
+        ],
+        imageURL: String,
+        isAdmin: bool,
+        isLikedNotifications:[{
+            createdAt: TimeStamp,
+            isRead: bool,
+            uid: String,
+        }],
+        likeNotifications: [{
+            createdAt: TimeStamp,
+            isRead: bool,
+            uid: String,
+        }],
+        likedComments:[{
+            commentId: String,
+            createdAt: TimeStamp,
+        }],
+        likes: [{
+            createdAt: TimeStamp,
+            likedPostId: String,
+        }],
+        mutes:[
+            String
+        ],
+        point: int,
+        preservations: [{
+            createdAt: TimeStamp,
+            postId: String,
+        }],
+        replyNotifications: [{
+            comment: String,
+            commentId: String,
+            createdAt: TimeStamp,
+            isRead: bool,
+            uid: String,
+        }],
+        subUserName: String,
+        uid: String,
+        userName: String,
+    }
+}

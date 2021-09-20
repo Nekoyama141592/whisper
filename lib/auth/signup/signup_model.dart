@@ -98,6 +98,7 @@ class SignupModel extends ChangeNotifier {
       'desciption': '',
       'email': email,
       'followNotifications': [],
+      'followerUids': [],
       'followingUids': [],
       'imageURL': imageURL,
       'isAdmin': false,
