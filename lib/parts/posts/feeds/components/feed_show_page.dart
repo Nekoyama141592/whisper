@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/parts/posts/feeds/feeds_model.dart';
-import 'package:whisper/parts/posts/feeds/audio_controll/audio_state_design.dart';
+import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
-import 'package:whisper/parts/posts/feeds/audio_controll/current_song_title.dart';
-import 'package:whisper/parts/posts/feeds/audio_controll/current_song_post_id.dart';
+import 'package:whisper/parts/posts/audio_controll/current_song_title.dart';
+import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';
 import 'package:whisper/parts/comments/comments.dart';
 class FeedShowPage extends StatelessWidget{
   final FeedsModel feedsProvider;
@@ -42,10 +42,10 @@ class FeedShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: CurrentSongPostId(feedsProvider),
+                        child: CurrentSongPostId(feedsProvider.currentSongPostIdNotifier),
                       ),
                       Center(
-                        child: CurrentSongTitle(feedsProvider),
+                        child: CurrentSongTitle(feedsProvider.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         feedsProvider.currentUserDoc,
@@ -53,7 +53,32 @@ class FeedShowPage extends StatelessWidget{
                         preservatedPostIds,
                         likedPostIds
                       ),
-                      AudioStateDesign(feedsProvider,preservatedPostIds,likedPostIds),
+                      AudioStateDesign(
+                        preservatedPostIds,
+                        likedPostIds,
+                        feedsProvider.currentSongTitleNotifier,
+                        feedsProvider.progressNotifier,
+                        feedsProvider.seek,
+                        feedsProvider.repeatButtonNotifier,
+                        (){
+                          feedsProvider.onRepeatButtonPressed();
+                        },
+                        feedsProvider.isFirstSongNotifier,
+                        (){
+                          feedsProvider.onPreviousSongButtonPressed();
+                        },
+                        feedsProvider.playButtonNotifier,
+                        (){
+                          feedsProvider.play();
+                        },
+                        (){
+                          feedsProvider.pause();
+                        },
+                        feedsProvider.isLastSongNotifier,
+                        (){
+                          feedsProvider.onNextSongButtonPressed();
+                        }
+                      ),
                       Comments(feedsProvider.currentSongPostIdNotifier.value)
                     ],
                   ),
