@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/parts/posts/feeds/feeds_model.dart';
 
-import 'package:whisper/parts/posts/feeds/audio_controll/audio_window.dart';
+import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';
-
+import 'package:whisper/constants/routes.dart' as routes;
 
 class FeedsCard extends StatelessWidget{
   FeedsCard(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
@@ -21,7 +21,25 @@ class FeedsCard extends StatelessWidget{
               PostCard(feedsProvider.feedDocs[i])
           ),
         ),
-        AudioWindow(feedsProvider, preservatedPostIds, likedPostIds),
+        AudioWindow(
+          preservatedPostIds,
+          likedPostIds,
+          (){
+            routes.toFeedShowPage(context, feedsProvider, preservatedPostIds, likedPostIds);
+          },
+          feedsProvider.progressNotifier,
+          feedsProvider.seek,
+          feedsProvider.currentSongTitleNotifier,
+          feedsProvider.currentSongPostIdNotifier,
+          feedsProvider.playButtonNotifier,
+          (){
+            feedsProvider.play();
+          },
+         (){
+           feedsProvider.pause();
+         },
+          feedsProvider.currentUserDoc
+        ),
        
       ]
     );
