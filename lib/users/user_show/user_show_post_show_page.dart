@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/users/user_show/audio_controll/audio_state_design.dart';
 import 'package:whisper/users/user_show/user_show_model.dart';
-import 'package:whisper/users/user_show/audio_controll/current_song_title.dart';
-import 'package:whisper/users/user_show/audio_controll/current_song_post_id.dart';
+import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
+import 'package:whisper/parts/posts/audio_controll/current_song_title.dart';
+import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
@@ -48,10 +48,10 @@ class UserShowPostShowPage extends StatelessWidget {
                     children: [
                       Center(
                         // image
-                        child: CurrentSongPostId(userShowProvider),
+                        child: CurrentSongPostId(userShowProvider.currentSongPostIdNotifier),
                       ),
                       Center(
-                        child: CurrentSongTitle(userShowProvider)
+                        child: CurrentSongTitle(userShowProvider.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         currentUserDoc,
@@ -59,7 +59,32 @@ class UserShowPostShowPage extends StatelessWidget {
                         preservatedPostIds,
                         likedPostIds
                       ),
-                      AudioStateDesign(currentUserDoc,userShowProvider,preservatedPostIds,likedPostIds),
+                      AudioStateDesign(
+                        preservatedPostIds,
+                        likedPostIds,
+                        userShowProvider.currentSongTitleNotifier,
+                        userShowProvider.progressNotifier,
+                        userShowProvider.seek,
+                        userShowProvider.repeatButtonNotifier,
+                        (){
+                          userShowProvider.onRepeatButtonPressed();
+                        },
+                        userShowProvider.isFirstSongNotifier,
+                        (){
+                          userShowProvider.onPreviousSongButtonPressed();
+                        },
+                        userShowProvider.playButtonNotifier,
+                        (){
+                          userShowProvider.play();
+                        },
+                        (){
+                          userShowProvider.pause();
+                        },
+                        userShowProvider.isLastSongNotifier,
+                        (){
+                          userShowProvider.onNextSongButtonPressed();
+                        }
+                      ),
                       Comments(userShowProvider.currentSongPostIdNotifier.value)
                     ],
                   ),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/components/post_card.dart';
-import 'package:whisper/preservations/audio_controll/audio_window.dart';
+import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/components/nothing.dart';
 import 'package:whisper/parts/components/loading.dart';
 import 'package:whisper/preservations/preservations_model.dart';
+
+import 'package:whisper/constants/routes.dart' as routes;
+
 class PreservationCard extends StatelessWidget {
   
   PreservationCard(
@@ -38,11 +41,30 @@ class PreservationCard extends StatelessWidget {
               ),
             ),
             AudioWindow(
-              preservationsProvider.currentUserDoc,
-              preservationsProvider,
               preservatedPostIds,
-              likedPostIds
-            )
+              likedPostIds,
+              (){
+                routes.toPreservationsShowPage(
+                  context, 
+                  preservationsProvider.currentUserDoc, 
+                  preservationsProvider, 
+                  preservatedPostIds, 
+                  likedPostIds
+                );
+              },
+              preservationsProvider.progressNotifier,
+              preservationsProvider.seek,
+              preservationsProvider.currentSongTitleNotifier,
+              preservationsProvider.currentSongPostIdNotifier,
+              preservationsProvider.playButtonNotifier,
+              (){
+                preservationsProvider.play();
+              },
+            (){
+              preservationsProvider.pause();
+            },
+              preservationsProvider.currentUserDoc
+            ),
           ],
         ),
       ),

@@ -36,8 +36,8 @@ void toPreservationsPage(context,currentUserDoc,preservatedPostIds,likedPostIds)
   Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationsPage(currentUserDoc,preservatedPostIds,likedPostIds)));
 }
 
-void toPreservationsShowPage(context,currentUserDoc,preservationsProvider,presrevatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(currentUserDoc,preservationsProvider,presrevatedPostIds,likedPostIds)));
+void toPreservationsShowPage(context,currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PreservationShowPage(currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds)));
 }
 
 void toUserShowPage(context,currentUserDoc,doc,preservatedPostIds,likedPostIds,followingUids) {

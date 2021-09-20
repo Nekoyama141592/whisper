@@ -5,9 +5,9 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
-import 'package:whisper/preservations/audio_controll/audio_state_design.dart';
-import 'package:whisper/preservations/audio_controll/current_song_post_id.dart';
-import 'package:whisper/preservations/audio_controll/current_song_title.dart';
+import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
+import 'package:whisper/parts/posts/audio_controll/current_song_title.dart';
+import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';
 import 'package:whisper/parts/comments/comments.dart';
 
 
@@ -47,10 +47,10 @@ class PreservationShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: CurrentSongPostId(preservationsProvider),
+                        child: CurrentSongPostId(preservationsProvider.currentSongPostIdNotifier),
                       ),
                       Center(
-                        child: CurrentSongTitle(preservationsProvider)
+                        child: CurrentSongTitle(preservationsProvider.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         currentUserDoc,
@@ -58,7 +58,32 @@ class PreservationShowPage extends StatelessWidget{
                         preservatedPostIds,
                         likedPostIds
                       ),
-                      AudioStateDesign(currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds),
+                      AudioStateDesign(
+                        preservatedPostIds,
+                        likedPostIds,
+                        preservationsProvider.currentSongTitleNotifier,
+                        preservationsProvider.progressNotifier,
+                        preservationsProvider.seek,
+                        preservationsProvider.repeatButtonNotifier,
+                        (){
+                          preservationsProvider.onRepeatButtonPressed();
+                        },
+                        preservationsProvider.isFirstSongNotifier,
+                        (){
+                          preservationsProvider.onPreviousSongButtonPressed();
+                        },
+                        preservationsProvider.playButtonNotifier,
+                        (){
+                          preservationsProvider.play();
+                        },
+                        (){
+                          preservationsProvider.pause();
+                        },
+                        preservationsProvider.isLastSongNotifier,
+                        (){
+                          preservationsProvider.onNextSongButtonPressed();
+                        }
+                      ),
                       Comments(preservationsProvider.currentSongPostIdNotifier.value)
                     ],
                   ),
