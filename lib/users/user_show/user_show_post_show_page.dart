@@ -5,18 +5,17 @@ import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/users/user_show/audio_controll/audio_state_design.dart';
 import 'package:whisper/users/user_show/user_show_model.dart';
-
-
+import 'package:whisper/users/user_show/audio_controll/current_song_title.dart';
+import 'package:whisper/users/user_show/audio_controll/current_song_post_id.dart';
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
 
 class UserShowPostShowPage extends StatelessWidget {
-  UserShowPostShowPage(this.currentUserDoc,this.doc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  UserShowPostShowPage(this.currentUserDoc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
   
   final UserShowModel userShowProvider;
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot doc;
   final List preservatedPostIds;
   final List likedPostIds;
   @override
@@ -49,19 +48,19 @@ class UserShowPostShowPage extends StatelessWidget {
                     children: [
                       Center(
                         // image
-                        child: Text(doc.id),
+                        child: CurrentSongPostId(userShowProvider),
                       ),
                       Center(
-                        child: Text(doc['title']),
+                        child: CurrentSongTitle(userShowProvider)
                       ),
                       PostButtons(
                         currentUserDoc,
-                        doc,
+                        userShowProvider.currentSongPostIdNotifier.value,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(currentUserDoc,userShowProvider,preservatedPostIds,likedPostIds),
-                      Comments(userShowProvider.currentSongDoc['postId'])
+                      Comments(userShowProvider.currentSongPostIdNotifier.value)
                     ],
                   ),
                 ),

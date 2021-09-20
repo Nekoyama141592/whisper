@@ -6,7 +6,7 @@ import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
 import 'audio_controll_buttons.dart';
 import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
-
+import 'package:whisper/preservations/audio_controll/current_song_post_id.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class AudioWindow extends StatelessWidget {
@@ -22,7 +22,7 @@ class AudioWindow extends StatelessWidget {
     return InkWell(
       onTap: () {
         
-        routes.toPreservationsShowPage(context,currentUserDoc,preservationsProvider.currentSongDoc, preservationsProvider, preservatedPostIds, likedPostIds);
+        routes.toPreservationsShowPage(context,currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds);
       },
       child: Container(
         height: audioWindowHeight,
@@ -45,10 +45,7 @@ class AudioWindow extends StatelessWidget {
                   child: Column(
                     children: [
                       CurrentSongTitle(preservationsProvider),
-                      Text(
-                        '(${preservationsProvider.currentSongDoc.id})',
-                        overflow: TextOverflow.ellipsis,
-                      )
+                      CurrentSongPostId(preservationsProvider),
                     ],
                   ),
                 ),
@@ -62,7 +59,7 @@ class AudioWindow extends StatelessWidget {
                         children: [
                           LikeButton(
                             currentUserDoc,
-                            preservationsProvider.currentSongDoc,
+                            preservationsProvider.currentSongPostIdNotifier.value,
                             likedPostIds
                           ),
                           

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/parts/posts/post_buttons/posts_futures.dart';
 
 class CommentButton extends ConsumerWidget {
 
-  CommentButton(this.uid,this.postDoc);
+  CommentButton(this.uid,this.currentSongPostId);
   final String uid;
-  final DocumentSnapshot postDoc;
+  final String currentSongPostId;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _postsFeaturesProvider = watch(postsFeaturesProvider);
@@ -49,7 +48,7 @@ class CommentButton extends ConsumerWidget {
                     await _postsFeaturesProvider.makeComment(
                       context,
                       uid, 
-                      postDoc
+                      currentSongPostId
                     );
                     
                   }, 

@@ -8,17 +8,16 @@ import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
-
+import 'package:whisper/parts/posts/recommenders/audio_controll/current_song_title.dart';
+import 'package:whisper/parts/posts/recommenders/audio_controll/current_song_post_id.dart';
 class RecommenderShowPage extends StatelessWidget{
 
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot postDoc;
   final RecommendersModel recommendersProvider;
   final List preservatedPostIds;
   final List likedPostIds;
   RecommenderShowPage(
     this.currentUserDoc,
-    this.postDoc,
     this.recommendersProvider,
     this.preservatedPostIds,
     this.likedPostIds
@@ -53,19 +52,19 @@ class RecommenderShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: Text(postDoc.id),
+                        child: CurrentSongPostId(recommendersProvider),
                       ),
                       Center(
-                        child: Text(postDoc['title']),
+                        child: CurrentSongTitle(recommendersProvider)
                       ),
                       PostButtons(
                         currentUserDoc,
-                        postDoc,
+                        recommendersProvider.currentSongPostIdNotifier.value,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(currentUserDoc,recommendersProvider,preservatedPostIds,likedPostIds),
-                      Comments(recommendersProvider.currentSongDoc['postId'])
+                      Comments(recommendersProvider.currentSongPostIdNotifier.value)
                     ],
                   ),
                 ),

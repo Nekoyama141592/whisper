@@ -15,20 +15,14 @@ class AudioStateDesign extends StatelessWidget {
   final UserShowModel userShowProvider;
   @override  
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        // toUser show post show
-        routes.toUserShowPostShowPage(context,currentUserDoc,userShowProvider.currentSongDoc, userShowProvider,preservatedPostIds,likedPostIds);
-      },
-      child: Container(
-        height: 130,
-        child: Column(
-          children: [
-            AudioControllButtons(userShowProvider),
-            AudioProgressBar(userShowProvider),
-            CurrentSongTitle(userShowProvider)
-          ],
-        ),
+    return Container(
+      height: 130,
+      child: Column(
+        children: [
+          AudioControllButtons(userShowProvider),
+          AudioProgressBar(userShowProvider),
+          CurrentSongTitle(userShowProvider)
+        ],
       ),
     );
   }

@@ -21,8 +21,10 @@ class FeedsModel extends ChangeNotifier {
 
   late DocumentSnapshot currentUserDoc;
   // notifiers
+
+  final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongTitleNotifier = ValueNotifier<String>('');
-  late DocumentSnapshot currentSongDoc;
+
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
@@ -234,9 +236,10 @@ class FeedsModel extends ChangeNotifier {
       if (sequenceState == null) return;
       // update current song doc
       final currentItem = sequenceState.currentSource;
-      currentSongDoc = currentItem?.tag;
-      final title = currentItem?.tag['title'];
-      currentSongTitleNotifier.value = title ?? '';
+      final currentSongDoc = currentItem?.tag;
+      final title = currentSongDoc['title'];
+      currentSongTitleNotifier.value = title;
+      currentSongPostIdNotifier.value = currentSongDoc['postId'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       playlist.map((item) {

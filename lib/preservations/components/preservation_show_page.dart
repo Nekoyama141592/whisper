@@ -6,17 +6,17 @@ import 'package:whisper/preservations/preservations_model.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 import 'package:whisper/preservations/audio_controll/audio_state_design.dart';
-
+import 'package:whisper/preservations/audio_controll/current_song_post_id.dart';
+import 'package:whisper/preservations/audio_controll/current_song_title.dart';
 import 'package:whisper/parts/comments/comments.dart';
 
 
 class PreservationShowPage extends StatelessWidget{
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot doc;
   final PreservationsModel preservationsProvider;
   final List preservatedPostIds;
   final List likedPostIds;
-  PreservationShowPage(this.currentUserDoc,this.doc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
+  PreservationShowPage(this.currentUserDoc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,19 +47,19 @@ class PreservationShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: Text(doc.id),
+                        child: CurrentSongPostId(preservationsProvider),
                       ),
                       Center(
-                        child: Text(doc['title']),
+                        child: CurrentSongTitle(preservationsProvider)
                       ),
                       PostButtons(
                         currentUserDoc,
-                        doc,
+                        preservationsProvider.currentSongPostIdNotifier.value,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds),
-                      Comments(preservationsProvider.currentSongDoc['postId'])
+                      Comments(preservationsProvider.currentSongPostIdNotifier.value)
                     ],
                   ),
                 ),

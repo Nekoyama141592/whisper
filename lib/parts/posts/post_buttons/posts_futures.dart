@@ -246,7 +246,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future makeComment(BuildContext context, String uid, DocumentSnapshot postDoc) async {
+  Future makeComment(BuildContext context, String uid, String currentSongPostId) async {
     if (comment.isEmpty) {
       throw('入力してください');
     } else {
@@ -255,7 +255,7 @@ class PostsFeaturesModel extends ChangeNotifier{
         .collection('comments')
         .add({
           'uid': uid,
-          'postId': postDoc['postId'],
+          'postId': currentSongPostId,
           'comment': comment,
         }).then((_) {
           Navigator.pop(context);

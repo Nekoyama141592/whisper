@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 
+// import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 class PostCard extends StatelessWidget {
   
   final DocumentSnapshot doc;
@@ -9,7 +11,6 @@ class PostCard extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
-    // final date = Timestamp.now().toDate();
     final Timestamp timeStamp = doc['createdAt'];
     final date = timeStamp.toDate();
     final year = date.year.toString();
@@ -29,6 +30,7 @@ class PostCard extends StatelessWidget {
             title: Text(doc['title']),
             subtitle: Text(doc.id),
             trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),
+            
           )
         ],
       ),

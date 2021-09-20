@@ -38,7 +38,7 @@ class PreservationCard extends StatelessWidget {
               ),
             ),
             AudioWindow(
-              preservationsProvider.currentSongDoc,
+              preservationsProvider.currentUserDoc,
               preservationsProvider,
               preservatedPostIds,
               likedPostIds

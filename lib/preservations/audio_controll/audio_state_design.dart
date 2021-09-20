@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../preservations_model.dart';
-import 'package:whisper/preservations/components/preservation_show_page.dart';
 
 import 'audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
@@ -15,22 +14,14 @@ class AudioStateDesign extends StatelessWidget {
   final List likedPostIds;
   @override  
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PreservationShowPage(currentUserDoc,preservationsProvider.currentSongDoc,preservationsProvider,preservatedPostIds,likedPostIds))
-        );
-      },
-      child: Container(
-        height: 130,
-        child: Column(
-          children: [
-            AudioControllButtons(preservationsProvider),
-            AudioProgressBar(preservationsProvider),
-            CurrentSongTitle(preservationsProvider)
-          ],
-        ),
+    return Container(
+      height: 130,
+      child: Column(
+        children: [
+          AudioControllButtons(preservationsProvider),
+          AudioProgressBar(preservationsProvider),
+          CurrentSongTitle(preservationsProvider)
+        ],
       ),
     );
   }

@@ -9,7 +9,7 @@ import 'audio_controll_buttons.dart';
 import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
-
+import 'package:whisper/parts/posts/recommenders/audio_controll/current_song_post_id.dart';
 class AudioWindow extends StatelessWidget {
   AudioWindow(this.currentUserDoc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
   
@@ -24,7 +24,7 @@ class AudioWindow extends StatelessWidget {
     return InkWell(
       onTap: () {
         
-        routes.toRecommenderShowPage(context,currentUserDoc,recommendersProvider.currentSongDoc, recommendersProvider, preservatedPostIds, likedPostIds);
+        routes.toRecommenderShowPage(context,currentUserDoc, recommendersProvider, preservatedPostIds, likedPostIds);
       },
       child: Container(
         height: audioWindowHeight,
@@ -47,10 +47,7 @@ class AudioWindow extends StatelessWidget {
                   child: Column(
                     children: [
                       CurrentSongTitle(recommendersProvider),
-                      Text(
-                        '(${recommendersProvider.currentSongDoc.id})',
-                        overflow: TextOverflow.ellipsis,
-                      )
+                      CurrentSongPostId(recommendersProvider)
                     ],
                   ),
                 ),
@@ -64,7 +61,7 @@ class AudioWindow extends StatelessWidget {
                         children: [
                           LikeButton(
                             currentUserDoc,
-                            recommendersProvider.currentSongDoc,
+                            recommendersProvider.currentSongPostIdNotifier.value,
                             likedPostIds
                           ),
                           

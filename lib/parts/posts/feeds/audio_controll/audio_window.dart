@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/feeds/feeds_model.dart';
+import 'package:whisper/parts/posts/feeds/audio_controll/current_song_post_id.dart';
 
 import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
 import 'audio_controll_buttons.dart';
 import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 
-
+// import 'package:whisper/parts/posts/feeds/audio_controll/current_song_post_id.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class AudioWindow extends StatelessWidget {
@@ -22,7 +23,7 @@ class AudioWindow extends StatelessWidget {
     return InkWell(
       onTap: () {
         // feeds_show
-        routes.toFeedShowPage(context, feedsProvider.currentSongDoc, feedsProvider,preservatedPostIds,likedPostIds);
+        routes.toFeedShowPage(context,feedsProvider,preservatedPostIds,likedPostIds);
       },
       child: Container(
         height: audioWindowHeight,
@@ -45,10 +46,7 @@ class AudioWindow extends StatelessWidget {
                   child: Column(
                     children: [
                       CurrentSongTitle(feedsProvider),
-                      Text(
-                        '(${feedsProvider.currentSongDoc.id})',
-                        overflow: TextOverflow.ellipsis,
-                      )
+                      CurrentSongPostId(feedsProvider)
                     ],
                   ),
                 ),
@@ -62,7 +60,7 @@ class AudioWindow extends StatelessWidget {
                         children: [
                           LikeButton(
                             feedsProvider.currentUserDoc,
-                            feedsProvider.currentSongDoc,
+                            feedsProvider.currentSongPostIdNotifier.value,
                             likedPostIds
                           ),
                           
