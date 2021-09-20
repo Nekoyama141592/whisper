@@ -4,10 +4,10 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/parts/posts/feeds/feeds_page.dart';
 import 'package:whisper/parts/posts/recommenders/recommenders_page.dart';
 
-import 'package:whisper/parts/notificationIcon.dart';
+import 'package:whisper/parts/components/notificationIcon.dart';
 import 'package:whisper/constants/tab_bar_elements.dart';
 
-import 'package:whisper/parts/whisper_drawer.dart';
+import 'package:whisper/parts/components/whisper_drawer.dart';
 
 class WhisperTabBar extends StatelessWidget {
 

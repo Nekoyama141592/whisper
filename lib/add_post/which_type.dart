@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
-import 'package:whisper/parts/rounded_button.dart';
+import 'package:whisper/parts/components/rounded_button.dart';
 
 class WhichType extends StatelessWidget {
 

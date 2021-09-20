@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field_model.dart';
 
-import 'package:whisper/parts/text_field_container.dart';
+import 'package:whisper/parts/components/text_field_container.dart';
 import 'package:whisper/constants/colors.dart';
 
 class RoundedPasswordField extends ConsumerWidget {

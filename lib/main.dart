@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:whisper/main_model.dart';
-import 'package:whisper/parts/loading.dart';
+import 'package:whisper/parts/components/loading.dart';
 
 import 'themes/themes.dart';
 import 'parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
@@ -13,7 +13,7 @@ import 'parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
 
 import 'auth/signup/signup_page.dart';
 
-import 'package:whisper/parts/whisper_tab_bar.dart';
+import 'package:whisper/parts/components/whisper_tab_bar.dart';
 import 'package:whisper/users/user_show/user_show_page.dart';
 import 'package:whisper/parts/algolia/search_page.dart';
 import 'package:whisper/preservations/preservations_page.dart';

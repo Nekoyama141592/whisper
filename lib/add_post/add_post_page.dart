@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/parts/rounded_input_field.dart';
+import 'package:whisper/parts/components/rounded_input_field.dart';
 import 'add_post_model.dart';
 
 import 'package:whisper/add_post/components/audio_buttons.dart';

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/preservations/audio_controll/audio_window.dart';
-import 'package:whisper/parts/nothing.dart';
-import 'package:whisper/parts/loading.dart';
+import 'package:whisper/parts/components/nothing.dart';
+import 'package:whisper/parts/components/loading.dart';
 import 'package:whisper/preservations/preservations_model.dart';
 class PreservationCard extends StatelessWidget {
   

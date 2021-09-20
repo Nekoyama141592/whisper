@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'components/tab_bar_elements.dart';
 
 import 'package:whisper/main_model.dart';
-import 'package:whisper/parts/whisper_drawer.dart';
+import 'package:whisper/parts/components/whisper_drawer.dart';
 import 'package:whisper/parts/notifications/components/like_notification/like_notification.dart';
 import 'package:whisper/parts/notifications/components/follow_notification/follow_notification.dart';
 
