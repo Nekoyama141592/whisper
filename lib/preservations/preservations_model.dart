@@ -20,6 +20,8 @@ class PreservationsModel extends ChangeNotifier {
   // notifiers
   final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongTitleNotifier = ValueNotifier<String>('');
+  final currentSongDocIdNotifier = ValueNotifier<String>('');
+  final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
@@ -209,10 +211,12 @@ class PreservationsModel extends ChangeNotifier {
       if (sequenceState == null) return;
       // update current song doc
       final currentItem = sequenceState.currentSource;
-      final currentSongDoc = currentItem?.tag;
+      final DocumentSnapshot currentSongDoc = currentItem?.tag;
       final title = currentSongDoc['title'];
       currentSongTitleNotifier.value = title;
       currentSongPostIdNotifier.value = currentSongDoc['postId'];
+      currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongCommentsNotifier.value = currentSongDoc['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       playlist.map((item) {

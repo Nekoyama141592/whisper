@@ -55,6 +55,8 @@ class PreservationShowPage extends StatelessWidget{
                       PostButtons(
                         currentUserDoc,
                         preservationsProvider.currentSongPostIdNotifier,
+                        preservationsProvider.currentSongDocIdNotifier,
+                        preservationsProvider.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
@@ -84,11 +86,12 @@ class PreservationShowPage extends StatelessWidget{
                           preservationsProvider.onNextSongButtonPressed();
                         }
                       ),
-                      Comments(preservationsProvider.currentSongPostIdNotifier.value)
+                      
                     ],
                   ),
                 ),
               ),
+              Comments(preservationsProvider.currentSongCommentsNotifier.value)
             ],
           ),
         ),

@@ -6,6 +6,7 @@ import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 import 'package:whisper/parts/posts/audio_controll/current_song_title.dart';
 import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';
+
 import 'package:whisper/parts/comments/comments.dart';
 class FeedShowPage extends StatelessWidget{
   final FeedsModel feedsProvider;
@@ -35,55 +36,56 @@ class FeedShowPage extends StatelessWidget{
                   }, 
                 ),
               ),
-              SingleChildScrollView(
-                child: Container(
-                  // margin: EdgeInsets.only(top: 100),
-                  child: Column(
-                    children: [
-                      Center(
-                        // image
-                        child: CurrentSongPostId(feedsProvider.currentSongPostIdNotifier),
-                      ),
-                      Center(
-                        child: CurrentSongTitle(feedsProvider.currentSongTitleNotifier),
-                      ),
-                      PostButtons(
-                        feedsProvider.currentUserDoc,
-                        feedsProvider.currentSongPostIdNotifier,
-                        preservatedPostIds,
-                        likedPostIds
-                      ),
-                      AudioStateDesign(
-                        preservatedPostIds,
-                        likedPostIds,
-                        feedsProvider.currentSongTitleNotifier,
-                        feedsProvider.progressNotifier,
-                        feedsProvider.seek,
-                        feedsProvider.repeatButtonNotifier,
-                        (){
-                          feedsProvider.onRepeatButtonPressed();
-                        },
-                        feedsProvider.isFirstSongNotifier,
-                        (){
-                          feedsProvider.onPreviousSongButtonPressed();
-                        },
-                        feedsProvider.playButtonNotifier,
-                        (){
-                          feedsProvider.play();
-                        },
-                        (){
-                          feedsProvider.pause();
-                        },
-                        feedsProvider.isLastSongNotifier,
-                        (){
-                          feedsProvider.onNextSongButtonPressed();
-                        }
-                      ),
-                      Comments(feedsProvider.currentSongPostIdNotifier.value)
-                    ],
-                  ),
+              Container(
+                // margin: EdgeInsets.only(top: 100),
+                child: Column(
+                  
+                  children: [
+                    Center(
+                      // image
+                      child: CurrentSongPostId(feedsProvider.currentSongPostIdNotifier),
+                    ),
+                    Center(
+                      child: CurrentSongTitle(feedsProvider.currentSongTitleNotifier),
+                    ),
+                    PostButtons(
+                      feedsProvider.currentUserDoc,
+                      feedsProvider.currentSongPostIdNotifier,
+                      feedsProvider.currentSongDocIdNotifier,
+                      feedsProvider.currentSongCommentsNotifier,
+                      preservatedPostIds,
+                      likedPostIds
+                    ),
+                    AudioStateDesign(
+                      preservatedPostIds,
+                      likedPostIds,
+                      feedsProvider.currentSongTitleNotifier,
+                      feedsProvider.progressNotifier,
+                      feedsProvider.seek,
+                      feedsProvider.repeatButtonNotifier,
+                      (){
+                        feedsProvider.onRepeatButtonPressed();
+                      },
+                      feedsProvider.isFirstSongNotifier,
+                      (){
+                        feedsProvider.onPreviousSongButtonPressed();
+                      },
+                      feedsProvider.playButtonNotifier,
+                      (){
+                        feedsProvider.play();
+                      },
+                      (){
+                        feedsProvider.pause();
+                      },
+                      feedsProvider.isLastSongNotifier,
+                      (){
+                        feedsProvider.onNextSongButtonPressed();
+                      }
+                    ),
+                  ],
                 ),
               ),
+              Comments(feedsProvider.currentSongCommentsNotifier.value)
             ],
           ),
         ),

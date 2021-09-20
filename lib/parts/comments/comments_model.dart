@@ -55,6 +55,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future like(List<dynamic> postComments,String commentId,String postDocId) async {
     startLoading();
+    setCurrentUser();
     try{
       postComments.forEach((postComment) {
         if (postComment['commentId'] == commentId){

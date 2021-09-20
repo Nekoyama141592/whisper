@@ -8,9 +8,18 @@ import 'package:whisper/parts/posts/post_buttons/components/comment_button.dart'
 
 class PostButtons extends StatelessWidget {
 
-  PostButtons(this.currentUserDoc,this.currentSongPostIdNotifier,this.preservatedPostIds,this.likedPostIds);
+  PostButtons(
+    this.currentUserDoc,
+    this.currentSongPostIdNotifier,
+    this.currentSongPostDocIdNotifier,
+    this.currentSongCommentsNotifier,
+    this.preservatedPostIds,
+    this.likedPostIds
+  );
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<String> currentSongPostIdNotifier;
+  final ValueNotifier<String> currentSongPostDocIdNotifier;
+  final ValueNotifier<List<dynamic>> currentSongCommentsNotifier;
   final List preservatedPostIds;
   final List likedPostIds;
   @override  
@@ -20,7 +29,7 @@ class PostButtons extends StatelessWidget {
       children: [
         LikeButton(currentUserDoc, currentSongPostIdNotifier,likedPostIds),
         PreservateButton(currentUserDoc, currentSongPostIdNotifier,preservatedPostIds),
-        CommentButton(currentUserDoc['uid'],currentSongPostIdNotifier.value)
+        CommentButton(currentSongPostDocIdNotifier.value,currentSongCommentsNotifier.value)
       ],
     );
   }

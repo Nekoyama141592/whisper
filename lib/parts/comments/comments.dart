@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/parts/comments/comments_model.dart';
+import 'package:whisper/parts/comments/components/comment_card.dart';
+import 'package:whisper/parts/components/loading.dart';
+import 'package:whisper/parts/components/nothing.dart';
 
 class Comments extends ConsumerWidget {
-  Comments(this.postId);
-  final String postId;
+  Comments(this.currentSongComments);
+  final List<dynamic> currentSongComments;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _commentsProvider = watch(commentsProvider);
     return _commentsProvider.isLoading ?
-    Text('Loading')
+    Loading()
     // : _commentsProvider.commentList.isEmpty ?
-    : 1 == 1 ?
-    ElevatedButton(
-      child: Text('コメントを見る'),
-      onPressed: () {
-      }, 
+    : currentSongComments.isNotEmpty ?
+    Expanded(
+      child: ListView.builder(
+        itemCount: currentSongComments.length,
+        itemBuilder: (BuildContext context,int i) =>
+        CommentCard(currentSongComments[i])
+      ),
     )
-    : Text('something');
+    : Nothing();
   }
 }

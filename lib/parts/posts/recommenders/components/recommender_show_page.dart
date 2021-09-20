@@ -60,6 +60,8 @@ class RecommenderShowPage extends StatelessWidget{
                       PostButtons(
                         currentUserDoc,
                         recommendersProvider.currentSongPostIdNotifier,
+                        recommendersProvider.currentSongDocIdNotifier,
+                        recommendersProvider.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
@@ -89,11 +91,12 @@ class RecommenderShowPage extends StatelessWidget{
                           recommendersProvider.onNextSongButtonPressed();
                         }
                       ),
-                      Comments(recommendersProvider.currentSongPostIdNotifier.value)
+                      
                     ],
                   ),
                 ),
               ),
+              Comments(recommendersProvider.currentSongCommentsNotifier.value)
             ],
           ),
         ),

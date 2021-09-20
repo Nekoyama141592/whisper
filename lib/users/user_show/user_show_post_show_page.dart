@@ -56,6 +56,8 @@ class UserShowPostShowPage extends StatelessWidget {
                       PostButtons(
                         currentUserDoc,
                         userShowProvider.currentSongPostIdNotifier,
+                        userShowProvider.currentSongDocIdNotifier,
+                        userShowProvider.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
@@ -85,11 +87,11 @@ class UserShowPostShowPage extends StatelessWidget {
                           userShowProvider.onNextSongButtonPressed();
                         }
                       ),
-                      Comments(userShowProvider.currentSongPostIdNotifier.value)
                     ],
                   ),
                 ),
               ),
+              Comments(userShowProvider.currentSongCommentsNotifier.value)
             ],
           ),
         ),

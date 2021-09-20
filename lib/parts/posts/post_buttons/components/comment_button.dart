@@ -5,9 +5,9 @@ import 'package:whisper/parts/comments/comments_model.dart';
 
 class CommentButton extends ConsumerWidget {
 
-  CommentButton(this.uid,this.currentSongPostId);
-  final String uid;
-  final String currentSongPostId;
+  CommentButton(this.postDocId,this.postComments);
+  final String postDocId;
+  final List<dynamic> postComments;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _commentsProvider = watch(commentsProvider);
@@ -50,7 +50,7 @@ class CommentButton extends ConsumerWidget {
                 ElevatedButton(
                   child: Text('送信'),
                   onPressed: ()async {
-                    
+                    _commentsProvider.makeComment(postDocId, postComments);
                   }, 
                 )
               ],
