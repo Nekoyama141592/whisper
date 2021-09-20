@@ -183,7 +183,7 @@ class UserShowPostScreen extends StatelessWidget {
               preservatedPostIds,
               likedPostIds,
               (){
-                routes.toUserShowPostShowPage(context, currentUserDoc, userShowProvider, preservatedPostIds, likedPostIds);
+                routes.toUserShowPostShowPage(context, currentUserDoc, _userShowProvider, preservatedPostIds, likedPostIds);
               },
               _userShowProvider.progressNotifier,
               _userShowProvider.seek,
