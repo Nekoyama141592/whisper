@@ -245,27 +245,7 @@ class PostsFeaturesModel extends ChangeNotifier{
 
     }
   }
-
-  Future makeComment(BuildContext context, String uid, String currentSongPostId) async {
-    if (comment.isEmpty) {
-      throw('入力してください');
-    } else {
-      try{
-        FirebaseFirestore.instance
-        .collection('comments')
-        .add({
-          'uid': uid,
-          'postId': currentSongPostId,
-          'comment': comment,
-        }).then((_) {
-          Navigator.pop(context);
-        });
-      } catch(e) {
-
-      }
-    }
-  }
-
+  
   void reload() {
     notifyListeners();
   }
