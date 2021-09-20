@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
-import '../audio_controll/audio_window.dart';
+import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 
 import 'package:whisper/parts/posts/components/post_card.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 
 class RecommendersCard extends StatelessWidget{
   RecommendersCard(this.currentUserDoc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
@@ -26,7 +27,25 @@ class RecommendersCard extends StatelessWidget{
               )
           ),
         ),
-        AudioWindow(currentUserDoc,recommendersProvider, preservatedPostIds, likedPostIds)
+        AudioWindow(
+          preservatedPostIds,
+          likedPostIds,
+          (){
+            routes.toRecommenderShowPage(context, currentUserDoc,recommendersProvider, preservatedPostIds, likedPostIds);
+          },
+          recommendersProvider.progressNotifier,
+          recommendersProvider.seek,
+          recommendersProvider.currentSongTitleNotifier,
+          recommendersProvider.currentSongPostIdNotifier,
+          recommendersProvider.playButtonNotifier,
+          (){
+            recommendersProvider.play();
+          },
+         (){
+           recommendersProvider.pause();
+         },
+          currentUserDoc
+        ),
       ]
     );
   }
