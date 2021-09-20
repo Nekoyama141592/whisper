@@ -10,7 +10,7 @@ import 'package:whisper/parts/components/nothing.dart';
 import 'user_show_model.dart';
 import 'package:whisper/users/user_show/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';
-import 'package:whisper/parts/posts/user_image.dart';
+import 'package:whisper/parts/posts/components/user_image.dart';
 import 'package:whisper/parts/components/rounded_button.dart';
 import 'package:whisper/users/follow/follow_model.dart';
 class UserShowPage extends ConsumerWidget {
