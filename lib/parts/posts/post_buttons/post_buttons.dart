@@ -19,7 +19,7 @@ class PostButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         LikeButton(currentUserDoc, currentSongPostIdNotifier,likedPostIds),
-        PreservateButton(currentUserDoc, currentSongPostIdNotifier.value,preservatedPostIds),
+        PreservateButton(currentUserDoc, currentSongPostIdNotifier,preservatedPostIds),
         CommentButton(currentUserDoc['uid'],currentSongPostIdNotifier.value)
       ],
     );
