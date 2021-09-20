@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/parts/posts/post_buttons/posts_futures.dart';
+import 'package:whisper/parts/comments/comments_model.dart';
 
 class CommentButton extends ConsumerWidget {
 
@@ -10,7 +10,7 @@ class CommentButton extends ConsumerWidget {
   final String currentSongPostId;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _postsFeaturesProvider = watch(postsFeaturesProvider);
+    final _commentsProvider = watch(commentsProvider);
     final commentEditingController = TextEditingController();
 
     return IconButton(
@@ -27,8 +27,13 @@ class CommentButton extends ConsumerWidget {
                     Container(
                       child: TextField(
                         controller: commentEditingController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 10,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
                         onChanged: (text) {
-                          _postsFeaturesProvider.comment = text;
+                          _commentsProvider.comment = text;
                         },
                       ),
                     )
@@ -45,11 +50,6 @@ class CommentButton extends ConsumerWidget {
                 ElevatedButton(
                   child: Text('送信'),
                   onPressed: ()async {
-                    await _postsFeaturesProvider.makeComment(
-                      context,
-                      uid, 
-                      currentSongPostId
-                    );
                     
                   }, 
                 )

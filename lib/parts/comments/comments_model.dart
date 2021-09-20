@@ -28,7 +28,7 @@ class CommentsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  Future onCommentsButtonPressed(String postDocId,List<dynamic> postComments) async {
+  Future makeComment(String postDocId,List<dynamic> postComments) async {
     
     startLoading();
     setCurrentUser();
