@@ -91,7 +91,7 @@ class UserShowPostShowPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Comments(userShowProvider.currentSongCommentsNotifier.value)
+              Comments(userShowProvider.currentSongCommentsNotifier)
             ],
           ),
         ),

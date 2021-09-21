@@ -91,7 +91,7 @@ class PreservationShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(preservationsProvider.currentSongCommentsNotifier.value)
+              Comments(preservationsProvider.currentSongCommentsNotifier)
             ],
           ),
         ),

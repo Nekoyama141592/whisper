@@ -85,7 +85,7 @@ class FeedShowPage extends StatelessWidget{
                   ],
                 ),
               ),
-              Comments(feedsProvider.currentSongCommentsNotifier.value)
+              Comments(feedsProvider.currentSongCommentsNotifier)
             ],
           ),
         ),

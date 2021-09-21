@@ -14,7 +14,6 @@ import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/parts/notifications/notifications_page.dart';
 import 'package:whisper/add_post/add_post_page.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));

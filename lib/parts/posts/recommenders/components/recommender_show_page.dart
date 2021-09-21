@@ -96,7 +96,7 @@ class RecommenderShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(recommendersProvider.currentSongCommentsNotifier.value)
+              Comments(recommendersProvider.currentSongCommentsNotifier)
             ],
           ),
         ),

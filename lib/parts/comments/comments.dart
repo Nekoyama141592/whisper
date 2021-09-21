@@ -7,21 +7,28 @@ import 'package:whisper/parts/components/loading.dart';
 import 'package:whisper/parts/components/nothing.dart';
 
 class Comments extends ConsumerWidget {
-  Comments(this.currentSongComments);
-  final List<dynamic> currentSongComments;
+  Comments(this.currentSongCommentsNotifer);
+  final ValueNotifier<List<dynamic>> currentSongCommentsNotifer;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _commentsProvider = watch(commentsProvider);
     return _commentsProvider.isLoading ?
     Loading()
     // : _commentsProvider.commentList.isEmpty ?
-    : currentSongComments.isNotEmpty ?
-    Expanded(
-      child: ListView.builder(
-        itemCount: currentSongComments.length,
-        itemBuilder: (BuildContext context,int i) =>
-        CommentCard(currentSongComments[i])
-      ),
+    : currentSongCommentsNotifer.value.isNotEmpty ?
+    ValueListenableBuilder(
+      valueListenable: currentSongCommentsNotifer, 
+      builder: (_,currentSongComments,__){
+        return
+        Expanded(
+          child: ListView.builder(
+            itemCount: currentSongCommentsNotifer.value.length,
+            itemBuilder: (BuildContext context, int i) =>
+            CommentCard(currentSongCommentsNotifer.value[i])
+          ),
+        );
+
+      }
     )
     : Nothing();
   }
