@@ -33,6 +33,8 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _userShowProvider = watch(userShowProvider);
     final _followProvider = watch(followProvider);
+    final List<dynamic> followerUids = currentUserDoc['followerUids'];
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: 
@@ -116,11 +118,31 @@ class UserShowPage extends ConsumerWidget {
                         )
                       ],
                     ),
+                    Row(
+                      children: [
+                        Text(
+                          'following' +followingUids.length.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        Text(
+                          'follower' + followerUids.length.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold
+                          ),
+                        )
+                      ],
+                    )
+
                   ],
                 ),
               ),
               
-              SizedBox(height: 5),
+              SizedBox(height: 10),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
