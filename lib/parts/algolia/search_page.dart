@@ -16,15 +16,6 @@ class SearchPage extends ConsumerWidget {
   final MainModel mainProvider;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    // final _searchProvider = watch(searchProvider);
-    // final searchController = TextEditingController.fromValue(
-    //   TextEditingValue(
-    //     text: _searchProvider.searchTerm,
-    //     selection: TextSelection.collapsed(
-    //       offset: _searchProvider.searchTerm.length
-    //     )
-    //   )
-    // );
     return SafeArea(
       child: DefaultTabController(
         length: tabBarElements.length,
