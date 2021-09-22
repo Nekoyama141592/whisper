@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:whisper/constants/colors.dart';
 
@@ -23,6 +24,7 @@ class AddPostContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final postTitleController = TextEditingController(text: addPostProvider.postTitle);
+    final size = MediaQuery.of(context).size;
     return 
     InkWell(
       onTap: (){
@@ -39,6 +41,10 @@ class AddPostContent extends StatelessWidget {
             ),
           )
           : SizedBox(),
+          SvgPicture.asset(
+            'assets/svgs/recording-bro.svg',
+            height: size.height * 0.3,
+          ),
           addPostProvider.isUploading ?
           Indicator()
           : !addPostProvider.isRecorded ?
