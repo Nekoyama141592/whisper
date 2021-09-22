@@ -6,13 +6,14 @@ import 'package:whisper/add_post/add_post_model.dart';
 
 class RetryButton extends StatelessWidget {
 
-  RetryButton(this.addPostProvider);
+  RetryButton(this.addPostProvider,this.text);
   final AddPostModel addPostProvider;
+  final String text;
   @override  
   Widget build(BuildContext context) {
     return 
     AudioButton(
-      'リトライ',
+      text,
       Icon(Icons.replay),
       (){
         addPostProvider.onRecordAgainButtonPressed();

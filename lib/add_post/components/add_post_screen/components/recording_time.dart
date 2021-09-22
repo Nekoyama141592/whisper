@@ -6,8 +6,9 @@ import 'package:whisper/add_post/add_post_model.dart';
 
 class RecordingTime extends StatelessWidget {
   @override 
-  RecordingTime(this.addPostProvider);
+  RecordingTime(this.addPostProvider,this.fontSize);
   final AddPostModel addPostProvider;
+  final double? fontSize;
   Widget build(BuildContext context) {
     return StreamBuilder<int?>(
       stream: addPostProvider.stopWatchTimer.rawTime,
@@ -25,7 +26,7 @@ class RecordingTime extends StatelessWidget {
         return Text(
           displayTime,
           style: TextStyle(
-            fontSize: 30,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold
           ),
         );

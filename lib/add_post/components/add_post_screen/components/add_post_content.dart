@@ -35,20 +35,27 @@ class AddPostContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+          ),
           addPostProvider.isUploaded ?
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
             child: CustomSnackBar.success(
               message: '投稿、お疲れ様です！'
             ),
           )
-          : SizedBox(),
+          : 
           // SvgPicture
-          
           SvgPicture.asset(
             'assets/svgs/recording-bro.svg',
-            height: size.height * 0.2,
+            height: 
+            !addPostProvider.isRecorded ?
+            size.height * 0.4
+            : size.height * 0.2,
           ),
+          
+          
           addPostProvider.isUploading ?
           Indicator()
           : !addPostProvider.isRecorded ?
@@ -57,33 +64,38 @@ class AddPostContent extends StatelessWidget {
               RecordButton(addPostProvider),
             ],
           )
-          : Row(
+          : !addPostProvider.isUploaded ?
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              RetryButton(addPostProvider),
+              RetryButton(addPostProvider,'やりなおす'),
               UploadButton(addPostProvider)
             ],
-          ),
-          RecordingTime(addPostProvider),
-          RoundedInputField(
-            "Post title", 
-            Icons.graphic_eq, 
-            postTitleController, 
-            (text) {
-              addPostProvider.postTitleNotifier.value = text;
-            }, 
-            kPrimaryColor
-          ),
-          addPostProvider.isRecorded ?
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20
-            ),
-            
           )
-          : SizedBox(),
+          : RetryButton(addPostProvider,'次の投稿を行う'),
+          !addPostProvider.isRecorded ?
+          RecordingTime(addPostProvider,80)
+          : RecordingTime(addPostProvider,30),
           addPostProvider.isRecorded ?
-          AudioWindow(addPostProvider,currentUserDoc)
+          Column(
+            children: [
+              RoundedInputField(
+                "Post title", 
+                Icons.graphic_eq, 
+                postTitleController, 
+                (text) {
+                  addPostProvider.postTitleNotifier.value = text;
+                }, 
+                kPrimaryColor
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20
+                ),
+              ),
+              AudioWindow(addPostProvider,currentUserDoc)
+            ],
+          )
           : SizedBox()
         ],
       ),

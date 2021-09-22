@@ -169,6 +169,8 @@ class AddPostModel extends ChangeNotifier {
 
   void onRecordAgainButtonPressed() {
     isRecorded = false;
+    isUploaded = false;
+    postTitleNotifier.value = '';
     notifyListeners();
   }
   

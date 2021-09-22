@@ -15,7 +15,10 @@ class UploadButton extends StatelessWidget {
       '公開する',
       Icon(Icons.upload_file),
       () async {
-        await addPostProvider.onUploadButtonPressed(context);
+        addPostProvider.startLoading();
+        await Future.delayed(Duration(seconds: 5));
+        addPostProvider.endLoading();
+        // await addPostProvider.onUploadButtonPressed(context);
       }
     );
   }
