@@ -58,9 +58,8 @@ class AddPostScreen extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         color: kBackgroundColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(35),
-                          topRight: Radius.circular(35)
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(35)
                         )
                       ),
                       child: Container(
@@ -69,7 +68,7 @@ class AddPostScreen extends StatelessWidget {
                             top: 20,
                           ),
                           child: content
-                          // addPostContent
+                          
                         ),
                       )
                     )

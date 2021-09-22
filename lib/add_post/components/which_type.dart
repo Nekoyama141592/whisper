@@ -29,6 +29,7 @@ class Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       width: MediaQuery.of(context).size.width,
       child: Column(
         
@@ -49,7 +50,6 @@ class Content extends StatelessWidget {
             () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  
                   content: Text('実装予定です！')
                 )
               );
