@@ -28,77 +28,72 @@ class AddPostContent extends StatelessWidget {
     final postTitleController = TextEditingController(text: addPostProvider.postTitleNotifier.value);
     final size = MediaQuery.of(context).size;
     return 
-    InkWell(
-      onTap: (){
-        addPostProvider.reload();
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
+    Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+        ),
+        addPostProvider.isUploaded ?
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: CustomSnackBar.success(
+            message: '投稿、お疲れ様です！'
           ),
-          addPostProvider.isUploaded ?
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: CustomSnackBar.success(
-              message: '投稿、お疲れ様です！'
-            ),
-          )
-          : 
-          // SvgPicture
-          SvgPicture.asset(
-            'assets/svgs/recording-bro.svg',
-            height: 
-            !addPostProvider.isRecorded ?
-            size.height * 0.4
-            : size.height * 0.2,
-          ),
-          
-          
-          addPostProvider.isUploading ?
-          Indicator()
-          : !addPostProvider.isRecorded ?
-          Column(
-            children: [
-              RecordButton(addPostProvider),
-            ],
-          )
-          : !addPostProvider.isUploaded ?
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RetryButton(addPostProvider,'やりなおす'),
-              UploadButton(addPostProvider)
-            ],
-          )
-          : RetryButton(addPostProvider,'次の投稿を行う'),
+        )
+        : 
+        // SvgPicture
+        SvgPicture.asset(
+          'assets/svgs/recording-bro.svg',
+          height: 
           !addPostProvider.isRecorded ?
-          RecordingTime(addPostProvider,80)
-          : RecordingTime(addPostProvider,30),
-          addPostProvider.isRecorded ?
-          Column(
-            children: [
-              RoundedInputField(
-                "Post title", 
-                Icons.graphic_eq, 
-                postTitleController, 
-                (text) {
-                  addPostProvider.postTitleNotifier.value = text;
-                }, 
-                kPrimaryColor
+          size.height * 0.4
+          : size.height * 0.2,
+        ),
+        
+        
+        addPostProvider.isUploading ?
+        Indicator()
+        : !addPostProvider.isRecorded ?
+        Column(
+          children: [
+            RecordButton(addPostProvider),
+          ],
+        )
+        : !addPostProvider.isUploaded ?
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RetryButton(addPostProvider,'やりなおす'),
+            UploadButton(addPostProvider)
+          ],
+        )
+        : RetryButton(addPostProvider,'次の投稿を行う'),
+        !addPostProvider.isRecorded ?
+        RecordingTime(addPostProvider,80)
+        : RecordingTime(addPostProvider,30),
+        addPostProvider.isRecorded ?
+        Column(
+          children: [
+            RoundedInputField(
+              "Post title", 
+              Icons.graphic_eq, 
+              postTitleController, 
+              (text) {
+                addPostProvider.postTitleNotifier.value = text;
+              }, 
+              kPrimaryColor
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 20
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20
-                ),
-              ),
-              AudioWindow(addPostProvider,currentUserDoc)
-            ],
-          )
-          : SizedBox()
-        ],
-      ),
+            ),
+            AudioWindow(addPostProvider,currentUserDoc)
+          ],
+        )
+        : SizedBox()
+      ],
     );
   }
 }
