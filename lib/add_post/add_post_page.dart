@@ -16,7 +16,6 @@ class AddPostPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _addPostProvider = watch(addPostProvider);
     return AddPostScreen(
-      currentUserDoc,
       AddPostContent(
         _addPostProvider,
         currentUserDoc

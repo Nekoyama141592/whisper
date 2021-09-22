@@ -20,7 +20,7 @@ final addPostProvider = ChangeNotifierProvider(
 
 class AddPostModel extends ChangeNotifier {
   
-  String postTitle = "";
+  final postTitleNotifier = ValueNotifier<String>('');
   bool isUploading = false;
   bool isRecording = false;
   bool isRecorded = false;
@@ -185,7 +185,7 @@ class AddPostModel extends ChangeNotifier {
 
   
   Future addPostToFirebase(context) async {
-    if (postTitle.isEmpty) {
+    if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('postTitle is Empty'))
       );
@@ -203,7 +203,7 @@ class AddPostModel extends ChangeNotifier {
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
           'preservationsCount': 0,
           'score': 0,
-          'title': postTitle,
+          'title': postTitleNotifier.value,
           'imageURL': '',
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),

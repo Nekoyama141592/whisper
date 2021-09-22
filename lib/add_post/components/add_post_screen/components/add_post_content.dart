@@ -25,7 +25,7 @@ class AddPostContent extends StatelessWidget {
   final DocumentSnapshot currentUserDoc;
   @override
   Widget build(BuildContext context) {
-    final postTitleController = TextEditingController(text: addPostProvider.postTitle);
+    final postTitleController = TextEditingController(text: addPostProvider.postTitleNotifier.value);
     final size = MediaQuery.of(context).size;
     return 
     InkWell(
@@ -44,6 +44,7 @@ class AddPostContent extends StatelessWidget {
           )
           : SizedBox(),
           // SvgPicture
+          
           SvgPicture.asset(
             'assets/svgs/recording-bro.svg',
             height: size.height * 0.2,
@@ -51,7 +52,11 @@ class AddPostContent extends StatelessWidget {
           addPostProvider.isUploading ?
           Indicator()
           : !addPostProvider.isRecorded ?
-          RecordButton(addPostProvider)
+          Column(
+            children: [
+              RecordButton(addPostProvider),
+            ],
+          )
           : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -65,7 +70,7 @@ class AddPostContent extends StatelessWidget {
             Icons.graphic_eq, 
             postTitleController, 
             (text) {
-              addPostProvider.postTitle = text;
+              addPostProvider.postTitleNotifier.value = text;
             }, 
             kPrimaryColor
           ),
@@ -74,11 +79,7 @@ class AddPostContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               vertical: 20
             ),
-            child: Center(
-              child: Text(
-                '画面をタップすると名前の下のPost Titleが更新されます',
-              ),
-            ),
+            
           )
           : SizedBox(),
           addPostProvider.isRecorded ?

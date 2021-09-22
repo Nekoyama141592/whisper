@@ -16,7 +16,7 @@ class WhichType extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return
-    AddPostScreen(currentUserDoc, Content(currentUserDoc: currentUserDoc,));
+    AddPostScreen(Content(currentUserDoc: currentUserDoc,));
   }
 }
 

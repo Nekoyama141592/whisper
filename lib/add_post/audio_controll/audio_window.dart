@@ -46,12 +46,18 @@ class AudioWindow extends StatelessWidget {
                         fontWeight: FontWeight.bold
                       ),
                     ),
-                    Text(
-                      addPostProvider.postTitle,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),
+                    ValueListenableBuilder<String>(
+                      valueListenable: addPostProvider.postTitleNotifier,
+                      builder: (_,postTitle,__) {
+                        return 
+                        Text(
+                          postTitle,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                        );
+                      }
                     )
                   ],
                 ),

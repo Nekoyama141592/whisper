@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:whisper/constants/colors.dart';
 
 class AddPostScreen extends StatelessWidget {
 
-  AddPostScreen(this.currentUserDoc,this.content);
-  final DocumentSnapshot currentUserDoc;
+  AddPostScreen(this.content);
   final Widget content;
   @override
   Widget build(BuildContext context) {
     
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -40,46 +37,48 @@ class AddPostScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                  
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5
                 ),
-                child: Column(
-                  
-                  children: [
-                    
-                    Text(
-                      'Add Post',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height:25),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: kBackgroundColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(35)
-                        )
-                      ),
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            top: 20,
-                          ),
-                          child: content
-                          
-                        ),
-                      )
+                child: Text(
+                  'Add Post',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height:25),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kBackgroundColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(35)
                     )
-                  ]
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 20,
+                            ),
+                            child: content
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ),
               )
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }
