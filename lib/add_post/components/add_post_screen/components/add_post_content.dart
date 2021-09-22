@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/add_post/add_post_model.dart';
-import 'package:whisper/add_post/components/indicator.dart';
+import 'package:whisper/add_post/components/add_post_screen/components/indicator.dart';
 
 import 'package:whisper/add_post/components/audio_buttons/retry_button.dart';
 import 'package:whisper/add_post/components/audio_buttons/record_button.dart';
@@ -16,6 +16,8 @@ import 'package:whisper/add_post/components/audio_buttons/upload_button.dart';
 
 import 'package:whisper/parts/components/rounded_input_field.dart';
 import 'package:whisper/add_post/audio_controll/audio_window.dart';
+import 'package:whisper/add_post/components/add_post_screen/components/recording_time.dart';
+
 class AddPostContent extends StatelessWidget {
 
   AddPostContent(this.addPostProvider,this.currentUserDoc);
@@ -41,9 +43,10 @@ class AddPostContent extends StatelessWidget {
             ),
           )
           : SizedBox(),
+          // SvgPicture
           SvgPicture.asset(
             'assets/svgs/recording-bro.svg',
-            height: size.height * 0.3,
+            height: size.height * 0.2,
           ),
           addPostProvider.isUploading ?
           Indicator()
@@ -56,6 +59,7 @@ class AddPostContent extends StatelessWidget {
               UploadButton(addPostProvider)
             ],
           ),
+          RecordingTime(addPostProvider),
           RoundedInputField(
             "Post title", 
             Icons.graphic_eq, 

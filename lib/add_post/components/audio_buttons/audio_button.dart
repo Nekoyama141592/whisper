@@ -18,7 +18,7 @@ class AudioButton extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 10
+            vertical: 5
           ),
           child: Text(
             description,

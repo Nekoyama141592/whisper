@@ -9,6 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
@@ -33,6 +34,9 @@ class AddPostModel extends ChangeNotifier {
   // notifiers
   final progressNotifier = ProgressNotifier();
   final playButtonNotifier = PlayButtonNotifier();
+
+  // timer
+  final stopWatchTimer = StopWatchTimer();
   AddPostModel() {
     init();
   }
@@ -57,6 +61,19 @@ class AddPostModel extends ChangeNotifier {
   reload() {
     notifyListeners();
   }
+
+  void startButtonPressed() {
+    stopWatchTimer.onExecute.add(StopWatchExecute.start);
+  }
+
+  void stopButtonPressed() {
+    stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+  }
+
+  void resetButtonPressed() {
+    stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+  }
+  
   Future setAudio(String filepath) async {
     await audioPlayer.setFilePath(filePath);
   }

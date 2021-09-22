@@ -14,7 +14,10 @@ class RetryButton extends StatelessWidget {
     AudioButton(
       'リトライ',
       Icon(Icons.replay),
-      (){addPostProvider.onRecordAgainButtonPressed();}
+      (){
+        addPostProvider.onRecordAgainButtonPressed();
+        addPostProvider.resetButtonPressed();
+      }
     );
   }
 }
