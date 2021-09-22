@@ -46,6 +46,7 @@ class AddPostScreen extends StatelessWidget {
                 child: Column(
                   
                   children: [
+                    
                     Text(
                       'Add Post',
                       style: TextStyle(
@@ -54,7 +55,7 @@ class AddPostScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height:10),
+                    SizedBox(height:25),
                     Container(
                       decoration: BoxDecoration(
                         color: kBackgroundColor,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/add_post/components/audio_buttons/audio_button.dart';
 
 import 'package:whisper/add_post/add_post_model.dart';
+import 'package:whisper/constants/colors.dart';
 
 class RecordButton extends StatelessWidget {
 
@@ -17,7 +18,10 @@ class RecordButton extends StatelessWidget {
       : '録音する',
       addPostProvider.isRecording ?
       Icon(Icons.pause)
-      : Icon(Icons.fiber_manual_record),
+      : Icon(
+        Icons.fiber_manual_record,
+        color: kTertiaryColor,
+      ),
       () async {
         addPostProvider.onRecordButtonPressed(context);
       }
