@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/parts/bookmarks/bookmarks_model.dart';
+import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';

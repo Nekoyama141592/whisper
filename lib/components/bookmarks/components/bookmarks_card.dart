@@ -4,7 +4,7 @@ import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/components/nothing.dart';
 import 'package:whisper/parts/components/loading.dart';
-import 'package:whisper/parts/bookmarks/bookmarks_model.dart';
+import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 

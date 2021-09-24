@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
 import 'package:whisper/auth/signup/signup_page.dart';
-import 'package:whisper/parts/bookmarks/bookmarks_page.dart';
+import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 
 import 'package:whisper/components/home/feeds/components/feed_show_page.dart';
 import 'package:whisper/components/home/recommenders/components/recommender_show_page.dart';
 import 'package:whisper/parts/user_show/components/user_show_post_show_page.dart';
 import 'package:whisper/parts/user_show/user_show_page.dart';
-import 'package:whisper/parts/bookmarks/components/bookmark_show_page.dart';
+import 'package:whisper/components/bookmarks/components/bookmark_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/parts/notifications/notifications_page.dart';

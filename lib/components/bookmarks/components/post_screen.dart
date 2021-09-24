@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:whisper/constants/colors.dart';
-import 'package:whisper/parts/bookmarks/components/bookmarks_card.dart';
+import 'package:whisper/components/bookmarks/components/bookmarks_card.dart';
 
-import 'package:whisper/parts/bookmarks/bookmarks_model.dart';
+import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostScreen extends StatelessWidget {
