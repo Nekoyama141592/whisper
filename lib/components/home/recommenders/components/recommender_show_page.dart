@@ -6,7 +6,7 @@ import 'package:whisper/components/home/recommenders/recommenders_model.dart';
 
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 
-import 'package:whisper/parts/comments/comments.dart';
+import 'package:whisper/posts/components/comments/comments.dart';
 import 'package:whisper/posts/components/audio_state_items/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_title.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_post_id.dart';

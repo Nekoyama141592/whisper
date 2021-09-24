@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/parts/comments/comments_model.dart';
-import 'package:whisper/parts/comments/components/comment_card.dart';
+import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/posts/components/comments/components/comment_card.dart';
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
 
