@@ -11,12 +11,14 @@ import 'user_show_model.dart';
 import 'package:whisper/posts/components/audio_state_items/audio_window.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/details/user_image.dart';
-import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/components/user_show/components/user_show_button.dart';
+import 'package:whisper/components/user_show/components/edit_profile/edit_profile_screen.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class UserShowPage extends ConsumerWidget {
+  
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot doc;
   final List preservatedPostIds;
@@ -39,7 +41,9 @@ class UserShowPage extends ConsumerWidget {
       extendBodyBehindAppBar: false,
       body: 
       SafeArea(
-        child: Container(
+        child: _userShowProvider.isEditing ?
+        EditProfileScreen(userShowProvider: _userShowProvider, currentUserDoc: currentUserDoc)
+        : Container(
           width: double.infinity,
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -83,41 +87,16 @@ class UserShowPage extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        !followingUids.contains(doc['uid']) ?
-                        RoundedButton(
-                          'follow', 
-                          0.35, 
-                          () async {
-                            try{
-                              followingUids.add(doc['uid']);
-                              _followProvider.reload();
-                              await _followProvider.follow(followingUids, currentUserDoc, doc);
-                              print(followingUids);
-                            } catch(e) {
-                              print(e.toString());
-                            }
-                          },
-                          Colors.white, 
-                          kTertiaryColor
-                        )
-                        : RoundedButton(
-                          'unfollow', 
-                          0.35, 
-                          () async {
-                            try{
-                              followingUids.remove(doc['uid']);
-                              _followProvider.reload();
-                              await _followProvider.unfollow(followingUids, currentUserDoc, doc);
-                              print(followingUids);
-                            } catch(e) {
-                              print(e.toString());
-                            }
-                          }, 
-                          Colors.white, 
-                          kSecondaryColor
+                        UserShowButton(
+                          currentUserDoc: currentUserDoc, 
+                          userDoc: doc, 
+                          userShowProvider: _userShowProvider, 
+                          followingUids: followingUids, 
+                          followProvider: _followProvider
                         )
                       ],
                     ),
+                    SizedBox(height: 16),
                     Row(
                       children: [
                         Text(
@@ -134,7 +113,9 @@ class UserShowPage extends ConsumerWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.bold
                           ),
-                        )
+                        ),
+                        SizedBox(width: 20,),
+                        // if (doc.id == currentUserDoc.id) Text('変更')
                       ],
                     )
 

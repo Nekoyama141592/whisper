@@ -40,6 +40,10 @@ class UserShowModel extends ChangeNotifier {
   // late QuerySnapshot<Map<String, dynamic>> snapshots;
   int postCount = -1;
   final oneTimeReadCount = 2;
+  // Edit profile
+  bool isEditing = false;
+  String userName = '';
+  String description = '';
 
   UserShowModel() {
     init();
@@ -68,6 +72,9 @@ class UserShowModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
+  void reload() {
+    notifyListeners();
+  }
   Future getPosts() async {
 
     try {
@@ -218,4 +225,22 @@ class UserShowModel extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  Future updateUserInfo(DocumentSnapshot currentUserDoc) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUserDoc.id)
+      .update({
+        'userName': userName,
+        'description': description,
+      });
+      isEditing = false;
+      notifyListeners();
+    } catch(e) {
+      print(e.toString());
+    }
+    
+  }
+  
 }
