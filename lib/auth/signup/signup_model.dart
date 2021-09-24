@@ -96,7 +96,6 @@ class SignupModel extends ChangeNotifier {
     await FirebaseFirestore.instance
     .collection('users').add({
       'desciption': '',
-      'email': email,
       'followNotifications': [],
       'followerUids': [],
       'followingUids': [],

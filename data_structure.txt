@@ -29,7 +29,6 @@ db{
     }
     users{
         description: String,
-        email: String,
         followNotifications: [{
             createdAt: TimeStamp,
             isRead: bool,
