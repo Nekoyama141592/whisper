@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:algolia/algolia.dart';
-import 'package:whisper/parts/algolia/AlgoliaApplication.dart';
+import 'package:whisper/components/search/AlgoliaApplication.dart';
+
 
 final searchProvider = ChangeNotifierProvider(
-  (ref) => UserSearchModel()
+  (ref) => PostSearchModel()
 );
-class UserSearchModel extends ChangeNotifier {
+
+class PostSearchModel extends ChangeNotifier{
 
   final Algolia algoliaApp = AlgoliaApplication.algolia;
   String searchTerm = '';
@@ -26,7 +28,7 @@ class UserSearchModel extends ChangeNotifier {
   Future operation() async {
     startLoading();
     results = [];
-    AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);
+    AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
     // Checking if has [AlgoliaQuerySnapshot]
     querySnap.hits.forEach((hit) {
@@ -34,7 +36,8 @@ class UserSearchModel extends ChangeNotifier {
     });
     print('Hits count: ${querySnap.nbHits}');
     print(results.length.toString() + 'resultsLength');
-    notifyListeners();
     endLoading();
+    notifyListeners();
+    // return querySnap;
   }
 }

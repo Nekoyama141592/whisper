@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:algolia/algolia.dart';
 
-import 'user_result.dart';
+import 'package:whisper/components/search/user_search/components/user_result.dart';
 
 class UserList extends StatelessWidget {
 

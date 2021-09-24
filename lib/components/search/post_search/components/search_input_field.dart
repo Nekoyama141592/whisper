@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/details/text_field_container.dart';
-import 'package:whisper/parts/algolia/post_search/post_search_model.dart';
+import 'package:whisper/components/search/post_search/post_search_model.dart';
 class SearchInputField extends StatelessWidget {
 
   SearchInputField(this.searchProvider,this.controller,this.press);

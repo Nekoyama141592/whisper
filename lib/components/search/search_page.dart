@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:whisper/parts/algolia/constants/tab_bar_elements.dart';
+import 'package:whisper/components/search/constants/tab_bar_elements.dart';
 import 'package:whisper/details/whisper_drawer.dart';
 import 'package:whisper/main_model.dart';
 
-import 'package:whisper/parts/algolia/user_search/user_search_page.dart';
-import 'package:whisper/parts/algolia/post_search/post_search_page.dart';
+import 'package:whisper/components/search/user_search/user_search_page.dart';
+import 'package:whisper/components/search/post_search/post_search_page.dart';
 // import 'search_model.dart';
 
 class SearchPage extends ConsumerWidget {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:whisper/parts/algolia/post_search/components/post_list.dart';
-import 'package:whisper/parts/algolia/post_search/components/search_input_field.dart';
+import 'package:whisper/components/search/post_search/components/post_list.dart';
+import 'package:whisper/components/search/post_search/components/search_input_field.dart';
 import 'post_search_model.dart';
 
 class PostSearchPage extends ConsumerWidget {
