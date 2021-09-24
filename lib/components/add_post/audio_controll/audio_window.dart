@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whisper/posts/components/user_image.dart';
+import 'package:whisper/posts/components/details/user_image.dart';
 
 import 'package:whisper/components/add_post/add_post_model.dart';
 import 'package:whisper/posts/audio_controll/audio_controll_buttons/components/play_button.dart';
-import 'package:whisper/posts/components/audio_progress_bar.dart';
+import 'package:whisper/posts/components/audio_state_items/audio_progress_bar.dart';
 class AudioWindow extends StatelessWidget {
   
   AudioWindow(

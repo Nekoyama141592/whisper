@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'audio_progress_bar.dart';
 import 'current_song_post_id.dart';
 import 'current_song_title.dart';
-import '../audio_controll/audio_controll_buttons/components/play_button.dart';
+import '../../audio_controll/audio_controll_buttons/components/play_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';

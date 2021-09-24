@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../audio_controll/audio_controll_buttons/audio_controll_buttons.dart';
+import '../../audio_controll/audio_controll_buttons/audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
 

@@ -8,9 +8,9 @@ import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
 
 import 'user_show_model.dart';
-import 'package:whisper/posts/components/audio_window.dart';
-import 'package:whisper/posts/components/post_card.dart';
-import 'package:whisper/posts/components/user_image.dart';
+import 'package:whisper/posts/components/audio_state_items/audio_window.dart';
+import 'package:whisper/posts/components/details/post_card.dart';
+import 'package:whisper/posts/components/details/user_image.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
