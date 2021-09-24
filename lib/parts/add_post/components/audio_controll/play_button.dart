@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/add_post/add_post_model.dart';
 
 class PlayButton extends StatelessWidget {

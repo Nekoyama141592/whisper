@@ -7,8 +7,8 @@ import 'current_song_post_id.dart';
 import 'current_song_title.dart';
 import 'audio_controll_buttons/components/play_button.dart';
 import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
-import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/progress_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/play_button_notifier.dart';
 
 class AudioWindow extends StatelessWidget {
   AudioWindow(

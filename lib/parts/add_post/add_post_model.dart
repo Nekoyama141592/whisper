@@ -11,8 +11,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/play_button_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/progress_notifier.dart';
 
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()

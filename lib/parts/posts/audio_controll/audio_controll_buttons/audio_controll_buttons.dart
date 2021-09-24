@@ -5,8 +5,8 @@ import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/compon
 import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/components/previous_song_button.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/components/repeat_button.dart';
 
-import 'package:whisper/parts/posts/notifiers/repeat_button_notifier.dart';
-import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/repeat_button_notifier.dart';
+import 'package:whisper/parts/posts/audio_controll/notifiers/play_button_notifier.dart';
 
 class AudioControllButtons extends StatelessWidget {
   
