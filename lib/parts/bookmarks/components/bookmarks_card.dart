@@ -4,19 +4,19 @@ import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/components/nothing.dart';
 import 'package:whisper/parts/components/loading.dart';
-import 'package:whisper/preservations/preservations_model.dart';
+import 'package:whisper/parts/bookmarks/bookmarks_model.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 
-class PreservationCard extends StatelessWidget {
+class BookmarkCard extends StatelessWidget {
   
-  PreservationCard(
-    this.preservationsProvider,
+  BookmarkCard(
+    this.bookmarksProvider,
     this.preservatedPostIds,
     this.likedPostIds
   );
 
-  final PreservationsModel preservationsProvider;
+  final BookMarksModel bookmarksProvider;
   final List preservatedPostIds;
   final List likedPostIds;
 
@@ -24,9 +24,9 @@ class PreservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: 
-      preservationsProvider.isLoading ?
+      bookmarksProvider.isLoading ?
       Loading()
-      : preservationsProvider.preservationDocs.isEmpty ?
+      : bookmarksProvider.preservationDocs.isEmpty ?
       Nothing()
       : 
       Padding(
@@ -35,9 +35,9 @@ class PreservationCard extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: preservationsProvider.preservationDocs.length,
+                itemCount: bookmarksProvider.preservationDocs.length,
                 itemBuilder: (BuildContext context, int i) =>
-                  PostCard(preservationsProvider.preservationDocs[i])
+                  PostCard(bookmarksProvider.preservationDocs[i])
               ),
             ),
             AudioWindow(
@@ -46,24 +46,24 @@ class PreservationCard extends StatelessWidget {
               (){
                 routes.toPreservationsShowPage(
                   context, 
-                  preservationsProvider.currentUserDoc, 
-                  preservationsProvider, 
+                  bookmarksProvider.currentUserDoc, 
+                  bookmarksProvider, 
                   preservatedPostIds, 
                   likedPostIds
                 );
               },
-              preservationsProvider.progressNotifier,
-              preservationsProvider.seek,
-              preservationsProvider.currentSongTitleNotifier,
-              preservationsProvider.currentSongPostIdNotifier,
-              preservationsProvider.playButtonNotifier,
+              bookmarksProvider.progressNotifier,
+              bookmarksProvider.seek,
+              bookmarksProvider.currentSongTitleNotifier,
+              bookmarksProvider.currentSongPostIdNotifier,
+              bookmarksProvider.playButtonNotifier,
               (){
-                preservationsProvider.play();
+                bookmarksProvider.play();
               },
             (){
-              preservationsProvider.pause();
+              bookmarksProvider.pause();
             },
-              preservationsProvider.currentUserDoc
+              bookmarksProvider.currentUserDoc
             ),
           ],
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/preservations/preservations_model.dart';
+import 'package:whisper/parts/bookmarks/bookmarks_model.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
@@ -11,12 +11,12 @@ import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';
 import 'package:whisper/parts/comments/comments.dart';
 
 
-class PreservationShowPage extends StatelessWidget{
+class BookmarkShowPage extends StatelessWidget{
   final DocumentSnapshot currentUserDoc;
-  final PreservationsModel preservationsProvider;
+  final BookMarksModel bookmarksProvider;
   final List preservatedPostIds;
   final List likedPostIds;
-  PreservationShowPage(this.currentUserDoc,this.preservationsProvider,this.preservatedPostIds,this.likedPostIds);
+  BookmarkShowPage(this.currentUserDoc,this.bookmarksProvider,this.preservatedPostIds,this.likedPostIds);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,43 +47,43 @@ class PreservationShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: CurrentSongPostId(preservationsProvider.currentSongPostIdNotifier),
+                        child: CurrentSongPostId(bookmarksProvider.currentSongPostIdNotifier),
                       ),
                       Center(
-                        child: CurrentSongTitle(preservationsProvider.currentSongTitleNotifier),
+                        child: CurrentSongTitle(bookmarksProvider.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         currentUserDoc,
-                        preservationsProvider.currentSongPostIdNotifier,
-                        preservationsProvider.currentSongDocIdNotifier,
-                        preservationsProvider.currentSongCommentsNotifier,
+                        bookmarksProvider.currentSongPostIdNotifier,
+                        bookmarksProvider.currentSongDocIdNotifier,
+                        bookmarksProvider.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(
                         preservatedPostIds,
                         likedPostIds,
-                        preservationsProvider.currentSongTitleNotifier,
-                        preservationsProvider.progressNotifier,
-                        preservationsProvider.seek,
-                        preservationsProvider.repeatButtonNotifier,
+                        bookmarksProvider.currentSongTitleNotifier,
+                        bookmarksProvider.progressNotifier,
+                        bookmarksProvider.seek,
+                        bookmarksProvider.repeatButtonNotifier,
                         (){
-                          preservationsProvider.onRepeatButtonPressed();
+                          bookmarksProvider.onRepeatButtonPressed();
                         },
-                        preservationsProvider.isFirstSongNotifier,
+                        bookmarksProvider.isFirstSongNotifier,
                         (){
-                          preservationsProvider.onPreviousSongButtonPressed();
+                          bookmarksProvider.onPreviousSongButtonPressed();
                         },
-                        preservationsProvider.playButtonNotifier,
+                        bookmarksProvider.playButtonNotifier,
                         (){
-                          preservationsProvider.play();
+                          bookmarksProvider.play();
                         },
                         (){
-                          preservationsProvider.pause();
+                          bookmarksProvider.pause();
                         },
-                        preservationsProvider.isLastSongNotifier,
+                        bookmarksProvider.isLastSongNotifier,
                         (){
-                          preservationsProvider.onNextSongButtonPressed();
+                          bookmarksProvider.onNextSongButtonPressed();
                         }
                       ),
                       
@@ -91,7 +91,7 @@ class PreservationShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(preservationsProvider.currentSongCommentsNotifier)
+              Comments(bookmarksProvider.currentSongCommentsNotifier)
             ],
           ),
         ),

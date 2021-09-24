@@ -9,11 +9,11 @@ import 'package:whisper/parts/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/parts/posts/notifiers/repeat_button_notifier.dart';
 
-final preservationsProvider = ChangeNotifierProvider(
-  (ref) => PreservationsModel()
+final bookmarksProvider = ChangeNotifierProvider(
+  (ref) => BookMarksModel()
 );
 
-class PreservationsModel extends ChangeNotifier {
+class BookMarksModel extends ChangeNotifier {
   bool isLoading = false;
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
@@ -39,7 +39,7 @@ class PreservationsModel extends ChangeNotifier {
   int postCount = -1;
   final oneTimeReadCount = 2;
   
-  PreservationsModel() {
+  BookMarksModel() {
     init();
   }
   void init() async {

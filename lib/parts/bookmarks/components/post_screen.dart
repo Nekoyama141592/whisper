@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:whisper/constants/colors.dart';
-import 'package:whisper/preservations/components/preservation_card.dart';
+import 'package:whisper/parts/bookmarks/components/bookmarks_card.dart';
 
-import 'package:whisper/preservations/preservations_model.dart';
+import 'package:whisper/parts/bookmarks/bookmarks_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({
     Key? key,
-    required PreservationsModel preservationsProvider,
+    required BookMarksModel bookmarksProvider,
     required this.currentUserDoc,
     required this.preservatedPostIds,
     required this.likedPostIds,
-  }) : _preservationsProvider = preservationsProvider, super(key: key);
+  }) : _bookmarksProvider = bookmarksProvider, super(key: key);
 
-  final PreservationsModel _preservationsProvider;
+  final BookMarksModel _bookmarksProvider;
   final DocumentSnapshot currentUserDoc;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -68,8 +68,8 @@ class PostScreen extends StatelessWidget {
                       topRight: Radius.circular(35)
                     )
                   ),
-                  child: PreservationCard(
-                    _preservationsProvider,
+                  child: BookmarkCard(
+                    _bookmarksProvider,
                     preservatedPostIds,
                     likedPostIds
                   ),
