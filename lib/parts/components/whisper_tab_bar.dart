@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/main_model.dart';
 
-import 'package:whisper/parts/posts/feeds/feeds_page.dart';
-import 'package:whisper/parts/posts/recommenders/recommenders_page.dart';
+import 'package:whisper/components/home/feeds/feeds_page.dart';
+import 'package:whisper/components/home/recommenders/recommenders_page.dart';
 
 import 'package:whisper/parts/components/notificationIcon.dart';
 import 'package:whisper/constants/tab_bar_elements.dart';

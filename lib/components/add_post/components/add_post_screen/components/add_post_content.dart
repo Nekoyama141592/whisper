@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/components/add_post/add_post_model.dart';
 
-import 'package:whisper/parts/add_post/add_post_model.dart';
-import 'package:whisper/parts/add_post/components/add_post_screen/components/indicator.dart';
+import 'package:whisper/components/add_post/components/add_post_screen/components/indicator.dart';
 
-import 'package:whisper/parts/add_post/components/audio_buttons/retry_button.dart';
-import 'package:whisper/parts/add_post/components/audio_buttons/record_button.dart';
-import 'package:whisper/parts/add_post/components/audio_buttons/upload_button.dart';
+import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
+import 'package:whisper/components/add_post/components/audio_buttons/retry_button.dart';
+import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
 
 import 'package:whisper/parts/components/rounded_input_field.dart';
-import 'package:whisper/parts/add_post/components/audio_controll/audio_window.dart';
-import 'package:whisper/parts/add_post/components/add_post_screen/components/recording_time.dart';
+
+import 'package:whisper/components/add_post/components/add_post_screen/components/recording_time.dart';
+import 'package:whisper/components/add_post/audio_controll/audio_window.dart';
+
 
 class AddPostContent extends StatelessWidget {
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:whisper/parts/whisper_bottom_navigation_bar/constants/bottom_navigation_bar_elements.dart';
+import 'package:whisper/components/whisper_bottom_navigation_bar/components/bottom_navigation_bar_elements.dart';
 import 'whisper_bottom_navigation_bar_model.dart';
 
 class WhisperBottomNavigationbar extends ConsumerWidget {

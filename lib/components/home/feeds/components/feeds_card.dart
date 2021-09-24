@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whisper/parts/posts/feeds/feeds_model.dart';
+import 'package:whisper/components/home/feeds/feeds_model.dart';
 
 import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';

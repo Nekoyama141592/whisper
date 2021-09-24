@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/parts/posts/recommenders/recommenders_model.dart';
+import 'package:whisper/components/home/recommenders/recommenders_model.dart';
 
 import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 

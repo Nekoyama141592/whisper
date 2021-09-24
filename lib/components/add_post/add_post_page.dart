@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'add_post_model.dart';
-import 'package:whisper/parts/add_post/components/add_post_screen/add_post_screen.dart';
-import 'package:whisper/parts/add_post/components/add_post_screen/components/add_post_content.dart';
+import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
+import 'package:whisper/components/add_post/components/add_post_screen/components/add_post_content.dart';
 
 class AddPostPage extends ConsumerWidget {
 

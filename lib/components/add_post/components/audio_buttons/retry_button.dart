@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 
-import 'package:whisper/parts/add_post/add_post_model.dart';
+import 'package:whisper/components/add_post/add_post_model.dart';
 
 class RetryButton extends StatelessWidget {
 

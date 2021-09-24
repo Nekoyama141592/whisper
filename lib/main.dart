@@ -8,7 +8,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/parts/components/loading.dart';
 
 import 'themes/themes.dart';
-import 'parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
+import 'components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
 
 
 import 'auth/signup/signup_page.dart';
@@ -17,8 +17,8 @@ import 'package:whisper/parts/components/whisper_tab_bar.dart';
 import 'package:whisper/parts/user_show/user_show_page.dart';
 import 'package:whisper/parts/algolia/search_page.dart';
 import 'package:whisper/parts/bookmarks/bookmarks_page.dart';
-import 'package:whisper/parts/add_post/components/which_type.dart';
-import 'package:whisper/parts/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
+import 'package:whisper/components/add_post/components/which_type.dart';
+import 'package:whisper/components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

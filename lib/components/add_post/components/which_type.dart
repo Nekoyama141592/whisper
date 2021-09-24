@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -6,8 +7,7 @@ import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/parts/components/rounded_button.dart';
-import 'package:whisper/parts/add_post/components/add_post_screen/add_post_screen.dart';
-
+import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
 class WhichType extends StatelessWidget {
 
   final DocumentSnapshot currentUserDoc;
