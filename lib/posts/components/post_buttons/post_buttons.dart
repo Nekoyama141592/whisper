@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
-import 'package:whisper/parts/posts/post_buttons/components/preservate_button.dart';
-import 'package:whisper/parts/posts/post_buttons/components/comment_button.dart';
+import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
+import 'package:whisper/posts/components/post_buttons/components/preservate_button.dart';
+import 'package:whisper/posts/components/post_buttons/components/comment_button.dart';
 
 class PostButtons extends StatelessWidget {
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/posts/audio_controll/notifiers/repeat_button_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/repeat_button_notifier.dart';
 
 class RepeatButton extends StatelessWidget {
   

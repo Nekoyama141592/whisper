@@ -4,12 +4,12 @@ import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/components/home/recommenders/recommenders_model.dart';
 
-import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
+import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 
 import 'package:whisper/parts/comments/comments.dart';
-import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
-import 'package:whisper/parts/posts/audio_controll/current_song_title.dart';
-import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';
+import 'package:whisper/posts/components/audio_state_design.dart';
+import 'package:whisper/posts/components/current_song_title.dart';
+import 'package:whisper/posts/components/current_song_post_id.dart';
 class RecommenderShowPage extends StatelessWidget{
 
   final DocumentSnapshot currentUserDoc;

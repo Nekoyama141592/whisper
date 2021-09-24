@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/components/next_song_button.dart';
-import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/components/play_button.dart';
-import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/components/previous_song_button.dart';
-import 'package:whisper/parts/posts/audio_controll/audio_controll_buttons/components/repeat_button.dart';
+import 'package:whisper/posts/audio_controll/audio_controll_buttons/components/next_song_button.dart';
+import 'package:whisper/posts/audio_controll/audio_controll_buttons/components/play_button.dart';
+import 'package:whisper/posts/audio_controll/audio_controll_buttons/components/previous_song_button.dart';
+import 'package:whisper/posts/audio_controll/audio_controll_buttons/components/repeat_button.dart';
 
-import 'package:whisper/parts/posts/audio_controll/notifiers/repeat_button_notifier.dart';
-import 'package:whisper/parts/posts/audio_controll/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/repeat_button_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
 
 class AudioControllButtons extends StatelessWidget {
   

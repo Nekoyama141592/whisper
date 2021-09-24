@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 
-import 'package:whisper/parts/posts/audio_controll/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
 
 class AudioProgressBar extends StatelessWidget {
   

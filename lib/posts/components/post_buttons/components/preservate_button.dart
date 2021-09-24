@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/parts/posts/post_buttons/posts_futures.dart';
+import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
 
 class PreservateButton extends ConsumerWidget {
   PreservateButton(this.currentUserDoc,this.currentSongPostIdNotifier,this.preservatedPostIds);

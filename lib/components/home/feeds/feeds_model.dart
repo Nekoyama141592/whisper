@@ -6,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'package:whisper/parts/posts/audio_controll/notifiers/play_button_notifier.dart';
-import 'package:whisper/parts/posts/audio_controll/notifiers/progress_notifier.dart';
-import 'package:whisper/parts/posts/audio_controll/notifiers/repeat_button_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/audio_controll/notifiers/repeat_button_notifier.dart';
 
 
 final feedsProvider = ChangeNotifierProvider(

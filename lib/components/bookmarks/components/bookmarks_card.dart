@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/posts/components/post_card.dart';
-import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
+import 'package:whisper/posts/components/post_card.dart';
+import 'package:whisper/posts/components/audio_window.dart';
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
