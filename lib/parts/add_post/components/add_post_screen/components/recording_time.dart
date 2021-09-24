@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-import 'package:whisper/add_post/add_post_model.dart';
+import 'package:whisper/parts/add_post/add_post_model.dart';
 
 class RecordingTime extends StatelessWidget {
   @override 

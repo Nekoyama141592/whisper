@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'audio_progress_bar.dart';
-import 'package:whisper/add_post/audio_controll/audio_controll_buttons/play_button.dart';
+import 'package:whisper/parts/add_post/components/audio_controll/play_button.dart';
 import 'package:whisper/parts/posts/components/user_image.dart';
-import 'package:whisper/add_post/add_post_model.dart';
+import 'package:whisper/parts/add_post/add_post_model.dart';
 
 class AudioWindow extends StatelessWidget {
   

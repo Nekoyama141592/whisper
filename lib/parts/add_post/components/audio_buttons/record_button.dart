@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/parts/add_post/components/audio_buttons/audio_button.dart';
 
-import 'package:whisper/add_post/add_post_model.dart';
+import 'package:whisper/parts/add_post/add_post_model.dart';
 import 'package:whisper/constants/colors.dart';
 
 class RecordButton extends StatelessWidget {
