@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/parts/components/loading.dart';
+import 'package:whisper/details/loading.dart';
 
 import 'package:whisper/components/home/feeds/feeds_model.dart';
 
 import 'components/feeds_card.dart';
 
-import 'package:whisper/parts/components/nothing.dart';
+import 'package:whisper/details/nothing.dart';
 
 class FeedsPage extends ConsumerWidget {
   FeedsPage(this.preservatedPostIds,this.likedPostIds);

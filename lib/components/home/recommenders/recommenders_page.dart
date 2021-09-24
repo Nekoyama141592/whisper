@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/parts/components/nothing.dart';
+import 'package:whisper/details/nothing.dart';
 import 'recommenders_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'components/recommenders_card.dart';
-import 'package:whisper/parts/components/loading.dart';
+import 'package:whisper/details/loading.dart';
 class RecommendersPage extends ConsumerWidget {
   RecommendersPage(this.currentUserDoc,this.preservatedPostIds,this.likedPostIds);
   

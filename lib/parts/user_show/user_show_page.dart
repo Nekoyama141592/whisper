@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
-import 'package:whisper/parts/components/loading.dart';
-import 'package:whisper/parts/components/nothing.dart';
+import 'package:whisper/details/loading.dart';
+import 'package:whisper/details/nothing.dart';
 
 import 'user_show_model.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/parts/posts/components/user_image.dart';
-import 'package:whisper/parts/components/rounded_button.dart';
+import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/parts/user_show/user_show_model.dart';
 import 'package:whisper/parts/user_show/components/follow/follow_model.dart';
 import 'package:whisper/constants/routes.dart' as routes;

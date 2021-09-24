@@ -13,7 +13,7 @@ import 'package:whisper/components/add_post/components/audio_buttons/record_butt
 import 'package:whisper/components/add_post/components/audio_buttons/retry_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
 
-import 'package:whisper/parts/components/rounded_input_field.dart';
+import 'package:whisper/details/rounded_input_field.dart';
 
 import 'package:whisper/components/add_post/components/add_post_screen/components/recording_time.dart';
 import 'package:whisper/components/add_post/audio_controll/audio_window.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:whisper/parts/algolia/constants/tab_bar_elements.dart';
-import 'package:whisper/parts/components/whisper_drawer.dart';
+import 'package:whisper/details/whisper_drawer.dart';
 import 'package:whisper/main_model.dart';
 
 import 'package:whisper/parts/algolia/user_search/user_search_page.dart';

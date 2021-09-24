@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/parts/components/rounded_button.dart';
+import 'package:whisper/details/rounded_button.dart';
 import 'admin_model.dart';
-import 'package:whisper/parts/components/no_right.dart';
+import 'package:whisper/details/no_right.dart';
 
 class AdminPage extends ConsumerWidget {
 

@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
-import 'package:whisper/parts/components/rounded_button.dart';
+import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
 class WhichType extends StatelessWidget {
 
