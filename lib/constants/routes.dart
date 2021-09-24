@@ -12,7 +12,7 @@ import 'package:whisper/parts/user_show/user_show_page.dart';
 import 'package:whisper/components/bookmarks/components/bookmark_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
-import 'package:whisper/parts/notifications/notifications_page.dart';
+import 'package:whisper/components/notifications/notifications_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
 
 

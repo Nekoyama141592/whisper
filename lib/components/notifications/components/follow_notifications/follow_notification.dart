@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/notifications/components/follow_notification/components/follow_notification_list.dart';
+import 'package:whisper/components/notifications/components/follow_notifications/components/follow_notification_list.dart';
 class FollowNotification extends StatelessWidget {
 
   FollowNotification(this.newFollowNotifications);

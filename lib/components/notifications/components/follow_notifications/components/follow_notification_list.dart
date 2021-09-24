@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/notifications/components/like_notification/components/like_notification_card.dart';
+import 'package:whisper/components/notifications/components/follow_notifications/components/follow_notification_card.dart';
+class FollowNotificationList extends StatelessWidget {
 
-class LikeNotificationList extends StatelessWidget {
-
-  LikeNotificationList(this.notifications);
+  FollowNotificationList(this.notifications);
 
   final List<dynamic> notifications;
-  
   @override 
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) =>
-      LikeNotificationCard(
+      FollowNotificationCard(
         notifications[i]
       )
     );

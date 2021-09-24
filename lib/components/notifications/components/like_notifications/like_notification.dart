@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:whisper/parts/notifications/components/like_notification/components/like_notification_list.dart';
+import 'package:whisper/components/notifications/components/like_notifications/components/like_notification_list.dart';
 
 class LikeNotification extends StatelessWidget {
 

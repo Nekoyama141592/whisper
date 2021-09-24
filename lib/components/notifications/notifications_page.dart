@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'components/tab_bar_elements.dart';
+import 'constants/tab_bar_elements.dart';
 
 import 'package:whisper/main_model.dart';
 import 'package:whisper/details/whisper_drawer.dart';
-import 'package:whisper/parts/notifications/components/like_notification/like_notification.dart';
-import 'package:whisper/parts/notifications/components/follow_notification/follow_notification.dart';
+import 'package:whisper/components/notifications/components/like_notifications/like_notification.dart';
+import 'package:whisper/components/notifications/components/follow_notifications/follow_notification.dart';
 
 class NotificationsPage extends StatelessWidget {
 
