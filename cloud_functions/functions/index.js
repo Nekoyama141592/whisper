@@ -38,6 +38,16 @@ exports.createPost = functions.firestore
 //         index.saveObject(afterUpdate);
 //     }
 // );
+exports.updatePostTitle = functions.firestore
+.document('posts/{id}/title')
+.onUpdate(
+    async (snap,context) => {
+        const afterUpdate = snap.after.data();
+        afterUpdate.objectID = snap.after.id;
+        var index = client.initIndex(ALGOLIA_INDEX_NAME);
+        index.saveObject(afterUpdate);
+    }
+);
 
 exports.deletePost = functions.firestore
 .document('posts/{id}')
