@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
 
-import 'package:whisper/users/user_show/user_show_model.dart';
+import 'package:whisper/parts/user_show/user_show_model.dart';
 import 'package:whisper/parts/posts/audio_controll/audio_state_design.dart';
 import 'package:whisper/parts/posts/audio_controll/current_song_title.dart';
 import 'package:whisper/parts/posts/audio_controll/current_song_post_id.dart';

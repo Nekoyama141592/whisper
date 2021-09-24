@@ -12,8 +12,8 @@ import 'package:whisper/parts/posts/audio_controll/audio_window.dart';
 import 'package:whisper/parts/posts/components/post_card.dart';
 import 'package:whisper/parts/posts/components/user_image.dart';
 import 'package:whisper/parts/components/rounded_button.dart';
-import 'package:whisper/users/follow/follow_model.dart';
-
+import 'package:whisper/parts/user_show/user_show_model.dart';
+import 'package:whisper/parts/user_show/components/follow/follow_model.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class UserShowPage extends ConsumerWidget {

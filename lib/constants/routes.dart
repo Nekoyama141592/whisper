@@ -4,10 +4,11 @@ import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
 import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/preservations/preservations_page.dart';
-import 'package:whisper/users/user_show/user_show_page.dart';
+
 import 'package:whisper/parts/posts/feeds/components/feed_show_page.dart';
 import 'package:whisper/parts/posts/recommenders/components/recommender_show_page.dart';
-import 'package:whisper/users/user_show/components/user_show_post_show_page.dart';
+import 'package:whisper/parts/user_show/components/user_show_post_show_page.dart';
+import 'package:whisper/parts/user_show/user_show_page.dart';
 import 'package:whisper/preservations/components/preservation_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
