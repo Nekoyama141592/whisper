@@ -62,15 +62,15 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void startButtonPressed() {
+  void startMeasure() {
     stopWatchTimer.onExecute.add(StopWatchExecute.start);
   }
 
-  void stopButtonPressed() {
+  void stopMeasure() {
     stopWatchTimer.onExecute.add(StopWatchExecute.stop);
   }
 
-  void resetButtonPressed() {
+  void resetMeasure() {
     stopWatchTimer.onExecute.add(StopWatchExecute.reset);
   }
   
@@ -106,6 +106,7 @@ class AddPostModel extends ChangeNotifier {
       await audioRecorder.start(
         path: setFilePath,
       );
+      startMeasure();
       filePath = setFilePath;
       audioFile = File(filePath);
       notifyListeners();
@@ -121,9 +122,10 @@ class AddPostModel extends ChangeNotifier {
       isRecording = true;
       notifyListeners();
       await startRecording(context);
-      
+      // startTimer
     } else {
       audioRecorder.stop();
+      stopMeasure();
       isRecording = false;
       isRecorded = true;
       setAudio(filePath);

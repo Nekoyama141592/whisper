@@ -24,11 +24,6 @@ class RecordButton extends StatelessWidget {
       ),
       () async {
         addPostProvider.onRecordButtonPressed(context);
-        if (addPostProvider.isRecording) {
-          addPostProvider.startButtonPressed();
-        } else {
-          addPostProvider.stopButtonPressed();
-        }
       }
     );
   }
