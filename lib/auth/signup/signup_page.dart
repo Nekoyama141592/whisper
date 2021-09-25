@@ -121,6 +121,8 @@ class SignupPage extends ConsumerWidget {
                               child: RoundedButton(
                                 'signup',
                                 0.8,
+                                20,
+                                10,
                                 () async {
                                   await _signupProvider.signup(context);
                                 },

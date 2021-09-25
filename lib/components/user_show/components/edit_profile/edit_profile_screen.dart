@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/colors.dart';
+
+import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 
 class EditProfileScreen extends ConsumerWidget {
@@ -25,18 +27,32 @@ class EditProfileScreen extends ConsumerWidget {
     final descriptionController = TextEditingController(
       text: currentUserDoc['description']
     );
-    
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity * 0.95,
+    final size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextButton(
-            onPressed: () {
-              userShowProvider.isEditing = false;
-              userShowProvider.reload();
-            }, 
-            child: Text('Cancel')
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  userShowProvider.isEditing = false;
+                  userShowProvider.reload();
+                }, 
+                child: Text('Cancel')
+              ),
+              SizedBox(width: size.width * 0.5,),
+              RoundedButton(
+                '保存', 
+                0.25, 
+                10, 
+                5, 
+                () => null, 
+                Colors.white, 
+                kPrimaryColor
+              )
+            ],
           ),
           CircleAvatar(
             backgroundColor: kTertiaryColor,

@@ -102,6 +102,8 @@ class LoginPage extends ConsumerWidget {
                               child: RoundedButton(
                                 'login',
                                 0.8,
+                                20,
+                                10,
                                 () async {
                                   await _loginProvider.login(context);
                                 },

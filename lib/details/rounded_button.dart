@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 class RoundedButton extends StatelessWidget {
   
   final String text;
-  final double width;
+  final double widthRate,verticalPadding,horizontalPadding;
   final Function()? press;
   final Color textColor, buttonColor;
+  
   RoundedButton(
     this.text,
-    this.width,
+    this.widthRate,
+    this.verticalPadding,
+    this.horizontalPadding,
     this.press,
     this.textColor,
-    this.buttonColor
+    this.buttonColor,
   );
 
   @override
@@ -19,14 +22,14 @@ class RoundedButton extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
-      width: size.width * width,
+      width: size.width * widthRate,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: ElevatedButton(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 10
+              vertical: verticalPadding,
+              horizontal: horizontalPadding
             ),
             child: Text(
               text,

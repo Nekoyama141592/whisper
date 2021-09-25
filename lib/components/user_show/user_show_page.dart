@@ -58,7 +58,6 @@ class UserShowPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   20, 

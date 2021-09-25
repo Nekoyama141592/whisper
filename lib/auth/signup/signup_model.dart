@@ -58,12 +58,12 @@ class SignupModel extends ChangeNotifier {
       await FirebaseStorage.instance
       .ref()
       .child('users')
-      .child('$userName' +'$dateTime' + '.png')
+      .child('$userName' +'$dateTime' + '.jpg')
       .putFile(imageFile);
       downloadURL = await FirebaseStorage.instance
       .ref()
       .child('users')
-      .child('$userName' +'$dateTime' + '.png')
+      .child('$userName' +'$dateTime' + '.jpg')
       .getDownloadURL();
     } catch(e) {
       print(e.toString());

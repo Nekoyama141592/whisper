@@ -30,10 +30,11 @@ class UserShowButton extends StatelessWidget {
     // 変更
     RoundedButton(
       '編集', 
-      0.35, 
+      0.25,
+      20,
+      0,
       () {
-        userShowProvider.isEditing = true;
-        userShowProvider.reload();
+        userShowProvider.onEditButtonPressed(currentUserDoc);
       }, 
       Colors.white, 
       kTertiaryColor
@@ -41,7 +42,9 @@ class UserShowButton extends StatelessWidget {
     : !followingUids.contains(userDoc['uid']) ?
     RoundedButton(
       'follow', 
-      0.35, 
+      0.35,
+      20,
+      10,
       () async {
         try {
           followingUids.add(userDoc['uid']);
@@ -56,7 +59,9 @@ class UserShowButton extends StatelessWidget {
     )
     : RoundedButton(
       'unfollow', 
-      0.35, 
+      0.35,
+      20,
+      10, 
       () async {
         try {
           followingUids.remove(userDoc['uid']);

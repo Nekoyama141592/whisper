@@ -226,6 +226,13 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
+    userName = currentUserDoc['userName'];
+    description = currentUserDoc['description'];
+    isEditing = true;
+    notifyListeners();
+  }
+
   Future updateUserInfo(DocumentSnapshot currentUserDoc) async {
     try {
       await FirebaseFirestore.instance

@@ -30,6 +30,8 @@ class AdminPage extends ConsumerWidget {
               child: RoundedButton(
                 'replyNotification', 
                 0.8,
+                20,
+                10,
                 (){
                 }, 
                 Colors.white, 

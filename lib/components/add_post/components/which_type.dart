@@ -62,6 +62,8 @@ class Content extends StatelessWidget {
               RoundedButton(
                 '広告の投稿',
                 0.8,
+                20,
+                10,
                 () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -75,6 +77,8 @@ class Content extends StatelessWidget {
               RoundedButton(
                 '普通の投稿', 
                 0.8,
+                20,
+                10,
                 () {
                   routes.toAddPostPage(context, currentUserDoc);
                 }, 
