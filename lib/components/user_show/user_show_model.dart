@@ -44,7 +44,9 @@ class UserShowModel extends ChangeNotifier {
   bool isEditing = false;
   String userName = '';
   String description = '';
-
+  // afterEdit
+  bool isEdited = false;
+  
   UserShowModel() {
     init();
   }
@@ -243,12 +245,24 @@ class UserShowModel extends ChangeNotifier {
         'description': description,
       });
       isEditing = false;
+      isEdited = true;
       notifyListeners();
     } catch(e) {
       print(e.toString());
     }
     
   }
-  
+
+  Future onSaveButtonPressed(context) async {
+    await Future.delayed(Duration(seconds: 2));
+    isEditing = false;
+    notifyListeners();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('snackbar'),
+        duration: const Duration(seconds: 3),
+      )
+    );
+  }
   
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:algolia/algolia.dart';
-import 'package:whisper/components/search/AlgoliaApplication.dart';
+import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 
 final searchProvider = ChangeNotifierProvider(
   (ref) => UserSearchModel()

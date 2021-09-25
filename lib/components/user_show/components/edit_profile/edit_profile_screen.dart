@@ -22,10 +22,10 @@ class EditProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
 
     final userNameController = TextEditingController(
-      text: currentUserDoc['userName']
+      text: !userShowProvider.isEdited ? currentUserDoc['userName'] : userShowProvider.userName
     );
     final descriptionController = TextEditingController(
-      text: currentUserDoc['description']
+      text: !userShowProvider.isEdited ? currentUserDoc['description'] : userShowProvider.description
     );
     final size = MediaQuery.of(context).size;
     return Padding(
@@ -48,7 +48,9 @@ class EditProfileScreen extends ConsumerWidget {
                 0.25, 
                 10, 
                 5, 
-                () => null, 
+                () async  {
+                  userShowProvider.onSaveButtonPressed(context);
+                },
                 Colors.white, 
                 kPrimaryColor
               )
