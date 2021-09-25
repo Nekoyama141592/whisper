@@ -17,7 +17,7 @@ class RetryButton extends StatelessWidget {
       Icon(Icons.replay),
       (){
         addPostProvider.onRecordAgainButtonPressed();
-        addPostProvider.resetButtonPressed();
+        addPostProvider.resetMeasure();
       }
     );
   }

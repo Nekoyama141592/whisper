@@ -112,7 +112,7 @@ class AddPostModel extends ChangeNotifier {
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Center(child: Text('Please enable recording permission'))));
+      .showSnackBar(SnackBar(content: Center(child: Text('マイクの許可をお願いします！！'))));
     }
   }
 

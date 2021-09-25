@@ -49,7 +49,7 @@ class EditProfileScreen extends ConsumerWidget {
                 10, 
                 5, 
                 () async  {
-                  userShowProvider.onSaveButtonPressed(context);
+                  await userShowProvider.onSaveButtonPressed(context,currentUserDoc);
                 },
                 Colors.white, 
                 kPrimaryColor

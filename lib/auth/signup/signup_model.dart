@@ -79,6 +79,7 @@ class SignupModel extends ChangeNotifier {
         password: password,
       );
       user = result.user;
+      
       addUserToFireStore(user!.uid);
       routes.toVerifyPage(context);
     } on FirebaseAuthException catch(e) {

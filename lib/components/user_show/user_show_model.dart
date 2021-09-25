@@ -244,18 +244,17 @@ class UserShowModel extends ChangeNotifier {
         'userName': userName,
         'description': description,
       });
-      isEditing = false;
-      isEdited = true;
+      
       notifyListeners();
     } catch(e) {
       print(e.toString());
     }
-    
   }
 
-  Future onSaveButtonPressed(context) async {
-    await Future.delayed(Duration(seconds: 2));
+  Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
+    updateUserInfo(currentUserDoc);
     isEditing = false;
+    isEdited = true;
     notifyListeners();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

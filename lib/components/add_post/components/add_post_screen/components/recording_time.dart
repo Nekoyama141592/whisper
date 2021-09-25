@@ -16,7 +16,7 @@ class RecordingTime extends StatelessWidget {
       builder: (context,snapshot) {
         final value = snapshot.data!.toInt();
         if (value >= 60000) {
-          addPostProvider.stopButtonPressed();
+          addPostProvider.stopMeasure();
         }
         final displayTime = StopWatchTimer.getDisplayTime(
           value,
