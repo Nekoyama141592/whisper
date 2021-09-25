@@ -24,7 +24,13 @@ class WhisperDrawer extends StatelessWidget {
               routes.toAdminPage(context,mainProvider.currentUserDoc);
             },
           )
-          : SizedBox()
+          : SizedBox.shrink(),
+          ListTile(
+            title: Text('Account'),
+            onTap: () {
+              routes.toAccountPage(context,mainProvider.currentUserDoc);
+            },
+          )
         ],
       ),
     );

@@ -12,6 +12,7 @@ import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/components/bookmarks/components/bookmark_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
+import 'package:whisper/auth/account/account_page.dart';
 import 'package:whisper/components/notifications/notifications_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
 
@@ -57,6 +58,10 @@ void toUserShowPostShowPage(context,currentUserDoc,userShowProvider,preservatedP
 
 void toAdminPage(context,currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc)));
+}
+
+void toAccountPage(context,currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc)));
 }
 
 void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {
