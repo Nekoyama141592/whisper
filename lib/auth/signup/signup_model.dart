@@ -15,11 +15,11 @@ final signupProvider = ChangeNotifierProvider(
 );
 
 class SignupModel extends ChangeNotifier {
+  
   String userName = "";
   String email = "";
   String password = "";
-  late UserCredential result;
-  late User? user;
+
   // image
   bool isLoading = false;
   bool isObscure = true;
@@ -28,6 +28,7 @@ class SignupModel extends ChangeNotifier {
   String downloadURL = '';
 
   String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+
   startLoading() {
     isLoading = true;
     notifyListeners();
@@ -73,13 +74,12 @@ class SignupModel extends ChangeNotifier {
 
   Future signup(context) async {
     try{
-      result = await FirebaseAuth.instance
+      UserCredential result = await FirebaseAuth.instance
       .createUserWithEmailAndPassword(
         email: email, 
         password: password,
       );
-      user = result.user;
-      
+      User? user = result.user;
       addUserToFireStore(user!.uid);
       routes.toVerifyPage(context);
     } on FirebaseAuthException catch(e) {

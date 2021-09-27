@@ -15,7 +15,8 @@ import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/auth/account/account_page.dart';
 import 'package:whisper/components/notifications/notifications_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
-
+import 'package:whisper/auth/update_password/update_password_page.dart';
+import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -31,6 +32,13 @@ void toSignupPage(context) {
 
 void toVerifyPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPage()));
+}
+
+void toUpdatePassword(context,currentUser) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordPage(currentUser: currentUser,)));
+}
+void toReauthenticationPage(context,currentUser,accountModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,)));
 }
 
 void toPreservationsPage(context,currentUserDoc,preservatedPostIds,likedPostIds) {
@@ -60,8 +68,8 @@ void toAdminPage(context,currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc)));
 }
 
-void toAccountPage(context,currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc)));
+void toAccountPage(context,currentUserDoc,currentUser) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc: currentUserDoc,currentUser: currentUser,)));
 }
 
 void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {

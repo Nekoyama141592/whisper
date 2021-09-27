@@ -28,7 +28,7 @@ class WhisperDrawer extends StatelessWidget {
           ListTile(
             title: Text('Account'),
             onTap: () {
-              routes.toAccountPage(context,mainProvider.currentUserDoc);
+              routes.toAccountPage(context,mainProvider.currentUserDoc,mainProvider.currentUser);
             },
           )
         ],
