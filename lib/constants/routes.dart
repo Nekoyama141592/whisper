@@ -18,6 +18,8 @@ import 'package:whisper/components/add_post/add_post_page.dart';
 import 'package:whisper/auth/update_password/update_password_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
+import 'package:whisper/auth/update_email/update_email_page.dart';
+
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
 }
@@ -37,6 +39,9 @@ void toVerifyPasswordResetPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPasswordResetPage()));
 }
 
+void toUpdateEmailPage(context,currentUser) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateEmailPage(currentUser: currentUser,)));
+}
 void toUpdatePassword(context,currentUser) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordPage(currentUser: currentUser,)));
 }
@@ -72,7 +77,7 @@ void toAdminPage(context,currentUserDoc) {
 }
 
 void toAccountPage(context,currentUserDoc,currentUser) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc: currentUserDoc,currentUser: currentUser,)));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc: currentUserDoc)));
 }
 
 void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {

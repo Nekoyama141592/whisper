@@ -37,7 +37,7 @@ class RoundedPasswordField extends ConsumerWidget {
           hintText: hintText,
           icon: Icon(
             Icons.lock,
-            color: Colors.white,
+            color: Colors.black,
           ),
           suffixIcon: IconButton(
             color: Colors.black,

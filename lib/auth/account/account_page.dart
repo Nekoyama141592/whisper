@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/routes.dart' as routes;
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'account_model.dart';
 
@@ -12,11 +11,9 @@ class AccountPage extends ConsumerWidget {
   const AccountPage({
     Key? key,
     required this.currentUserDoc,
-    required this.currentUser
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final User? currentUser;
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
@@ -33,6 +30,8 @@ class AccountPage extends ConsumerWidget {
               title: Text(_accountModel.currentUser!.email!),
             ),
             onTap: () {
+              _accountModel.whichState = WhichState.updateEmail;
+              routes.toReauthenticationPage(context, _accountModel.currentUser, _accountModel);
             },
           ),
           InkWell(
@@ -41,7 +40,15 @@ class AccountPage extends ConsumerWidget {
             ),
             onTap: () {
               _accountModel.whichState = WhichState.updatePassword;
-              routes.toReauthenticationPage(context, currentUser,_accountModel);
+              routes.toReauthenticationPage(context, _accountModel.currentUser,_accountModel);
+            },
+          ),
+          InkWell(
+            child: ListTile(
+              title: Text('ログアウト'),
+            ),
+            onTap: () {
+              _accountModel.showSignOutDialog(context);
             },
           ),
         ],

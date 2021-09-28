@@ -20,7 +20,7 @@ class VerifyModel extends ChangeNotifier {
   void init() {
     setCurrentUser();
     currentUser!.sendEmailVerification();
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    Timer.periodic(Duration(seconds: 1), (timer) async {
       await currentUser!.reload();
     });
   }

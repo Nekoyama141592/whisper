@@ -13,7 +13,7 @@ import 'components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.d
 
 import 'auth/signup/signup_page.dart';
 
-import 'package:whisper/components/home/components/whisper_tab_bar.dart';
+import 'package:whisper/components/home/home.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/components/search/search_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
@@ -59,7 +59,7 @@ class MyHomePage extends ConsumerWidget {
           _provider.onPageChanged(index);
         },
         children: [
-          WhisperTabBar(
+          Home(
             _mainProvider,
             _mainProvider.preservatedPostIds,
             _mainProvider.likedPostIds

@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
+
+import 'package:whisper/details/rounded_button.dart';
+
 final accountProvider = ChangeNotifierProvider(
   (ref) => AccountModel()
 );
@@ -42,6 +46,8 @@ class AccountModel extends ChangeNotifier {
       await user!.reauthenticateWithCredential(credential);
       if (whichState == WhichState.updatePassword) {
         routes.toUpdatePassword(context, currentUser);
+      } else if (whichState == WhichState.updateEmail) {
+        routes.toUpdateEmailPage(context, currentUser);
       }
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
@@ -62,5 +68,38 @@ class AccountModel extends ChangeNotifier {
         break;
       }
     }
+  }
+
+  void showSignOutDialog(BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text('ログアウト'),
+          content: Text('ログアウトしますか？'),
+          actions: [
+            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel')),
+            RoundedButton(
+              'OK', 
+              0.2, 
+              20, 
+              10, 
+              () async {
+                await signOut(context);
+              }, 
+              Colors.white, 
+              kPrimaryColor
+            )
+          ],
+        );
+      }
+    );
+  }
+  Future signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    routes.toLoginpage(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('一度、Whisperのタブを切るのをおすすめします'))
+    );
   }
 }

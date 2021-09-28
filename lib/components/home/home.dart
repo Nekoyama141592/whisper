@@ -9,9 +9,9 @@ import 'package:whisper/constants/tab_bar_elements.dart';
 
 import 'package:whisper/details/whisper_drawer.dart';
 
-class WhisperTabBar extends StatelessWidget {
+class Home extends StatelessWidget {
 
-  WhisperTabBar(this.mainProvider, this.preservatedPostIds,this.likedPostIds);
+  Home(this.mainProvider, this.preservatedPostIds,this.likedPostIds);
   
   final MainModel mainProvider;
   final List preservatedPostIds;

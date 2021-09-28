@@ -44,8 +44,8 @@ class ReauthenticationPage extends StatelessWidget {
               0.95, 
               20, 
               10, 
-              () {
-                accountModel.reauthenticateWithCredential(context,currentUser);
+              () async {
+                await accountModel.reauthenticateWithCredential(context,currentUser);
               }, 
               Colors.white, 
               kQuaternaryColor

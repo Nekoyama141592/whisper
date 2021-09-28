@@ -16,45 +16,43 @@ class SearchPage extends ConsumerWidget {
   final MainModel mainProvider;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    return SafeArea(
-      child: DefaultTabController(
-        length: tabBarElements.length,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Search'),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(30)
-              )
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.keyboard_arrow_down),
-                onPressed: () {
-                  Navigator.pop(context);
-                }, 
-              )
-            ],
-            bottom: TabBar(
-              indicatorSize: TabBarIndicatorSize.label,
-              tabs: tabBarElements.map((tabBarElement) {
-                return Tab(
-                  text: tabBarElement.title
-                );
-              }).toList()
-            ),
+    return DefaultTabController(
+      length: tabBarElements.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Search'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30)
+            )
           ),
-          drawer: WhisperDrawer(
-            mainProvider, 
+          actions: [
+            IconButton(
+              icon: Icon(Icons.keyboard_arrow_down),
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+            )
+          ],
+          bottom: TabBar(
+            indicatorSize: TabBarIndicatorSize.label,
+            tabs: tabBarElements.map((tabBarElement) {
+              return Tab(
+                text: tabBarElement.title
+              );
+            }).toList()
           ),
-          body: 
-          TabBarView(
-            children: [
-              PostSearchPage(),
-              UserSearchPage(),
-            ]
-          )
         ),
+        drawer: WhisperDrawer(
+          mainProvider, 
+        ),
+        body: 
+        TabBarView(
+          children: [
+            PostSearchPage(),
+            UserSearchPage(),
+          ]
+        )
       ),
     );
   }
