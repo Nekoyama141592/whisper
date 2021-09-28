@@ -17,7 +17,7 @@ import 'package:whisper/components/notifications/notifications_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
 import 'package:whisper/auth/update_password/update_password_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
-
+import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
 }
@@ -32,6 +32,9 @@ void toSignupPage(context) {
 
 void toVerifyPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPage()));
+}
+void toVerifyPasswordResetPage(context) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPasswordResetPage()));
 }
 
 void toUpdatePassword(context,currentUser) {

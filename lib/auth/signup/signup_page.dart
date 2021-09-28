@@ -7,7 +7,7 @@ import 'package:whisper/auth/components/rounded_password_field/rounded_password_
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/auth/components/already_have_an_account.dart';
-
+import 'package:whisper/auth/components/forget_password_text.dart';
 import 'signup_model.dart';
 
 class SignupPage extends ConsumerWidget {
@@ -130,7 +130,8 @@ class SignupPage extends ConsumerWidget {
                                 kSecondaryColor
                               ),
                             ),
-                            AlreadyHaveAnAccount(kTertiaryColor)
+                            AlreadyHaveAnAccount(textColor: kTertiaryColor),
+                            ForgetPasswordText(textColor: kTertiaryColor,)
                           ]
                         ),
                       ),
@@ -146,7 +147,7 @@ class SignupPage extends ConsumerWidget {
           color: Colors.grey.withOpacity(0.7),
           child: Center(child: CircularProgressIndicator(),),
         )
-        : SizedBox()
+        : SizedBox.shrink()
       ],
     );
   }

@@ -38,16 +38,18 @@ class ReauthenticationPage extends StatelessWidget {
               kTertiaryColor
             ),
           ),
-          RoundedButton(
-            '認証する', 
-            0.95, 
-            20, 
-            10, 
-            () {
-              accountModel.reauthenticateWithCredential(context,currentUser);
-            }, 
-            Colors.white, 
-            kQuaternaryColor
+          Center(
+            child: RoundedButton(
+              '認証する', 
+              0.95, 
+              20, 
+              10, 
+              () {
+                accountModel.reauthenticateWithCredential(context,currentUser);
+              }, 
+              Colors.white, 
+              kQuaternaryColor
+            ),
           )
         ],
       ),

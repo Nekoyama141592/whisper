@@ -5,7 +5,10 @@ import 'package:whisper/constants/routes.dart' as routes;
 
 class AlreadyHaveAnAccount extends StatelessWidget{
 
-  AlreadyHaveAnAccount(this.textColor);
+  AlreadyHaveAnAccount({
+    Key? key,
+    required this.textColor
+  }) : super(key: key);
   final Color textColor;
 
   Widget build(BuildContext context) {
