@@ -68,7 +68,7 @@ class SignupPage extends ConsumerWidget {
                             Column(
                               children: [
                                 InkWell(
-                                  child: _signupProvider.xfile != null ?
+                                  child: _signupProvider.imageFile != null ?
                                   Container(
                                     margin: EdgeInsets.symmetric(
                                       vertical: 25
@@ -79,7 +79,7 @@ class SignupPage extends ConsumerWidget {
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                         fit: BoxFit.fill,
-                                        image: FileImage(_signupProvider.imageFile),
+                                        image: FileImage(_signupProvider.imageFile!),
                                       )
                                     ),
                                   )

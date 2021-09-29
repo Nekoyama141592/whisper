@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
@@ -37,6 +41,10 @@ class AddPostModel extends ChangeNotifier {
 
   // timer
   final stopWatchTimer = StopWatchTimer();
+  // imagePicker
+  XFile? xfile;
+  File? imageFile;
+
   AddPostModel() {
     init();
   }
@@ -60,6 +68,44 @@ class AddPostModel extends ChangeNotifier {
 
   reload() {
     notifyListeners();
+  }
+
+  Future showImagePicker() async {
+    final ImagePicker _picker = ImagePicker();
+    xfile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xfile != null) {
+      await cropImage();
+    }
+    notifyListeners();
+  }
+
+  Future cropImage() async {
+    File? croppedFile = await ImageCropper.cropImage(
+      sourcePath: xfile!.path,
+      aspectRatioPresets: Platform.isAndroid ?
+      [
+        CropAspectRatioPreset.square,
+      ]
+      : [
+        // CropAspectRatioPreset.original,
+        CropAspectRatioPreset.square,
+      ],
+      androidUiSettings: const AndroidUiSettings(
+        toolbarTitle: 'Cropper',
+        toolbarColor: kPrimaryColor,
+        toolbarWidgetColor: Colors.white,
+        // initAspectRatio: CropAspectRatioPreset.original,
+        initAspectRatio: CropAspectRatioPreset.square,
+        lockAspectRatio: false
+      ),
+      iosUiSettings: const IOSUiSettings(
+        title: 'Cropper',
+      )
+    );
+    if (croppedFile != null) {
+      imageFile = croppedFile;
+      notifyListeners();
+    }
   }
 
   void startMeasure() {
@@ -98,16 +144,16 @@ class AddPostModel extends ChangeNotifier {
 
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      String setFilePath = directory.path + '/'
+      String filePath = directory.path + '/'
       + currentUser!.uid
       +  DateTime.now().microsecondsSinceEpoch.toString() 
       + '.aac';
 
       await audioRecorder.start(
-        path: setFilePath,
+        path: filePath,
       );
       startMeasure();
-      filePath = setFilePath;
+      filePath = filePath;
       audioFile = File(filePath);
       notifyListeners();
     } else {
