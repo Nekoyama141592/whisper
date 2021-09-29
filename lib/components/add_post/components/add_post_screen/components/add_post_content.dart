@@ -35,7 +35,7 @@ class AddPostContent extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width,
         ),
-        addPostProvider.isUploaded ?
+        addPostProvider.addPostState == AddPostState.uploaded ?
         Padding(
           padding: const EdgeInsets.all(20),
           child: CustomSnackBar.success(
@@ -47,33 +47,35 @@ class AddPostContent extends StatelessWidget {
         SvgPicture.asset(
           'assets/svgs/recording-bro.svg',
           height: 
-          !addPostProvider.isRecorded ?
+          addPostProvider.addPostState != AddPostState.recorded ?
           size.height * 0.4
           : size.height * 0.2,
         ),
         
-        
-        addPostProvider.isUploading ?
+        addPostProvider.addPostState == AddPostState.uploading ?
         Indicator()
-        : !addPostProvider.isRecorded ?
+        : addPostProvider.addPostState != AddPostState.recorded ?
         Column(
           children: [
             RecordButton(addPostProvider),
           ],
         )
-        : !addPostProvider.isUploaded ?
+        
+        : addPostProvider.addPostState != AddPostState.uploaded ?
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RetryButton(addPostProvider,'やりなおす'),
-            UploadButton(addPostProvider)
+            // UploadButton(addPostProvider)
           ],
         )
         : RetryButton(addPostProvider,'次の投稿を行う'),
-        !addPostProvider.isRecorded ?
+
+        addPostProvider.addPostState != AddPostState.recorded ?
         RecordingTime(addPostProvider,80)
         : RecordingTime(addPostProvider,30),
-        addPostProvider.isRecorded ?
+
+        addPostProvider.addPostState == AddPostState.recorded ?
         Column(
           children: [
             RoundedInputField(

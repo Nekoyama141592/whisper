@@ -13,10 +13,10 @@ class RecordButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     AudioButton(
-      addPostProvider.isRecording ?
+      addPostProvider.addPostState == AddPostState.recording ?
       '停止する'
       : '録音する',
-      addPostProvider.isRecording ?
+      addPostProvider.addPostState == AddPostState.recording ?
       Icon(Icons.pause)
       : Icon(
         Icons.fiber_manual_record,

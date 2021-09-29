@@ -33,11 +33,13 @@ enum AddPostState {
 class AddPostModel extends ChangeNotifier {
   
   final postTitleNotifier = ValueNotifier<String>('');
-  bool isUploading = false;
-  bool isRecording = false;
-  bool isRecorded = false;
-  bool isUploaded = false;
+  // bool isUploading = false;
+  // bool isRecording = false;
+  // bool isRecorded = false;
+  // bool isUploaded = false;
+  AddPostState addPostState = AddPostState.initialValue;
   late AudioPlayer audioPlayer;
+  String recordFilePath = '';
   String filePath = "";
   late File audioFile;
   late Record audioRecorder;
@@ -62,19 +64,17 @@ class AddPostModel extends ChangeNotifier {
     setCurrentUser();
   }
 
-  startLoading() {
-    isUploaded = false;
-    isUploading = true;
+  void startLoading() {
+    addPostState = AddPostState.uploading;
     notifyListeners();
   }
 
-  endLoading() {
-    isUploading = false;
-    isUploaded = true;
+  void endLoading() {
+    addPostState = AddPostState.uploaded;
     notifyListeners();
   }
 
-  reload() {
+  void reload() {
     notifyListeners();
   }
 
@@ -152,17 +152,16 @@ class AddPostModel extends ChangeNotifier {
 
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      String filePath = directory.path + '/'
+      recordFilePath = directory.path + '/'
       + currentUser!.uid
       +  DateTime.now().microsecondsSinceEpoch.toString() 
       + '.aac';
-
+      filePath = recordFilePath;
       await audioRecorder.start(
         path: filePath,
       );
+
       startMeasure();
-      filePath = filePath;
-      audioFile = File(filePath);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context)
@@ -170,19 +169,18 @@ class AddPostModel extends ChangeNotifier {
     }
   }
 
-  void onRecordButtonPressed(context) async {
-    if (!isRecording) {
-      isRecorded = false;
-      isRecording = true;
+  Future onRecordButtonPressed(context) async {
+    if (!(addPostState == AddPostState.recording)) {
+      addPostState = AddPostState.recording;
       notifyListeners();
       await startRecording(context);
       // startTimer
     } else {
       audioRecorder.stop();
       stopMeasure();
-      isRecording = false;
-      isRecorded = true;
-      setAudio(filePath);
+      await setAudio(filePath);
+      audioFile = File(filePath);
+      addPostState = AddPostState.recorded;
       listenForStates();
       notifyListeners();
     }
@@ -224,8 +222,7 @@ class AddPostModel extends ChangeNotifier {
 
 
   void onRecordAgainButtonPressed() {
-    isRecorded = false;
-    isUploaded = false;
+    addPostState = AddPostState.initialValue;
     postTitleNotifier.value = '';
     notifyListeners();
   }

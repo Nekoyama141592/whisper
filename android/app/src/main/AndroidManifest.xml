@@ -2,8 +2,7 @@
     package="com.example.whisper">
    <application
         android:label="whisper"
-        android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
