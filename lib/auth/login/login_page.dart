@@ -10,8 +10,9 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/details/rounded_button.dart';
-// model
+// models
 import 'package:whisper/auth/login/login_model.dart';
+import 'package:whisper/main_model.dart';
 
 class LoginPage extends ConsumerWidget {
   @override  

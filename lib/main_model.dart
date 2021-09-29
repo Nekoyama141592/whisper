@@ -14,7 +14,7 @@ class MainModel extends ChangeNotifier {
 
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
-  bool isLoading = true;
+  bool isLoading = false;
   List<String> likedPostIds = [];
   List<String> preservatedPostIds = [];
   List<dynamic> newLikeNotifications = [];
