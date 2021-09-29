@@ -29,7 +29,11 @@ class ArrowForwardButton extends StatelessWidget {
         color: kTertiaryColor,
       ),
       (){
-        routes.toPickPostImagePage(context, addPostModel, currentUserDoc);
+        if (addPostModel.postTitleNotifier.value.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Post titleを入力してください')));
+        } else {
+          routes.toPickPostImagePage(context, addPostModel, currentUserDoc);
+        }
       }
     );
   }

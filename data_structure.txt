@@ -1,6 +1,5 @@
 db{
     posts{
-        ImageExist: bool,
         audioURL: String,
         comments: [{
             comment: String,

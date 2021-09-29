@@ -4,6 +4,7 @@ import 'package:whisper/components/add_post/components/audio_buttons/audio_butto
 
 import 'package:whisper/components/add_post/add_post_model.dart';
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 
 class RecordButton extends StatelessWidget {
 
@@ -12,18 +13,23 @@ class RecordButton extends StatelessWidget {
   @override  
   Widget build(BuildContext context) {
     return 
-    AudioButton(
-      addPostProvider.addPostState == AddPostState.recording ?
-      '停止する'
-      : '録音する',
-      addPostProvider.addPostState == AddPostState.recording ?
-      Icon(Icons.pause)
-      : Icon(
-        Icons.fiber_manual_record,
-        color: kTertiaryColor,
-      ),
-      () async {
-        addPostProvider.onRecordButtonPressed(context);
+    ValueListenableBuilder<AddPostState>(
+      valueListenable: addPostProvider.addPostStateNotifier,
+      builder: (_,value,__) {
+        return AudioButton(
+          value == AddPostState.recording ?
+          '停止する'
+          : '録音する',
+          value == AddPostState.recording ?
+          Icon(Icons.pause)
+          : Icon(
+            Icons.fiber_manual_record,
+            color: kTertiaryColor,
+          ),
+          () async {
+            addPostProvider.onRecordButtonPressed(context);
+          }
+        );
       }
     );
   }

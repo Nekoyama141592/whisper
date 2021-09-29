@@ -13,28 +13,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
 
+import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
+
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
 );
 
-enum AddPostState {
-  initialValue,
-  recording,
-  recorded,
-  uploading,
-  uploaded
-}
 
 class AddPostModel extends ChangeNotifier {
   
   final postTitleNotifier = ValueNotifier<String>('');
   
-  AddPostState addPostState = AddPostState.initialValue;
   late AudioPlayer audioPlayer;
   String recordFilePath = '';
   String filePath = "";
@@ -45,12 +40,13 @@ class AddPostModel extends ChangeNotifier {
   // notifiers
   final progressNotifier = ProgressNotifier();
   final playButtonNotifier = PlayButtonNotifier();
-
+  final addPostStateNotifier = AddPostStateNotifier();
+  final isCroppedNotifier = ValueNotifier<bool>(false);
   // timer
   final stopWatchTimer = StopWatchTimer();
   // imagePicker
   XFile? xfile;
-  File? imageFile;
+  File? croppedFile;
 
   AddPostModel() {
     init();
@@ -62,13 +58,11 @@ class AddPostModel extends ChangeNotifier {
   }
 
   void startLoading() {
-    addPostState = AddPostState.uploading;
-    notifyListeners();
+    addPostStateNotifier.value = AddPostState.uploading;
   }
 
   void endLoading() {
-    addPostState = AddPostState.uploaded;
-    notifyListeners();
+    addPostStateNotifier.value = AddPostState.uploaded;
   }
 
   void reload() {
@@ -85,7 +79,9 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future cropImage() async {
-    File? croppedFile = await ImageCropper.cropImage(
+    isCroppedNotifier.value = false;
+    croppedFile = null;
+    croppedFile = await ImageCropper.cropImage(
       sourcePath: xfile!.path,
       aspectRatioPresets: Platform.isAndroid ?
       [
@@ -108,7 +104,7 @@ class AddPostModel extends ChangeNotifier {
       )
     );
     if (croppedFile != null) {
-      imageFile = croppedFile;
+      isCroppedNotifier.value = true;
       notifyListeners();
     }
   }
@@ -129,17 +125,17 @@ class AddPostModel extends ChangeNotifier {
     await audioPlayer.setFilePath(filePath);
   }
 
-  play() {
+  void play() {
     audioPlayer.play();
     notifyListeners();
   }
 
-  pause() {
+  void pause() {
     audioPlayer.pause();
     notifyListeners();
   }
 
-  seek(Duration position) {
+  void seek(Duration position) {
     audioPlayer.seek(position);
   }
 
@@ -167,18 +163,16 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future onRecordButtonPressed(context) async {
-    if (!(addPostState == AddPostState.recording)) {
-      addPostState = AddPostState.recording;
+    if (!(addPostStateNotifier.value == AddPostState.recording)) {
       await startRecording(context);
-      notifyListeners();
+      addPostStateNotifier.value = AddPostState.recording;
     } else {
       audioRecorder.stop();
       stopMeasure();
       await setAudio(filePath);
       audioFile = File(filePath);
-      addPostState = AddPostState.recorded;
+      addPostStateNotifier.value = AddPostState.recorded;
       listenForStates();
-      notifyListeners();
     }
   }
 
@@ -212,15 +206,13 @@ class AddPostModel extends ChangeNotifier {
       )
     )
     .getDownloadURL();
-    
     return downloadURL;
   }
 
 
   void onRecordAgainButtonPressed() {
-    addPostState = AddPostState.initialValue;
     postTitleNotifier.value = '';
-    notifyListeners();
+    addPostStateNotifier.value = AddPostState.initialValue;
   }
   
   Future onUploadButtonPressed(context) async {
@@ -229,23 +221,41 @@ class AddPostModel extends ChangeNotifier {
     endLoading();
   }
 
-  Future setCurrentUser() async {
+  void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
+  }
+
+  Future<String> uploadImage() async {
+    final String imageName = currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
+    try {
+      await FirebaseStorage.instance
+      .ref()
+      .child('postImages')
+      .child(imageName + 'jpg')
+      .putFile(croppedFile!);
+    } catch(e) {
+      print(e.toString());
+    }
+    final String downloadURL = await FirebaseStorage.instance
+    .ref()
+    .child('postImages')
+    .child(imageName + 'jpg')
+    .getDownloadURL();
+    return downloadURL;
   }
 
   
   Future addPostToFirebase(context) async {
+    final String imageURL = croppedFile == null ? '' : await uploadImage();
     if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('postTitle is Empty'))
       );
     } else {
       try {
-        
         final audioURL = await getPostUrl(context);
         await FirebaseFirestore.instance.collection('posts')
         .add({
-          'ImageExist': false,
           'audioURL': audioURL,
           'comments': [],
           'createdAt': Timestamp.now(),
@@ -254,7 +264,7 @@ class AddPostModel extends ChangeNotifier {
           'preservationsCount': 0,
           'score': 0,
           'title': postTitleNotifier.value,
-          'imageURL': '',
+          'imageURL': imageURL,
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),
           'userImageURL': '',
@@ -322,6 +332,4 @@ class AddPostModel extends ChangeNotifier {
       );
     });
   }
-
-  
 }

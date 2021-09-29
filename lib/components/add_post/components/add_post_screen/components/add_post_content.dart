@@ -17,6 +17,7 @@ import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/components/add_post/components/add_post_screen/components/details/recording_time.dart';
 import 'package:whisper/components/add_post/audio_controll/audio_window.dart';
 
+import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 
 class AddPostContent extends StatelessWidget {
 
@@ -28,72 +29,76 @@ class AddPostContent extends StatelessWidget {
     final postTitleController = TextEditingController(text: addPostModel.postTitleNotifier.value);
     final size = MediaQuery.of(context).size;
     return 
-    Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-        ),
-        addPostModel.addPostState == AddPostState.uploaded ?
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: CustomSnackBar.success(
-            message: '投稿、お疲れ様です！'
-          ),
-        )
-        : 
-        // SvgPicture
-        SvgPicture.asset(
-          'assets/svgs/recording-bro.svg',
-          height: 
-          addPostModel.addPostState != AddPostState.recorded ?
-          size.height * 0.4
-          : size.height * 0.2,
-        ),
-        
-        addPostModel.addPostState == AddPostState.uploading ?
-        Indicator()
-        : addPostModel.addPostState != AddPostState.recorded ?
-        Column(
+    ValueListenableBuilder<AddPostState>(
+      valueListenable: addPostModel.addPostStateNotifier,
+      builder: (_,value,__) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            RecordButton(addPostModel),
-          ],
-        )
-        
-        : addPostModel.addPostState != AddPostState.uploaded ?
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RetryButton(addPostModel,'やりなおす'),
-            ArrowForwardButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc, text: '次へ')
-            // UploadButton(addPostProvider)
-          ],
-        )
-        : RetryButton(addPostModel,'次の投稿を行う'),
-
-        RecordingTime(addPostModel,addPostModel.addPostState != AddPostState.recorded ? 80 : 30),
-
-        addPostModel.addPostState == AddPostState.recorded ?
-        Column(
-          children: [
-            RoundedInputField(
-              "Post title", 
-              Icons.graphic_eq, 
-              postTitleController, 
-              (text) {
-                addPostModel.postTitleNotifier.value = text;
-              }, 
-              kPrimaryColor
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
             ),
+            value == AddPostState.uploaded ?
             Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 20
+              padding: const EdgeInsets.all(20),
+              child: CustomSnackBar.success(
+                message: '投稿、お疲れ様です！'
               ),
+            )
+            : 
+            // SvgPicture
+            SvgPicture.asset(
+              'assets/svgs/recording-bro.svg',
+              height: 
+              value!= AddPostState.recorded ?
+              size.height * 0.4
+              : size.height * 0.2,
             ),
-            AudioWindow(addPostModel,currentUserDoc)
+            
+            value == AddPostState.uploading ?
+            Indicator()
+            : value != AddPostState.recorded ?
+            Column(
+              children: [
+                RecordButton(addPostModel),
+              ],
+            )
+            
+            : value != AddPostState.uploaded ?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RetryButton(addPostModel,'やりなおす'),
+                ArrowForwardButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc, text: '次へ')
+              ],
+            )
+            : RetryButton(addPostModel,'次の投稿を行う'),
+    
+            RecordingTime(addPostModel,value != AddPostState.recorded ? 80 : 30),
+    
+            value == AddPostState.recorded ?
+            Column(
+              children: [
+                RoundedInputField(
+                  "Post title", 
+                  Icons.graphic_eq, 
+                  postTitleController, 
+                  (text) {
+                    addPostModel.postTitleNotifier.value = text;
+                  }, 
+                  kPrimaryColor
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20
+                  ),
+                ),
+                AudioWindow(addPostModel,currentUserDoc)
+              ],
+            ): SizedBox()
           ],
-        ): SizedBox()
-      ],
+        );
+      }
     );
   }
 }

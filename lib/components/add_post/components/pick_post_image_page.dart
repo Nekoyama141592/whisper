@@ -18,26 +18,38 @@ class PickPostImagePage extends StatelessWidget {
   final DocumentSnapshot currentUserDoc;
   @override 
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('image'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            addPostModel.imageFile != null ? Image.file(addPostModel.imageFile!) : Image.network(currentUserDoc['imageURL']),
-            RoundedButton(
-              addPostModel.imageFile != null ? '写真を変更する' :'写真を追加(任意)', 
-              0.95, 
-              20, 
-              10, 
-              () => null, 
-              Colors.white, 
-              addPostModel.imageFile != null ? kTertiaryColor : kPrimaryColor
-            ),
-            UploadButton(addPostModel)
-          ],
+        child: ValueListenableBuilder<bool>(
+          valueListenable: addPostModel.isCroppedNotifier,
+          builder: (_,value,__) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: size.width * 0.6,
+                  width: size.width * 0.6,
+                  child: value ? Image.file(addPostModel.croppedFile!) : Image.network(currentUserDoc['imageURL']),
+                ),
+                RoundedButton(
+                  value ? '写真を変更する' :'写真を追加(任意)', 
+                  0.95, 
+                  20, 
+                  10, 
+                  () async {
+                    await addPostModel.showImagePicker();
+                  }, 
+                  Colors.white, 
+                  value ? kTertiaryColor : kPrimaryColor
+                ),
+                UploadButton(addPostModel)
+              ],
+            );
+          }
         ),
       ),
     );

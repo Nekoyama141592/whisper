@@ -19,9 +19,7 @@ class UploadButton extends StatelessWidget {
         color: kTertiaryColor,
       ),
       () async {
-        addPostProvider.startLoading();
-        // await addPostProvider.onUploadButtonPressed(context);
-        addPostProvider.endLoading();
+        await addPostProvider.onUploadButtonPressed(context);
       }
     );
   }
