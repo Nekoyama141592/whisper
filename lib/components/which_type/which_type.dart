@@ -2,21 +2,32 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:whisper/constants/colors.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
-class WhichType extends StatelessWidget {
+import 'package:whisper/components/add_post/add_post_model.dart';
 
+class WhichType extends ConsumerWidget {
+
+  WhichType({
+    Key? key,
+    required this.currentUserDoc
+  }) : super(key: key);
   final DocumentSnapshot currentUserDoc;
-  WhichType(this.currentUserDoc);
+
   @override 
-  Widget build(BuildContext context) {
-    
+  Widget build(BuildContext context, ScopedReader watch) {
+    final addPostModel = watch(addPostProvider);
     return
-    AddPostScreen(Content(currentUserDoc: currentUserDoc,));
+    AddPostScreen(
+      content: Content(currentUserDoc: currentUserDoc, addPostModel: addPostModel,), 
+      addPostModel: addPostModel, 
+      currentUserDoc: currentUserDoc
+    );
   }
 }
 
@@ -24,10 +35,11 @@ class Content extends StatelessWidget {
   const Content({
     Key? key,
     required this.currentUserDoc,
+    required this.addPostModel
   }) : super(key: key);
 
   final DocumentSnapshot<Object?> currentUserDoc;
-
+  final AddPostModel addPostModel;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -80,7 +92,7 @@ class Content extends StatelessWidget {
                 20,
                 10,
                 () {
-                  routes.toAddPostPage(context, currentUserDoc);
+                  routes.toAddPostPage(context, addPostModel,currentUserDoc);
                 }, 
                 Colors.white, 
                 kTertiaryColor

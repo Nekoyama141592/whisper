@@ -19,6 +19,7 @@ import 'package:whisper/auth/update_password/update_password_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
+import 'package:whisper/components/add_post/components/pick_post_image_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -84,8 +85,12 @@ void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainProvider,preservatedPostIds,likedPostIds)));
 }
 
-void toAddPostPage(context,currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage(currentUserDoc)));
+void toAddPostPage (context,addPostModel,currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage(currentUserDoc: currentUserDoc, addPostModel: addPostModel) ));
+}
+
+void toPickPostImagePage(context,addPostModel, currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
 

@@ -33,10 +33,7 @@ enum AddPostState {
 class AddPostModel extends ChangeNotifier {
   
   final postTitleNotifier = ValueNotifier<String>('');
-  // bool isUploading = false;
-  // bool isRecording = false;
-  // bool isRecorded = false;
-  // bool isUploaded = false;
+  
   AddPostState addPostState = AddPostState.initialValue;
   late AudioPlayer audioPlayer;
   String recordFilePath = '';
@@ -172,9 +169,8 @@ class AddPostModel extends ChangeNotifier {
   Future onRecordButtonPressed(context) async {
     if (!(addPostState == AddPostState.recording)) {
       addPostState = AddPostState.recording;
-      notifyListeners();
       await startRecording(context);
-      // startTimer
+      notifyListeners();
     } else {
       audioRecorder.stop();
       stopMeasure();
@@ -231,7 +227,6 @@ class AddPostModel extends ChangeNotifier {
     startLoading();
     await addPostToFirebase(context);
     endLoading();
-    
   }
 
   Future setCurrentUser() async {

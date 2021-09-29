@@ -17,7 +17,7 @@ import 'package:whisper/components/home/home.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/components/search/search_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
-import 'package:whisper/components/add_post/components/which_type.dart';
+import 'package:whisper/components/which_type/which_type.dart';
 import 'package:whisper/components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -67,7 +67,7 @@ class MyHomePage extends ConsumerWidget {
           SearchPage(
             _mainProvider
           ),
-          WhichType(_mainProvider.currentUserDoc),
+          WhichType(currentUserDoc: _mainProvider.currentUserDoc),
           BookmarksPage(
             _mainProvider.currentUserDoc,
             _mainProvider.preservatedPostIds, 
