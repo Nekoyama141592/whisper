@@ -19,10 +19,23 @@ class AddPostPage extends StatelessWidget {
   @override  
   Widget build(BuildContext context) {
     return AddPostScreen(
+      top: Row(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+              color: Colors.black,
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+            ),
+          ),
+        ],
+      ),
       content: AddPostContent(addPostModel, currentUserDoc),
        addPostModel: addPostModel, 
        currentUserDoc: currentUserDoc
       );
   }
 }
-

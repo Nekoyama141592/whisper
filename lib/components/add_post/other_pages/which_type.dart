@@ -24,6 +24,7 @@ class WhichType extends ConsumerWidget {
     final addPostModel = watch(addPostProvider);
     return
     AddPostScreen(
+      top: SizedBox.shrink(),
       content: Content(currentUserDoc: currentUserDoc, addPostModel: addPostModel,), 
       addPostModel: addPostModel, 
       currentUserDoc: currentUserDoc
