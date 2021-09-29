@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/constants/colors.dart';
 
+import 'package:whisper/details/rounded_button.dart';
 class PickImagePage extends StatelessWidget {
   PickImagePage({
     Key? key,
@@ -15,10 +17,14 @@ class PickImagePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('image'),
       ),
-      body: Column(
-        children: [
-          
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.image),
+            
+          ],
+        ),
       ),
     );
   }

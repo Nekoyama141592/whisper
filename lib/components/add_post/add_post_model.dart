@@ -22,6 +22,14 @@ final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
 );
 
+enum AddPostState {
+  initialValue,
+  recording,
+  recorded,
+  uploading,
+  uploaded
+}
+
 class AddPostModel extends ChangeNotifier {
   
   final postTitleNotifier = ValueNotifier<String>('');
