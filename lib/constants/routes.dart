@@ -19,7 +19,7 @@ import 'package:whisper/auth/update_password/update_password_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
-import 'package:whisper/components/add_post/components/pick_post_image_page.dart';
+import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));

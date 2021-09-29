@@ -19,15 +19,18 @@ final signupProvider = ChangeNotifierProvider(
 
 class SignupModel extends ChangeNotifier {
   
+  // basic
+  bool isLoading = false;
+  // info
   String userName = "";
   String email = "";
   String password = "";
+  bool isObscure = true;
 
   // image
-  bool isLoading = false;
-  bool isObscure = true;
+  bool isCropped = false;
   XFile? xfile;
-  File? imageFile;
+  File? croppedFile;
   String downloadURL = '';
 
   startLoading() {
@@ -55,7 +58,9 @@ class SignupModel extends ChangeNotifier {
   }
 
   Future cropImage() async {
-    File? croppedFile = await ImageCropper.cropImage(
+    isCropped = false;
+    croppedFile = null;
+    croppedFile = await ImageCropper.cropImage(
       sourcePath: xfile!.path,
       aspectRatioPresets: Platform.isAndroid ?
       [
@@ -78,9 +83,9 @@ class SignupModel extends ChangeNotifier {
       )
     );
     if (croppedFile != null) {
-      imageFile = croppedFile;
-      notifyListeners();
+      isCropped = true;
     }
+    notifyListeners();
   }
 
   Future uploadImage() async {
@@ -93,7 +98,7 @@ class SignupModel extends ChangeNotifier {
       .ref()
       .child('users')
       .child('$userName' +'$dateTime' + '.jpg')
-      .putFile(imageFile!);
+      .putFile(croppedFile!);
       downloadURL = await FirebaseStorage.instance
       .ref()
       .child('users')

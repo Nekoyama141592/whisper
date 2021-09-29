@@ -1,13 +1,16 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:whisper/details/rounded_input_field.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
+// constants
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/constants/colors.dart';
+// components
+import 'package:whisper/details/rounded_input_field.dart';
+import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/auth/components/already_have_an_account.dart';
 import 'package:whisper/auth/components/forget_password_text.dart';
+// model
 import 'signup_model.dart';
 
 class SignupPage extends ConsumerWidget {
@@ -21,6 +24,16 @@ class SignupPage extends ConsumerWidget {
       children: [
         Scaffold(
           extendBodyBehindAppBar: false,
+          floatingActionButton: FloatingActionButton(
+            child: Icon(
+              Icons.image,
+              color: Colors.white,
+            ),
+            backgroundColor: kPrimaryColor,
+            onPressed: () async {
+              await _signupProvider.showImagePicker();
+            }
+          ),
           body: SafeArea(
             child: Container(
               width: double.infinity,
@@ -67,8 +80,8 @@ class SignupPage extends ConsumerWidget {
                           children: [
                             Column(
                               children: [
-                                InkWell(
-                                  child: _signupProvider.imageFile != null ?
+                                Container(
+                                  child: _signupProvider.isCropped ?
                                   Container(
                                     margin: EdgeInsets.symmetric(
                                       vertical: 25
@@ -76,29 +89,36 @@ class SignupPage extends ConsumerWidget {
                                     width: 160,
                                     height: 160,
                                     decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: kTertiaryColor
+                                      ),
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                         fit: BoxFit.fill,
-                                        image: FileImage(_signupProvider.imageFile!),
+                                        image: FileImage(_signupProvider.croppedFile!),
                                       )
                                     ),
                                   )
-                                  : Icon(
-                                    Icons.image,
-                                    size: 160,
+                                  : Column(
+                                    children: [
+                                      Icon(
+                                        Icons.image,
+                                        size: 160,
+                                      ),
+                                      
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 5
+                                        ),
+                                        child: Text('右下のボタンで写真を選択',style: TextStyle(fontWeight: FontWeight.bold),),
+                                      )
+                                    ],
                                   ),
-                                  onTap: () async {
-                                    await _signupProvider.showImagePicker();
-                                  },
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('アイコンをタップしてプロフィール画像を設定'),
-                                )
                               ],
                             ),
                             RoundedInputField(
-                              "Your Email",
+                              "Email",
                               Icons.person,
                               emailInputController,
                               (text) {
@@ -107,7 +127,7 @@ class SignupPage extends ConsumerWidget {
                               kPrimaryColor
                             ),
                             RoundedPasswordField(
-                              "Your password",
+                              "password",
                               passwordInputController,
                               (text) {
                                 _signupProvider.password = text;

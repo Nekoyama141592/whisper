@@ -27,7 +27,8 @@ class AlreadyHaveAnAccount extends StatelessWidget{
               TextSpan(
                 text: 'ログイン',
                 style: TextStyle(
-                  color: textColor,fontSize: 18
+                  color: textColor,fontSize: 18,
+                  fontWeight: FontWeight.bold
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {
                   routes.toLoginpage(context);
