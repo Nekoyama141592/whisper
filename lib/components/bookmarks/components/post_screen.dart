@@ -32,9 +32,9 @@ class PostScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               colors: [
-                kPrimaryColor.withOpacity(0.9),
-                kPrimaryColor.withOpacity(0.8),
-                kPrimaryColor.withOpacity(0.4),
+                Theme.of(context).primaryColor.withOpacity(0.9),
+                Theme.of(context).primaryColor.withOpacity(0.8),
+                Theme.of(context).primaryColor.withOpacity(0.4),
               ]
             )
           ),
@@ -62,7 +62,7 @@ class PostScreen extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: kBackgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       topRight: Radius.circular(35)

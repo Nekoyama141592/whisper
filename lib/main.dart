@@ -38,7 +38,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Whisper',
       debugShowCheckedModeBanner: false,
-      theme: themeModel.isDarkTheme ? lightThemeData(context) : lightThemeData(context),
+      theme: themeModel.isDarkTheme ? darkThemeData(context) : lightThemeData(context),
       home: currentUser == null ? 
       SignupPage()
       : MyHomePage(

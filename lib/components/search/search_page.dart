@@ -34,14 +34,6 @@ class SearchPage extends ConsumerWidget {
               bottom: Radius.circular(30)
             )
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.keyboard_arrow_down),
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
-            )
-          ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
             tabs: tabBarElements.map((tabBarElement) {

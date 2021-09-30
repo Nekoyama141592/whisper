@@ -1,14 +1,16 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+// constants
 import 'package:whisper/constants/colors.dart';
-
 import 'package:whisper/constants/routes.dart' as routes;
+// components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
+// model
 import 'package:whisper/components/add_post/add_post_model.dart';
 
 class WhichType extends ConsumerWidget {
@@ -45,7 +47,7 @@ class Content extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      
+      color: Theme.of(context).scaffoldBackgroundColor,
       width: MediaQuery.of(context).size.width,
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -85,7 +87,7 @@ class Content extends StatelessWidget {
                   );
                 }, 
                 Colors.black, 
-                kQuaternaryColor
+                Theme.of(context).colorScheme.secondary
               ),
               RoundedButton(
                 '普通の投稿', 
@@ -96,7 +98,7 @@ class Content extends StatelessWidget {
                   routes.toAddPostPage(context, addPostModel,currentUserDoc);
                 }, 
                 Colors.white, 
-                kTertiaryColor
+                Theme.of(context).highlightColor
               ),
               
             ],

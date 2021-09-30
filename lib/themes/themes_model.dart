@@ -8,7 +8,7 @@ final themeProvider = ChangeNotifierProvider(
 );
 
 class ThemeModel extends ChangeNotifier {
-  bool isDarkTheme = false;
+  bool isDarkTheme = true;
 
   void toggoleIsDarkTheme() {
     isDarkTheme = !isDarkTheme;

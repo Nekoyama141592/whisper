@@ -5,6 +5,7 @@ import 'package:whisper/constants/colors.dart';
 ThemeData lightThemeData(BuildContext context) {
   return ThemeData.light().copyWith(
     primaryColor: kPrimaryColor,
+    highlightColor: kTertiaryColor,
     scaffoldBackgroundColor: kBackgroundColor,
     // appBarTheme: AppBarTheme(),
     iconTheme: IconThemeData(color: kContentColorLightTheme),
@@ -21,7 +22,7 @@ ThemeData lightThemeData(BuildContext context) {
       backgroundColor: kBackgroundColor,
       selectedItemColor: kContentColorLightTheme.withOpacity(0.7),
       unselectedItemColor: kContentColorLightTheme.withOpacity(0.32),
-      selectedIconTheme: IconThemeData(color: kPrimaryColor),
+      selectedIconTheme: IconThemeData(color: kTertiaryColor),
       showUnselectedLabels: true,
     ),
   );
@@ -29,15 +30,17 @@ ThemeData lightThemeData(BuildContext context) {
 
 ThemeData darkThemeData(BuildContext context){
   return ThemeData.dark().copyWith(
-    primaryColor: kPrimaryColor,
+    primaryColor: kTertiaryColor,
+    highlightColor: kPrimaryColor,
     scaffoldBackgroundColor: kContentColorLightTheme,
     // appBarTheme: AppBar
+    appBarTheme: AppBarTheme(color: kTertiaryColor),
     iconTheme: IconThemeData(color: kContentColorDarkTheme),
     textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
         .apply(bodyColor: kContentColorDarkTheme),
     colorScheme: ColorScheme.dark().copyWith(
-      primary: kPrimaryColor,
-      secondary: kSecondaryColor,
+      primary: kTertiaryColor,
+      secondary: kQuaternaryColor,
       error: kErrorColor,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(

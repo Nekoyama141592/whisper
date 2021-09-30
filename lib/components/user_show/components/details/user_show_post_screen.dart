@@ -1,13 +1,15 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
+// components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/audio_state_items/audio_window.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
-import 'package:whisper/constants/routes.dart' as routes;
-
+// model
 import 'package:whisper/components/user_show/user_show_model.dart';
 class UserShowPostScreen extends StatelessWidget {
   const UserShowPostScreen({

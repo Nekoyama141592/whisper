@@ -1,11 +1,11 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+// components
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
-import 'package:whisper/constants/colors.dart';
 import 'package:whisper/details/rounded_button.dart';
-
+// model
 import 'package:whisper/components/user_show/user_show_model.dart';
 
 class UserShowButton extends StatelessWidget {
@@ -37,7 +37,7 @@ class UserShowButton extends StatelessWidget {
         userShowProvider.onEditButtonPressed(currentUserDoc);
       }, 
       Colors.white, 
-      kTertiaryColor
+      Theme.of(context).highlightColor
     )
     : !followingUids.contains(userDoc['uid']) ?
     RoundedButton(
@@ -55,7 +55,7 @@ class UserShowButton extends StatelessWidget {
         }
       }, 
       Colors.white, 
-      kTertiaryColor
+      Theme.of(context).highlightColor
     )
     : RoundedButton(
       'unfollow', 
@@ -72,7 +72,7 @@ class UserShowButton extends StatelessWidget {
         }
       },  
       Colors.white, 
-      kQuaternaryColor
+      Theme.of(context).colorScheme.secondary
     );
     
   }

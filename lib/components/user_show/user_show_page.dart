@@ -1,17 +1,19 @@
-
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
-import 'user_show_model.dart';
+// components
 import 'package:whisper/posts/components/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/user_show_button.dart';
 import 'package:whisper/components/user_show/components/edit_profile/edit_profile_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
+// models
 import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
+import 'user_show_model.dart';
 
 class UserShowPage extends ConsumerWidget {
   
@@ -45,9 +47,9 @@ class UserShowPage extends ConsumerWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               colors: [
-                kPrimaryColor.withOpacity(0.9),
-                kPrimaryColor.withOpacity(0.8),
-                kPrimaryColor.withOpacity(0.4),
+                Theme.of(context).primaryColor.withOpacity(0.9),
+                Theme.of(context).primaryColor.withOpacity(0.8),
+                Theme.of(context).primaryColor.withOpacity(0.4),
               ]
             )
           ),
@@ -111,7 +113,6 @@ class UserShowPage extends ConsumerWidget {
                           ),
                         ),
                         SizedBox(width: 20,),
-                        // if (doc.id == currentUserDoc.id) Text('変更')
                       ],
                     )
 
@@ -123,7 +124,7 @@ class UserShowPage extends ConsumerWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: kBackgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       topRight: Radius.circular(35)

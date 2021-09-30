@@ -1,15 +1,18 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
-import 'package:whisper/components/user_show/user_show_model.dart';
+// components
 import 'package:whisper/posts/components/audio_state_items/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_title.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_post_id.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
-
 import 'package:whisper/posts/components/comments/comments.dart';
+// model
+import 'package:whisper/components/user_show/user_show_model.dart';
+
 
 class UserShowPostShowPage extends StatelessWidget {
   UserShowPostShowPage(this.currentUserDoc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);

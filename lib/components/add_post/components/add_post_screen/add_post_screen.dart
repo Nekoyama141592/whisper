@@ -28,9 +28,9 @@ class AddPostScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               colors: [
-                kPrimaryColor.withOpacity(0.9),
-                kPrimaryColor.withOpacity(0.8),
-                kPrimaryColor.withOpacity(0.4),
+                Theme.of(context).primaryColor.withOpacity(0.9),
+                Theme.of(context).primaryColor.withOpacity(0.8),
+                Theme.of(context).primaryColor.withOpacity(0.4),
               ]
             )
           ),
@@ -56,7 +56,7 @@ class AddPostScreen extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: kBackgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.all(
                       Radius.circular(35)
                     )
