@@ -28,7 +28,6 @@ class VerifyPasswordResetPage extends ConsumerWidget {
               (text) {
                 _verifyPasswordResetModel.email = text;
               }, 
-              kTertiaryColor
             ),
           ),
           Center(

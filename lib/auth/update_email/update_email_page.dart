@@ -40,8 +40,7 @@ class UpdateEmailPage extends ConsumerWidget {
               newEmailInputController, 
               (text) {
                 _updateEmailModel.newEmail = text;
-              }, 
-              kPrimaryColor
+              },
             ),
             SizedBox(height: 16,),
             RoundedButton(

@@ -88,7 +88,6 @@ class LoginPage extends ConsumerWidget {
                               (text) {
                                 _loginProvider.email = text;
                               },
-                              kTertiaryColor
                             ),
                             RoundedPasswordField(
                               "Your password",

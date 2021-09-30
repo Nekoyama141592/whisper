@@ -124,7 +124,6 @@ class SignupPage extends ConsumerWidget {
                               (text) {
                                 _signupProvider.email = text;
                               },
-                              kPrimaryColor
                             ),
                             RoundedPasswordField(
                               "password",

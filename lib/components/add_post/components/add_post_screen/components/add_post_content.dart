@@ -86,7 +86,6 @@ class AddPostContent extends StatelessWidget {
                   (text) {
                     addPostModel.postTitleNotifier.value = text;
                   }, 
-                  kPrimaryColor
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
