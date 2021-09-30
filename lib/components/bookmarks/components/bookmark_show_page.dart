@@ -1,26 +1,36 @@
+// material
 import 'package:flutter/material.dart';
+// package
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whisper/constants/colors.dart';
-
-import 'package:whisper/components/bookmarks/bookmarks_model.dart';
-
+// components
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_state_items/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_title.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_post_id.dart';
 import 'package:whisper/posts/components/comments/comments.dart';
+// model
+import 'package:whisper/components/bookmarks/bookmarks_model.dart';
+
 
 
 class BookmarkShowPage extends StatelessWidget{
+  const BookmarkShowPage({
+    Key? key,
+    required this.currentUserDoc,
+    required this.bookmarksModel,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+  }) : super(key: key);
+  
   final DocumentSnapshot currentUserDoc;
-  final BookMarksModel bookmarksProvider;
+  final BookMarksModel bookmarksModel;
   final List preservatedPostIds;
   final List likedPostIds;
-  BookmarkShowPage(this.currentUserDoc,this.bookmarksProvider,this.preservatedPostIds,this.likedPostIds);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
         
         body: SafeArea(
@@ -47,43 +57,43 @@ class BookmarkShowPage extends StatelessWidget{
                     children: [
                       Center(
                         // image
-                        child: CurrentSongPostId(bookmarksProvider.currentSongPostIdNotifier),
+                        child: CurrentSongPostId(bookmarksModel.currentSongPostIdNotifier),
                       ),
                       Center(
-                        child: CurrentSongTitle(bookmarksProvider.currentSongTitleNotifier),
+                        child: CurrentSongTitle(bookmarksModel.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         currentUserDoc,
-                        bookmarksProvider.currentSongPostIdNotifier,
-                        bookmarksProvider.currentSongDocIdNotifier,
-                        bookmarksProvider.currentSongCommentsNotifier,
+                        bookmarksModel.currentSongPostIdNotifier,
+                        bookmarksModel.currentSongDocIdNotifier,
+                        bookmarksModel.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(
                         preservatedPostIds,
                         likedPostIds,
-                        bookmarksProvider.currentSongTitleNotifier,
-                        bookmarksProvider.progressNotifier,
-                        bookmarksProvider.seek,
-                        bookmarksProvider.repeatButtonNotifier,
+                        bookmarksModel.currentSongTitleNotifier,
+                        bookmarksModel.progressNotifier,
+                        bookmarksModel.seek,
+                        bookmarksModel.repeatButtonNotifier,
                         (){
-                          bookmarksProvider.onRepeatButtonPressed();
+                          bookmarksModel.onRepeatButtonPressed();
                         },
-                        bookmarksProvider.isFirstSongNotifier,
+                        bookmarksModel.isFirstSongNotifier,
                         (){
-                          bookmarksProvider.onPreviousSongButtonPressed();
+                          bookmarksModel.onPreviousSongButtonPressed();
                         },
-                        bookmarksProvider.playButtonNotifier,
+                        bookmarksModel.playButtonNotifier,
                         (){
-                          bookmarksProvider.play();
+                          bookmarksModel.play();
                         },
                         (){
-                          bookmarksProvider.pause();
+                          bookmarksModel.pause();
                         },
-                        bookmarksProvider.isLastSongNotifier,
+                        bookmarksModel.isLastSongNotifier,
                         (){
-                          bookmarksProvider.onNextSongButtonPressed();
+                          bookmarksModel.onNextSongButtonPressed();
                         }
                       ),
                       
@@ -91,7 +101,7 @@ class BookmarkShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(bookmarksProvider.currentSongCommentsNotifier)
+              Comments(bookmarksModel.currentSongCommentsNotifier)
             ],
           ),
         ),

@@ -1,10 +1,10 @@
+// material
 import 'package:flutter/material.dart';
-
+// pages
 import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
 import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
-
 import 'package:whisper/components/home/feeds/components/feed_show_page.dart';
 import 'package:whisper/components/home/recommenders/components/recommender_show_page.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_show_page.dart';
@@ -54,23 +54,23 @@ void toPreservationsPage(context,currentUserDoc,preservatedPostIds,likedPostIds)
   Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(currentUserDoc,preservatedPostIds,likedPostIds)));
 }
 
-void toPreservationsShowPage(context,currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarkShowPage(currentUserDoc,preservationsProvider,preservatedPostIds,likedPostIds)));
+void toPreservationsShowPage(context,currentUserDoc,bookmarksModel,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarkShowPage(currentUserDoc: currentUserDoc, bookmarksModel: bookmarksModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
 }
 
 void toUserShowPage(context,currentUserDoc,doc,preservatedPostIds,likedPostIds,followingUids) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc,doc,preservatedPostIds,likedPostIds,followingUids)));
 }
 void toFeedShowPage(context,feedsProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(feedsProvider,preservatedPostIds,likedPostIds)));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(feedsProvider: feedsProvider, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
 }
 
 void toRecommenderShowPage(context,currentUserDoc,recommendersProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(currentUserDoc,recommendersProvider,preservatedPostIds,likedPostIds)));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(currentUserDoc: currentUserDoc, recommendersProvider: recommendersProvider, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
 }
 
 void toUserShowPostShowPage(context,currentUserDoc,userShowProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(currentUserDoc,userShowProvider,preservatedPostIds,likedPostIds)));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(currentUserDoc: currentUserDoc, userShowProvider: userShowProvider, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
 }
 
 void toAdminPage(context,currentUserDoc) {

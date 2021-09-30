@@ -15,16 +15,24 @@ import 'package:whisper/components/user_show/user_show_model.dart';
 
 
 class UserShowPostShowPage extends StatelessWidget {
-  UserShowPostShowPage(this.currentUserDoc,this.userShowProvider,this.preservatedPostIds,this.likedPostIds);
+  
+  const UserShowPostShowPage({
+    Key? key,
+    required this.currentUserDoc,
+    required this.userShowProvider,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+  });
   
   final UserShowModel userShowProvider;
   final DocumentSnapshot currentUserDoc;
   final List preservatedPostIds;
   final List likedPostIds;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
         
         body: SafeArea(
@@ -46,7 +54,6 @@ class UserShowPostShowPage extends StatelessWidget {
               ),
               SingleChildScrollView(
                 child: Container(
-                  // margin: EdgeInsets.only(top: 100),
                   child: Column(
                     children: [
                       Center(

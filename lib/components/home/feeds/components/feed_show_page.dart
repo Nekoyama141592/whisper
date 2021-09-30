@@ -1,24 +1,31 @@
+// material
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/colors.dart';
-import 'package:whisper/components/home/feeds/feeds_model.dart';
+// components
 import 'package:whisper/posts/components/audio_state_items/audio_state_design.dart';
-
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_title.dart';
 import 'package:whisper/posts/components/audio_state_items/current_song_post_id.dart';
-
 import 'package:whisper/posts/components/comments/comments.dart';
+// model
+import 'package:whisper/components/home/feeds/feeds_model.dart';
+
 class FeedShowPage extends StatelessWidget{
+  
+  const FeedShowPage({
+    required this.feedsProvider,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+  });
+
   final FeedsModel feedsProvider;
   final List preservatedPostIds;
   final List likedPostIds;
-  FeedShowPage(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
-        
         body: SafeArea(
           child: Column(
             children: [
@@ -37,9 +44,7 @@ class FeedShowPage extends StatelessWidget{
                 ),
               ),
               Container(
-                // margin: EdgeInsets.only(top: 100),
                 child: Column(
-                  
                   children: [
                     Center(
                       // image
