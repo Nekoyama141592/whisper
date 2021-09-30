@@ -37,7 +37,7 @@ class BookmarkCard extends StatelessWidget {
               child: ListView.builder(
                 itemCount: bookmarksProvider.preservationDocs.length,
                 itemBuilder: (BuildContext context, int i) =>
-                  PostCard(bookmarksProvider.preservationDocs[i])
+                  PostCard(postDoc: bookmarksProvider.preservationDocs[i])
               ),
             ),
             AudioWindow(

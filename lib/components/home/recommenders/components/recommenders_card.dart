@@ -23,7 +23,7 @@ class RecommendersCard extends StatelessWidget{
             itemCount: recommendersProvider.recommenderDocs.length,
             itemBuilder: (BuildContext context, int i) =>
               PostCard(
-                recommendersProvider.recommenderDocs[i]
+                postDoc: recommendersProvider.recommenderDocs[i]
               )
           ),
         ),

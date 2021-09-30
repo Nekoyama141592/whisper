@@ -34,7 +34,7 @@ class AudioWindow extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.03,
                 ),
-                child: UserImage(doc: currentUserDoc,)
+                child: UserImage(userImageURL: currentUserDoc['imageURL'],)
               ),
               Container(
                 width: size.width * 0.55,

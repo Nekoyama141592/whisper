@@ -18,7 +18,7 @@ class FeedsCard extends StatelessWidget{
           child: ListView.builder(
             itemCount: feedsProvider.feedDocs.length,
             itemBuilder: (BuildContext context, int i) =>
-              PostCard(feedsProvider.feedDocs[i])
+              PostCard(postDoc: feedsProvider.feedDocs[i])
           ),
         ),
         AudioWindow(

@@ -1,18 +1,24 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-// import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
+// components
+import 'package:whisper/details/circle_image.dart';
 
-// import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
 class PostCard extends StatelessWidget {
   
-  final DocumentSnapshot doc;
-  PostCard(this.doc);
+  const PostCard({
+    Key? key,
+    required this.postDoc
+  }) : super(key: key);
+
+  final DocumentSnapshot postDoc;
 
   @override  
   Widget build(BuildContext context) {
-    final Timestamp timeStamp = doc['createdAt'];
+    final Timestamp timeStamp = postDoc['createdAt'];
     final date = timeStamp.toDate();
     final year = date.year.toString();
     final month = date.month.toString();
@@ -35,13 +41,10 @@ class PostCard extends StatelessWidget {
           children: [
             ListTile(
               // imageURL
-              leading: CircleAvatar(
-                radius: 24,
-              ),
-              title: Text(doc['title']),
-              subtitle: Text(doc.id),
+              // leading: CircleImage(length: 50.0, image: NetworkImage(postDoc['imageURL'])),
+              title: Text(postDoc['title']),
+              subtitle: Text(postDoc.id),
               trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),
-              
             )
           ],
         ),

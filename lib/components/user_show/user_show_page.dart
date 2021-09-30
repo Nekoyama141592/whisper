@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/posts/components/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/user_show_button.dart';
@@ -18,13 +16,13 @@ import 'user_show_model.dart';
 class UserShowPage extends ConsumerWidget {
   
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot doc;
+  final DocumentSnapshot passiveUserDoc;
   final List preservatedPostIds;
   final List likedPostIds;
   final List followingUids;
   UserShowPage(
     this.currentUserDoc,
-    this.doc,
+    this.passiveUserDoc,
     this.preservatedPostIds,
     this.likedPostIds,
     this.followingUids
@@ -67,18 +65,18 @@ class UserShowPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      !_userShowProvider.isEdited ? doc['userName'] : _userShowProvider.userName,
+                      !_userShowProvider.isEdited ? passiveUserDoc['userName'] : _userShowProvider.userName,
                       style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)
                     ),
                     
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        UserImage(doc: doc),
+                        UserImage(userImageURL: passiveUserDoc['imageURL'],),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            !_userShowProvider.isEdited ? doc['description'] : _userShowProvider.description,
+                            !_userShowProvider.isEdited ? passiveUserDoc['description'] : _userShowProvider.description,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold
@@ -87,7 +85,7 @@ class UserShowPage extends ConsumerWidget {
                         ),
                         UserShowButton(
                           currentUserDoc: currentUserDoc, 
-                          userDoc: doc, 
+                          userDoc: passiveUserDoc, 
                           userShowProvider: _userShowProvider, 
                           followingUids: followingUids, 
                           followProvider: _followProvider

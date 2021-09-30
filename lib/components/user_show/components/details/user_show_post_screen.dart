@@ -40,7 +40,7 @@ class UserShowPostScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: _userShowProvider.postDocs.length,
                 itemBuilder: (BuildContext context, int i) =>
-                PostCard(_userShowProvider.postDocs[i])
+                PostCard(postDoc: _userShowProvider.postDocs[i])
               )
             ),
             AudioWindow(
