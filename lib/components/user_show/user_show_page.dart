@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-import 'package:whisper/posts/components/details/user_image.dart';
+import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/user_show_button.dart';
 import 'package:whisper/components/user_show/components/edit_profile/edit_profile_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
@@ -72,9 +72,9 @@ class UserShowPage extends ConsumerWidget {
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        UserImage(userImageURL: passiveUserDoc['imageURL'],),
+                        UserImage(userImageURL: passiveUserDoc['imageURL'],length: 60.0,padding: 5.0,),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: Text(
                             !_userShowProvider.isEdited ? passiveUserDoc['description'] : _userShowProvider.description,
                             style: TextStyle(

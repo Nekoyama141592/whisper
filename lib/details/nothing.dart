@@ -1,24 +1,30 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:flutter_svg/svg.dart';
 
 class Nothing extends StatelessWidget {
   @override  
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Center(
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/svgs/Search-rafiki.svg',
-            height: size.height * 0.30,
+          Center(
+            child: SvgPicture.asset(
+              'assets/svgs/Search-rafiki.svg',
+              height: size.height * 0.30,
+            ),
           ),
-          Text(
-            'Nothing',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24
+          Center(
+            child: Text(
+              'Nothing',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24
+              ),
             ),
           )
         ],
