@@ -10,11 +10,18 @@ import 'package:whisper/components/search/user_search/user_search_page.dart';
 import 'package:whisper/components/search/post_search/post_search_page.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/themes/themes_model.dart';
 
 class SearchPage extends ConsumerWidget {
 
-  SearchPage(this.mainModel);
+  const SearchPage({
+    Key? key,
+    required this.mainModel,
+    required this.themeModel
+  }) : super(key: key);
+
   final MainModel mainModel;
+  final ThemeModel themeModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     return DefaultTabController(
@@ -44,7 +51,7 @@ class SearchPage extends ConsumerWidget {
             }).toList()
           ),
         ),
-        drawer: WhisperDrawer(mainModel: mainModel),
+        drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: 
         TabBarView(
           children: [

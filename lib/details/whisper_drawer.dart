@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/colors.dart';
+// components
+import 'package:whisper/details/toggle_icon.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -42,7 +45,7 @@ class WhisperDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('テーマ変更'),
-            trailing:  themeModel.isDarkTheme ? Icon(Icons.toggle_on) : Icon(Icons.toggle_off),
+            trailing:  themeModel.isDarkTheme ? ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,) : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,),
             onTap: () {
               themeModel.toggoleIsDarkTheme();
             },

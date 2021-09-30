@@ -1,17 +1,23 @@
+// material
 import 'package:flutter/material.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart';
+// model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/themes/themes_model.dart';
 
 class NotificationIcon extends StatelessWidget {
 
   NotificationIcon(
-    this.mainProvider,
+    this.mainModel,
+    this.themeModel,
     this.preservatedPostIds,
     this.likedPostIds
   );
 
-  final MainModel mainProvider;
+  final MainModel mainModel;
+  final ThemeModel themeModel;
   final List preservatedPostIds;
   final List likedPostIds;
   @override  
@@ -23,13 +29,14 @@ class NotificationIcon extends StatelessWidget {
         onTap: () {
           toNotificationsPage(
             context, 
-            mainProvider, 
+            mainModel,
+            themeModel,
             preservatedPostIds, 
             likedPostIds
           );
         },
-        child: mainProvider.newLikeNotifications.length > 0 || 
-        mainProvider.newFollowNotifications.length > 0 ?
+        child: mainModel.newLikeNotifications.length > 0 || 
+        mainModel.newFollowNotifications.length > 0 ?
         Stack(
           children: [
             Icon(Icons.notifications),

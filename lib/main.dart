@@ -69,13 +69,10 @@ class MyHomePage extends ConsumerWidget {
           _provider.onPageChanged(index);
         },
         children: [
-          Home(
-            mainModel,
-            mainModel.preservatedPostIds,
-            mainModel.likedPostIds
-          ),
+          Home(mainModel: mainModel, themeModel: themeModel, preservatedPostIds: mainModel.preservatedPostIds, likedPostIds: mainModel.likedPostIds),
           SearchPage(
-            mainModel
+            mainModel: mainModel,
+            themeModel: themeModel,
           ),
           WhichType(currentUserDoc: mainModel.currentUserDoc),
           BookmarksPage(

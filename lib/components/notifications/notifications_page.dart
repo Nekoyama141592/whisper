@@ -8,11 +8,13 @@ import 'package:whisper/components/notifications/components/like_notifications/l
 import 'package:whisper/components/notifications/components/follow_notifications/follow_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/themes/themes_model.dart';
 
 class NotificationsPage extends StatelessWidget {
 
   NotificationsPage(
     this.mainModel,
+    this.themeModel,
     this.preservatedPostIds,
     this.likedPostIds
   );
@@ -20,6 +22,7 @@ class NotificationsPage extends StatelessWidget {
   final MainModel mainModel;
   final List preservatedPostIds;
   final List likedPostIds;
+  final ThemeModel themeModel;
 
   @override  
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class NotificationsPage extends StatelessWidget {
           ),
           
         ),
-        drawer: WhisperDrawer(mainModel: mainModel),
+        drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: TabBarView(
           children: [
             LikeNotification(

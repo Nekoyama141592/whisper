@@ -1,21 +1,33 @@
+// material
 import 'package:flutter/material.dart';
-import 'package:whisper/main_model.dart';
-
+// constants
+import 'package:whisper/constants/tab_bar_elements.dart';
+// components
+import 'package:whisper/details/notificationIcon.dart';
+import 'package:whisper/details/whisper_drawer.dart';
+// pages
 import 'package:whisper/components/home/feeds/feeds_page.dart';
 import 'package:whisper/components/home/recommenders/recommenders_page.dart';
+// model
+import 'package:whisper/main_model.dart';
+import 'package:whisper/themes/themes_model.dart';
 
-import 'package:whisper/details/notificationIcon.dart';
-import 'package:whisper/constants/tab_bar_elements.dart';
-
-import 'package:whisper/details/whisper_drawer.dart';
 
 class Home extends StatelessWidget {
 
-  Home(this.mainModel, this.preservatedPostIds,this.likedPostIds);
+  const Home({
+    Key? key,
+    required this.mainModel,
+    required this.themeModel,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+  }) : super(key: key);
   
   final MainModel mainModel;
+  final ThemeModel themeModel;
   final List preservatedPostIds;
   final List likedPostIds;
+
   @override  
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -31,6 +43,7 @@ class Home extends StatelessWidget {
           actions: [
             NotificationIcon(
               mainModel,
+              themeModel,
               preservatedPostIds,
               likedPostIds
             )
@@ -47,7 +60,7 @@ class Home extends StatelessWidget {
         
         drawer: WhisperDrawer(
           mainModel: mainModel,
-          themeModel: ,
+          themeModel: themeModel,
         ),
         body: TabBarView(
           children: [

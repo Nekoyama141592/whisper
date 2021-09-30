@@ -81,8 +81,8 @@ void toAccountPage(context,currentUserDoc,currentUser) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc: currentUserDoc)));
 }
 
-void toNotificationsPage(context,mainProvider,preservatedPostIds,likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainProvider,preservatedPostIds,likedPostIds)));
+void toNotificationsPage(context,mainModel,themeModel,preservatedPostIds,likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel, themeModel, preservatedPostIds, likedPostIds) ));
 }
 
 void toAddPostPage (context,addPostModel,currentUserDoc) {
