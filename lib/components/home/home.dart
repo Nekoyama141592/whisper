@@ -45,7 +45,10 @@ class Home extends StatelessWidget {
           ),
         ),
         
-        drawer: WhisperDrawer(mainModel: mainModel),
+        drawer: WhisperDrawer(
+          mainModel: mainModel,
+          themeModel: ,
+        ),
         body: TabBarView(
           children: [
             FeedsPage(preservatedPostIds,likedPostIds),

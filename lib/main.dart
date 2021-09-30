@@ -20,6 +20,7 @@ import 'package:whisper/components/add_post/other_pages/which_type.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
 // models
 import 'package:whisper/main_model.dart';
+import 'package:whisper/themes/themes_model.dart';
 
 
 void main() async {
@@ -29,23 +30,32 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final themeModel = watch(themeProvider);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Whisper',
       debugShowCheckedModeBanner: false,
-      
-      theme: lightThemeData(context),
+      theme: themeModel.isDarkTheme ? lightThemeData(context) : lightThemeData(context),
       home: currentUser == null ? 
       SignupPage()
-      : MyHomePage(),
+      : MyHomePage(
+        themeModel: themeModel,
+      ),
     );
   }
 }
 
 class MyHomePage extends ConsumerWidget {
+
+  const MyHomePage({
+    Key? key,
+    required this.themeModel
+  }) : super(key: key);
+
+  final ThemeModel themeModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final mainModel = watch(mainProvider);

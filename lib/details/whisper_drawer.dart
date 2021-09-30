@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/themes/themes_model.dart';
 
 class WhisperDrawer extends StatelessWidget {
   
@@ -13,11 +14,12 @@ class WhisperDrawer extends StatelessWidget {
   
   WhisperDrawer({
     Key? key,
-    required this.mainModel
+    required this.mainModel,
+    required this.themeModel
   }) : super(key: key);
 
   final MainModel mainModel;
-  
+  final ThemeModel themeModel;
   @override  
   Widget build(BuildContext context) {
     return Drawer(
@@ -40,9 +42,9 @@ class WhisperDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('テーマ変更'),
-            trailing: Icon(Icons.toggle_off),
+            trailing:  themeModel.isDarkTheme ? Icon(Icons.toggle_on) : Icon(Icons.toggle_off),
             onTap: () {
-              
+              themeModel.toggoleIsDarkTheme();
             },
           ),
         ],
