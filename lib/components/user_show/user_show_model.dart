@@ -208,6 +208,7 @@ class UserShowModel extends ChangeNotifier {
       currentSongTitleNotifier.value = title;
       currentSongPostIdNotifier.value = currentSongDoc['postId'];
       currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
       currentSongCommentsNotifier.value = currentSongDoc['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;

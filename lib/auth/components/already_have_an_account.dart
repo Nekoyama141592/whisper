@@ -22,7 +22,10 @@ class AlreadyHaveAnAccount extends StatelessWidget{
             style: TextStyle(color: Colors.black),
             children: [
               TextSpan(
-                text: 'すでにアカウントをお持ちですか？'
+                text: 'すでにアカウントをお持ちですか？',
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
+                )
               ),
               TextSpan(
                 text: 'ログイン',

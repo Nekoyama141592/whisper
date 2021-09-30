@@ -6,8 +6,8 @@ import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class FeedsCard extends StatelessWidget{
-  FeedsCard(this.feedsProvider,this.preservatedPostIds,this.likedPostIds);
-  final FeedsModel feedsProvider;
+  FeedsCard(this.feedsModel,this.preservatedPostIds,this.likedPostIds);
+  final FeedsModel feedsModel;
   final List preservatedPostIds;
   final List likedPostIds;
   @override
@@ -16,29 +16,30 @@ class FeedsCard extends StatelessWidget{
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: feedsProvider.feedDocs.length,
+            itemCount: feedsModel.feedDocs.length,
             itemBuilder: (BuildContext context, int i) =>
-              PostCard(postDoc: feedsProvider.feedDocs[i])
+              PostCard(postDoc: feedsModel.feedDocs[i])
           ),
         ),
         AudioWindow(
           preservatedPostIds,
           likedPostIds,
           (){
-            routes.toFeedShowPage(context, feedsProvider, preservatedPostIds, likedPostIds);
+            routes.toFeedShowPage(context, feedsModel, preservatedPostIds, likedPostIds);
           },
-          feedsProvider.progressNotifier,
-          feedsProvider.seek,
-          feedsProvider.currentSongTitleNotifier,
-          feedsProvider.currentSongPostIdNotifier,
-          feedsProvider.playButtonNotifier,
+          feedsModel.progressNotifier,
+          feedsModel.seek,
+          feedsModel.currentSongTitleNotifier,
+          feedsModel.currentSongPostIdNotifier,
+          feedsModel.currentSongUserImageURLNotifier,
+          feedsModel.playButtonNotifier,
           (){
-            feedsProvider.play();
+            feedsModel.play();
           },
          (){
-           feedsProvider.pause();
+           feedsModel.pause();
          },
-          feedsProvider.currentUserDoc
+          feedsModel.currentUserDoc
         ),
        
       ]

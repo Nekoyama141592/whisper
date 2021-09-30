@@ -12,7 +12,6 @@ import 'package:whisper/auth/components/rounded_password_field/rounded_password_
 import 'package:whisper/details/rounded_button.dart';
 // models
 import 'package:whisper/auth/login/login_model.dart';
-import 'package:whisper/main_model.dart';
 
 class LoginPage extends ConsumerWidget {
   @override  
@@ -69,7 +68,7 @@ class LoginPage extends ConsumerWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(60),
                           topRight: Radius.circular(60)

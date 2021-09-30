@@ -11,12 +11,12 @@ import 'package:whisper/constants/routes.dart' as routes;
 class BookmarkCard extends StatelessWidget {
   
   BookmarkCard(
-    this.bookmarksProvider,
+    this.bookmarksModel,
     this.preservatedPostIds,
     this.likedPostIds
   );
 
-  final BookMarksModel bookmarksProvider;
+  final BookMarksModel bookmarksModel;
   final List preservatedPostIds;
   final List likedPostIds;
 
@@ -24,9 +24,9 @@ class BookmarkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: 
-      bookmarksProvider.isLoading ?
+      bookmarksModel.isLoading ?
       Loading()
-      : bookmarksProvider.preservationDocs.isEmpty ?
+      : bookmarksModel.preservationDocs.isEmpty ?
       Nothing()
       : 
       Padding(
@@ -35,9 +35,9 @@ class BookmarkCard extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: bookmarksProvider.preservationDocs.length,
+                itemCount: bookmarksModel.preservationDocs.length,
                 itemBuilder: (BuildContext context, int i) =>
-                  PostCard(postDoc: bookmarksProvider.preservationDocs[i])
+                  PostCard(postDoc: bookmarksModel.preservationDocs[i])
               ),
             ),
             AudioWindow(
@@ -46,24 +46,25 @@ class BookmarkCard extends StatelessWidget {
               (){
                 routes.toPreservationsShowPage(
                   context, 
-                  bookmarksProvider.currentUserDoc, 
-                  bookmarksProvider, 
+                  bookmarksModel.currentUserDoc, 
+                  bookmarksModel, 
                   preservatedPostIds, 
                   likedPostIds
                 );
               },
-              bookmarksProvider.progressNotifier,
-              bookmarksProvider.seek,
-              bookmarksProvider.currentSongTitleNotifier,
-              bookmarksProvider.currentSongPostIdNotifier,
-              bookmarksProvider.playButtonNotifier,
+              bookmarksModel.progressNotifier,
+              bookmarksModel.seek,
+              bookmarksModel.currentSongTitleNotifier,
+              bookmarksModel.currentSongPostIdNotifier,
+              bookmarksModel.currentSongUserImageURLNotifier,
+              bookmarksModel.playButtonNotifier,
               (){
-                bookmarksProvider.play();
+                bookmarksModel.play();
               },
             (){
-              bookmarksProvider.pause();
+              bookmarksModel.pause();
             },
-              bookmarksProvider.currentUserDoc
+              bookmarksModel.currentUserDoc
             ),
           ],
         ),

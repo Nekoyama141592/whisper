@@ -18,19 +18,19 @@ class UserShowPostScreen extends StatelessWidget {
     required this.currentUserDoc,
     required this.preservatedPostIds,
     required this.likedPostIds,
-  }) : _userShowProvider = userShowProvider, super(key: key);
+  }) : userShowModel = userShowProvider, super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final UserShowModel _userShowProvider;
+  final UserShowModel userShowModel;
   final List preservatedPostIds;
   final List likedPostIds;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: _userShowProvider.isLoading ?
+      child: userShowModel.isLoading ?
       Loading()
-      : _userShowProvider.postDocs.isEmpty ?
+      : userShowModel.postDocs.isEmpty ?
       Nothing()
       : Padding(
         padding: EdgeInsets.only(top: 20),
@@ -38,27 +38,28 @@ class UserShowPostScreen extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: _userShowProvider.postDocs.length,
+                itemCount: userShowModel.postDocs.length,
                 itemBuilder: (BuildContext context, int i) =>
-                PostCard(postDoc: _userShowProvider.postDocs[i])
+                PostCard(postDoc: userShowModel.postDocs[i])
               )
             ),
             AudioWindow(
               preservatedPostIds,
               likedPostIds,
               (){
-                routes.toUserShowPostShowPage(context, currentUserDoc, _userShowProvider, preservatedPostIds, likedPostIds);
+                routes.toUserShowPostShowPage(context, currentUserDoc, userShowModel, preservatedPostIds, likedPostIds);
               },
-              _userShowProvider.progressNotifier,
-              _userShowProvider.seek,
-              _userShowProvider.currentSongTitleNotifier,
-              _userShowProvider.currentSongPostIdNotifier,
-              _userShowProvider.playButtonNotifier,
+              userShowModel.progressNotifier,
+              userShowModel.seek,
+              userShowModel.currentSongTitleNotifier,
+              userShowModel.currentSongPostIdNotifier,
+              userShowModel.currentSongUserImageURLNotifier,
+              userShowModel.playButtonNotifier,
               (){
-                _userShowProvider.play();
+                userShowModel.play();
               },
             (){
-              _userShowProvider.pause();
+              userShowModel.pause();
             },
               currentUserDoc
             ),

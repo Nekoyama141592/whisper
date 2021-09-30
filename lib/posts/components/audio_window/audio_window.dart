@@ -10,9 +10,10 @@ import 'package:whisper/posts/components/audio_controll_buttons/components/play_
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/details/user_image.dart';
+import 'package:whisper/posts/components/audio_window/components/audio_window_user_image.dart';
 
 class AudioWindow extends StatelessWidget {
+  
   AudioWindow(
     this.preservatedPostIds,
     this.likedPostIds,
@@ -21,6 +22,7 @@ class AudioWindow extends StatelessWidget {
     this.seek,
     this.currentSongTitleNotifier,
     this.currentSongPostIdNotifier,
+    this.currentSongUserImageURLNotifier,
     this.playButtonNotifier,
     this.play,
     this.pause,
@@ -34,6 +36,7 @@ class AudioWindow extends StatelessWidget {
   final void Function(Duration)? seek;
   final ValueNotifier<String> currentSongTitleNotifier;
   final ValueNotifier<String> currentSongPostIdNotifier;
+  final ValueNotifier<String> currentSongUserImageURLNotifier;
   final PlayButtonNotifier playButtonNotifier;
   final void Function()? play;
   final void Function()? pause;
@@ -52,7 +55,7 @@ class AudioWindow extends StatelessWidget {
             AudioProgressBar(progressNotifier,seek),
             Row(
               children: [
-                // UserImage(userImageURL: userImageURL, length: 40, padding: size.width * 0.03),
+                AudioWindowUserImage(currentSongUserImageURLNotifier: currentSongUserImageURLNotifier),
                 Container(
                   width: size.width * 0.55,
                   child: Column(

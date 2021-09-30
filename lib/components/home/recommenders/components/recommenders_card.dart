@@ -8,10 +8,10 @@ import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 class RecommendersCard extends StatelessWidget{
-  RecommendersCard(this.currentUserDoc,this.recommendersProvider,this.preservatedPostIds,this.likedPostIds);
+  RecommendersCard(this.currentUserDoc,this.recommendersModel,this.preservatedPostIds,this.likedPostIds);
   
   final DocumentSnapshot currentUserDoc;
-  final RecommendersModel recommendersProvider;
+  final RecommendersModel recommendersModel;
   final List preservatedPostIds;
   final List likedPostIds;
   @override
@@ -20,10 +20,10 @@ class RecommendersCard extends StatelessWidget{
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: recommendersProvider.recommenderDocs.length,
+            itemCount: recommendersModel.recommenderDocs.length,
             itemBuilder: (BuildContext context, int i) =>
               PostCard(
-                postDoc: recommendersProvider.recommenderDocs[i]
+                postDoc: recommendersModel.recommenderDocs[i]
               )
           ),
         ),
@@ -31,18 +31,19 @@ class RecommendersCard extends StatelessWidget{
           preservatedPostIds,
           likedPostIds,
           (){
-            routes.toRecommenderShowPage(context, currentUserDoc,recommendersProvider, preservatedPostIds, likedPostIds);
+            routes.toRecommenderShowPage(context, currentUserDoc,recommendersModel, preservatedPostIds, likedPostIds);
           },
-          recommendersProvider.progressNotifier,
-          recommendersProvider.seek,
-          recommendersProvider.currentSongTitleNotifier,
-          recommendersProvider.currentSongPostIdNotifier,
-          recommendersProvider.playButtonNotifier,
+          recommendersModel.progressNotifier,
+          recommendersModel.seek,
+          recommendersModel.currentSongTitleNotifier,
+          recommendersModel.currentSongPostIdNotifier,
+          recommendersModel.currentSongUserImageURLNotifier,
+          recommendersModel.playButtonNotifier,
           (){
-            recommendersProvider.play();
+            recommendersModel.play();
           },
          (){
-           recommendersProvider.pause();
+           recommendersModel.pause();
          },
           currentUserDoc
         ),

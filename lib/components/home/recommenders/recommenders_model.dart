@@ -23,6 +23,7 @@ class RecommendersModel extends ChangeNotifier {
   final currentSongTitleNotifier = ValueNotifier<String>('');
   final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongDocIdNotifier = ValueNotifier<String>('');
+  final currentSongUserImageURLNotifier = ValueNotifier<String>('');
   final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
@@ -277,6 +278,8 @@ class RecommendersModel extends ChangeNotifier {
       currentSongTitleNotifier.value = title;
       currentSongPostIdNotifier.value = currentSongDoc['postId'];
       currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
       currentSongCommentsNotifier.value = currentSongDoc['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
