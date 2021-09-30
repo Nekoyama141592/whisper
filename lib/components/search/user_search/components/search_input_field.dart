@@ -1,19 +1,30 @@
+// material
 import 'package:flutter/material.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
+// components
 import 'package:whisper/details/text_field_container.dart';
+// model
 import 'package:whisper/components/search/user_search/user_search_model.dart';
+
 class SearchInputField extends StatelessWidget {
 
-  SearchInputField(this.searchProvider,this.controller,this.press);
+  SearchInputField({
+    Key? key,
+    required this.searchModel,
+    required this.controller,
+    required this.press
+  }) : super(key: key);
   
-  final UserSearchModel searchProvider;
+  final UserSearchModel searchModel;
   final void Function()? press;
   final TextEditingController controller;
+  
   @override 
+  
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      TextField(
+      child:TextField(
         style: TextStyle(
           color: Colors.black,
           fontSize: 20,
@@ -21,7 +32,7 @@ class SearchInputField extends StatelessWidget {
         ),
         keyboardType: TextInputType.text,
         onChanged: (text){
-          searchProvider.searchTerm = text;
+          searchModel.searchTerm = text;
         },
         controller: controller,
         cursorColor: kTertiaryColor,
@@ -48,7 +59,6 @@ class SearchInputField extends StatelessWidget {
           border: InputBorder.none
         ),
       ), 
-      kTertiaryColor
     );
   }
 }

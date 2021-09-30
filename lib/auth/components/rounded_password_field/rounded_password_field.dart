@@ -24,7 +24,7 @@ class RoundedPasswordField extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final _provider = watch(roundedPasswordFieldProvider);
     return TextFieldContainer(
-      TextField(
+      child: TextField(
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold
@@ -49,7 +49,6 @@ class RoundedPasswordField extends ConsumerWidget {
           border: InputBorder.none
         ),
       ),
-      formColor
     );
   }
 }

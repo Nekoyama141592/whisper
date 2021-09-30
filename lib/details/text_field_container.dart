@@ -1,10 +1,15 @@
+// material
 import 'package:flutter/material.dart';
 
 class TextFieldContainer extends StatelessWidget {
-  final Widget child;
-  final Color fieldColor;
-  TextFieldContainer(this.child,this.fieldColor);
+  
+  const TextFieldContainer({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
+  final Widget child;
+  
   @override  
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -17,14 +22,13 @@ class TextFieldContainer extends StatelessWidget {
         ),
         width: size.width * 0.9 ,
         decoration: BoxDecoration(
-          // color: fieldColor.withOpacity(0.7),
           color: Colors.white,
           border: Border.all(
             color: Colors.black.withOpacity(0.5)
           ),
           boxShadow: [
             BoxShadow(
-              color: fieldColor.withOpacity(0.3),
+              color: Theme.of(context).highlightColor.withOpacity(0.3),
               blurRadius: 20,
               offset: Offset(0, 10)
             )

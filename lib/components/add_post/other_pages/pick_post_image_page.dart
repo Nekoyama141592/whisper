@@ -1,13 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// material
 import 'package:flutter/material.dart';
-
-import 'package:whisper/components/add_post/add_post_model.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
+// components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
+// model
+import 'package:whisper/components/add_post/add_post_model.dart';
 
 class PickPostImagePage extends StatelessWidget {
+  
   PickPostImagePage({
     Key? key,
     required this.addPostModel,
@@ -16,6 +20,7 @@ class PickPostImagePage extends StatelessWidget {
 
   final AddPostModel addPostModel;
   final DocumentSnapshot currentUserDoc;
+  
   @override 
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -46,7 +51,7 @@ class PickPostImagePage extends StatelessWidget {
                   Colors.white, 
                   value ? kTertiaryColor : kPrimaryColor
                 ),
-                UploadButton(addPostModel)
+                UploadButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
               ],
             );
           }

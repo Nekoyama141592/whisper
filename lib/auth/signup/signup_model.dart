@@ -144,7 +144,7 @@ class SignupModel extends ChangeNotifier {
       'likeNotifications': [],
       'likedComments': [],
       'likes': [],
-      'mutes': [],
+      'muteUids': [],
       'point': 0,
       'preservations': [],
       'replyNotifications': [],

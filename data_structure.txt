@@ -17,6 +17,7 @@ db{
             uid: String,
             
         }],
+        likesCount: int,
         postId: String,
         preservations: [{
             createdAt: TimeStamp,
@@ -24,7 +25,10 @@ db{
         }],
         score: int,
         title: String,
+        imageURL: String,
+        uid: String,
         updatedAt: TimeStamp,
+        userImageURL: String,
     }
     users{
         description: String,
@@ -59,7 +63,7 @@ db{
             createdAt: TimeStamp,
             likedPostId: String,
         }],
-        mutes:[
+        muteUids:[
             String
         ],
         point: int,

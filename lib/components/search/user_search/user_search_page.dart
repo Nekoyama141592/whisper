@@ -1,36 +1,38 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+// components
 import 'package:whisper/components/search/user_search/components/user_list.dart';
 import 'package:whisper/components/search/user_search/components/search_input_field.dart';
+// model
 import 'user_search_model.dart';
 
 class UserSearchPage extends ConsumerWidget {
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
-    final _searchProvider = watch(searchProvider);
+    final searchModel = watch(searchProvider);
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
-        text: _searchProvider.searchTerm,
+        text: searchModel.searchTerm,
         selection: TextSelection.collapsed(
-          offset: _searchProvider.searchTerm.length
+          offset: searchModel.searchTerm.length
         )
       )
     );
     return Column(
       children: [
         SearchInputField(
-          _searchProvider, 
-          searchController, 
-          () async {
-            await _searchProvider.operation();
+          searchModel: searchModel, 
+          controller: searchController, 
+          press: () async {
+            await searchModel.operation();
           }
         ),
-        !_searchProvider.isLoading ?
+        !searchModel.isLoading ?
         UserList(
-          _searchProvider.results
+          searchModel.results
         )
         : Text('Loading')
       ],

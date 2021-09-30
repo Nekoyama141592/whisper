@@ -1,8 +1,9 @@
+// dart
 import 'dart:async';
 import 'dart:io';
-
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,13 +14,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-
+// constants
 import 'package:whisper/constants/colors.dart';
-
+// notifiers
 import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
-
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
+
 
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
@@ -215,9 +216,9 @@ class AddPostModel extends ChangeNotifier {
     addPostStateNotifier.value = AddPostState.initialValue;
   }
   
-  Future onUploadButtonPressed(context) async {
+  Future onUploadButtonPressed(context, DocumentSnapshot currentUserDoc) async {
     startLoading();
-    await addPostToFirebase(context);
+    await addPostToFirebase(context,currentUserDoc);
     endLoading();
   }
 
@@ -245,7 +246,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   
-  Future addPostToFirebase(context) async {
+  Future addPostToFirebase(context,currentUserDoc) async {
     final String imageURL = croppedFile == null ? '' : await uploadImage();
     if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -259,15 +260,17 @@ class AddPostModel extends ChangeNotifier {
           'audioURL': audioURL,
           'comments': [],
           'createdAt': Timestamp.now(),
+          'likes':[],
           'likesCount': 0,
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+          'preservations':[],
           'preservationsCount': 0,
           'score': 0,
           'title': postTitleNotifier.value,
           'imageURL': imageURL,
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),
-          'userImageURL': '',
+          'userImageURL': currentUserDoc,
         });
         
       } catch(e) {

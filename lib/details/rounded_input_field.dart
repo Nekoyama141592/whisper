@@ -3,11 +3,13 @@ import 'package:whisper/constants/colors.dart';
 import 'text_field_container.dart';
 
 class RoundedInputField extends StatelessWidget {
+  
   final String hintText;
   final IconData icon;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final Color formColor;
+  
   RoundedInputField(
     this.hintText,
     this.icon,
@@ -19,7 +21,7 @@ class RoundedInputField extends StatelessWidget {
   @override  
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      TextFormField(
+      child: TextFormField(
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold
@@ -38,7 +40,6 @@ class RoundedInputField extends StatelessWidget {
           border: InputBorder.none
         ),
       ),
-      formColor
     );
   }
   
