@@ -28,6 +28,7 @@ class AccountPage extends ConsumerWidget {
           InkWell(
             child: ListTile(
               title: Text(_accountModel.currentUser!.email!),
+              trailing: Icon(Icons.arrow_forward_ios),
             ),
             onTap: () {
               _accountModel.whichState = WhichState.updateEmail;
@@ -37,6 +38,7 @@ class AccountPage extends ConsumerWidget {
           InkWell(
             child: ListTile(
               title: Text('パスワード変更'),
+              trailing: Icon(Icons.arrow_forward_ios),
             ),
             onTap: () {
               _accountModel.whichState = WhichState.updatePassword;

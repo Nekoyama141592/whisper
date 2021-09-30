@@ -1,9 +1,11 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
+// components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 

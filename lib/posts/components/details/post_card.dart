@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/constants/colors.dart';
 // import 'package:whisper/parts/posts/post_buttons/components/like_button.dart';
 
 // import 'package:whisper/parts/posts/post_buttons/post_buttons.dart';
@@ -18,21 +19,32 @@ class PostCard extends StatelessWidget {
     final day = date.day.toString();
     final hour = date.hour.toString();
     final minute = date.minute.toString();
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            // imageURL
-            leading: CircleAvatar(
-              radius: 24,
-            ),
-            title: Text(doc['title']),
-            subtitle: Text(doc.id),
-            trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),
-            
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: kPrimaryColor.withOpacity(0.1),
+            blurRadius: 20,
+            offset: Offset(0, 5)
           )
-        ],
+        ]
+      ),
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              // imageURL
+              leading: CircleAvatar(
+                radius: 24,
+              ),
+              title: Text(doc['title']),
+              subtitle: Text(doc.id),
+              trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),
+              
+            )
+          ],
+        ),
       ),
     );
   }
