@@ -10,14 +10,11 @@ class RoundedPasswordField extends ConsumerWidget {
   final String hintText;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
-  final Color formColor;
-  
   
   RoundedPasswordField(
     this.hintText,
     this.controller,
     this.onChanged,
-    this.formColor,
   );
 
   @override  

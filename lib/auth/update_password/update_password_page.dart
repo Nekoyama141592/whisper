@@ -38,7 +38,6 @@ class UpdatePasswordPage extends ConsumerWidget {
               (text) {
                 _updatePasswordModel.newPassword = text;
               }, 
-              kPrimaryColor
             ),
           ),
           Center(
@@ -47,8 +46,7 @@ class UpdatePasswordPage extends ConsumerWidget {
               confirmPasswordInputController, 
               (text) {
                 _updatePasswordModel.confirmPassword = text;
-              }, 
-              kPrimaryColor
+              },
             ),
           ),
           Center(

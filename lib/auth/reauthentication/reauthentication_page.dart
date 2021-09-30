@@ -35,7 +35,6 @@ class ReauthenticationPage extends StatelessWidget {
               (text) {
                 accountModel.password = text;
               }, 
-              kTertiaryColor
             ),
           ),
           Center(

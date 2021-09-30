@@ -131,7 +131,6 @@ class SignupPage extends ConsumerWidget {
                               (text) {
                                 _signupProvider.password = text;
                               },
-                              kPrimaryColor,
                               
                             ),
                             

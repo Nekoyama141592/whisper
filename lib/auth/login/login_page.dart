@@ -95,7 +95,6 @@ class LoginPage extends ConsumerWidget {
                               (text) {
                                 _loginProvider.password = text;
                               },
-                              kTertiaryColor,
                               
                             ),
                             
