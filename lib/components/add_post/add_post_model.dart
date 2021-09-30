@@ -17,8 +17,8 @@ import 'package:image_cropper/image_cropper.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 // notifiers
-import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 
 

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:whisper/components/home/recommenders/recommenders_model.dart';
-import 'package:whisper/posts/components/audio_state_items/audio_window.dart';
+import 'package:whisper/posts/components/audio_window/audio_window.dart';
 
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/constants/routes.dart' as routes;

@@ -7,7 +7,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/posts/components/audio_state_items/audio_window.dart';
+import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 // model
 import 'package:whisper/components/user_show/user_show_model.dart';

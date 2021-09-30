@@ -1,14 +1,16 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'audio_progress_bar.dart';
-import 'current_song_post_id.dart';
-import 'current_song_title.dart';
-import '../../audio_controll/audio_controll_buttons/components/play_button.dart';
+// components
+import 'components/audio_progress_bar.dart';
+import 'components/current_song_post_id.dart';
+import 'components/current_song_title.dart';
+import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
-import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/details/user_image.dart';
 
 class AudioWindow extends StatelessWidget {
   AudioWindow(
@@ -50,15 +52,7 @@ class AudioWindow extends StatelessWidget {
             AudioProgressBar(progressNotifier,seek),
             Row(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                  ),
-                  child: CircleAvatar(
-                    radius: 20,
-                    foregroundColor: Colors.blue,
-                  ),
-                ),
+                // UserImage(userImageURL: userImageURL, length: 40, padding: size.width * 0.03),
                 Container(
                   width: size.width * 0.55,
                   child: Column(

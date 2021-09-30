@@ -1,14 +1,14 @@
-
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
-
-import 'package:whisper/posts/audio_controll/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/audio_controll/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/audio_controll/notifiers/repeat_button_notifier.dart';
+// notifiers
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
@@ -23,6 +23,7 @@ class UserShowModel extends ChangeNotifier {
   final currentSongTitleNotifier = ValueNotifier<String>('');
   final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongDocIdNotifier = ValueNotifier<String>('');
+  final currentSongUserImageURLNotifier = ValueNotifier<String>('');
   final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
