@@ -25,30 +25,24 @@ class AccountPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          InkWell(
-            child: ListTile(
-              title: Text(_accountModel.currentUser!.email!),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
+          ListTile(
+            title: Text(_accountModel.currentUser!.email!),
+            trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               _accountModel.whichState = WhichState.updateEmail;
               routes.toReauthenticationPage(context, _accountModel.currentUser, _accountModel);
             },
           ),
-          InkWell(
-            child: ListTile(
-              title: Text('パスワード変更'),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
+          ListTile(
+            title: Text('パスワード変更'),
+            trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               _accountModel.whichState = WhichState.updatePassword;
               routes.toReauthenticationPage(context, _accountModel.currentUser,_accountModel);
             },
           ),
-          InkWell(
-            child: ListTile(
-              title: Text('ログアウト'),
-            ),
+          ListTile(
+            title: Text('ログアウト'),
             onTap: () {
               _accountModel.showSignOutDialog(context);
             },

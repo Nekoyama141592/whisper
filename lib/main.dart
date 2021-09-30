@@ -1,26 +1,26 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:whisper/main_model.dart';
-import 'package:whisper/details/loading.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+// constants
 import 'themes/themes.dart';
+//components
+import 'package:whisper/details/loading.dart';
 import 'components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar.dart';
-
-
-import 'auth/signup/signup_page.dart';
-
+import 'package:whisper/components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
+// pages
 import 'package:whisper/components/home/home.dart';
-import 'package:whisper/components/user_show/user_show_page.dart';
+import 'auth/signup/signup_page.dart';
 import 'package:whisper/components/search/search_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 import 'package:whisper/components/add_post/other_pages/which_type.dart';
-import 'package:whisper/components/whisper_bottom_navigation_bar/whisper_bottom_navigation_bar_model.dart';
+import 'package:whisper/components/user_show/user_show_page.dart';
+// models
+import 'package:whisper/main_model.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env',);
@@ -48,10 +48,10 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _mainProvider = watch(mainProvider);
+    final mainModel = watch(mainProvider);
     final _provider = watch(whisperBottomNavigationbarProvider);
     return Scaffold(
-      body: _mainProvider.isLoading ?
+      body: mainModel.isLoading ?
       Loading()
       : PageView(
         controller: _provider.pageController,
@@ -60,25 +60,25 @@ class MyHomePage extends ConsumerWidget {
         },
         children: [
           Home(
-            _mainProvider,
-            _mainProvider.preservatedPostIds,
-            _mainProvider.likedPostIds
+            mainModel,
+            mainModel.preservatedPostIds,
+            mainModel.likedPostIds
           ),
           SearchPage(
-            _mainProvider
+            mainModel
           ),
-          WhichType(currentUserDoc: _mainProvider.currentUserDoc),
+          WhichType(currentUserDoc: mainModel.currentUserDoc),
           BookmarksPage(
-            _mainProvider.currentUserDoc,
-            _mainProvider.preservatedPostIds, 
-            _mainProvider.likedPostIds
+            mainModel.currentUserDoc,
+            mainModel.preservatedPostIds, 
+            mainModel.likedPostIds
           ),
           UserShowPage(
-            _mainProvider.currentUserDoc,
-            _mainProvider.currentUserDoc, 
-            _mainProvider.preservatedPostIds, 
-            _mainProvider.likedPostIds,
-            _mainProvider.followingUids
+            mainModel.currentUserDoc,
+            mainModel.currentUserDoc, 
+            mainModel.preservatedPostIds, 
+            mainModel.likedPostIds,
+            mainModel.followingUids
           )
         ],
       ),

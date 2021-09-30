@@ -1,19 +1,20 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+// components
 import 'package:whisper/components/search/constants/tab_bar_elements.dart';
 import 'package:whisper/details/whisper_drawer.dart';
-import 'package:whisper/main_model.dart';
-
+// pages
 import 'package:whisper/components/search/user_search/user_search_page.dart';
 import 'package:whisper/components/search/post_search/post_search_page.dart';
-// import 'search_model.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class SearchPage extends ConsumerWidget {
 
-  SearchPage(this.mainProvider);
-  final MainModel mainProvider;
+  SearchPage(this.mainModel);
+  final MainModel mainModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     return DefaultTabController(
@@ -43,9 +44,7 @@ class SearchPage extends ConsumerWidget {
             }).toList()
           ),
         ),
-        drawer: WhisperDrawer(
-          mainProvider, 
-        ),
+        drawer: WhisperDrawer(mainModel: mainModel),
         body: 
         TabBarView(
           children: [

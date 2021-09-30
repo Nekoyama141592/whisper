@@ -1,21 +1,23 @@
+// material
 import 'package:flutter/material.dart';
-
+// constants
 import 'constants/tab_bar_elements.dart';
-
-import 'package:whisper/main_model.dart';
+// components
 import 'package:whisper/details/whisper_drawer.dart';
 import 'package:whisper/components/notifications/components/like_notifications/like_notification.dart';
 import 'package:whisper/components/notifications/components/follow_notifications/follow_notification.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class NotificationsPage extends StatelessWidget {
 
   NotificationsPage(
-    this.mainProvider,
+    this.mainModel,
     this.preservatedPostIds,
     this.likedPostIds
   );
 
-  final MainModel mainProvider;
+  final MainModel mainModel;
   final List preservatedPostIds;
   final List likedPostIds;
 
@@ -49,18 +51,14 @@ class NotificationsPage extends StatelessWidget {
           ),
           
         ),
-        drawer: mainProvider.isLoading ?
-        Drawer()
-        : WhisperDrawer(
-          mainProvider,
-        ),
+        drawer: WhisperDrawer(mainModel: mainModel),
         body: TabBarView(
           children: [
             LikeNotification(
-              mainProvider.newLikeNotifications
+              mainModel.newLikeNotifications
             ),
             FollowNotification(
-              mainProvider.newFollowNotifications
+              mainModel.newFollowNotifications
             )
           ]
         ),

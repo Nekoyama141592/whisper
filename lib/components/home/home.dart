@@ -11,9 +11,9 @@ import 'package:whisper/details/whisper_drawer.dart';
 
 class Home extends StatelessWidget {
 
-  Home(this.mainProvider, this.preservatedPostIds,this.likedPostIds);
+  Home(this.mainModel, this.preservatedPostIds,this.likedPostIds);
   
-  final MainModel mainProvider;
+  final MainModel mainModel;
   final List preservatedPostIds;
   final List likedPostIds;
   @override  
@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
           ),
           actions: [
             NotificationIcon(
-              mainProvider,
+              mainModel,
               preservatedPostIds,
               likedPostIds
             )
@@ -45,14 +45,11 @@ class Home extends StatelessWidget {
           ),
         ),
         
-        drawer: WhisperDrawer(
-          mainProvider,
-          
-        ),
+        drawer: WhisperDrawer(mainModel: mainModel),
         body: TabBarView(
           children: [
             FeedsPage(preservatedPostIds,likedPostIds),
-            RecommendersPage(mainProvider.currentUserDoc,preservatedPostIds,likedPostIds),
+            RecommendersPage(mainModel.currentUserDoc,preservatedPostIds,likedPostIds),
           ],
         ),
         
