@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 // components
-import 'package:whisper/details/circle_image.dart';
+import 'package:whisper/details/user_image.dart';
 
 class PostCard extends StatelessWidget {
   
@@ -40,8 +40,7 @@ class PostCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              // imageURL
-              // leading: CircleImage(length: 50.0, image: NetworkImage(postDoc['imageURL'])),
+              leading: UserImage(userImageURL: postDoc['userImageURL'], length: 50.0, padding: 0.0),
               title: Text(postDoc['title']),
               subtitle: Text(postDoc.id),
               trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),

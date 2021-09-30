@@ -24,7 +24,7 @@ class RoundedInputField extends StatelessWidget {
       child: TextFormField(
         style: TextStyle(
           fontSize: 20,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
         ),
         // これも要素
         keyboardType: TextInputType.emailAddress,
