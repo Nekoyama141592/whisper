@@ -14,9 +14,9 @@ class PostScreen extends StatelessWidget {
     required this.currentUserDoc,
     required this.preservatedPostIds,
     required this.likedPostIds,
-  }) : _bookmarksProvider = bookmarksModel, super(key: key);
+  }) : bookmarksModel = bookmarksModel, super(key: key);
 
-  final BookMarksModel _bookmarksProvider;
+  final BookMarksModel bookmarksModel;
   final DocumentSnapshot currentUserDoc;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -69,11 +69,7 @@ class PostScreen extends StatelessWidget {
                       topRight: Radius.circular(35)
                     )
                   ),
-                  child: BookmarkCard(
-                    _bookmarksProvider,
-                    preservatedPostIds,
-                    likedPostIds
-                  ),
+                  child: BookmarkCard(bookmarksModel: bookmarksModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds)
                 )
               )
             ],

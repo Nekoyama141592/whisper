@@ -19,13 +19,14 @@ class BookMarksModel extends ChangeNotifier {
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
   // notifiers
-  final currentSongPostIdNotifier = ValueNotifier<String>('');
-  final currentSongTitleNotifier = ValueNotifier<String>('');
-  final currentSongDocIdNotifier = ValueNotifier<String>('');
-  final currentSongDocUidNotifier = ValueNotifier<String>('');
-  final currentSongImageURLNotifier = ValueNotifier<String>('');
-  final currentSongUserImageURLNotifier = ValueNotifier<String>('');
-  final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
+  final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
+  // final currentSongPostIdNotifier = ValueNotifier<String>('');
+  // final currentSongTitleNotifier = ValueNotifier<String>('');
+  // final currentSongDocIdNotifier = ValueNotifier<String>('');
+  // final currentSongDocUidNotifier = ValueNotifier<String>('');
+  // final currentSongImageURLNotifier = ValueNotifier<String>('');
+  // final currentSongUserImageURLNotifier = ValueNotifier<String>('');
+  // final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
@@ -100,8 +101,8 @@ class BookMarksModel extends ChangeNotifier {
       .collection('posts')
       .where('postId', whereIn: preservationPostIds)
       .get();
-      snapshots.docs.forEach((DocumentSnapshot doc) {
-        preservationDocs.add(doc);
+      snapshots.docs.forEach((DocumentSnapshot? doc) {
+        preservationDocs.add(doc!);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
         afterUris.add(source);
@@ -215,15 +216,8 @@ class BookMarksModel extends ChangeNotifier {
       if (sequenceState == null) return;
       // update current song doc
       final currentItem = sequenceState.currentSource;
-      final DocumentSnapshot currentSongDoc = currentItem?.tag;
-      final title = currentSongDoc['title'];
-      currentSongTitleNotifier.value = title;
-      currentSongPostIdNotifier.value = currentSongDoc['postId'];
-      currentSongDocIdNotifier.value = currentSongDoc.id;
-      currentSongDocUidNotifier.value = currentSongDoc['uid'];
-      currentSongImageURLNotifier.value = currentSongDoc['imageURL'];
-      currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
-      currentSongCommentsNotifier.value = currentSongDoc['comments'];
+      final DocumentSnapshot? currentSongDoc = currentItem?.tag;
+      currentSongDocNotifier.value = currentSongDoc;
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       playlist.map((item) {

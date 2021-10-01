@@ -1,30 +1,40 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// model
 import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
 
-class PreservateButton extends ConsumerWidget {
-  PreservateButton(this.currentUserDoc,this.currentSongPostIdNotifier,this.preservatedPostIds);
+class BookmarkButton extends ConsumerWidget {
+  
+  const BookmarkButton({
+    Key? key,
+    required this.currentUserDoc,
+    required this.currentSongDocNotifier,
+    required this.preservatedPostIds
+  }) : super(key: key);
+  
   final DocumentSnapshot currentUserDoc;
-  final ValueNotifier<String> currentSongPostIdNotifier;
+  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final List preservatedPostIds;
+  
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _postsFeaturesProvider = watch(postsFeaturesProvider);
     return 
-    ValueListenableBuilder(
-      valueListenable: currentSongPostIdNotifier, 
-      builder: (_,currentSongPostId,__){
+    ValueListenableBuilder<DocumentSnapshot?>(
+      valueListenable: currentSongDocNotifier, 
+      builder: (_, currentSongDoc, __) {
         return 
-        preservatedPostIds.contains(currentSongPostId) ?
+        preservatedPostIds.contains(currentSongDoc!['postId']) ?
         IconButton(
           icon: Icon(
             Icons.inventory_2,
             color: Colors.red,
           ),
           onPressed: () async {
-            preservatedPostIds.remove(currentSongPostId);
+            preservatedPostIds.remove(currentSongDoc['postId']);
             _postsFeaturesProvider.reload();
             // await _postsFeaturesProvider.unpreservate(currentUserDoc, postDoc);
           }, 
@@ -32,7 +42,7 @@ class PreservateButton extends ConsumerWidget {
         : IconButton(
           icon: Icon(Icons.inventory_2),
           onPressed: () async {
-            preservatedPostIds.add(currentSongPostId);
+            preservatedPostIds.add(currentSongDoc['postId']);
             _postsFeaturesProvider.reload();
             // await _postsFeaturesProvider.preservate(currentUserDoc, postDoc);
           }, 

@@ -10,29 +10,22 @@ class EditButton extends StatelessWidget {
   const EditButton({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongTitleNotifier,
-    required this.currentSongUidNotifier,
-    required this.currentSongDocIdNotifier,
-    required this.currentSongImageURLNotifier,
-    required this.currentSongUserImageURLNotifier
+    required this.currentSongDocNotifier,
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
-  final ValueNotifier<String> currentSongTitleNotifier;
-  final ValueNotifier<String> currentSongDocIdNotifier;
-  final ValueNotifier<String> currentSongUidNotifier;
-  final ValueNotifier<String> currentSongImageURLNotifier;
-  final ValueNotifier<String> currentSongUserImageURLNotifier;
+  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+
   @override 
   
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<String>(
-      valueListenable: currentSongUidNotifier, 
-      builder: (_,currentSongUid,__) {
-        return currentUserDoc['uid'] != currentSongUid ? SizedBox.shrink()
+    return ValueListenableBuilder<DocumentSnapshot?>(
+      valueListenable: currentSongDocNotifier, 
+      builder: (_, currentSongDoc, __) {
+        return currentUserDoc['uid'] != currentSongDoc!['uid'] ? SizedBox.shrink()
         : IconButton(
           onPressed: () {
-            routes.toEditPostInfoPage(context, currentSongTitleNotifier.value, currentUserDoc, currentSongDocIdNotifier.value, currentSongUserImageURLNotifier.value);
+            routes.toEditPostInfoPage(context, currentSongDoc['title'], currentUserDoc, currentSongDoc.id, currentSongDoc['userImageURL']);
           }, 
           icon: Icon(Icons.edit)
         );

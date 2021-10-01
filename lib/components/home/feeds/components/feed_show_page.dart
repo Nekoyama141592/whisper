@@ -24,6 +24,9 @@ class FeedShowPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final currentSongDocNotifier = feedsModel.currentSongDocNotifier;
+    final currentUserDoc = feedsModel.currentUserDoc;
+
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
@@ -48,46 +51,37 @@ class FeedShowPage extends StatelessWidget{
                 child: Container(
                   child: Column(
                     children: [
-                      SquarePostImage(
-                        imageURLNotifier: feedsModel.currentSongImageURLNotifier.value.isNotEmpty ? feedsModel.currentSongImageURLNotifier : feedsModel.currentSongUserImageURLNotifier
+                      SquarePostImage(currentSongDocNotifier: currentSongDocNotifier),
+                      Center(
+                        child: CurrentSongPostId(currentSongDocNotifier: currentSongDocNotifier)
                       ),
                       Center(
-                        child: CurrentSongPostId(feedsModel.currentSongPostIdNotifier),
+                        child: CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
                       ),
-                      Center(
-                        child: CurrentSongTitle(feedsModel.currentSongTitleNotifier),
-                      ),
-                      PostButtons(
-                        feedsModel.currentUserDoc,
-                        feedsModel.currentSongPostIdNotifier,
-                        feedsModel.currentSongDocIdNotifier,
-                        feedsModel.currentSongCommentsNotifier,
-                        preservatedPostIds,
-                        likedPostIds
-                      ),
+                      PostButtons(currentUserDoc, currentSongDocNotifier, preservatedPostIds, likedPostIds),
                       AudioStateDesign(
-                        preservatedPostIds,
-                        likedPostIds,
-                        feedsModel.currentSongTitleNotifier,
-                        feedsModel.progressNotifier,
-                        feedsModel.seek,
-                        feedsModel.repeatButtonNotifier,
-                        (){
+                        preservatedPostIds: preservatedPostIds,
+                        likedPostIds: likedPostIds,
+                        currentSongDocNotifier: feedsModel.currentSongDocNotifier,
+                        progressNotifier: feedsModel.progressNotifier,
+                        seek: feedsModel.seek,
+                        repeatButtonNotifier: feedsModel.repeatButtonNotifier,
+                        onRepeatButtonPressed: (){
                           feedsModel.onRepeatButtonPressed();
                         },
-                        feedsModel.isFirstSongNotifier,
-                        (){
+                        isFirstSongNotifier: feedsModel.isFirstSongNotifier,
+                        onPreviousSongButtonPressed: (){
                           feedsModel.onPreviousSongButtonPressed();
                         },
-                        feedsModel.playButtonNotifier,
-                        (){
+                        playButtonNotifier: feedsModel.playButtonNotifier,
+                        play: (){
                           feedsModel.play();
                         },
-                        (){
+                        pause: (){
                           feedsModel.pause();
                         },
-                        feedsModel.isLastSongNotifier,
-                        (){
+                        isLastSongNotifier: feedsModel.isLastSongNotifier,
+                        onNextSongButtonPressed: (){
                           feedsModel.onNextSongButtonPressed();
                         }
                       ),
@@ -95,7 +89,7 @@ class FeedShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(feedsModel.currentSongCommentsNotifier)
+              Comments(currentSongDocNotifier: currentSongDocNotifier)
             ],
           ),
         ),

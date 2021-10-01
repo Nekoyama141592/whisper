@@ -30,6 +30,7 @@ class BookmarkShowPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final currentSongDocNotifier = bookmarksModel.currentSongDocNotifier;
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
@@ -53,47 +54,37 @@ class BookmarkShowPage extends StatelessWidget{
                 child: Container(
                   child: Column(
                     children: [
-                      SquarePostImage(
-                        imageURLNotifier: bookmarksModel.currentSongImageURLNotifier.value.isNotEmpty ? bookmarksModel.currentSongImageURLNotifier : bookmarksModel.currentSongUserImageURLNotifier
+                      SquarePostImage(currentSongDocNotifier: currentSongDocNotifier),
+                      Center(
+                        child: CurrentSongPostId(currentSongDocNotifier: currentSongDocNotifier)
                       ),
                       Center(
-                        // image
-                        child: CurrentSongPostId(bookmarksModel.currentSongPostIdNotifier),
+                        child: CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
                       ),
-                      Center(
-                        child: CurrentSongTitle(bookmarksModel.currentSongTitleNotifier),
-                      ),
-                      PostButtons(
-                        currentUserDoc,
-                        bookmarksModel.currentSongPostIdNotifier,
-                        bookmarksModel.currentSongDocIdNotifier,
-                        bookmarksModel.currentSongCommentsNotifier,
-                        preservatedPostIds,
-                        likedPostIds
-                      ),
+                      PostButtons(currentUserDoc, currentSongDocNotifier, preservatedPostIds, likedPostIds),
                       AudioStateDesign(
-                        preservatedPostIds,
-                        likedPostIds,
-                        bookmarksModel.currentSongTitleNotifier,
-                        bookmarksModel.progressNotifier,
-                        bookmarksModel.seek,
-                        bookmarksModel.repeatButtonNotifier,
-                        (){
+                        preservatedPostIds: preservatedPostIds,
+                        likedPostIds: likedPostIds,
+                        currentSongDocNotifier: bookmarksModel.currentSongDocNotifier,
+                        progressNotifier: bookmarksModel.progressNotifier,
+                        seek: bookmarksModel.seek,
+                        repeatButtonNotifier: bookmarksModel.repeatButtonNotifier,
+                        onRepeatButtonPressed: (){
                           bookmarksModel.onRepeatButtonPressed();
                         },
-                        bookmarksModel.isFirstSongNotifier,
-                        (){
+                        isFirstSongNotifier: bookmarksModel.isFirstSongNotifier,
+                        onPreviousSongButtonPressed: (){
                           bookmarksModel.onPreviousSongButtonPressed();
                         },
-                        bookmarksModel.playButtonNotifier,
-                        (){
+                        playButtonNotifier: bookmarksModel.playButtonNotifier,
+                        play: (){
                           bookmarksModel.play();
                         },
-                        (){
+                        pause: (){
                           bookmarksModel.pause();
                         },
-                        bookmarksModel.isLastSongNotifier,
-                        (){
+                        isLastSongNotifier: bookmarksModel.isLastSongNotifier,
+                        onNextSongButtonPressed: (){
                           bookmarksModel.onNextSongButtonPressed();
                         }
                       ),
@@ -102,7 +93,7 @@ class BookmarkShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(bookmarksModel.currentSongCommentsNotifier)
+              Comments(currentSongDocNotifier: currentSongDocNotifier)
             ],
           ),
         ),

@@ -22,25 +22,29 @@ class FeedsCard extends StatelessWidget{
           ),
         ),
         AudioWindow(
-          preservatedPostIds,
-          likedPostIds,
-          (){
-            routes.toFeedShowPage(context, feedsModel, preservatedPostIds, likedPostIds);
+          preservatedPostIds: preservatedPostIds, 
+          likedPostIds: likedPostIds, 
+          route: (){
+            routes.toPreservationsShowPage(
+              context, 
+              feedsModel.currentUserDoc, 
+              feedsModel, 
+              preservatedPostIds, 
+              likedPostIds
+            );
           },
-          feedsModel.progressNotifier,
-          feedsModel.seek,
-          feedsModel.currentSongTitleNotifier,
-          feedsModel.currentSongPostIdNotifier,
-          feedsModel.currentSongUserImageURLNotifier,
-          feedsModel.playButtonNotifier,
-          (){
+          progressNotifier: feedsModel.progressNotifier, 
+          seek: feedsModel.seek, 
+          currentSongDocNotifier: feedsModel.currentSongDocNotifier, 
+          playButtonNotifier: feedsModel.playButtonNotifier,
+          play: () {
             feedsModel.play();
-          },
-         (){
-           feedsModel.pause();
-         },
-          feedsModel.currentUserDoc
-        ),
+          }, 
+          pause: () {
+            feedsModel.pause();
+          }, 
+          currentUserDoc: feedsModel.currentUserDoc
+        )
        
       ]
     );

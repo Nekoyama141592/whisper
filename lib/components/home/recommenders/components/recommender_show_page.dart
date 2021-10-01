@@ -32,10 +32,11 @@ class RecommenderShowPage extends StatelessWidget{
   
   @override
   Widget build(BuildContext context) {
+    final currentSongDocNotifier = recommendersModel.currentSongDocNotifier;
+
     return Scaffold(
         backgroundColor: kBackgroundColor,
         extendBodyBehindAppBar: false,
-        
         body: SafeArea(
           child: Column(
             children: [
@@ -57,56 +58,45 @@ class RecommenderShowPage extends StatelessWidget{
                 child: Container(
                   child: Column(
                     children: [
-                      SquarePostImage(
-                        imageURLNotifier: recommendersModel.currentSongImageURLNotifier.value.isNotEmpty ? recommendersModel.currentSongImageURLNotifier : recommendersModel.currentSongUserImageURLNotifier
+                     SquarePostImage(currentSongDocNotifier: currentSongDocNotifier),
+                      Center(
+                       child: CurrentSongPostId(currentSongDocNotifier: currentSongDocNotifier),
                       ),
                       Center(
-                        // image
-                        child: CurrentSongPostId(recommendersModel.currentSongPostIdNotifier),
+                        child: CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
                       ),
-                      Center(
-                        child: CurrentSongTitle(recommendersModel.currentSongTitleNotifier),
-                      ),
-                      PostButtons(
-                        currentUserDoc,
-                        recommendersModel.currentSongPostIdNotifier,
-                        recommendersModel.currentSongDocIdNotifier,
-                        recommendersModel.currentSongCommentsNotifier,
-                        preservatedPostIds,
-                        likedPostIds
-                      ),
+                      PostButtons(currentUserDoc, currentSongDocNotifier, preservatedPostIds, likedPostIds),
                       AudioStateDesign(
-                        preservatedPostIds,
-                        likedPostIds,
-                        recommendersModel.currentSongTitleNotifier,
-                        recommendersModel.progressNotifier,
-                        recommendersModel.seek,
-                        recommendersModel.repeatButtonNotifier,
-                        (){
+                        preservatedPostIds: preservatedPostIds,
+                        likedPostIds: likedPostIds,
+                        currentSongDocNotifier: recommendersModel.currentSongDocNotifier,
+                        progressNotifier: recommendersModel.progressNotifier,
+                        seek: recommendersModel.seek,
+                        repeatButtonNotifier: recommendersModel.repeatButtonNotifier,
+                        onRepeatButtonPressed: (){
                           recommendersModel.onRepeatButtonPressed();
                         },
-                        recommendersModel.isFirstSongNotifier,
-                        (){
+                        isFirstSongNotifier: recommendersModel.isFirstSongNotifier,
+                        onPreviousSongButtonPressed: (){
                           recommendersModel.onPreviousSongButtonPressed();
                         },
-                        recommendersModel.playButtonNotifier,
-                        (){
+                        playButtonNotifier: recommendersModel.playButtonNotifier,
+                        play: (){
                           recommendersModel.play();
                         },
-                        (){
+                        pause: (){
                           recommendersModel.pause();
                         },
-                        recommendersModel.isLastSongNotifier,
-                        (){
+                        isLastSongNotifier: recommendersModel.isLastSongNotifier,
+                        onNextSongButtonPressed: (){
                           recommendersModel.onNextSongButtonPressed();
                         }
                       ),
-                      
                     ],
                   ),
                 ),
               ),
-              Comments(recommendersModel.currentSongCommentsNotifier)
+              Comments(currentSongDocNotifier: currentSongDocNotifier)
             ],
           ),
         ),

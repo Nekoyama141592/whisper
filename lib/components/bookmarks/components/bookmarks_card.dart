@@ -1,20 +1,23 @@
+// material
 import 'package:flutter/material.dart';
-
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
+// components
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/loading.dart';
+// model
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
-import 'package:whisper/constants/routes.dart' as routes;
 
 class BookmarkCard extends StatelessWidget {
   
-  BookmarkCard(
-    this.bookmarksModel,
-    this.preservatedPostIds,
-    this.likedPostIds
-  );
+  BookmarkCard({
+    required this.bookmarksModel,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+  });
 
   final BookMarksModel bookmarksModel;
   final List preservatedPostIds;
@@ -41,9 +44,9 @@ class BookmarkCard extends StatelessWidget {
               ),
             ),
             AudioWindow(
-              preservatedPostIds,
-              likedPostIds,
-              (){
+              preservatedPostIds: preservatedPostIds, 
+              likedPostIds: likedPostIds, 
+              route: (){
                 routes.toPreservationsShowPage(
                   context, 
                   bookmarksModel.currentUserDoc, 
@@ -52,20 +55,18 @@ class BookmarkCard extends StatelessWidget {
                   likedPostIds
                 );
               },
-              bookmarksModel.progressNotifier,
-              bookmarksModel.seek,
-              bookmarksModel.currentSongTitleNotifier,
-              bookmarksModel.currentSongPostIdNotifier,
-              bookmarksModel.currentSongUserImageURLNotifier,
-              bookmarksModel.playButtonNotifier,
-              (){
+              progressNotifier: bookmarksModel.progressNotifier, 
+              seek: bookmarksModel.seek, 
+              currentSongDocNotifier: bookmarksModel.currentSongDocNotifier, 
+              playButtonNotifier: bookmarksModel.playButtonNotifier,
+              play: () {
                 bookmarksModel.play();
-              },
-            (){
-              bookmarksModel.pause();
-            },
-              bookmarksModel.currentUserDoc
-            ),
+              }, 
+              pause: () {
+                bookmarksModel.pause();
+              }, 
+              currentUserDoc: bookmarksModel.currentUserDoc
+            )
           ],
         ),
       ),

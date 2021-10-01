@@ -1,36 +1,39 @@
+// material
 import 'package:flutter/material.dart';
-
-import '../../audio_controll_buttons/audio_controll_buttons.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+// components
+import 'package:whisper/posts/components/audio_controll_buttons/audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
-
+// notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
-
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 
 class AudioStateDesign extends StatelessWidget {
   
-  AudioStateDesign(
-    this.preservatedPostIds,
-    this.likedPostIds,
-    this.currentSongTitleNotifier,
-    this.progressNotifier,
-    this.seek,
-    this.repeatButtonNotifier,
-    this.onRepeatButtonPressed,
-    this.isFirstSongNotifier,
-    this.onPreviousSongButtonPressed,
-    this.playButtonNotifier,
-    this.play,
-    this.pause,
-    this.isLastSongNotifier,
-    this.onNextSongButtonPressed
-  );
+  const AudioStateDesign({
+    Key? key,
+    required this.preservatedPostIds,
+    required this.likedPostIds,
+    required this.currentSongDocNotifier,
+    required this.progressNotifier,
+    required this.seek,
+    required this.repeatButtonNotifier,
+    required this.onRepeatButtonPressed,
+    required this.isFirstSongNotifier,
+    required this.onPreviousSongButtonPressed,
+    required this.playButtonNotifier,
+    required this.play,
+    required this.pause,
+    required this.isLastSongNotifier,
+    required this.onNextSongButtonPressed
+  }) : super(key: key);
   
   final List preservatedPostIds;
   final List likedPostIds;
-  final ValueNotifier<String> currentSongTitleNotifier;
+  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
   final RepeatButtonNotifier repeatButtonNotifier;
@@ -60,8 +63,8 @@ class AudioStateDesign extends StatelessWidget {
             isLastSongNotifier,
             onNextSongButtonPressed
           ),
-          AudioProgressBar(progressNotifier,seek),
-          CurrentSongTitle(currentSongTitleNotifier)
+          AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
+          CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
         ],
       ),
     );

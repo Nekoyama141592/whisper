@@ -28,25 +28,29 @@ class RecommendersCard extends StatelessWidget{
           ),
         ),
         AudioWindow(
-          preservatedPostIds,
-          likedPostIds,
-          (){
-            routes.toRecommenderShowPage(context, currentUserDoc,recommendersModel, preservatedPostIds, likedPostIds);
+          preservatedPostIds: preservatedPostIds, 
+          likedPostIds: likedPostIds, 
+          route: (){
+            routes.toPreservationsShowPage(
+              context, 
+              currentUserDoc, 
+              recommendersModel, 
+              preservatedPostIds, 
+              likedPostIds
+            );
           },
-          recommendersModel.progressNotifier,
-          recommendersModel.seek,
-          recommendersModel.currentSongTitleNotifier,
-          recommendersModel.currentSongPostIdNotifier,
-          recommendersModel.currentSongUserImageURLNotifier,
-          recommendersModel.playButtonNotifier,
-          (){
+          progressNotifier: recommendersModel.progressNotifier, 
+          seek: recommendersModel.seek, 
+          currentSongDocNotifier: recommendersModel.currentSongDocNotifier, 
+          playButtonNotifier: recommendersModel.playButtonNotifier,
+          play: () {
             recommendersModel.play();
-          },
-         (){
-           recommendersModel.pause();
-         },
-          currentUserDoc
-        ),
+          }, 
+          pause: () {
+            recommendersModel.pause();
+          }, 
+          currentUserDoc: currentUserDoc
+        )
       ]
     );
   }

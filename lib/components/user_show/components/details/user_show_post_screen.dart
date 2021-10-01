@@ -11,7 +11,9 @@ import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 // model
 import 'package:whisper/components/user_show/user_show_model.dart';
+
 class UserShowPostScreen extends StatelessWidget {
+  
   const UserShowPostScreen({
     Key? key,
     required UserShowModel userShowProvider,
@@ -44,24 +46,22 @@ class UserShowPostScreen extends StatelessWidget {
               )
             ),
             AudioWindow(
-              preservatedPostIds,
-              likedPostIds,
-              (){
+              preservatedPostIds: preservatedPostIds,
+              likedPostIds: likedPostIds,
+              route: (){
                 routes.toUserShowPostShowPage(context, currentUserDoc, userShowModel, preservatedPostIds, likedPostIds);
               },
-              userShowModel.progressNotifier,
-              userShowModel.seek,
-              userShowModel.currentSongTitleNotifier,
-              userShowModel.currentSongPostIdNotifier,
-              userShowModel.currentSongUserImageURLNotifier,
-              userShowModel.playButtonNotifier,
-              (){
+              progressNotifier: userShowModel.progressNotifier,
+              seek: userShowModel.seek,
+              currentSongDocNotifier: userShowModel.currentSongDocNotifier,
+              playButtonNotifier: userShowModel.playButtonNotifier,
+              play: (){
                 userShowModel.play();
               },
-            (){
-              userShowModel.pause();
-            },
-              currentUserDoc
+              pause: (){
+                userShowModel.pause();
+              },
+              currentUserDoc: currentUserDoc
             ),
           ],
         ),

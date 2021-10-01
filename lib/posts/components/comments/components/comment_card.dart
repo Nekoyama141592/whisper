@@ -1,8 +1,13 @@
+// material
 import 'package:flutter/material.dart';
 
 class CommentCard extends StatelessWidget {
 
-  CommentCard(this.comment);
+  const CommentCard({
+    Key? key,
+    required this.comment
+  }): super(key: key);
+  
   final Map<String,dynamic> comment;
 
   @override  

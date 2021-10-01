@@ -55,46 +55,37 @@ class UserShowPostShowPage extends StatelessWidget {
                 child: Container(
                   child: Column(
                     children: [
-                      SquarePostImage(
-                        imageURLNotifier: userShowModel.currentSongImageURLNotifier.value.isNotEmpty ? userShowModel.currentSongImageURLNotifier : userShowModel.currentSongUserImageURLNotifier
+                      SquarePostImage(currentSongDocNotifier: userShowModel.currentSongDocNotifier),
+                      Center(
+                        child: CurrentSongPostId(currentSongDocNotifier: userShowModel.currentSongDocNotifier),
                       ),
                       Center(
-                        child: CurrentSongPostId(userShowModel.currentSongPostIdNotifier),
+                        child: CurrentSongTitle(currentSongDocNotifier: userShowModel.currentSongDocNotifier),
                       ),
-                      Center(
-                        child: CurrentSongTitle(userShowModel.currentSongTitleNotifier),
-                      ),
-                      PostButtons(
-                        currentUserDoc,
-                        userShowModel.currentSongPostIdNotifier,
-                        userShowModel.currentSongDocIdNotifier,
-                        userShowModel.currentSongCommentsNotifier,
-                        preservatedPostIds,
-                        likedPostIds
-                      ),
+                      PostButtons(currentUserDoc, userShowModel.currentSongDocNotifier, preservatedPostIds, likedPostIds),
                       AudioStateDesign(
-                        preservatedPostIds,
-                        likedPostIds,
-                        userShowModel.currentSongTitleNotifier,
-                        userShowModel.progressNotifier,
-                        userShowModel.seek,
-                        userShowModel.repeatButtonNotifier,
-                        (){
+                        preservatedPostIds: preservatedPostIds,
+                        likedPostIds: likedPostIds,
+                        currentSongDocNotifier: userShowModel.currentSongDocNotifier,
+                        progressNotifier: userShowModel.progressNotifier,
+                        seek: userShowModel.seek,
+                        repeatButtonNotifier: userShowModel.repeatButtonNotifier,
+                        onRepeatButtonPressed: (){
                           userShowModel.onRepeatButtonPressed();
                         },
-                        userShowModel.isFirstSongNotifier,
-                        (){
+                        isFirstSongNotifier: userShowModel.isFirstSongNotifier,
+                        onPreviousSongButtonPressed: (){
                           userShowModel.onPreviousSongButtonPressed();
                         },
-                        userShowModel.playButtonNotifier,
-                        (){
+                        playButtonNotifier: userShowModel.playButtonNotifier,
+                        play: (){
                           userShowModel.play();
                         },
-                        (){
+                        pause: (){
                           userShowModel.pause();
                         },
-                        userShowModel.isLastSongNotifier,
-                        (){
+                        isLastSongNotifier: userShowModel.isLastSongNotifier,
+                        onNextSongButtonPressed: (){
                           userShowModel.onNextSongButtonPressed();
                         }
                       ),
@@ -102,7 +93,7 @@ class UserShowPostShowPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Comments(userShowModel.currentSongCommentsNotifier)
+              Comments(currentSongDocNotifier: userShowModel.currentSongDocNotifier)
             ],
           ),
         ),

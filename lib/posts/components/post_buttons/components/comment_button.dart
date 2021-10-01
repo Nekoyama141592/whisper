@@ -1,13 +1,20 @@
+// material
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// model
 import 'package:whisper/posts/components/comments/comments_model.dart';
 
 class CommentButton extends ConsumerWidget {
 
-  CommentButton(this.postDocId,this.postComments);
-  final String postDocId;
-  final List<dynamic> postComments;
+  CommentButton({
+    Key? key,
+    required this.currentSongDocId,
+    required this.currentPostComments
+  }) : super(key: key);
+
+  final String currentSongDocId;
+  final List<dynamic> currentPostComments;
+  
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _commentsProvider = watch(commentsProvider);
@@ -50,7 +57,7 @@ class CommentButton extends ConsumerWidget {
                 ElevatedButton(
                   child: Text('送信'),
                   onPressed: ()async {
-                    // _commentsProvider.makeComment(postDocId, postComments);
+                    // _commentsProvider.makeComment(currentPostDocId, currentPostComments);
                   }, 
                 )
               ],

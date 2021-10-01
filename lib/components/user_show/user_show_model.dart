@@ -20,13 +20,14 @@ class UserShowModel extends ChangeNotifier {
   User? currentUser;
   
   // notifiers
-  final currentSongTitleNotifier = ValueNotifier<String>('');
-  final currentSongPostIdNotifier = ValueNotifier<String>('');
-  final currentSongDocIdNotifier = ValueNotifier<String>('');
-  final currentSongDocUidNotifier = ValueNotifier<String>('');
-  final currentSongImageURLNotifier = ValueNotifier<String>('');
-  final currentSongUserImageURLNotifier = ValueNotifier<String>('');
-  final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
+  final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
+  // final currentSongTitleNotifier = ValueNotifier<String>('');
+  // final currentSongPostIdNotifier = ValueNotifier<String>('');
+  // final currentSongDocIdNotifier = ValueNotifier<String>('');
+  // final currentSongDocUidNotifier = ValueNotifier<String>('');
+  // final currentSongImageURLNotifier = ValueNotifier<String>('');
+  // final currentSongUserImageURLNotifier = ValueNotifier<String>('');
+  // final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
 
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
@@ -89,8 +90,8 @@ class UserShowModel extends ChangeNotifier {
       .where('uid',isEqualTo: currentUser!.uid)
       .get()
       .then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot doc) {
-          postDocs.add(doc);
+        qshot.docs.forEach((DocumentSnapshot? doc) {
+          postDocs.add(doc!);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);
           afterUris.add(source);
@@ -206,15 +207,8 @@ class UserShowModel extends ChangeNotifier {
       if (sequenceState == null) return;
       // update current song doc
       final currentItem = sequenceState.currentSource;
-      final DocumentSnapshot currentSongDoc = currentItem?.tag;
-      final title = currentSongDoc['title'];
-      currentSongTitleNotifier.value = title;
-      currentSongPostIdNotifier.value = currentSongDoc['postId'];
-      currentSongDocIdNotifier.value = currentSongDoc.id;
-      currentSongDocUidNotifier.value = currentSongDoc['uid'];
-      currentSongImageURLNotifier.value = currentSongDoc['imageURL'];
-      currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
-      currentSongCommentsNotifier.value = currentSongDoc['comments'];
+      final DocumentSnapshot? currentSongDoc = currentItem?.tag;
+      currentSongDocNotifier.value = currentSongDoc;
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       playlist.map((item) {

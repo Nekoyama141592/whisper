@@ -8,26 +8,27 @@ import 'package:whisper/posts/components/audio_controll_buttons/components/play_
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
 class AudioWindow extends StatelessWidget {
   
-  AudioWindow(
-    this.addPostProvider,
-    this.currentUserDoc,
-    // this.postTitleController
-  );
-  final AddPostModel addPostProvider;
+  const AudioWindow({
+    Key? key,
+    required this.addPostModel,
+    required this.currentUserDoc,
+  }) : super(key: key);
+  
+  final AddPostModel addPostModel;
   final DocumentSnapshot currentUserDoc;
-  // final TextEditingController postTitleController;
 
   Widget build(BuildContext context) {
+    
     final size = MediaQuery.of(context).size;
     final audioWindowHeight = size.height * 0.15;
+    final progressNotifier = addPostModel.progressNotifier;
+    final seek = addPostModel.seek;
+
     return Container(
       height: audioWindowHeight,
       child: Column(
         children: [
-          AudioProgressBar(
-            addPostProvider.progressNotifier,
-            addPostProvider.seek
-          ),
+          AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
           Row(
             children: [
               Padding(
@@ -40,8 +41,6 @@ class AudioWindow extends StatelessWidget {
                 width: size.width * 0.55,
                 child: Column(
                   children: [
-                    // Text(userName),
-                    // Text(title)
                     Text(
                       currentUserDoc['userName'],
                       style: TextStyle(
@@ -49,7 +48,7 @@ class AudioWindow extends StatelessWidget {
                       ),
                     ),
                     ValueListenableBuilder<String>(
-                      valueListenable: addPostProvider.postTitleNotifier,
+                      valueListenable: addPostModel.postTitleNotifier,
                       builder: (_,postTitle,__) {
                         return 
                         Text(
@@ -69,12 +68,12 @@ class AudioWindow extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     PlayButton(
-                      addPostProvider.playButtonNotifier,
+                      addPostModel.playButtonNotifier,
                       (){
-                        addPostProvider.play();
+                        addPostModel.play();
                       },
                       (){
-                        addPostProvider.pause();
+                        addPostModel.pause();
                       }
                     ),
                   ],

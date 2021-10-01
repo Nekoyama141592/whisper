@@ -1,22 +1,27 @@
 // material
 import 'package:flutter/material.dart';
+// package
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SquarePostImage extends StatelessWidget {
 
   const SquarePostImage({
     Key? key,
-    required this.imageURLNotifier
+    required this.currentSongDocNotifier,
   }) : super(key: key);
 
-  final ValueNotifier<String> imageURLNotifier;
+  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+
   @override 
   
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
-    return ValueListenableBuilder<String>(
-      valueListenable: imageURLNotifier, 
-      builder: (_,imageURL,__) {
+    return ValueListenableBuilder<DocumentSnapshot?>(
+      valueListenable: currentSongDocNotifier, 
+      builder: (_, currentSongDoc, __) {
+        final String imageURL = currentSongDoc!['imageURL'];
+        final String resultURL = imageURL.isNotEmpty ? currentSongDoc['imageURL'] : currentSongDoc['userImageURL'];
         return Padding(
           padding: const EdgeInsets.only(
             bottom: 35.0
@@ -31,7 +36,7 @@ class SquarePostImage extends StatelessWidget {
                 ),
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(imageURL),
+                  image: NetworkImage(resultURL),
                 )
               ),
             ),
