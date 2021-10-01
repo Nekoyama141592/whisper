@@ -20,6 +20,7 @@ import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
+import 'package:whisper/posts/components/other_pages/edit_post_info/edit_post_info_page.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -93,5 +94,8 @@ void toPickPostImagePage(context,addPostModel, currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
+void toEditPostInfoPage(context,postTitle,currentUserDoc,songDocId,imageURL) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => EditPostInfoPage(postTitle: postTitle, currentUserDoc: currentUserDoc, songDocId: songDocId, imageURL: imageURL) ));
+}
 
 

@@ -12,13 +12,13 @@ class EditPostInfoPage extends ConsumerWidget {
 
   const EditPostInfoPage({
     Key? key,
-    required this.postDoc,
+    required this.postTitle,
     required this.currentUserDoc,
     required this.songDocId,
     required this.imageURL,
   }) : super(key: key);
 
-  final DocumentSnapshot postDoc;
+  final String postTitle;
   final DocumentSnapshot currentUserDoc;
   final String songDocId;
   final String imageURL;
@@ -30,7 +30,7 @@ class EditPostInfoPage extends ConsumerWidget {
     final length = size.width * 0.8;
     final editPostInfoModel = watch(editPostInfoProvider);
     final postTitleController = TextEditingController(
-      text: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : postDoc['title']
+      text: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : postTitle
     );
 
     return Scaffold(

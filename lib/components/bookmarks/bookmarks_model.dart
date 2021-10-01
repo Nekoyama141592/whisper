@@ -22,6 +22,7 @@ class BookMarksModel extends ChangeNotifier {
   final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongTitleNotifier = ValueNotifier<String>('');
   final currentSongDocIdNotifier = ValueNotifier<String>('');
+  final currentSongDocUidNotifier = ValueNotifier<String>('');
   final currentSongImageURLNotifier = ValueNotifier<String>('');
   final currentSongUserImageURLNotifier = ValueNotifier<String>('');
   final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
@@ -219,6 +220,7 @@ class BookMarksModel extends ChangeNotifier {
       currentSongTitleNotifier.value = title;
       currentSongPostIdNotifier.value = currentSongDoc['postId'];
       currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongDocUidNotifier.value = currentSongDoc['uid'];
       currentSongImageURLNotifier.value = currentSongDoc['imageURL'];
       currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
       currentSongCommentsNotifier.value = currentSongDoc['comments'];

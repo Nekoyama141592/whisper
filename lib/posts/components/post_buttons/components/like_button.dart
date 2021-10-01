@@ -1,8 +1,9 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+// model
 import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
 
 class LikeButton extends ConsumerWidget {
@@ -14,6 +15,7 @@ class LikeButton extends ConsumerWidget {
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<String> currentSongPostIdNotifier;
   final List likedPostIds;
+  
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final _postFeaturesProvider = watch(postsFeaturesProvider);

@@ -23,9 +23,11 @@ class UserShowModel extends ChangeNotifier {
   final currentSongTitleNotifier = ValueNotifier<String>('');
   final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongDocIdNotifier = ValueNotifier<String>('');
+  final currentSongDocUidNotifier = ValueNotifier<String>('');
   final currentSongImageURLNotifier = ValueNotifier<String>('');
   final currentSongUserImageURLNotifier = ValueNotifier<String>('');
   final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
+
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
@@ -209,6 +211,7 @@ class UserShowModel extends ChangeNotifier {
       currentSongTitleNotifier.value = title;
       currentSongPostIdNotifier.value = currentSongDoc['postId'];
       currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongDocUidNotifier.value = currentSongDoc['uid'];
       currentSongImageURLNotifier.value = currentSongDoc['imageURL'];
       currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
       currentSongCommentsNotifier.value = currentSongDoc['comments'];
