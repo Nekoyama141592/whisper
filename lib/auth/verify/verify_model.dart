@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +10,6 @@ final verifyProvider = ChangeNotifierProvider(
 
 class VerifyModel extends ChangeNotifier {
   User? currentUser;
-  int verifyTimes = 0;
 
   VerifyModel() {
     init();
@@ -20,16 +17,14 @@ class VerifyModel extends ChangeNotifier {
   void init() {
     setCurrentUser();
     currentUser!.sendEmailVerification();
-    Timer.periodic(Duration(seconds: 1), (timer) async {
-      await currentUser!.reload();
-    });
   }
 
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  void checkEmailVerified(context)  {
+  Future checkEmailVerified(context) async {
+    await currentUser!.reload();
     if (currentUser!.emailVerified) {
       routes.toMyApp(context);
     } else {

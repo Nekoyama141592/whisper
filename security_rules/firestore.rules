@@ -6,13 +6,17 @@ service cloud.firestore {
   match /databases/{database}/documents {
     
     match /users/{userId} {
+      allow write: if 1 == 1;
+      allow read: if isAuthenticated();
       match /userName {
-        allow update: if false;
+        allow update: if 1 == 2;
       }
     }
-    
-    match /{document=**} {
+    match /posts/{postId} {
       allow read, write: if isAuthenticated();
     }
+    // match /{document=**} {
+    //   allow read, write: if isAuthenticated();
+    // }
   }
 }
