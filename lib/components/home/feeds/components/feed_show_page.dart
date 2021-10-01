@@ -5,6 +5,7 @@ import 'package:whisper/posts/components/audio_window/components/audio_state_des
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
+import 'package:whisper/posts/components/details/square_user_image.dart';
 import 'package:whisper/posts/components/comments/comments.dart';
 // model
 import 'package:whisper/components/home/feeds/feeds_model.dart';
@@ -12,12 +13,12 @@ import 'package:whisper/components/home/feeds/feeds_model.dart';
 class FeedShowPage extends StatelessWidget{
   
   const FeedShowPage({
-    required this.feedsProvider,
+    required this.feedsModel,
     required this.preservatedPostIds,
     required this.likedPostIds
   });
 
-  final FeedsModel feedsProvider;
+  final FeedsModel feedsModel;
   final List preservatedPostIds;
   final List likedPostIds;
 
@@ -43,54 +44,58 @@ class FeedShowPage extends StatelessWidget{
                   }, 
                 ),
               ),
-              Container(
-                child: Column(
-                  children: [
-                    Center(
-                      // image
-                      child: CurrentSongPostId(feedsProvider.currentSongPostIdNotifier),
-                    ),
-                    Center(
-                      child: CurrentSongTitle(feedsProvider.currentSongTitleNotifier),
-                    ),
-                    PostButtons(
-                      feedsProvider.currentUserDoc,
-                      feedsProvider.currentSongPostIdNotifier,
-                      feedsProvider.currentSongDocIdNotifier,
-                      feedsProvider.currentSongCommentsNotifier,
-                      preservatedPostIds,
-                      likedPostIds
-                    ),
-                    AudioStateDesign(
-                      preservatedPostIds,
-                      likedPostIds,
-                      feedsProvider.currentSongTitleNotifier,
-                      feedsProvider.progressNotifier,
-                      feedsProvider.seek,
-                      feedsProvider.repeatButtonNotifier,
-                      (){
-                        feedsProvider.onRepeatButtonPressed();
-                      },
-                      feedsProvider.isFirstSongNotifier,
-                      (){
-                        feedsProvider.onPreviousSongButtonPressed();
-                      },
-                      feedsProvider.playButtonNotifier,
-                      (){
-                        feedsProvider.play();
-                      },
-                      (){
-                        feedsProvider.pause();
-                      },
-                      feedsProvider.isLastSongNotifier,
-                      (){
-                        feedsProvider.onNextSongButtonPressed();
-                      }
-                    ),
-                  ],
+              SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      SquareUserImage(
+                        imageURLNotifier: feedsModel.currentSongImageURLNotifier.value.isNotEmpty ? feedsModel.currentSongImageURLNotifier : feedsModel.currentSongUserImageURLNotifier
+                      ),
+                      Center(
+                        child: CurrentSongPostId(feedsModel.currentSongPostIdNotifier),
+                      ),
+                      Center(
+                        child: CurrentSongTitle(feedsModel.currentSongTitleNotifier),
+                      ),
+                      PostButtons(
+                        feedsModel.currentUserDoc,
+                        feedsModel.currentSongPostIdNotifier,
+                        feedsModel.currentSongDocIdNotifier,
+                        feedsModel.currentSongCommentsNotifier,
+                        preservatedPostIds,
+                        likedPostIds
+                      ),
+                      AudioStateDesign(
+                        preservatedPostIds,
+                        likedPostIds,
+                        feedsModel.currentSongTitleNotifier,
+                        feedsModel.progressNotifier,
+                        feedsModel.seek,
+                        feedsModel.repeatButtonNotifier,
+                        (){
+                          feedsModel.onRepeatButtonPressed();
+                        },
+                        feedsModel.isFirstSongNotifier,
+                        (){
+                          feedsModel.onPreviousSongButtonPressed();
+                        },
+                        feedsModel.playButtonNotifier,
+                        (){
+                          feedsModel.play();
+                        },
+                        (){
+                          feedsModel.pause();
+                        },
+                        feedsModel.isLastSongNotifier,
+                        (){
+                          feedsModel.onNextSongButtonPressed();
+                        }
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Comments(feedsProvider.currentSongCommentsNotifier)
+              Comments(feedsModel.currentSongCommentsNotifier)
             ],
           ),
         ),

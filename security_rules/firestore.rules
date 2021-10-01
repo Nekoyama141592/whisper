@@ -4,8 +4,15 @@ service cloud.firestore {
     return request.auth != null;
   }
   match /databases/{database}/documents {
+    
+    match /users/{userId} {
+      match /userName {
+        allow update: if false;
+      }
+    }
+    
     match /{document=**} {
-      allow read, write: if isAuthenticated;
+      allow read, write: if isAuthenticated();
     }
   }
 }

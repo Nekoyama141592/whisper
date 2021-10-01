@@ -10,6 +10,7 @@ import 'package:whisper/posts/components/comments/comments.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
+import 'package:whisper/posts/components/details/square_user_image.dart';
 // model
 import 'package:whisper/components/home/recommenders/recommenders_model.dart';
 
@@ -19,13 +20,13 @@ class RecommenderShowPage extends StatelessWidget{
   RecommenderShowPage({
     Key? key,
     required this.currentUserDoc,
-    required this.recommendersProvider,
+    required this.recommendersModel,
     required this.preservatedPostIds,
     required this.likedPostIds
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final RecommendersModel recommendersProvider;
+  final RecommendersModel recommendersModel;
   final List preservatedPostIds;
   final List likedPostIds;
   
@@ -54,48 +55,50 @@ class RecommenderShowPage extends StatelessWidget{
               ),
               SingleChildScrollView(
                 child: Container(
-                  // margin: EdgeInsets.only(top: 100),
                   child: Column(
                     children: [
-                      Center(
-                        // image
-                        child: CurrentSongPostId(recommendersProvider.currentSongPostIdNotifier),
+                      SquareUserImage(
+                        imageURLNotifier: recommendersModel.currentSongImageURLNotifier.value.isNotEmpty ? recommendersModel.currentSongImageURLNotifier : recommendersModel.currentSongUserImageURLNotifier
                       ),
                       Center(
-                        child: CurrentSongTitle(recommendersProvider.currentSongTitleNotifier),
+                        // image
+                        child: CurrentSongPostId(recommendersModel.currentSongPostIdNotifier),
+                      ),
+                      Center(
+                        child: CurrentSongTitle(recommendersModel.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         currentUserDoc,
-                        recommendersProvider.currentSongPostIdNotifier,
-                        recommendersProvider.currentSongDocIdNotifier,
-                        recommendersProvider.currentSongCommentsNotifier,
+                        recommendersModel.currentSongPostIdNotifier,
+                        recommendersModel.currentSongDocIdNotifier,
+                        recommendersModel.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(
                         preservatedPostIds,
                         likedPostIds,
-                        recommendersProvider.currentSongTitleNotifier,
-                        recommendersProvider.progressNotifier,
-                        recommendersProvider.seek,
-                        recommendersProvider.repeatButtonNotifier,
+                        recommendersModel.currentSongTitleNotifier,
+                        recommendersModel.progressNotifier,
+                        recommendersModel.seek,
+                        recommendersModel.repeatButtonNotifier,
                         (){
-                          recommendersProvider.onRepeatButtonPressed();
+                          recommendersModel.onRepeatButtonPressed();
                         },
-                        recommendersProvider.isFirstSongNotifier,
+                        recommendersModel.isFirstSongNotifier,
                         (){
-                          recommendersProvider.onPreviousSongButtonPressed();
+                          recommendersModel.onPreviousSongButtonPressed();
                         },
-                        recommendersProvider.playButtonNotifier,
+                        recommendersModel.playButtonNotifier,
                         (){
-                          recommendersProvider.play();
+                          recommendersModel.play();
                         },
                         (){
-                          recommendersProvider.pause();
+                          recommendersModel.pause();
                         },
-                        recommendersProvider.isLastSongNotifier,
+                        recommendersModel.isLastSongNotifier,
                         (){
-                          recommendersProvider.onNextSongButtonPressed();
+                          recommendersModel.onNextSongButtonPressed();
                         }
                       ),
                       
@@ -103,7 +106,7 @@ class RecommenderShowPage extends StatelessWidget{
                   ),
                 ),
               ),
-              Comments(recommendersProvider.currentSongCommentsNotifier)
+              Comments(recommendersModel.currentSongCommentsNotifier)
             ],
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
+import 'package:whisper/posts/components/details/square_user_image.dart';
 import 'package:whisper/posts/components/comments/comments.dart';
 // model
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
@@ -32,7 +33,6 @@ class BookmarkShowPage extends StatelessWidget{
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
-        
         body: SafeArea(
           child: Column(
             children: [
@@ -41,7 +41,6 @@ class BookmarkShowPage extends StatelessWidget{
                 child: IconButton(
                   padding: EdgeInsets.symmetric(
                     vertical: 20,
-                    
                   ),
                   color: Colors.blue,
                   icon: Icon(Icons.keyboard_arrow_down),
@@ -52,9 +51,11 @@ class BookmarkShowPage extends StatelessWidget{
               ),
               SingleChildScrollView(
                 child: Container(
-                  // margin: EdgeInsets.only(top: 100),
                   child: Column(
                     children: [
+                      SquareUserImage(
+                        imageURLNotifier: bookmarksModel.currentSongImageURLNotifier.value.isNotEmpty ? bookmarksModel.currentSongImageURLNotifier : bookmarksModel.currentSongUserImageURLNotifier
+                      ),
                       Center(
                         // image
                         child: CurrentSongPostId(bookmarksModel.currentSongPostIdNotifier),

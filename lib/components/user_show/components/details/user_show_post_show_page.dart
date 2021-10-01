@@ -2,13 +2,12 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
+import 'package:whisper/posts/components/details/square_user_image.dart';
 import 'package:whisper/posts/components/comments/comments.dart';
 // model
 import 'package:whisper/components/user_show/user_show_model.dart';
@@ -19,12 +18,12 @@ class UserShowPostShowPage extends StatelessWidget {
   const UserShowPostShowPage({
     Key? key,
     required this.currentUserDoc,
-    required this.userShowProvider,
+    required this.userShowModel,
     required this.preservatedPostIds,
     required this.likedPostIds
   });
   
-  final UserShowModel userShowProvider;
+  final UserShowModel userShowModel;
   final DocumentSnapshot currentUserDoc;
   final List preservatedPostIds;
   final List likedPostIds;
@@ -56,52 +55,54 @@ class UserShowPostShowPage extends StatelessWidget {
                 child: Container(
                   child: Column(
                     children: [
-                      Center(
-                        // image
-                        child: CurrentSongPostId(userShowProvider.currentSongPostIdNotifier),
+                      SquareUserImage(
+                        imageURLNotifier: userShowModel.currentSongImageURLNotifier.value.isNotEmpty ? userShowModel.currentSongImageURLNotifier : userShowModel.currentSongUserImageURLNotifier
                       ),
                       Center(
-                        child: CurrentSongTitle(userShowProvider.currentSongTitleNotifier),
+                        child: CurrentSongPostId(userShowModel.currentSongPostIdNotifier),
+                      ),
+                      Center(
+                        child: CurrentSongTitle(userShowModel.currentSongTitleNotifier),
                       ),
                       PostButtons(
                         currentUserDoc,
-                        userShowProvider.currentSongPostIdNotifier,
-                        userShowProvider.currentSongDocIdNotifier,
-                        userShowProvider.currentSongCommentsNotifier,
+                        userShowModel.currentSongPostIdNotifier,
+                        userShowModel.currentSongDocIdNotifier,
+                        userShowModel.currentSongCommentsNotifier,
                         preservatedPostIds,
                         likedPostIds
                       ),
                       AudioStateDesign(
                         preservatedPostIds,
                         likedPostIds,
-                        userShowProvider.currentSongTitleNotifier,
-                        userShowProvider.progressNotifier,
-                        userShowProvider.seek,
-                        userShowProvider.repeatButtonNotifier,
+                        userShowModel.currentSongTitleNotifier,
+                        userShowModel.progressNotifier,
+                        userShowModel.seek,
+                        userShowModel.repeatButtonNotifier,
                         (){
-                          userShowProvider.onRepeatButtonPressed();
+                          userShowModel.onRepeatButtonPressed();
                         },
-                        userShowProvider.isFirstSongNotifier,
+                        userShowModel.isFirstSongNotifier,
                         (){
-                          userShowProvider.onPreviousSongButtonPressed();
+                          userShowModel.onPreviousSongButtonPressed();
                         },
-                        userShowProvider.playButtonNotifier,
+                        userShowModel.playButtonNotifier,
                         (){
-                          userShowProvider.play();
+                          userShowModel.play();
                         },
                         (){
-                          userShowProvider.pause();
+                          userShowModel.pause();
                         },
-                        userShowProvider.isLastSongNotifier,
+                        userShowModel.isLastSongNotifier,
                         (){
-                          userShowProvider.onNextSongButtonPressed();
+                          userShowModel.onNextSongButtonPressed();
                         }
                       ),
                     ],
                   ),
                 ),
               ),
-              Comments(userShowProvider.currentSongCommentsNotifier)
+              Comments(userShowModel.currentSongCommentsNotifier)
             ],
           ),
         ),

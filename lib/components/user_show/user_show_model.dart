@@ -23,6 +23,7 @@ class UserShowModel extends ChangeNotifier {
   final currentSongTitleNotifier = ValueNotifier<String>('');
   final currentSongPostIdNotifier = ValueNotifier<String>('');
   final currentSongDocIdNotifier = ValueNotifier<String>('');
+  final currentSongImageURLNotifier = ValueNotifier<String>('');
   final currentSongUserImageURLNotifier = ValueNotifier<String>('');
   final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   List<DocumentSnapshot> currentSongDocs = [];
@@ -208,6 +209,7 @@ class UserShowModel extends ChangeNotifier {
       currentSongTitleNotifier.value = title;
       currentSongPostIdNotifier.value = currentSongDoc['postId'];
       currentSongDocIdNotifier.value = currentSongDoc.id;
+      currentSongImageURLNotifier.value = currentSongDoc['imageURL'];
       currentSongUserImageURLNotifier.value = currentSongDoc['userImageURL'];
       currentSongCommentsNotifier.value = currentSongDoc['comments'];
       // update playlist
