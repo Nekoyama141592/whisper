@@ -47,7 +47,7 @@ class BookmarkCard extends StatelessWidget {
               preservatedPostIds: preservatedPostIds, 
               likedPostIds: likedPostIds, 
               route: (){
-                routes.toPreservationsShowPage(
+                routes.toBookmarksShowPage(
                   context, 
                   bookmarksModel.currentUserDoc, 
                   bookmarksModel, 

@@ -31,7 +31,7 @@ class RecommendersCard extends StatelessWidget{
           preservatedPostIds: preservatedPostIds, 
           likedPostIds: likedPostIds, 
           route: (){
-            routes.toPreservationsShowPage(
+            routes.toRecommenderShowPage(
               context, 
               currentUserDoc, 
               recommendersModel, 

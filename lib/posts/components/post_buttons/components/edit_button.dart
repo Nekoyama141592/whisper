@@ -25,7 +25,7 @@ class EditButton extends StatelessWidget {
         return currentUserDoc['uid'] != currentSongDoc!['uid'] ? SizedBox.shrink()
         : IconButton(
           onPressed: () {
-            routes.toEditPostInfoPage(context, currentSongDoc['title'], currentUserDoc, currentSongDoc.id, currentSongDoc['userImageURL']);
+            routes.toEditPostInfoPage(context, currentUserDoc, currentSongDoc);
           }, 
           icon: Icon(Icons.edit)
         );

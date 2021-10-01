@@ -12,16 +12,12 @@ class EditPostInfoPage extends ConsumerWidget {
 
   const EditPostInfoPage({
     Key? key,
-    required this.postTitle,
     required this.currentUserDoc,
-    required this.songDocId,
-    required this.imageURL,
+    required this.currentSongDoc
   }) : super(key: key);
 
-  final String postTitle;
   final DocumentSnapshot currentUserDoc;
-  final String songDocId;
-  final String imageURL;
+  final DocumentSnapshot currentSongDoc;
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
@@ -30,8 +26,11 @@ class EditPostInfoPage extends ConsumerWidget {
     final length = size.width * 0.8;
     final editPostInfoModel = watch(editPostInfoProvider);
     final postTitleController = TextEditingController(
-      text: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : postTitle
+      text: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : currentSongDoc['title']
     );
+    final String imageURL = currentSongDoc['imageURL'];
+    final String userImageURL = currentSongDoc['userImageURL'];
+    final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
 
     return Scaffold(
       body: Padding(
@@ -61,7 +60,7 @@ class EditPostInfoPage extends ConsumerWidget {
                     10, 
                     5, 
                     () async  {
-                      await editPostInfoModel.updatePostInfo(songDocId,currentUserDoc['uid']);
+                      await editPostInfoModel.updatePostInfo(currentSongDoc.id,currentUserDoc['uid']);
                     },
                     Colors.white, 
                     Theme.of(context).highlightColor
@@ -78,7 +77,7 @@ class EditPostInfoPage extends ConsumerWidget {
                   ),
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: NetworkImage(imageURL),
+                    image: NetworkImage(resultURL),
                   )
                 ),
               ) 

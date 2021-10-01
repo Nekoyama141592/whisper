@@ -25,9 +25,8 @@ class FeedsCard extends StatelessWidget{
           preservatedPostIds: preservatedPostIds, 
           likedPostIds: likedPostIds, 
           route: (){
-            routes.toPreservationsShowPage(
+            routes.toFeedShowPage(
               context, 
-              feedsModel.currentUserDoc, 
               feedsModel, 
               preservatedPostIds, 
               likedPostIds
