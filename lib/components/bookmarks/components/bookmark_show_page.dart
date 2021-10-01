@@ -7,7 +7,7 @@ import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
-import 'package:whisper/posts/components/details/square_user_image.dart';
+import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/comments/comments.dart';
 // model
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
@@ -53,7 +53,7 @@ class BookmarkShowPage extends StatelessWidget{
                 child: Container(
                   child: Column(
                     children: [
-                      SquareUserImage(
+                      SquarePostImage(
                         imageURLNotifier: bookmarksModel.currentSongImageURLNotifier.value.isNotEmpty ? bookmarksModel.currentSongImageURLNotifier : bookmarksModel.currentSongUserImageURLNotifier
                       ),
                       Center(

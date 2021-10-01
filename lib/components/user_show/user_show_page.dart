@@ -38,7 +38,7 @@ class UserShowPage extends ConsumerWidget {
       body: 
       SafeArea(
         child: _userShowProvider.isEditing ?
-        EditProfileScreen(userShowProvider: _userShowProvider, currentUserDoc: currentUserDoc)
+        EditProfileScreen(userShowModel: _userShowProvider, currentUserDoc: currentUserDoc)
         : Container(
           width: double.infinity,
           decoration: BoxDecoration(

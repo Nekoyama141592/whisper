@@ -1,9 +1,9 @@
 // material
 import 'package:flutter/material.dart';
 
-class SquareUserImage extends StatelessWidget {
+class SquarePostImage extends StatelessWidget {
 
-  const SquareUserImage({
+  const SquarePostImage({
     Key? key,
     required this.imageURLNotifier
   }) : super(key: key);

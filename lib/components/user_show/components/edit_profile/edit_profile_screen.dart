@@ -3,32 +3,31 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
-import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/details/user_image.dart';
+// model
+import 'package:whisper/components/user_show/user_show_model.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   
   const EditProfileScreen({
     Key? key,
-    required this.userShowProvider,
+    required this.userShowModel,
     required this.currentUserDoc
   }) : super(key: key);
 
-  final UserShowModel userShowProvider;
+  final UserShowModel userShowModel;
   final DocumentSnapshot currentUserDoc;
   
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
 
     final userNameController = TextEditingController(
-      text: !userShowProvider.isEdited ? currentUserDoc['userName'] : userShowProvider.userName
+      text: !userShowModel.isEdited ? currentUserDoc['userName'] : userShowModel.userName
     );
     final descriptionController = TextEditingController(
-      text: !userShowProvider.isEdited ? currentUserDoc['description'] : userShowProvider.description
+      text: !userShowModel.isEdited ? currentUserDoc['description'] : userShowModel.description
     );
     final size = MediaQuery.of(context).size;
     return Padding(
@@ -41,8 +40,8 @@ class EditProfileScreen extends ConsumerWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    userShowProvider.isEditing = false;
-                    userShowProvider.reload();
+                    userShowModel.isEditing = false;
+                    userShowModel.reload();
                   }, 
                   child: Text(
                     'Cancel',
@@ -59,10 +58,10 @@ class EditProfileScreen extends ConsumerWidget {
                   10, 
                   5, 
                   () async  {
-                    await userShowProvider.onSaveButtonPressed(context,currentUserDoc);
+                    await userShowModel.onSaveButtonPressed(context,currentUserDoc);
                   },
                   Colors.white, 
-                  kPrimaryColor
+                  Theme.of(context).highlightColor
                 )
               ],
             ),
@@ -72,7 +71,7 @@ class EditProfileScreen extends ConsumerWidget {
               keyboardType: TextInputType.text,
               controller: userNameController,
               onChanged: (text){
-                userShowProvider.userName = text;
+                userShowModel.userName = text;
               },
             ),
             Text('自己紹介'),
@@ -81,7 +80,7 @@ class EditProfileScreen extends ConsumerWidget {
               maxLines: 10,
               controller: descriptionController,
               onChanged: (text){
-                userShowProvider.description = text;
+                userShowModel.description = text;
               },
             ),
           ],

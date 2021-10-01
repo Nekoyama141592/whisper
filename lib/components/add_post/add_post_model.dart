@@ -232,7 +232,7 @@ class AddPostModel extends ChangeNotifier {
       await FirebaseStorage.instance
       .ref()
       .child('postImages')
-      .child(imageName + 'jpg')
+      .child(imageName + '.jpg')
       .putFile(croppedFile!);
     } catch(e) {
       print(e.toString());
@@ -240,7 +240,7 @@ class AddPostModel extends ChangeNotifier {
     final String downloadURL = await FirebaseStorage.instance
     .ref()
     .child('postImages')
-    .child(imageName + 'jpg')
+    .child(imageName + '.jpg')
     .getDownloadURL();
     return downloadURL;
   }

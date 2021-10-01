@@ -15,7 +15,7 @@ class BookmarksPage extends ConsumerWidget {
     final _bookmarksProvider = watch(bookmarksProvider);
     return Scaffold(
       body: PostScreen(
-        bookmarksProvider: _bookmarksProvider,
+        bookmarksModel: _bookmarksProvider,
         currentUserDoc: currentUserDoc, 
         preservatedPostIds: preservatedPostIds, 
         likedPostIds: likedPostIds

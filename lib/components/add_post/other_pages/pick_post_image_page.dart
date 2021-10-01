@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
@@ -12,7 +10,7 @@ import 'package:whisper/components/add_post/add_post_model.dart';
 
 class PickPostImagePage extends StatelessWidget {
   
-  PickPostImagePage({
+  const PickPostImagePage({
     Key? key,
     required this.addPostModel,
     required this.currentUserDoc
@@ -49,7 +47,7 @@ class PickPostImagePage extends StatelessWidget {
                     await addPostModel.showImagePicker();
                   }, 
                   Colors.white, 
-                  value ? kTertiaryColor : kPrimaryColor
+                  value ? Theme.of(context).primaryColor : Theme.of(context).highlightColor
                 ),
                 UploadButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
               ],
