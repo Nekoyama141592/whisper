@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 // model
@@ -21,24 +22,35 @@ class AddPostPage extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    return GradientScreen(
-      top: Row(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
+    return Scaffold(
+      body: GradientScreen(
+        top: Row(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                color: Colors.black,
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                }, 
+              ),
             ),
+          ],
+        ),
+        header: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            '投稿する',
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold
+            )
           ),
-        ],
+        ),
+        content: AddPostContent(addPostModel: addPostModel, currentUserDoc: currentUserDoc),
+        circular: 35.0,
       ),
-      header: SizedBox.shrink(),
-      content: AddPostContent(addPostModel: addPostModel, currentUserDoc: currentUserDoc),
-      circular: 35.0,
     );
   }
 }

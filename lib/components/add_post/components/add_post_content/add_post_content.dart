@@ -44,7 +44,7 @@ class AddPostContent extends StatelessWidget {
             ),
             value == AddPostState.uploaded ?
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(8.0),
               child: CustomSnackBar.success(
                 message: '投稿、お疲れ様です！'
               ),

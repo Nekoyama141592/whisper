@@ -25,8 +25,18 @@ class WhichType extends ConsumerWidget {
     final addPostModel = watch(addPostProvider);
     return
     GradientScreen(
-      top: SizedBox(height: 16),
-      header: SizedBox.shrink(),
+      // top: SizedBox(height: 16),
+      top: SizedBox.shrink(),
+      header: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          'WhichType',
+          style: TextStyle(
+            fontSize: 35.0,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
       content: Content(currentUserDoc: currentUserDoc, addPostModel: addPostModel),
       circular: 35.0
     );
@@ -46,7 +56,6 @@ class Content extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
       width: MediaQuery.of(context).size.width,
       child: Padding(
         padding: const EdgeInsets.symmetric(

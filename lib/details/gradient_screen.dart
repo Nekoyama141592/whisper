@@ -26,8 +26,8 @@ class GradientScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             colors: [
               Theme.of(context).primaryColor.withOpacity(0.9),
-              Theme.of(context).primaryColor.withOpacity(0.8),
               Theme.of(context).primaryColor.withOpacity(0.4),
+              Theme.of(context).primaryColor.withOpacity(0.1),
             ]
           )
         ),
