@@ -12,15 +12,16 @@ import 'package:whisper/themes/themes_model.dart';
 
 class NotificationsPage extends StatelessWidget {
 
-  NotificationsPage(
-    this.mainModel,
-    this.themeModel,
-    this.preservatedPostIds,
-    this.likedPostIds
-  );
+  const NotificationsPage({
+    Key? key,
+    required this.mainModel,
+    required this.themeModel,
+    required this.bookmarkedPostIds,
+    required this.likedPostIds
+  });
 
   final MainModel mainModel;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
   final ThemeModel themeModel;
 

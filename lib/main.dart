@@ -59,37 +59,36 @@ class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final mainModel = watch(mainProvider);
-    final _provider = watch(whisperBottomNavigationbarProvider);
+    final whisperBottomNavigationbarModel = watch(whisperBottomNavigationbarProvider);
+    final likedPostIds = mainModel.likedPostIds;
+    final bookmarkedPostIds = mainModel.bookmarkedPostIds;
+    final currentUserDoc = mainModel.currentUserDoc;
+    final followingUids = mainModel.followingUids;
+
     return Scaffold(
       body: mainModel.isLoading ?
       Loading()
       : PageView(
-        controller: _provider.pageController,
+        controller: whisperBottomNavigationbarModel.pageController,
         onPageChanged: (index){
-          _provider.onPageChanged(index);
+          whisperBottomNavigationbarModel.onPageChanged(index);
         },
         children: [
-          Home(mainModel: mainModel, themeModel: themeModel, preservatedPostIds: mainModel.preservatedPostIds, likedPostIds: mainModel.likedPostIds),
+          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds),
           SearchPage(
             mainModel: mainModel,
             themeModel: themeModel,
           ),
-          WhichType(currentUserDoc: mainModel.currentUserDoc),
+          WhichType(currentUserDoc: currentUserDoc),
           BookmarksPage(
-            mainModel.currentUserDoc,
-            mainModel.preservatedPostIds, 
-            mainModel.likedPostIds
+            currentUserDoc: currentUserDoc, 
+            bookmarkedPostIds: bookmarkedPostIds, 
+            likedPostIds: likedPostIds,
           ),
-          UserShowPage(
-            mainModel.currentUserDoc,
-            mainModel.currentUserDoc, 
-            mainModel.preservatedPostIds, 
-            mainModel.likedPostIds,
-            mainModel.followingUids
-          )
+          UserShowPage(currentUserDoc: currentUserDoc, passiveUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids)
         ],
       ),
-      bottomNavigationBar: WhisperBottomNavigationbar(_provider),
+      bottomNavigationBar: WhisperBottomNavigationbar(whisperBottomNavigationbarModel),
     );
   }
 }

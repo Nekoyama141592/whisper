@@ -59,27 +59,27 @@ void toReauthenticationPage(context,User? currentUser,AccountModel accountModel)
   Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,)));
 }
 
-void toBookmarksPage(context,DocumentSnapshot currentUserDoc,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(currentUserDoc,preservatedPostIds,likedPostIds)));
+void toBookmarksPage(context,DocumentSnapshot currentUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(currentUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds) ));
 }
 
-void toPostShowPage(context,List<dynamic> likedPostIds,List<dynamic> preservatedPostIds,DocumentSnapshot currentUserDoc, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()?  onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(likedPostIds: likedPostIds, preservatedPostIds: preservatedPostIds, currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed) ));
+void toPostShowPage(context,List<dynamic> likedPostIds,List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()?  onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(likedPostIds: likedPostIds, bookmarkedPostIds: bookmarkedPostIds, currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed) ));
 }
 
-void toUserShowPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds,List<dynamic> followingUids) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc,passiveUserDoc,preservatedPostIds,likedPostIds,followingUids)));
+void toUserShowPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> followingUids) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids) ));
 }
 void toAdminPage(context,DocumentSnapshot currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc)));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc: currentUserDoc) ));
 }
 
 void toAccountPage(context,DocumentSnapshot currentUserDoc,User? currentUser) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc: currentUserDoc)));
 }
 
-void toNotificationsPage(context,MainModel mainModel,ThemeModel themeModel,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel, themeModel, preservatedPostIds, likedPostIds) ));
+void toNotificationsPage(context,MainModel mainModel,ThemeModel themeModel,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds) ));
 }
 
 void toAddPostPage (context,AddPostModel addPostModel,DocumentSnapshot currentUserDoc) {

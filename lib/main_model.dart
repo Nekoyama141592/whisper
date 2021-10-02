@@ -16,7 +16,7 @@ class MainModel extends ChangeNotifier {
   late DocumentSnapshot currentUserDoc;
   bool isLoading = false;
   List<String> likedPostIds = [];
-  List<String> preservatedPostIds = [];
+  List<String> bookmarkedPostIds = [];
   List<dynamic> newLikeNotifications = [];
   List<dynamic> newFollowNotifications = [];
   List<dynamic> followingUids = [];
@@ -83,13 +83,13 @@ class MainModel extends ChangeNotifier {
       List preservations = currentUserDoc['preservations'];
       print(preservations.length.toString() + "  preservationsLength");
       preservations.forEach((preservation) {
-        preservatedPostIds.add(preservation['postId']);
+        bookmarkedPostIds.add(preservation['postId']);
       });
       notifyListeners();
     } catch(e) {
       print(e.toString());
     }
-    print(preservatedPostIds.length.toString() + '  preservatedPostIds');
+    print(bookmarkedPostIds.length.toString() + '  preservatedPostIds');
   }
 
   void getFollowingUids() {

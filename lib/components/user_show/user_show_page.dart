@@ -15,18 +15,21 @@ import 'user_show_model.dart';
 
 class UserShowPage extends ConsumerWidget {
   
+  const UserShowPage({
+    Key? key,
+    required this.currentUserDoc,
+    required this.passiveUserDoc,
+    required this.bookmarkedPostIds,
+    required this.likedPostIds,
+    required this.followingUids
+  });
+
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot passiveUserDoc;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
   final List followingUids;
-  UserShowPage(
-    this.currentUserDoc,
-    this.passiveUserDoc,
-    this.preservatedPostIds,
-    this.likedPostIds,
-    this.followingUids
-  );
+  
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final userShowModel = watch(userShowProvider);
@@ -131,7 +134,7 @@ class UserShowPage extends ConsumerWidget {
                   child: UserShowPostScreen(
                     currentUserDoc: currentUserDoc,
                     userShowModel: userShowModel, 
-                    preservatedPostIds: preservatedPostIds, 
+                    preservatedPostIds: bookmarkedPostIds, 
                     likedPostIds: likedPostIds
                   ),
                 ),

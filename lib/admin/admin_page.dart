@@ -1,21 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// material
 import 'package:flutter/material.dart';
-
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/colors.dart';
-
-import 'package:whisper/details/rounded_button.dart';
-import 'admin_model.dart';
+// components
 import 'package:whisper/details/no_right.dart';
+import 'package:whisper/details/rounded_button.dart';
+// model
+import 'admin_model.dart';
 
 class AdminPage extends ConsumerWidget {
 
-  AdminPage(this.currentUserDoc);
+  const AdminPage({
+    Key? key,
+    required this.currentUserDoc
+  }) : super(key: key);
+  
   final DocumentSnapshot currentUserDoc;
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
-    final _adminProvider = watch(adminProvider);
+    final adminModel = watch(adminProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Admin Page'),
@@ -35,7 +40,7 @@ class AdminPage extends ConsumerWidget {
                 (){
                 }, 
                 Colors.white, 
-                kSecondaryColor
+                Theme.of(context).colorScheme.secondary
               ),
             ),
           )

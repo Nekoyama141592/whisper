@@ -19,7 +19,7 @@ class PostShowPage extends StatelessWidget {
   const PostShowPage({
     Key? key,
     required this.likedPostIds,
-    required this.preservatedPostIds,
+    required this.bookmarkedPostIds,
     required this.currentUserDoc,
     required this.currentSongDocNotifier,
     required this.progressNotifier,
@@ -36,7 +36,7 @@ class PostShowPage extends StatelessWidget {
   }) : super(key: key);
 
   final List likedPostIds;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final ProgressNotifier progressNotifier;
@@ -83,9 +83,9 @@ class PostShowPage extends StatelessWidget {
                     Center(
                       child: CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
                     ),
-                    PostButtons(currentUserDoc, currentSongDocNotifier, preservatedPostIds, likedPostIds),
+                    PostButtons(currentUserDoc, currentSongDocNotifier, bookmarkedPostIds, likedPostIds),
                     AudioStateDesign(
-                      preservatedPostIds: preservatedPostIds,
+                      preservatedPostIds: bookmarkedPostIds,
                       likedPostIds: likedPostIds,
                       currentSongDocNotifier: currentSongDocNotifier,
                       progressNotifier: progressNotifier,

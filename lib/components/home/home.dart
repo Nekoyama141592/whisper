@@ -19,13 +19,13 @@ class Home extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.preservatedPostIds,
+    required this.bookmarkedPostIds,
     required this.likedPostIds
   }) : super(key: key);
   
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
 
   @override  
@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
             NotificationIcon(
               mainModel,
               themeModel,
-              preservatedPostIds,
+              bookmarkedPostIds,
               likedPostIds
             )
           ],
@@ -64,8 +64,8 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds),
-            RecommendersPage(currentUserDoc: mainModel.currentUserDoc, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds)
+            FeedsPage(preservatedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds),
+            RecommendersPage(currentUserDoc: mainModel.currentUserDoc, preservatedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds)
           ],
         ),
         
