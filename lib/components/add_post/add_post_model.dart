@@ -271,6 +271,7 @@ class AddPostModel extends ChangeNotifier {
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),
           'userImageURL': currentUserDoc,
+          'userName': currentUserDoc['userName'],
         });
         
       } catch(e) {

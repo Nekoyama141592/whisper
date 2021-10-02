@@ -29,6 +29,7 @@ db{
         uid: String,
         updatedAt: TimeStamp,
         userImageURL: String,
+        userName: String
     }
     users{
         description: String,

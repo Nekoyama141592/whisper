@@ -1,11 +1,15 @@
 // material
 import 'package:flutter/material.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
+// components
+import 'package:whisper/details/user_image.dart';
 
 class PostResult extends StatelessWidget {
 
-  PostResult(this.result);
+  const PostResult({
+    Key? key,
+    required this.result
+  }) : super(key: key);
+  
   final Map<String,dynamic> result;
 
   @override 
@@ -15,7 +19,7 @@ class PostResult extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: kPrimaryColor.withOpacity(0.1),
+            color: Theme.of(context).highlightColor.withOpacity(0.3),
             blurRadius: 20,
             offset: Offset(0, 5)
           )
@@ -26,12 +30,15 @@ class PostResult extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              // imageURL
-              leading: CircleAvatar(
-                radius: 24,
+              leading: UserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0),
+              title: Text(result['userName']),
+              subtitle: Text(
+                result['title'],
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
+                  fontWeight: FontWeight.bold
+                ),
               ),
-              title: Text(result['title']),
-              subtitle: Text('sample'),
             )
           ],
         ),

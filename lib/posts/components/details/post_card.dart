@@ -41,8 +41,14 @@ class PostCard extends StatelessWidget {
           children: [
             ListTile(
               leading: UserImage(userImageURL: postDoc['userImageURL'], length: 50.0, padding: 0.0),
-              title: Text(postDoc['title']),
-              subtitle: Text(postDoc.id),
+              title: Text(postDoc['userName']),
+              subtitle: Text(
+                postDoc['title'],
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
               trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),
             )
           ],

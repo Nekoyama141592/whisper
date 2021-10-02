@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
+import 'package:whisper/details/loading.dart';
 import 'package:whisper/components/search/user_search/components/user_list.dart';
 import 'package:whisper/components/search/user_search/components/search_input_field.dart';
 // model
@@ -13,6 +14,7 @@ class UserSearchPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final searchModel = watch(searchProvider);
+    final results = searchModel.results;
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
         text: searchModel.searchTerm,
@@ -30,11 +32,8 @@ class UserSearchPage extends ConsumerWidget {
             await searchModel.operation();
           }
         ),
-        !searchModel.isLoading ?
-        UserList(
-          searchModel.results
-        )
-        : Text('Loading')
+        searchModel.isLoading ?
+        Loading() : UserList(results: results)
       ],
     );
   }
