@@ -9,9 +9,9 @@ import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/retry_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/arrow_forward_button.dart';
-import 'package:whisper/components/add_post/components/add_post_screen/components/details/indicator.dart';
+import 'package:whisper/components/add_post/components/add_post_content/components/indicator.dart';
 import 'package:whisper/components/add_post/audio_controll/audio_window.dart';
-import 'package:whisper/components/add_post/components/add_post_screen/components/details/recording_time.dart';
+import 'package:whisper/components/add_post/components/add_post_content/components/recording_time.dart';
 // notifier
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 // model
@@ -19,9 +19,15 @@ import 'package:whisper/components/add_post/add_post_model.dart';
 
 class AddPostContent extends StatelessWidget {
 
-  AddPostContent(this.addPostModel,this.currentUserDoc);
+  const AddPostContent({
+    Key? key,
+    required this.addPostModel,
+    required this.currentUserDoc
+  }) : super(key: key);
+
   final AddPostModel addPostModel;
   final DocumentSnapshot currentUserDoc;
+
   @override
   Widget build(BuildContext context) {
     final postTitleController = TextEditingController(text: addPostModel.postTitleNotifier.value);

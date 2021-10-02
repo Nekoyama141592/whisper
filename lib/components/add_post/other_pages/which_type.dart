@@ -5,11 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/rounded_button.dart';
-import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
+import 'package:whisper/details/gradient_screen.dart';
 // model
 import 'package:whisper/components/add_post/add_post_model.dart';
 
@@ -25,11 +24,11 @@ class WhichType extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final addPostModel = watch(addPostProvider);
     return
-    AddPostScreen(
-      top: SizedBox(height: 16,),
-      content: Content(currentUserDoc: currentUserDoc, addPostModel: addPostModel,), 
-      addPostModel: addPostModel, 
-      currentUserDoc: currentUserDoc
+    GradientScreen(
+      top: SizedBox(height: 16),
+      header: SizedBox.shrink(),
+      content: Content(currentUserDoc: currentUserDoc, addPostModel: addPostModel),
+      circular: 35.0
     );
   }
 }

@@ -1,7 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // constants
-import 'package:whisper/constants/tab_bar_elements.dart';
+import 'package:whisper/components/home/constants/tab_bar_elements.dart';
 // components
 import 'package:whisper/details/notificationIcon.dart';
 import 'package:whisper/details/whisper_drawer.dart';

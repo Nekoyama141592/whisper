@@ -1,9 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// material
 import 'package:flutter/material.dart';
-
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+// components
+import 'package:whisper/details/gradient_screen.dart';
+// model
 import 'add_post_model.dart';
-import 'package:whisper/components/add_post/components/add_post_screen/add_post_screen.dart';
-import 'package:whisper/components/add_post/components/add_post_screen/components/add_post_content.dart';
+import 'package:whisper/components/add_post/components/add_post_content/add_post_content.dart';
 
 class AddPostPage extends StatelessWidget {
 
@@ -18,7 +21,7 @@ class AddPostPage extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    return AddPostScreen(
+    return GradientScreen(
       top: Row(
         children: [
           Align(
@@ -33,9 +36,9 @@ class AddPostPage extends StatelessWidget {
           ),
         ],
       ),
-      content: AddPostContent(addPostModel, currentUserDoc),
-       addPostModel: addPostModel, 
-       currentUserDoc: currentUserDoc
-      );
+      header: SizedBox.shrink(),
+      content: AddPostContent(addPostModel: addPostModel, currentUserDoc: currentUserDoc),
+      circular: 35.0,
+    );
   }
 }
