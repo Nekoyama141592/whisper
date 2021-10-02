@@ -30,45 +30,53 @@ class PostScreen extends StatelessWidget {
     final postDocs = bookmarksModel.bookmarkedDocs;
     return GradientScreen(
       top: SizedBox.shrink(), 
-      header: Text(
-        'BookMarks',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+      header: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          'BookMarks',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-      content: PostCards(
-        likedPostIds: likedPostIds, 
-        bookmarkedPostIds: bookmarkedPostIds, 
-        postDocs: postDocs, 
-        route: () {
-          routes.toPostShowPage(
-            context, 
-            likedPostIds, 
-            bookmarkedPostIds, 
-            currentUserDoc, 
-            bookmarksModel.currentSongDocNotifier, 
-            bookmarksModel.progressNotifier, 
-            bookmarksModel.seek, 
-            bookmarksModel.repeatButtonNotifier, 
-            () { bookmarksModel.onRepeatButtonPressed(); }, 
-            bookmarksModel.isFirstSongNotifier, 
-            () { bookmarksModel.onPreviousSongButtonPressed(); }, 
-            bookmarksModel.playButtonNotifier, 
-            () { bookmarksModel.play(); }, 
-            () { bookmarksModel.pause(); }, 
-            bookmarksModel.isLastSongNotifier, 
-            () { bookmarksModel.onNextSongButtonPressed(); }
-          );
-        }, 
-        progressNotifier: bookmarksModel.progressNotifier, 
-        seek: bookmarksModel.seek, 
-        currentSongDocNotifier: bookmarksModel.currentSongDocNotifier ,
-        playButtonNotifier: bookmarksModel.playButtonNotifier, 
-        play: () { bookmarksModel.play(); }, 
-        pause: () { bookmarksModel.pause(); }, 
-        currentUserDoc: currentUserDoc
+      content: Padding(
+        padding: const EdgeInsets.only(
+          top: 20.0
+        ),
+        child: PostCards(
+          likedPostIds: likedPostIds, 
+          bookmarkedPostIds: bookmarkedPostIds, 
+          postDocs: postDocs, 
+          route: () {
+            routes.toPostShowPage(
+              context, 
+              likedPostIds, 
+              bookmarkedPostIds, 
+              currentUserDoc, 
+              bookmarksModel.currentSongDocNotifier, 
+              bookmarksModel.progressNotifier, 
+              bookmarksModel.seek, 
+              bookmarksModel.repeatButtonNotifier, 
+              () { bookmarksModel.onRepeatButtonPressed(); }, 
+              bookmarksModel.isFirstSongNotifier, 
+              () { bookmarksModel.onPreviousSongButtonPressed(); }, 
+              bookmarksModel.playButtonNotifier, 
+              () { bookmarksModel.play(); }, 
+              () { bookmarksModel.pause(); }, 
+              bookmarksModel.isLastSongNotifier, 
+              () { bookmarksModel.onNextSongButtonPressed(); }
+            );
+          }, 
+          progressNotifier: bookmarksModel.progressNotifier, 
+          seek: bookmarksModel.seek, 
+          currentSongDocNotifier: bookmarksModel.currentSongDocNotifier ,
+          playButtonNotifier: bookmarksModel.playButtonNotifier, 
+          play: () { bookmarksModel.play(); }, 
+          pause: () { bookmarksModel.pause(); }, 
+          currentUserDoc: currentUserDoc
+        ),
       ), 
       circular: 35.0
     );
