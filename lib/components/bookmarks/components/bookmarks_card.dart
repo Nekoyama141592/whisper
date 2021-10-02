@@ -29,7 +29,7 @@ class BookmarkCard extends StatelessWidget {
       child: 
       bookmarksModel.isLoading ?
       Loading()
-      : bookmarksModel.preservationDocs.isEmpty ?
+      : bookmarksModel.bookmarkedDocs.isEmpty ?
       Nothing()
       : 
       Padding(
@@ -38,9 +38,9 @@ class BookmarkCard extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: bookmarksModel.preservationDocs.length,
+                itemCount: bookmarksModel.bookmarkedDocs.length,
                 itemBuilder: (BuildContext context, int i) =>
-                  PostCard(postDoc: bookmarksModel.preservationDocs[i])
+                  PostCard(postDoc: bookmarksModel.bookmarkedDocs[i])
               ),
             ),
             AudioWindow(

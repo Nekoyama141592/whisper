@@ -34,7 +34,7 @@ class BookMarksModel extends ChangeNotifier {
   final List<AudioSource> afterUris = [];
   // cloudFirestore
   List<String> preservationPostIds = [];
-  List<DocumentSnapshot> preservationDocs = [];
+  List<DocumentSnapshot> bookmarkedDocs = [];
   int postCount = -1;
   final oneTimeReadCount = 2;
   
@@ -96,7 +96,7 @@ class BookMarksModel extends ChangeNotifier {
       .where('postId', whereIn: preservationPostIds)
       .get();
       snapshots.docs.forEach((DocumentSnapshot? doc) {
-        preservationDocs.add(doc!);
+        bookmarkedDocs.add(doc!);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
         afterUris.add(source);
