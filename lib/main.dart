@@ -62,7 +62,6 @@ class MyHomePage extends ConsumerWidget {
     final whisperBottomNavigationbarModel = watch(whisperBottomNavigationbarProvider);
     final likedPostIds = mainModel.likedPostIds;
     final bookmarkedPostIds = mainModel.bookmarkedPostIds;
-    final currentUserDoc = mainModel.currentUserDoc;
     final followingUids = mainModel.followingUids;
 
     return Scaffold(
@@ -79,13 +78,13 @@ class MyHomePage extends ConsumerWidget {
             mainModel: mainModel,
             themeModel: themeModel,
           ),
-          WhichType(currentUserDoc: currentUserDoc),
+          WhichType(currentUserDoc: mainModel.currentUserDoc),
           BookmarksPage(
-            currentUserDoc: currentUserDoc, 
+            currentUserDoc: mainModel.currentUserDoc, 
             bookmarkedPostIds: bookmarkedPostIds, 
             likedPostIds: likedPostIds,
           ),
-          UserShowPage(currentUserDoc: currentUserDoc, passiveUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids)
+          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids)
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(whisperBottomNavigationbarModel),

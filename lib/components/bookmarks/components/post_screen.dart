@@ -2,80 +2,75 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/details/gradient_screen.dart';
 // components
-import 'package:whisper/components/bookmarks/components/bookmarks_card.dart';
+import 'package:whisper/posts/components/details/post_cards.dart';
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
 class PostScreen extends StatelessWidget {
+  
   const PostScreen({
     Key? key,
-    required BookMarksModel bookmarksModel,
+    required this.bookmarksModel,
     required this.currentUserDoc,
-    required this.preservatedPostIds,
+    required this.bookmarkedPostIds,
     required this.likedPostIds,
-  }) : bookmarksModel = bookmarksModel, super(key: key);
+  }) : super(key: key);
 
   final BookMarksModel bookmarksModel;
   final DocumentSnapshot currentUserDoc;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: 
-      
-      SafeArea(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              colors: [
-                Theme.of(context).primaryColor.withOpacity(0.9),
-                Theme.of(context).primaryColor.withOpacity(0.8),
-                Theme.of(context).primaryColor.withOpacity(0.4),
-              ]
-            )
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'BookMarks',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    
-                  ]
-                ),
-              ),
-              SizedBox(height:5),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35)
-                    )
-                  ),
-                  child: BookmarkCard(bookmarksModel: bookmarksModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds)
-                )
-              )
-            ],
-          ),
+    final postDocs = bookmarksModel.bookmarkedDocs;
+    return GradientScreen(
+      top: SizedBox.shrink(), 
+      header: Text(
+        'BookMarks',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
-      )
+      ),
+      content: PostCards(
+        likedPostIds: likedPostIds, 
+        bookmarkedPostIds: bookmarkedPostIds, 
+        postDocs: postDocs, 
+        route: () {
+          routes.toPostShowPage(
+            context, 
+            likedPostIds, 
+            bookmarkedPostIds, 
+            currentUserDoc, 
+            bookmarksModel.currentSongDocNotifier, 
+            bookmarksModel.progressNotifier, 
+            bookmarksModel.seek, 
+            bookmarksModel.repeatButtonNotifier, 
+            () { bookmarksModel.onRepeatButtonPressed(); }, 
+            bookmarksModel.isFirstSongNotifier, 
+            () { bookmarksModel.onPreviousSongButtonPressed(); }, 
+            bookmarksModel.playButtonNotifier, 
+            () { bookmarksModel.play(); }, 
+            () { bookmarksModel.pause(); }, 
+            bookmarksModel.isLastSongNotifier, 
+            () { bookmarksModel.onNextSongButtonPressed(); }
+          );
+        }, 
+        progressNotifier: bookmarksModel.progressNotifier, 
+        seek: bookmarksModel.seek, 
+        currentSongDocNotifier: bookmarksModel.currentSongDocNotifier ,
+        playButtonNotifier: bookmarksModel.playButtonNotifier, 
+        play: () { bookmarksModel.play(); }, 
+        pause: () { bookmarksModel.pause(); }, 
+        currentUserDoc: currentUserDoc
+      ), 
+      circular: 35.0
     );
   }
 }

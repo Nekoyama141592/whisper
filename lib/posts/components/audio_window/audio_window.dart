@@ -17,7 +17,7 @@ class AudioWindow extends StatelessWidget {
   
   AudioWindow({
     Key? key,
-    required this.preservatedPostIds,
+    required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.route,
     required this.progressNotifier,
@@ -29,7 +29,7 @@ class AudioWindow extends StatelessWidget {
     required this.currentUserDoc
   }) : super(key: key);
   
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
   final void Function()? route;
   final ProgressNotifier progressNotifier;

@@ -5,10 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'package:whisper/details/loading.dart';
-import 'package:whisper/details/nothing.dart';
-import 'package:whisper/posts/components/audio_window/audio_window.dart';
-import 'package:whisper/posts/components/details/post_card.dart';
+import 'package:whisper/details/judge_screen.dart';
+import 'package:whisper/posts/components/details/post_cards.dart';
 // model
 import 'package:whisper/components/user_show/user_show_model.dart';
 
@@ -18,71 +16,64 @@ class UserShowPostScreen extends StatelessWidget {
     Key? key,
     required this.userShowModel,
     required this.currentUserDoc,
-    required this.preservatedPostIds,
+    required this.bookmarkedPostIds,
     required this.likedPostIds,
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final UserShowModel userShowModel;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: userShowModel.isLoading ?
-      Loading()
-      : userShowModel.postDocs.isEmpty ?
-      Nothing()
-      : Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: userShowModel.postDocs.length,
-                itemBuilder: (BuildContext context, int i) =>
-                PostCard(postDoc: userShowModel.postDocs[i])
-              )
-            ),
-            AudioWindow(
-              preservatedPostIds: preservatedPostIds,
-              likedPostIds: likedPostIds,
-              route: (){
-                routes.toPostShowPage(
-                context, 
-                likedPostIds, 
-                preservatedPostIds, 
-                currentUserDoc, 
-                userShowModel.currentSongDocNotifier, 
-                userShowModel.progressNotifier, 
-                userShowModel.seek, 
-                userShowModel.repeatButtonNotifier, 
-                () { userShowModel.onRepeatButtonPressed(); }, 
-                userShowModel.isFirstSongNotifier, 
-                () { userShowModel.onPreviousSongButtonPressed(); }, 
-                userShowModel.playButtonNotifier, 
-                () { userShowModel.play(); }, 
-                () { userShowModel.pause(); }, 
-                userShowModel.isLastSongNotifier, 
-                () { userShowModel.onNextSongButtonPressed(); }
-                );
-              },
-              progressNotifier: userShowModel.progressNotifier,
-              seek: userShowModel.seek,
-              currentSongDocNotifier: userShowModel.currentSongDocNotifier,
-              playButtonNotifier: userShowModel.playButtonNotifier,
-              play: (){
-                userShowModel.play();
-              },
-              pause: (){
-                userShowModel.pause();
-              },
-              currentUserDoc: currentUserDoc
-            ),
-          ],
-        ),
+    final isLoading = userShowModel.isLoading;
+    final postDocs = userShowModel.postDocs;
+    final content =  Padding(
+      padding: EdgeInsets.only(top: 20),
+      child: PostCards(
+        likedPostIds: likedPostIds, 
+        bookmarkedPostIds: bookmarkedPostIds, 
+        postDocs: userShowModel.postDocs, 
+        route: (){
+          routes.toPostShowPage(
+          context, 
+          likedPostIds, 
+          bookmarkedPostIds, 
+          currentUserDoc, 
+          userShowModel.currentSongDocNotifier, 
+          userShowModel.progressNotifier, 
+          userShowModel.seek, 
+          userShowModel.repeatButtonNotifier, 
+          () { userShowModel.onRepeatButtonPressed(); }, 
+          userShowModel.isFirstSongNotifier, 
+          () { userShowModel.onPreviousSongButtonPressed(); }, 
+          userShowModel.playButtonNotifier, 
+          () { userShowModel.play(); }, 
+          () { userShowModel.pause(); }, 
+          userShowModel.isLastSongNotifier, 
+          () { userShowModel.onNextSongButtonPressed(); }
+          );
+        },
+        progressNotifier: userShowModel.progressNotifier,
+        seek: userShowModel.seek,
+        currentSongDocNotifier: userShowModel.currentSongDocNotifier,
+        playButtonNotifier: userShowModel.playButtonNotifier,
+        play: (){
+          userShowModel.play();
+        },
+        pause: (){
+          userShowModel.pause();
+        }, 
+        currentUserDoc: currentUserDoc
       ),
     );
+    
+    return JudgeScreen(
+      isLoading: isLoading, 
+      postDocs: postDocs, 
+      content: content
+    );
+    
   }
 }

@@ -23,12 +23,12 @@ class BookmarksPage extends ConsumerWidget {
   
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
-    final _bookmarksProvider = watch(bookmarksProvider);
+    final bookmarksModel = watch(bookmarksProvider);
     return Scaffold(
       body: PostScreen(
-        bookmarksModel: _bookmarksProvider,
+        bookmarksModel: bookmarksModel,
         currentUserDoc: currentUserDoc, 
-        preservatedPostIds: bookmarkedPostIds, 
+        bookmarkedPostIds: bookmarkedPostIds, 
         likedPostIds: likedPostIds
       )
     );

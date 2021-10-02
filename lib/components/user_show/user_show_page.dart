@@ -134,7 +134,7 @@ class UserShowPage extends ConsumerWidget {
                   child: UserShowPostScreen(
                     currentUserDoc: currentUserDoc,
                     userShowModel: userShowModel, 
-                    preservatedPostIds: bookmarkedPostIds, 
+                    bookmarkedPostIds: bookmarkedPostIds, 
                     likedPostIds: likedPostIds
                   ),
                 ),
