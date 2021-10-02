@@ -64,8 +64,8 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(preservatedPostIds,likedPostIds),
-            RecommendersPage(mainModel.currentUserDoc,preservatedPostIds,likedPostIds),
+            FeedsPage(preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds),
+            RecommendersPage(currentUserDoc: mainModel.currentUserDoc, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds)
           ],
         ),
         

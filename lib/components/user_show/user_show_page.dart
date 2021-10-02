@@ -29,7 +29,7 @@ class UserShowPage extends ConsumerWidget {
   );
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final _userShowProvider = watch(userShowProvider);
+    final userShowModel = watch(userShowProvider);
     final _followProvider = watch(followProvider);
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
 
@@ -37,8 +37,8 @@ class UserShowPage extends ConsumerWidget {
       extendBodyBehindAppBar: false,
       body: 
       SafeArea(
-        child: _userShowProvider.isEditing ?
-        EditProfileScreen(userShowModel: _userShowProvider, currentUserDoc: currentUserDoc)
+        child: userShowModel.isEditing ?
+        EditProfileScreen(userShowModel: userShowModel, currentUserDoc: currentUserDoc)
         : Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class UserShowPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      !_userShowProvider.isEdited ? passiveUserDoc['userName'] : _userShowProvider.userName,
+                      !userShowModel.isEdited ? passiveUserDoc['userName'] : userShowModel.userName,
                       style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)
                     ),
                     
@@ -76,7 +76,7 @@ class UserShowPage extends ConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            !_userShowProvider.isEdited ? passiveUserDoc['description'] : _userShowProvider.description,
+                            !userShowModel.isEdited ? passiveUserDoc['description'] : userShowModel.description,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold
@@ -86,7 +86,7 @@ class UserShowPage extends ConsumerWidget {
                         UserShowButton(
                           currentUserDoc: currentUserDoc, 
                           userDoc: passiveUserDoc, 
-                          userShowProvider: _userShowProvider, 
+                          userShowProvider: userShowModel, 
                           followingUids: followingUids, 
                           followProvider: _followProvider
                         )
@@ -130,7 +130,7 @@ class UserShowPage extends ConsumerWidget {
                   ),
                   child: UserShowPostScreen(
                     currentUserDoc: currentUserDoc,
-                    userShowProvider: _userShowProvider, 
+                    userShowModel: userShowModel, 
                     preservatedPostIds: preservatedPostIds, 
                     likedPostIds: likedPostIds
                   ),

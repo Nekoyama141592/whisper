@@ -16,11 +16,11 @@ class UserShowPostScreen extends StatelessWidget {
   
   const UserShowPostScreen({
     Key? key,
-    required UserShowModel userShowProvider,
+    required this.userShowModel,
     required this.currentUserDoc,
     required this.preservatedPostIds,
     required this.likedPostIds,
-  }) : userShowModel = userShowProvider, super(key: key);
+  }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final UserShowModel userShowModel;
@@ -49,7 +49,24 @@ class UserShowPostScreen extends StatelessWidget {
               preservatedPostIds: preservatedPostIds,
               likedPostIds: likedPostIds,
               route: (){
-                routes.toUserShowPostShowPage(context, currentUserDoc, userShowModel, preservatedPostIds, likedPostIds);
+                routes.toPostShowPage(
+                context, 
+                likedPostIds, 
+                preservatedPostIds, 
+                currentUserDoc, 
+                userShowModel.currentSongDocNotifier, 
+                userShowModel.progressNotifier, 
+                userShowModel.seek, 
+                userShowModel.repeatButtonNotifier, 
+                () { userShowModel.onRepeatButtonPressed(); }, 
+                userShowModel.isFirstSongNotifier, 
+                () { userShowModel.onPreviousSongButtonPressed(); }, 
+                userShowModel.playButtonNotifier, 
+                () { userShowModel.play(); }, 
+                () { userShowModel.pause(); }, 
+                userShowModel.isLastSongNotifier, 
+                () { userShowModel.onNextSongButtonPressed(); }
+                );
               },
               progressNotifier: userShowModel.progressNotifier,
               seek: userShowModel.seek,

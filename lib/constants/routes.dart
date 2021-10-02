@@ -8,11 +8,8 @@ import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
 import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
-import 'package:whisper/components/home/feeds/components/feed_show_page.dart';
-import 'package:whisper/components/home/recommenders/components/recommender_show_page.dart';
-import 'package:whisper/components/user_show/components/details/user_show_post_show_page.dart';
+import 'package:whisper/posts/components/other_pages/post_show_page.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
-import 'package:whisper/components/bookmarks/components/bookmark_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/auth/account/account_page.dart';
@@ -24,13 +21,13 @@ import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.da
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/other_pages/edit_post_info/edit_post_info_page.dart';
+// notifiers
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/auth/account/account_model.dart';
-import 'package:whisper/components/bookmarks/bookmarks_model.dart';
-import 'package:whisper/components/home/feeds/feeds_model.dart';
-import 'package:whisper/components/home/recommenders/recommenders_model.dart';
-import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 
@@ -66,25 +63,13 @@ void toBookmarksPage(context,DocumentSnapshot currentUserDoc,List<dynamic> prese
   Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(currentUserDoc,preservatedPostIds,likedPostIds)));
 }
 
-void toBookmarksShowPage(context,DocumentSnapshot currentUserDoc,BookMarksModel bookmarksModel,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarkShowPage(currentUserDoc: currentUserDoc, bookmarksModel: bookmarksModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
+void toPostShowPage(context,List<dynamic> likedPostIds,List<dynamic> preservatedPostIds,DocumentSnapshot currentUserDoc, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()?  onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(likedPostIds: likedPostIds, preservatedPostIds: preservatedPostIds, currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed) ));
 }
 
 void toUserShowPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds,List<dynamic> followingUids) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc,passiveUserDoc,preservatedPostIds,likedPostIds,followingUids)));
 }
-void toFeedShowPage(context,FeedsModel feedsModel,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedShowPage(feedsModel: feedsModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
-}
-
-void toRecommenderShowPage(context,DocumentSnapshot currentUserDoc,RecommendersModel recommendersModel,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => RecommenderShowPage(currentUserDoc: currentUserDoc, recommendersModel: recommendersModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
-}
-
-void toUserShowPostShowPage(context,DocumentSnapshot currentUserDoc,UserShowModel userShowModel,List<dynamic> preservatedPostIds,List<dynamic> likedPostIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPostShowPage(currentUserDoc: currentUserDoc, userShowModel: userShowModel, preservatedPostIds: preservatedPostIds, likedPostIds: likedPostIds) ));
-}
-
 void toAdminPage(context,DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc)));
 }

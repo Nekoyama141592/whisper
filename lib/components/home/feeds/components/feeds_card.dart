@@ -1,15 +1,26 @@
+// material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
+// components
+import 'package:whisper/posts/components/details/post_card.dart';
+import 'package:whisper/posts/components/audio_window/audio_window.dart';
+// model
 import 'package:whisper/components/home/feeds/feeds_model.dart';
 
-import 'package:whisper/posts/components/audio_window/audio_window.dart';
-import 'package:whisper/posts/components/details/post_card.dart';
-import 'package:whisper/constants/routes.dart' as routes;
-
 class FeedsCard extends StatelessWidget{
-  FeedsCard(this.feedsModel,this.preservatedPostIds,this.likedPostIds);
+  
+  const FeedsCard({
+    Key? key,
+    required this.feedsModel,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+    }) : super(key: key);
+  
   final FeedsModel feedsModel;
   final List preservatedPostIds;
   final List likedPostIds;
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,11 +36,23 @@ class FeedsCard extends StatelessWidget{
           preservatedPostIds: preservatedPostIds, 
           likedPostIds: likedPostIds, 
           route: (){
-            routes.toFeedShowPage(
-              context, 
-              feedsModel, 
-              preservatedPostIds, 
-              likedPostIds
+            routes.toPostShowPage(
+            context, 
+            likedPostIds, 
+            preservatedPostIds, 
+            feedsModel.currentUserDoc, 
+            feedsModel.currentSongDocNotifier, 
+            feedsModel.progressNotifier, 
+            feedsModel.seek, 
+            feedsModel.repeatButtonNotifier, 
+            () { feedsModel.onRepeatButtonPressed(); }, 
+            feedsModel.isFirstSongNotifier, 
+            () { feedsModel.onPreviousSongButtonPressed(); }, 
+            feedsModel.playButtonNotifier, 
+            () { feedsModel.play(); }, 
+            () { feedsModel.pause(); }, 
+            feedsModel.isLastSongNotifier, 
+            () { feedsModel.onNextSongButtonPressed(); }
             );
           },
           progressNotifier: feedsModel.progressNotifier, 

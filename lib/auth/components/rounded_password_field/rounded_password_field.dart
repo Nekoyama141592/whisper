@@ -23,6 +23,7 @@ class RoundedPasswordField extends ConsumerWidget {
     return TextFieldContainer(
       child: TextField(
         style: TextStyle(
+          color: Colors.black,
           fontSize: 20,
           fontWeight: FontWeight.bold
         ),
@@ -32,6 +33,7 @@ class RoundedPasswordField extends ConsumerWidget {
         cursorColor: kPrimaryColor.withOpacity(0.7),
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
           icon: Icon(
             Icons.lock,
             color: Colors.black,

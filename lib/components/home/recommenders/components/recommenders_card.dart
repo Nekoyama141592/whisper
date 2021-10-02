@@ -1,19 +1,31 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// material
 import 'package:flutter/material.dart';
-
-import 'package:whisper/components/home/recommenders/recommenders_model.dart';
-import 'package:whisper/posts/components/audio_window/audio_window.dart';
-
-import 'package:whisper/posts/components/details/post_card.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
 import 'package:whisper/constants/routes.dart' as routes;
+// components
+import 'package:whisper/posts/components/details/post_card.dart';
+import 'package:whisper/posts/components/audio_window/audio_window.dart';
+// model
+import 'package:whisper/components/home/recommenders/recommenders_model.dart';
+
+
 
 class RecommendersCard extends StatelessWidget{
-  RecommendersCard(this.currentUserDoc,this.recommendersModel,this.preservatedPostIds,this.likedPostIds);
+  const RecommendersCard({
+    Key? key,
+    required this.currentUserDoc,
+    required this.recommendersModel,
+    required this.preservatedPostIds,
+    required this.likedPostIds
+  }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
   final RecommendersModel recommendersModel;
   final List preservatedPostIds;
   final List likedPostIds;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,12 +43,23 @@ class RecommendersCard extends StatelessWidget{
           preservatedPostIds: preservatedPostIds, 
           likedPostIds: likedPostIds, 
           route: (){
-            routes.toRecommenderShowPage(
-              context, 
-              currentUserDoc, 
-              recommendersModel, 
-              preservatedPostIds, 
-              likedPostIds
+            routes.toPostShowPage(
+            context, 
+            likedPostIds, 
+            preservatedPostIds, 
+            currentUserDoc, 
+            recommendersModel.currentSongDocNotifier, 
+            recommendersModel.progressNotifier, 
+            recommendersModel.seek, 
+            recommendersModel.repeatButtonNotifier, 
+            () { recommendersModel.onRepeatButtonPressed(); }, 
+            recommendersModel.isFirstSongNotifier, 
+            () { recommendersModel.onPreviousSongButtonPressed(); }, 
+            recommendersModel.playButtonNotifier, 
+            () { recommendersModel.play(); }, 
+            () { recommendersModel.pause(); }, 
+            recommendersModel.isLastSongNotifier, 
+            () { recommendersModel.onNextSongButtonPressed(); }
             );
           },
           progressNotifier: recommendersModel.progressNotifier, 

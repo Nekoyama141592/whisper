@@ -47,12 +47,23 @@ class BookmarkCard extends StatelessWidget {
               preservatedPostIds: preservatedPostIds, 
               likedPostIds: likedPostIds, 
               route: (){
-                routes.toBookmarksShowPage(
-                  context, 
-                  bookmarksModel.currentUserDoc, 
-                  bookmarksModel, 
-                  preservatedPostIds, 
-                  likedPostIds
+                routes.toPostShowPage(
+                context, 
+                likedPostIds, 
+                preservatedPostIds, 
+                bookmarksModel.currentUserDoc, 
+                bookmarksModel.currentSongDocNotifier, 
+                bookmarksModel.progressNotifier, 
+                bookmarksModel.seek, 
+                bookmarksModel.repeatButtonNotifier, 
+                () { bookmarksModel.onRepeatButtonPressed(); }, 
+                bookmarksModel.isFirstSongNotifier, 
+                () { bookmarksModel.onPreviousSongButtonPressed(); }, 
+                bookmarksModel.playButtonNotifier, 
+                () { bookmarksModel.play(); }, 
+                () { bookmarksModel.pause(); }, 
+                bookmarksModel.isLastSongNotifier, 
+                () { bookmarksModel.onNextSongButtonPressed(); }
                 );
               },
               progressNotifier: bookmarksModel.progressNotifier, 
