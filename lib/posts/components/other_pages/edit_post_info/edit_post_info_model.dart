@@ -68,8 +68,8 @@ class EditPostInfoModel extends ChangeNotifier {
     }
   }
 
-  Future<String> uploadImage(String currentUserDocUid) async {
-    final String imageName = currentUserDocUid + DateTime.now().microsecondsSinceEpoch.toString();
+  Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
+    final String imageName = currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
     try {
       await FirebaseStorage.instance
       .ref()
@@ -87,13 +87,15 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo(currentSongDocId,currentUserDocUid) async {
-    // final String imageURL = croppedFile == null ? '' : await uploadImage(currentUserDocUid);
-    final String imageURL = '';
+  Future updatePostInfo(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
+    final String currentSongDocImageURL = currentSongDoc['imageURL'];
+    final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongDoc['userImageURL'];
+    final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
+    
     try{
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(currentSongDocId)
+      .doc(currentSongDoc.id)
       .update({
         'title': postTitle,
         'imageURL': imageURL,

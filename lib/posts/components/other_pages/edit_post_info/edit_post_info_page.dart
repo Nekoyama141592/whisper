@@ -60,7 +60,7 @@ class EditPostInfoPage extends ConsumerWidget {
                     10, 
                     5, 
                     () async  {
-                      await editPostInfoModel.updatePostInfo(currentSongDoc.id,currentUserDoc['uid']);
+                      await editPostInfoModel.updatePostInfo(currentSongDoc,currentUserDoc);
                     },
                     Colors.white, 
                     Theme.of(context).highlightColor
