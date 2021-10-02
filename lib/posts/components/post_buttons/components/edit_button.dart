@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // model
-import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class EditButton extends StatelessWidget {
   

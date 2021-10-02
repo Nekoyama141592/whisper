@@ -32,6 +32,7 @@ db{
         userName: String
     }
     users{
+        createdAt: TimeStamp,
         description: String,
         followNotifications: [{
             createdAt: TimeStamp,
@@ -81,6 +82,7 @@ db{
         }],
         subUserName: String,
         uid: String,
+        updatedAt: String,
         userName: String,
     }
 }

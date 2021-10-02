@@ -134,6 +134,7 @@ class SignupModel extends ChangeNotifier {
     final imageURL = await uploadImage();
     await FirebaseFirestore.instance
     .collection('users').add({
+      'createdAt': Timestamp.now(),
       'desciption': '',
       'followNotifications': [],
       'followerUids': [],
@@ -150,6 +151,7 @@ class SignupModel extends ChangeNotifier {
       'replyNotifications': [],
       'subUserName': uid,
       'uid' : uid,
+      'updatedAt': Timestamp.now(),
       'userName': userName,
     });
   }

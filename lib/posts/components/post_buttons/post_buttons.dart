@@ -7,7 +7,7 @@ import 'package:whisper/posts/components/post_buttons/components/edit_button.dar
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/bookmark_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/comment_button.dart';
-import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class PostButtons extends StatelessWidget {
 

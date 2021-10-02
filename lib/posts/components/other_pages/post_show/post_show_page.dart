@@ -10,13 +10,15 @@ import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_user_name.dart';
-import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_screen.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/timestamp_display.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_screen.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // model
-import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+
 class PostShowPage extends ConsumerWidget {
   
   const PostShowPage({
@@ -58,6 +60,8 @@ class PostShowPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final editPostInfoModel = watch(editPostInfoProvider);
     final currentSongDoc = currentSongDocNotifier.value;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: false,
@@ -66,17 +70,23 @@ class PostShowPage extends ConsumerWidget {
         EditPostInfoScreen(currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc!, editPostInfoModel: editPostInfoModel)
         : Column(
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                padding: EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
-                color: Theme.of(context).focusColor,
-                icon: Icon(Icons.keyboard_arrow_down),
-                onPressed: (){
-                  Navigator.pop(context);
-                }, 
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 20.0
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    color: Theme.of(context).focusColor,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    onPressed: (){
+                      Navigator.pop(context);
+                    }, 
+                  ),
+                  SizedBox(width: size.width * 0.38),
+                  TimestampDisplay(currentSongDocNotifier: currentSongDocNotifier)
+                ],
               ),
             ),
             SingleChildScrollView(

@@ -243,6 +243,7 @@ class UserShowModel extends ChangeNotifier {
       .doc(currentUserDoc.id)
       .update({
         'userName': userName,
+        'updatedAt': Timestamp.now(),
         'description': description,
       });
       

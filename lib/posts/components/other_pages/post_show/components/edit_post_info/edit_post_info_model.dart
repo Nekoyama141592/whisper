@@ -100,6 +100,7 @@ class EditPostInfoModel extends ChangeNotifier {
       .update({
         'title': postTitle,
         'imageURL': imageURL,
+        'updatedAt': Timestamp.now(),
       });
       isEditing = false;
       isEdited = true;

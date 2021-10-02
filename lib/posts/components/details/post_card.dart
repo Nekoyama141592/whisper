@@ -18,13 +18,6 @@ class PostCard extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
-    final Timestamp timeStamp = postDoc['createdAt'];
-    final date = timeStamp.toDate();
-    final year = date.year.toString();
-    final month = date.month.toString();
-    final day = date.day.toString();
-    final hour = date.hour.toString();
-    final minute = date.minute.toString();
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -49,7 +42,6 @@ class PostCard extends StatelessWidget {
                   fontWeight: FontWeight.bold
                 ),
               ),
-              trailing: Text(year + "/" + month + "/" + day + " " + hour + "時" + minute + "分"),
             )
           ],
         ),
