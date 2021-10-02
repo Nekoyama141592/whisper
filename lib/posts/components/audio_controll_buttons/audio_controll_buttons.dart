@@ -1,26 +1,28 @@
+// material
 import 'package:flutter/material.dart';
-
+// components
 import 'package:whisper/posts/components/audio_controll_buttons/components/next_song_button.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/previous_song_button.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/repeat_button.dart';
-
+// notifiers
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 
 class AudioControllButtons extends StatelessWidget {
   
-  AudioControllButtons(
-    this.repeatButtonNotifier,
-    this.onRepeatButtonPressed,
-    this.isFirstSongNotifier,
-    this.onPreviousSongButtonPressed,
-    this.playButtonNotifier,
-    this.play,
-    this.pause,
-    this.isLastSongNotifier,
-    this.onNextSongButtonPressed
-  );
+  const AudioControllButtons({
+    required this.repeatButtonNotifier,
+    required this.onRepeatButtonPressed,
+    required this.isFirstSongNotifier,
+    required this.onPreviousSongButtonPressed,
+    required this.playButtonNotifier,
+    required this.play,
+    required this.pause,
+    required this.isLastSongNotifier,
+    required this.onNextSongButtonPressed
+  });
+
   final RepeatButtonNotifier repeatButtonNotifier;
   final void Function()? onRepeatButtonPressed;
   final ValueNotifier<bool> isFirstSongNotifier;
@@ -30,6 +32,7 @@ class AudioControllButtons extends StatelessWidget {
   final void Function()? pause;
   final ValueNotifier<bool> isLastSongNotifier;
   final void Function()? onNextSongButtonPressed;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,10 +40,10 @@ class AudioControllButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          RepeatButton(repeatButtonNotifier,onRepeatButtonPressed),
-          PreviousSongButton(isFirstSongNotifier,onPreviousSongButtonPressed),
-          PlayButton(playButtonNotifier,play,pause),
-          NextSongButton(isLastSongNotifier,onNextSongButtonPressed)
+          RepeatButton(repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed),
+          PreviousSongButton(isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed),
+          PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause),
+          NextSongButton(isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed)
         ],
       ),
     );

@@ -52,17 +52,7 @@ class AudioStateDesign extends StatelessWidget {
       height: 130,
       child: Column(
         children: [
-          AudioControllButtons(
-            repeatButtonNotifier,
-            onRepeatButtonPressed,
-            isFirstSongNotifier,
-            onPreviousSongButtonPressed,
-            playButtonNotifier,
-            play,
-            pause,
-            isLastSongNotifier,
-            onNextSongButtonPressed
-          ),
+          AudioControllButtons(repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed),
           AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
           CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
         ],

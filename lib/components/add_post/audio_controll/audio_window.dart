@@ -1,11 +1,14 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+// components
 import 'package:whisper/details/user_image.dart';
-
-import 'package:whisper/components/add_post/add_post_model.dart';
-import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
+import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
+// model
+import 'package:whisper/components/add_post/add_post_model.dart';
+
 class AudioWindow extends StatelessWidget {
   
   const AudioWindow({
@@ -23,6 +26,10 @@ class AudioWindow extends StatelessWidget {
     final audioWindowHeight = size.height * 0.15;
     final progressNotifier = addPostModel.progressNotifier;
     final seek = addPostModel.seek;
+
+    final playButtonNotifier = addPostModel.playButtonNotifier;
+    final play = () { addPostModel.play(); };
+    final pause = () { addPostModel.pause(); };
 
     return Container(
       height: audioWindowHeight,
@@ -67,15 +74,7 @@ class AudioWindow extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    PlayButton(
-                      addPostModel.playButtonNotifier,
-                      (){
-                        addPostModel.play();
-                      },
-                      (){
-                        addPostModel.pause();
-                      }
-                    ),
+                    PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause)
                   ],
                 ),
               )

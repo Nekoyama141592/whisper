@@ -9,7 +9,7 @@ import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
-import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
+import 'package:whisper/posts/components/audio_window/components/current_song_user_name.dart';
 import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_screen.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -82,15 +82,15 @@ class PostShowPage extends ConsumerWidget {
             SingleChildScrollView(
               child: Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SquarePostImage(currentSongDocNotifier: currentSongDocNotifier),
-                    Center(
-                      child: CurrentSongPostId(currentSongDocNotifier: currentSongDocNotifier)
-                    ),
-                    Center(
-                      child: CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
-                    ),
+                    CurrentSongUserName(currentSongDocNotifier: currentSongDocNotifier),
+                    SizedBox(height: 10.0),
+                    CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier),
+                    SizedBox(height: 10.0),
                     PostButtons(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, editPostInfoModel: editPostInfoModel),
+                    SizedBox(height: 10.0),
                     AudioStateDesign(
                       preservatedPostIds: bookmarkedPostIds,
                       likedPostIds: likedPostIds,

@@ -19,7 +19,10 @@ class CurrentSongTitle extends StatelessWidget {
       builder: (_, currentSongDoc, __) {
         return Text(
           currentSongDoc!['title'], 
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+          ),
           overflow: TextOverflow.ellipsis,
         );
       }

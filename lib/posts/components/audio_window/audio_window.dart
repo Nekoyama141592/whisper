@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'components/audio_progress_bar.dart';
-import 'components/current_song_post_id.dart';
+import 'components/current_song_user_name.dart';
 import 'components/current_song_title.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
@@ -58,8 +58,8 @@ class AudioWindow extends StatelessWidget {
                   width: size.width * 0.55,
                   child: Column(
                     children: [
-                      CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier,),
-                      CurrentSongPostId(currentSongDocNotifier: currentSongDocNotifier)
+                      CurrentSongUserName(currentSongDocNotifier: currentSongDocNotifier),
+                      CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
                     ],
                   ),
                 ),
@@ -67,7 +67,7 @@ class AudioWindow extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      PlayButton(playButtonNotifier,play,pause),
+                      PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

@@ -1,12 +1,19 @@
+// material
 import 'package:flutter/material.dart';
-
+// notifier
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 class RepeatButton extends StatelessWidget {
   
-  RepeatButton(this.repeatButtonNotifier,this.onRepeatButtonPressed);
+  const RepeatButton({
+    Key? key,
+    required this.repeatButtonNotifier,
+    required this.onRepeatButtonPressed
+  }) : super(key: key);
+
   final RepeatButtonNotifier repeatButtonNotifier;
   final void Function()? onRepeatButtonPressed;
+  
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<RepeatState>(

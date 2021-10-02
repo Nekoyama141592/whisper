@@ -1,10 +1,17 @@
+// material
 import 'package:flutter/material.dart';
 
 class PreviousSongButton extends StatelessWidget {
   
-  PreviousSongButton(this.isFirstSongNotifier,this.onPreviousSongButtonPressed);
+  const PreviousSongButton({
+    Key? key,
+    required this.isFirstSongNotifier,
+    required this.onPreviousSongButtonPressed
+  }) : super(key: key);
+
   final ValueNotifier<bool> isFirstSongNotifier;
   final void Function()? onPreviousSongButtonPressed;
+  
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
