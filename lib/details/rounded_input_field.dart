@@ -30,7 +30,7 @@ class RoundedInputField extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         onChanged: onChanged,
         controller: controller,
-        cursorColor: kPrimaryColor.withOpacity(0.7),
+        cursorColor: Theme.of(context).highlightColor.withOpacity(0.7),
         decoration: InputDecoration(
           icon: Icon(
             icon,

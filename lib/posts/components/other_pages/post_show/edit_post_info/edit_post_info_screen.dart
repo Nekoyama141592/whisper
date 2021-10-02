@@ -1,34 +1,34 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 // packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // model
 import 'edit_post_info_model.dart';
 
-class EditPostInfoPage extends ConsumerWidget {
+class EditPostInfoScreen extends StatelessWidget {
 
-  const EditPostInfoPage({
+  const EditPostInfoScreen({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongDoc
+    required this.currentSongDoc,
+    required this.editPostInfoModel
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot currentSongDoc;
-
+  final EditPostInfoModel editPostInfoModel;
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
-    final editPostInfoModel = watch(editPostInfoProvider);
-    final postTitleController = TextEditingController(
-      text: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : currentSongDoc['title']
-    );
+    final postTitleController = TextEditingController(text: editPostInfoModel.postTitle);
     final String imageURL = currentSongDoc['imageURL'];
     final String userImageURL = currentSongDoc['userImageURL'];
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
@@ -45,7 +45,9 @@ class EditPostInfoPage extends ConsumerWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        editPostInfoModel.isEditing = false;
+                        editPostInfoModel.reload();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿の編集がキャンセルされました')));
                       }, 
                       child: Text(
                         'Cancel',
@@ -62,7 +64,7 @@ class EditPostInfoPage extends ConsumerWidget {
                       10, 
                       5, 
                       () async  {
-                        await editPostInfoModel.updatePostInfo(currentSongDoc,currentUserDoc);
+                        await editPostInfoModel.updatePostInfo(currentSongDoc,currentUserDoc,context);
                       },
                       Colors.white, 
                       Theme.of(context).highlightColor
@@ -101,15 +103,23 @@ class EditPostInfoPage extends ConsumerWidget {
                   '投稿のタイトル',
                   style: TextStyle(
                     fontSize: 25.0,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
                 TextFormField(
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold
+                  ),
                   keyboardType: TextInputType.text,
                   controller: postTitleController,
                   onChanged: (text) {
                     editPostInfoModel.postTitle = text;
                   },
+                  decoration: InputDecoration(
+                    hintText: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : currentSongDoc['title'],
+                    hintStyle: TextStyle(fontWeight: FontWeight.bold)
+                  ),
                 )
               ]
             ),

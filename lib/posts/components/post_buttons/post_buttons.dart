@@ -7,20 +7,23 @@ import 'package:whisper/posts/components/post_buttons/components/edit_button.dar
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/bookmark_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/comment_button.dart';
+import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_model.dart';
 
 class PostButtons extends StatelessWidget {
 
-  const PostButtons(
-    this.currentUserDoc,
-    this.currentSongDocNotifier,
-    this.preservatedPostIds,
-    this.likedPostIds
-  );
+  const PostButtons({
+    required this.currentUserDoc,
+    required this.currentSongDocNotifier,
+    required this.bookmarkedPostIds,
+    required this.likedPostIds,
+    required this.editPostInfoModel
+  });
 
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
+  final EditPostInfoModel editPostInfoModel;
   
   @override  
   Widget build(BuildContext context) {
@@ -28,9 +31,9 @@ class PostButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds),
-        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, preservatedPostIds: preservatedPostIds),
+        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, preservatedPostIds: bookmarkedPostIds),
         CommentButton(currentSongDocId: currentSongDocNotifier.value!.id, currentPostComments: currentSongDocNotifier.value!['comments']),
-        EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier)
+        EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
       ],
     );
   }

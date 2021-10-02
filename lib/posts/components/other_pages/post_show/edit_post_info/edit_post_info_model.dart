@@ -17,6 +17,7 @@ final editPostInfoProvider = ChangeNotifierProvider(
 
 class EditPostInfoModel extends ChangeNotifier {
   
+  bool isEditing = false;
   bool isEdited = false;
   String postTitle = '';
   // image
@@ -87,7 +88,7 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
+  Future updatePostInfo(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,BuildContext context) async {
     final String currentSongDocImageURL = currentSongDoc['imageURL'];
     final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongDoc['userImageURL'];
     final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
@@ -100,6 +101,10 @@ class EditPostInfoModel extends ChangeNotifier {
         'title': postTitle,
         'imageURL': imageURL,
       });
+      isEditing = false;
+      isEdited = true;
+      notifyListeners();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿の情報が変更されました')));
     } catch(e) {
       print(e.toString());
     }

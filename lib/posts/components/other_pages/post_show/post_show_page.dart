@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/posts/components/comments/comments.dart';
 import 'package:whisper/posts/components/details/square_post_image.dart';
@@ -9,12 +10,14 @@ import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
 import 'package:whisper/posts/components/audio_window/components/current_song_post_id.dart';
+import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_screen.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-
-class PostShowPage extends StatelessWidget {
+// model
+import 'package:whisper/posts/components/other_pages/post_show/edit_post_info/edit_post_info_model.dart';
+class PostShowPage extends ConsumerWidget {
   
   const PostShowPage({
     Key? key,
@@ -52,12 +55,16 @@ class PostShowPage extends StatelessWidget {
   final void Function()? onNextSongButtonPressed;
 
   @override 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final editPostInfoModel = watch(editPostInfoProvider);
+    final currentSongDoc = currentSongDocNotifier.value;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: false,
       body: SafeArea(
-        child: Column(
+        child: editPostInfoModel.isEditing ?
+        EditPostInfoScreen(currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc!, editPostInfoModel: editPostInfoModel)
+        : Column(
           children: [
             Align(
               alignment: Alignment.topLeft,
@@ -83,7 +90,7 @@ class PostShowPage extends StatelessWidget {
                     Center(
                       child: CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
                     ),
-                    PostButtons(currentUserDoc, currentSongDocNotifier, bookmarkedPostIds, likedPostIds),
+                    PostButtons(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, editPostInfoModel: editPostInfoModel),
                     AudioStateDesign(
                       preservatedPostIds: bookmarkedPostIds,
                       likedPostIds: likedPostIds,

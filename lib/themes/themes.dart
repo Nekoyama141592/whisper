@@ -15,7 +15,7 @@ ThemeData lightThemeData(BuildContext context) {
       .textTheme
     ).apply(bodyColor: kContentColorLightTheme),
     colorScheme: ColorScheme.light(
-      primary: kQuaternaryColor,
+      primary: kPrimaryColor,
       secondary: kSecondaryColor,
       error: kErrorColor
     ),
@@ -41,7 +41,7 @@ ThemeData darkThemeData(BuildContext context){
     textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
         .apply(bodyColor: kContentColorDarkTheme),
     colorScheme: ColorScheme.dark().copyWith(
-      primary: kSecondaryColor,
+      primary: kTertiaryColor,
       secondary: kQuaternaryColor,
       error: kErrorColor,
     ),

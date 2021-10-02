@@ -8,7 +8,7 @@ import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
 import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
-import 'package:whisper/posts/components/other_pages/post_show_page.dart';
+import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
@@ -20,7 +20,6 @@ import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
-import 'package:whisper/posts/components/other_pages/edit_post_info/edit_post_info_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -89,8 +88,3 @@ void toAddPostPage (context,AddPostModel addPostModel,DocumentSnapshot currentUs
 void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
-
-void toEditPostInfoPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => EditPostInfoPage(currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc) ));
-}
-
