@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/one_time_read_count.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -42,9 +44,9 @@ class FeedsModel extends ChangeNotifier {
   //repost
   bool isReposted = false;
   // refresh
+  int refreshIndex = -1;
   RefreshController refreshController = RefreshController(initialRefresh: false);
-  final oneTimeReadCount = 2;
-  int postsCount = -1;
+
   FeedsModel() {
     init();
   }
@@ -75,6 +77,20 @@ class FeedsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
+  Future onRefresh() async {
+    refreshIndex = -1;
+    feedDocs = [];
+    await getFeeds();
+    notifyListeners();
+    refreshController.refreshCompleted();
+  }
+
+  Future onLoading() async {
+    await getFeeds();
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+  
   Future setCurrentUserDoc() async {
     try{
       await FirebaseFirestore.instance
@@ -113,27 +129,48 @@ class FeedsModel extends ChangeNotifier {
   Future getFeeds() async {
 
     try{
-      
-      QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',whereIn: followUids)
-      .get();
-      if (snapshots.docs.isNotEmpty) {
-
-        snapshots.docs.forEach((DocumentSnapshot? doc) {
-          feedDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
-        });
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
+      if (refreshIndex == -1) {
+        QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid',whereIn: followUids)
+        .limit(oneTimeReadCount)
+        .get();
+        if (snapshots.docs.isNotEmpty) {
+          snapshots.docs.forEach((DocumentSnapshot? doc) {
+            feedDocs.add(doc!);
+            Uri song = Uri.parse(doc['audioURL']);
+            UriAudioSource source = AudioSource.uri(song, tag: doc);
+            afterUris.add(source);
+          });
+          if (afterUris.isNotEmpty) {
+            ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+            await audioPlayer.setAudioSource(playlist);
+          }
+        }
+      } else {
+        QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid',whereIn: followUids)
+        .startAfterDocument(feedDocs[refreshIndex])
+        .limit(oneTimeReadCount)
+        .get();
+        if (snapshots.docs.isNotEmpty) {
+          snapshots.docs.forEach((DocumentSnapshot? doc) {
+            feedDocs.add(doc!);
+            Uri song = Uri.parse(doc['audioURL']);
+            UriAudioSource source = AudioSource.uri(song, tag: doc);
+            afterUris.add(source);
+          });
+          if (afterUris.isNotEmpty) {
+            ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+            await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
+          }
+        }
       }
-      
+      refreshIndex += oneTimeReadCount;
     } catch(e) {
       print(e.toString());
     }
-    notifyListeners();
   }
 
   void play()  {

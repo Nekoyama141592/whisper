@@ -66,7 +66,10 @@ class FeedsPage extends ConsumerWidget {
         playButtonNotifier: feedsModel.playButtonNotifier, 
         play: () { feedsModel.play(); }, 
         pause: () { feedsModel.pause(); }, 
-        currentUserDoc: feedsModel.currentUserDoc
+        currentUserDoc: feedsModel.currentUserDoc,
+        refreshController: feedsModel.refreshController,
+        onRefresh: () { feedsModel.onRefresh(); },
+        onLoading: () { feedsModel.onLoading();},
       )
     );
   }

@@ -5,6 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/one_time_read_count.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -21,13 +24,6 @@ class UserShowModel extends ChangeNotifier {
   
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
-  // final currentSongTitleNotifier = ValueNotifier<String>('');
-  // final currentSongPostIdNotifier = ValueNotifier<String>('');
-  // final currentSongDocIdNotifier = ValueNotifier<String>('');
-  // final currentSongDocUidNotifier = ValueNotifier<String>('');
-  // final currentSongImageURLNotifier = ValueNotifier<String>('');
-  // final currentSongUserImageURLNotifier = ValueNotifier<String>('');
-  // final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
 
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
@@ -42,9 +38,9 @@ class UserShowModel extends ChangeNotifier {
   // cloudFirestore
   List<String> postIds = [];
   List<DocumentSnapshot> postDocs = [];
-  // late QuerySnapshot<Map<String, dynamic>> snapshots;
-  int postCount = -1;
-  final oneTimeReadCount = 2;
+  // refresh
+  int refreshIndex = -1;
+  RefreshController refreshController = RefreshController(initialRefresh: false);
   // Edit profile
   bool isEditing = false;
   String userName = '';
@@ -82,25 +78,61 @@ class UserShowModel extends ChangeNotifier {
   void reload() {
     notifyListeners();
   }
-  Future getPosts() async {
 
+  Future onRefresh() async {
+    refreshIndex = -1;
+    postDocs = [];
+    await getPosts();
+    notifyListeners();
+    refreshController.refreshCompleted();
+  }
+
+  Future onLoading() async {
+    await getPosts();
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+
+  Future getPosts() async {
     try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',isEqualTo: currentUser!.uid)
-      .get()
-      .then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot? doc) {
-          postDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
-          
+      if (refreshIndex == -1) {
+        await FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid',isEqualTo: currentUser!.uid)
+        .limit(oneTimeReadCount)
+        .get()
+        .then((qshot) {
+          qshot.docs.forEach((DocumentSnapshot? doc) {
+            postDocs.add(doc!);
+            Uri song = Uri.parse(doc['audioURL']);
+            UriAudioSource source = AudioSource.uri(song, tag: doc);
+            afterUris.add(source);
+          });
         });
-      });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist);
+        }
+      } else {
+        await FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid',isEqualTo: currentUser!.uid)
+        .startAfterDocument(postDocs[refreshIndex])
+        .limit(oneTimeReadCount)
+        .get()
+        .then((qshot) {
+          qshot.docs.forEach((DocumentSnapshot? doc) {
+            postDocs.add(doc!);
+            Uri song = Uri.parse(doc['audioURL']);
+            UriAudioSource source = AudioSource.uri(song, tag: doc);
+            afterUris.add(source);
+          });
+        });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
+          refreshIndex += oneTimeReadCount;
+        }
       }
     } catch(e) {
       print(e.toString());

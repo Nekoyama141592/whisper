@@ -5,6 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/one_time_read_count.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -33,10 +36,11 @@ class BookMarksModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<String> preservationPostIds = [];
+  List<String> bookmarkedPostIds = [];
   List<DocumentSnapshot> bookmarkedDocs = [];
-  int postCount = -1;
-  final oneTimeReadCount = 2;
+  // refresh
+  int refreshIndex = -1;
+  RefreshController refreshController = RefreshController(initialRefresh: false);
   
   BookMarksModel() {
     init();
@@ -47,7 +51,7 @@ class BookMarksModel extends ChangeNotifier {
     setCurrentUser();
     await setCurrentUserDoc();
     setPreservationPostIds();
-    await getPreservations();
+    await getBookmarks();
     listenForStates();
     endLoading();
   }
@@ -66,6 +70,21 @@ class BookMarksModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
   
+  Future onRefresh() async {
+    audioPlayer = AudioPlayer();
+    refreshIndex = -1;
+    bookmarkedDocs = [];
+    await getBookmarks();
+    notifyListeners();
+    refreshController.refreshCompleted();
+  }
+
+  Future onLoading() async {
+    await getBookmarks();
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+
   Future setCurrentUserDoc() async {
     try{
       await FirebaseFirestore.instance
@@ -84,31 +103,51 @@ class BookMarksModel extends ChangeNotifier {
   void setPreservationPostIds() {
     List maps = currentUserDoc['preservations'];
     maps.forEach((map) {
-      preservationPostIds.add(map['postId']);
+      bookmarkedPostIds.add(map['postId']);
     });
     notifyListeners();
   }
 
-  Future getPreservations () async {
+  Future getBookmarks () async {
     try{
-      QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
-      .collection('posts')
-      .where('postId', whereIn: preservationPostIds)
-      .get();
-      snapshots.docs.forEach((DocumentSnapshot? doc) {
-        bookmarkedDocs.add(doc!);
-        Uri song = Uri.parse(doc['audioURL']);
-        UriAudioSource source = AudioSource.uri(song, tag: doc);
-        afterUris.add(source);
-      });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
+      if (refreshIndex == -1) {
+        QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('postId', whereIn: bookmarkedPostIds)
+        .limit(oneTimeReadCount)
+        .get();
+        snapshots.docs.forEach((DocumentSnapshot? doc) {
+          bookmarkedDocs.add(doc!);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+        });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist);
+        }
+      } else {
+        QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('postId', whereIn: bookmarkedPostIds)
+        .limit(oneTimeReadCount)
+        .get();
+        snapshots.docs.forEach((DocumentSnapshot? doc) {
+          bookmarkedDocs.add(doc!);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+        });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
+        }
       }
     } catch(e) {
       print(e.toString());
     }
     notifyListeners();
+    refreshIndex += oneTimeReadCount;
   }
 
   void play()  {

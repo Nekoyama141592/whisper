@@ -66,7 +66,10 @@ class UserShowPostScreen extends StatelessWidget {
         pause: (){
           userShowModel.pause();
         }, 
-        currentUserDoc: currentUserDoc
+        currentUserDoc: currentUserDoc,
+        refreshController: userShowModel.refreshController,
+        onRefresh: (){ userShowModel.onRefresh(); },
+        onLoading: () { userShowModel.onLoading(); },
       ),
     );
     

@@ -1,8 +1,9 @@
+// material
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final commentsProvider = ChangeNotifierProvider(
   (ref) => CommentsModel()
@@ -15,6 +16,7 @@ class CommentsModel extends ChangeNotifier {
   User? currentUser;
 
   Map<String,dynamic> thisComment = {};
+  
   void startLoading() {
     isLoading = true;
     notifyListeners();

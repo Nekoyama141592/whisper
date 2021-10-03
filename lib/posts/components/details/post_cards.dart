@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
@@ -23,7 +24,10 @@ class PostCards extends StatelessWidget {
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
-    required this.currentUserDoc
+    required this.currentUserDoc,
+    required this.refreshController,
+    required this.onRefresh,
+    required this.onLoading
   }) : super(key: key);
 
   final List likedPostIds;
@@ -37,16 +41,28 @@ class PostCards extends StatelessWidget {
   final void Function()? play;
   final void Function()? pause;
   final DocumentSnapshot currentUserDoc;
+  // refresh
+  final RefreshController refreshController;
+  final void Function()? onRefresh;
+  final void Function()? onLoading;
 
   @override 
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemCount: postDocs.length,
-            itemBuilder: (BuildContext context, int i) =>
-              PostCard(postDoc: postDocs[i])
+          child: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            header: WaterDropHeader(),
+            controller: refreshController,
+            onRefresh: onRefresh,
+            onLoading: onLoading,
+            child: ListView.builder(
+              itemCount: postDocs.length,
+              itemBuilder: (BuildContext context, int i) =>
+                PostCard(postDoc: postDocs[i])
+            ),
           ),
         ),
         AudioWindow(

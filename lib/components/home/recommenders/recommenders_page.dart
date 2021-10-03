@@ -64,7 +64,10 @@ class RecommendersPage extends ConsumerWidget {
         playButtonNotifier: recommendersModel.playButtonNotifier, 
         play: () { recommendersModel.play(); }, 
         pause: () { recommendersModel.pause(); }, 
-        currentUserDoc: currentUserDoc
+        currentUserDoc: currentUserDoc,
+        refreshController: recommendersModel.refreshController,
+        onRefresh: () { recommendersModel.onRefresh(); },
+        onLoading: () { recommendersModel.onLoading(); },
       )
     );
   }

@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/one_time_read_count.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -21,13 +23,6 @@ class RecommendersModel extends ChangeNotifier {
 
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
-  // final currentSongTitleNotifier = ValueNotifier<String>('');
-  // final currentSongPostIdNotifier = ValueNotifier<String>('');
-  // final currentSongDocIdNotifier = ValueNotifier<String>('');
-  // final currentSongDocUidNotifier = ValueNotifier<String>('');
-  // final currentSongImageURLNotifier = ValueNotifier<String>('');
-  // final currentSongUserImageURLNotifier = ValueNotifier<String>('');
-  // final currentSongCommentsNotifier = ValueNotifier<List<dynamic>>([]);
 
   List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
@@ -45,12 +40,11 @@ class RecommendersModel extends ChangeNotifier {
   List<String> followUids = [];
   List<String> mutesUids = [];
   List<DocumentSnapshot> recommenderDocs = [];
-  final oneTimeReadCount = 2;
-  int postsCount = -1;
-  //repost
-  bool isReposted = false;
+
   // refresh
+  int refreshIndex = -1;
   RefreshController refreshController = RefreshController(initialRefresh: false);
+
   RecommendersModel() {
     init();
   }
@@ -78,6 +72,21 @@ class RecommendersModel extends ChangeNotifier {
 
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
+  }
+
+  Future onRefresh() async {
+    audioPlayer = AudioPlayer();
+    refreshIndex = -1;
+    recommenderDocs = [];
+    await getRecommenders();
+    notifyListeners();
+    refreshController.refreshCompleted();
+  }
+
+  Future onLoading() async {
+    await getRecommenders();
+    refreshController.loadComplete();
+    notifyListeners();
   }
   // CloudFirestore
   Future setFollowUids() async {
@@ -119,7 +128,7 @@ class RecommendersModel extends ChangeNotifier {
     
     try {
 
-      if (postsCount == -1) {
+      if (refreshIndex == -1) {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
         .where('createdAt', isGreaterThanOrEqualTo: range)
@@ -133,8 +142,10 @@ class RecommendersModel extends ChangeNotifier {
           UriAudioSource source = AudioSource.uri(song, tag: doc);
           afterUris.add(source);
         });
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist);
+        }
       } else {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
@@ -142,39 +153,26 @@ class RecommendersModel extends ChangeNotifier {
         .where('createdAt', isGreaterThanOrEqualTo: range)
         .orderBy('createdAt', descending: true)
         .orderBy('score', descending: true)
-        .startAfterDocument(recommenderDocs[postsCount])
+        .startAfterDocument(recommenderDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot doc) {
           recommenderDocs.add(doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
         });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
+        }
       }
-      
+      refreshIndex += oneTimeReadCount;
       print(recommenderDocs.length.toString() + "!!!!!!!!!");
-      postsCount += oneTimeReadCount;
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
     }
     notifyListeners();
-  }
-
-  Future repost(DocumentSnapshot doc) async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .add({
-        'uid': currentUser!.uid,
-        'repostedPostId': doc.id,
-        'createdAt': Timestamp.now(),
-        'updatedAt': Timestamp.now(),
-        
-      });
-      print('repostTryPass!!!!');
-      isReposted = true;
-      notifyListeners();
-    } catch(e) {
-      print(e.toString() + "repostRepostRepost");
-    }
   }
 
   void play()  {

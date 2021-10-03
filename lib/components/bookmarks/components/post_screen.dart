@@ -75,7 +75,10 @@ class PostScreen extends StatelessWidget {
           playButtonNotifier: bookmarksModel.playButtonNotifier, 
           play: () { bookmarksModel.play(); }, 
           pause: () { bookmarksModel.pause(); }, 
-          currentUserDoc: currentUserDoc
+          currentUserDoc: currentUserDoc,
+          refreshController: bookmarksModel.refreshController,
+          onRefresh: () { bookmarksModel.onRefresh(); },
+          onLoading: () { bookmarksModel.onLoading(); },
         ),
       ), 
       circular: 35.0
