@@ -3,23 +3,25 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart';
-// model
+// models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 
 class NotificationIcon extends StatelessWidget {
 
-  NotificationIcon(
-    this.mainModel,
-    this.themeModel,
-    this.preservatedPostIds,
-    this.likedPostIds
-  );
+  const NotificationIcon({
+    Key? key,
+    required this.mainModel,
+    required this.themeModel,
+    required this.bookmarkedPostIds,
+    required this.likedPostIds
+  }) : super(key: key);
 
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
+
   @override  
   Widget build(BuildContext context) {
     return 
@@ -31,7 +33,7 @@ class NotificationIcon extends StatelessWidget {
             context, 
             mainModel,
             themeModel,
-            preservatedPostIds, 
+            bookmarkedPostIds, 
             likedPostIds
           );
         },

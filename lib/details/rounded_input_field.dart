@@ -1,5 +1,6 @@
+// material
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/colors.dart';
+// components
 import 'text_field_container.dart';
 
 class RoundedInputField extends StatelessWidget {
@@ -10,7 +11,7 @@ class RoundedInputField extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
   
-  RoundedInputField(
+  const RoundedInputField(
     this.hintText,
     this.icon,
     this.controller,

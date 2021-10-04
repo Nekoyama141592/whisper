@@ -1,10 +1,12 @@
+// material
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-
+// constants
 import 'package:whisper/constants/routes.dart' as routes;
 
 class ForgetPasswordText extends StatelessWidget {
-  ForgetPasswordText({
+  
+  const ForgetPasswordText({
     Key? key,
     required this.textColor
   }) : super(key: key);

@@ -41,12 +41,7 @@ class Home extends StatelessWidget {
             )
           ),
           actions: [
-            NotificationIcon(
-              mainModel,
-              themeModel,
-              bookmarkedPostIds,
-              likedPostIds
-            )
+            NotificationIcon(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds)
           ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,

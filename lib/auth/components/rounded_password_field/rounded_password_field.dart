@@ -1,21 +1,24 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field_model.dart';
-
-import 'package:whisper/details/text_field_container.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
+// components
+import 'package:whisper/details/text_field_container.dart';
 
 class RoundedPasswordField extends ConsumerWidget {
-  final String hintText;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
   
-  RoundedPasswordField(
+  const RoundedPasswordField(
     this.hintText,
     this.controller,
     this.onChanged,
   );
+
+  final String hintText;
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
