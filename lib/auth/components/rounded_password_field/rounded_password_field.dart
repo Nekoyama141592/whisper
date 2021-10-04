@@ -10,11 +10,12 @@ import 'package:whisper/details/text_field_container.dart';
 
 class RoundedPasswordField extends ConsumerWidget {
   
-  const RoundedPasswordField(
-    this.hintText,
-    this.controller,
-    this.onChanged,
-  );
+  const RoundedPasswordField({
+    Key? key,
+    required this.hintText,
+    required this.controller,
+    required this.onChanged,
+  }) : super(key: key);
 
   final String hintText;
   final TextEditingController controller;

@@ -16,9 +16,9 @@ import 'package:whisper/auth/login/login_model.dart';
 class LoginPage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _loginProvider = watch(loginProvider);
-    final emailInputController = TextEditingController(text: _loginProvider.email);
-    final passwordInputController = TextEditingController(text: _loginProvider.password,);
+    final loginModel = watch(loginProvider);
+    final emailInputController = TextEditingController(text: loginModel.email);
+    final passwordInputController = TextEditingController(text: loginModel.password,);
     final size = MediaQuery.of(context).size;
     return Stack(
       children: [
@@ -86,18 +86,16 @@ class LoginPage extends ConsumerWidget {
                               Icons.person,
                               emailInputController,
                               (text) {
-                                _loginProvider.email = text;
+                                loginModel.email = text;
                               },
                             ),
                             RoundedPasswordField(
-                              "Your password",
-                              passwordInputController,
-                              (text) {
-                                _loginProvider.password = text;
-                              },
-                              
+                              hintText: 'Password', 
+                              controller: passwordInputController, 
+                              onChanged: (text) {
+                                loginModel.password = text;
+                              }
                             ),
-                            
                             SizedBox(height: 24),
                             Center(
                               child: RoundedButton(
@@ -106,7 +104,7 @@ class LoginPage extends ConsumerWidget {
                                 20,
                                 10,
                                 () async {
-                                  await _loginProvider.login(context);
+                                  await loginModel.login(context);
                                 },
                                 Colors.white,
                                 kQuaternaryColor
@@ -122,7 +120,7 @@ class LoginPage extends ConsumerWidget {
             ),
           ),
         ),
-        _loginProvider.isLoading ?
+        loginModel.isLoading ?
         Container(
           color: Colors.grey.withOpacity(0.7),
           child: Center(child: CircularProgressIndicator(),),

@@ -1,12 +1,15 @@
+// material
 import 'package:flutter/material.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
-import 'update_password_model.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
+// components
 import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
+// model
+import 'update_password_model.dart';
 
 class UpdatePasswordPage extends ConsumerWidget {
 
@@ -33,18 +36,18 @@ class UpdatePasswordPage extends ConsumerWidget {
         children: [
           Center(
             child: RoundedPasswordField(
-              '新しいパスワード', 
-              newPasswordInputController, 
-              (text) {
+              hintText: '新しいパスワード', 
+              controller: newPasswordInputController, 
+              onChanged:  (text) {
                 _updatePasswordModel.newPassword = text;
               }, 
             ),
           ),
           Center(
             child: RoundedPasswordField(
-              'パスワード(確認)', 
-              confirmPasswordInputController, 
-              (text) {
+              hintText: 'パスワード(確認)', 
+              controller: confirmPasswordInputController, 
+              onChanged:  (text) {
                 _updatePasswordModel.confirmPassword = text;
               },
             ),

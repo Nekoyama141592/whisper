@@ -30,9 +30,9 @@ class ReauthenticationPage extends StatelessWidget {
         children: [
           Center(
             child: RoundedPasswordField(
-              '現在のパスワード', 
-              passwordInputController, 
-              (text) {
+              hintText: '現在のパスワード', 
+              controller: passwordInputController, 
+              onChanged: (text) {
                 accountModel.password = text;
               }, 
             ),

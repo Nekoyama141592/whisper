@@ -20,6 +20,7 @@ class SignupPage extends ConsumerWidget {
     final _signupProvider = watch(signupProvider);
     final emailInputController = TextEditingController(text: _signupProvider.email);
     final passwordInputController = TextEditingController(text: _signupProvider.password);
+
     return Stack(
       children: [
         Scaffold(
@@ -126,9 +127,9 @@ class SignupPage extends ConsumerWidget {
                               },
                             ),
                             RoundedPasswordField(
-                              "password",
-                              passwordInputController,
-                              (text) {
+                              hintText: "password",
+                              controller: passwordInputController,
+                              onChanged:  (text) {
                                 _signupProvider.password = text;
                               },
                               
