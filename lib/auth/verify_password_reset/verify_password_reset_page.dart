@@ -22,10 +22,10 @@ class VerifyPasswordResetPage extends ConsumerWidget {
         children: [
           Center(
             child: RoundedInputField(
-              'email', 
-              Icons.email, 
-              emailInputController, 
-              (text) {
+              hintText: 'email', 
+              icon: Icons.email, 
+              controller: emailInputController, 
+              onChanged:  (text) {
                 _verifyPasswordResetModel.email = text;
               }, 
             ),

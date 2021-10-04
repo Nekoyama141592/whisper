@@ -84,10 +84,10 @@ class AddPostContent extends StatelessWidget {
             Column(
               children: [
                 RoundedInputField(
-                  "Post title", 
-                  Icons.graphic_eq, 
-                  postTitleController, 
-                  (text) {
+                  hintText: "Post title", 
+                  icon: Icons.graphic_eq, 
+                  controller: postTitleController, 
+                  onChanged:  (text) {
                     addPostModel.postTitleNotifier.value = text;
                   }, 
                 ),

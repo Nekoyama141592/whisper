@@ -14,6 +14,11 @@ import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/auth/login/login_model.dart';
 
 class LoginPage extends ConsumerWidget {
+
+  const LoginPage({
+    Key? key
+  }) : super(key: key);
+
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final loginModel = watch(loginProvider);
@@ -82,10 +87,10 @@ class LoginPage extends ConsumerWidget {
                               height: size.height * 0.30,
                             ),
                             RoundedInputField(
-                              "Your Email",
-                              Icons.person,
-                              emailInputController,
-                              (text) {
+                              hintText: "Your Email",
+                              icon: Icons.person,
+                              controller: emailInputController,
+                              onChanged:  (text) {
                                 loginModel.email = text;
                               },
                             ),

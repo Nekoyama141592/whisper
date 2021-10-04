@@ -15,11 +15,15 @@ import 'signup_model.dart';
 
 class SignupPage extends ConsumerWidget {
   
+  const SignupPage({
+    Key? key
+  }) : super(key: key);
+  
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final _signupProvider = watch(signupProvider);
-    final emailInputController = TextEditingController(text: _signupProvider.email);
-    final passwordInputController = TextEditingController(text: _signupProvider.password);
+    final signupModel = watch(signupProvider);
+    final emailInputController = TextEditingController(text: signupModel.email);
+    final passwordInputController = TextEditingController(text: signupModel.password);
 
     return Stack(
       children: [
@@ -32,7 +36,7 @@ class SignupPage extends ConsumerWidget {
             ),
             backgroundColor: kPrimaryColor,
             onPressed: () async {
-              await _signupProvider.showImagePicker();
+              await signupModel.showImagePicker();
             }
           ),
           body: SafeArea(
@@ -82,7 +86,7 @@ class SignupPage extends ConsumerWidget {
                             Column(
                               children: [
                                 Container(
-                                  child: _signupProvider.isCropped ?
+                                  child: signupModel.isCropped ?
                                   Container(
                                     margin: EdgeInsets.symmetric(
                                       vertical: 25
@@ -96,7 +100,7 @@ class SignupPage extends ConsumerWidget {
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                         fit: BoxFit.fill,
-                                        image: FileImage(_signupProvider.croppedFile!),
+                                        image: FileImage(signupModel.croppedFile!),
                                       )
                                     ),
                                   )
@@ -119,18 +123,18 @@ class SignupPage extends ConsumerWidget {
                               ],
                             ),
                             RoundedInputField(
-                              "Email",
-                              Icons.person,
-                              emailInputController,
-                              (text) {
-                                _signupProvider.email = text;
+                              hintText: "Email",
+                              icon: Icons.person,
+                              controller: emailInputController,
+                              onChanged:  (text) {
+                                signupModel.email = text;
                               },
                             ),
                             RoundedPasswordField(
                               hintText: "password",
                               controller: passwordInputController,
                               onChanged:  (text) {
-                                _signupProvider.password = text;
+                                signupModel.password = text;
                               },
                               
                             ),
@@ -143,7 +147,7 @@ class SignupPage extends ConsumerWidget {
                                 20,
                                 10,
                                 () async {
-                                  await _signupProvider.signup(context);
+                                  await signupModel.signup(context);
                                 },
                                 Colors.white,
                                 kSecondaryColor
@@ -161,7 +165,7 @@ class SignupPage extends ConsumerWidget {
             ),
           ),
         ),
-        _signupProvider.isLoading ?
+        signupModel.isLoading ?
         Container(
           color: Colors.grey.withOpacity(0.7),
           child: Center(child: CircularProgressIndicator(),),

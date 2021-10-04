@@ -1,19 +1,19 @@
+// material
 import 'package:flutter/material.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
+// components
 import 'package:whisper/details/rounded_input_field.dart';
-
 import 'package:whisper/details/rounded_button.dart';
-
+// model
 import 'update_email_model.dart';
 
 class UpdateEmailPage extends ConsumerWidget {
 
-  UpdateEmailPage({
+  const UpdateEmailPage({
     Key? key,
     required this.currentUser
   }) : super(key: key);
@@ -35,10 +35,10 @@ class UpdateEmailPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RoundedInputField(
-              '新しいメールアドレス', 
-              Icons.email, 
-              newEmailInputController, 
-              (text) {
+              hintText: '新しいメールアドレス', 
+              icon: Icons.email, 
+              controller: newEmailInputController, 
+              onChanged:  (text) {
                 _updateEmailModel.newEmail = text;
               },
             ),
