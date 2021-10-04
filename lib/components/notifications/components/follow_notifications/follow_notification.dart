@@ -1,15 +1,21 @@
+// material
 import 'package:flutter/material.dart';
-
+// components
 import 'package:whisper/components/notifications/components/follow_notifications/components/follow_notification_list.dart';
+
 class FollowNotification extends StatelessWidget {
 
-  FollowNotification(this.newFollowNotifications);
+  const FollowNotification({
+    Key? key,
+    required this.newFollowNotifications
+  }) : super(key: key);
+
   final List<dynamic> newFollowNotifications;
+
   @override 
   Widget build(BuildContext context) {
-    return 
-    FollowNotificationList(
-      newFollowNotifications
-    );
+    final notifications = newFollowNotifications;
+    return FollowNotificationList(notifications: notifications);
   }
+  
 }

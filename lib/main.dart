@@ -87,7 +87,7 @@ class MyHomePage extends ConsumerWidget {
           UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids)
         ],
       ),
-      bottomNavigationBar: WhisperBottomNavigationbar(whisperBottomNavigationbarModel),
+      bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),
     );
   }
 }

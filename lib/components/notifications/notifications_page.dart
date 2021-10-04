@@ -27,6 +27,7 @@ class NotificationsPage extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
+    final newFollowNotifications = mainModel.newFollowNotifications;
     return DefaultTabController(
       length: tabBarElements.length,
       child: Scaffold(
@@ -61,9 +62,7 @@ class NotificationsPage extends StatelessWidget {
             LikeNotification(
               mainModel.newLikeNotifications
             ),
-            FollowNotification(
-              mainModel.newFollowNotifications
-            )
+            FollowNotification(newFollowNotifications: newFollowNotifications)
           ]
         ),
       ),

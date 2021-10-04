@@ -1,5 +1,8 @@
+// material
 import 'package:flutter/material.dart';
+// package
 import 'package:google_fonts/google_fonts.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
 
 ThemeData lightThemeData(BuildContext context) {

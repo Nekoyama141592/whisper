@@ -1,22 +1,30 @@
+// material
 import 'package:flutter/material.dart';
+// package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:whisper/components/whisper_bottom_navigation_bar/components/bottom_navigation_bar_elements.dart';
+// constants
+import 'package:whisper/components/whisper_bottom_navigation_bar/constants/bottom_navigation_bar_elements.dart';
+// model
 import 'whisper_bottom_navigation_bar_model.dart';
 
 class WhisperBottomNavigationbar extends ConsumerWidget {
   
-  WhisperBottomNavigationbar(this.provider);
-  final WhisperBottomNavigationbarModel provider;
+  const WhisperBottomNavigationbar({
+    Key? key,
+    required this.model
+  }) : super(key: key);
+
+  final WhisperBottomNavigationbarModel model;
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: buttonNavigationBarElements,
-      currentIndex: provider.currentIndex,
+      currentIndex: model.currentIndex,
       onTap: (index) {
-        provider.onTabTapped(index);
+        model.onTabTapped(index);
       },
     );
   }

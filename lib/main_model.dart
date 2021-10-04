@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// material
 import 'package:flutter/material.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
 import 'package:whisper/constants/routes.dart' as routes;
 
 final mainProvider = ChangeNotifierProvider(
@@ -24,6 +25,7 @@ class MainModel extends ChangeNotifier {
   MainModel() {
     init();
   }
+  
   void init() async {
     startLoading();
     await setCurrentUser();
@@ -74,22 +76,20 @@ class MainModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
-    print(likedPostIds.length.toString() + "  likedPostIds");
-    
   }
 
   void getPreservatedPostIds() {
+    
     try{
-      List preservations = currentUserDoc['preservations'];
-      print(preservations.length.toString() + "  preservationsLength");
-      preservations.forEach((preservation) {
-        bookmarkedPostIds.add(preservation['postId']);
+      List bookmarks = currentUserDoc['preservations'];
+      bookmarks.forEach((bookmark) {
+        bookmarkedPostIds.add(bookmark['postId']);
       });
       notifyListeners();
     } catch(e) {
       print(e.toString());
     }
-    print(bookmarkedPostIds.length.toString() + '  preservatedPostIds');
+    
   }
 
   void getFollowingUids() {

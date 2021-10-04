@@ -2,10 +2,13 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 
 class Loading extends StatelessWidget {
+
+  const Loading({
+    Key? key
+  }) : super(key: key);
+  
   @override  
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

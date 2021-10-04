@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+// material
+import 'package:flutter/material.dart';
 
 class RepeatButtonNotifier extends ValueNotifier<RepeatState> {
   RepeatButtonNotifier() : super(_initialValue);
