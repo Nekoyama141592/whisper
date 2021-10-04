@@ -5,10 +5,7 @@ db{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
-            likes: [{
-                createdAt: TimeStamp,
-                uid: String,
-            }],
+            likesUids
             uid: String,
         }],
         createdAt: TimeStamp,

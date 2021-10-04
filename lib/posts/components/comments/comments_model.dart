@@ -15,7 +15,7 @@ class CommentsModel extends ChangeNotifier {
   String comment = "";
   User? currentUser;
 
-  Map<String,dynamic> thisComment = {};
+  Map<String,dynamic> postComment = {};
   
   void startLoading() {
     isLoading = true;
@@ -57,7 +57,7 @@ class CommentsModel extends ChangeNotifier {
         'comment': comment,
         'uid': currentUser!.uid,
         'createdAt': Timestamp.now(),
-        'likes': [{}],
+        'likes': [],
         'commentId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
       };
       postComments.add(commentMap);
@@ -80,15 +80,11 @@ class CommentsModel extends ChangeNotifier {
     try{
       postComments.forEach((postComment) {
         if (postComment['commentId'] == commentId){
-          thisComment = postComment;
-          List<dynamic> likes = thisComment['likes'];
-          final Map<String,dynamic> newLikeMap = {
-            'uid': currentUser!.uid,
-            'createdAt': Timestamp.now(),
-          };
-          likes.add(newLikeMap);
-          thisComment['likes'] = likes;
-          postComments.add(thisComment);
+          // likesUids
+          List<dynamic> likesUids = postComment['likes'];
+          likesUids.add(currentUser!.uid);
+          postComment['likesUids'] = likesUids;
+          postComments.add(postComment);
           FirebaseFirestore.instance
           .collection('posts')
           .doc(postDocId)
