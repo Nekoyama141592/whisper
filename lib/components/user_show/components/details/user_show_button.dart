@@ -29,23 +29,23 @@ class UserShowButton extends StatelessWidget {
     return userDoc.id == currentUserDoc.id ?
     // 変更
     RoundedButton(
-      '編集', 
-      0.25,
-      20,
-      0,
-      () {
+      text: '編集', 
+      widthRate: 0.25,
+      verticalPadding: 20.0,
+      horizontalPadding: 0.0,
+      press: () {
         userShowProvider.onEditButtonPressed(currentUserDoc);
       }, 
-      Colors.white, 
-      Theme.of(context).highlightColor
+      textColor: Colors.white, 
+      buttonColor: Theme.of(context).highlightColor
     )
     : !followingUids.contains(userDoc['uid']) ?
     RoundedButton(
-      'follow', 
-      0.35,
-      20,
-      10,
-      () async {
+      text: 'follow', 
+      widthRate: 0.35,
+      verticalPadding: 20.0,
+      horizontalPadding: 10.0,
+      press: () async {
         try {
           followingUids.add(userDoc['uid']);
           followProvider.reload();
@@ -54,15 +54,15 @@ class UserShowButton extends StatelessWidget {
           print(e.toString());          
         }
       }, 
-      Colors.white, 
-      Theme.of(context).highlightColor
+      textColor: Colors.white, 
+      buttonColor: Theme.of(context).highlightColor
     )
     : RoundedButton(
-      'unfollow', 
-      0.35,
-      20,
-      10, 
-      () async {
+      text: 'unfollow', 
+      widthRate: 0.35,
+      verticalPadding: 20.0,
+      horizontalPadding: 10.0,
+      press: () async {
         try {
           followingUids.remove(userDoc['uid']);
           followProvider.reload();
@@ -71,8 +71,8 @@ class UserShowButton extends StatelessWidget {
           print(e.toString());          
         }
       },  
-      Colors.white, 
-      Theme.of(context).colorScheme.secondary
+      textColor: Colors.white, 
+      buttonColor: Theme.of(context).colorScheme.secondary
     );
     
   }

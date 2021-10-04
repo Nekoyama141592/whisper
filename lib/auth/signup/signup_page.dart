@@ -142,15 +142,15 @@ class SignupPage extends ConsumerWidget {
                             SizedBox(height: 24),
                             Center(
                               child: RoundedButton(
-                                'signup',
-                                0.8,
-                                20,
-                                10,
-                                () async {
+                                text: 'signup',
+                                widthRate: 0.8,
+                                verticalPadding: 20.0,
+                                horizontalPadding: 10.0,
+                                press: () async {
                                   await signupModel.signup(context);
                                 },
-                                Colors.white,
-                                kSecondaryColor
+                                textColor: Colors.white,
+                                buttonColor: kSecondaryColor,
                               ),
                             ),
                             AlreadyHaveAnAccount(textColor: kTertiaryColor),

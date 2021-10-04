@@ -104,15 +104,15 @@ class LoginPage extends ConsumerWidget {
                             SizedBox(height: 24),
                             Center(
                               child: RoundedButton(
-                                'login',
-                                0.8,
-                                20,
-                                10,
-                                () async {
+                                text: 'login',
+                                widthRate: 0.8,
+                                verticalPadding: 20.0,
+                                horizontalPadding: 10.0,
+                                press: () async {
                                   await loginModel.login(context);
                                 },
-                                Colors.white,
-                                kQuaternaryColor
+                                textColor: Colors.white,
+                                buttonColor: kQuaternaryColor
                               ),
                             )
                           ]

@@ -1,12 +1,11 @@
-
+// material
 import 'package:flutter/material.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:whisper/constants/colors.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
 import 'package:whisper/constants/routes.dart' as routes;
-
+// components
 import 'package:whisper/details/rounded_button.dart';
 
 final accountProvider = ChangeNotifierProvider(
@@ -80,15 +79,13 @@ class AccountModel extends ChangeNotifier {
           actions: [
             TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel')),
             RoundedButton(
-              'OK', 
-              0.2, 
-              20, 
-              10, 
-              () async {
-                await signOut(context);
-              }, 
-              Colors.white, 
-              kPrimaryColor
+              text: 'OK', 
+              widthRate: 0.2, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async { await signOut(context); }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
             )
           ],
         );

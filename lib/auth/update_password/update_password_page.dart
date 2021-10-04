@@ -54,15 +54,15 @@ class UpdatePasswordPage extends ConsumerWidget {
           ),
           Center(
             child: RoundedButton(
-              'パスワードを更新', 
-              0.95, 
-              20, 
-              10, 
-              () {
-                _updatePasswordModel.onUpdateButtonPressed(context);
+              text: 'パスワードを更新', 
+              widthRate: 0.95,
+              verticalPadding: 20.0,
+              horizontalPadding: 10.0,
+              press:  () async {
+                await _updatePasswordModel.onUpdateButtonPressed(context);
               }, 
-              Colors.white, 
-              kSecondaryColor
+              textColor: Colors.white, 
+              buttonColor: kSecondaryColor
             ),
           )
         ],

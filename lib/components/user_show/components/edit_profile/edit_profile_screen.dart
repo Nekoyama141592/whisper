@@ -53,15 +53,15 @@ class EditProfileScreen extends ConsumerWidget {
                 ),
                 SizedBox(width: size.width * 0.4,),
                 RoundedButton(
-                  '保存', 
-                  0.25, 
-                  10, 
-                  5, 
-                  () async  {
+                  text: '保存', 
+                  widthRate: 0.25, 
+                  verticalPadding: 10.0, 
+                  horizontalPadding: 5.0, 
+                  press: () async  {
                     await userShowModel.onSaveButtonPressed(context,currentUserDoc);
                   },
-                  Colors.white, 
-                  Theme.of(context).highlightColor
+                  textColor: Colors.white, 
+                  buttonColor: Theme.of(context).highlightColor
                 )
               ],
             ),

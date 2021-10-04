@@ -83,30 +83,30 @@ class Content extends StatelessWidget {
                 ),
               ),
               RoundedButton(
-                '広告の投稿',
-                0.8,
-                20,
-                10,
-                () {
+                text: '広告の投稿',
+                widthRate: 0.8,
+                verticalPadding: 20.0,
+                horizontalPadding: 10.0,
+                press: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('実装予定です！')
                     )
                   );
                 }, 
-                Colors.black, 
-                Theme.of(context).colorScheme.secondary
+                textColor: Colors.black, 
+                buttonColor: Theme.of(context).colorScheme.secondary
               ),
               RoundedButton(
-                '普通の投稿', 
-                0.8,
-                20,
-                10,
-                () {
+                text: '普通の投稿', 
+                widthRate: 0.8,
+                verticalPadding: 20.0,
+                horizontalPadding: 10.0,
+                press: () {
                   routes.toAddPostPage(context, addPostModel,currentUserDoc);
                 }, 
-                Colors.white, 
-                Theme.of(context).highlightColor
+                textColor: Colors.white, 
+                buttonColor: Theme.of(context).highlightColor
               ),
               
             ],

@@ -39,15 +39,13 @@ class ReauthenticationPage extends StatelessWidget {
           ),
           Center(
             child: RoundedButton(
-              '認証する', 
-              0.95, 
-              20, 
-              10, 
-              () async {
-                await accountModel.reauthenticateWithCredential(context,currentUser);
-              }, 
-              Colors.white, 
-              kQuaternaryColor
+              text: '認証する', 
+              widthRate: 0.95, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async { await accountModel.reauthenticateWithCredential(context,currentUser); }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).colorScheme.secondary,
             ),
           )
         ],

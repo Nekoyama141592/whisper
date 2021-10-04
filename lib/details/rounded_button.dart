@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
   
-  const RoundedButton(
-    this.text,
-    this.widthRate,
-    this.verticalPadding,
-    this.horizontalPadding,
-    this.press,
-    this.textColor,
-    this.buttonColor,
-  );
+  const RoundedButton({
+    Key? key,
+    required this.text,
+    required this.widthRate,
+    required this.verticalPadding,
+    required this.horizontalPadding,
+    required this.press,
+    required this.textColor,
+    required this.buttonColor,
+  }) : super(key:key);
 
   final String text;
   final double widthRate,verticalPadding,horizontalPadding;

@@ -39,15 +39,15 @@ class PickPostImagePage extends StatelessWidget {
                   child: value ? Image.file(addPostModel.croppedFile!) : Image.network(currentUserDoc['imageURL']),
                 ),
                 RoundedButton(
-                  value ? '写真を変更する' :'写真を追加(任意)', 
-                  0.95, 
-                  20, 
-                  10, 
-                  () async {
+                  text: value ? '写真を変更する' :'写真を追加(任意)', 
+                  widthRate: 0.95,
+                  verticalPadding: 20.0, 
+                  horizontalPadding: 10.0,
+                  press: () async {
                     await addPostModel.showImagePicker();
                   }, 
-                  Colors.white, 
-                  value ? Theme.of(context).primaryColor : Theme.of(context).highlightColor
+                  textColor: Colors.white, 
+                  buttonColor: value ? Theme.of(context).primaryColor : Theme.of(context).highlightColor
                 ),
                 UploadButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
               ],

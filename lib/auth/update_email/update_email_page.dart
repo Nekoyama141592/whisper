@@ -44,15 +44,15 @@ class UpdateEmailPage extends ConsumerWidget {
             ),
             SizedBox(height: 16,),
             RoundedButton(
-              'メールアドレスを認証', 
-              0.95, 
-              20, 
-              10, 
-              () async {
+              text: 'メールアドレスを認証', 
+              widthRate: 0.95, 
+              verticalPadding: 20.0,
+              horizontalPadding: 10.0,
+              press: () async {
                 await _updateEmailModel.verifyBeforeUpdateEmail(context);        
               }, 
-              Colors.white, 
-              kSecondaryColor
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).colorScheme.secondary,
             ),
             Text('リンクをタップしても変更が反映されない場合は'),
             Text('一度、Whisperのタブを切ってください')
