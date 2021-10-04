@@ -30,7 +30,7 @@ class MainModel extends ChangeNotifier {
     startLoading();
     await setCurrentUser();
     getLikedPostIds();
-    getPreservatedPostIds();
+    getBookmarkedPostIds();
     getFollowingUids();
     getNewNotifications();
     endLoading();
@@ -78,10 +78,10 @@ class MainModel extends ChangeNotifier {
     }
   }
 
-  void getPreservatedPostIds() {
+  void getBookmarkedPostIds() {
     
     try{
-      List bookmarks = currentUserDoc['preservations'];
+      List bookmarks = currentUserDoc['bookmarks'];
       bookmarks.forEach((bookmark) {
         bookmarkedPostIds.add(bookmark['postId']);
       });
@@ -97,19 +97,6 @@ class MainModel extends ChangeNotifier {
   }
 
   void getNewNotifications () {
-    List<dynamic> likeNotifications = currentUserDoc['likeNotifications'];
-    List<dynamic> followNotifications = currentUserDoc['followNotifications'];
-    likeNotifications.forEach((likeNotification){
-      if (likeNotification['isRead'] == false) {
-        newLikeNotifications.add(likeNotification);
-      }
-    });
-    followNotifications.forEach((followNotification){
-      if (followNotification['isRead'] == false) {
-        newFollowNotifications.add(followNotification);
-      }
-    });
-    notifyListeners();
   }
   Future logout(context) async {
     await FirebaseAuth.instance.signOut();

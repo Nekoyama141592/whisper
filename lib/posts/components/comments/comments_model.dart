@@ -44,8 +44,6 @@ class CommentsModel extends ChangeNotifier {
     await updateCommentsOfPostWhenSomeoneLiked(currentSongDoc, commentId);
     // I liked your post.
     await updateLikedCommentsOfCurrentUser(commentId,currentUserDoc);
-    // make notification
-    await updateIsLikedNotificationsOfUser(currentUserDoc);
     endLoading();
   }
 
@@ -122,21 +120,6 @@ class CommentsModel extends ChangeNotifier {
 
   }
 
-  Future updateIsLikedNotificationsOfUser(DocumentSnapshot currentUserDoc) async {
-    Map<String,dynamic> map = {
-      'createdAt': Timestamp.now(),
-      'isRead': false,
-      'uid': currentUser!.uid
-    };
-    List<dynamic> isLikedNotifications = currentUserDoc['isLikedNotifications'];
-    isLikedNotifications.add(map);
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .update({
-      'isLikedNotifications': isLikedNotifications,
-    });
-  }
 
   Future setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(String passiveUid,String commentId) async {
     await FirebaseFirestore.instance
@@ -153,13 +136,17 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future updateReplyNotificationsOfPassiveUser(String commentId,DocumentSnapshot passiveUserDoc) async {
+
+    final String notificationId = currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
+
     Map<String,dynamic> map = {
       'commentId': commentId,
       'comment': comment,
       'createdAt': Timestamp.now(),
-      'isRead': false,
+      'notificationId': notificationId,
       'uid': currentUser!.uid,
     };
+
     List<dynamic> replyNotifications = passiveUserDoc['replyNotifications'];
     replyNotifications.add(map);
     await FirebaseFirestore.instance

@@ -33,11 +33,6 @@ db{
         }],
         createdAt: TimeStamp,
         description: String,
-        followNotifications: [{
-            createdAt: TimeStamp,
-            isRead: bool,
-            uid: String,
-        }],
         followerUids:[
             String
         ],
@@ -46,16 +41,6 @@ db{
         ],
         imageURL: String,
         isAdmin: bool,
-        isLikedNotifications:[{
-            createdAt: TimeStamp,
-            isRead: bool,
-            uid: String,
-        }],
-        likeNotifications: [{
-            createdAt: TimeStamp,
-            isRead: bool,
-            uid: String,
-        }],
         likedComments:[{
             commentId: String,
             createdAt: TimeStamp,
@@ -67,11 +52,12 @@ db{
         muteUids:[
             String
         ],
+        readNotificationIds: [ String ]
         replyNotifications: [{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
-            isRead: bool,
+            'notificationId': String,
             uid: String,
         }],
         subUserName: String,

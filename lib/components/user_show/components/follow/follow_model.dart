@@ -18,6 +18,7 @@ class FollowModel extends ChangeNotifier {
     await removeFollowingUidOfActiveUser(followingUids,currentUserDoc, passiveUserDoc);
     await removeFollowerUidOfPassiveUser(currentUserDoc, passiveUserDoc);
   }
+  
   Future addFollowingUidOfActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
       await FirebaseFirestore.instance

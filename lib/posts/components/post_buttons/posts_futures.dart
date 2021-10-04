@@ -92,11 +92,11 @@ class PostsFeaturesModel extends ChangeNotifier{
   Future addLikeNotificationsToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       List list = owner['likeNotifications'];
-      
+      final String notificationId = currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
+
       Map<String,dynamic> map = {
         'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
-        'isRead': false,
       };
       list.add(map);
 
