@@ -50,7 +50,7 @@ class BookMarksModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     await setCurrentUserDoc();
-    setPreservationPostIds();
+    setBookmarkedPostIds();
     await getBookmarks();
     listenForStates();
     endLoading();
@@ -100,8 +100,8 @@ class BookMarksModel extends ChangeNotifier {
     }
   }
 
-  void setPreservationPostIds() {
-    List maps = currentUserDoc['preservations'];
+  void setBookmarkedPostIds() {
+    List maps = currentUserDoc['bookmarks'];
     maps.forEach((map) {
       bookmarkedPostIds.add(map['postId']);
     });

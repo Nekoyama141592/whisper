@@ -1,6 +1,10 @@
 db{
     posts{
         audioURL: String,
+        bookmarks: [{
+            createdAt: TimeStamp,
+            uid: String,
+        }],
         comments: [{
             comment: String,
             commentId: String,
@@ -12,14 +16,8 @@ db{
         likes: [{
             createdAt: TimeStamp,
             uid: String,
-            
         }],
-        likesCount: int,
         postId: String,
-        preservations: [{
-            createdAt: TimeStamp,
-            uid: String,
-        }],
         score: int,
         title: String,
         imageURL: String,

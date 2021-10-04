@@ -34,8 +34,8 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   Future unpreservate(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
     await findOwner(postDoc);
-    await removePreservationsOfPost(currentUserDoc, postDoc);
-    await removePreservationsOfUser(currentUserDoc, postDoc);
+    await removeBookmarksOfPost(currentUserDoc, postDoc);
+    await removeBookmarksOfUser(currentUserDoc, postDoc);
   }
 
   Future findOwner(DocumentSnapshot postDoc) async {
@@ -125,17 +125,17 @@ class PostsFeaturesModel extends ChangeNotifier{
   Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
     try {
       // User ver
-      final List preservations = postDoc['preservations'];
+      final List bookmarks = postDoc['bookmarks'];
       final Map<String, dynamic> map = {
         'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
       };
-      preservations.add(map);
+      bookmarks.add(map);
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(postDoc.id)
       .update({
-        'preservations': preservations,
+        'bookmarks': bookmarks,
       });
     } catch(e) {
       print(e.toString());
@@ -144,47 +144,47 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   Future addBookmarksToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
     try{
-      final List preservations = currentUserDoc['preservations'];
+      final List bookmarks = currentUserDoc['bookmarks'];
       final Map<String, dynamic> map = {
         'postId': postDoc['postId'],
         'createdAt': Timestamp.now(),
       };
-      preservations.add(map);
+      bookmarks.add(map);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
       .update({
-        'preservations': preservations,
+        'bookmarks': bookmarks,
       });
     } catch(e) {
       print(e.toString());
     }
   }
-  Future removePreservationsOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+  Future removeBookmarksOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
     try {
       // User ver
-      final List preservations = postDoc['preservations'];
-      preservations.removeWhere((preservation) => preservation['uid'] == currentUserDoc['uid']);
+      final List bookmarks = postDoc['bookmarks'];
+      bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(postDoc.id)
       .update({
-        'preservations': preservations,
+        'bookmarks': bookmarks,
       });
     } catch(e) {
       print(e.toString());
     }
   }
 
-  Future removePreservationsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future removeBookmarksOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
     try{
-      final List preservations = currentUserDoc['preservations'];
-      preservations.removeWhere((preservation) => preservation['postId'] == postDoc['postId']);
+      final List bookmarks = currentUserDoc['bookmarks'];
+      bookmarks.removeWhere((bookmark) => bookmark['postId'] == postDoc['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
       .update({
-        'preservations': preservations,
+        'bookmarks': bookmarks,
       });
     } catch(e) {
       print(e.toString());

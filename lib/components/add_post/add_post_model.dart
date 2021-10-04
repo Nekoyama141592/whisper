@@ -250,7 +250,7 @@ class AddPostModel extends ChangeNotifier {
     final String imageURL = croppedFile == null ? '' : await uploadImage();
     if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('postTitle is Empty'))
+        SnackBar(content: Text('タイトルを入力してください'))
       );
     } else {
       try {
@@ -258,13 +258,11 @@ class AddPostModel extends ChangeNotifier {
         await FirebaseFirestore.instance.collection('posts')
         .add({
           'audioURL': audioURL,
+          'bookmarks':[],
           'comments': [],
           'createdAt': Timestamp.now(),
           'likes':[],
-          'likesCount': 0,
           'postId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
-          'preservations':[],
-          'preservationsCount': 0,
           'score': 0,
           'title': postTitleNotifier.value,
           'imageURL': imageURL,
