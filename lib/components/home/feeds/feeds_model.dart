@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
-import 'package:whisper/constants/one_time_read_count.dart';
+import 'package:whisper/constants/counts.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -44,7 +44,7 @@ class FeedsModel extends ChangeNotifier {
   //repost
   bool isReposted = false;
   // refresh
-  int refreshIndex = -1;
+  int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   FeedsModel() {
@@ -78,7 +78,7 @@ class FeedsModel extends ChangeNotifier {
   }
 
   Future onRefresh() async {
-    refreshIndex = -1;
+    refreshIndex = defaultRefreshIndex;
     feedDocs = [];
     await getFeeds();
     notifyListeners();
@@ -129,7 +129,7 @@ class FeedsModel extends ChangeNotifier {
   Future getFeeds() async {
 
     try{
-      if (refreshIndex == -1) {
+      if (refreshIndex == defaultRefreshIndex) {
         QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',whereIn: followUids)

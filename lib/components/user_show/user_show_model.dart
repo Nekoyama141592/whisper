@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
-import 'package:whisper/constants/one_time_read_count.dart';
+import 'package:whisper/constants/counts.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -39,7 +39,7 @@ class UserShowModel extends ChangeNotifier {
   List<String> postIds = [];
   List<DocumentSnapshot> postDocs = [];
   // refresh
-  int refreshIndex = -1;
+  int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // Edit profile
   bool isEditing = false;
@@ -80,7 +80,7 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future onRefresh() async {
-    refreshIndex = -1;
+    refreshIndex = defaultRefreshIndex;
     postDocs = [];
     await getPosts();
     notifyListeners();
@@ -95,7 +95,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future getPosts() async {
     try {
-      if (refreshIndex == -1) {
+      if (refreshIndex == defaultRefreshIndex) {
         await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
