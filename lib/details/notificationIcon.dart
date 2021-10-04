@@ -26,7 +26,7 @@ class NotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     Padding(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
           toNotificationsPage(

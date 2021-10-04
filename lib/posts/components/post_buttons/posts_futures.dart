@@ -32,7 +32,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     await addBookmarksToUser(currentUserDoc, currentSongDoc);
   }
 
-  Future unpreservate(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+  Future unbookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
     await findOwner(currentSongDoc);
     await removeBookmarksOfPost(currentUserDoc, currentSongDoc);
     await removeBookmarksOfUser(currentUserDoc, currentSongDoc);

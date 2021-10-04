@@ -57,7 +57,7 @@ db{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
-            'notificationId': String,
+            notificationId: String,
             uid: String,
         }],
         subUserName: String,
