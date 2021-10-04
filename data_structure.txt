@@ -21,6 +21,7 @@ db{
         score: int,
         title: String,
         imageURL: String,
+        userDocId: String,
         uid: String,
         updatedAt: TimeStamp,
         userImageURL: String,

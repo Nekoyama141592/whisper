@@ -121,18 +121,12 @@ class CommentsModel extends ChangeNotifier {
   }
 
 
-  Future setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(String passiveUid,String commentId) async {
-    await FirebaseFirestore.instance
+  Future setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(String passiveUserDocId,String commentId) async {
+    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
-    .where('uid',isEqualTo: passiveUid)
-    .limit(1)
-    .get()
-    .then((qshot) {
-      qshot.docs.forEach((DocumentSnapshot doc) async {
-        DocumentSnapshot passiveUserDoc = doc;
-        await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc);
-      });
-    } );
+    .doc(passiveUserDocId)
+    .get();
+    await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc);
   }
 
   Future updateReplyNotificationsOfPassiveUser(String commentId,DocumentSnapshot passiveUserDoc) async {

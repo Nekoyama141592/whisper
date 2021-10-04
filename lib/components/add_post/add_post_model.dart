@@ -246,7 +246,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   
-  Future addPostToFirebase(context,currentUserDoc) async {
+  Future addPostToFirebase(context,DocumentSnapshot currentUserDoc) async {
     final String imageURL = croppedFile == null ? '' : await uploadImage();
     if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -266,6 +266,7 @@ class AddPostModel extends ChangeNotifier {
           'score': 0,
           'title': postTitleNotifier.value,
           'imageURL': imageURL,
+          'userDocId': currentUserDoc.id,
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),
           'userImageURL': currentUserDoc,
