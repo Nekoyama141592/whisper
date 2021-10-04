@@ -14,34 +14,34 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   late DocumentSnapshot owner;
   
-  Future like(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
-    await findOwner(postDoc);
-    await addLikesToPost(currentUserDoc, postDoc);
-    await addLikesToUser(currentUserDoc, postDoc);
-    await addLikeNotificationsToUser(currentUserDoc, postDoc);
+  Future like(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+    await findOwner(currentSongDoc);
+    await addLikesToPost(currentUserDoc, currentSongDoc);
+    await addLikesToUser(currentUserDoc, currentSongDoc);
+    await addLikeNotificationsToUser(currentUserDoc, currentSongDoc);
   }
 
-  Future unlike(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
-    await removeLikeOfPost(currentUserDoc, postDoc);
-    await removeLikeOfUser(currentUserDoc, postDoc);
-    await removeLikeNotificationsOfUser(currentUserDoc, postDoc);
+  Future unlike(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+    await removeLikeOfPost(currentUserDoc, currentSongDoc);
+    await removeLikeOfUser(currentUserDoc, currentSongDoc);
+    await removeLikeNotificationsOfUser(currentUserDoc, currentSongDoc);
   }
 
-  Future bookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
-    await addBookmarksToPost(currentUserDoc, postDoc);
-    await addBookmarksToUser(currentUserDoc, postDoc);
+  Future bookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+    await addBookmarksToPost(currentUserDoc, currentSongDoc);
+    await addBookmarksToUser(currentUserDoc, currentSongDoc);
   }
 
-  Future unpreservate(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
-    await findOwner(postDoc);
-    await removeBookmarksOfPost(currentUserDoc, postDoc);
-    await removeBookmarksOfUser(currentUserDoc, postDoc);
+  Future unpreservate(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+    await findOwner(currentSongDoc);
+    await removeBookmarksOfPost(currentUserDoc, currentSongDoc);
+    await removeBookmarksOfUser(currentUserDoc, currentSongDoc);
   }
 
-  Future findOwner(DocumentSnapshot postDoc) async {
+  Future findOwner(DocumentSnapshot currentSongDoc) async {
     await FirebaseFirestore.instance
     .collection('users')
-    .where('uid',isEqualTo: postDoc['uid'])
+    .where('uid',isEqualTo: currentSongDoc['uid'])
     .get()
     .then((qshot) {
       qshot.docs.forEach((DocumentSnapshot doc) {
@@ -51,9 +51,9 @@ class PostsFeaturesModel extends ChangeNotifier{
   }
 
  
-  Future addLikesToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+  Future addLikesToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
     try {
-      final List likes = postDoc['likes'];
+      final List likes = currentSongDoc['likes'];
       final Map<String, dynamic> map = {
         'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
@@ -61,7 +61,7 @@ class PostsFeaturesModel extends ChangeNotifier{
       likes.add(map);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(postDoc.id)
+      .doc(currentSongDoc.id)
       .update({
         'likes': likes,
       });
@@ -70,11 +70,11 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
   
-  Future addLikesToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future addLikesToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       final List likeList = currentUserDoc['likes'];
       final Map<String, dynamic> map = {
-        'likedPostId': postDoc['postId'],
+        'likedPostId': currentSongDoc['postId'],
         'createdAt': Timestamp.now(),
       };
       likeList.add(map);
@@ -89,7 +89,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future addLikeNotificationsToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future addLikeNotificationsToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       List list = owner['likeNotifications'];
       
@@ -104,7 +104,7 @@ class PostsFeaturesModel extends ChangeNotifier{
 
       return FirebaseFirestore.instance
       .collection('users')
-      .where('uid',isEqualTo: postDoc['uid'])
+      .where('uid',isEqualTo: currentSongDoc['uid'])
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
@@ -122,10 +122,10 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+  Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
     try {
       // User ver
-      final List bookmarks = postDoc['bookmarks'];
+      final List bookmarks = currentSongDoc['bookmarks'];
       final Map<String, dynamic> map = {
         'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
@@ -133,7 +133,7 @@ class PostsFeaturesModel extends ChangeNotifier{
       bookmarks.add(map);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(postDoc.id)
+      .doc(currentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
       });
@@ -142,11 +142,11 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future addBookmarksToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future addBookmarksToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       final List bookmarks = currentUserDoc['bookmarks'];
       final Map<String, dynamic> map = {
-        'postId': postDoc['postId'],
+        'postId': currentSongDoc['postId'],
         'createdAt': Timestamp.now(),
       };
       bookmarks.add(map);
@@ -160,14 +160,14 @@ class PostsFeaturesModel extends ChangeNotifier{
       print(e.toString());
     }
   }
-  Future removeBookmarksOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+  Future removeBookmarksOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
     try {
       // User ver
-      final List bookmarks = postDoc['bookmarks'];
+      final List bookmarks = currentSongDoc['bookmarks'];
       bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(postDoc.id)
+      .doc(currentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
       });
@@ -176,10 +176,10 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future removeBookmarksOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future removeBookmarksOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       final List bookmarks = currentUserDoc['bookmarks'];
-      bookmarks.removeWhere((bookmark) => bookmark['postId'] == postDoc['postId']);
+      bookmarks.removeWhere((bookmark) => bookmark['postId'] == currentSongDoc['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -191,13 +191,13 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+  Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
     try {
-      final List likes = postDoc['likes'];
+      final List likes = currentSongDoc['likes'];
       likes.removeWhere((like) => like['uid'] == currentUserDoc['uid']);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(postDoc.id)
+      .doc(currentSongDoc.id)
       .update({
         'likes': likes,
       });
@@ -206,10 +206,10 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
   
-  Future removeLikeOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future removeLikeOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       final List likes = currentUserDoc['likes'];
-      likes.removeWhere((like) => like['likedPostId'] == postDoc['postId']);
+      likes.removeWhere((like) => like['likedPostId'] == currentSongDoc['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -220,7 +220,7 @@ class PostsFeaturesModel extends ChangeNotifier{
       print(e.toString());
     }
   }
-  Future removeLikeNotificationsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future removeLikeNotificationsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) async {
     try{
       List list = owner['likeNotifications'];
       
@@ -230,7 +230,7 @@ class PostsFeaturesModel extends ChangeNotifier{
 
       return FirebaseFirestore.instance
       .collection('users')
-      .where('uid',isEqualTo: postDoc['uid'])
+      .where('uid',isEqualTo: currentSongDoc['uid'])
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {

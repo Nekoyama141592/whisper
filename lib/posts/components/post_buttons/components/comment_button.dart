@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // model
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -8,16 +10,14 @@ class CommentButton extends ConsumerWidget {
 
   CommentButton({
     Key? key,
-    required this.currentSongDocId,
-    required this.currentPostComments
+    required this.currentSongDoc
   }) : super(key: key);
 
-  final String currentSongDocId;
-  final List<dynamic> currentPostComments;
+  final DocumentSnapshot currentSongDoc;
   
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _commentsProvider = watch(commentsProvider);
+    final commentsModel = watch(commentsProvider);
     final commentEditingController = TextEditingController();
 
     return IconButton(
@@ -40,7 +40,7 @@ class CommentButton extends ConsumerWidget {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (text) {
-                          _commentsProvider.comment = text;
+                          commentsModel.comment = text;
                         },
                       ),
                     )
@@ -57,7 +57,7 @@ class CommentButton extends ConsumerWidget {
                 ElevatedButton(
                   child: Text('送信'),
                   onPressed: ()async {
-                    // _commentsProvider.makeComment(currentPostDocId, currentPostComments);
+                    await commentsModel.makeComment(currentSongDoc);
                   }, 
                 )
               ],

@@ -30,29 +30,32 @@ class CommentsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  Future makeComment(String postDocId,List<dynamic> postComments,String passiveUid,String commentId) async {
+  Future makeComment(DocumentSnapshot currentSongDoc) async {
     startLoading();
     setCurrentUser();
-    await updateCommentsOfPostWhenMakeComment(postDocId, postComments);
-    // await setPassiveUserDoc(passiveUid, commentId);
+    await updateCommentsOfPostWhenMakeComment(currentSongDoc);
     endLoading();
   }
 
-  Future like(List<dynamic> postComments,String commentId,String postDocId,List<dynamic> likedComments, DocumentSnapshot currentUserDoc) async {
+  Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId) async {
     startLoading();
     setCurrentUser();
     // Someone left a comment on your post.
-    await updateCommentsOfPostWhenSomeoneLiked(postComments, commentId, postDocId);
+    await updateCommentsOfPostWhenSomeoneLiked(currentSongDoc, commentId);
     // I liked your post.
-    await updateLikedCommentsOfUser(commentId,likedComments,currentUserDoc);
+    await updateLikedCommentsOfCurrentUser(commentId,currentUserDoc);
     // make notification
     await updateIsLikedNotificationsOfUser(currentUserDoc);
     endLoading();
   }
 
-  Future updateCommentsOfPostWhenMakeComment(String postDocId,List<dynamic> postComments) async {
-    
+  Future reply(String passiveUid,String commentId) async {
+    await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUid, commentId);
+  }
+
+  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc) async {
     try{
+      final postComments = currentSongDoc['comments'];
       final commentMap = {
         'comment': comment,
         'uid': currentUser!.uid,
@@ -63,7 +66,7 @@ class CommentsModel extends ChangeNotifier {
       postComments.add(commentMap);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(postDocId)
+      .doc(currentSongDoc.id)
       .update({
         'comments': postComments,
       });
@@ -75,7 +78,9 @@ class CommentsModel extends ChangeNotifier {
 
   
 
-  Future updateCommentsOfPostWhenSomeoneLiked(List<dynamic> postComments,String commentId,String postDocId) async {
+  Future updateCommentsOfPostWhenSomeoneLiked(DocumentSnapshot currentSongDoc,String commentId) async {
+
+    final postComments = currentSongDoc['comments'];
     //Likeが押された時のPost側の処理
     try{
       postComments.forEach((postComment) {
@@ -87,7 +92,7 @@ class CommentsModel extends ChangeNotifier {
           postComments.add(postComment);
           FirebaseFirestore.instance
           .collection('posts')
-          .doc(postDocId)
+          .doc(currentSongDoc.id)
           .update({
             'comments': postComments,
           });
@@ -97,12 +102,15 @@ class CommentsModel extends ChangeNotifier {
       print(e.toString());
     }
   }
-  Future updateLikedCommentsOfUser(String commentId,List<dynamic> likedComments,DocumentSnapshot currentUserDoc) async {
+
+  Future updateLikedCommentsOfCurrentUser(String commentId,DocumentSnapshot currentUserDoc) async {
     // User側の処理
+    List<dynamic> likedComments = currentUserDoc['likedComments'];
     Map<String,dynamic> map = {
       'commentId': commentId,
       'createdAt': Timestamp.now(),
     };
+
     likedComments.add(map);
     await FirebaseFirestore.instance
     .collection('users')
@@ -110,6 +118,7 @@ class CommentsModel extends ChangeNotifier {
     .update({
       'likedComments': likedComments,
     });
+
   }
 
   Future updateIsLikedNotificationsOfUser(DocumentSnapshot currentUserDoc) async {
@@ -128,7 +137,7 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future setPassiveUserDoc(String passiveUid,String commentId) async {
+  Future setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(String passiveUid,String commentId) async {
     await FirebaseFirestore.instance
     .collection('users')
     .where('uid',isEqualTo: passiveUid)

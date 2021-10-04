@@ -12,39 +12,39 @@ class BookmarkButton extends ConsumerWidget {
     Key? key,
     required this.currentUserDoc,
     required this.currentSongDocNotifier,
-    required this.preservatedPostIds
+    required this.bookmarkedPostIds
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _postsFeaturesProvider = watch(postsFeaturesProvider);
+    final postFuturesModel = watch(postsFeaturesProvider);
     return 
     ValueListenableBuilder<DocumentSnapshot?>(
       valueListenable: currentSongDocNotifier, 
       builder: (_, currentSongDoc, __) {
         return 
-        preservatedPostIds.contains(currentSongDoc!['postId']) ?
+        bookmarkedPostIds.contains(currentSongDoc!['postId']) ?
         IconButton(
           icon: Icon(
             Icons.inventory_2,
             color: Colors.red,
           ),
           onPressed: () async {
-            preservatedPostIds.remove(currentSongDoc['postId']);
-            _postsFeaturesProvider.reload();
-            // await _postsFeaturesProvider.unpreservate(currentUserDoc, postDoc);
+            bookmarkedPostIds.remove(currentSongDoc['postId']);
+            postFuturesModel.reload();
+            await postFuturesModel.unpreservate(currentUserDoc, currentSongDoc);
           }, 
         )
         : IconButton(
           icon: Icon(Icons.inventory_2),
           onPressed: () async {
-            preservatedPostIds.add(currentSongDoc['postId']);
-            _postsFeaturesProvider.reload();
-            // await _postsFeaturesProvider.preservate(currentUserDoc, postDoc);
+            bookmarkedPostIds.add(currentSongDoc['postId']);
+            postFuturesModel.reload();
+            await postFuturesModel.bookmark(currentUserDoc, currentSongDoc);
           }, 
         );
       }

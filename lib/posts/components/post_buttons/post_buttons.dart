@@ -31,8 +31,8 @@ class PostButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds),
-        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, preservatedPostIds: bookmarkedPostIds),
-        CommentButton(currentSongDocId: currentSongDocNotifier.value!.id, currentPostComments: currentSongDocNotifier.value!['comments']),
+        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds),
+        CommentButton(currentSongDoc: currentSongDocNotifier.value!),
         EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
       ],
     );

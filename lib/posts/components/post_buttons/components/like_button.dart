@@ -20,7 +20,7 @@ class LikeButton extends ConsumerWidget {
   
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _postFeaturesProvider = watch(postsFeaturesProvider);
+    final postFuturesModel = watch(postsFeaturesProvider);
     return 
     ValueListenableBuilder<DocumentSnapshot?>(
       valueListenable: currentSongDocNotifier, 
@@ -38,8 +38,8 @@ class LikeButton extends ConsumerWidget {
           icon: Icon(Icons.favorite),
           onPressed: () async {
             likedPostIds.add(currentSongDoc['postId']);
-            _postFeaturesProvider.reload();
-            // await _postFeaturesProvider.like(currentUserDoc, postDoc);
+            postFuturesModel.reload();
+            await postFuturesModel.like(currentUserDoc, currentSongDoc);
           }, 
         );
       }
