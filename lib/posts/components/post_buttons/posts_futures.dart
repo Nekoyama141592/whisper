@@ -1,6 +1,8 @@
+// material
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostsFeaturesModel()
@@ -25,9 +27,9 @@ class PostsFeaturesModel extends ChangeNotifier{
     await removeLikeNotificationsOfUser(currentUserDoc, postDoc);
   }
 
-  Future preservate(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
-    await addPreservationsToPost(currentUserDoc, postDoc);
-    await addPreservationsToUser(currentUserDoc, postDoc);
+  Future bookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+    await addBookmarksToPost(currentUserDoc, postDoc);
+    await addBookmarksToUser(currentUserDoc, postDoc);
   }
 
   Future unpreservate(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
@@ -37,7 +39,7 @@ class PostsFeaturesModel extends ChangeNotifier{
   }
 
   Future findOwner(DocumentSnapshot postDoc) async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
     .collection('users')
     .where('uid',isEqualTo: postDoc['uid'])
     .get()
@@ -120,7 +122,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future addPreservationsToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
+  Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot postDoc) async {
     try {
       // User ver
       final List preservations = postDoc['preservations'];
@@ -140,7 +142,7 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future addPreservationsToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
+  Future addBookmarksToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot postDoc) async {
     try{
       final List preservations = currentUserDoc['preservations'];
       final Map<String, dynamic> map = {
