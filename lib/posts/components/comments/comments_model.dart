@@ -50,6 +50,7 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future reply(String passiveUid,String commentId) async {
+    // reply notification
     await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUid, commentId);
   }
 

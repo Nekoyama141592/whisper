@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
-import 'package:whisper/posts/components/comments/comments.dart';
 import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
@@ -12,6 +11,7 @@ import 'package:whisper/posts/components/audio_window/components/current_song_ti
 import 'package:whisper/posts/components/audio_window/components/current_song_user_name.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/timestamp_display.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_screen.dart';
+
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -122,7 +122,7 @@ class PostShowPage extends ConsumerWidget {
                 ),
               ),
             ),
-            // comments
+            
           ],
         )
       ),

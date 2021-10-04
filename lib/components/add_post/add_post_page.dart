@@ -29,7 +29,7 @@ class AddPostPage extends StatelessWidget {
             Align(
               alignment: Alignment.topLeft,
               child: IconButton(
-                color: Colors.black,
+                color: Theme.of(context).focusColor,
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.pop(context);

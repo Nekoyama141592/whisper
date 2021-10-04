@@ -20,6 +20,7 @@ import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
+import 'package:whisper/posts/components/comments/comments_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -88,3 +89,9 @@ void toAddPostPage (context,AddPostModel addPostModel,DocumentSnapshot currentUs
 void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
+
+void toCommentsPage(context, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(currentSongDocNotifier: currentSongDocNotifier) ));
+}
+
+
