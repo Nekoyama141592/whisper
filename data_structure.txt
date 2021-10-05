@@ -32,7 +32,8 @@ db{
     replys{
         commentId: String,
         createdAt: TimeStamp,
-        reply: String
+        reply: String,
+        uid: String,
         userName: String,
         userImageURL: String,
     }

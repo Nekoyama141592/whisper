@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
-
+// components
+import 'package:whisper/details/user_image.dart';
 class CommentCard extends StatelessWidget {
 
   const CommentCard({
@@ -18,11 +19,13 @@ class CommentCard extends StatelessWidget {
         children: [
           ListTile(
             // imageURL
-            leading: CircleAvatar(
-              radius: 24,
+            leading: UserImage(
+              userImageURL: comment['userImageURL'], 
+              length: 60.0, 
+              padding: 0.0
             ),
-            title: Text(comment['commentId']),
-            subtitle: Text('sample'),
+            title: Text(comment['userName']),
+            subtitle: Text(comment['comment']),
           )
         ],
       ),
