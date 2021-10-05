@@ -12,10 +12,12 @@ class CommentButton extends ConsumerWidget {
 
   CommentButton({
     Key? key,
-    required this.currentSongDocNotifier
+    required this.currentSongDocNotifier,
+    required this.currentUserDoc
   }) : super(key: key);
 
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final DocumentSnapshot currentUserDoc;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final commentsModel = watch(commentsProvider);
@@ -23,7 +25,7 @@ class CommentButton extends ConsumerWidget {
 
     return 
     IconButton(
-      onPressed: () { routes.toCommentsPage(context, currentSongDocNotifier); }, 
+      onPressed: () { routes.toCommentsPage(context, currentSongDocNotifier,currentUserDoc); }, 
       icon: Icon(Icons.comment)
     );
   //   IconButton(

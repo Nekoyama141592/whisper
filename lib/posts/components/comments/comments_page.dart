@@ -1,8 +1,8 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
@@ -15,18 +15,18 @@ class CommentsPage extends ConsumerWidget {
   const CommentsPage({
     Key? key,
     required this.currentSongDocNotifier,
+    required this.currentUserDoc
   }) : super(key: key);
   
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  
+  final DocumentSnapshot currentUserDoc;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final commentsModel = watch(commentsProvider);
     final size = MediaQuery.of(context).size;
     final currentSongDoc = currentSongDocNotifier.value;
     final commentEditingController = TextEditingController();
-    List<dynamic> comments = currentSongDocNotifier.value!['comments'];
-
+    commentsModel.comments = currentSongDocNotifier.value!['comments'];
     return Scaffold(
       floatingActionButton: commentsModel.isMaking ?
       SizedBox.shrink()
@@ -34,7 +34,7 @@ class CommentsPage extends ConsumerWidget {
         child: Icon(Icons.new_label),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  { 
-          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc!,commentEditingController); 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc!,commentEditingController,currentUserDoc); 
         },
       ),
       body: 
@@ -58,17 +58,16 @@ class CommentsPage extends ConsumerWidget {
           ),
           commentsModel.isLoading ?
           Loading()
-          : comments.isNotEmpty ?
+          : commentsModel.comments.isNotEmpty ?
           ValueListenableBuilder<DocumentSnapshot?>(
             valueListenable: currentSongDocNotifier, 
             builder: (_, currentSongDoc, __) {
-              final List<dynamic> comments = currentSongDocNotifier.value!['comments'];
               return
               Expanded(
                 child: ListView.builder(
-                  itemCount: comments.length,
+                  itemCount: commentsModel.comments.length,
                   itemBuilder: (BuildContext context, int i) =>
-                  CommentCard(comment: comments[i])
+                  CommentCard(comment: commentsModel.comments[i])
                 ),
               );
     

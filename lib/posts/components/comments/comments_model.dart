@@ -12,12 +12,12 @@ final commentsProvider = ChangeNotifierProvider(
 class CommentsModel extends ChangeNotifier {
   
   bool isLoading = false;
+  List<dynamic> comments = [];
   User? currentUser;
   // comment
   String comment = "";
   String reply = "";
   bool isMaking = false;
-
   Map<String,dynamic> postComment = {};
   
   void startLoading() {
@@ -44,7 +44,7 @@ class CommentsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController) {
+  void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
     startMaking();
     showDialog(
       context: context, 
@@ -84,7 +84,7 @@ class CommentsModel extends ChangeNotifier {
             ElevatedButton(
               child: Text('送信'),
               onPressed: ()async {
-                await makeComment(currentSongDoc);
+                await makeComment(currentSongDoc,currentUserDoc);
                 endMaking();
               }, 
             )
@@ -93,10 +93,10 @@ class CommentsModel extends ChangeNotifier {
       }
     );
   }
-  Future makeComment(DocumentSnapshot currentSongDoc) async {
+  Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
     startLoading();
     setCurrentUser();
-    await updateCommentsOfPostWhenMakeComment(currentSongDoc);
+    await updateCommentsOfPostWhenMakeComment(currentSongDoc,currentUserDoc);
     endLoading();
   }
 
@@ -116,22 +116,24 @@ class CommentsModel extends ChangeNotifier {
     await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUserDocId, commentId);
   }
 
-  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc) async {
+  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc, DocumentSnapshot currentUserDoc) async {
     try{
-      final List<dynamic> postComments = currentSongDoc['comments'];
       final commentMap = {
         'comment': comment,
-        'uid': currentUser!.uid,
         'createdAt': Timestamp.now(),
+        'commentId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
         'likes': [],
-        'commentId': currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
+        'uid': currentUser!.uid,
+        'userName': currentUserDoc['userName'],
+        'userImageURL': currentUserDoc['imageURL'],
       };
-      postComments.add(commentMap);
+      comments.add(commentMap);
+      notifyListeners();
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(currentSongDoc.id)
       .update({
-        'comments': postComments,
+        'comments': comments,
       });
     } catch(e) {
       print(e.toString());

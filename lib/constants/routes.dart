@@ -90,8 +90,8 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
-void toCommentsPage(context, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(currentSongDocNotifier: currentSongDocNotifier) ));
+void toCommentsPage(context, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,DocumentSnapshot currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,) ));
 }
 
 
