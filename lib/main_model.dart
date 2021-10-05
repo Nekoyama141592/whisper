@@ -98,7 +98,6 @@ class MainModel extends ChangeNotifier {
   }
   Future logout(context) async {
     await FirebaseAuth.instance.signOut();
-    print('Logout!!!!!!!!!!!!!!!!!!!!!!!!');
     routes.toMyApp(context);
   }
 }

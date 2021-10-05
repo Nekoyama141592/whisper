@@ -12,9 +12,11 @@ final commentsProvider = ChangeNotifierProvider(
 class CommentsModel extends ChangeNotifier {
   
   bool isLoading = false;
+  User? currentUser;
+  // comment
   String comment = "";
   String reply = "";
-  User? currentUser;
+  bool isMaking = false;
 
   Map<String,dynamic> postComment = {};
   
@@ -25,12 +27,72 @@ class CommentsModel extends ChangeNotifier {
 
   void endLoading() {
     isLoading = false;
+    notifyListeners();
+  }
+
+  void startMaking() {
+    isMaking = true;
+    notifyListeners();
+  }
+
+  void endMaking() {
+    isMaking = false;
+    notifyListeners();
   }
 
   void setCurrentUser(){
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
+  void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController) {
+    startMaking();
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text('comment'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Container(
+                  child: TextField(
+                    controller: commentEditingController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (text) {
+                      comment = text;
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                'cancel',
+                style: TextStyle(color: Theme.of(context).focusColor),
+              ),
+              onPressed: () { 
+                Navigator.pop(context);
+                endMaking();
+              },
+            ),
+            ElevatedButton(
+              child: Text('送信'),
+              onPressed: ()async {
+                await makeComment(currentSongDoc);
+                endMaking();
+              }, 
+            )
+          ],
+        );
+      }
+    );
+  }
   Future makeComment(DocumentSnapshot currentSongDoc) async {
     startLoading();
     setCurrentUser();
@@ -56,7 +118,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc) async {
     try{
-      final postComments = currentSongDoc['comments'];
+      final List<dynamic> postComments = currentSongDoc['comments'];
       final commentMap = {
         'comment': comment,
         'uid': currentUser!.uid,
@@ -74,7 +136,6 @@ class CommentsModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
-    endLoading();
   }
 
   
@@ -165,7 +226,7 @@ class CommentsModel extends ChangeNotifier {
         'userImageURL': currentUserDoc['imageURL'],
       });
     } catch(e) {
-
+      print(e.toString());
     }
   }
 

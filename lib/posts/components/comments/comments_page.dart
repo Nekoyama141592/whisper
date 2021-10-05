@@ -23,8 +23,23 @@ class CommentsPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final commentsModel = watch(commentsProvider);
     final size = MediaQuery.of(context).size;
+    final currentSongDoc = currentSongDocNotifier.value;
+    final commentEditingController = TextEditingController();
+    List<dynamic> comments = currentSongDocNotifier.value!['comments'];
+
     return Scaffold(
-      body: Column(
+      floatingActionButton: commentsModel.isMaking ?
+      SizedBox.shrink()
+      : FloatingActionButton(
+        child: Icon(Icons.new_label),
+        backgroundColor: Theme.of(context).highlightColor,
+        onPressed: ()  { 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc!,commentEditingController); 
+        },
+      ),
+      body: 
+
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
@@ -43,7 +58,7 @@ class CommentsPage extends ConsumerWidget {
           ),
           commentsModel.isLoading ?
           Loading()
-          : currentSongDocNotifier.value!['comments'].isNotEmpty ?
+          : comments.isNotEmpty ?
           ValueListenableBuilder<DocumentSnapshot?>(
             valueListenable: currentSongDocNotifier, 
             builder: (_, currentSongDoc, __) {
