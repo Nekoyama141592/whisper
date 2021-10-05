@@ -1,4 +1,5 @@
 // material
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,67 +15,68 @@ class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
     Key? key,
-    required this.currentSongDocNotifier,
+    required this.currentSongDoc,
     required this.currentUserDoc
   }) : super(key: key);
   
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final commentsModel = watch(commentsProvider);
     final size = MediaQuery.of(context).size;
-    final currentSongDoc = currentSongDocNotifier.value;
     final commentEditingController = TextEditingController();
-    commentsModel.comments = currentSongDocNotifier.value!['comments'];
+
     return Scaffold(
-      floatingActionButton: commentsModel.isMaking ?
-      SizedBox.shrink()
-      : FloatingActionButton(
-        child: Icon(Icons.new_label),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.new_label,
+          color: Colors.white,
+        ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  { 
-          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc!,commentEditingController,currentUserDoc); 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc,commentEditingController,currentUserDoc); 
         },
       ),
-      body: 
 
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  color: Theme.of(context).focusColor,
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }, 
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    color: Theme.of(context).focusColor,
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }, 
+                  ),
                 ),
-              ),
-            ],
-          ),
-          commentsModel.isLoading ?
-          Loading()
-          : commentsModel.comments.isNotEmpty ?
-          ValueListenableBuilder<DocumentSnapshot?>(
-            valueListenable: currentSongDocNotifier, 
-            builder: (_, currentSongDoc, __) {
-              return
-              Expanded(
-                child: ListView.builder(
-                  itemCount: commentsModel.comments.length,
-                  itemBuilder: (BuildContext context, int i) =>
-                  CommentCard(comment: commentsModel.comments[i])
-                ),
-              );
-    
-            }
-          )
-          : Nothing(),
-        ],
+              ],
+            ),
+            commentsModel.isLoading ?
+            Loading()
+            : currentSongDoc['comments'].isNotEmpty ?
+            Expanded(
+              child: ListView.builder(
+                itemCount: commentsModel.didCommented ? commentsModel.comments.length :  currentSongDoc['comments'].length,
+                itemBuilder: (BuildContext context, int i) =>
+                InkWell(
+                  child: CommentCard(
+                    comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i]
+                  ),
+                  onTap: () {
+                    print(commentsModel.comments.length);
+                  },
+                )
+            ),
+             )
+            : Nothing(),
+          ],
+        ),
       ),
     );
   }
