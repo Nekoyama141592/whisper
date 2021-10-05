@@ -68,7 +68,9 @@ class CommentsPage extends ConsumerWidget {
                 itemBuilder: (BuildContext context, int i) =>
                 InkWell(
                   child: CommentCard(
-                    comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i]
+                    comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i],
+                    currentSongDoc: currentSongDoc,
+                    likedCommentIds: likedCommentIds,
                   ),
                   onTap: () {
                     print(commentsModel.comments.length);

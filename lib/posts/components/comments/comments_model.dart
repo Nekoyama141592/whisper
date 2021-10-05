@@ -28,6 +28,10 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reload() {
+    notifyListeners();
+  }
+
   void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
     showDialog(
       context: context, 
