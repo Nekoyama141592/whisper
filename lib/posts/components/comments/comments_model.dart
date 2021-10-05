@@ -108,7 +108,9 @@ class CommentsModel extends ChangeNotifier {
         'userName': currentUserDoc['userName'],
         'userImageURL': currentUserDoc['imageURL'],
       };
-      comments = currentSongDoc['comments'];
+      if (!didCommented) {
+        comments = currentSongDoc['comments'];
+      }
       comments.add(commentMap);
       print(comments.length.toString());
       await FirebaseFirestore.instance
