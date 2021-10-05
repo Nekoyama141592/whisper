@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
@@ -29,25 +28,37 @@ class CommentCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // ListTile(
-          //   leading: UserImage(
-          //     userImageURL: comment['userImageURL'], 
-          //     length: 60.0, 
-          //     padding: 0.0
-          //   ),
-          //   title: Text(comment['userName']),
-          //   subtitle: Text(comment['comment']),
-          //   trailing: CommentLikeButton(likedCommentIds: likedCommentIds, commentId: commentId),
-          // )
           Container(
-            height: 60,
             width: size.width * 0.98,
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(4.0))
             ),
             child: Row(
-              
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0
+                  ),
+                  child: UserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0),
+                ),
+                SizedBox(
+                  width: size.width * 0.6,
+                  child: Column(
+                    children: [
+                      Text(comment['userName']),
+                      SizedBox(height: 10.0,),
+                      Text(comment['comment'])
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    CommentReplyButton(currentSongDoc: currentSongDoc, comment: comment),
+                    CommentLikeButton(likedCommentIds: likedCommentIds, commentId: commentId),
+                  ],
+                )
+              ]
             ),
           ),
         ],
