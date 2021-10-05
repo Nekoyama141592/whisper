@@ -21,7 +21,8 @@ class UserShowPage extends ConsumerWidget {
     required this.passiveUserDoc,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
-    required this.followingUids
+    required this.followingUids,
+    required this.likedCommentIds
   });
 
   final DocumentSnapshot currentUserDoc;
@@ -29,7 +30,8 @@ class UserShowPage extends ConsumerWidget {
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List followingUids;
-  
+  final List likedCommentIds;
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final userShowModel = watch(userShowProvider);
@@ -43,7 +45,7 @@ class UserShowPage extends ConsumerWidget {
       : GradientScreen(
         top: SizedBox.shrink(), 
         header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, currentUserDoc: currentUserDoc, followingUids: followingUids, followerUids: followerUids, followModel: followModel), 
-        content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds), 
+        content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds), 
         circular: 35.0
       )
     );

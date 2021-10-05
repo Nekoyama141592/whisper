@@ -18,12 +18,14 @@ class PostScreen extends StatelessWidget {
     required this.currentUserDoc,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
+    required this.likedCommentIds
   }) : super(key: key);
 
   final BookMarksModel bookmarksModel;
   final DocumentSnapshot currentUserDoc;
   final List bookmarkedPostIds;
   final List likedPostIds;
+  final List likedCommentIds;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class PostScreen extends StatelessWidget {
               context, 
               likedPostIds, 
               bookmarkedPostIds, 
+              likedCommentIds,
               currentUserDoc, 
               bookmarksModel.currentSongDocNotifier, 
               bookmarksModel.progressNotifier, 

@@ -19,12 +19,14 @@ class UserShowPostScreen extends StatelessWidget {
     required this.currentUserDoc,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
+    required this.likedCommentIds
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final UserShowModel userShowModel;
   final List bookmarkedPostIds;
   final List likedPostIds;
+  final List likedCommentIds;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,8 @@ class UserShowPostScreen extends StatelessWidget {
           routes.toPostShowPage(
           context, 
           likedPostIds, 
-          bookmarkedPostIds, 
+          bookmarkedPostIds,
+          likedCommentIds,
           currentUserDoc, 
           userShowModel.currentSongDocNotifier, 
           userShowModel.progressNotifier, 

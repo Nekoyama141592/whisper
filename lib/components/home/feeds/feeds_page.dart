@@ -18,12 +18,13 @@ class FeedsPage extends ConsumerWidget {
   const FeedsPage({
     Key? key,
     required this.bookmarkedPostIds,
-    required this.likedPostIds
+    required this.likedPostIds,
+    required this.likedCommentIds
   }) : super(key: key);
 
   final List bookmarkedPostIds;
   final List likedPostIds;
-
+  final List likedCommentIds;
   @override
   
   Widget build(BuildContext context, ScopedReader watch) {
@@ -45,6 +46,7 @@ class FeedsPage extends ConsumerWidget {
             context, 
             likedPostIds, 
             bookmarkedPostIds, 
+            likedCommentIds,
             feedsModel.currentUserDoc, 
             feedsModel.currentSongDocNotifier, 
             feedsModel.progressNotifier, 

@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/routes.dart' as routes;
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -19,6 +17,7 @@ class MainModel extends ChangeNotifier {
   List<String> likedPostIds = [];
   List<String> bookmarkedPostIds = [];
   List<dynamic> followingUids = [];
+  List<dynamic> likedCommentIds = [];
 
   MainModel() {
     init();
@@ -66,7 +65,6 @@ class MainModel extends ChangeNotifier {
   void getLikedPostIds() {
     try{
       List likes = currentUserDoc['likes'];
-      print(likes.length.toString() + "  likesLength");
       likes.forEach((like) {
         likedPostIds.add(like['likedPostId']);
       });
@@ -87,17 +85,23 @@ class MainModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
-    
   }
 
   void getFollowingUids() {
     followingUids = currentUserDoc['followingUids'];
   }
 
+  void getLikedCommentIds() {
+    List likedComments = currentUserDoc['likedCommentIds'];
+    likedComments.forEach((likedComment) {
+      likedCommentIds.add(likedComment['commentId']);
+    });
+    notifyListeners();
+  }
+
+
   void getNewNotifications () {
   }
-  Future logout(context) async {
-    await FirebaseAuth.instance.signOut();
-    routes.toMyApp(context);
-  }
+
+  
 }

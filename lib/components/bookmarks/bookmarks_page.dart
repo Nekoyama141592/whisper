@@ -14,13 +14,14 @@ class BookmarksPage extends ConsumerWidget {
     Key? key,
     required this.currentUserDoc,
     required this.bookmarkedPostIds,
-    required this.likedPostIds
+    required this.likedPostIds,
+    required this.likedCommentIds
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
   final List bookmarkedPostIds;
   final List likedPostIds;
-  
+  final List likedCommentIds;
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final bookmarksModel = watch(bookmarksProvider);
@@ -29,7 +30,8 @@ class BookmarksPage extends ConsumerWidget {
         bookmarksModel: bookmarksModel,
         currentUserDoc: currentUserDoc, 
         bookmarkedPostIds: bookmarkedPostIds, 
-        likedPostIds: likedPostIds
+        likedPostIds: likedPostIds,
+        likedCommentIds: likedCommentIds,
       )
     );
   }

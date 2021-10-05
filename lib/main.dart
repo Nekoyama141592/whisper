@@ -63,6 +63,7 @@ class MyHomePage extends ConsumerWidget {
     final likedPostIds = mainModel.likedPostIds;
     final bookmarkedPostIds = mainModel.bookmarkedPostIds;
     final followingUids = mainModel.followingUids;
+    final likedCommentIds = mainModel.likedCommentIds;
 
     return Scaffold(
       body: mainModel.isLoading ?
@@ -73,7 +74,7 @@ class MyHomePage extends ConsumerWidget {
           whisperBottomNavigationbarModel.onPageChanged(index);
         },
         children: [
-          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds),
+          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,),
           SearchPage(
             mainModel: mainModel,
             themeModel: themeModel,
@@ -83,8 +84,9 @@ class MyHomePage extends ConsumerWidget {
             currentUserDoc: mainModel.currentUserDoc, 
             bookmarkedPostIds: bookmarkedPostIds, 
             likedPostIds: likedPostIds,
+            likedCommentIds: likedCommentIds,
           ),
-          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids)
+          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,)
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),

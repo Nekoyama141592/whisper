@@ -15,10 +15,12 @@ class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
     Key? key,
+    required this.likedCommentIds,
     required this.currentSongDoc,
-    required this.currentUserDoc
+    required this.currentUserDoc,
   }) : super(key: key);
   
+  final List<dynamic> likedCommentIds;
   final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
   @override  
