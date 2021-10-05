@@ -37,8 +37,9 @@ class NotificationIcon extends StatelessWidget {
             likedPostIds
           );
         },
-        child: mainModel.newLikeNotifications.length > 0 || 
-        mainModel.newFollowNotifications.length > 0 ?
+        // child: mainModel.newLikeNotifications.length > 0 || 
+        // mainModel.newFollowNotifications.length > 0 ?
+        child: 1 == 1 ?
         Stack(
           children: [
             Icon(Icons.notifications),

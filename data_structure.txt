@@ -9,8 +9,10 @@ db{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
-            likesUids
+            likesUids: [ String ],
             uid: String,
+            userName: String,
+            userImageURL: String,
         }],
         createdAt: TimeStamp,
         likes: [{
@@ -26,6 +28,13 @@ db{
         updatedAt: TimeStamp,
         userImageURL: String,
         userName: String
+    }
+    replys{
+        commentId: String,
+        createdAt: TimeStamp,
+        reply: String
+        userName: String,
+        userImageURL: String,
     }
     users{
         bookmarks: [{

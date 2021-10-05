@@ -13,6 +13,7 @@ class CommentsModel extends ChangeNotifier {
   
   bool isLoading = false;
   String comment = "";
+  String reply = "";
   User? currentUser;
 
   Map<String,dynamic> postComment = {};
@@ -47,9 +48,10 @@ class CommentsModel extends ChangeNotifier {
     endLoading();
   }
 
-  Future reply(String passiveUid,String commentId) async {
+  Future makeReply(String passiveUserDocId,String commentId,DocumentSnapshot currentUserDoc) async {
+    await addReplyToFirestore(commentId, currentUserDoc);
     // reply notification
-    await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUid, commentId);
+    await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUserDocId, commentId);
   }
 
   Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc) async {
@@ -79,7 +81,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future updateCommentsOfPostWhenSomeoneLiked(DocumentSnapshot currentSongDoc,String commentId) async {
 
-    final postComments = currentSongDoc['comments'];
+    final List<dynamic> postComments = currentSongDoc['comments'];
     //Likeが押された時のPost側の処理
     try{
       postComments.forEach((postComment) {
@@ -150,4 +152,21 @@ class CommentsModel extends ChangeNotifier {
       'replyNotifications': replyNotifications,
     });
   }
+
+  Future addReplyToFirestore(String commentId, DocumentSnapshot currentUserDoc) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('replys')
+      .add({
+        'commentId': commentId,
+        'createdAt': Timestamp.now(),
+        'reply': reply,
+        'userName': currentUserDoc['userName'],
+        'userImageURL': currentUserDoc['imageURL'],
+      });
+    } catch(e) {
+
+    }
+  }
+
 }

@@ -18,8 +18,6 @@ class MainModel extends ChangeNotifier {
   bool isLoading = false;
   List<String> likedPostIds = [];
   List<String> bookmarkedPostIds = [];
-  List<dynamic> newLikeNotifications = [];
-  List<dynamic> newFollowNotifications = [];
   List<dynamic> followingUids = [];
 
   MainModel() {

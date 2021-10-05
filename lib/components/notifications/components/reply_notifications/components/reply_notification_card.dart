@@ -1,8 +1,13 @@
+// material
 import 'package:flutter/material.dart';
 
-class LikeNotificationCard extends StatelessWidget {
+class ReaplyNotificationCard extends StatelessWidget {
 
-  LikeNotificationCard(this.notification);
+  const ReaplyNotificationCard({
+    Key? key,
+    required this.notification
+  }) : super(key: key);
+  
   final Map<String,dynamic> notification;
 
   @override 

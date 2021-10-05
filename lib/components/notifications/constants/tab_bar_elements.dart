@@ -4,6 +4,6 @@ class TabBarElements {
 }
 
 final List<TabBarElements>  tabBarElements= [
-  TabBarElements('likes'),
-  TabBarElements('followed')
+  TabBarElements('reply'),
+  TabBarElements('official')
 ];
