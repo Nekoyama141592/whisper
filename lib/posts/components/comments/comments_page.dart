@@ -7,9 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
-// model
+// models
 import 'package:whisper/posts/components/comments/comments_model.dart';
-
+import 'package:whisper/posts/components/replys/replys_model.dart';
 class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
@@ -25,7 +25,7 @@ class CommentsPage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final commentsModel = watch(commentsProvider);
-    final size = MediaQuery.of(context).size;
+    final replysModel = watch(replysProvider);
     final commentEditingController = TextEditingController();
 
     return Scaffold(
@@ -66,6 +66,7 @@ class CommentsPage extends ConsumerWidget {
                 InkWell(
                   child: CommentCard(
                     commentsModel: commentsModel,
+                    replysModel: replysModel,
                     comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i],
                     currentUserDoc: currentUserDoc,
                     currentSongDoc: currentSongDoc,

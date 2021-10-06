@@ -63,7 +63,11 @@ class CommentsModel extends ChangeNotifier {
               widthRate: 0.95, 
               verticalPadding: 10.0, 
               horizontalPadding: 10.0, 
-              press: () async { makeComment(currentSongDoc, currentUserDoc); }, 
+              press: () async { 
+                makeComment(currentSongDoc, currentUserDoc); 
+                comment = '';
+                Navigator.pop(context);
+              }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
             )

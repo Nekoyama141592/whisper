@@ -5,16 +5,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
-import 'package:whisper/posts/components/comments/components/comment_reply_button.dart';
-// model
+import 'package:whisper/posts/components/replys/reply_button.dart';
+// models
 import 'package:whisper/posts/components/comments/comments_model.dart';
-
+import 'package:whisper/posts/components/replys/replys_model.dart';
 class CommentCard extends StatelessWidget {
 
   const CommentCard({
     Key? key,
     required this.comment,
     required this.commentsModel,
+    required this.replysModel,
     required this.currentUserDoc,
     required this.currentSongDoc,
     required this.likedCommentIds
@@ -22,6 +23,7 @@ class CommentCard extends StatelessWidget {
   
   final Map<String,dynamic> comment;
   final CommentsModel commentsModel;
+  final ReplysModel replysModel;
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot currentSongDoc;
   final List<dynamic> likedCommentIds;
@@ -30,6 +32,9 @@ class CommentCard extends StatelessWidget {
   Widget build(BuildContext context){
     final commentId = comment['commentId'];
     final size = MediaQuery.of(context).size;
+    final replyEditingController = TextEditingController();
+    final thisComment = comment;
+    
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -60,7 +65,7 @@ class CommentCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    CommentReplyButton(currentSongDoc: currentSongDoc, comment: comment),
+                    ReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, replyEditingController: replyEditingController, currentUserDoc: currentUserDoc, thisComment: thisComment),
                     CommentLikeButton(commentsModel: commentsModel, currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: likedCommentIds, commentId: commentId)
                   ],
                 )

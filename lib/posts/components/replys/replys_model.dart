@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 
-final replyProvider = ChangeNotifierProvider(
+final replysProvider = ChangeNotifierProvider(
   (ref) => ReplysModel()
 );
 
@@ -55,7 +55,11 @@ class ReplysModel extends ChangeNotifier {
               widthRate: 0.95, 
               verticalPadding: 10.0, 
               horizontalPadding: 10.0, 
-              press: () async { makeReply(currentSongDoc, currentUserDoc, thisComment); }, 
+              press: () async { 
+                await makeReply(currentSongDoc, currentUserDoc, thisComment);
+                reply = "";
+                Navigator.pop(context);
+              }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
             )
