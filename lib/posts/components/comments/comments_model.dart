@@ -10,23 +10,12 @@ final commentsProvider = ChangeNotifierProvider(
 
 class CommentsModel extends ChangeNotifier {
   
-  bool isLoading = false;
+
   bool didCommented = false;
   List<dynamic> comments = [];
   // comment
   String comment = "";
-  String reply = "";
   Map<String,dynamic> postComment = {};
-  
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
-  }
 
   void reload() {
     notifyListeners();
@@ -80,28 +69,19 @@ class CommentsModel extends ChangeNotifier {
     );
   }
   Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
-    startLoading();
     await updateCommentsOfPostWhenMakeComment(currentSongDoc,currentUserDoc);
-    endLoading();
-    await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc);
+    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc['userDocId']);
+    await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
   }
 
   Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId) async {
-    // Someone left a comment on your post.
     await updateCommentsOfPostWhenSomeoneLiked(currentSongDoc, commentId,currentUserDoc);
-    // I liked your post.
     await updateLikedCommentsOfCurrentUser(commentId,currentUserDoc);
   }
 
-  Future makeReply(String passiveUserDocId,String commentId,DocumentSnapshot currentUserDoc) async {
-    await addReplyToFirestore(commentId, currentUserDoc);
-    // reply notification
-    await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUserDocId, commentId,currentUserDoc);
-  }
-
-  Future updateCommentNotificationsOfPassiveUser(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
+  Future updateCommentNotificationsOfPassiveUser(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
-      List<dynamic> commentNotifications = currentSongDoc['commentNotifications'];
+      List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': comment,
         'createdAt': Timestamp.now(),
@@ -115,7 +95,7 @@ class CommentsModel extends ChangeNotifier {
       commentNotifications.add(newCommentNotificationMap);
       await FirebaseFirestore.instance
       .collection('users')
-      .doc(currentSongDoc['userDocId'])
+      .doc(passiveUserDoc.id)
       .update({
         'commentNotifications': commentNotifications,
       });
@@ -196,51 +176,13 @@ class CommentsModel extends ChangeNotifier {
   }
 
 
-  Future setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(String passiveUserDocId,String commentId,DocumentSnapshot currentUserDoc) async {
+  Future setPassiveUserDoc(String passiveUserDocId) async {
     DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
     .doc(passiveUserDocId)
     .get();
-    await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc,currentUserDoc);
+    return passiveUserDoc;
   }
 
-  Future updateReplyNotificationsOfPassiveUser(String commentId,DocumentSnapshot passiveUserDoc,DocumentSnapshot currentUserDoc) async {
-
-    final String notificationId = currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
-
-    Map<String,dynamic> map = {
-      'commentId': commentId,
-      'comment': comment,
-      'createdAt': Timestamp.now(),
-      'notificationId': notificationId,
-      'uid': currentUserDoc['uid'],
-    };
-
-    List<dynamic> replyNotifications = passiveUserDoc['replyNotifications'];
-    replyNotifications.add(map);
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(passiveUserDoc.id)
-    .update({
-      'replyNotifications': replyNotifications,
-    });
-  }
-
-  Future addReplyToFirestore(String commentId, DocumentSnapshot currentUserDoc) async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('replys')
-      .add({
-        'commentId': commentId,
-        'createdAt': Timestamp.now(),
-        'reply': reply,
-        'uid': currentUserDoc['uid'],
-        'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['imageURL'],
-      });
-    } catch(e) {
-      print(e.toString());
-    }
-  }
-
+  
 }

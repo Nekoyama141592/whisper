@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
-import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // model
@@ -59,9 +58,7 @@ class CommentsPage extends ConsumerWidget {
                 ),
               ],
             ),
-            commentsModel.isLoading ?
-            Loading()
-            : currentSongDoc['comments'].isNotEmpty ?
+            currentSongDoc['comments'].isNotEmpty ?
             Expanded(
               child: ListView.builder(
                 itemCount: commentsModel.didCommented ? commentsModel.comments.length :  currentSongDoc['comments'].length,
