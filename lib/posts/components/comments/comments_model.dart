@@ -136,10 +136,8 @@ class CommentsModel extends ChangeNotifier {
       postComments.forEach((postComment) {
         if (postComment['commentId'] == commentId){
           // likesUids
-          List<dynamic> likesUids = postComment['likes'];
+          List<dynamic> likesUids = postComment['likesUids'];
           likesUids.add(currentUserDoc['uid']);
-          postComment['likesUids'] = likesUids;
-          postComments.add(postComment);
           FirebaseFirestore.instance
           .collection('posts')
           .doc(currentSongDoc.id)

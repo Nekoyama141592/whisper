@@ -25,11 +25,14 @@ class CommentLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return likedCommentIds.contains(commentId) ?
     IconButton(
-      onPressed: () {}, 
+      onPressed: () {
+      }, 
       icon: Icon(Icons.favorite,color: Colors.red,)
     )
     : IconButton(
       onPressed: () async {
+        likedCommentIds.add(commentId);
+        commentsModel.reload();
         await commentsModel.like(currentUserDoc, currentSongDoc, commentId);
       }, 
       icon: Icon(Icons.favorite)
