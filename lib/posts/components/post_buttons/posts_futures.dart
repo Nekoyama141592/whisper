@@ -17,12 +17,6 @@ class PostsFeaturesModel extends ChangeNotifier{
     await addLikesToPost(currentUserDoc, newCurrentSongDoc);
     await addLikesToCurrentUser(currentUserDoc, currentSongDoc,likes);
   }
-
-  // Future unlike(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
-  //   await removeLikeOfPost(currentUserDoc, currentSongDoc);
-  //   await removeLikeOfUser(currentUserDoc, currentSongDoc);
-  // }
-
  
   Future addLikesToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
     try {
@@ -45,12 +39,12 @@ class PostsFeaturesModel extends ChangeNotifier{
   
   Future addLikesToCurrentUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
     try{
-
       final Map<String, dynamic> map = {
         'likedPostId': currentSongDoc['postId'],
         'createdAt': Timestamp.now(),
       };
       likes.add(map);
+      notifyListeners();
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -67,12 +61,6 @@ class PostsFeaturesModel extends ChangeNotifier{
     await addBookmarksToPost(currentUserDoc, newCurrentSongDoc);
     await addBookmarksToUser(currentUserDoc, currentSongDoc,bookmarks);
   }
-
-  // Future unbookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
-  //   final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc);
-  //   await removeBookmarksOfPost(currentUserDoc, currentSongDoc);
-  //   await removeBookmarksOfUser(currentUserDoc, currentSongDoc);
-  // }
 
   Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
     try {
@@ -95,7 +83,6 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   Future addBookmarksToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
     try{
-
       final Map<String, dynamic> map = {
         'postId': currentSongDoc['postId'],
         'createdAt': Timestamp.now(),
@@ -111,14 +98,22 @@ class PostsFeaturesModel extends ChangeNotifier{
       print(e.toString());
     }
   }
-  Future removeBookmarksOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+
+   Future unbookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    await removeBookmarksOfPost(currentUserDoc, newCurrentSongDoc);
+    await removeBookmarksOfUser(currentUserDoc, currentSongDoc, bookmarks);
+  }
+
+  Future removeBookmarksOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
     try {
       // User ver
-      final List bookmarks = currentSongDoc['bookmarks'];
+      // final List bookmarks = currentSongDoc['bookmarks'];
+      final List<dynamic> bookmarks = newCurrentSongDoc['bookmarks'];
       bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(currentSongDoc.id)
+      .doc(newCurrentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
       });
@@ -141,13 +136,20 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc) async {
+   Future unlike(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
+    // await removeLikeOfPost(currentUserDoc, currentSongDoc);
+    final newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    await removeLikeOfPost(currentUserDoc, newCurrentSongDoc);
+    await removeLikeOfUser(currentUserDoc, currentSongDoc,likes);
+  }
+
+  Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
     try {
-      final List likes = currentSongDoc['likes'];
+      final List likes = newCurrentSongDoc['likes'];
       likes.removeWhere((like) => like['uid'] == currentUserDoc['uid']);
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(currentSongDoc.id)
+      .doc(newCurrentSongDoc.id)
       .update({
         'likes': likes,
       });

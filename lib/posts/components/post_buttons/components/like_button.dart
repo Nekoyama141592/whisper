@@ -33,7 +33,11 @@ class LikeButton extends ConsumerWidget {
             Icons.favorite,
             color: Colors.red,
           ),
-          onPressed: (){}, 
+          onPressed: () async {
+            likedPostIds.remove(currentSongDoc['postId']);
+            postFuturesModel.reload();
+            await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
+          }, 
         )
         : IconButton(
           icon: Icon(Icons.favorite),
