@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 // components
 import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_card.dart';
 
-class ReplyNotificationList extends StatelessWidget {
+class OfficialNotificationList extends StatelessWidget {
 
-  const ReplyNotificationList({
+  const OfficialNotificationList({
     Key? key,
     required this.notifications,
   }) : super(key: key);

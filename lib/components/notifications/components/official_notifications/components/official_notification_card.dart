@@ -1,9 +1,9 @@
 // material
 import 'package:flutter/material.dart';
 
-class CommentNotificationCard extends StatelessWidget {
+class OfiicialNotificationCard extends StatelessWidget {
 
-  const CommentNotificationCard({
+  const OfiicialNotificationCard({
     Key? key,
     required this.notification
   }) : super(key: key);
