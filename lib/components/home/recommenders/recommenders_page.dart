@@ -19,13 +19,16 @@ class RecommendersPage extends ConsumerWidget {
     required this.currentUserDoc,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
-    required this.likedCommentIds
+    required this.likedCommentIds,
+    required this.likedComments
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List likedCommentIds;
+  final List likedComments;
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final recommendersModel = watch(recommendersProvider);
@@ -45,7 +48,8 @@ class RecommendersPage extends ConsumerWidget {
             likedPostIds, 
             bookmarkedPostIds,
             likedCommentIds,
-            currentUserDoc, 
+            likedComments,
+            currentUserDoc,
             recommendersModel.currentSongDocNotifier, 
             recommendersModel.progressNotifier, 
             recommendersModel.seek, 

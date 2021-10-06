@@ -18,7 +18,7 @@ class MainModel extends ChangeNotifier {
   List<String> bookmarkedPostIds = [];
   List<dynamic> followingUids = [];
   List<dynamic> likedCommentIds = [];
-
+  List<dynamic> likedComments = [];
   MainModel() {
     init();
   }
@@ -29,7 +29,7 @@ class MainModel extends ChangeNotifier {
     getLikedPostIds();
     getBookmarkedPostIds();
     getFollowingUids();
-    getNewNotifications();
+    getLikedCommentIds();
     endLoading();
   }
 
@@ -92,16 +92,11 @@ class MainModel extends ChangeNotifier {
   }
 
   void getLikedCommentIds() {
-    List likedComments = currentUserDoc['likedCommentIds'];
+    likedComments = currentUserDoc['likedCommentIds'];
     likedComments.forEach((likedComment) {
       likedCommentIds.add(likedComment['commentId']);
     });
     notifyListeners();
   }
-
-
-  void getNewNotifications () {
-  }
-
   
 }

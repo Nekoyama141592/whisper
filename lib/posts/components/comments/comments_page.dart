@@ -15,11 +15,13 @@ class CommentsPage extends ConsumerWidget {
   const CommentsPage({
     Key? key,
     required this.likedCommentIds,
+    required this.likedComments,
     required this.currentSongDoc,
     required this.currentUserDoc,
   }) : super(key: key);
   
   final List<dynamic> likedCommentIds;
+  final List<dynamic> likedComments;
   final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
   @override  
@@ -71,6 +73,7 @@ class CommentsPage extends ConsumerWidget {
                     currentUserDoc: currentUserDoc,
                     currentSongDoc: currentSongDoc,
                     likedCommentIds: likedCommentIds,
+                    likedComments: likedComments,
                   ),
                   onTap: () {
                     print(commentsModel.comments.length);

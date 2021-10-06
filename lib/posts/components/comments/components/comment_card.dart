@@ -18,7 +18,8 @@ class CommentCard extends StatelessWidget {
     required this.replysModel,
     required this.currentUserDoc,
     required this.currentSongDoc,
-    required this.likedCommentIds
+    required this.likedCommentIds,
+    required this.likedComments
   }): super(key: key);
   
   final Map<String,dynamic> comment;
@@ -27,7 +28,7 @@ class CommentCard extends StatelessWidget {
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot currentSongDoc;
   final List<dynamic> likedCommentIds;
-
+  final List<dynamic> likedComments;
   @override  
   Widget build(BuildContext context){
     final commentId = comment['commentId'];
@@ -66,7 +67,7 @@ class CommentCard extends StatelessWidget {
                 Row(
                   children: [
                     ReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, replyEditingController: replyEditingController, currentUserDoc: currentUserDoc, thisComment: thisComment),
-                    CommentLikeButton(commentsModel: commentsModel, currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: likedCommentIds, commentId: commentId)
+                    CommentLikeButton(commentsModel: commentsModel, currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: likedCommentIds, commentId: commentId,likedComments: likedComments)
                   ],
                 )
               ]

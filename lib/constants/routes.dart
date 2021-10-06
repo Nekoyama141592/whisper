@@ -59,16 +59,16 @@ void toReauthenticationPage(context,User? currentUser,AccountModel accountModel)
   Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,)));
 }
 
-void toBookmarksPage(context,DocumentSnapshot currentUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> likedCommentIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(currentUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,) ));
+void toBookmarksPage(context,DocumentSnapshot currentUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> likedCommentIds,List<dynamic> likedComments) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(currentUserDoc: currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments) ));
 }
 
-void toPostShowPage(context,List<dynamic> likedPostIds,List<dynamic> bookmarkedPostIds,List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()?  onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(likedPostIds: likedPostIds, bookmarkedPostIds: bookmarkedPostIds, likedCommentIds: likedCommentIds, currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed) ));
+void toPostShowPage(context,List<dynamic> likedPostIds,List<dynamic> bookmarkedPostIds,List<dynamic> likedCommentIds,List<dynamic> likedComments, DocumentSnapshot currentUserDoc, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()?  onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(likedPostIds: likedPostIds, bookmarkedPostIds: bookmarkedPostIds, likedCommentIds: likedCommentIds,likedComments: likedComments, currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed) ));
 }
 
-void toUserShowPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> followingUids, List<dynamic> likedCommentIds) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,) ));
+void toUserShowPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> followingUids, List<dynamic> likedCommentIds,List<dynamic> likedComments) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments) ));
 }
 void toAdminPage(context,DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc: currentUserDoc) ));
@@ -90,8 +90,8 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
-void toCommentsPage(context,List<dynamic> likedCommentIds, ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,DocumentSnapshot currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(likedCommentIds: likedCommentIds,currentSongDoc: currentSongDocNotifier.value!,currentUserDoc: currentUserDoc,) ));
+void toCommentsPage(context,List<dynamic> likedCommentIds, List<dynamic> likedComments,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,DocumentSnapshot currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDoc: currentSongDocNotifier.value!,currentUserDoc: currentUserDoc,) ));
 }
 
 

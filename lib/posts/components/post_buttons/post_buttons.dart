@@ -17,6 +17,7 @@ class PostButtons extends StatelessWidget {
     required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.likedCommentIds,
+    required this.likedComments,
     required this.editPostInfoModel
   });
 
@@ -25,6 +26,7 @@ class PostButtons extends StatelessWidget {
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List likedCommentIds;
+  final List likedComments;
   final EditPostInfoModel editPostInfoModel;
   
   @override  
@@ -34,7 +36,7 @@ class PostButtons extends StatelessWidget {
       children: [
         LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds),
         BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds),
-        CommentButton(likedCommentIds: likedCommentIds,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,),
+        CommentButton(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,),
         EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
       ],
     );

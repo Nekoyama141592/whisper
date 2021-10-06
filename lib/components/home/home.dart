@@ -21,7 +21,8 @@ class Home extends StatelessWidget {
     required this.themeModel,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
-    required this.likedCommentIds
+    required this.likedCommentIds,
+    required this.likedComments
   }) : super(key: key);
   
   final MainModel mainModel;
@@ -29,6 +30,7 @@ class Home extends StatelessWidget {
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List likedCommentIds;
+  final List likedComments;
   @override  
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -60,8 +62,8 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds),
-            RecommendersPage(currentUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds)
+            FeedsPage(bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments),
+            RecommendersPage(currentUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments)
           ],
         ),
         

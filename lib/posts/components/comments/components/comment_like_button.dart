@@ -12,7 +12,8 @@ class CommentLikeButton extends StatelessWidget {
     required this.currentUserDoc,
     required this.currentSongDoc,
     required this.likedCommentIds,
-    required this.commentId
+    required this.commentId,
+    required this.likedComments
   }) : super(key: key);
 
   final CommentsModel commentsModel;
@@ -20,7 +21,7 @@ class CommentLikeButton extends StatelessWidget {
   final DocumentSnapshot currentSongDoc;
   final List<dynamic> likedCommentIds;
   final String commentId;
-
+  final List<dynamic> likedComments;
   @override 
   Widget build(BuildContext context) {
     return likedCommentIds.contains(commentId) ?
@@ -33,7 +34,7 @@ class CommentLikeButton extends StatelessWidget {
       onPressed: () async {
         likedCommentIds.add(commentId);
         commentsModel.reload();
-        await commentsModel.like(currentUserDoc, currentSongDoc, commentId);
+        await commentsModel.like(currentUserDoc, currentSongDoc, commentId,likedComments);
       }, 
       icon: Icon(Icons.favorite)
     );
