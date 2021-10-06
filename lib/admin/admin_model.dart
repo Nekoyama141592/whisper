@@ -9,7 +9,7 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  Future addCommentNotificationsToUser() async {
+  Future adminMove() async {
     try {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       return 
@@ -19,9 +19,7 @@ class AdminModel extends ChangeNotifier {
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(doc.reference, {
-            'bookmarks': [],
-            'createdAt': Timestamp.now(),
-            'commentNotifications': [],
+            'likedReplyMaps': [],
           });
         });
         return batch.commit();
