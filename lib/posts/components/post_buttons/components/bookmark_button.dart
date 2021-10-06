@@ -36,7 +36,7 @@ class BookmarkButton extends ConsumerWidget {
           onPressed: () async {
             bookmarkedPostIds.remove(currentSongDoc['postId']);
             postFuturesModel.reload();
-            await postFuturesModel.unbookmark(currentUserDoc, currentSongDoc);
+            // await postFuturesModel.unbookmark(currentUserDoc, currentSongDoc);
           }, 
         )
         : IconButton(

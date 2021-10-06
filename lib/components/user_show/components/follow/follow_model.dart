@@ -10,8 +10,9 @@ final followProvider = ChangeNotifierProvider(
 class FollowModel extends ChangeNotifier {
 
   Future follow(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
-    await addFollowingUidOfActiveUser(followingUids,currentUserDoc, passiveUserDoc);
-    await addFollowerUidOfPassiveUser(currentUserDoc, passiveUserDoc);
+    await addFollowingUidToActiveUser(followingUids,currentUserDoc, passiveUserDoc);
+    final DocumentSnapshot newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
+    await addFollowerUidToPassiveUser(currentUserDoc, newPassiveUserDoc);
   }
 
   Future unfollow(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
@@ -19,7 +20,7 @@ class FollowModel extends ChangeNotifier {
     await removeFollowerUidOfPassiveUser(currentUserDoc, passiveUserDoc);
   }
   
-  Future addFollowingUidOfActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future addFollowingUidToActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
       await FirebaseFirestore.instance
       .collection('users')
@@ -32,14 +33,14 @@ class FollowModel extends ChangeNotifier {
     } 
   }
 
-  Future addFollowerUidOfPassiveUser(DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future addFollowerUidToPassiveUser(DocumentSnapshot currentUserDoc,DocumentSnapshot newPassiveUserDoc) async {
     try{
-      final List<dynamic> followerUids = passiveUserDoc['followerUids'];
+      final List<dynamic> followerUids = newPassiveUserDoc['followerUids'];
       final String newFollowerUid = currentUserDoc['uid'];
       followerUids.add(newFollowerUid);
       await FirebaseFirestore.instance
       .collection('users')
-      .doc(passiveUserDoc.id)
+      .doc(newPassiveUserDoc.id)
       .update({
         'followerUids': followerUids,
       });
@@ -78,5 +79,13 @@ class FollowModel extends ChangeNotifier {
   }
   void reload() {
     notifyListeners();
+  }
+
+  Future getNewPassiveUserDoc(DocumentSnapshot passiveUserDoc) async {
+    final DocumentSnapshot newPassiveUserDoc = await FirebaseFirestore.instance
+    .collection('users')
+    .doc(passiveUserDoc.id)
+    .get();
+    return newPassiveUserDoc;
   }
 }
