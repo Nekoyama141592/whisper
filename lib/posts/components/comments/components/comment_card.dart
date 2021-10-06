@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
-import 'package:whisper/posts/components/replys/reply_button/reply_button.dart';
+import 'package:whisper/posts/components/replys/reply_button.dart';
 // models
 import 'package:whisper/posts/components/comments/comments_model.dart';
-import 'package:whisper/posts/components/replys/reply_button/replys_model.dart';
+import 'package:whisper/posts/components/replys/replys_model.dart';
 class CommentCard extends StatelessWidget {
 
   const CommentCard({

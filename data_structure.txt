@@ -67,6 +67,10 @@ db{
             commentId: String,
             createdAt: TimeStamp,
         }],
+        likedReplyDocs: [{
+            'createdAt': TimeStamp,
+            'likedReplyDocId': String,
+        }]
         likes: [{
             createdAt: TimeStamp,
             likedPostId: String,

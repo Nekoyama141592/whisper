@@ -13,11 +13,16 @@ final commentsProvider = ChangeNotifierProvider(
 class CommentsModel extends ChangeNotifier {
   
 
-  bool didCommented = false;
-  List<dynamic> comments = [];
   // comment
   String comment = "";
   Map<String,dynamic> postComment = {};
+  // change
+  List<dynamic> comments = [];
+  
+  List<dynamic> commentNotifications = [];
+  bool didLikedComments = false;
+  List<dynamic> postComments = [];
+  List<dynamic> likedComments = [];
 
   void reload() {
     notifyListeners();
@@ -64,7 +69,7 @@ class CommentsModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 10.0, 
               press: () async { 
-                makeComment(currentSongDoc, currentUserDoc); 
+                await makeComment(currentSongDoc, currentUserDoc); 
                 comment = '';
                 Navigator.pop(context);
               }, 
@@ -76,20 +81,44 @@ class CommentsModel extends ChangeNotifier {
       }
     );
   }
+
   Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
-    await updateCommentsOfPostWhenMakeComment(currentSongDoc,currentUserDoc);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc, currentUserDoc);
     final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc['userDocId']);
     await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
   }
 
-  Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId) async {
-    await updateCommentsOfPostWhenSomeoneLiked(currentSongDoc, commentId,currentUserDoc);
-    await updateLikedCommentsOfCurrentUser(commentId,currentUserDoc);
+  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot newCurrentSongDoc, DocumentSnapshot currentUserDoc) async {
+    try{
+      final commentMap = {
+        'comment': comment,
+        'commentId': currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
+        'createdAt': Timestamp.now(),
+        'likesUids': [],
+        'uid': currentUserDoc['uid'],
+        'userName': currentUserDoc['userName'],
+        'userImageURL': currentUserDoc['imageURL'],
+      };
+      comments = newCurrentSongDoc['comments'];
+      
+      comments.add(commentMap);
+      print(comments.length.toString());
+      await FirebaseFirestore.instance
+      .collection('posts')
+      .doc(newCurrentSongDoc.id)
+      .update({
+        'comments': comments,
+      });
+    } catch(e) {
+      print(e.toString());
+    }
   }
 
   Future updateCommentNotificationsOfPassiveUser(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
-      List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
+      commentNotifications = passiveUserDoc['commentNotifications'];
+
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': comment,
         'createdAt': Timestamp.now(),
@@ -112,39 +141,17 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc, DocumentSnapshot currentUserDoc) async {
-    try{
-      final commentMap = {
-        'comment': comment,
-        'commentId': currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
-        'createdAt': Timestamp.now(),
-        'likesUids': [],
-        'uid': currentUserDoc['uid'],
-        'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['imageURL'],
-      };
-      if (!didCommented) {
-        comments = currentSongDoc['comments'];
-      }
-      comments.add(commentMap);
-      print(comments.length.toString());
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .doc(currentSongDoc.id)
-      .update({
-        'comments': comments,
-      });
-      didCommented = true;
-    } catch(e) {
-      print(e.toString());
-    }
+  Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId) async {
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final DocumentSnapshot newCurrentUserDoc = await getNewCurrentUserDoc(currentUserDoc);
+    await updateCommentsOfPostWhenSomeoneLiked(newCurrentSongDoc, commentId, currentUserDoc);
+    await updateLikedCommentsOfCurrentUser(commentId, newCurrentUserDoc);
   }
-
   
 
-  Future updateCommentsOfPostWhenSomeoneLiked(DocumentSnapshot currentSongDoc,String commentId,DocumentSnapshot currentUserDoc) async {
+  Future updateCommentsOfPostWhenSomeoneLiked(DocumentSnapshot newCurrentSongDoc,String commentId,DocumentSnapshot currentUserDoc) async {
 
-    final List<dynamic> postComments = currentSongDoc['comments'];
+    postComments = newCurrentSongDoc['comments'];
     //Likeが押された時のPost側の処理
     try{
       postComments.forEach((postComment) {
@@ -154,7 +161,7 @@ class CommentsModel extends ChangeNotifier {
           likesUids.add(currentUserDoc['uid']);
           FirebaseFirestore.instance
           .collection('posts')
-          .doc(currentSongDoc.id)
+          .doc(newCurrentSongDoc.id)
           .update({
             'comments': postComments,
           });
@@ -165,9 +172,9 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  Future updateLikedCommentsOfCurrentUser(String commentId,DocumentSnapshot currentUserDoc) async {
+  Future updateLikedCommentsOfCurrentUser(String commentId,DocumentSnapshot newCurrentUserDoc) async {
     // User側の処理
-    List<dynamic> likedComments = currentUserDoc['likedComments'];
+    likedComments = newCurrentUserDoc['likedComments'];
     Map<String,dynamic> map = {
       'commentId': commentId,
       'createdAt': Timestamp.now(),
@@ -176,7 +183,7 @@ class CommentsModel extends ChangeNotifier {
     likedComments.add(map);
     await FirebaseFirestore.instance
     .collection('users')
-    .doc(currentUserDoc.id)
+    .doc(newCurrentUserDoc.id)
     .update({
       'likedComments': likedComments,
     });
@@ -192,5 +199,20 @@ class CommentsModel extends ChangeNotifier {
     return passiveUserDoc;
   }
 
-  
+  Future getNewCurrentUserDoc(DocumentSnapshot currentUserDoc) async {
+    DocumentSnapshot newCurrentUserDoc = await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .get();
+    return newCurrentUserDoc;
+  }
+
+  Future getNewCurrentSongDoc(DocumentSnapshot currentSongDoc) async {
+    DocumentSnapshot newCurrentSongDoc = await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentSongDoc.id)
+    .get();
+    return newCurrentSongDoc;
+  }
+
 }

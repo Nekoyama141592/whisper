@@ -126,4 +126,26 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
+  Future updateLikedReplyDocsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot thisReply) async {
+    try {
+      final List<dynamic> likedReplyMaps = currentUserDoc['likedReplyDocs'];
+      final newLikedReplyMap = {
+        'likedReplyDocId': thisReply.id,
+        'createdAt': Timestamp.now(),
+      };
+      likedReplyMaps.add(newLikedReplyMap);
+      await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUserDoc.id)
+      .update({
+        'likedReplyDocs': likedReplyMaps,
+      });
+    } catch(e) {
+      print(e.toString());
+    }
+  }
+
+  Future like() async {
+
+  }
 }
