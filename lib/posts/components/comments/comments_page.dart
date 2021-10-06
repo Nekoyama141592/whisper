@@ -9,7 +9,7 @@ import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/posts/components/comments/comments_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/posts/components/replys/reply_button/replys_model.dart';
 class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({

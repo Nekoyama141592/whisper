@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // model
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/posts/components/replys/reply_button/replys_model.dart';
 
 class ReplyButton extends StatelessWidget {
 

@@ -32,6 +32,7 @@ db{
     replys{
         commentId: String,
         createdAt: TimeStamp,
+        likesUids: []
         reply: String,
         uid: String,
         userName: String,
@@ -70,7 +71,7 @@ db{
             createdAt: TimeStamp,
             likedPostId: String,
         }],
-        muteUids:[
+        mutesUids:[
             String
         ],
         readNotificationIds: [ String ]

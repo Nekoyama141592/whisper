@@ -115,6 +115,7 @@ class ReplysModel extends ChangeNotifier {
       .add({
         'commentId': commentId,
         'createdAt': Timestamp.now(),
+        'likesUids': [],
         'reply': reply,
         'uid': currentUserDoc['uid'],
         'userName': currentUserDoc['userName'],
