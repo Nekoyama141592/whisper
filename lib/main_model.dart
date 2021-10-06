@@ -95,7 +95,7 @@ class MainModel extends ChangeNotifier {
   }
 
   void getLikedCommentIds() {
-    likedComments = currentUserDoc['likedCommentIds'];
+    likedComments = currentUserDoc['likedComments'];
     likedComments.forEach((likedComment) {
       likedCommentIds.add(likedComment['commentId']);
     });
