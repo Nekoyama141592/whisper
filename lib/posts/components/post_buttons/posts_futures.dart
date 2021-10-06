@@ -58,8 +58,8 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   Future bookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
-    await addBookmarksToPost(currentUserDoc, newCurrentSongDoc);
-    await addBookmarksToUser(currentUserDoc, currentSongDoc,bookmarks);
+    // await addBookmarksToPost(currentUserDoc, newCurrentSongDoc);
+    // await addBookmarksToUser(currentUserDoc, currentSongDoc,bookmarks);
   }
 
   Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
@@ -178,7 +178,7 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   Future getNewCurrentSongDoc(DocumentSnapshot currentSongDoc) async {
     DocumentSnapshot newCurrentSongDoc = await FirebaseFirestore.instance
-    .collection('users')
+    .collection('posts')
     .doc(currentSongDoc.id)
     .get();
     return newCurrentSongDoc;

@@ -1,6 +1,7 @@
 db{
     posts{
         audioURL: String,
+        // ない
         bookmarks: [{
             createdAt: TimeStamp,
             uid: String,
@@ -15,6 +16,8 @@ db{
             userImageURL: String,
         }],
         createdAt: TimeStamp,
+        imageURL: String,
+        // ない
         likes: [{
             createdAt: TimeStamp,
             uid: String,
@@ -22,11 +25,10 @@ db{
         postId: String,
         score: int,
         title: String,
-        imageURL: String,
-        userDocId: String,
         uid: String,
         updatedAt: TimeStamp,
         userImageURL: String,
+        userDocId: String,
         userName: String
     }
     replys{
@@ -67,7 +69,8 @@ db{
             commentId: String,
             createdAt: TimeStamp,
         }],
-        likedReplyDocs: [{
+        // signupにはあっってDBにはない
+        likedReplyMaps: [{
             'createdAt': TimeStamp,
             'likedReplyDocId': String,
         }]
