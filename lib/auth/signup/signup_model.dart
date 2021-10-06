@@ -135,6 +135,7 @@ class SignupModel extends ChangeNotifier {
     await FirebaseFirestore.instance
     .collection('users').add({
       'bookmarks': [],
+      'commentNotifications': [],
       'createdAt': Timestamp.now(),
       'desciption': '',
       'followNotifications': [],

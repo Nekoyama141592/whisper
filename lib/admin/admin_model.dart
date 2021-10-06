@@ -9,35 +9,25 @@ final adminProvider = ChangeNotifierProvider(
 
 class AdminModel extends ChangeNotifier {
   
-  // Future replyNotificationOfUser() async {
-   
-  //   try{
-      
-  //     WriteBatch batch = FirebaseFirestore.instance.batch();
-  //     Map<String,dynamic> map = {
-  //       'commentId': '',
-  //       'comment': '',
-  //       'createdAt': Timestamp.now(),
-  //       'isRead': false,
-  //       'uid': '',
-  //     };
-  //     List replyNotifications = [map];
-
-  //     return FirebaseFirestore.instance.collection('users')
-  //     .get()
-  //     .then((qshot) {
-  //       qshot.docs.forEach((doc) {
-  //         batch.update(
-  //           doc.reference, 
-  //           {
-  //             'replyNotifications': replyNotifications,
-  //           }
-  //         );
-  //       });
-  //       return batch.commit();
-  //     });
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  // }
+  Future addCommentNotificationsToUser() async {
+    try {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      return 
+      FirebaseFirestore.instance
+      .collection('users')
+      .get()
+      .then((qshot) {
+        qshot.docs.forEach((doc) {
+          batch.update(doc.reference, {
+            'bookmarks': [],
+            'createdAt': Timestamp.now(),
+            'commentNotifications': [],
+          });
+        });
+        return batch.commit();
+      });
+    } catch(e) {
+      print(e.toString());
+    }
+  }
 }

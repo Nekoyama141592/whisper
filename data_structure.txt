@@ -42,6 +42,16 @@ db{
             createdAt: TimeStamp,
             postId: String,
         }],
+        commentNotifications: [{
+            'comment': String,
+            'createdAt': TimeStamp,
+            'postId': notificationId,
+            'postTitle': String,
+            'uid': String,
+            'userDocId': String,
+            'userName': String,
+            'userImageURL': String,
+        }]
         createdAt: TimeStamp,
         description: String,
         followerUids:[

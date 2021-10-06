@@ -83,6 +83,7 @@ class CommentsModel extends ChangeNotifier {
     startLoading();
     await updateCommentsOfPostWhenMakeComment(currentSongDoc,currentUserDoc);
     endLoading();
+    await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc);
   }
 
   Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId) async {
@@ -96,6 +97,31 @@ class CommentsModel extends ChangeNotifier {
     await addReplyToFirestore(commentId, currentUserDoc);
     // reply notification
     await setPassiveUserDocAndUpdateReplyNotificationOfPassiveUser(passiveUserDocId, commentId,currentUserDoc);
+  }
+
+  Future updateCommentNotificationsOfPassiveUser(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
+    try{
+      List<dynamic> commentNotifications = currentSongDoc['commentNotifications'];
+      final Map<String,dynamic> newCommentNotificationMap = {
+        'comment': comment,
+        'createdAt': Timestamp.now(),
+        'postId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
+        'postTitle': currentSongDoc['title'],
+        'uid': currentUserDoc['uid'],
+        'userDocId': currentUserDoc.id,
+        'userName': currentUserDoc['userName'],
+        'userImageURL': currentUserDoc['userImageURL'],
+      };
+      commentNotifications.add(newCommentNotificationMap);
+      await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentSongDoc['userDocId'])
+      .update({
+        'commentNotifications': commentNotifications,
+      });
+    } catch(e) {
+      print(e.toString());
+    }
   }
 
   Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot currentSongDoc, DocumentSnapshot currentUserDoc) async {
