@@ -3,14 +3,67 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// components
+import 'package:whisper/details/rounded_button.dart';
 
 final replyProvider = ChangeNotifierProvider(
-  (ref) => ReplyModel()
+  (ref) => ReplysModel()
 );
 
-class ReplyModel extends ChangeNotifier {
+class ReplysModel extends ChangeNotifier {
 
   String reply = "";
+
+
+  void onAddReplyButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text('reply'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Container(
+                  child: TextField(
+                    controller: replyEditingController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (text) {
+                      reply = text;
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                'cancel',
+                style: TextStyle(color: Theme.of(context).focusColor),
+              ),
+              onPressed: () { 
+                Navigator.pop(context);
+              },
+            ),
+            RoundedButton(
+              text: '送信', 
+              widthRate: 0.95, 
+              verticalPadding: 10.0, 
+              horizontalPadding: 10.0, 
+              press: () async { makeReply(currentSongDoc, currentUserDoc, thisComment); }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).primaryColor
+            )
+          ],
+        );
+      }
+    );
+  }
 
   Future makeReply(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
     final commentId = thisComment['commentId'];

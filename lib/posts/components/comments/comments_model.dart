@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// components
+import 'package:whisper/details/rounded_button.dart';
 
 final commentsProvider = ChangeNotifierProvider(
   (ref) => CommentsModel()
@@ -56,12 +58,14 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
               },
             ),
-            ElevatedButton(
-              child: Text('送信'),
-              onPressed: () async {
-                Navigator.pop(context);
-                await makeComment(currentSongDoc,currentUserDoc);
-              }, 
+            RoundedButton(
+              text: '送信', 
+              widthRate: 0.95, 
+              verticalPadding: 10.0, 
+              horizontalPadding: 10.0, 
+              press: () async { makeComment(currentSongDoc, currentUserDoc); }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).primaryColor
             )
           ],
         );
