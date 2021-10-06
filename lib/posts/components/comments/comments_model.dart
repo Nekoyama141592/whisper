@@ -86,12 +86,10 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId) async {
-    startLoading();
     // Someone left a comment on your post.
     await updateCommentsOfPostWhenSomeoneLiked(currentSongDoc, commentId,currentUserDoc);
     // I liked your post.
     await updateLikedCommentsOfCurrentUser(commentId,currentUserDoc);
-    endLoading();
   }
 
   Future makeReply(String passiveUserDocId,String commentId,DocumentSnapshot currentUserDoc) async {
