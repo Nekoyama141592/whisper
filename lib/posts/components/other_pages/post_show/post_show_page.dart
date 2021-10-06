@@ -27,6 +27,8 @@ class PostShowPage extends ConsumerWidget {
     required this.bookmarkedPostIds,
     required this.likedCommentIds,
     required this.likedComments,
+    required this.bookmarks,
+    required this.likes,
     required this.currentUserDoc,
     required this.currentSongDocNotifier,
     required this.progressNotifier,
@@ -46,6 +48,8 @@ class PostShowPage extends ConsumerWidget {
   final List bookmarkedPostIds;
   final List likedCommentIds;
   final List likedComments;
+  final List bookmarks;
+  final List likes;
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final ProgressNotifier progressNotifier;
@@ -103,7 +107,17 @@ class PostShowPage extends ConsumerWidget {
                     SizedBox(height: 10.0),
                     CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier),
                     SizedBox(height: 10.0),
-                    PostButtons(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, likedCommentIds: likedCommentIds, likedComments: likedComments, editPostInfoModel: editPostInfoModel),
+                    PostButtons(
+                      currentUserDoc: currentUserDoc, 
+                      currentSongDocNotifier: currentSongDocNotifier, 
+                      bookmarkedPostIds: bookmarkedPostIds, 
+                      likedPostIds: likedPostIds, 
+                      likedCommentIds: likedCommentIds, 
+                      likedComments: likedComments, 
+                      bookmarks: bookmarks,
+                      likes: likes,
+                      editPostInfoModel: editPostInfoModel
+                    ),
                     SizedBox(height: 10.0),
                     AudioStateDesign(
                       preservatedPostIds: bookmarkedPostIds,

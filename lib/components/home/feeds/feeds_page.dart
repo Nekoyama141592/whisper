@@ -20,13 +20,17 @@ class FeedsPage extends ConsumerWidget {
     required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.likedCommentIds,
-    required this.likedComments
+    required this.likedComments,
+    required this.bookmarks,
+    required this.likes
   }) : super(key: key);
 
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List likedCommentIds;
   final List likedComments;
+  final List bookmarks;
+  final List likes;
   @override
   
   Widget build(BuildContext context, ScopedReader watch) {
@@ -42,6 +46,7 @@ class FeedsPage extends ConsumerWidget {
       content: PostCards(
         likedPostIds: likedPostIds, 
         bookmarkedPostIds: bookmarkedPostIds, 
+        likes: likes,
         postDocs: postDocs, 
         route: () {
           routes.toPostShowPage(
@@ -50,6 +55,8 @@ class FeedsPage extends ConsumerWidget {
             bookmarkedPostIds, 
             likedCommentIds,
             likedComments,
+            bookmarks,
+            likes,
             feedsModel.currentUserDoc, 
             feedsModel.currentSongDocNotifier, 
             feedsModel.progressNotifier, 

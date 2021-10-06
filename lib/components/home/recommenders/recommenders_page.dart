@@ -20,7 +20,9 @@ class RecommendersPage extends ConsumerWidget {
     required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.likedCommentIds,
-    required this.likedComments
+    required this.likedComments,
+    required this.bookmarks,
+    required this.likes
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
@@ -28,7 +30,8 @@ class RecommendersPage extends ConsumerWidget {
   final List likedPostIds;
   final List likedCommentIds;
   final List likedComments;
-
+  final List bookmarks;
+  final List likes;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final recommendersModel = watch(recommendersProvider);
@@ -41,6 +44,7 @@ class RecommendersPage extends ConsumerWidget {
       content: PostCards(
         likedPostIds: likedPostIds, 
         bookmarkedPostIds: bookmarkedPostIds, 
+        likes: likes,
         postDocs: postDocs, 
         route: () {
           routes.toPostShowPage(
@@ -49,6 +53,8 @@ class RecommendersPage extends ConsumerWidget {
             bookmarkedPostIds,
             likedCommentIds,
             likedComments,
+            bookmarks,
+            likes,
             currentUserDoc,
             recommendersModel.currentSongDocNotifier, 
             recommendersModel.progressNotifier, 

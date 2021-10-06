@@ -20,7 +20,6 @@ class CommentsModel extends ChangeNotifier {
   List<dynamic> comments = [];
   bool didCommented = false;
   List<dynamic> postComments = [];
-  List<dynamic> likedComments = [];
 
   void reload() {
     notifyListeners();
@@ -174,7 +173,6 @@ class CommentsModel extends ChangeNotifier {
 
   Future updateLikedCommentsOfCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot currentUserDoc) async {
     // User側の処理
-    likedComments = likedComments;
     Map<String,dynamic> map = {
       'commentId': commentId,
       'createdAt': Timestamp.now(),

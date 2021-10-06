@@ -12,12 +12,13 @@ class LikeButton extends ConsumerWidget {
     required this.currentUserDoc,
     required this.currentSongDocNotifier,
     required this.likedPostIds,
+    required this.likes
   });
   
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final List likedPostIds;
-  
+  final List likes;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
@@ -39,7 +40,7 @@ class LikeButton extends ConsumerWidget {
           onPressed: () async {
             likedPostIds.add(currentSongDoc['postId']);
             postFuturesModel.reload();
-            await postFuturesModel.like(currentUserDoc, currentSongDoc);
+            await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
           }, 
         );
       }

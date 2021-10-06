@@ -16,7 +16,9 @@ class BookmarksPage extends ConsumerWidget {
     required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.likedCommentIds,
-    required this.likedComments
+    required this.likedComments,
+    required this.bookmarks,
+    required this.likes
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
@@ -24,6 +26,8 @@ class BookmarksPage extends ConsumerWidget {
   final List likedPostIds;
   final List likedCommentIds;
   final List likedComments;
+  final List bookmarks;
+  final List likes;
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final bookmarksModel = watch(bookmarksProvider);
@@ -35,6 +39,8 @@ class BookmarksPage extends ConsumerWidget {
         likedPostIds: likedPostIds,
         likedCommentIds: likedCommentIds,
         likedComments: likedComments,
+        bookmarks: bookmarks,
+        likes: likes,
       )
     );
   }

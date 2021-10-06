@@ -18,6 +18,8 @@ class PostButtons extends StatelessWidget {
     required this.likedPostIds,
     required this.likedCommentIds,
     required this.likedComments,
+    required this.bookmarks,
+    required this.likes,
     required this.editPostInfoModel
   });
 
@@ -27,6 +29,8 @@ class PostButtons extends StatelessWidget {
   final List likedPostIds;
   final List likedCommentIds;
   final List likedComments;
+  final List bookmarks;
+  final List likes;
   final EditPostInfoModel editPostInfoModel;
   
   @override  
@@ -34,8 +38,8 @@ class PostButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds),
-        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds),
+        LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds,likes: likes),
+        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds,bookmarks: bookmarks),
         CommentButton(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,),
         EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
       ],

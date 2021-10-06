@@ -16,6 +16,7 @@ class PostCards extends StatelessWidget {
     Key? key,
     required this.likedPostIds,
     required this.bookmarkedPostIds,
+    required this.likes,
     required this.postDocs,
     required this.route,
     required this.progressNotifier,
@@ -32,6 +33,7 @@ class PostCards extends StatelessWidget {
 
   final List likedPostIds;
   final List bookmarkedPostIds;
+  final List likes;
   final List<DocumentSnapshot> postDocs;
   final void Function()? route;
   final ProgressNotifier progressNotifier;
@@ -68,6 +70,7 @@ class PostCards extends StatelessWidget {
         AudioWindow(
           bookmarkedPostIds: bookmarkedPostIds, 
           likedPostIds: likedPostIds, 
+          likes: likes,
           route: route, 
           progressNotifier: progressNotifier, 
           seek: seek, 

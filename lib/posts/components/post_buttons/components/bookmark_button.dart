@@ -12,13 +12,14 @@ class BookmarkButton extends ConsumerWidget {
     Key? key,
     required this.currentUserDoc,
     required this.currentSongDocNotifier,
-    required this.bookmarkedPostIds
+    required this.bookmarkedPostIds,
+    required this.bookmarks
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final List bookmarkedPostIds;
-  
+  final List bookmarks;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
@@ -44,7 +45,7 @@ class BookmarkButton extends ConsumerWidget {
           onPressed: () async {
             bookmarkedPostIds.add(currentSongDoc['postId']);
             postFuturesModel.reload();
-            await postFuturesModel.bookmark(currentUserDoc, currentSongDoc);
+            await postFuturesModel.bookmark(currentUserDoc, currentSongDoc,bookmarks);
           }, 
         );
       }

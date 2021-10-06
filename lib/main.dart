@@ -65,6 +65,9 @@ class MyHomePage extends ConsumerWidget {
     final followingUids = mainModel.followingUids;
     final likedCommentIds = mainModel.likedCommentIds;
     final likedComments = mainModel.likedComments;
+    final bookmarks = mainModel.bookmarks;
+    final likes = mainModel.likes;
+    
     return Scaffold(
       body: mainModel.isLoading ?
       Loading()
@@ -74,7 +77,7 @@ class MyHomePage extends ConsumerWidget {
           whisperBottomNavigationbarModel.onPageChanged(index);
         },
         children: [
-          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments),
+          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,),
           SearchPage(
             mainModel: mainModel,
             themeModel: themeModel,
@@ -85,9 +88,11 @@ class MyHomePage extends ConsumerWidget {
             bookmarkedPostIds: bookmarkedPostIds, 
             likedPostIds: likedPostIds,
             likedCommentIds: likedCommentIds,
-            likedComments: likedComments
+            likedComments: likedComments,
+            bookmarks: bookmarks,
+            likes: likes,
           ),
-          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments,)
+          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,)
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),

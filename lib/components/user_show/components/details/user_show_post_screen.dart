@@ -20,7 +20,9 @@ class UserShowPostScreen extends StatelessWidget {
     required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.likedCommentIds,
-    required this.likedComments
+    required this.likedComments,
+    required this.bookmarks,
+    required this.likes
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
@@ -29,6 +31,9 @@ class UserShowPostScreen extends StatelessWidget {
   final List likedPostIds;
   final List likedCommentIds;
   final List likedComments;
+  final List bookmarks;
+  final List likes;
+
   @override
   Widget build(BuildContext context) {
     final isLoading = userShowModel.isLoading;
@@ -38,6 +43,7 @@ class UserShowPostScreen extends StatelessWidget {
       child: PostCards(
         likedPostIds: likedPostIds, 
         bookmarkedPostIds: bookmarkedPostIds, 
+        likes: likes,
         postDocs: userShowModel.postDocs, 
         route: (){
           routes.toPostShowPage(
@@ -46,6 +52,8 @@ class UserShowPostScreen extends StatelessWidget {
           bookmarkedPostIds,
           likedCommentIds,
           likedComments,
+          bookmarks,
+          likes,
           currentUserDoc, 
           userShowModel.currentSongDocNotifier, 
           userShowModel.progressNotifier, 
