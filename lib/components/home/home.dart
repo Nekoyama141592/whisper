@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/components/home/constants/tab_bar_elements.dart';
 // components
-import 'package:whisper/details/notificationIcon.dart';
+import 'package:whisper/details/notification_icon.dart';
 import 'package:whisper/details/whisper_drawer.dart';
 // pages
 import 'package:whisper/components/home/feeds/feeds_page.dart';
@@ -24,7 +24,8 @@ class Home extends StatelessWidget {
     required this.likedCommentIds,
     required this.likedComments,
     required this.bookmarks,
-    required this.likes
+    required this.likes,
+    required this.replyNotifications
   }) : super(key: key);
   
   final MainModel mainModel;
@@ -35,6 +36,8 @@ class Home extends StatelessWidget {
   final List likedComments;
   final List bookmarks;
   final List likes;
+  final List replyNotifications;
+
   @override  
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -48,7 +51,7 @@ class Home extends StatelessWidget {
             )
           ),
           actions: [
-            NotificationIcon(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds)
+            NotificationIcon(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, replyNotifications: replyNotifications)
           ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,

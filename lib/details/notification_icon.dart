@@ -14,13 +14,15 @@ class NotificationIcon extends StatelessWidget {
     required this.mainModel,
     required this.themeModel,
     required this.bookmarkedPostIds,
-    required this.likedPostIds
+    required this.likedPostIds,
+    required this.replyNotifications
   }) : super(key: key);
 
   final MainModel mainModel;
   final ThemeModel themeModel;
   final List bookmarkedPostIds;
   final List likedPostIds;
+  final List replyNotifications;
 
   @override  
   Widget build(BuildContext context) {
@@ -34,12 +36,12 @@ class NotificationIcon extends StatelessWidget {
             mainModel,
             themeModel,
             bookmarkedPostIds, 
-            likedPostIds
+            likedPostIds,
+            replyNotifications
           );
         },
-        // child: mainModel.newLikeNotifications.length > 0 || 
-        // mainModel.newFollowNotifications.length > 0 ?
-        child: 1 == 1 ?
+        child: replyNotifications.isNotEmpty ?
+
         Stack(
           children: [
             Icon(Icons.notifications),

@@ -7,13 +7,13 @@ class ReplyNotifications extends StatelessWidget {
 
   const ReplyNotifications({
     Key? key,
-    required this.notifications
+    required this.replyNotifications
   }) : super(key: key);
 
-  final List<dynamic> notifications;
+  final List<dynamic> replyNotifications;
 
   @override 
   Widget build(BuildContext context) {
-    return ReplyNotificationList(notifications: notifications);
+    return ReplyNotificationList(notifications: replyNotifications);
   }
 }

@@ -17,12 +17,14 @@ class NotificationsPage extends StatelessWidget {
     required this.mainModel,
     required this.themeModel,
     required this.bookmarkedPostIds,
+    required this.replyNotifications,
     required this.likedPostIds
   });
 
   final MainModel mainModel;
   final List bookmarkedPostIds;
   final List likedPostIds;
+  final List replyNotifications;
   final ThemeModel themeModel;
 
   @override  
@@ -58,7 +60,7 @@ class NotificationsPage extends StatelessWidget {
         drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: TabBarView(
           children: [
-            // ReplyNotifications(notifications: notifications),
+            ReplyNotifications(replyNotifications: replyNotifications),
             Container(),
             OfficialNotifications(),
           ]

@@ -18,7 +18,7 @@ class OfficialNotificationList extends StatelessWidget {
     return ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) => 
-      ReaplyNotificationCard(notification: notifications[i] )
+      ReaplyNotificationCard(replyNotification: notifications[i] )
     );
   }
 

@@ -67,6 +67,7 @@ class MyHomePage extends ConsumerWidget {
     final likedComments = mainModel.likedComments;
     final bookmarks = mainModel.bookmarks;
     final likes = mainModel.likes;
+    final replyNotifications = mainModel.replyNotifications;
     
     return Scaffold(
       body: mainModel.isLoading ?
@@ -77,7 +78,7 @@ class MyHomePage extends ConsumerWidget {
           whisperBottomNavigationbarModel.onPageChanged(index);
         },
         children: [
-          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,),
+          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,replyNotifications: replyNotifications,),
           SearchPage(
             mainModel: mainModel,
             themeModel: themeModel,
