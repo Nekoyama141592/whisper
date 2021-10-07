@@ -20,6 +20,7 @@ class AdminModel extends ChangeNotifier {
         qshot.docs.forEach((doc) {
           batch.update(doc.reference, {
             'likedReplyMaps': [],
+            'readPosts': [],
           });
         });
         return batch.commit();

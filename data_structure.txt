@@ -64,12 +64,10 @@ db{
         ],
         imageURL: String,
         isAdmin: bool,
-        //
         likedComments:[{
             commentId: String,
             createdAt: TimeStamp,
         }],
-        // signupにはあっってDBにはない
         likedReplyMaps: [{
             'createdAt': TimeStamp,
             'likedReplyDocId': String,
@@ -82,6 +80,11 @@ db{
             String
         ],
         readNotificationIds: [ String ]
+        // 新規
+        readPosts: [{
+            'createdAt': TimeStamp,
+            'postId': String
+        }]
         replyNotifications: [{
             comment: String,
             commentId: String,
