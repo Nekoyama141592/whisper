@@ -25,7 +25,9 @@ class Home extends StatelessWidget {
     required this.likedComments,
     required this.bookmarks,
     required this.likes,
-    required this.replyNotifications
+    required this.replyNotifications,
+    required this.readPostIds,
+    required this.readPosts
   }) : super(key: key);
   
   final MainModel mainModel;
@@ -37,6 +39,8 @@ class Home extends StatelessWidget {
   final List bookmarks;
   final List likes;
   final List replyNotifications;
+  final List readPostIds;
+  final List readPosts;
 
   @override  
   Widget build(BuildContext context) {
@@ -70,8 +74,27 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,),
-            RecommendersPage(currentUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,)
+            FeedsPage(
+              bookmarkedPostIds: bookmarkedPostIds, 
+              likedPostIds: likedPostIds,
+              likedCommentIds: likedCommentIds,
+              likedComments: likedComments,
+              bookmarks: bookmarks,
+              likes: likes,
+              readPostIds: readPostIds,
+              readPosts: readPosts,
+            ),
+            RecommendersPage(
+              currentUserDoc: mainModel.currentUserDoc, 
+              bookmarkedPostIds: bookmarkedPostIds, 
+              likedPostIds: likedPostIds,
+              likedCommentIds: likedCommentIds,
+              likedComments: likedComments,
+              bookmarks: bookmarks,
+              likes: likes,
+              readPostIds: readPostIds,
+              readPosts: readPosts,
+            )
           ],
         ),
         

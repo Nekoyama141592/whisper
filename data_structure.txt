@@ -80,7 +80,6 @@ db{
             String
         ],
         readNotificationIds: [ String ]
-        // 新規
         readPosts: [{
             'createdAt': TimeStamp,
             'postId': String

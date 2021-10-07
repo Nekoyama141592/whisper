@@ -68,6 +68,8 @@ class MyHomePage extends ConsumerWidget {
     final bookmarks = mainModel.bookmarks;
     final likes = mainModel.likes;
     final replyNotifications = mainModel.replyNotifications;
+    final readPostIds = mainModel.readPostIds;
+    final readPosts = mainModel.readPosts;
     
     return Scaffold(
       body: mainModel.isLoading ?
@@ -78,7 +80,19 @@ class MyHomePage extends ConsumerWidget {
           whisperBottomNavigationbarModel.onPageChanged(index);
         },
         children: [
-          Home(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,replyNotifications: replyNotifications,),
+          Home(
+            mainModel: mainModel, 
+            themeModel: themeModel, 
+            bookmarkedPostIds: bookmarkedPostIds, 
+            likedPostIds: likedPostIds,
+            likedCommentIds: likedCommentIds,
+            likedComments: likedComments,
+            bookmarks: bookmarks,
+            likes: likes,
+            replyNotifications: replyNotifications,
+            readPostIds: readPostIds,
+            readPosts: readPosts,
+          ),
           SearchPage(
             mainModel: mainModel,
             themeModel: themeModel,
@@ -92,8 +106,10 @@ class MyHomePage extends ConsumerWidget {
             likedComments: likedComments,
             bookmarks: bookmarks,
             likes: likes,
+            readPostIds: readPostIds,
+            readPosts: readPosts,
           ),
-          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,)
+          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,readPostIds: readPostIds,readPosts: readPosts)
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),

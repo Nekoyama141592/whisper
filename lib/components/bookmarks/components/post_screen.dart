@@ -21,7 +21,9 @@ class PostScreen extends StatelessWidget {
     required this.likedCommentIds,
     required this.likedComments,
     required this.bookmarks,
-    required this.likes
+    required this.likes,
+    required this.readPostIds,
+    required this.readPosts
   }) : super(key: key);
 
   final BookMarksModel bookmarksModel;
@@ -32,6 +34,8 @@ class PostScreen extends StatelessWidget {
   final List likedComments;
   final List bookmarks;
   final List likes;
+  final List readPostIds;
+  final List readPosts;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +80,7 @@ class PostScreen extends StatelessWidget {
               bookmarksModel.isFirstSongNotifier, 
               () { bookmarksModel.onPreviousSongButtonPressed(); }, 
               bookmarksModel.playButtonNotifier, 
-              () { bookmarksModel.play(); }, 
+              () { bookmarksModel.play(readPostIds, readPosts, currentUserDoc); }, 
               () { bookmarksModel.pause(); }, 
               bookmarksModel.isLastSongNotifier, 
               () { bookmarksModel.onNextSongButtonPressed(); }
@@ -86,7 +90,7 @@ class PostScreen extends StatelessWidget {
           seek: bookmarksModel.seek, 
           currentSongDocNotifier: bookmarksModel.currentSongDocNotifier ,
           playButtonNotifier: bookmarksModel.playButtonNotifier, 
-          play: () { bookmarksModel.play(); }, 
+          play: () { bookmarksModel.play(readPostIds, readPosts, currentUserDoc); }, 
           pause: () { bookmarksModel.pause(); }, 
           currentUserDoc: currentUserDoc,
           refreshController: bookmarksModel.refreshController,

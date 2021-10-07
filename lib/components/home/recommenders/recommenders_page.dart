@@ -22,7 +22,9 @@ class RecommendersPage extends ConsumerWidget {
     required this.likedCommentIds,
     required this.likedComments,
     required this.bookmarks,
-    required this.likes
+    required this.likes,
+    required this.readPostIds,
+    required this.readPosts
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
@@ -32,6 +34,9 @@ class RecommendersPage extends ConsumerWidget {
   final List likedComments;
   final List bookmarks;
   final List likes;
+  final List readPostIds;
+  final List readPosts;
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final recommendersModel = watch(recommendersProvider);
@@ -64,7 +69,7 @@ class RecommendersPage extends ConsumerWidget {
             recommendersModel.isFirstSongNotifier, 
             () { recommendersModel.onPreviousSongButtonPressed(); }, 
             recommendersModel.playButtonNotifier, 
-            () { recommendersModel.play(); }, 
+            () { recommendersModel.play(readPostIds, readPosts, currentUserDoc); }, 
             () { recommendersModel.pause(); }, 
             recommendersModel.isLastSongNotifier, 
             () { recommendersModel.onNextSongButtonPressed(); }
@@ -74,7 +79,7 @@ class RecommendersPage extends ConsumerWidget {
         seek: recommendersModel.seek, 
         currentSongDocNotifier: recommendersModel.currentSongDocNotifier ,
         playButtonNotifier: recommendersModel.playButtonNotifier, 
-        play: () { recommendersModel.play(); }, 
+        play: () { recommendersModel.play(readPostIds, readPosts, currentUserDoc); }, 
         pause: () { recommendersModel.pause(); }, 
         currentUserDoc: currentUserDoc,
         refreshController: recommendersModel.refreshController,

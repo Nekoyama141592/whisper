@@ -22,7 +22,9 @@ class UserShowPostScreen extends StatelessWidget {
     required this.likedCommentIds,
     required this.likedComments,
     required this.bookmarks,
-    required this.likes
+    required this.likes,
+    required this.readPostIds,
+    required this.readPosts
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
@@ -33,6 +35,8 @@ class UserShowPostScreen extends StatelessWidget {
   final List likedComments;
   final List bookmarks;
   final List likes;
+  final List readPostIds;
+  final List readPosts;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class UserShowPostScreen extends StatelessWidget {
           userShowModel.isFirstSongNotifier, 
           () { userShowModel.onPreviousSongButtonPressed(); }, 
           userShowModel.playButtonNotifier, 
-          () { userShowModel.play(); }, 
+          () { userShowModel.play(readPostIds, readPosts, currentUserDoc); }, 
           () { userShowModel.pause(); }, 
           userShowModel.isLastSongNotifier, 
           () { userShowModel.onNextSongButtonPressed(); }
@@ -74,7 +78,7 @@ class UserShowPostScreen extends StatelessWidget {
         currentSongDocNotifier: userShowModel.currentSongDocNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
         play: (){
-          userShowModel.play();
+          userShowModel.play(readPostIds, readPosts, currentUserDoc);
         },
         pause: (){
           userShowModel.pause();

@@ -22,7 +22,9 @@ class FeedsPage extends ConsumerWidget {
     required this.likedCommentIds,
     required this.likedComments,
     required this.bookmarks,
-    required this.likes
+    required this.likes,
+    required this.readPostIds,
+    required this.readPosts
   }) : super(key: key);
 
   final List bookmarkedPostIds;
@@ -31,6 +33,9 @@ class FeedsPage extends ConsumerWidget {
   final List likedComments;
   final List bookmarks;
   final List likes;
+  final List readPostIds;
+  final List readPosts;
+
   @override
   
   Widget build(BuildContext context, ScopedReader watch) {
@@ -38,7 +43,8 @@ class FeedsPage extends ConsumerWidget {
     final feedsModel = watch(feedsProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.feedDocs;
-    
+    final currentUserDoc = feedsModel.currentUserDoc;
+
     return isLoading ?
     Loading()
     : JudgeScreen(
@@ -66,7 +72,7 @@ class FeedsPage extends ConsumerWidget {
             feedsModel.isFirstSongNotifier, 
             () { feedsModel.onPreviousSongButtonPressed(); }, 
             feedsModel.playButtonNotifier, 
-            () { feedsModel.play(); }, 
+            () { feedsModel.play(readPostIds, readPosts, currentUserDoc); }, 
             () { feedsModel.pause(); }, 
             feedsModel.isLastSongNotifier, 
             () { feedsModel.onNextSongButtonPressed(); }
@@ -76,7 +82,7 @@ class FeedsPage extends ConsumerWidget {
         seek: feedsModel.seek, 
         currentSongDocNotifier: feedsModel.currentSongDocNotifier ,
         playButtonNotifier: feedsModel.playButtonNotifier, 
-        play: () { feedsModel.play(); }, 
+        play: () { feedsModel.play(readPostIds, readPosts, currentUserDoc); }, 
         pause: () { feedsModel.pause(); }, 
         currentUserDoc: feedsModel.currentUserDoc,
         refreshController: feedsModel.refreshController,

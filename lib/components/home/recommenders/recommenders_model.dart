@@ -54,7 +54,8 @@ class RecommendersModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     // await
-    await setFollowUids();
+    // await setFollowUids();
+    // await setMutes();
     await getRecommenders();
     listenForStates();
     endLoading();
@@ -87,39 +88,6 @@ class RecommendersModel extends ChangeNotifier {
     await getRecommenders();
     refreshController.loadComplete();
     notifyListeners();
-  }
-  // CloudFirestore
-  Future setFollowUids() async {
-    
-    try {
-      QuerySnapshot<Map<String, dynamic>> follows = await FirebaseFirestore.instance
-      .collection('follows')
-      .where('activeUserId', isEqualTo: currentUser!.uid)
-      .get();
-      follows.docs.forEach((DocumentSnapshot doc) {
-        followUids.add(doc['passiveUserId']);
-      });
-      followUids.add(currentUser!.uid);
-    } catch(e) {
-      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-  }
-
-  Future setMutesList() async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('mutes')
-      .where('activeUserId', isEqualTo: currentUser!.uid)
-      .get()
-      .then((snapshot){
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          mutesUids.add(doc['passiveUserId']);
-        });
-      } );
-
-    } catch(e){
-      print(e.toString());
-    }
   }
 
   Future getRecommenders() async {
@@ -175,9 +143,27 @@ class RecommendersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void play()  {
+  void play(List<dynamic> readPostIds,List<dynamic> readPosts,DocumentSnapshot currentUserDoc)  {
     audioPlayer.play();
     notifyListeners();
+    audioPlayer.sequenceStateStream.listen((sequenceState) {
+      final currentItem = sequenceState!.currentSource;
+      final DocumentSnapshot? currentSongDoc = currentItem?.tag;
+      final postId = currentSongDoc!['postId'];
+      if (!readPostIds.contains(postId)) {
+        final map = {
+          'createdAt': Timestamp.now(),
+          'postId': postId,
+        };
+        readPosts.add(map);
+        FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserDoc.id)
+        .update({
+          'readPosts': readPosts,
+        });
+      }
+    });
   }
 
   void pause() {

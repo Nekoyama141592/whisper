@@ -110,14 +110,14 @@ class MainModel extends ChangeNotifier {
   }
   
   void getReadPost() {
-    readPosts = currentUserDoc['readPost'];
+    readPosts = currentUserDoc['readPosts'];
     readPosts.forEach((readPost) {
       readPostIds.add(readPost['postId']);
     });
   }
 
   void getReadNotifiationIds() {
-    List<dynamic> readNotifications = currentUserDoc['readNotifications'];
+    List<dynamic> readNotifications = currentUserDoc['readNotificationIds'];
     readNotifications.forEach((replyNotification) {
       readNotificationsIds.add(replyNotification['notificationId']);
     });
