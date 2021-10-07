@@ -14,16 +14,19 @@ class CommentNotificationCard extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final userImageURL = notification['userImageURL'];
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-           leading: UserImage(userImageURL: userImageURL, length: 60.0, padding: 0.0),
-            title: Text(notification['userName']),
-            subtitle: Text(notification['comment']),
-          )
-        ],
+    return InkWell(
+      onTap: () { print('success'); },
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+             leading: UserImage(userImageURL: userImageURL, length: 60.0, padding: 0.0),
+              title: Text(notification['userName']),
+              subtitle: Text(notification['comment']),
+            )
+          ],
+        ),
       ),
     );
   }

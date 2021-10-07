@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_card.dart';
+import 'package:whisper/components/notifications/components/comment_notifications/components/comment_notification_card.dart';
 
 class CommentNotificationList extends StatelessWidget {
 
@@ -20,7 +20,7 @@ class CommentNotificationList extends StatelessWidget {
     return ListView.builder(
       itemCount: commentNotifications.length,
       itemBuilder: (BuildContext context, int i) => 
-      ReaplyNotificationCard(replyNotification: commentNotifications[i] )
+      CommentNotificationCard(notification: commentNotifications[i] )
     );
   }
 
