@@ -1,5 +1,8 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications.dart';
+// package
+import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'constants/tab_bar_elements.dart';
 // components
@@ -18,7 +21,8 @@ class NotificationsPage extends StatelessWidget {
     required this.themeModel,
     required this.bookmarkedPostIds,
     required this.replyNotifications,
-    required this.likedPostIds
+    required this.likedPostIds,
+    required this.currentUserDoc
   });
 
   final MainModel mainModel;
@@ -26,7 +30,7 @@ class NotificationsPage extends StatelessWidget {
   final List likedPostIds;
   final List replyNotifications;
   final ThemeModel themeModel;
-
+  final DocumentSnapshot currentUserDoc;
   @override  
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -61,7 +65,7 @@ class NotificationsPage extends StatelessWidget {
         body: TabBarView(
           children: [
             ReplyNotifications(replyNotifications: replyNotifications),
-            Container(),
+            CommentNotifications(currentUserDoc: currentUserDoc),
             OfficialNotifications(),
           ]
         ),

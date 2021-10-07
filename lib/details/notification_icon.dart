@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// package
+import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart';
@@ -15,7 +17,8 @@ class NotificationIcon extends StatelessWidget {
     required this.themeModel,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
-    required this.replyNotifications
+    required this.replyNotifications,
+    required this.currentUserDoc
   }) : super(key: key);
 
   final MainModel mainModel;
@@ -23,7 +26,7 @@ class NotificationIcon extends StatelessWidget {
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List replyNotifications;
-
+  final DocumentSnapshot currentUserDoc;
   @override  
   Widget build(BuildContext context) {
     return 
@@ -37,7 +40,8 @@ class NotificationIcon extends StatelessWidget {
             themeModel,
             bookmarkedPostIds, 
             likedPostIds,
-            replyNotifications
+            replyNotifications,
+            currentUserDoc
           );
         },
         child: replyNotifications.isNotEmpty ?

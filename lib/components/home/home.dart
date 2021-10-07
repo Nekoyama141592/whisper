@@ -40,6 +40,7 @@ class Home extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
+    final currentUserDoc = mainModel.currentUserDoc;
     return DefaultTabController(
       length: tabBarElements.length, 
       child: Scaffold(
@@ -51,7 +52,7 @@ class Home extends StatelessWidget {
             )
           ),
           actions: [
-            NotificationIcon(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, replyNotifications: replyNotifications)
+            NotificationIcon(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, replyNotifications: replyNotifications, currentUserDoc: currentUserDoc)
           ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
