@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/details/user_image.dart';
 
 class CommentNotificationCard extends StatelessWidget {
 
@@ -12,18 +13,15 @@ class CommentNotificationCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    
+    final userImageURL = notification['userImageURL'];
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            // imageURL
-            leading: CircleAvatar(
-              radius: 24,
-            ),
-            title: Text(notification['uid']),
-            subtitle: Text(notification['isRead'].toString()),
+           leading: UserImage(userImageURL: userImageURL, length: 60.0, padding: 0.0),
+            title: Text(notification['userName']),
+            subtitle: Text(notification['comment']),
           )
         ],
       ),
