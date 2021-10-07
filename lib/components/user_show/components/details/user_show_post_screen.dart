@@ -93,7 +93,7 @@ class UserShowPostScreen extends StatelessWidget {
     return isLoading ?
     Loading()
     : JudgeScreen(
-      postDocs: postDocs, 
+      list: postDocs, 
       content: content
     );
     

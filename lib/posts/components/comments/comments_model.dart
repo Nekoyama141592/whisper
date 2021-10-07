@@ -62,9 +62,9 @@ class CommentsModel extends ChangeNotifier {
             ),
             RoundedButton(
               text: '送信', 
-              widthRate: 0.95, 
+              widthRate: 0.25, 
               verticalPadding: 10.0, 
-              horizontalPadding: 10.0, 
+              horizontalPadding: 0.0, 
               press: () async { 
                 await makeComment(currentSongDoc, currentUserDoc); 
                 comment = '';
@@ -84,7 +84,8 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
     await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc, currentUserDoc);
-    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc['userDocId']);
+    // セーフ
+    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc);
     await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
   }
 
@@ -118,7 +119,6 @@ class CommentsModel extends ChangeNotifier {
   Future updateCommentNotificationsOfPassiveUser(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
       List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
-
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': comment,
         'createdAt': Timestamp.now(),
@@ -127,7 +127,7 @@ class CommentsModel extends ChangeNotifier {
         'uid': currentUserDoc['uid'],
         'userDocId': currentUserDoc.id,
         'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['userImageURL'],
+        'userImageURL': currentUserDoc['imageURL'],
       };
       commentNotifications.add(newCommentNotificationMap);
       await FirebaseFirestore.instance
@@ -189,17 +189,17 @@ class CommentsModel extends ChangeNotifier {
   }
 
 
-  Future setPassiveUserDoc(String passiveUserDocId) async {
+  Future setPassiveUserDoc(DocumentSnapshot currentSongDoc) async {
     DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
-    .doc(passiveUserDocId)
+    .doc(currentSongDoc['userDocId'])
     .get();
     return passiveUserDoc;
   }
 
   Future getNewCurrentSongDoc(DocumentSnapshot currentSongDoc) async {
     DocumentSnapshot newCurrentSongDoc = await FirebaseFirestore.instance
-    .collection('users')
+    .collection('posts')
     .doc(currentSongDoc.id)
     .get();
     return newCurrentSongDoc;

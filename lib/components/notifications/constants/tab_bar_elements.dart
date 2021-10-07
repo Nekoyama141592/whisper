@@ -4,6 +4,7 @@ class TabBarElements {
 }
 
 final List<TabBarElements>  tabBarElements= [
+  TabBarElements('comment'),
   TabBarElements('reply'),
   TabBarElements('official')
 ];

@@ -43,12 +43,11 @@ class FeedsPage extends ConsumerWidget {
     final feedsModel = watch(feedsProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.feedDocs;
-    final currentUserDoc = feedsModel.currentUserDoc;
 
     return isLoading ?
     Loading()
     : JudgeScreen(
-      postDocs: postDocs, 
+      list: postDocs, 
       content: PostCards(
         likedPostIds: likedPostIds, 
         bookmarkedPostIds: bookmarkedPostIds, 
@@ -72,7 +71,7 @@ class FeedsPage extends ConsumerWidget {
             feedsModel.isFirstSongNotifier, 
             () { feedsModel.onPreviousSongButtonPressed(); }, 
             feedsModel.playButtonNotifier, 
-            () { feedsModel.play(readPostIds, readPosts, currentUserDoc); }, 
+            () { feedsModel.play(readPostIds, readPosts, feedsModel.currentUserDoc); }, 
             () { feedsModel.pause(); }, 
             feedsModel.isLastSongNotifier, 
             () { feedsModel.onNextSongButtonPressed(); }
@@ -82,7 +81,7 @@ class FeedsPage extends ConsumerWidget {
         seek: feedsModel.seek, 
         currentSongDocNotifier: feedsModel.currentSongDocNotifier ,
         playButtonNotifier: feedsModel.playButtonNotifier, 
-        play: () { feedsModel.play(readPostIds, readPosts, currentUserDoc); }, 
+        play: () { feedsModel.play(readPostIds, readPosts, feedsModel.currentUserDoc); }, 
         pause: () { feedsModel.pause(); }, 
         currentUserDoc: feedsModel.currentUserDoc,
         refreshController: feedsModel.refreshController,

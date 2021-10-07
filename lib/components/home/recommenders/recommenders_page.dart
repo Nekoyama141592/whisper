@@ -45,7 +45,7 @@ class RecommendersPage extends ConsumerWidget {
     return isLoading ?
     Loading()
     : JudgeScreen(
-      postDocs: postDocs, 
+      list: postDocs, 
       content: PostCards(
         likedPostIds: likedPostIds, 
         bookmarkedPostIds: bookmarkedPostIds, 

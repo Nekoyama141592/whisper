@@ -41,7 +41,6 @@ class CommentCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: size.width * 0.98,
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(4.0))
@@ -55,7 +54,7 @@ class CommentCard extends StatelessWidget {
                   child: UserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0),
                 ),
                 SizedBox(
-                  width: size.width * 0.6,
+                  width: size.width * 0.53,
                   child: Column(
                     children: [
                       Text(comment['userName']),
