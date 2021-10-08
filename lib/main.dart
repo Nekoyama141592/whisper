@@ -69,8 +69,6 @@ class MyHomePage extends ConsumerWidget {
     final likes = mainModel.likes;
     final replyNotifications = mainModel.replyNotifications;
     final readPostIds = mainModel.readPostIds;
-    final readPosts = mainModel.readPosts;
-    final readNotificationIds = mainModel.readNotificationsIds;
 
     return Scaffold(
       body: mainModel.isLoading ?
@@ -92,8 +90,8 @@ class MyHomePage extends ConsumerWidget {
             likes: likes,
             replyNotifications: replyNotifications,
             readPostIds: readPostIds,
-            readPosts: readPosts,
-            readNotificationIds: readNotificationIds
+            readPosts: mainModel.readPosts,
+            readNotificationIds: mainModel.readNotificationsIds
           ),
           SearchPage(
             mainModel: mainModel,
@@ -109,9 +107,21 @@ class MyHomePage extends ConsumerWidget {
             bookmarks: bookmarks,
             likes: likes,
             readPostIds: readPostIds,
-            readPosts: readPosts,
+            readPosts: mainModel.readPosts,
           ),
-          UserShowPage(currentUserDoc: mainModel.currentUserDoc, passiveUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,readPostIds: readPostIds,readPosts: readPosts)
+          UserShowPage(
+            currentUserDoc: mainModel.currentUserDoc, 
+            passiveUserDoc: mainModel.currentUserDoc, 
+            bookmarkedPostIds: bookmarkedPostIds, 
+            likedPostIds: likedPostIds, 
+            followingUids: followingUids,
+            likedCommentIds: likedCommentIds,
+            likedComments: likedComments,
+            bookmarks: bookmarks,
+            likes: likes,
+            readPostIds: readPostIds,
+            readPosts: mainModel.readPosts
+          )
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),
