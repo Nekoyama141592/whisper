@@ -14,21 +14,26 @@ class CommentNotificationCard extends ConsumerWidget {
     Key? key,
     required this.notification,
     required this.currentUserDoc,
-    required this.readNotificationIds
   }) : super(key: key);
   
   final Map<String,dynamic> notification;
   final DocumentSnapshot currentUserDoc;
-  final List<dynamic> readNotificationIds;
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
 
     final notificationModel = watch(notificationProvider);
+    final readNotificationIds = notificationModel.localReadNotificationIds;
     final userImageURL = notification['userImageURL'];
     final String notificationId = notification['notificationId'];
     return InkWell(
-      onTap: () async {
-        await notificationModel.updateReadNotificationIdsOfCurrentUser(currentUserDoc, notificationId, readNotificationIds);
+      onTap: notificationModel.isLoading ? 
+      null : 
+      () async {
+        print(notificationModel.localReadNotificationIds);
+        print(notificationId);
+        if (!readNotificationIds.contains(notificationId)) {
+          await notificationModel.resetReadNotificationIdsOfCurrentUser(notificationId);
+        }
       },
       child: Card(
         child: Column(

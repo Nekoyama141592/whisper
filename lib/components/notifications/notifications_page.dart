@@ -21,7 +21,6 @@ class NotificationsPage extends StatelessWidget {
     required this.themeModel,
     required this.bookmarkedPostIds,
     required this.replyNotifications,
-    required this.readNotificationIds,
     required this.likedPostIds,
     required this.currentUserDoc
   });
@@ -30,7 +29,6 @@ class NotificationsPage extends StatelessWidget {
   final List bookmarkedPostIds;
   final List likedPostIds;
   final List replyNotifications;
-  final List readNotificationIds;
   final ThemeModel themeModel;
   final DocumentSnapshot currentUserDoc;
 
@@ -67,7 +65,7 @@ class NotificationsPage extends StatelessWidget {
         drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: TabBarView(
           children: [
-            CommentNotifications(currentUserDoc: currentUserDoc,readNotificationIds: readNotificationIds,),
+            CommentNotifications(currentUserDoc: currentUserDoc),
             ReplyNotifications(replyNotifications: replyNotifications),
             OfficialNotifications(),
           ]

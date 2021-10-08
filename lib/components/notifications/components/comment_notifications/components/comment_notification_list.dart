@@ -10,11 +10,9 @@ class CommentNotificationList extends StatelessWidget {
   const CommentNotificationList({
     Key? key,
     required this.currentUserDoc,
-    required this.readNotificationIds
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final List<dynamic> readNotificationIds;
 
   @override
 
@@ -23,7 +21,7 @@ class CommentNotificationList extends StatelessWidget {
     return ListView.builder(
       itemCount: commentNotifications.length,
       itemBuilder: (BuildContext context, int i) => 
-      CommentNotificationCard(notification: commentNotifications[i],currentUserDoc: currentUserDoc,readNotificationIds: readNotificationIds,)
+      CommentNotificationCard(notification: commentNotifications[i],currentUserDoc: currentUserDoc)
     );
   }
 

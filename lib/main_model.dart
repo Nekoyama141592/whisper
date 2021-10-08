@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -11,9 +12,12 @@ final mainProvider = ChangeNotifierProvider(
 
 class MainModel extends ChangeNotifier {
 
+  // base
+  bool isLoading = false;
+  // user
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
-  bool isLoading = false;
+  
   List<String> likedPostIds = [];
   List<String> bookmarkedPostIds = [];
   List<dynamic> followingUids = [];
@@ -23,7 +27,7 @@ class MainModel extends ChangeNotifier {
   List<dynamic> likes = [];
   List<dynamic> readPosts = [];
   List<dynamic> readPostIds = [];
-  List<dynamic> readNotificationsIds = [];
+  List<String> readNotificationsIds = [];
   List<dynamic> replyNotifications = [];
 
   MainModel() {
@@ -38,7 +42,7 @@ class MainModel extends ChangeNotifier {
     getFollowingUids();
     getLikedCommentIds();
     getReadPost();
-    getReadNotifiationIds();
+    getReadNotificationIds();
     getReplyNotifications();
     endLoading();
   }
@@ -116,11 +120,10 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  void getReadNotifiationIds() {
-    List<dynamic> readNotifications = currentUserDoc['readNotificationIds'];
-    readNotifications.forEach((readNotification) {
-      readNotificationsIds.add(readNotification['notificationId']);
-    });
+  Future getReadNotificationIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
+    print(readNotificationsIds);
   }
 
   void getReplyNotifications() {

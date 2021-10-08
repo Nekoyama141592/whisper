@@ -1,8 +1,8 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final notificationProvider = ChangeNotifierProvider(
   (ref) => NotificationModel()
@@ -10,18 +10,42 @@ final notificationProvider = ChangeNotifierProvider(
 
 class NotificationModel extends ChangeNotifier {
   
-  Future updateReadNotificationIdsOfCurrentUser(DocumentSnapshot currentUserDoc,String notificationId,List<dynamic> readNotificationIds) async {
-    try{
-      readNotificationIds.add(notificationId);
-      notifyListeners();
-      await FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUserDoc.id)
-      .update({
-        'readNotificationIds': readNotificationIds
-      });
-    } catch(e) {
-      print(e.toString());
-    }
+  late SharedPreferences prefs;
+  bool isLoading = false;
+  List<String> localReadNotificationIds = [];
+
+  NotificationModel() {
+    init();
+  }
+  
+  Future init() async {
+    startLoading();
+    await setPrefs();
+    getReadNotificationIds();
+    endLoading();
+  }
+
+  void startLoading() {
+    isLoading = true;
+  }
+
+  Future setPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void getReadNotificationIds() {
+    localReadNotificationIds = prefs.getStringList('readNotificationIds') ?? [];
+  }
+
+  void endLoading() {
+    isLoading = false;
+  }
+
+  Future resetReadNotificationIdsOfCurrentUser(String notificationId) async {
+    localReadNotificationIds.add(notificationId);
+    localReadNotificationIds.remove(null);
+    notifyListeners();
+    await prefs.setStringList('readNotificationIds', localReadNotificationIds);
+    print('success');
   }
 }

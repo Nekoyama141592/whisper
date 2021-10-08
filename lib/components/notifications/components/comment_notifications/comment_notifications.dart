@@ -11,16 +11,14 @@ class CommentNotifications extends StatelessWidget {
   const CommentNotifications({
     Key? key,
     required this.currentUserDoc,
-    required this.readNotificationIds
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final List<dynamic> readNotificationIds;
 
   @override 
   Widget build(BuildContext context) {
     final list = currentUserDoc['commentNotifications'];
-    final content = CommentNotificationList(currentUserDoc: currentUserDoc,readNotificationIds: readNotificationIds,);
+    final content = CommentNotificationList(currentUserDoc: currentUserDoc);
     return NotificationJudgeScreen(list: list, content: content);
   }
 }

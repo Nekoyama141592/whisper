@@ -28,7 +28,7 @@ class NotificationIcon extends StatelessWidget {
   final List likedPostIds;
   final List replyNotifications;
   final DocumentSnapshot currentUserDoc;
-  final List readNotificationIds;
+  final List<String> readNotificationIds;
   @override  
   Widget build(BuildContext context) {
     return 
@@ -44,7 +44,6 @@ class NotificationIcon extends StatelessWidget {
             likedPostIds,
             replyNotifications,
             currentUserDoc,
-            readNotificationIds,
           );
         },
         child: replyNotifications.isNotEmpty  || currentUserDoc['commentNotifications'].isNotEmpty ?

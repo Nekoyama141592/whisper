@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
   final List replyNotifications;
   final List readPostIds;
   final List readPosts;
-  final List readNotificationIds;
+  final List<String> readNotificationIds;
 
   @override  
   Widget build(BuildContext context) {

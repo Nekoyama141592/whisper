@@ -80,7 +80,6 @@ db{
         mutesUids:[
             String
         ],
-        readNotificationIds: [ String ]
         readPosts: [{
             'createdAt': TimeStamp,
             'postId': String
