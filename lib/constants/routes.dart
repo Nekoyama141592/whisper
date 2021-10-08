@@ -21,6 +21,7 @@ import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.da
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';
+import 'package:whisper/posts/components/replys/replys_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -30,6 +31,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/auth/account/account_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/posts/components/replys/replys_model.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -92,6 +94,10 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
 
 void toCommentsPage(context,List<dynamic> likedCommentIds, List<dynamic> likedComments,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDoc: currentSongDocNotifier.value!,currentUserDoc: currentUserDoc,) ));
+}
+
+void toReplysPage(context,ReplysModel replysModel, List<DocumentSnapshot> replyDocs,DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, replyDocs: replyDocs, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: thisComment) ));
 }
 
 
