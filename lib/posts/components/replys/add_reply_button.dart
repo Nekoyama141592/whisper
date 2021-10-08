@@ -5,9 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // model
 import 'package:whisper/posts/components/replys/replys_model.dart';
 
-class ReplyButton extends StatelessWidget {
+class AddReplyButton extends StatelessWidget {
 
-  const ReplyButton({
+  const AddReplyButton({
     Key? key,
     required this.replysModel,
     required this.currentSongDoc,
