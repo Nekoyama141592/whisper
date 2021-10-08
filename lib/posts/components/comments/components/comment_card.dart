@@ -5,9 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
-import 'package:whisper/posts/components/replys/add_reply_button.dart';
-import 'package:whisper/posts/components/replys/reply_card/reply_card.dart';
-import 'package:whisper/posts/components/replys/reply_card/components/show_replys_button.dart';
+import 'package:whisper/posts/components/replys/components/reply_card/components/show_replys_button.dart';
 // models
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -34,8 +32,6 @@ class CommentCard extends StatelessWidget {
   @override  
   Widget build(BuildContext context){
     final commentId = comment['commentId'];
-    final replyEditingController = TextEditingController();
-    final thisComment = comment;
     
     return Card(
       child: SingleChildScrollView(
@@ -69,7 +65,7 @@ class CommentCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      AddReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, replyEditingController: replyEditingController, currentUserDoc: currentUserDoc, thisComment: thisComment),
+                      // AddReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, replyEditingController: replyEditingController, currentUserDoc: currentUserDoc, thisComment: thisComment),
                       CommentLikeButton(commentsModel: commentsModel, currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: likedCommentIds, commentId: commentId,likedComments: likedComments),
                       if(comment['uid'] == currentSongDoc['uid'] ) ShowReplyButton(replysModel: replysModel) 
                     ],
