@@ -25,12 +25,11 @@ class CommentNotificationCard extends ConsumerWidget {
     final readNotificationIds = notificationModel.localReadNotificationIds;
     final userImageURL = notification['userImageURL'];
     final String notificationId = notification['notificationId'];
+
     return InkWell(
       onTap: notificationModel.isLoading ? 
       null : 
       () async {
-        print(notificationModel.localReadNotificationIds);
-        print(notificationId);
         if (!readNotificationIds.contains(notificationId)) {
           await notificationModel.resetReadNotificationIdsOfCurrentUser(notificationId);
         }
