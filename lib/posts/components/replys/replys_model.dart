@@ -13,7 +13,7 @@ final replysProvider = ChangeNotifierProvider(
 class ReplysModel extends ChangeNotifier {
 
   String reply = "";
-
+  List<DocumentSnapshot> replyDocs = [];
 
   void onAddReplyButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
     showDialog(
@@ -67,6 +67,26 @@ class ReplysModel extends ChangeNotifier {
         );
       }
     );
+  }
+
+  Future getReplyDocs(BuildContext context) async {
+    try{
+      await FirebaseFirestore.instance
+      .collection('replys')
+      .get()
+      .then((qshot) {
+        if (qshot.docs.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('まだリプライはありません')));
+        } else {
+            qshot.docs.forEach((DocumentSnapshot doc) {
+            replyDocs.add(doc);
+          });
+          notifyListeners();
+        }
+      });
+    } catch(e) {
+      print(e.toString());
+    }
   }
 
   Future makeReply(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
