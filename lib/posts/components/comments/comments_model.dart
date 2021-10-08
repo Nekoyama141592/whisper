@@ -94,7 +94,7 @@ class CommentsModel extends ChangeNotifier {
     try{
       final commentMap = {
         'comment': comment,
-        'commentId': currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
+        'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'createdAt': Timestamp.now(),
         'likesUids': [],
         'uid': currentUserDoc['uid'],
@@ -122,6 +122,7 @@ class CommentsModel extends ChangeNotifier {
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': comment,
         'createdAt': Timestamp.now(),
+        'notificationId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'postId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'postTitle': currentSongDoc['title'],
         'uid': currentUserDoc['uid'],

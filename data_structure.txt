@@ -47,6 +47,7 @@ db{
         commentNotifications: [{
             'comment': String,
             'createdAt': TimeStamp,
+            'notificationId': String,
             'postId': notificationId,
             'postTitle': String,
             'uid': String,

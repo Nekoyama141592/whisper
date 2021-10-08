@@ -18,7 +18,8 @@ class NotificationIcon extends StatelessWidget {
     required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.replyNotifications,
-    required this.currentUserDoc
+    required this.currentUserDoc,
+    required this.readNotificationIds
   }) : super(key: key);
 
   final MainModel mainModel;
@@ -27,6 +28,7 @@ class NotificationIcon extends StatelessWidget {
   final List likedPostIds;
   final List replyNotifications;
   final DocumentSnapshot currentUserDoc;
+  final List readNotificationIds;
   @override  
   Widget build(BuildContext context) {
     return 
@@ -41,7 +43,8 @@ class NotificationIcon extends StatelessWidget {
             bookmarkedPostIds, 
             likedPostIds,
             replyNotifications,
-            currentUserDoc
+            currentUserDoc,
+            readNotificationIds,
           );
         },
         child: replyNotifications.isNotEmpty  || currentUserDoc['commentNotifications'].isNotEmpty ?

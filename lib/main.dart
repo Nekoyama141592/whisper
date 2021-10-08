@@ -70,7 +70,8 @@ class MyHomePage extends ConsumerWidget {
     final replyNotifications = mainModel.replyNotifications;
     final readPostIds = mainModel.readPostIds;
     final readPosts = mainModel.readPosts;
-    
+    final readNotificationIds = mainModel.readNotificationsIds;
+
     return Scaffold(
       body: mainModel.isLoading ?
       Loading()
@@ -92,6 +93,7 @@ class MyHomePage extends ConsumerWidget {
             replyNotifications: replyNotifications,
             readPostIds: readPostIds,
             readPosts: readPosts,
+            readNotificationIds: readNotificationIds
           ),
           SearchPage(
             mainModel: mainModel,

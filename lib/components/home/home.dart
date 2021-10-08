@@ -27,7 +27,8 @@ class Home extends StatelessWidget {
     required this.likes,
     required this.replyNotifications,
     required this.readPostIds,
-    required this.readPosts
+    required this.readPosts,
+    required this.readNotificationIds
   }) : super(key: key);
   
   final MainModel mainModel;
@@ -41,6 +42,7 @@ class Home extends StatelessWidget {
   final List replyNotifications;
   final List readPostIds;
   final List readPosts;
+  final List readNotificationIds;
 
   @override  
   Widget build(BuildContext context) {
@@ -56,7 +58,15 @@ class Home extends StatelessWidget {
             )
           ),
           actions: [
-            NotificationIcon(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, replyNotifications: replyNotifications, currentUserDoc: currentUserDoc)
+            NotificationIcon(
+              mainModel: mainModel, 
+              themeModel: themeModel, 
+              bookmarkedPostIds: bookmarkedPostIds, 
+              likedPostIds: likedPostIds, 
+              replyNotifications: replyNotifications, 
+              currentUserDoc: currentUserDoc,
+              readNotificationIds: readNotificationIds,
+            )
           ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
