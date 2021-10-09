@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/details/loading.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 // models
@@ -47,9 +46,7 @@ class CommentsPage extends ConsumerWidget {
       ),
 
       body: SafeArea(
-        child: replysModel.isLoading ?
-        Loading() 
-        : Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(

@@ -87,6 +87,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future getReplyDocs(BuildContext context,Map<String,dynamic> thisComment) async {
+    isReplysMode = true;
     startLoading();
     thisComment = thisComment;
     try{
@@ -106,7 +107,6 @@ class ReplysModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
-    isReplysMode = true;
     endLoading();
   }
 

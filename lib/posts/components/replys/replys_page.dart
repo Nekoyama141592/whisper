@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/details/loading.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/replys/components/reply_card/reply_card.dart';
@@ -37,7 +38,9 @@ class ReplysPage extends StatelessWidget {
         },
       ),
       body: SafeArea(
-        child: Column(
+        child: replysModel.isLoading ?
+        Loading()
+        : Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
