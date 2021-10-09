@@ -80,31 +80,33 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
-    didCommented = true;
-    notifyListeners();
+    makeCommentMap(currentUserDoc, currentSongDoc);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
-    await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc, currentUserDoc);
-    // セーフ
+    await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc);
     final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc);
     await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
   }
 
+  Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) {
+    final commentMap = {
+      'comment': comment,
+      'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
+      'createdAt': Timestamp.now(),
+      'likesUids': [],
+      'uid': currentUserDoc['uid'],
+      'userName': currentUserDoc['userName'],
+      'userImageURL': currentUserDoc['imageURL'],
+    };
+    comments = currentSongDoc['comments'];
+    comments.add(commentMap);
+    didCommented = true;
+    notifyListeners();
+    return commentMap;
+  }
 
-  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot newCurrentSongDoc, DocumentSnapshot currentUserDoc) async {
+
+  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot newCurrentSongDoc) async {
     try{
-      final commentMap = {
-        'comment': comment,
-        'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
-        'createdAt': Timestamp.now(),
-        'likesUids': [],
-        'uid': currentUserDoc['uid'],
-        'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['imageURL'],
-      };
-      comments = newCurrentSongDoc['comments'];
-      
-      comments.add(commentMap);
-      print(comments.length.toString());
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
