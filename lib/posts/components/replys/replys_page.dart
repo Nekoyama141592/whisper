@@ -41,7 +41,7 @@ class ReplysPage extends StatelessWidget {
         child: replysModel.isLoading ?
         Loading()
         : Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -65,7 +65,7 @@ class ReplysPage extends StatelessWidget {
                 itemBuilder: (BuildContext context,int i) {
                   return ReplyCard(reply: replyMaps[i],replysModel: replysModel);
                 }
-              )
+              ),
             ) : Column(
               children: [
                 SizedBox(height: size.height * 0.25,),

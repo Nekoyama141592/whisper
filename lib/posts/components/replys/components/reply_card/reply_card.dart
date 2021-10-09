@@ -20,11 +20,17 @@ class ReplyCard extends StatelessWidget {
     final length = 60.0;
     final padding = 0.0;
 
-    return reply['commentId'] == replysModel.thisComment['commentId'] ?
+    return reply['commentId'] == replysModel.giveComment['commentId'] ?
     ListTile(
       leading: UserImage(userImageURL: userImageURL, length: length, padding: padding),
       title: Text(reply['userName']),
-      subtitle: Text('reply'),
+      subtitle: Text(
+        reply['commentId'].toString(),
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+        ),
+      ),
     ) : SizedBox.shrink();
   }
 

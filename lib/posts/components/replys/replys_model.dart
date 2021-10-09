@@ -16,7 +16,7 @@ class ReplysModel extends ChangeNotifier {
   List<Map<String,dynamic>> replyMaps = [];
   bool isLoading = false;
   bool isReplysMode = false;
-  Map<String,dynamic> thisComment = {};
+  Map<String,dynamic> giveComment = {};
 
   void reload() {
     notifyListeners();
@@ -69,7 +69,7 @@ class ReplysModel extends ChangeNotifier {
             ),
             RoundedButton(
               text: '送信', 
-              widthRate: 0.95, 
+              widthRate: 0.25, 
               verticalPadding: 10.0, 
               horizontalPadding: 10.0, 
               press: () async { 
@@ -89,7 +89,7 @@ class ReplysModel extends ChangeNotifier {
   Future getReplyDocs(BuildContext context,Map<String,dynamic> thisComment) async {
     isReplysMode = true;
     startLoading();
-    thisComment = thisComment;
+    giveComment = thisComment;
     try{
       await FirebaseFirestore.instance
       .collection('replys')
@@ -113,11 +113,52 @@ class ReplysModel extends ChangeNotifier {
 
   Future makeReply(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
     final commentId = thisComment['commentId'];
+    makeReplyMap(commentId, currentUserDoc);
     await addReplyToFirestore(commentId, currentUserDoc);
-    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc.id);
+    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc['userDocId']);
     await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc, currentUserDoc, thisComment);
   }
+
+  void makeReplyMap(String commentId,DocumentSnapshot currentUserDoc) {
+    final map = {
+      'commentId': commentId,
+      'createdAt': Timestamp.now(),
+      'likesUids': [],
+      'reply': reply,
+      'uid': currentUserDoc['uid'],
+      'userName': currentUserDoc['userName'],
+      'userImageURL': currentUserDoc['imageURL'],
+    };
+    replyMaps.add(map);
+    notifyListeners();
+  }
   
+  Future addReplyToFirestore(String commentId, DocumentSnapshot currentUserDoc) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('replys')
+      .add({
+        'commentId': commentId,
+        'createdAt': Timestamp.now(),
+        'likesUids': [],
+        'reply': reply,
+        'uid': currentUserDoc['uid'],
+        'userName': currentUserDoc['userName'],
+        'userImageURL': currentUserDoc['imageURL'],
+      });
+    } catch(e) {
+      print(e.toString());
+    }
+  }
+
+  Future setPassiveUserDoc(String passiveUserDocId) async {
+    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
+    .collection('users')
+    .doc(passiveUserDocId)
+    .get();
+    return passiveUserDoc;
+  }
+
   Future updateReplyNotificationsOfPassiveUser(String commentId,DocumentSnapshot passiveUserDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
 
     final String notificationId = 'replyNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
@@ -139,32 +180,6 @@ class ReplysModel extends ChangeNotifier {
     .update({
       'replyNotifications': replyNotifications,
     });
-  }
-
-  Future setPassiveUserDoc(String passiveUserDocId) async {
-    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
-    .collection('users')
-    .doc(passiveUserDocId)
-    .get();
-    return passiveUserDoc;
-  }
-
-  Future addReplyToFirestore(String commentId, DocumentSnapshot currentUserDoc) async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('replys')
-      .add({
-        'commentId': commentId,
-        'createdAt': Timestamp.now(),
-        'likesUids': [],
-        'reply': reply,
-        'uid': currentUserDoc['uid'],
-        'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['imageURL'],
-      });
-    } catch(e) {
-      print(e.toString());
-    }
   }
 
   Future updateLikedReplyDocsOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot thisReply) async {

@@ -32,7 +32,7 @@ class CommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return replysModel.isReplysMode ?
-    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.thisComment)
+    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.giveComment)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -63,7 +63,7 @@ class CommentsPage extends ConsumerWidget {
                 ),
               ],
             ),
-            currentSongDoc['comments'].isNotEmpty ?
+            currentSongDoc['comments'].isNotEmpty  || commentsModel.comments.isNotEmpty ?
             Expanded(
               child: ListView.builder(
                 itemCount: commentsModel.didCommented ? commentsModel.comments.length :  currentSongDoc['comments'].length,

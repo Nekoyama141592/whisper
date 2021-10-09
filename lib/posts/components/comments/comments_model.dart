@@ -87,7 +87,7 @@ class CommentsModel extends ChangeNotifier {
     await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
   }
 
-  Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) {
+  void makeCommentMap(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) {
     final commentMap = {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
@@ -101,7 +101,6 @@ class CommentsModel extends ChangeNotifier {
     comments.add(commentMap);
     didCommented = true;
     notifyListeners();
-    return commentMap;
   }
 
 
