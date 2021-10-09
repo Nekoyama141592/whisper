@@ -6,7 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
+import 'package:whisper/details/loading.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
+import 'package:whisper/posts/components/replys/replys_page.dart';
 // models
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -30,7 +32,9 @@ class CommentsPage extends ConsumerWidget {
     final replysModel = watch(replysProvider);
     final commentEditingController = TextEditingController();
 
-    return Scaffold(
+    return replysModel.isReplysMode ?
+    ReplysPage(replysModel: replysModel, replyDocs: replysModel.replyDocs, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.thisComment)
+    : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.new_label,
@@ -43,7 +47,9 @@ class CommentsPage extends ConsumerWidget {
       ),
 
       body: SafeArea(
-        child: Column(
+        child: replysModel.isLoading ?
+        Loading() 
+        : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(

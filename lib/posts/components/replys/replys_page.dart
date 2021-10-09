@@ -31,6 +31,7 @@ class ReplysPage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).highlightColor,
         child: Icon(Icons.add_comment),
         onPressed: () {
           replysModel.onAddReplyButtonPressed(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
@@ -48,7 +49,8 @@ class ReplysPage extends StatelessWidget {
                     color: Theme.of(context).focusColor,
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context);
+                      replysModel.isReplysMode = false;
+                      replysModel.reload();
                     }, 
                   ),
                 ),
@@ -59,7 +61,7 @@ class ReplysPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: replyDocs.length,
                 itemBuilder: (BuildContext context,int i) {
-                  return ReplyCard(reply: replyDocs[i]);
+                  return ReplyCard(reply: replyDocs[i],replysModel: replysModel);
                 }
               )
             ) : Nothing()

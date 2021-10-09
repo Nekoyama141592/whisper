@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // constants
-import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/posts/components/replys/replys_model.dart';
 
@@ -23,8 +22,7 @@ class ShowReplyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        await replysModel.getReplyDocs(context);
-        routes.toReplysPage(context, replysModel, replysModel.replyDocs, currentSongDoc, currentUserDoc, thisComment);
+        await replysModel.getReplyDocs(context,thisComment);
       }, 
       icon: Icon(Icons.mode_comment)
     );

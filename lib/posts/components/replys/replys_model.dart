@@ -14,6 +14,23 @@ class ReplysModel extends ChangeNotifier {
 
   String reply = "";
   List<DocumentSnapshot> replyDocs = [];
+  bool isLoading = false;
+  bool isReplysMode = false;
+  Map<String,dynamic> thisComment = {};
+
+  void reload() {
+    notifyListeners();
+  }
+
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  void endLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
 
   void onAddReplyButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
     showDialog(
@@ -69,7 +86,9 @@ class ReplysModel extends ChangeNotifier {
     );
   }
 
-  Future getReplyDocs(BuildContext context) async {
+  Future getReplyDocs(BuildContext context,Map<String,dynamic> thisComment) async {
+    startLoading();
+    thisComment = thisComment;
     try{
       await FirebaseFirestore.instance
       .collection('replys')
@@ -87,6 +106,8 @@ class ReplysModel extends ChangeNotifier {
     } catch(e) {
       print(e.toString());
     }
+    isReplysMode = true;
+    endLoading();
   }
 
   Future makeReply(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
