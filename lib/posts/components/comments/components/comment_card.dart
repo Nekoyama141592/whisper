@@ -65,7 +65,6 @@ class CommentCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      // AddReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, replyEditingController: replyEditingController, currentUserDoc: currentUserDoc, thisComment: thisComment),
                       CommentLikeButton(commentsModel: commentsModel, currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: likedCommentIds, commentId: commentId,likedComments: likedComments),
                       if(comment['uid'] == currentSongDoc['uid'] ) ShowReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: comment)
                     ],
