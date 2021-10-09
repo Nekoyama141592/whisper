@@ -54,7 +54,7 @@ class SearchInputField extends StatelessWidget {
           ),
           hintText: 'Search...',
           hintStyle: TextStyle(
-            color: Colors.black
+            color: Colors.black.withOpacity(0.5)
           ),
           border: InputBorder.none
         ),
