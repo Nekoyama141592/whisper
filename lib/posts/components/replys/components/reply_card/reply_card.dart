@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 // model
@@ -15,7 +13,7 @@ class ReplyCard extends StatelessWidget {
     required this.replysModel
   }) : super(key: key);
 
-  final DocumentSnapshot reply;
+  final Map<String,dynamic> reply;
   final ReplysModel replysModel;
   Widget build(BuildContext context) {
     final String userImageURL = reply['userImageURL'];

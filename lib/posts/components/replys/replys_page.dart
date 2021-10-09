@@ -14,14 +14,14 @@ class ReplysPage extends StatelessWidget {
   const ReplysPage({
     Key? key,
     required this.replysModel,
-    required this.replyDocs,
+    required this.replyMaps,
     required this.currentSongDoc,
     required this.currentUserDoc,
     required this.thisComment
   }) : super(key: key);
 
   final ReplysModel replysModel;
-  final List<DocumentSnapshot> replyDocs;
+  final List<Map<String,dynamic>> replyMaps;
   final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
@@ -58,12 +58,12 @@ class ReplysPage extends StatelessWidget {
                 ),
               ],
             ),
-            replyDocs.isNotEmpty ?
+            replyMaps.isNotEmpty ?
             Expanded(
               child: ListView.builder(
-                itemCount: replyDocs.length,
+                itemCount: replyMaps.length,
                 itemBuilder: (BuildContext context,int i) {
-                  return ReplyCard(reply: replyDocs[i],replysModel: replysModel);
+                  return ReplyCard(reply: replyMaps[i],replysModel: replysModel);
                 }
               )
             ) : Column(

@@ -32,7 +32,7 @@ class CommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return replysModel.isReplysMode ?
-    ReplysPage(replysModel: replysModel, replyDocs: replysModel.replyDocs, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.thisComment)
+    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.thisComment)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(

@@ -13,7 +13,7 @@ final replysProvider = ChangeNotifierProvider(
 class ReplysModel extends ChangeNotifier {
 
   String reply = "";
-  List<DocumentSnapshot> replyDocs = [];
+  List<Map<String,dynamic>> replyMaps = [];
   bool isLoading = false;
   bool isReplysMode = false;
   Map<String,dynamic> thisComment = {};
@@ -99,7 +99,8 @@ class ReplysModel extends ChangeNotifier {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('まだリプライはありません')));
         } else {
             qshot.docs.forEach((DocumentSnapshot doc) {
-            replyDocs.add(doc);
+              final map = doc.data() as Map<String,dynamic>;
+              replyMaps.add(map);
           });
           notifyListeners();
         }
