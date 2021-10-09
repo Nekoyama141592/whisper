@@ -1,11 +1,12 @@
+// material
 import 'package:flutter/material.dart';
-
+// package
 import 'package:firebase_auth/firebase_auth.dart';
-
+// components
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/details/rounded_button.dart';
+// model
 import 'package:whisper/auth/account/account_model.dart';
-import 'package:whisper/constants/colors.dart';
 
 class ReauthenticationPage extends StatelessWidget {
 

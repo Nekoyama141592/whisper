@@ -50,20 +50,11 @@ class AccountModel extends ChangeNotifier {
       }
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
-        case 'user-mismatch':
-        print('それは今、お使いのアカウントではありません');
-        break;
-        case 'user-not-found':
-        print('そのようなユーザーは見つかりません');
-        break;
         case 'invalid-email':
-        print('そのメールアドレスは運営によって無効化されています');
-        break;
-        case 'invalid-credential':
-        print('invalid-credential');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスは不敵です')));
         break;
         case 'wrong-password':
-        print('passwordが違います');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが違います')));
         break;
       }
     }

@@ -31,21 +31,24 @@ class LoginModel extends ChangeNotifier {
 
   Future login(context) async {
     try {
-      await FirebaseAuth.instance
-      .signInWithEmailAndPassword(
-        email: email, 
-        password: password
-      );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       routes.toMyApp(context);
     } on FirebaseAuthException catch(e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      } else {
-        print(e.toString());
+      switch(e.code) {
+        case 'invalid-email':
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスは不適です')));
+        break;
+        case 'user-disabled':
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスは無効化されています')));
+        break;
+        case 'user-not-found':
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスを持つユーザーが見つかりません')));
+        break;
+        case 'wrong-password':
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが違います')));
+        break;
       }
-    }
+    } 
   }
   
 }

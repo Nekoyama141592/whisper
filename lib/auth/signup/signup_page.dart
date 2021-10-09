@@ -29,16 +29,6 @@ class SignupPage extends ConsumerWidget {
       children: [
         Scaffold(
           extendBodyBehindAppBar: false,
-          floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.image,
-              color: Colors.white,
-            ),
-            backgroundColor: kPrimaryColor,
-            onPressed: () async {
-              await signupModel.showImagePicker();
-            }
-          ),
           body: SafeArea(
             child: Container(
               width: double.infinity,
@@ -106,16 +96,17 @@ class SignupPage extends ConsumerWidget {
                                   )
                                   : Column(
                                     children: [
-                                      Icon(
-                                        Icons.image,
-                                        size: 160,
+                                      InkWell(
+                                        child: Icon(Icons.image,size: 160.0),
+                                        onTap: () async {
+                                          await signupModel.showImagePicker();
+                                        },
                                       ),
-                                      
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 5
                                         ),
-                                        child: Text('右下のボタンで写真を選択',style: TextStyle(fontWeight: FontWeight.bold),),
+                                        child: Text('上のアイコンをタップして写真を選択',style: TextStyle(fontWeight: FontWeight.bold),),
                                       )
                                     ],
                                   ),

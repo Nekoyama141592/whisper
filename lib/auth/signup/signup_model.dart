@@ -121,10 +121,11 @@ class SignupModel extends ChangeNotifier {
       addUserToFireStore(user!.uid);
       routes.toVerifyPage(context);
     } on FirebaseAuthException catch(e) {
+      print(e.code);
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'emain-already-in-use') {
-        print('The account already exists for that email.');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが弱いです')));
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスはすでに使われています')));
       } else {
         print(e.toString());
       }
