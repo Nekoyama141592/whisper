@@ -8,11 +8,12 @@ service cloud.firestore {
     match /users/{userId} {
       allow write: if 1 == 1;
       allow read: if isAuthenticated();
-      match /userName {
-        allow update: if 1 == 2;
-      }
     }
     match /posts/{postId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /replys/{replyId} {
       allow read, write: if isAuthenticated();
     }
     // match /{document=**} {
