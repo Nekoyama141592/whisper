@@ -85,7 +85,7 @@ class AddPostContent extends StatelessWidget {
               Column(
                 children: [
                   RoundedInputField(
-                    hintText: "Post title", 
+                    hintText: "タイトル", 
                     icon: Icons.graphic_eq, 
                     controller: postTitleController, 
                     onChanged:  (text) {
