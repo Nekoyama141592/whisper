@@ -213,16 +213,24 @@ class AddPostModel extends ChangeNotifier {
     postTitleNotifier.value = '';
     addPostStateNotifier.value = AddPostState.initialValue;
   }
-  
-  Future onUploadButtonPressed(context, DocumentSnapshot currentUserDoc) async {
-    startLoading();
-    await addPostToFirebase(context,currentUserDoc);
-    endLoading();
-  }
 
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
+
+  Future onUploadButtonPressed(context, DocumentSnapshot currentUserDoc) async {
+    if (postTitleNotifier.value.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
+    } else {
+      startLoading();
+      final String imageURL = croppedFile == null ? '' : await uploadImage();
+      final audioURL = await getPostUrl(context);
+      await addPostToFirebase(context,currentUserDoc,imageURL,audioURL);
+      endLoading();
+    }
+  }
+
+  
 
   Future<String> uploadImage() async {
     final String imageName = currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
@@ -244,15 +252,8 @@ class AddPostModel extends ChangeNotifier {
   }
 
   
-  Future addPostToFirebase(context,DocumentSnapshot currentUserDoc) async {
-    final String imageURL = croppedFile == null ? '' : await uploadImage();
-    if (postTitleNotifier.value.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('タイトルを入力してください'))
-      );
-    } else {
+  Future addPostToFirebase(context,DocumentSnapshot currentUserDoc,String imageURL,String audioURL) async {
       try {
-        final audioURL = await getPostUrl(context);
         await FirebaseFirestore.instance.collection('posts')
         .add({
           'audioURL': audioURL,
@@ -267,14 +268,12 @@ class AddPostModel extends ChangeNotifier {
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),
           'userDocId': currentUserDoc.id,
-          'userImageURL': currentUserDoc,
+          'userImageURL': currentUserDoc['imageURL'],
           'userName': currentUserDoc['userName'],
         });
-        
       } catch(e) {
         print(e.toString());
       }
-    }
   }
 
   void listenForStates() {
