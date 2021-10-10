@@ -68,7 +68,7 @@ class AccountModel extends ChangeNotifier {
           title: Text('ログアウト'),
           content: Text('ログアウトしますか？'),
           actions: [
-            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel')),
+            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel',style: TextStyle(color: Theme.of(context).focusColor,fontWeight: FontWeight.bold),)),
             RoundedButton(
               text: 'OK', 
               widthRate: 0.2, 

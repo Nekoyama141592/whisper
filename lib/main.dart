@@ -14,6 +14,7 @@ import 'package:whisper/components/whisper_bottom_navigation_bar/whisper_bottom_
 // pages
 import 'package:whisper/components/home/home.dart';
 import 'auth/signup/signup_page.dart';
+import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/components/search/search_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 import 'package:whisper/components/add_post/other_pages/which_type.dart';
@@ -41,9 +42,10 @@ class MyApp extends ConsumerWidget {
       theme: themeModel.isDarkTheme ? darkThemeData(context) : lightThemeData(context),
       home: currentUser == null ? 
       SignupPage()
-      : MyHomePage(
+      : currentUser!.emailVerified ?
+      MyHomePage(
         themeModel: themeModel,
-      ),
+      ) : VerifyPage()
     );
   }
 }

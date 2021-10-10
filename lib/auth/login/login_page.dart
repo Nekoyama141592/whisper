@@ -8,8 +8,9 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/rounded_input_field.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
+import 'package:whisper/auth/components/forget_password_text.dart';
 import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 // models
 import 'package:whisper/auth/login/login_model.dart';
 
@@ -63,7 +64,7 @@ class LoginPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("ログイン", style: TextStyle(color: Colors.white, fontSize: 30)),
+                        Text("ログイン", style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
                         SizedBox(height: 10,),
                         Text("お帰りなさい", style: TextStyle(color: Colors.white, fontSize: 18),)
                       ],
@@ -114,7 +115,8 @@ class LoginPage extends ConsumerWidget {
                                 textColor: Colors.white,
                                 buttonColor: kQuaternaryColor
                               ),
-                            )
+                            ),
+                            ForgetPasswordText()
                           ]
                         ),
                       ),

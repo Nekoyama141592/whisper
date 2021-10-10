@@ -8,9 +8,7 @@ class AlreadyHaveAnAccount extends StatelessWidget{
 
   const AlreadyHaveAnAccount({
     Key? key,
-    required this.textColor
   }) : super(key: key);
-  final Color textColor;
 
   Widget build(BuildContext context) {
     return Padding(
@@ -31,7 +29,8 @@ class AlreadyHaveAnAccount extends StatelessWidget{
               TextSpan(
                 text: 'ログイン',
                 style: TextStyle(
-                  color: textColor,fontSize: 18,
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {

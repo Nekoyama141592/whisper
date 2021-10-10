@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/constants/colors.dart';
 // components
+import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/rounded_input_field.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/auth/components/already_have_an_account.dart';
-import 'package:whisper/auth/components/forget_password_text.dart';
+import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 // model
 import 'signup_model.dart';
 
@@ -30,7 +30,9 @@ class SignupPage extends ConsumerWidget {
         Scaffold(
           extendBodyBehindAppBar: false,
           body: SafeArea(
-            child: Container(
+            child: signupModel.isLoading ?
+            Loading()
+            : Container(
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -54,7 +56,7 @@ class SignupPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("新規登録", style: TextStyle(color: Colors.white, fontSize: 30)),
+                        Text("新規登録", style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
                         SizedBox(height: 10,),
                         Text("ようこそWhisperへ！", style: TextStyle(color: Colors.white, fontSize: 18),)
                       ],
@@ -133,19 +135,22 @@ class SignupPage extends ConsumerWidget {
                             SizedBox(height: 24),
                             Center(
                               child: RoundedButton(
-                                text: 'signup',
+                                text: '新規登録',
                                 widthRate: 0.8,
                                 verticalPadding: 20.0,
                                 horizontalPadding: 10.0,
                                 press: () async {
-                                  await signupModel.signup(context);
+                                  if (signupModel.croppedFile == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('写真を選択してください')));
+                                  } else {
+                                    await signupModel.signup(context);
+                                  }
                                 },
                                 textColor: Colors.white,
                                 buttonColor: kSecondaryColor,
                               ),
                             ),
-                            AlreadyHaveAnAccount(textColor: kTertiaryColor),
-                            ForgetPasswordText(textColor: kTertiaryColor,)
+                            AlreadyHaveAnAccount()
                           ]
                         ),
                       ),
@@ -156,12 +161,6 @@ class SignupPage extends ConsumerWidget {
             ),
           ),
         ),
-        signupModel.isLoading ?
-        Container(
-          color: Colors.grey.withOpacity(0.7),
-          child: Center(child: CircularProgressIndicator(),),
-        )
-        : SizedBox.shrink()
       ],
     );
   }

@@ -8,10 +8,8 @@ class ForgetPasswordText extends StatelessWidget {
   
   const ForgetPasswordText({
     Key? key,
-    required this.textColor
   }) : super(key: key);
 
-  final Color textColor;
   @override 
   Widget build(BuildContext context) {
     return Padding(
@@ -29,7 +27,8 @@ class ForgetPasswordText extends StatelessWidget {
               TextSpan(
                 text: 'パスワードを忘れた場合',
                 style: TextStyle(
-                  color: textColor,fontSize: 18
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 18
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {
                   routes.toVerifyPasswordResetPage(context);

@@ -31,7 +31,7 @@ class RoundedPasswordField extends ConsumerWidget {
           fontSize: 20,
           fontWeight: FontWeight.bold
         ),
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.visiblePassword,
         obscureText: _provider.isObscure,
         onChanged: onChanged,
         cursorColor: kPrimaryColor.withOpacity(0.7),

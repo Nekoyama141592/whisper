@@ -1,17 +1,19 @@
+// dart
 import 'dart:async';
 import 'dart:io';
-
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+// constants
 import 'package:whisper/constants/colors.dart';
-
 import 'package:whisper/constants/routes.dart' as routes;
+
 
 final signupProvider = ChangeNotifierProvider(
   (ref) => SignupModel()
@@ -119,6 +121,7 @@ class SignupModel extends ChangeNotifier {
       );
       User? user = result.user;
       addUserToFireStore(user!.uid);
+      uploadImage();
       routes.toVerifyPage(context);
     } on FirebaseAuthException catch(e) {
       print(e.code);

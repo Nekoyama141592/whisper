@@ -26,12 +26,13 @@ class UserShowButton extends StatelessWidget {
   final FollowModel followProvider;
   @override 
   Widget build(BuildContext context) {
+    final verticalPadding = 12.0;
     return userDoc.id == currentUserDoc.id ?
     // 変更
     RoundedButton(
       text: '編集', 
       widthRate: 0.25,
-      verticalPadding: 20.0,
+      verticalPadding: verticalPadding,
       horizontalPadding: 0.0,
       press: () {
         userShowProvider.onEditButtonPressed(currentUserDoc);
@@ -43,7 +44,7 @@ class UserShowButton extends StatelessWidget {
     RoundedButton(
       text: 'follow', 
       widthRate: 0.35,
-      verticalPadding: 20.0,
+      verticalPadding: verticalPadding,
       horizontalPadding: 10.0,
       press: () async {
         try {
@@ -60,7 +61,7 @@ class UserShowButton extends StatelessWidget {
     : RoundedButton(
       text: 'unfollow', 
       widthRate: 0.35,
-      verticalPadding: 20.0,
+      verticalPadding: verticalPadding,
       horizontalPadding: 10.0,
       press: () async {
         try {
