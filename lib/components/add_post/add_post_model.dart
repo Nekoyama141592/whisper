@@ -89,14 +89,12 @@ class AddPostModel extends ChangeNotifier {
         CropAspectRatioPreset.square,
       ]
       : [
-        // CropAspectRatioPreset.original,
         CropAspectRatioPreset.square,
       ],
       androidUiSettings: const AndroidUiSettings(
         toolbarTitle: 'Cropper',
         toolbarColor: kPrimaryColor,
         toolbarWidgetColor: Colors.white,
-        // initAspectRatio: CropAspectRatioPreset.original,
         initAspectRatio: CropAspectRatioPreset.square,
         lockAspectRatio: false
       ),
@@ -194,7 +192,7 @@ class AddPostModel extends ChangeNotifier {
       print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error occured while uploading')
+          content: Text('何らかのエラーが発生しました')
         )
       );
     }
