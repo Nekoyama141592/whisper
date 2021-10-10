@@ -31,7 +31,7 @@ class UserResult extends StatelessWidget {
           children: [
             ListTile(
               leading: UserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0),
-              title: Text(result['title']),
+              title: Text(result['userName']),
               subtitle: Text(
                 result['description'],
               ),

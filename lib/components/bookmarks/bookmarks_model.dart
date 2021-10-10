@@ -1,10 +1,10 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
@@ -18,13 +18,12 @@ final bookmarksProvider = ChangeNotifierProvider(
 );
 
 class BookMarksModel extends ChangeNotifier {
+  
   bool isLoading = false;
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
-  
-  List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -32,9 +31,8 @@ class BookMarksModel extends ChangeNotifier {
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
   // just_audio
-  
   late AudioPlayer audioPlayer;
-  final List<AudioSource> afterUris = [];
+  List<AudioSource> afterUris = [];
   // cloudFirestore
   List<String> bookmarkedPostIds = [];
   List<DocumentSnapshot> bookmarkedDocs = [];
@@ -45,6 +43,7 @@ class BookMarksModel extends ChangeNotifier {
   BookMarksModel() {
     init();
   }
+  
   void init() async {
     startLoading();
     audioPlayer = AudioPlayer();
@@ -272,9 +271,9 @@ class BookMarksModel extends ChangeNotifier {
       currentSongDocNotifier.value = currentSongDoc;
       // update playlist
       final playlist = sequenceState.effectiveSequence;
-      playlist.map((item) {
-        currentSongDocs.add(item.tag);
-      });
+      // playlist.map((item) {
+      //   currentSongDocs.add(item.tag);
+      // });
       // update shuffle mode
       isShuffleModeEnabledNotifier.value = 
       sequenceState.shuffleModeEnabled;
