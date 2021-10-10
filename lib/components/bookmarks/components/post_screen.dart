@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/gradient_screen.dart';
+import 'package:whisper/details/nothing.dart';
 // components
 import 'package:whisper/posts/components/details/post_cards.dart';
 // constants
@@ -53,7 +54,9 @@ class PostScreen extends StatelessWidget {
           ),
         ),
       ),
-      content: Padding(
+      content: postDocs.isEmpty ?
+      Nothing()
+      : Padding(
         padding: const EdgeInsets.only(
           top: 20.0
         ),

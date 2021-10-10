@@ -40,17 +40,15 @@ class RecommendersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final recommendersModel = watch(recommendersProvider);
-    final isLoading = recommendersModel.isLoading;
-    final postDocs = recommendersModel.recommenderDocs;
-    return isLoading ?
+    return recommendersModel.isLoading ?
     Loading()
     : JudgeScreen(
-      list: postDocs, 
+      list: recommendersModel.recommenderDocs ,
       content: PostCards(
         likedPostIds: likedPostIds, 
         bookmarkedPostIds: bookmarkedPostIds, 
         likes: likes,
-        postDocs: postDocs, 
+        postDocs: recommendersModel.recommenderDocs, 
         route: () {
           routes.toPostShowPage(
             context, 

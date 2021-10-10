@@ -18,7 +18,9 @@ final recommendersProvider = ChangeNotifierProvider(
 );
 class RecommendersModel extends ChangeNotifier {
 
+  // basic
   bool isLoading = false;
+  // user
   User? currentUser;
 
   // notifiers
@@ -31,13 +33,11 @@ class RecommendersModel extends ChangeNotifier {
   final playButtonNotifier = PlayButtonNotifier();
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  // just_audio
   
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
   // cloudFirestore
   List<String> recommenderPostIds = [];
-  List<String> followUids = [];
   List<String> mutesUids = [];
   List<DocumentSnapshot> recommenderDocs = [];
 
@@ -53,8 +53,6 @@ class RecommendersModel extends ChangeNotifier {
     startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
-    // await
-    // await setFollowUids();
     // await setMutes();
     await getRecommenders();
     listenForStates();
@@ -74,7 +72,7 @@ class RecommendersModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
-
+  
   Future onRefresh() async {
     audioPlayer = AudioPlayer();
     refreshIndex = defaultRefreshIndex;
@@ -104,6 +102,7 @@ class RecommendersModel extends ChangeNotifier {
         .orderBy('score', descending: true)
         .limit(oneTimeReadCount)
         .get();
+        print(snapshots.docs.length.toString() + 'snapshots');
         snapshots.docs.forEach((DocumentSnapshot? doc) {
           recommenderDocs.add(doc!);
           Uri song = Uri.parse(doc['audioURL']);
