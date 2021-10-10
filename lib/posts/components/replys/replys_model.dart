@@ -126,6 +126,7 @@ class ReplysModel extends ChangeNotifier {
       'likesUids': [],
       'reply': reply,
       'uid': currentUserDoc['uid'],
+      'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };

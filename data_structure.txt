@@ -10,6 +10,7 @@ db{
             commentId: String,
             createdAt: TimeStamp,
             likesUids: [ String ],
+            userDocId: String
             uid: String,
             userName: String,
             userImageURL: String,
@@ -36,6 +37,7 @@ db{
         likesUids: []
         reply: String,
         uid: String,
+        userDocId
         userName: String,
         userImageURL: String,
     }

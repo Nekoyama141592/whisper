@@ -94,6 +94,7 @@ class CommentsModel extends ChangeNotifier {
       'createdAt': Timestamp.now(),
       'likesUids': [],
       'uid': currentUserDoc['uid'],
+      'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };
