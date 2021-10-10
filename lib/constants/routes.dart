@@ -10,6 +10,7 @@ import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
+import 'package:whisper/auth/signup/other_pages/add_user_info_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/auth/account/account_page.dart';
@@ -30,6 +31,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/auth/account/account_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/auth/signup/signup_model.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -40,6 +42,10 @@ void toLoginpage(context) {
 
 void toSignupPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+}
+
+void toAddUserInfoPage(context,SignupModel signupModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AddUserInfoPage(signupModel: signupModel)));
 }
 
 void toVerifyPage(context) {
@@ -93,9 +99,5 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
 void toCommentsPage(context,List<dynamic> likedCommentIds, List<dynamic> likedComments,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDoc: currentSongDocNotifier.value!,currentUserDoc: currentUserDoc,) ));
 }
-
-// void toReplysPage(context,ReplysModel replysModel, List<DocumentSnapshot> replyDocs,DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
-//   Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, replyDocs: replyDocs, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: thisComment) ));
-// }
 
 

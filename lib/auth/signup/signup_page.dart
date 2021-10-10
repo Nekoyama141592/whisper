@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
+import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/auth/components/already_have_an_account.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
@@ -135,15 +136,15 @@ class SignupPage extends ConsumerWidget {
                             SizedBox(height: 24),
                             Center(
                               child: RoundedButton(
-                                text: '新規登録',
+                                text: '次へ',
                                 widthRate: 0.8,
                                 verticalPadding: 20.0,
                                 horizontalPadding: 10.0,
-                                press: () async {
+                                press: () {
                                   if (signupModel.croppedFile == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('写真を選択してください')));
                                   } else {
-                                    await signupModel.signup(context);
+                                    routes.toAddUserInfoPage(context, signupModel);
                                   }
                                 },
                                 textColor: Colors.white,

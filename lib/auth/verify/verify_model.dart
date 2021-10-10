@@ -40,6 +40,7 @@ class VerifyModel extends ChangeNotifier {
     if (currentUser!.emailVerified) {
       timer.cancel();
       routes.toMyApp(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に成功しました!!')));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に失敗しました')));
       print(currentUser!.emailVerified);

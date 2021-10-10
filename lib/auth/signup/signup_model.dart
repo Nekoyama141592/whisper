@@ -121,7 +121,6 @@ class SignupModel extends ChangeNotifier {
       );
       User? user = result.user;
       addUserToFireStore(user!.uid);
-      uploadImage();
       routes.toVerifyPage(context);
     } on FirebaseAuthException catch(e) {
       print(e.code);
@@ -141,7 +140,7 @@ class SignupModel extends ChangeNotifier {
       'bookmarks': [],
       'commentNotifications': [],
       'createdAt': Timestamp.now(),
-      'desciption': '',
+      'description': '',
       'followNotifications': [],
       'followerUids': [],
       'followingUids': [],
