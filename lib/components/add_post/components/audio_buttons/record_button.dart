@@ -1,10 +1,11 @@
+// material
 import 'package:flutter/material.dart';
-
+// components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
-
-import 'package:whisper/components/add_post/add_post_model.dart';
-import 'package:whisper/constants/colors.dart';
+// notifier
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
+// model
+import 'package:whisper/components/add_post/add_post_model.dart';
 
 class RecordButton extends StatelessWidget {
 
@@ -24,7 +25,7 @@ class RecordButton extends StatelessWidget {
           Icon(Icons.pause)
           : Icon(
             Icons.fiber_manual_record,
-            color: kTertiaryColor,
+            color: Theme.of(context).highlightColor,
           ),
           () async {
             addPostProvider.onRecordButtonPressed(context);

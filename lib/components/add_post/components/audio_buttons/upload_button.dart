@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 //model
@@ -26,7 +24,7 @@ class UploadButton extends StatelessWidget {
       '公開する',
       Icon(
         Icons.upload_file,
-        color: kTertiaryColor,
+        color: Theme.of(context).highlightColor,
       ),
       () async {
         await addPostModel.onUploadButtonPressed(context,currentUserDoc);

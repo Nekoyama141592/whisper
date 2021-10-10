@@ -36,70 +36,72 @@ class AddPostContent extends StatelessWidget {
     ValueListenableBuilder<AddPostState>(
       valueListenable: addPostModel.addPostStateNotifier,
       builder: (_,value,__) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-            ),
-            value == AddPostState.uploaded ?
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomSnackBar.success(
-                message: '投稿、お疲れ様です！'
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
               ),
-            )
-            : 
-            // SvgPicture
-            SvgPicture.asset(
-              'assets/svgs/recording-bro.svg',
-              height: 
-              value!= AddPostState.recorded ?
-              size.height * 0.4
-              : size.height * 0.2,
-            ),
-            
-            value == AddPostState.uploading ?
-            Indicator()
-            : value != AddPostState.recorded ?
-            Column(
-              children: [
-                RecordButton(addPostModel),
-              ],
-            )
-            
-            : value != AddPostState.uploaded ?
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RetryButton(addPostModel,'やりなおす'),
-                ArrowForwardButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc, text: '次へ')
-              ],
-            )
-            : RetryButton(addPostModel,'次の投稿を行う'),
-    
-            RecordingTime(addPostModel,value != AddPostState.recorded ? 80 : 30),
-    
-            value == AddPostState.recorded ?
-            Column(
-              children: [
-                RoundedInputField(
-                  hintText: "Post title", 
-                  icon: Icons.graphic_eq, 
-                  controller: postTitleController, 
-                  onChanged:  (text) {
-                    addPostModel.postTitleNotifier.value = text;
-                  }, 
+              value == AddPostState.uploaded ?
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomSnackBar.success(
+                  message: '投稿、お疲れ様です！'
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20
+              )
+              : 
+              // SvgPicture
+              SvgPicture.asset(
+                'assets/svgs/recording-bro.svg',
+                height: 
+                value!= AddPostState.recorded ?
+                size.height * 0.4
+                : size.height * 0.2,
+              ),
+              
+              value == AddPostState.uploading ?
+              Indicator()
+              : value != AddPostState.recorded ?
+              Column(
+                children: [
+                  RecordButton(addPostModel),
+                ],
+              )
+              
+              : value != AddPostState.uploaded ?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RetryButton(addPostModel,'やりなおす'),
+                  ArrowForwardButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc, text: '次へ')
+                ],
+              )
+              : RetryButton(addPostModel,'次の投稿を行う'),
+            
+              RecordingTime(addPostModel,value != AddPostState.recorded ? 80 : 30),
+            
+              value == AddPostState.recorded ?
+              Column(
+                children: [
+                  RoundedInputField(
+                    hintText: "Post title", 
+                    icon: Icons.graphic_eq, 
+                    controller: postTitleController, 
+                    onChanged:  (text) {
+                      addPostModel.postTitleNotifier.value = text;
+                    }, 
                   ),
-                ),
-                AudioWindow(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
-              ],
-            ): SizedBox()
-          ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20
+                    ),
+                  ),
+                  AudioWindow(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
+                ],
+              ): SizedBox()
+            ],
+          ),
         );
       }
     );

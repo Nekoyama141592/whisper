@@ -1,11 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// material
 import 'package:flutter/material.dart';
-
+// package
+import 'package:cloud_firestore/cloud_firestore.dart';
+// components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
-
-import 'package:whisper/components/add_post/add_post_model.dart';
-import 'package:whisper/constants/colors.dart';
+// constants
 import 'package:whisper/constants/routes.dart' as routes;
+// model
+import 'package:whisper/components/add_post/add_post_model.dart';
 class ArrowForwardButton extends StatelessWidget {
 
   ArrowForwardButton({
@@ -26,7 +28,7 @@ class ArrowForwardButton extends StatelessWidget {
       text,
       Icon(
         Icons.arrow_forward,
-        color: kTertiaryColor,
+        color: Theme.of(context).highlightColor,
       ),
       (){
         if (addPostModel.postTitleNotifier.value.isEmpty) {
