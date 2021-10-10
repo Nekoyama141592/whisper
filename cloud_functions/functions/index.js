@@ -5,7 +5,8 @@ const algoliasearch = require('algoliasearch');
 const ALGOLIA_APP_ID = functions.config().algolia.app_id
 // const ALGOLIA_SEARCH_API_KEY = functions.config().algolia.api_key
 const ALGOLIA_ADMIN_API_KEY = functions.config().algolia.admin_api_key
-const ALGOLIA_INDEX_NAME = "Posts";
+const ALGOLIA_POSTS_INDEX_NAME = "Posts";
+const ALGOLIA_USERS_INDEX_NAME = "Users"
 const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_API_KEY)
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -22,7 +23,7 @@ exports.createPost = functions.firestore
         const newValue = snap.data();
         // newValue.objectID = snap.id;
         newValue.objectID = context.params.id
-        var index = client.initIndex(ALGOLIA_INDEX_NAME);
+        var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
         index.saveObject(newValue);
         console.log('finished')
     }
@@ -34,7 +35,7 @@ exports.createPost = functions.firestore
 //     async (snap, context) => {
 //         const afterUpdate = snap.after.data();
 //         afterUpdate.objectID = snap.after.id;
-//         var index = client.initIndex(ALGOLIA_INDEX_NAME);
+//         var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
 //         index.saveObject(afterUpdate);
 //     }
 // );
@@ -44,7 +45,7 @@ exports.deletePost = functions.firestore
 .onDelete(
     async (snap, context) => {
         const oldID = snap.id;
-        var index = client.initIndex(ALGOLIA_INDEX_NAME);
+        var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
         index.deleteObject(oldID);
     }
 );
@@ -54,9 +55,8 @@ exports.createUser = functions.firestore
 .onCreate(
     async (snap,context) =>{
         const newValue = snap.data();
-        // newValue.objectID = snap.id;
         newValue.objectID = context.params.id
-        var index = client.initIndex(ALGOLIA_INDEX_NAME);
+        var index = client.initIndex(ALGOLIA_USERS_INDEX_NAME);
         index.saveObject(newValue);
         console.log('finished')
     }
@@ -67,7 +67,7 @@ exports.deleteUser = functions.firestore
 .onDelete(
     async (snap, context) => {
     const oldID = snap.id;
-    var index = client.initIndex(ALGOLIA_INDEX_NAME);
+    var index = client.initIndex(ALGOLIA_USERS_INDEX_NAME );
     index.deleteObject(oldID);
     }
 );
