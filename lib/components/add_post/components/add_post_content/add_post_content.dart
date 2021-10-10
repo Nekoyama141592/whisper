@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
@@ -45,24 +44,30 @@ class AddPostContent extends StatelessWidget {
               ),
               value == AddPostState.uploaded ?
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomSnackBar.success(
-                  message: '投稿、お疲れ様です！'
+                padding: const EdgeInsets.symmetric(
+                  vertical: 25.0
                 ),
+                child: Text(
+                  '投稿お疲れ様です！',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
               )
-              : 
+              : SizedBox.shrink(),
               // SvgPicture
               SvgPicture.asset(
                 'assets/svgs/recording-bro.svg',
                 height: 
-                value!= AddPostState.recorded ?
+                value != AddPostState.recorded && value != AddPostState.uploaded ?
                 size.height * 0.4
                 : size.height * 0.2,
               ),
               
               value == AddPostState.uploading ?
               Indicator()
-              : value != AddPostState.recorded ?
+              : value != AddPostState.recorded && value != AddPostState.uploaded ?
               Column(
                 children: [
                   RecordButton(addPostModel),
@@ -99,7 +104,9 @@ class AddPostContent extends StatelessWidget {
                   ),
                   AudioWindow(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
                 ],
-              ): SizedBox()
+              ): SizedBox(),
+              value == AddPostState.uploaded ?
+              AudioWindow(addPostModel: addPostModel, currentUserDoc: currentUserDoc) : SizedBox.shrink()
             ],
           ),
         );

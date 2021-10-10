@@ -58,6 +58,10 @@ class AddPostModel extends ChangeNotifier {
     setCurrentUser();
   }
 
+  void onFpressed() {
+    addPostStateNotifier.value = AddPostState.uploaded;
+  }
+
   void startLoading() {
     addPostStateNotifier.value = AddPostState.uploading;
   }
@@ -271,6 +275,7 @@ class AddPostModel extends ChangeNotifier {
           'userImageURL': currentUserDoc['imageURL'],
           'userName': currentUserDoc['userName'],
         });
+        addPostStateNotifier.value = AddPostState.uploaded;
       } catch(e) {
         print(e.toString());
       }
