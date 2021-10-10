@@ -102,7 +102,6 @@ class RecommendersModel extends ChangeNotifier {
         .orderBy('score', descending: true)
         .limit(oneTimeReadCount)
         .get();
-        print(snapshots.docs.length.toString() + 'snapshots');
         snapshots.docs.forEach((DocumentSnapshot? doc) {
           recommenderDocs.add(doc!);
           Uri song = Uri.parse(doc['audioURL']);
@@ -116,7 +115,6 @@ class RecommendersModel extends ChangeNotifier {
       } else {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
-        // .where('uid',whereNotIn: mutesUids)
         .where('createdAt', isGreaterThanOrEqualTo: range)
         .orderBy('createdAt', descending: true)
         .orderBy('score', descending: true)
@@ -135,7 +133,6 @@ class RecommendersModel extends ChangeNotifier {
         }
       }
       refreshIndex += oneTimeReadCount;
-      print(recommenderDocs.length.toString() + "!!!!!!!!!");
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
     }
