@@ -47,13 +47,16 @@ class UserShowHeader extends StatelessWidget {
           Row(
             children: [
               UserImage(userImageURL: passiveUserDoc['imageURL'],length: 60.0,padding: 5.0,),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  !userShowModel.isEdited ? passiveUserDoc['description'] : userShowModel.description,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    !userShowModel.isEdited ? passiveUserDoc['description'] : userShowModel.description,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0
+                    ),
                   ),
                 ),
               ),
@@ -73,7 +76,8 @@ class UserShowHeader extends StatelessWidget {
                 'following' + followingUids.length.toString(),
                 style: TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0
                 ),
               ),
               SizedBox(width: 20,),
@@ -81,7 +85,8 @@ class UserShowHeader extends StatelessWidget {
                 'follower' + followerUids.length.toString(),
                 style: TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0
                 ),
               ),
               SizedBox(width: 20,),
