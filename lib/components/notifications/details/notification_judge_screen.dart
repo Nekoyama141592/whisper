@@ -1,6 +1,4 @@
 // material
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/details/nothing.dart';
