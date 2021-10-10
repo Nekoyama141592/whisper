@@ -111,19 +111,7 @@ class MyHomePage extends ConsumerWidget {
             readPostIds: readPostIds,
             readPosts: mainModel.readPosts,
           ),
-          UserShowPage(
-            currentUserDoc: mainModel.currentUserDoc, 
-            passiveUserDoc: mainModel.currentUserDoc, 
-            bookmarkedPostIds: bookmarkedPostIds, 
-            likedPostIds: likedPostIds, 
-            followingUids: followingUids,
-            likedCommentIds: likedCommentIds,
-            likedComments: likedComments,
-            bookmarks: bookmarks,
-            likes: likes,
-            readPostIds: readPostIds,
-            readPosts: mainModel.readPosts
-          )
+         UserShowPage(passiveUserDoc: mainModel.currentUserDoc, mainModel: mainModel)
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),

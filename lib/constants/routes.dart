@@ -73,8 +73,8 @@ void toPostShowPage(context,List<dynamic> likedPostIds,List<dynamic> bookmarkedP
   Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(likedPostIds: likedPostIds, bookmarkedPostIds: bookmarkedPostIds, likedCommentIds: likedCommentIds, likedComments: likedComments, bookmarks: bookmarks, likes: likes, currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed) ));
 }
 
-void toUserShowPage(context,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> followingUids, List<dynamic> likedCommentIds,List<dynamic> likedComments,List<dynamic> bookmarks,List<dynamic> likes,List<dynamic> readPostIds,List<dynamic> readPosts) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds, followingUids: followingUids,likedCommentIds: likedCommentIds,likedComments: likedComments,bookmarks: bookmarks,likes: likes,readPostIds: readPostIds,readPosts: readPosts,) ));
+void toUserShowPage(context,DocumentSnapshot passiveUserDoc,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveUserDoc: passiveUserDoc, mainModel: mainModel)));
 }
 void toAdminPage(context,DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc: currentUserDoc) ));
