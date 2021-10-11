@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -11,8 +12,9 @@ import 'package:whisper/details/loading.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-class UserShowPostScreen extends StatelessWidget {
+class UserShowPostScreen extends ConsumerWidget {
   
   const UserShowPostScreen({
     Key? key,
@@ -26,7 +28,9 @@ class UserShowPostScreen extends StatelessWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ScopedReader watch) {
+
+    final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = userShowModel.isLoading;
     final postDocs = userShowModel.postDocs;
     final content =  Padding(
@@ -48,6 +52,15 @@ class UserShowPostScreen extends StatelessWidget {
           () { userShowModel.pause(); }, 
           userShowModel.isLastSongNotifier, 
           () { userShowModel.onNextSongButtonPressed(); },
+          () {
+            userShowModel.pause();
+            routes.toCommentsPage(context, userShowModel.currentSongDocNotifier, mainModel);
+          },
+          () {
+            userShowModel.pause();
+            editPostInfoModel.isEditing = true;
+            editPostInfoModel.reload();
+          },
           mainModel
           );
         },

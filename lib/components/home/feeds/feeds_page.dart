@@ -11,7 +11,7 @@ import 'package:whisper/components/home/feeds/components/post_cards.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/feeds/feeds_model.dart';
-
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 
 class FeedsPage extends ConsumerWidget {
@@ -28,6 +28,7 @@ class FeedsPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     
     final feedsModel = watch(feedsProvider);
+    final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.feedDocs;
 
@@ -52,6 +53,10 @@ class FeedsPage extends ConsumerWidget {
             () { feedsModel.pause(); }, 
             feedsModel.isLastSongNotifier, 
             () { feedsModel.onNextSongButtonPressed(); },
+            () {
+              feedsModel.pause();
+              routes.toCommentsPage(context, feedsModel.currentSongDocNotifier, mainModel);
+            },
             mainModel
           );
         }, 

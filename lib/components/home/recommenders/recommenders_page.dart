@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -11,6 +12,7 @@ import 'package:whisper/components/home/recommenders/components/post_cards.dart'
 // model
 import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class RecommendersPage extends ConsumerWidget {
   
@@ -24,6 +26,8 @@ class RecommendersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final recommendersModel = watch(recommendersProvider);
+    final editPostInfoModel = watch(editPostInfoProvider);
+
     return recommendersModel.isLoading ?
     Loading()
     : JudgeScreen(
@@ -45,6 +49,15 @@ class RecommendersPage extends ConsumerWidget {
             () { recommendersModel.pause(); }, 
             recommendersModel.isLastSongNotifier, 
             () { recommendersModel.onNextSongButtonPressed(); },
+            () {
+              recommendersModel.pause();
+              routes.toCommentsPage(context, recommendersModel.currentSongDocNotifier, mainModel);
+            },
+            () {
+              recommendersModel.pause();
+              editPostInfoModel.isEditing = true;
+              editPostInfoModel.reload();
+            },
             mainModel
           );
         },  

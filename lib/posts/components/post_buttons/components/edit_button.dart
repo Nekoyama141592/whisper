@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
-// model
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class EditButton extends StatelessWidget {
   
@@ -11,12 +9,12 @@ class EditButton extends StatelessWidget {
     Key? key,
     required this.currentUserDoc,
     required this.currentSongDocNotifier,
-    required this.editPostInfoModel,
+    required this.toEditingMode,
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final EditPostInfoModel editPostInfoModel;
+  final void Function()? toEditingMode;
   @override 
   
   Widget build(BuildContext context) {
@@ -25,10 +23,11 @@ class EditButton extends StatelessWidget {
       builder: (_, currentSongDoc, __) {
         return currentUserDoc['uid'] != currentSongDoc!['uid'] ? SizedBox.shrink()
         : IconButton(
-          onPressed: () {
-            editPostInfoModel.isEditing = true;
-            editPostInfoModel.reload();
-          }, 
+          // onPressed: () {
+          //   editPostInfoModel.isEditing = true;
+          //   editPostInfoModel.reload();
+          // }, 
+          onPressed: toEditingMode,
           icon: Icon(Icons.edit)
         );
       }

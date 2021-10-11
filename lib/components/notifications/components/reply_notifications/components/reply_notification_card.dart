@@ -41,10 +41,11 @@ class ReaplyNotificationCard extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(replyNotification['comment']),
             ListTile(
               leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: replyNotification['userDocId'],mainModel: mainModel,),
               title: Text(replyNotification['userName']),
-              subtitle: Text(replyNotification['comment']),
+              subtitle: Text(replyNotification['reply']),
             )
           ],
         ),

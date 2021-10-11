@@ -69,8 +69,8 @@ void toBookmarksPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(mainModel: mainModel) ));
 }
 
-void toPostShowPage(context,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()? onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, mainModel: mainModel)));
+void toPostShowPage(context,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()? onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed,void Function()? toCommentsPage,void Function()? toEditingMode,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel)));
 }
 
 void toUserShowPage(context,DocumentSnapshot passiveUserDoc,MainModel mainModel) {
@@ -96,8 +96,8 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
-void toCommentsPage(context,List<dynamic> likedCommentIds, List<dynamic> likedComments,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,DocumentSnapshot currentUserDoc,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDoc: currentSongDocNotifier.value!,currentUserDoc: currentUserDoc,mainModel: mainModel,) ));
+void toCommentsPage(context,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(currentSongDoc: currentSongDocNotifier.value!,mainModel: mainModel,) ));
 }
 
 

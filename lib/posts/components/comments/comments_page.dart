@@ -17,17 +17,11 @@ class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
     Key? key,
-    required this.likedCommentIds,
-    required this.likedComments,
     required this.currentSongDoc,
-    required this.currentUserDoc,
     required this.mainModel
   }) : super(key: key);
   
-  final List<dynamic> likedCommentIds;
-  final List<dynamic> likedComments;
   final DocumentSnapshot currentSongDoc;
-  final DocumentSnapshot currentUserDoc;
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
@@ -36,7 +30,7 @@ class CommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return replysModel.isReplysMode ?
-    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
+    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: mainModel.currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -45,7 +39,7 @@ class CommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  { 
-          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc,commentEditingController,currentUserDoc); 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc,commentEditingController, mainModel.currentUserDoc); 
         },
       ),
 
@@ -77,10 +71,10 @@ class CommentsPage extends ConsumerWidget {
                     commentsModel: commentsModel,
                     replysModel: replysModel,
                     comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i],
-                    currentUserDoc: currentUserDoc,
+                    currentUserDoc: mainModel.currentUserDoc,
                     currentSongDoc: currentSongDoc,
-                    likedCommentIds: likedCommentIds,
-                    likedComments: likedComments,
+                    likedCommentIds: mainModel.likedCommentIds,
+                    likedComments: mainModel.likedComments,
                     mainModel: mainModel,
                   ),
                   onTap: () {

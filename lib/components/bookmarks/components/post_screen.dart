@@ -1,17 +1,19 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:whisper/details/gradient_screen.dart';
-import 'package:whisper/details/nothing.dart';
+// package
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
+import 'package:whisper/details/nothing.dart';
+import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/bookmarks/components/post_cards.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-class PostScreen extends StatelessWidget {
+class PostScreen extends ConsumerWidget {
   
   const PostScreen({
     Key? key,
@@ -23,7 +25,9 @@ class PostScreen extends StatelessWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ScopedReader watch) {
+
+    final editPostInfoModel = watch(editPostInfoProvider); 
     final postDocs = bookmarksModel.bookmarkedDocs;
     return GradientScreen(
       top: SizedBox.shrink(), 
@@ -61,6 +65,15 @@ class PostScreen extends StatelessWidget {
               () { bookmarksModel.pause(); }, 
               bookmarksModel.isLastSongNotifier, 
               () { bookmarksModel.onNextSongButtonPressed(); },
+              () {
+                bookmarksModel.pause();
+                routes.toCommentsPage(context, bookmarksModel.currentSongDocNotifier, mainModel);
+              },
+              () {
+                bookmarksModel.pause();
+                editPostInfoModel.isEditing = true;
+                editPostInfoModel.reload();
+              },
               mainModel
             );
           }, 

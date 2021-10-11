@@ -15,11 +15,15 @@ class PostButtons extends StatelessWidget {
 
   const PostButtons({
     required this.currentSongDocNotifier,
+    required this.toCommentsPage,
+    required this.toEditingMode,
     required this.mainModel,
     required this.editPostInfoModel
   });
 
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final void Function()? toCommentsPage;
+  final void Function()? toEditingMode;
   final MainModel mainModel;
   final EditPostInfoModel editPostInfoModel;
   
@@ -30,8 +34,8 @@ class PostButtons extends StatelessWidget {
       children: [
         LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
         BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
-        CommentButton(likedCommentIds: mainModel.likedCommentIds,likedComments: mainModel.likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,),
-        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
+        CommentButton(currentSongDocNotifier: currentSongDocNotifier,mainModel: mainModel,toCommentsPage: toCommentsPage),
+        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, toEditingMode: toEditingMode,)
       ],
     );
   }

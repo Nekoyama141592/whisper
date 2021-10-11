@@ -11,24 +11,23 @@ class CommentButton extends StatelessWidget {
 
   CommentButton({
     Key? key,
-    required this.likedCommentIds,
-    required this.likedComments,
     required this.currentSongDocNotifier,
-    required this.currentUserDoc,
+    required this.toCommentsPage,
     required this.mainModel
   }) : super(key: key);
 
-  final List<dynamic> likedCommentIds;
-  final List<dynamic> likedComments;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final DocumentSnapshot currentUserDoc;
+  void Function()? toCommentsPage;
   final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
     return 
     IconButton(
-      onPressed: () { routes.toCommentsPage(context, likedCommentIds, likedComments, currentSongDocNotifier, currentUserDoc,mainModel); }, 
+      // onPressed: () {
+      //   routes.toCommentsPage(context, mainModel.likedCommentIds, mainModel.likedComments, currentSongDocNotifier, mainModel.currentUserDoc,mainModel); 
+      // }, 
+      onPressed: toCommentsPage,
       icon: Icon(Icons.comment)
     );
 

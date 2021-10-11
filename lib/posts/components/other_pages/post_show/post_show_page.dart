@@ -36,6 +36,8 @@ class PostShowPage extends ConsumerWidget {
     required this.pause,
     required this.isLastSongNotifier,
     required this.onNextSongButtonPressed,
+    required this.toCommentsPage,
+    required this.toEditingMode,
     required this.mainModel
   }) : super(key: key);
 
@@ -51,6 +53,8 @@ class PostShowPage extends ConsumerWidget {
   final void Function()? pause;
   final ValueNotifier<bool> isLastSongNotifier;
   final void Function()? onNextSongButtonPressed;
+  final void Function()? toCommentsPage;
+  final void Function()? toEditingMode;
   final MainModel mainModel;
 
   @override 
@@ -96,7 +100,7 @@ class PostShowPage extends ConsumerWidget {
                     SizedBox(height: 10.0),
                     CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier),
                     SizedBox(height: 10.0),
-                    PostButtons(currentSongDocNotifier: currentSongDocNotifier, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                    PostButtons(currentSongDocNotifier: currentSongDocNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
                     SizedBox(height: 10.0),
                     AudioStateDesign(
                       bookmarkedPostIds: mainModel.bookmarkedPostIds,
