@@ -1,7 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 // constants
-import 'package:algolia/algolia.dart';
 import 'package:whisper/main_model.dart';
 // component
 import 'post_result.dart';
@@ -14,7 +13,7 @@ class PostList extends StatelessWidget {
     required this.mainModel
   }) : super(key: key);
 
-  final List<AlgoliaObjectSnapshot> results;
+  final List<Map<String,dynamic>> results;
   final MainModel mainModel;
   
   @override 
@@ -23,7 +22,7 @@ class PostList extends StatelessWidget {
       child: ListView.builder(
         itemCount: results.length,
         itemBuilder: (BuildContext context, int i) =>
-        PostResult(result: results[i].data,mainModel: mainModel,)
+        PostResult(result: results[i],mainModel: mainModel,)
       )
     );
   }

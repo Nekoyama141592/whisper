@@ -24,7 +24,7 @@ class PostSearchModel extends ChangeNotifier{
    // just_audio
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
-  List<AlgoliaObjectSnapshot> results = [];
+  List<Map<String,dynamic>> results = [];
    // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -58,8 +58,8 @@ class PostSearchModel extends ChangeNotifier{
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
     querySnap.hits.forEach((hit) {
-      results.add(hit);
       final map = hit.data;
+      results.add(map);
       Uri song = Uri.parse(map['audioURL']);
       UriAudioSource source = AudioSource.uri(song, tag: map);
       afterUris.add(source);
