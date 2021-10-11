@@ -12,7 +12,7 @@ import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
-final searchProvider = ChangeNotifierProvider(
+final postSearchProvider = ChangeNotifierProvider(
   (ref) => PostSearchModel()
 );
 

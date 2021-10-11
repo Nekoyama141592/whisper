@@ -11,11 +11,11 @@ import 'package:image_picker/image_picker.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 
-final editPostInfoProvider = ChangeNotifierProvider(
-  (ref) => EditPostInfoModel()
+final searchEditPostInfoProvider = ChangeNotifierProvider(
+  (ref) => SearchEditPostInfoModel()
 );
 
-class EditPostInfoModel extends ChangeNotifier {
+class SearchEditPostInfoModel extends ChangeNotifier {
   
   bool isEditing = false;
   bool isEdited = false;
@@ -88,15 +88,15 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,BuildContext context) async {
-    final String currentSongDocImageURL = currentSongDoc['imageURL'];
-    final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongDoc['userImageURL'];
+  Future updatePostInfo(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,BuildContext context) async {
+    final String currentSongDocImageURL = currentSongMap['imageURL'];
+    final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongMap['userImageURL'];
     final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
     
     try{
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(currentSongDoc.id)
+      .doc(currentSongMap['objectID'])
       .update({
         'title': postTitle,
         'imageURL': imageURL,

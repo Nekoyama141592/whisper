@@ -1,70 +1,42 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
-import 'package:whisper/posts/components/details/square_post_image.dart';
-import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
-import 'package:whisper/posts/components/audio_window/components/audio_state_design.dart';
-import 'package:whisper/posts/components/audio_window/components/current_song_title.dart';
-import 'package:whisper/posts/components/audio_window/components/current_song_user_name.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/timestamp_display.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_screen.dart';
-
-// notifiers
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/components/search/post_search/components/audio_window/components/audio_state_design.dart';
+import 'package:whisper/components/search/post_search/components/audio_window/components/current_song_user_name.dart';
+import 'package:whisper/components/search/post_search/components/other_pages/post_show/components/edit_post_info/search_edit_post_info_screen.dart';
+import 'package:whisper/components/search/post_search/components/audio_window/components/current_song_title.dart';
+import 'package:whisper/components/search/post_search/components/details/square_post_image.dart';
+import 'package:whisper/components/search/post_search/components/post_buttons/post_buttons.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/components/search/post_search/post_search_model.dart';
+import 'package:whisper/components/search/post_search/components/other_pages/post_show/components/edit_post_info/search_edit_post_info_model.dart';
 
 class PostShowPage extends ConsumerWidget {
   
   const PostShowPage({
     Key? key,
-    required this.currentSongDocNotifier,
-    required this.progressNotifier,
-    required this.seek,
-    required this.repeatButtonNotifier,
-    required this.onRepeatButtonPressed,
-    required this.isFirstSongNotifier,
-    required this.onPreviousSongButtonPressed,
-    required this.playButtonNotifier,
-    required this.play,
-    required this.pause,
-    required this.isLastSongNotifier,
-    required this.onNextSongButtonPressed,
-    required this.mainModel
+    required this.mainModel,
+    required this.postSearchModel
   }) : super(key: key);
 
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final ProgressNotifier progressNotifier;
-  final void Function(Duration)? seek;
-  final RepeatButtonNotifier repeatButtonNotifier;
-  final void Function()? onRepeatButtonPressed;
-  final ValueNotifier<bool> isFirstSongNotifier;
-  final void Function()?  onPreviousSongButtonPressed;
-  final PlayButtonNotifier playButtonNotifier;
-  final void Function()? play;
-  final void Function()? pause;
-  final ValueNotifier<bool> isLastSongNotifier;
-  final void Function()? onNextSongButtonPressed;
+  
   final MainModel mainModel;
+  final PostSearchModel postSearchModel;
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
-    final editPostInfoModel = watch(editPostInfoProvider);
-    final currentSongDoc = currentSongDocNotifier.value;
+    final searchEditPostInfoModel = watch(searchEditPostInfoProvider);
+    final currentSongMap = postSearchModel.currentSongMapNotifier.value;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: false,
       body: SafeArea(
-        child: editPostInfoModel.isEditing ?
-        EditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc!, editPostInfoModel: editPostInfoModel)
+        child: searchEditPostInfoModel.isEditing ?
+        SearchEditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, searchEditPostInfoModel: searchEditPostInfoModel)
         : Column(
           children: [
             Padding(
@@ -82,7 +54,6 @@ class PostShowPage extends ConsumerWidget {
                     }, 
                   ),
                   SizedBox(width: size.width * 0.38),
-                  TimestampDisplay(currentSongDocNotifier: currentSongDocNotifier)
                 ],
               ),
             ),
@@ -91,29 +62,14 @@ class PostShowPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SquarePostImage(currentSongDocNotifier: currentSongDocNotifier),
-                    CurrentSongUserName(currentSongDocNotifier: currentSongDocNotifier),
+                    SquarePostImage(currentSongMapNotifier: postSearchModel.currentSongMapNotifier),
+                    CurrentSongUserName(currentSongMapNotifier: postSearchModel.currentSongMapNotifier),
                     SizedBox(height: 10.0),
-                    CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier),
+                    CurrentSongTitle(currentSongMapNotifier: postSearchModel.currentSongMapNotifier),
                     SizedBox(height: 10.0),
-                    PostButtons(currentSongDocNotifier: currentSongDocNotifier, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                    PostButtons(currentSongMapNotifier: postSearchModel.currentSongMapNotifier, mainModel: mainModel, searchEditPostInfoModel: searchEditPostInfoModel),
                     SizedBox(height: 10.0),
-                    AudioStateDesign(
-                      bookmarkedPostIds: mainModel.bookmarkedPostIds,
-                      likedPostIds: mainModel.likedPostIds,
-                      currentSongDocNotifier: currentSongDocNotifier,
-                      progressNotifier: progressNotifier,
-                      seek: seek,
-                      repeatButtonNotifier: repeatButtonNotifier,
-                      onRepeatButtonPressed: onRepeatButtonPressed,
-                      isFirstSongNotifier: isFirstSongNotifier,
-                      onPreviousSongButtonPressed: onPreviousSongButtonPressed,
-                      playButtonNotifier: playButtonNotifier,
-                      play: play,
-                      pause: pause,
-                      isLastSongNotifier: isLastSongNotifier,
-                      onNextSongButtonPressed: onNextSongButtonPressed,
-                    ),
+                    AudioStateDesign(mainModel: mainModel, postSearchModel: postSearchModel)
                     
                   ],
                 ),

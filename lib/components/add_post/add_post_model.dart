@@ -231,6 +231,7 @@ class AddPostModel extends ChangeNotifier {
       final audioURL = await getPostUrl(context);
       await addPostToFirebase(context,currentUserDoc,imageURL,audioURL);
       endLoading();
+      Navigator.pop(context);
     }
   }
 

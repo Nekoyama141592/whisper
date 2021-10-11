@@ -1,9 +1,8 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/routes.dart' as routes;
+// components
+import 'package:whisper/components/search/post_search/components/comments/search_comments_page.dart';
+// model
 import 'package:whisper/main_model.dart';
 
 
@@ -11,24 +10,21 @@ class CommentButton extends StatelessWidget {
 
   CommentButton({
     Key? key,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.currentSongDocNotifier,
-    required this.currentUserDoc,
+    required this.currentSongMapNotifier,
     required this.mainModel
   }) : super(key: key);
 
-  final List<dynamic> likedCommentIds;
-  final List<dynamic> likedComments;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final DocumentSnapshot currentUserDoc;
+
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
     return 
     IconButton(
-      onPressed: () { routes.toCommentsPage(context, likedCommentIds, likedComments, currentSongDocNotifier, currentUserDoc,mainModel); }, 
+      onPressed: () { 
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCommentsPage(currentSongMap: currentSongMapNotifier.value, currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel) ) );
+      }, 
       icon: Icon(Icons.comment)
     );
 

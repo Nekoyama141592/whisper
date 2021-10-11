@@ -11,6 +11,7 @@ import 'package:whisper/components/search/post_search/post_search_page.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
+import 'package:whisper/components/search/post_search/post_search_model.dart';
 
 class SearchPage extends ConsumerWidget {
 
@@ -22,8 +23,11 @@ class SearchPage extends ConsumerWidget {
 
   final MainModel mainModel;
   final ThemeModel themeModel;
+
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
+
+    final postSearchModel = watch(postSearchProvider);
     return DefaultTabController(
       length: tabBarElements.length,
       child: Scaffold(
@@ -47,7 +51,7 @@ class SearchPage extends ConsumerWidget {
         body: 
         TabBarView(
           children: [
-            PostSearchPage(mainModel: mainModel),
+            PostSearchPage(mainModel: mainModel, postSearchModel: postSearchModel),
             UserSearchPage(mainModel: mainModel)
           ]
         )

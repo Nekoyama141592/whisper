@@ -9,28 +9,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // model
-import 'edit_post_info_model.dart';
+import 'search_edit_post_info_model.dart';
 
-class EditPostInfoScreen extends StatelessWidget {
+class SearchEditPostInfoScreen extends StatelessWidget {
 
-  const EditPostInfoScreen({
+  const SearchEditPostInfoScreen({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongDoc,
-    required this.editPostInfoModel
+    required this.currentSongMap,
+    required this.searchEditPostInfoModel
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot currentSongDoc;
-  final EditPostInfoModel editPostInfoModel;
+  final Map<String,dynamic> currentSongMap;
+  final SearchEditPostInfoModel searchEditPostInfoModel;
+
   @override 
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
-    final postTitleController = TextEditingController(text: editPostInfoModel.postTitle);
-    final String imageURL = currentSongDoc['imageURL'];
-    final String userImageURL = currentSongDoc['userImageURL'];
+    final postTitleController = TextEditingController(text: searchEditPostInfoModel.postTitle);
+    final String imageURL = currentSongMap['imageURL'];
+    final String userImageURL = currentSongMap['userImageURL'];
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
 
     return Scaffold(
@@ -45,8 +46,8 @@ class EditPostInfoScreen extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        editPostInfoModel.isEditing = false;
-                        editPostInfoModel.reload();
+                        searchEditPostInfoModel.isEditing = false;
+                        searchEditPostInfoModel.reload();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿の編集がキャンセルされました')));
                       }, 
                       child: Text(
@@ -64,14 +65,14 @@ class EditPostInfoScreen extends StatelessWidget {
                       verticalPadding: 10, 
                       horizontalPadding: 5, 
                       press: () async  {
-                        await editPostInfoModel.updatePostInfo(currentSongDoc,currentUserDoc,context);
+                        await searchEditPostInfoModel.updatePostInfo(currentSongMap,currentUserDoc,context);
                       },
                       textColor: Colors.white, 
                       buttonColor: Theme.of(context).highlightColor
                     )
                   ],
                 ),
-                !editPostInfoModel.isCropped ?
+                !searchEditPostInfoModel.isCropped ?
                 Container(
                   width: length,
                   height: length,
@@ -85,16 +86,16 @@ class EditPostInfoScreen extends StatelessWidget {
                     )
                   ),
                 ) 
-                : SizedBox(width: length,height: length,child: Image.file(editPostInfoModel.croppedFile!)),
+                : SizedBox(width: length,height: length,child: Image.file(searchEditPostInfoModel.croppedFile!)),
                 SizedBox(height: 20.0),
                 RoundedButton(
-                  text: editPostInfoModel.isCropped ? '写真を変更する' :'投稿用の写真を編集',
+                  text: searchEditPostInfoModel.isCropped ? '写真を変更する' :'投稿用の写真を編集',
                   widthRate: 0.95, 
                   verticalPadding: 20.0, 
                   horizontalPadding: 10.0, 
-                  press: () async { editPostInfoModel.showImagePicker(); }, 
-                  textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
-                  buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
+                  press: () async { searchEditPostInfoModel.showImagePicker(); }, 
+                  textColor: searchEditPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
+                  buttonColor: searchEditPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
                 ),
                 SizedBox(height: 10.0),
                 Text(
@@ -112,10 +113,10 @@ class EditPostInfoScreen extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   controller: postTitleController,
                   onChanged: (text) {
-                    editPostInfoModel.postTitle = text;
+                    searchEditPostInfoModel.postTitle = text;
                   },
                   decoration: InputDecoration(
-                    hintText: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : currentSongDoc['title'],
+                    hintText: searchEditPostInfoModel.isEdited ? searchEditPostInfoModel.postTitle : currentSongMap['title'],
                     hintStyle: TextStyle(fontWeight: FontWeight.bold)
                   ),
                 )

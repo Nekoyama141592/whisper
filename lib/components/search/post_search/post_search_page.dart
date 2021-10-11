@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/loading.dart';
-import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/search/post_search/components/details/post_list.dart';
 import 'package:whisper/components/search/post_search/components/details/search_input_field.dart';
 // model
@@ -15,14 +14,16 @@ class PostSearchPage extends ConsumerWidget {
 
   const PostSearchPage({
     Key? key,
-    required this.mainModel
+    required this.mainModel,
+    required this.postSearchModel
   }) : super(key: key);
 
   final MainModel mainModel;
+  final PostSearchModel postSearchModel;
   
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
-    final searchModel = watch(searchProvider);
+    final searchModel = watch(postSearchProvider);
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
         text: searchModel.searchTerm,
@@ -31,24 +32,25 @@ class PostSearchPage extends ConsumerWidget {
         )
       )
     );
-    return Column(
-      children: [
-        SearchInputField(
-          searchModel: searchModel, 
-          controller: searchController, 
-          press: () async {
-            await searchModel.operation();
-          }
-        ),
-        searchModel.isLoading ?
-        Loading() 
-        : searchModel.results.isEmpty ?
-        Nothing()
-        : PostList(
-          results: searchModel.results,
-          mainModel: mainModel
-        )
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SearchInputField(
+            searchModel: searchModel, 
+            controller: searchController, 
+            press: () async {
+              await searchModel.operation();
+            }
+          ),
+          searchModel.isLoading ?
+          Loading() 
+          : PostList(
+            results: searchModel.results,
+            mainModel: mainModel,
+            postSearchModel: postSearchModel,
+          )
+        ],
+      ),
     );
   }
 }
