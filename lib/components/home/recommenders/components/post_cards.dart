@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
-import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
+import 'package:whisper/components/home/recommenders/components/post_card.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
-
+import 'package:whisper/components/home/recommenders/recommenders_model.dart';
 class PostCards extends StatelessWidget {
 
   const PostCards({
@@ -29,6 +29,7 @@ class PostCards extends StatelessWidget {
     required this.onRefresh,
     required this.onLoading,
     required this.mainModel,
+    required this.recommendersModel
   }) : super(key: key);
 
  
@@ -46,7 +47,7 @@ class PostCards extends StatelessWidget {
   final void Function()? onRefresh;
   final void Function()? onLoading;
   final MainModel mainModel;
-
+  final RecommendersModel recommendersModel;
   @override 
   Widget build(BuildContext context) {
     return Column(
@@ -62,7 +63,12 @@ class PostCards extends StatelessWidget {
             child: ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: (BuildContext context, int i) =>
-                PostCard(postDoc: postDocs[i], mainModel: mainModel)
+                PostCard(
+                  i: i,
+                  postDoc: postDocs[i], 
+                  mainModel: mainModel,
+                  recommendersModel: recommendersModel,
+                )
             ),
           ),
         ),

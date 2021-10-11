@@ -14,10 +14,10 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 final bookmarksProvider = ChangeNotifierProvider(
-  (ref) => BookMarksModel()
+  (ref) => BookmarksModel()
 );
 
-class BookMarksModel extends ChangeNotifier {
+class BookmarksModel extends ChangeNotifier {
   
   bool isLoading = false;
   User? currentUser;
@@ -40,7 +40,7 @@ class BookMarksModel extends ChangeNotifier {
   int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   
-  BookMarksModel() {
+  BookmarksModel() {
     init();
   }
   

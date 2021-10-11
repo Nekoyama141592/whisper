@@ -1,14 +1,13 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
+// package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/judge_screen.dart';
-import 'package:whisper/posts/components/details/post_cards.dart';
+import 'package:whisper/components/home/recommenders/components/post_cards.dart';
 // model
 import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
@@ -60,6 +59,7 @@ class RecommendersPage extends ConsumerWidget {
         onRefresh: () { recommendersModel.onRefresh(); },
         onLoading: () { recommendersModel.onLoading(); },
         mainModel: mainModel,
+        recommendersModel: recommendersModel,
       )
     );
   }

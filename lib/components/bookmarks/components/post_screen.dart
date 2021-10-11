@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/details/nothing.dart';
 // components
-import 'package:whisper/posts/components/details/post_cards.dart';
+import 'package:whisper/components/bookmarks/components/post_cards.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -19,7 +19,7 @@ class PostScreen extends StatelessWidget {
     required this.mainModel
   }) : super(key: key);
 
-  final BookMarksModel bookmarksModel;
+  final BookmarksModel bookmarksModel;
   final MainModel mainModel;
 
   @override
@@ -75,6 +75,7 @@ class PostScreen extends StatelessWidget {
           onRefresh: () { bookmarksModel.onRefresh(); },
           onLoading: () { bookmarksModel.onLoading(); },
           mainModel: mainModel,
+          bookmarksModel: bookmarksModel,
         ),
       ), 
       circular: 35.0

@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/judge_screen.dart';
-import 'package:whisper/posts/components/details/post_cards.dart';
+import 'package:whisper/components/user_show/components/details/post_cards.dart';
 import 'package:whisper/details/loading.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -32,7 +32,6 @@ class UserShowPostScreen extends StatelessWidget {
     final content =  Padding(
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
-
         postDocs: userShowModel.postDocs, 
         route: (){
           routes.toPostShowPage(
@@ -67,6 +66,7 @@ class UserShowPostScreen extends StatelessWidget {
         onRefresh: (){ userShowModel.onRefresh(); },
         onLoading: () { userShowModel.onLoading(); },
         mainModel: mainModel,
+        userShowModel: userShowModel,
       ),
     );
     

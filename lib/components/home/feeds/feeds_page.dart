@@ -7,7 +7,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/details/loading.dart';
-import 'package:whisper/posts/components/details/post_cards.dart';
+import 'package:whisper/components/home/feeds/components/post_cards.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/feeds/feeds_model.dart';
@@ -66,6 +66,7 @@ class FeedsPage extends ConsumerWidget {
         onRefresh: () { feedsModel.onRefresh(); },
         onLoading: () { feedsModel.onLoading();},
         mainModel: mainModel,
+        feedsModel: feedsModel,
       )
     );
   }
