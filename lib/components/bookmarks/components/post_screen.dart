@@ -45,9 +45,6 @@ class PostScreen extends StatelessWidget {
           top: 20.0
         ),
         child: PostCards(
-          likedPostIds: mainModel.likedPostIds, 
-          bookmarkedPostIds: mainModel.bookmarkedPostIds, 
-          likes: mainModel.likes,
           postDocs: postDocs, 
           route: () {
             routes.toPostShowPage(

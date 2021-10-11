@@ -32,9 +32,7 @@ class UserShowPostScreen extends StatelessWidget {
     final content =  Padding(
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
-        likedPostIds: mainModel.likedPostIds, 
-        bookmarkedPostIds: mainModel.bookmarkedPostIds, 
-        likes: mainModel.likes,
+
         postDocs: userShowModel.postDocs, 
         route: (){
           routes.toPostShowPage(

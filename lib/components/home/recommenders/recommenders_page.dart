@@ -30,9 +30,6 @@ class RecommendersPage extends ConsumerWidget {
     : JudgeScreen(
       list: recommendersModel.recommenderDocs ,
       content: PostCards(
-        likedPostIds: mainModel.likedPostIds, 
-        bookmarkedPostIds: mainModel.bookmarkedPostIds, 
-        likes: mainModel.likes,
         postDocs: recommendersModel.recommenderDocs, 
         route: () {
           routes.toPostShowPage(

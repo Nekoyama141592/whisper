@@ -52,8 +52,7 @@ class PostSearchModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future operation() async {
-    startLoading();
+  Future search() async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
@@ -68,6 +67,11 @@ class PostSearchModel extends ChangeNotifier{
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist);
     }
+  }
+
+  Future operation() async {
+    startLoading();
+    await search();
     listenForStates();
     endLoading();
   }

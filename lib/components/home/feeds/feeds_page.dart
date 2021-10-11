@@ -36,9 +36,6 @@ class FeedsPage extends ConsumerWidget {
     : JudgeScreen(
       list: postDocs, 
       content: PostCards(
-        likedPostIds: mainModel.likedPostIds, 
-        bookmarkedPostIds: mainModel.bookmarkedPostIds, 
-        likes: mainModel.likes,
         postDocs: postDocs, 
         route: () {
           routes.toPostShowPage(

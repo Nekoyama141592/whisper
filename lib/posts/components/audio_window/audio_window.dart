@@ -19,9 +19,6 @@ class AudioWindow extends StatelessWidget {
   
   AudioWindow({
     Key? key,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likes,
     required this.route,
     required this.progressNotifier,
     required this.seek,
@@ -33,9 +30,6 @@ class AudioWindow extends StatelessWidget {
     required this.mainModel
   }) : super(key: key);
   
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likes;
   final void Function()? route;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
@@ -77,7 +71,7 @@ class AudioWindow extends StatelessWidget {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds,likes: likes)
+                          LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes)
                         ],
                       ),
                       
