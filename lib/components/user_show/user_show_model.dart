@@ -89,6 +89,11 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future initAudioPlayer(int i) async {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
+
   Future onRefresh() async {
     refreshIndex = defaultRefreshIndex;
     postDocs = [];

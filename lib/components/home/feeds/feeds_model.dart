@@ -76,6 +76,11 @@ class FeedsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
+  Future initAudioPlayer(int i) async {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
+
   Future onRefresh() async {
     refreshIndex = defaultRefreshIndex;
     feedDocs = [];

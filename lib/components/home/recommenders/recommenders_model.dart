@@ -71,6 +71,11 @@ class RecommendersModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
+
+  Future<void> initAudioPlayer(int i) async {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
   
   Future onRefresh() async {
     audioPlayer = AudioPlayer();

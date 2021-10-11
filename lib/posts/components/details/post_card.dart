@@ -15,11 +15,13 @@ class PostCard extends StatelessWidget {
   const PostCard({
     Key? key,
     required this.postDoc,
-    required this.mainModel
+    required this.mainModel,
+    required this.press
   }) : super(key: key);
 
   final DocumentSnapshot postDoc;
   final MainModel mainModel;
+  final Future<void> press;
 
   @override  
   Widget build(BuildContext context) {

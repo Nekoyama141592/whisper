@@ -28,7 +28,7 @@ class PostCards extends StatelessWidget {
     required this.refreshController,
     required this.onRefresh,
     required this.onLoading,
-    required this.mainModel
+    required this.mainModel,
   }) : super(key: key);
 
  
