@@ -2,15 +2,17 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whisper/components/user_show/components/follow/follow_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/user_show_button.dart';
 // models
 import 'package:whisper/main_model.dart';
+import 'package:whisper/global_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
+import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 
-class UserShowHeader extends StatelessWidget {
+class UserShowHeader extends ConsumerWidget {
 
   const UserShowHeader({
     Key? key,
@@ -28,7 +30,10 @@ class UserShowHeader extends StatelessWidget {
   final FollowModel followModel;
 
   @override 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ScopedReader watch) {
+
+    final globalModel = watch(globalProvider);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         20.0, 
@@ -39,6 +44,25 @@ class UserShowHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ValueListenableBuilder<bool>(
+            valueListenable: globalModel.isMyShowPageNotifier,
+            builder: (_,value,__) {
+              return value ?
+              SizedBox.shrink()
+              : Column(
+                children: [
+                  InkWell(
+                    child: Icon(Icons.arrow_back),
+                    onTap: () {
+                      Navigator.pop(context);
+                      globalModel.isMyShowPageNotifier.value = true;
+                    },
+                  ),
+                  SizedBox(height: 10.0,)
+                ],
+              );
+            }
+          ),
           Text(
             !userShowModel.isEdited ? passiveUserDoc['userName'] : userShowModel.userName,
             style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)

@@ -66,7 +66,7 @@ class EditProfileScreen extends ConsumerWidget {
               ],
             ),
             
-            UserImage(userImageURL: currentUserDoc['imageURL'], length: 80.0, padding: 10.0),
+            InkWell(child: UserImage(userImageURL: currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: () async { await userShowModel.showImagePicker(); },),
             Text('名前'),
             TextFormField(
               keyboardType: TextInputType.text,

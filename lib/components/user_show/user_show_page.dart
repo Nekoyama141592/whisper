@@ -27,8 +27,11 @@ class UserShowPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    
     final userShowModel = watch(userShowProvider);
     final followModel = watch(followProvider);
+    
+
     final List<dynamic> followerUids = mainModel.currentUserDoc['followerUids'];
 
     return Scaffold(
