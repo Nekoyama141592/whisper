@@ -26,7 +26,6 @@ class FeedsModel extends ChangeNotifier {
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
 
-  List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -295,9 +294,6 @@ class FeedsModel extends ChangeNotifier {
       currentSongDocNotifier.value = currentSongDoc;
       // update playlist
       final playlist = sequenceState.effectiveSequence;
-      playlist.map((item) {
-        currentSongDocs.add(item.tag);
-      });
       // update shuffle mode
       isShuffleModeEnabledNotifier.value = 
       sequenceState.shuffleModeEnabled;
