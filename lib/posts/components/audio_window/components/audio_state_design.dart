@@ -15,7 +15,7 @@ class AudioStateDesign extends StatelessWidget {
   
   const AudioStateDesign({
     Key? key,
-    required this.preservatedPostIds,
+    required this.bookmarkedPostIds,
     required this.likedPostIds,
     required this.currentSongDocNotifier,
     required this.progressNotifier,
@@ -31,7 +31,7 @@ class AudioStateDesign extends StatelessWidget {
     required this.onNextSongButtonPressed
   }) : super(key: key);
   
-  final List preservatedPostIds;
+  final List bookmarkedPostIds;
   final List likedPostIds;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final ProgressNotifier progressNotifier;

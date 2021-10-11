@@ -124,7 +124,7 @@ class PostShowPage extends ConsumerWidget {
                     ),
                     SizedBox(height: 10.0),
                     AudioStateDesign(
-                      preservatedPostIds: bookmarkedPostIds,
+                      bookmarkedPostIds: bookmarkedPostIds,
                       likedPostIds: likedPostIds,
                       currentSongDocNotifier: currentSongDocNotifier,
                       progressNotifier: progressNotifier,
