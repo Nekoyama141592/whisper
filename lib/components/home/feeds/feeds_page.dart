@@ -75,6 +75,10 @@ class FeedsPage extends ConsumerWidget {
         refreshController: feedsModel.refreshController,
         onRefresh: () { feedsModel.onRefresh(); },
         onLoading: () { feedsModel.onLoading();},
+        isFirstSongNotifier: feedsModel.isFirstSongNotifier,
+        onPreviousSongButtonPressed: () { feedsModel.onPreviousSongButtonPressed(); },
+        isLastSongNotifier: feedsModel.isLastSongNotifier,
+        onNextSongButtonPressed: () { feedsModel.onNextSongButtonPressed(); },
         mainModel: mainModel,
         feedsModel: feedsModel,
       )

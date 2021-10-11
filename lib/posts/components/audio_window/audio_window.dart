@@ -6,9 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'components/audio_progress_bar.dart';
 import 'components/current_song_user_name.dart';
 import 'components/current_song_title.dart';
-import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_window_user_image.dart';
+import 'package:whisper/posts/components/audio_controll_buttons/components/next_song_button.dart';
+import 'package:whisper/posts/components/audio_controll_buttons/components/previous_song_button.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -27,6 +28,10 @@ class AudioWindow extends StatelessWidget {
     required this.play,
     required this.pause,
     required this.currentUserDoc,
+    required this.isFirstSongNotifier,
+    required this.onPreviousSongButtonPressed,
+    required this.isLastSongNotifier,
+    required this.onNextSongButtonPressed,
     required this.mainModel
   }) : super(key: key);
   
@@ -38,6 +43,10 @@ class AudioWindow extends StatelessWidget {
   final void Function()? play;
   final void Function()? pause;
   final DocumentSnapshot currentUserDoc;
+  final ValueNotifier<bool> isFirstSongNotifier;
+  final void Function()? onPreviousSongButtonPressed;
+  final ValueNotifier<bool> isLastSongNotifier;
+  final void Function()? onNextSongButtonPressed;
   final MainModel mainModel;
 
   @override
@@ -54,8 +63,7 @@ class AudioWindow extends StatelessWidget {
             Row(
               children: [
                 AudioWindowUserImage(currentSongDocNotifier: currentSongDocNotifier, mainModel: mainModel),
-                Container(
-                  width: size.width * 0.55,
+                Expanded(
                   child: Column(
                     children: [
                       CurrentSongUserName(currentSongDocNotifier: currentSongDocNotifier),
@@ -67,13 +75,9 @@ class AudioWindow extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      PreviousSongButton(isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed),
                       PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes)
-                        ],
-                      ),
+                      NextSongButton(isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed)
                       
                     ],
                   ),

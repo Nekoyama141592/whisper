@@ -71,6 +71,10 @@ class RecommendersPage extends ConsumerWidget {
         refreshController: recommendersModel.refreshController,
         onRefresh: () { recommendersModel.onRefresh(); },
         onLoading: () { recommendersModel.onLoading(); },
+        isFirstSongNotifier: recommendersModel.isFirstSongNotifier,
+        onPreviousSongButtonPressed: () { recommendersModel.onPreviousSongButtonPressed(); },
+        isLastSongNotifier: recommendersModel.isLastSongNotifier,
+        onNextSongButtonPressed: () { recommendersModel.onNextSongButtonPressed(); },
         mainModel: mainModel,
         recommendersModel: recommendersModel,
       )

@@ -28,6 +28,10 @@ class PostCards extends StatelessWidget {
     required this.refreshController,
     required this.onRefresh,
     required this.onLoading,
+     required this.isFirstSongNotifier,
+    required this.onPreviousSongButtonPressed,
+    required this.isLastSongNotifier,
+    required this.onNextSongButtonPressed,
     required this.mainModel,
     required this.recommendersModel
   }) : super(key: key);
@@ -46,6 +50,10 @@ class PostCards extends StatelessWidget {
   final RefreshController refreshController;
   final void Function()? onRefresh;
   final void Function()? onLoading;
+  final ValueNotifier<bool> isFirstSongNotifier;
+  final void Function()? onPreviousSongButtonPressed;
+  final ValueNotifier<bool> isLastSongNotifier;
+  final void Function()? onNextSongButtonPressed;
   final MainModel mainModel;
   final RecommendersModel recommendersModel;
   @override 
@@ -81,6 +89,10 @@ class PostCards extends StatelessWidget {
           play: play, 
           pause: pause, 
           currentUserDoc: currentUserDoc,
+          isFirstSongNotifier: isFirstSongNotifier,
+          onPreviousSongButtonPressed: onPreviousSongButtonPressed,
+          isLastSongNotifier: isLastSongNotifier,
+          onNextSongButtonPressed: onNextSongButtonPressed,
           mainModel: mainModel,
         )
       ],
