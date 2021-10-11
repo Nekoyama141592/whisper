@@ -23,10 +23,6 @@ class EditButton extends StatelessWidget {
       builder: (_, currentSongDoc, __) {
         return currentUserDoc['uid'] != currentSongDoc!['uid'] ? SizedBox.shrink()
         : IconButton(
-          // onPressed: () {
-          //   editPostInfoModel.isEditing = true;
-          //   editPostInfoModel.reload();
-          // }, 
           onPressed: toEditingMode,
           icon: Icon(Icons.edit)
         );

@@ -57,6 +57,11 @@ class FeedsPage extends ConsumerWidget {
               feedsModel.pause();
               routes.toCommentsPage(context, feedsModel.currentSongDocNotifier, mainModel);
             },
+            () {
+              feedsModel.pause();
+              editPostInfoModel.isEditing = true;
+              editPostInfoModel.reload();
+            },
             mainModel
           );
         }, 
