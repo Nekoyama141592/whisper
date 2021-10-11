@@ -52,6 +52,11 @@ class PostSearchModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  Future initAudioPlayer(int i) async {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
+
   Future search() async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);

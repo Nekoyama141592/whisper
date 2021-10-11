@@ -42,7 +42,12 @@ class PostList extends StatelessWidget {
             child: ListView.builder(
               itemCount: results.length,
               itemBuilder: (BuildContext context, int i) =>
-              PostResult(result: results[i],mainModel: mainModel,)
+              PostResult(
+                result: results[i],
+                i: i,
+                mainModel: mainModel,
+                postSearchModel: postSearchModel
+              )
             )
           ),
          AudioWindow(mainModel: mainModel, postSearchModel: postSearchModel)
