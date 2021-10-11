@@ -43,13 +43,6 @@ class FeedsPage extends ConsumerWidget {
         route: () {
           routes.toPostShowPage(
             context, 
-            mainModel.likedPostIds, 
-            mainModel.bookmarkedPostIds, 
-            mainModel.likedCommentIds,
-            mainModel.likedComments,
-            mainModel.bookmarks,
-            mainModel.likes,
-            feedsModel.currentUserDoc, 
             feedsModel.currentSongDocNotifier, 
             feedsModel.progressNotifier, 
             feedsModel.seek, 

@@ -52,13 +52,6 @@ class PostScreen extends StatelessWidget {
           route: () {
             routes.toPostShowPage(
               context, 
-              mainModel.likedPostIds, 
-              mainModel.bookmarkedPostIds, 
-              mainModel.likedCommentIds,
-              mainModel.likedComments,
-              mainModel.bookmarks,
-              mainModel.likes,
-              mainModel.currentUserDoc, 
               bookmarksModel.currentSongDocNotifier, 
               bookmarksModel.progressNotifier, 
               bookmarksModel.seek, 

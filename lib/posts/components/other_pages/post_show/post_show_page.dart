@@ -24,13 +24,6 @@ class PostShowPage extends ConsumerWidget {
   
   const PostShowPage({
     Key? key,
-    required this.likedPostIds,
-    required this.bookmarkedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
-    required this.currentUserDoc,
     required this.currentSongDocNotifier,
     required this.progressNotifier,
     required this.seek,
@@ -46,13 +39,6 @@ class PostShowPage extends ConsumerWidget {
     required this.mainModel
   }) : super(key: key);
 
-  final List likedPostIds;
-  final List bookmarkedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
-  final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
@@ -78,7 +64,7 @@ class PostShowPage extends ConsumerWidget {
       extendBodyBehindAppBar: false,
       body: SafeArea(
         child: editPostInfoModel.isEditing ?
-        EditPostInfoScreen(currentUserDoc: currentUserDoc, currentSongDoc: currentSongDoc!, editPostInfoModel: editPostInfoModel)
+        EditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc!, editPostInfoModel: editPostInfoModel)
         : Column(
           children: [
             Padding(
@@ -110,22 +96,11 @@ class PostShowPage extends ConsumerWidget {
                     SizedBox(height: 10.0),
                     CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier),
                     SizedBox(height: 10.0),
-                    PostButtons(
-                      currentUserDoc: currentUserDoc, 
-                      currentSongDocNotifier: currentSongDocNotifier, 
-                      bookmarkedPostIds: bookmarkedPostIds, 
-                      likedPostIds: likedPostIds, 
-                      likedCommentIds: likedCommentIds, 
-                      likedComments: likedComments, 
-                      bookmarks: bookmarks,
-                      likes: likes,
-                      mainModel: mainModel,
-                      editPostInfoModel: editPostInfoModel
-                    ),
+                    PostButtons(currentSongDocNotifier: currentSongDocNotifier, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
                     SizedBox(height: 10.0),
                     AudioStateDesign(
-                      bookmarkedPostIds: bookmarkedPostIds,
-                      likedPostIds: likedPostIds,
+                      bookmarkedPostIds: mainModel.bookmarkedPostIds,
+                      likedPostIds: mainModel.likedPostIds,
                       currentSongDocNotifier: currentSongDocNotifier,
                       progressNotifier: progressNotifier,
                       seek: seek,

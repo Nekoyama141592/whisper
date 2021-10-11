@@ -37,13 +37,6 @@ class RecommendersPage extends ConsumerWidget {
         route: () {
           routes.toPostShowPage(
             context, 
-            mainModel.likedPostIds, 
-            mainModel.bookmarkedPostIds,
-            mainModel.likedCommentIds,
-            mainModel.likedComments,
-            mainModel.bookmarks,
-            mainModel.likes,
-            mainModel.currentUserDoc,
             recommendersModel.currentSongDocNotifier, 
             recommendersModel.progressNotifier, 
             recommendersModel.seek, 

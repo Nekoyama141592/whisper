@@ -14,26 +14,12 @@ import 'package:whisper/posts/components/other_pages/post_show/components/edit_p
 class PostButtons extends StatelessWidget {
 
   const PostButtons({
-    required this.currentUserDoc,
     required this.currentSongDocNotifier,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
     required this.mainModel,
     required this.editPostInfoModel
   });
 
-  final DocumentSnapshot currentUserDoc;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
   final MainModel mainModel;
   final EditPostInfoModel editPostInfoModel;
   
@@ -42,10 +28,10 @@ class PostButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds,likes: likes),
-        BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds,bookmarks: bookmarks),
-        CommentButton(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,mainModel: mainModel,),
-        EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
+        LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
+        BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
+        CommentButton(likedCommentIds: mainModel.likedCommentIds,likedComments: mainModel.likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,),
+        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
       ],
     );
   }
