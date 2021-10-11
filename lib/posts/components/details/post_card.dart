@@ -6,16 +6,20 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 // components
-import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/redirect_user_image.dart';
+// model
 
+import 'package:whisper/main_model.dart';
 class PostCard extends StatelessWidget {
   
   const PostCard({
     Key? key,
-    required this.postDoc
+    required this.postDoc,
+    required this.mainModel
   }) : super(key: key);
 
   final DocumentSnapshot postDoc;
+  final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
@@ -64,7 +68,7 @@ class PostCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: UserImage(userImageURL: postDoc['userImageURL'], length: 50.0, padding: 0.0),
+                leading: RedirectUserImage(userImageURL: postDoc['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: postDoc['userDocId'], mainModel: mainModel),
                 title: Text(postDoc['userName']),
                 subtitle: Text(
                   postDoc['title'],

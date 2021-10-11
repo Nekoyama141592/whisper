@@ -14,14 +14,14 @@ class UserShowButton extends StatelessWidget {
     Key? key,
     required this.currentUserDoc,
     required this.userDoc,
-    required this.userShowProvider,
+    required this.userShowModel,
     required this.followingUids,
     required this.followProvider
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot userDoc;
-  final UserShowModel userShowProvider;
+  final UserShowModel userShowModel;
   final List followingUids;
   final FollowModel followProvider;
   @override 
@@ -35,7 +35,7 @@ class UserShowButton extends StatelessWidget {
       verticalPadding: verticalPadding,
       horizontalPadding: 0.0,
       press: () {
-        userShowProvider.onEditButtonPressed(currentUserDoc);
+        userShowModel.onEditButtonPressed(currentUserDoc);
       }, 
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor

@@ -6,7 +6,8 @@ import 'package:whisper/details/loading.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/replys/components/reply_card/reply_card.dart';
-// model
+// models
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
 
 class ReplysPage extends StatelessWidget {
@@ -17,7 +18,8 @@ class ReplysPage extends StatelessWidget {
     required this.replyMaps,
     required this.currentSongDoc,
     required this.currentUserDoc,
-    required this.thisComment
+    required this.thisComment,
+    required this.mainModel
   }) : super(key: key);
 
   final ReplysModel replysModel;
@@ -25,6 +27,7 @@ class ReplysPage extends StatelessWidget {
   final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
+  final MainModel mainModel;
 
   Widget build(BuildContext context) {
 
@@ -63,7 +66,7 @@ class ReplysPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: replyMaps.length,
                 itemBuilder: (BuildContext context,int i) {
-                  return ReplyCard(reply: replyMaps[i],replysModel: replysModel);
+                  return ReplyCard(reply: replyMaps[i],replysModel: replysModel,mainModel: mainModel,);
                 }
               ),
             ) : Column(

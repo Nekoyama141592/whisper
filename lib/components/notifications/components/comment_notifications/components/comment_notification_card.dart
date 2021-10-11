@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/redirect_user_image.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/notifications/notification_model.dart';
 
 class CommentNotificationCard extends ConsumerWidget {
@@ -14,10 +15,12 @@ class CommentNotificationCard extends ConsumerWidget {
     Key? key,
     required this.notification,
     required this.currentUserDoc,
+    required this.mainModel
   }) : super(key: key);
   
   final Map<String,dynamic> notification;
   final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
 
@@ -40,7 +43,7 @@ class CommentNotificationCard extends ConsumerWidget {
           children: [
             ListTile(
               tileColor: readNotificationIds.contains(notificationId) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor,
-              leading: UserImage(userImageURL: userImageURL, length: 60.0, padding: 0.0),
+              leading: RedirectUserImage(userImageURL: userImageURL, length: 60.0, padding: 0.0,passiveUserDocId: notification['userDocId'],mainModel: mainModel,),
               title: Text(notification['userName']),
               subtitle: Text(notification['comment']),
             )

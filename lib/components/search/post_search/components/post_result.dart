@@ -1,16 +1,20 @@
 // material
 import 'package:flutter/material.dart';
 // components
-import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/redirect_user_image.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class PostResult extends StatelessWidget {
 
   const PostResult({
     Key? key,
-    required this.result
+    required this.result,
+    required this.mainModel
   }) : super(key: key);
   
   final Map<String,dynamic> result;
+  final MainModel mainModel;
 
   @override 
   Widget build(BuildContext context) {
@@ -30,7 +34,7 @@ class PostResult extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: UserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0),
+              leading: RedirectUserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['userDocId'],mainModel: mainModel,),
               title: Text(result['userName']),
               subtitle: Text(
                 result['title'],

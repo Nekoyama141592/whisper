@@ -9,6 +9,8 @@ import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class PostCards extends StatelessWidget {
 
@@ -28,7 +30,8 @@ class PostCards extends StatelessWidget {
     required this.currentUserDoc,
     required this.refreshController,
     required this.onRefresh,
-    required this.onLoading
+    required this.onLoading,
+    required this.mainModel
   }) : super(key: key);
 
   final List likedPostIds;
@@ -47,6 +50,7 @@ class PostCards extends StatelessWidget {
   final RefreshController refreshController;
   final void Function()? onRefresh;
   final void Function()? onLoading;
+  final MainModel mainModel;
 
   @override 
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class PostCards extends StatelessWidget {
             child: ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: (BuildContext context, int i) =>
-                PostCard(postDoc: postDocs[i])
+                PostCard(postDoc: postDocs[i], mainModel: mainModel)
             ),
           ),
         ),
@@ -78,7 +82,8 @@ class PostCards extends StatelessWidget {
           playButtonNotifier: playButtonNotifier, 
           play: play, 
           pause: pause, 
-          currentUserDoc: currentUserDoc
+          currentUserDoc: currentUserDoc,
+          mainModel: mainModel,
         )
       ],
     );

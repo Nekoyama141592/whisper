@@ -11,31 +11,16 @@ import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/posts/components/details/post_cards.dart';
 // model
 import 'recommenders_model.dart';
+import 'package:whisper/main_model.dart';
 
 class RecommendersPage extends ConsumerWidget {
   
   const RecommendersPage({
     Key? key,
-    required this.currentUserDoc,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
-    required this.readPostIds,
-    required this.readPosts
+    required this.mainModel
   }) : super(key: key);
   
-  final DocumentSnapshot currentUserDoc;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
-  final List readPostIds;
-  final List readPosts;
+  final MainModel mainModel;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -45,20 +30,20 @@ class RecommendersPage extends ConsumerWidget {
     : JudgeScreen(
       list: recommendersModel.recommenderDocs ,
       content: PostCards(
-        likedPostIds: likedPostIds, 
-        bookmarkedPostIds: bookmarkedPostIds, 
-        likes: likes,
+        likedPostIds: mainModel.likedPostIds, 
+        bookmarkedPostIds: mainModel.bookmarkedPostIds, 
+        likes: mainModel.likes,
         postDocs: recommendersModel.recommenderDocs, 
         route: () {
           routes.toPostShowPage(
             context, 
-            likedPostIds, 
-            bookmarkedPostIds,
-            likedCommentIds,
-            likedComments,
-            bookmarks,
-            likes,
-            currentUserDoc,
+            mainModel.likedPostIds, 
+            mainModel.bookmarkedPostIds,
+            mainModel.likedCommentIds,
+            mainModel.likedComments,
+            mainModel.bookmarks,
+            mainModel.likes,
+            mainModel.currentUserDoc,
             recommendersModel.currentSongDocNotifier, 
             recommendersModel.progressNotifier, 
             recommendersModel.seek, 
@@ -67,22 +52,24 @@ class RecommendersPage extends ConsumerWidget {
             recommendersModel.isFirstSongNotifier, 
             () { recommendersModel.onPreviousSongButtonPressed(); }, 
             recommendersModel.playButtonNotifier, 
-            () { recommendersModel.play(readPostIds, readPosts, currentUserDoc); }, 
+            () { recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
             () { recommendersModel.pause(); }, 
             recommendersModel.isLastSongNotifier, 
-            () { recommendersModel.onNextSongButtonPressed(); }
+            () { recommendersModel.onNextSongButtonPressed(); },
+            mainModel
           );
         },  
         progressNotifier: recommendersModel.progressNotifier, 
         seek: recommendersModel.seek, 
         currentSongDocNotifier: recommendersModel.currentSongDocNotifier ,
         playButtonNotifier: recommendersModel.playButtonNotifier, 
-        play: () { recommendersModel.play(readPostIds, readPosts, currentUserDoc); }, 
+        play: () { recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
         pause: () { recommendersModel.pause(); }, 
-        currentUserDoc: currentUserDoc,
+        currentUserDoc: mainModel.currentUserDoc,
         refreshController: recommendersModel.refreshController,
         onRefresh: () { recommendersModel.onRefresh(); },
         onLoading: () { recommendersModel.onLoading(); },
+        mainModel: mainModel,
       )
     );
   }

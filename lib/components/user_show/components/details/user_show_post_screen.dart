@@ -9,6 +9,7 @@ import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/posts/components/details/post_cards.dart';
 import 'package:whisper/details/loading.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 
 class UserShowPostScreen extends StatelessWidget {
@@ -17,26 +18,12 @@ class UserShowPostScreen extends StatelessWidget {
     Key? key,
     required this.userShowModel,
     required this.currentUserDoc,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
-    required this.readPostIds,
-    required this.readPosts
+    required this.mainModel
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final UserShowModel userShowModel;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
-  final List readPostIds;
-  final List readPosts;
+  final MainModel mainModel;
 
   @override
   Widget build(BuildContext context) {
@@ -45,19 +32,19 @@ class UserShowPostScreen extends StatelessWidget {
     final content =  Padding(
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
-        likedPostIds: likedPostIds, 
-        bookmarkedPostIds: bookmarkedPostIds, 
-        likes: likes,
+        likedPostIds: mainModel.likedPostIds, 
+        bookmarkedPostIds: mainModel.bookmarkedPostIds, 
+        likes: mainModel.likes,
         postDocs: userShowModel.postDocs, 
         route: (){
           routes.toPostShowPage(
           context, 
-          likedPostIds, 
-          bookmarkedPostIds,
-          likedCommentIds,
-          likedComments,
-          bookmarks,
-          likes,
+          mainModel.likedPostIds, 
+          mainModel.bookmarkedPostIds,
+          mainModel.likedCommentIds,
+          mainModel.likedComments,
+          mainModel.bookmarks,
+          mainModel.likes,
           currentUserDoc, 
           userShowModel.currentSongDocNotifier, 
           userShowModel.progressNotifier, 
@@ -67,10 +54,11 @@ class UserShowPostScreen extends StatelessWidget {
           userShowModel.isFirstSongNotifier, 
           () { userShowModel.onPreviousSongButtonPressed(); }, 
           userShowModel.playButtonNotifier, 
-          () { userShowModel.play(readPostIds, readPosts, currentUserDoc); }, 
+          () { userShowModel.play(mainModel.readPostIds, mainModel.readPosts, currentUserDoc); }, 
           () { userShowModel.pause(); }, 
           userShowModel.isLastSongNotifier, 
-          () { userShowModel.onNextSongButtonPressed(); }
+          () { userShowModel.onNextSongButtonPressed(); },
+          mainModel
           );
         },
         progressNotifier: userShowModel.progressNotifier,
@@ -78,7 +66,7 @@ class UserShowPostScreen extends StatelessWidget {
         currentSongDocNotifier: userShowModel.currentSongDocNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
         play: (){
-          userShowModel.play(readPostIds, readPosts, currentUserDoc);
+          userShowModel.play(mainModel.readPostIds, mainModel.readPosts, currentUserDoc);
         },
         pause: (){
           userShowModel.pause();
@@ -87,6 +75,7 @@ class UserShowPostScreen extends StatelessWidget {
         refreshController: userShowModel.refreshController,
         onRefresh: (){ userShowModel.onRefresh(); },
         onLoading: () { userShowModel.onLoading(); },
+        mainModel: mainModel,
       ),
     );
     

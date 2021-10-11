@@ -8,9 +8,16 @@ import 'package:whisper/components/search/user_search/components/user_list.dart'
 import 'package:whisper/components/search/user_search/components/search_input_field.dart';
 // model
 import 'user_search_model.dart';
+import 'package:whisper/main_model.dart';
 
 class UserSearchPage extends ConsumerWidget {
 
+  const UserSearchPage({
+    Key? key,
+    required this.mainModel
+  }) : super(key: key);
+
+  final MainModel mainModel;
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final searchModel = watch(searchProvider);
@@ -33,7 +40,7 @@ class UserSearchPage extends ConsumerWidget {
           }
         ),
         searchModel.isLoading ?
-        Loading() : UserList(results: results)
+        Loading() : UserList(results: results, mainModel: mainModel)
       ],
     );
   }

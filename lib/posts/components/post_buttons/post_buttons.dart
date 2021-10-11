@@ -7,6 +7,8 @@ import 'package:whisper/posts/components/post_buttons/components/edit_button.dar
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/bookmark_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/comment_button.dart';
+// models
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class PostButtons extends StatelessWidget {
@@ -20,6 +22,7 @@ class PostButtons extends StatelessWidget {
     required this.likedComments,
     required this.bookmarks,
     required this.likes,
+    required this.mainModel,
     required this.editPostInfoModel
   });
 
@@ -31,6 +34,7 @@ class PostButtons extends StatelessWidget {
   final List likedComments;
   final List bookmarks;
   final List likes;
+  final MainModel mainModel;
   final EditPostInfoModel editPostInfoModel;
   
   @override  
@@ -40,7 +44,7 @@ class PostButtons extends StatelessWidget {
       children: [
         LikeButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: likedPostIds,likes: likes),
         BookmarkButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: bookmarkedPostIds,bookmarks: bookmarks),
-        CommentButton(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,),
+        CommentButton(likedCommentIds: likedCommentIds,likedComments: likedComments,currentSongDocNotifier: currentSongDocNotifier,currentUserDoc: currentUserDoc,mainModel: mainModel,),
         EditButton(currentUserDoc: currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, editPostInfoModel: editPostInfoModel)
       ],
     );

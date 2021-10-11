@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
 import 'package:whisper/posts/components/replys/components/reply_card/components/show_replys_button.dart';
 // models
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
+
 class CommentCard extends StatelessWidget {
 
   const CommentCard({
@@ -19,7 +21,8 @@ class CommentCard extends StatelessWidget {
     required this.currentUserDoc,
     required this.currentSongDoc,
     required this.likedCommentIds,
-    required this.likedComments
+    required this.likedComments,
+    required this.mainModel
   }): super(key: key);
   
   final Map<String,dynamic> comment;
@@ -29,6 +32,7 @@ class CommentCard extends StatelessWidget {
   final DocumentSnapshot currentSongDoc;
   final List<dynamic> likedCommentIds;
   final List<dynamic> likedComments;
+  final MainModel mainModel;
   @override  
   Widget build(BuildContext context){
     final commentId = comment['commentId'];
@@ -49,7 +53,8 @@ class CommentCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8.0
                     ),
-                    child: UserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0),
+                    // child: UserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0),
+                    child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
                   ),
                   Expanded(
                     child: SizedBox(

@@ -1,3 +1,5 @@
+// dart
+import 'dart:io';
 // material
 import 'package:flutter/material.dart';
 // packages
@@ -6,7 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // constants
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -45,9 +51,13 @@ class UserShowModel extends ChangeNotifier {
   bool isEditing = false;
   String userName = '';
   String description = '';
+  String downloadURL = '';
+  bool isCropped = false;
+  XFile? xfile;
+  File? croppedFile;
   // afterEdit
   bool isEdited = false;
-  
+
   UserShowModel() {
     init();
   }
@@ -139,6 +149,69 @@ class UserShowModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future showImagePicker() async {
+    final ImagePicker _picker = ImagePicker();
+    xfile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xfile != null) {
+      await cropImage();
+    }
+    notifyListeners();
+  }
+
+  Future cropImage() async {
+    isCropped = false;
+    croppedFile = null;
+    croppedFile = await ImageCropper.cropImage(
+      sourcePath: xfile!.path,
+      aspectRatioPresets: Platform.isAndroid ?
+      [
+        CropAspectRatioPreset.square,
+      ]
+      : [
+        // CropAspectRatioPreset.original,
+        CropAspectRatioPreset.square,
+      ],
+      androidUiSettings: const AndroidUiSettings(
+        toolbarTitle: 'Cropper',
+        toolbarColor: kPrimaryColor,
+        toolbarWidgetColor: Colors.white,
+        // initAspectRatio: CropAspectRatioPreset.original,
+        initAspectRatio: CropAspectRatioPreset.square,
+        lockAspectRatio: false
+      ),
+      iosUiSettings: const IOSUiSettings(
+        title: 'Cropper',
+      )
+    );
+    if (croppedFile != null) {
+      isCropped = true;
+    }
+    notifyListeners();
+  }
+
+  Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
+    final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+    if (userName.isEmpty) {
+      print('userNameを入力してください');
+    }
+    try {
+      await FirebaseStorage.instance
+      .ref()
+      .child('users')
+      .child(currentUserDoc['uid'] + dateTime + '.jpg')
+      .putFile(croppedFile!);
+      downloadURL = await FirebaseStorage.instance
+      .ref()
+      .child('users')
+      .child(currentUserDoc['uid'] + dateTime + '.jpg')
+      .getDownloadURL();
+    } catch(e) {
+      print(e.toString());
+    }
+    return downloadURL;
+  }
+
 
   void play(List<dynamic> readPostIds,List<dynamic> readPosts,DocumentSnapshot currentUserDoc)  {
     audioPlayer.play();
@@ -287,25 +360,30 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future updateUserInfo(DocumentSnapshot currentUserDoc) async {
-    try {
+  Future updateUserInfo(BuildContext context,DocumentSnapshot currentUserDoc) async {
+
+    final String downloadURL = croppedFile == null ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
+    if (downloadURL.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
+    } else {
+      try {
       await FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUserDoc.id)
-      .update({
-        'userName': userName,
-        'updatedAt': Timestamp.now(),
-        'description': description,
-      });
-      
-      notifyListeners();
-    } catch(e) {
-      print(e.toString());
+        .collection('users')
+        .doc(currentUserDoc.id)
+        .update({
+          'userName': userName,
+          'updatedAt': Timestamp.now(),
+          'description': description,
+        });
+        notifyListeners();
+      } catch(e) {
+        print(e.toString());
+      }
     }
   }
 
   Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
-    updateUserInfo(currentUserDoc);
+    updateUserInfo(context,currentUserDoc);
     isEditing = false;
     isEdited = true;
     notifyListeners();

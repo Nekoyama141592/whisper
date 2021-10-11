@@ -37,8 +37,8 @@ class UserShowPage extends ConsumerWidget {
       SafeArea(child: EditProfileScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc))
       : GradientScreen(
         top: SizedBox.shrink(), 
-        header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, currentUserDoc: mainModel.currentUserDoc, followingUids: mainModel.followingUids, followerUids: followerUids, followModel: followModel), 
-        content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc, bookmarkedPostIds: mainModel.bookmarkedPostIds, likedPostIds: mainModel.likedPostIds, likedCommentIds: mainModel.likedCommentIds, likedComments: mainModel.likedComments,bookmarks: mainModel.bookmarks,likes: mainModel.likes,readPostIds: mainModel.readPostIds,readPosts: mainModel.readPosts,),
+        header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, followerUids: followerUids, mainModel: mainModel, followModel: followModel),
+        content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel),
         circular: 35.0
       )
     );

@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/components/notifications/components/comment_notifications/components/comment_notification_card.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class CommentNotificationList extends StatelessWidget {
 
   const CommentNotificationList({
     Key? key,
     required this.currentUserDoc,
+    required this.mainModel
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
 
   @override
 
@@ -21,7 +25,7 @@ class CommentNotificationList extends StatelessWidget {
     return ListView.builder(
       itemCount: commentNotifications.length,
       itemBuilder: (BuildContext context, int i) => 
-      CommentNotificationCard(notification: commentNotifications[i],currentUserDoc: currentUserDoc)
+      CommentNotificationCard(notification: commentNotifications[i],currentUserDoc: currentUserDoc,mainModel: mainModel,)
     );
   }
 

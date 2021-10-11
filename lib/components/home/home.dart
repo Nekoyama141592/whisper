@@ -84,27 +84,8 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(
-              bookmarkedPostIds: bookmarkedPostIds, 
-              likedPostIds: likedPostIds,
-              likedCommentIds: likedCommentIds,
-              likedComments: likedComments,
-              bookmarks: bookmarks,
-              likes: likes,
-              readPostIds: readPostIds,
-              readPosts: readPosts,
-            ),
-            RecommendersPage(
-              currentUserDoc: mainModel.currentUserDoc, 
-              bookmarkedPostIds: bookmarkedPostIds, 
-              likedPostIds: likedPostIds,
-              likedCommentIds: likedCommentIds,
-              likedComments: likedComments,
-              bookmarks: bookmarks,
-              likes: likes,
-              readPostIds: readPostIds,
-              readPosts: readPosts,
-            )
+            FeedsPage(mainModel: mainModel),
+            RecommendersPage(mainModel: mainModel)
           ],
         ),
         

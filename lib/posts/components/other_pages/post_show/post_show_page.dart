@@ -16,7 +16,8 @@ import 'package:whisper/posts/components/other_pages/post_show/components/edit_p
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-// model
+// models
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class PostShowPage extends ConsumerWidget {
@@ -41,7 +42,8 @@ class PostShowPage extends ConsumerWidget {
     required this.play,
     required this.pause,
     required this.isLastSongNotifier,
-    required this.onNextSongButtonPressed
+    required this.onNextSongButtonPressed,
+    required this.mainModel
   }) : super(key: key);
 
   final List likedPostIds;
@@ -63,6 +65,7 @@ class PostShowPage extends ConsumerWidget {
   final void Function()? pause;
   final ValueNotifier<bool> isLastSongNotifier;
   final void Function()? onNextSongButtonPressed;
+  final MainModel mainModel;
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
@@ -116,6 +119,7 @@ class PostShowPage extends ConsumerWidget {
                       likedComments: likedComments, 
                       bookmarks: bookmarks,
                       likes: likes,
+                      mainModel: mainModel,
                       editPostInfoModel: editPostInfoModel
                     ),
                     SizedBox(height: 10.0),

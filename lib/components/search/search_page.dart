@@ -47,8 +47,8 @@ class SearchPage extends ConsumerWidget {
         body: 
         TabBarView(
           children: [
-            PostSearchPage(),
-            UserSearchPage(),
+            PostSearchPage(mainModel: mainModel),
+            UserSearchPage(mainModel: mainModel)
           ]
         )
       ),

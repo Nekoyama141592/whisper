@@ -12,6 +12,8 @@ import 'package:whisper/posts/components/audio_window/components/audio_window_us
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class AudioWindow extends StatelessWidget {
   
@@ -27,7 +29,8 @@ class AudioWindow extends StatelessWidget {
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
-    required this.currentUserDoc
+    required this.currentUserDoc,
+    required this.mainModel
   }) : super(key: key);
   
   final List bookmarkedPostIds;
@@ -41,6 +44,7 @@ class AudioWindow extends StatelessWidget {
   final void Function()? play;
   final void Function()? pause;
   final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,7 @@ class AudioWindow extends StatelessWidget {
             AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
             Row(
               children: [
-                AudioWindowUserImage(currentSongDocNotifier: currentSongDocNotifier),
+                AudioWindowUserImage(currentSongDocNotifier: currentSongDocNotifier, mainModel: mainModel),
                 Container(
                   width: size.width * 0.55,
                   child: Column(

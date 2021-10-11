@@ -1,7 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/details/nothing.dart';
 // components
@@ -9,6 +8,7 @@ import 'package:whisper/posts/components/details/post_cards.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
 class PostScreen extends StatelessWidget {
@@ -16,27 +16,11 @@ class PostScreen extends StatelessWidget {
   const PostScreen({
     Key? key,
     required this.bookmarksModel,
-    required this.currentUserDoc,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
-    required this.readPostIds,
-    required this.readPosts
+    required this.mainModel
   }) : super(key: key);
 
   final BookMarksModel bookmarksModel;
-  final DocumentSnapshot currentUserDoc;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
-  final List readPostIds;
-  final List readPosts;
+  final MainModel mainModel;
 
   @override
   Widget build(BuildContext context) {
@@ -61,20 +45,20 @@ class PostScreen extends StatelessWidget {
           top: 20.0
         ),
         child: PostCards(
-          likedPostIds: likedPostIds, 
-          bookmarkedPostIds: bookmarkedPostIds, 
-          likes: likes,
+          likedPostIds: mainModel.likedPostIds, 
+          bookmarkedPostIds: mainModel.bookmarkedPostIds, 
+          likes: mainModel.likes,
           postDocs: postDocs, 
           route: () {
             routes.toPostShowPage(
               context, 
-              likedPostIds, 
-              bookmarkedPostIds, 
-              likedCommentIds,
-              likedComments,
-              bookmarks,
-              likes,
-              currentUserDoc, 
+              mainModel.likedPostIds, 
+              mainModel.bookmarkedPostIds, 
+              mainModel.likedCommentIds,
+              mainModel.likedComments,
+              mainModel.bookmarks,
+              mainModel.likes,
+              mainModel.currentUserDoc, 
               bookmarksModel.currentSongDocNotifier, 
               bookmarksModel.progressNotifier, 
               bookmarksModel.seek, 
@@ -83,22 +67,24 @@ class PostScreen extends StatelessWidget {
               bookmarksModel.isFirstSongNotifier, 
               () { bookmarksModel.onPreviousSongButtonPressed(); }, 
               bookmarksModel.playButtonNotifier, 
-              () { bookmarksModel.play(readPostIds, readPosts, currentUserDoc); }, 
+              () { bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
               () { bookmarksModel.pause(); }, 
               bookmarksModel.isLastSongNotifier, 
-              () { bookmarksModel.onNextSongButtonPressed(); }
+              () { bookmarksModel.onNextSongButtonPressed(); },
+              mainModel
             );
           }, 
           progressNotifier: bookmarksModel.progressNotifier, 
           seek: bookmarksModel.seek, 
           currentSongDocNotifier: bookmarksModel.currentSongDocNotifier ,
           playButtonNotifier: bookmarksModel.playButtonNotifier, 
-          play: () { bookmarksModel.play(readPostIds, readPosts, currentUserDoc); }, 
+          play: () { bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
           pause: () { bookmarksModel.pause(); }, 
-          currentUserDoc: currentUserDoc,
+          currentUserDoc: mainModel.currentUserDoc,
           refreshController: bookmarksModel.refreshController,
           onRefresh: () { bookmarksModel.onRefresh(); },
           onLoading: () { bookmarksModel.onLoading(); },
+          mainModel: mainModel,
         ),
       ), 
       circular: 35.0

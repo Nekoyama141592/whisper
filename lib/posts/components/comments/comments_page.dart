@@ -9,8 +9,10 @@ import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 // models
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
+
 class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
@@ -19,12 +21,14 @@ class CommentsPage extends ConsumerWidget {
     required this.likedComments,
     required this.currentSongDoc,
     required this.currentUserDoc,
+    required this.mainModel
   }) : super(key: key);
   
   final List<dynamic> likedCommentIds;
   final List<dynamic> likedComments;
   final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final commentsModel = watch(commentsProvider);
@@ -32,7 +36,8 @@ class CommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return replysModel.isReplysMode ?
-    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.giveComment)
+    // ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.giveComment)
+    ReplysPage(replysModel: replysModel, replyMaps: replysModel.replyMaps, currentSongDoc: currentSongDoc, currentUserDoc: currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -77,6 +82,7 @@ class CommentsPage extends ConsumerWidget {
                     currentSongDoc: currentSongDoc,
                     likedCommentIds: likedCommentIds,
                     likedComments: likedComments,
+                    mainModel: mainModel,
                   ),
                   onTap: () {
                     print(commentsModel.comments.length);

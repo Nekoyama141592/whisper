@@ -9,6 +9,7 @@ import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/posts/components/details/post_cards.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/feeds/feeds_model.dart';
 
 
@@ -17,24 +18,10 @@ class FeedsPage extends ConsumerWidget {
   
   const FeedsPage({
     Key? key,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
-    required this.readPostIds,
-    required this.readPosts
+    required this.mainModel
   }) : super(key: key);
 
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
-  final List readPostIds;
-  final List readPosts;
+  final MainModel mainModel;
 
   @override
   
@@ -49,19 +36,19 @@ class FeedsPage extends ConsumerWidget {
     : JudgeScreen(
       list: postDocs, 
       content: PostCards(
-        likedPostIds: likedPostIds, 
-        bookmarkedPostIds: bookmarkedPostIds, 
-        likes: likes,
+        likedPostIds: mainModel.likedPostIds, 
+        bookmarkedPostIds: mainModel.bookmarkedPostIds, 
+        likes: mainModel.likes,
         postDocs: postDocs, 
         route: () {
           routes.toPostShowPage(
             context, 
-            likedPostIds, 
-            bookmarkedPostIds, 
-            likedCommentIds,
-            likedComments,
-            bookmarks,
-            likes,
+            mainModel.likedPostIds, 
+            mainModel.bookmarkedPostIds, 
+            mainModel.likedCommentIds,
+            mainModel.likedComments,
+            mainModel.bookmarks,
+            mainModel.likes,
             feedsModel.currentUserDoc, 
             feedsModel.currentSongDocNotifier, 
             feedsModel.progressNotifier, 
@@ -71,22 +58,24 @@ class FeedsPage extends ConsumerWidget {
             feedsModel.isFirstSongNotifier, 
             () { feedsModel.onPreviousSongButtonPressed(); }, 
             feedsModel.playButtonNotifier, 
-            () { feedsModel.play(readPostIds, readPosts, feedsModel.currentUserDoc); }, 
+            () { feedsModel.play(mainModel.readPostIds, mainModel.readPosts, feedsModel.currentUserDoc); }, 
             () { feedsModel.pause(); }, 
             feedsModel.isLastSongNotifier, 
-            () { feedsModel.onNextSongButtonPressed(); }
+            () { feedsModel.onNextSongButtonPressed(); },
+            mainModel
           );
         }, 
         progressNotifier: feedsModel.progressNotifier, 
         seek: feedsModel.seek, 
         currentSongDocNotifier: feedsModel.currentSongDocNotifier ,
         playButtonNotifier: feedsModel.playButtonNotifier, 
-        play: () { feedsModel.play(readPostIds, readPosts, feedsModel.currentUserDoc); }, 
+        play: () { feedsModel.play(mainModel.readPostIds, mainModel.readPosts, feedsModel.currentUserDoc); }, 
         pause: () { feedsModel.pause(); }, 
         currentUserDoc: feedsModel.currentUserDoc,
         refreshController: feedsModel.refreshController,
         onRefresh: () { feedsModel.onRefresh(); },
         onLoading: () { feedsModel.onLoading();},
+        mainModel: mainModel,
       )
     );
   }

@@ -7,16 +7,14 @@ class UserImage extends StatelessWidget {
   
   const UserImage({
     Key? key,
-    required this.userImageURL,
+    required this.padding,
     required this.length,
-    required this.padding
+    required this.userImageURL
   }) : super(key: key);
 
+  final double padding,length;
   final String userImageURL;
-  final double length;
-  final double padding;
-  
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(padding),

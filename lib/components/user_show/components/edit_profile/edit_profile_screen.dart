@@ -65,6 +65,7 @@ class EditProfileScreen extends ConsumerWidget {
                 )
               ],
             ),
+            
             UserImage(userImageURL: currentUserDoc['imageURL'], length: 80.0, padding: 10.0),
             Text('名前'),
             TextFormField(
