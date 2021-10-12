@@ -10,9 +10,9 @@ import 'package:whisper/components/search/post_search/components/replys/componen
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
 
-class ReplysPage extends StatelessWidget {
+class SearchReplysPage extends StatelessWidget {
 
-  const ReplysPage({
+  const SearchReplysPage({
     Key? key,
     required this.searchReplysModel,
     required this.replyMaps,

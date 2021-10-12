@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/search/post_search/components/comments/components/comment_card.dart';
-import 'package:whisper/components/search/post_search/components/replys/replys_page.dart';
+import 'package:whisper/components/search/post_search/components/replys/search_replys_page.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
@@ -33,7 +33,7 @@ class SearchCommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return searchReplysModel.isReplysMode ?
-    ReplysPage(searchReplysModel: searchReplysModel, replyMaps: searchReplysModel.replyMaps, currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
+    SearchReplysPage(searchReplysModel: searchReplysModel, replyMaps: searchReplysModel.replyMaps, currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
