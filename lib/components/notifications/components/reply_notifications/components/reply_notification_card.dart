@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
+import 'package:whisper/details/user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/notifications/notification_model.dart';
@@ -27,6 +28,7 @@ class ReaplyNotificationCard extends ConsumerWidget {
     final length = 60.0;
     final padding = 0.0;
     final notificationId = replyNotification['notificationId'];
+    final readNotificationIds = notificationModel.localReadNotificationIds;
 
     return InkWell(
       onTap: notificationModel.isLoading ?
@@ -41,11 +43,16 @@ class ReaplyNotificationCard extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(replyNotification['comment']),
+             ListTile(
+              leading:  UserImage(padding: 0.0, length: 60.0, userImageURL: mainModel.currentUserDoc['imageURL']),
+              title: Text(mainModel.currentUserDoc['userName'],style: TextStyle(fontWeight: FontWeight.bold),),
+              subtitle: Text(replyNotification['comment'],style: TextStyle(color: Theme.of(context).focusColor),),
+            ),
             ListTile(
+              tileColor: readNotificationIds.contains(notificationId) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
               leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: replyNotification['userDocId'],mainModel: mainModel,),
               title: Text(replyNotification['userName']),
-              subtitle: Text(replyNotification['reply']),
+              subtitle: Text(replyNotification['reply'],style: TextStyle(color: Theme.of(context).focusColor))
             )
           ],
         ),

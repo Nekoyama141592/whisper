@@ -27,8 +27,11 @@ class MainModel extends ChangeNotifier {
   List<dynamic> likes = [];
   List<dynamic> readPosts = [];
   List<dynamic> readPostIds = [];
+  List<dynamic> commentNotifications = [];
   List<String> readNotificationsIds = [];
   List<dynamic> replyNotifications = [];
+  List<String> notificationIds = [];
+  bool newNotificationExists = false;
 
   MainModel() {
     init();
@@ -120,6 +123,10 @@ class MainModel extends ChangeNotifier {
     });
   }
 
+  void setCommentNotifications() {
+    commentNotifications = currentUserDoc['commentNotifications'];
+  }
+
   Future getReadNotificationIds() async {
     final prefs = await SharedPreferences.getInstance();
     readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
@@ -128,6 +135,23 @@ class MainModel extends ChangeNotifier {
 
   void getReplyNotifications() {
     replyNotifications = currentUserDoc['replyNotifications'];
+  }
+
+  void setNotificationIds() {
+    replyNotifications.forEach((replyNotification) {
+      final notificationId = replyNotification['notificationId'];
+      if (!readNotificationsIds.contains(notificationId)) {
+        newNotificationExists = true;
+      }
+      notificationIds.add(notificationId);
+    });
+    commentNotifications.forEach((commentNotification) {
+      final notificationId = commentNotification['notificationId'];
+      if (!readNotificationsIds.contains(notificationId)) {
+        newNotificationExists = true;
+      }
+      notificationIds.add(notificationId);
+    });
   }
   
 }

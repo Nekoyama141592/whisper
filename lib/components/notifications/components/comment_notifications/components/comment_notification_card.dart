@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
+import 'package:whisper/details/user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/notifications/notification_model.dart';
@@ -41,12 +42,16 @@ class CommentNotificationCard extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(notification['title']),
+           ListTile(
+             leading:  UserImage(padding: 0.0, length: 60.0, userImageURL: currentUserDoc['imageURL']),
+             title: Text(currentUserDoc['userName'],style: TextStyle(fontWeight: FontWeight.bold),),
+             subtitle: Text(notification['postTitle'],style: TextStyle(color: Theme.of(context).focusColor),),
+           ),
             ListTile(
-              tileColor: readNotificationIds.contains(notificationId) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor,
+              tileColor: readNotificationIds.contains(notificationId) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
               leading: RedirectUserImage(userImageURL: userImageURL, length: 60.0, padding: 0.0,passiveUserDocId: notification['userDocId'],mainModel: mainModel,),
-              title: Text(notification['userName']),
-              subtitle: Text(notification['comment']),
+              title: Text(notification['userName'],style: TextStyle(fontWeight: FontWeight.bold),),
+              subtitle: Text(notification['comment'],style: TextStyle(color: Theme.of(context).focusColor),),
             )
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
+import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/notifications/details/notification_judge_screen.dart';
 import 'package:whisper/components/notifications/components/comment_notifications/components/comment_notification_list.dart';
 // mainModel
@@ -21,8 +22,10 @@ class CommentNotifications extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final list = currentUserDoc['commentNotifications'];
+    final List<dynamic> list = mainModel.commentNotifications;
     final content = CommentNotificationList(currentUserDoc: currentUserDoc,mainModel: mainModel,);
-    return NotificationJudgeScreen(list: list, content: content);
+    return list.isEmpty ?
+    Nothing()
+    : NotificationJudgeScreen(list: list, content: content);
   }
 }

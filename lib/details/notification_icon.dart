@@ -46,7 +46,7 @@ class NotificationIcon extends StatelessWidget {
             currentUserDoc,
           );
         },
-        child: replyNotifications.isNotEmpty  || currentUserDoc['commentNotifications'].isNotEmpty ?
+        child: mainModel.newNotificationExists ?
         Stack(
           children: [
             Icon(Icons.notifications),
