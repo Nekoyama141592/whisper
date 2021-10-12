@@ -18,7 +18,6 @@ final editPostInfoProvider = ChangeNotifierProvider(
 class EditPostInfoModel extends ChangeNotifier {
   
   bool isEditing = false;
-  bool isEdited = false;
   String postTitle = '';
   // image
   bool isCropped = false;
@@ -103,9 +102,12 @@ class EditPostInfoModel extends ChangeNotifier {
         'updatedAt': Timestamp.now(),
       });
       isEditing = false;
-      isEdited = true;
       notifyListeners();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿の情報が変更されました')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('データが変更されました！'),
+        duration: Duration(seconds: 3),
+      ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タブを切ると変更が画面に反映されます')));
     } catch(e) {
       print(e.toString());
     }

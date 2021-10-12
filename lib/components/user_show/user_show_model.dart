@@ -55,8 +55,6 @@ class UserShowModel extends ChangeNotifier {
   bool isCropped = false;
   XFile? xfile;
   File? croppedFile;
-  // afterEdit
-  bool isEdited = false;
 
   UserShowModel() {
     init();
@@ -388,16 +386,8 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
-    updateUserInfo(context,currentUserDoc);
+    await updateUserInfo(context,currentUserDoc);
     isEditing = false;
-    isEdited = true;
-    notifyListeners();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('snackbar'),
-        duration: const Duration(seconds: 3),
-      )
-    );
   }
   
 }

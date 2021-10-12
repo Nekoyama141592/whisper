@@ -64,14 +64,15 @@ class UserShowHeader extends ConsumerWidget {
             }
           ),
           Text(
-            !userShowModel.isEdited ? passiveUserDoc['userName'] : userShowModel.userName,
+            passiveUserDoc['userName'],
             style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)
           ),
           SizedBox(height: 10),
           Row(
             children: [
               UserImage(
-                userImageURL: !userShowModel.isEdited ? passiveUserDoc['imageURL'] : userShowModel.downloadURL,
+                // userImageURL: !userShowModel.isEdited ? passiveUserDoc['imageURL'] : userShowModel.downloadURL,
+                userImageURL: passiveUserDoc['imageURL'],
                 length: 60.0,
                 padding: 5.0,
               ),
@@ -79,7 +80,7 @@ class UserShowHeader extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    !userShowModel.isEdited ? passiveUserDoc['description'] : userShowModel.description,
+                    passiveUserDoc['description'],
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

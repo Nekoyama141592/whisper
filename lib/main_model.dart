@@ -166,5 +166,13 @@ class MainModel extends ChangeNotifier {
       notificationIds.add(notificationId);
     });
   }
+
+  Future regetCurrentUserDoc(String currentUserDocId) async {
+    currentUserDoc =  await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDocId)
+    .get();
+    notifyListeners();
+  }
   
 }

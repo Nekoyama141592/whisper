@@ -37,7 +37,7 @@ class UserShowPage extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: userShowModel.isEditing ?
-      SafeArea(child: EditProfileScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc))
+      SafeArea(child: EditProfileScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,))
       : GradientScreen(
         top: SizedBox.shrink(), 
         header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, followerUids: followerUids, mainModel: mainModel, followModel: followModel),

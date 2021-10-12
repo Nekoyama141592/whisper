@@ -115,7 +115,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     editPostInfoModel.postTitle = text;
                   },
                   decoration: InputDecoration(
-                    hintText: editPostInfoModel.isEdited ? editPostInfoModel.postTitle : currentSongDoc['title'],
+                    hintText: currentSongDoc['title'],
                     hintStyle: TextStyle(fontWeight: FontWeight.bold)
                   ),
                 )
