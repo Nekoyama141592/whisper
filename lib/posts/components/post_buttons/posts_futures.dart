@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostsFeaturesModel()
@@ -11,6 +12,7 @@ final postsFeaturesProvider = ChangeNotifierProvider(
 class PostsFeaturesModel extends ChangeNotifier{
   
   String comment = '';
+  bool isLoading = false;
 
   Future like(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
@@ -183,4 +185,41 @@ class PostsFeaturesModel extends ChangeNotifier{
     .get();
     return newCurrentSongDoc;
   }
+
+  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs) async {
+    mutesPostIds.add(postId);
+    await prefs.setStringList('mutesPostIds', mutesPostIds);
+  }
+
+  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs) async {
+    mutesUids.add(uid);
+    await prefs.setStringList('mutesUids', mutesUids);
+  }
+
+  Future unMuteUser(List<String> mutesUids,String passiveUid,SharedPreferences prefs) async {
+    mutesUids.remove(passiveUid);
+    await prefs.setStringList('mutesUids', mutesUids);
+  }
+
+  Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {
+    mutesReplyIds.add(replyId);
+    await prefs.setStringList('mutesReplyIds', mutesReplyIds);
+  }
+
+  Future muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
+    mutesCommentIds.add(commentId);
+    await prefs.setStringList('mutesCommentIds', mutesCommentIds);
+  }
+
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid) async {
+    blockingUids.add(passiveUid);
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'blocingUids': blockingUids,
+    }); 
+  }
+
+
 }

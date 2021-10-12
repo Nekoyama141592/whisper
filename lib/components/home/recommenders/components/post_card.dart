@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 // components
@@ -10,8 +11,9 @@ import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/recommenders/recommenders_model.dart';
+import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends ConsumerWidget {
   
   const PostCard({
     Key? key,
@@ -27,7 +29,9 @@ class PostCard extends StatelessWidget {
   final RecommendersModel recommendersModel;
 
   @override  
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ScopedReader watch) {
+
+    final postFutures = watch(postsFeaturesProvider);
     return InkWell(
       onTap: () async {
         await recommendersModel.initAudioPlayer(i);
@@ -35,26 +39,33 @@ class PostCard extends StatelessWidget {
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: [
+        actions: mainModel.currentUserDoc['uid'] == postDoc['uid'] ? 
+        [
           IconSlideAction(
             caption: 'mute User',
             color: Colors.transparent,
             icon: Icons.person_off,
-            onTap: () => print("mute User"),
+            onTap: () async {
+              await postFutures.muteUser(mainModel.mutesUids, postDoc['uid'], mainModel.prefs);
+            } ,
           ),
           IconSlideAction(
             caption: 'mute Post',
             color: Colors.transparent,
             icon: Icons.visibility_off,
-            onTap: () => print("mute comment"),
+            onTap: () async {
+              await postFutures.mutePost(mainModel.mutesPostIds, postDoc['postId'], mainModel.prefs);
+            },
           ),
           IconSlideAction(
             caption: 'block User',
             color: Colors.transparent,
             icon: Icons.block,
-            onTap: () => print("blockUser"),
+            onTap: () async {
+              await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, postDoc['uid']);
+            },
           ),
-        ],
+        ] : [],
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [

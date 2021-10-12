@@ -43,8 +43,7 @@ db{
         userImageURL: String,
     }
     users{
-        blockUids: [ String ],
-        blockerUids: [ String ],
+        blockingUids: [ String ],
         bookmarks: [{
             createdAt: TimeStamp,
             postId: String,

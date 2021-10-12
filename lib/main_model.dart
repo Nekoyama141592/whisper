@@ -34,8 +34,11 @@ class MainModel extends ChangeNotifier {
   List<String> notificationIds = [];
   // mutes 
   List<String> mutesReplyIds = [];
-  List<String> muteUids = [];
-  List<String> muteCommentIds = [];
+  List<String> mutesUids = [];
+  List<String> mutesCommentIds = [];
+  List<String> mutesPostIds = [];
+  // block
+  List<dynamic> blockingUids = [];
 
   bool newNotificationExists = false;
 
@@ -141,13 +144,18 @@ class MainModel extends ChangeNotifier {
   }
 
   void setMutes() {
-    mutesReplyIds = prefs.getStringList('muteReplyIds') ?? [];
-    muteUids = prefs.getStringList('muteUids') ?? [];
-    muteCommentIds = prefs.getStringList('muteCommentIds') ?? [];
+    mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
+    mutesUids = prefs.getStringList('mutesUids') ?? [];
+    mutesCommentIds = prefs.getStringList('mutesCommentIds') ?? [];
+    mutesPostIds = prefs.getStringList('mutesPOstIds') ?? [];
   }
 
   void getReplyNotifications() {
     replyNotifications = currentUserDoc['replyNotifications'];
+  }
+
+  void getBlocks() {
+    blockingUids = currentUserDoc['blockingUids'];
   }
 
   void setNotificationIds() {

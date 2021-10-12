@@ -137,8 +137,7 @@ class SignupModel extends ChangeNotifier {
     final imageURL = await uploadImage();
     await FirebaseFirestore.instance
     .collection('users').add({
-      'blockUids': [],
-      'blockerUids': [], 
+      'blockingUids': [],
       'bookmarks': [],
       'commentNotifications': [],
       'createdAt': Timestamp.now(),
