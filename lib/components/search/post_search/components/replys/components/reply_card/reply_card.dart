@@ -31,12 +31,13 @@ class ReplyCard extends StatelessWidget {
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       actions: [
+        reply['uid'] == mainModel.currentUserDoc['uid'] ?
         IconSlideAction(
           caption: 'Edit',
           color: Colors.transparent,
           icon: Icons.edit,
           onTap: () => print("edit"),
-        ),
+        ) : SizedBox.shrink(),
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
