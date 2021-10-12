@@ -1,2 +1,2 @@
-const int oneTimeReadCount = 2;
+const int oneTimeReadCount = 30;
 const int defaultRefreshIndex = -1;

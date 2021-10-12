@@ -147,6 +147,8 @@ class SignupModel extends ChangeNotifier {
       'followingUids': [],
       'imageURL': imageURL,
       'isAdmin': false,
+      'isNFTicon': false,
+      'isOfficial': false,
       'likedComments': [],
       'likedReplyMaps': [],
       'likes': [],

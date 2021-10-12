@@ -19,8 +19,8 @@ class AdminModel extends ChangeNotifier {
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(doc.reference, {
-            'likedReplyMaps': [],
-            'readPosts': [],
+            'isNFTicon': false,
+            'isOfficial': false,
           });
         });
         return batch.commit();

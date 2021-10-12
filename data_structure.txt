@@ -69,6 +69,8 @@ db{
         ],
         imageURL: String,
         isAdmin: bool,
+        isNFTicon: bool,
+        isOfficial: bool,
         likedComments:[{
             commentId: String,
             createdAt: TimeStamp,
