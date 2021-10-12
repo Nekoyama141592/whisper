@@ -30,7 +30,7 @@ class LikeButton extends ConsumerWidget {
         IconButton(
           icon: Icon(
             Icons.favorite,
-            color: Colors.red,
+            color: Theme.of(context).highlightColor,
           ),
           onPressed: () async {
             mainModel.likedPostIds.remove(currentSongMap['postId']);

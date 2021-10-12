@@ -32,7 +32,7 @@ class BookmarkButton extends ConsumerWidget {
         IconButton(
           icon: Icon(
             Icons.inventory_2,
-            color: Colors.red,
+            color: Theme.of(context).highlightColor,
           ),
           onPressed: () async {
             bookmarkedPostIds.remove(currentSongDoc['postId']);
