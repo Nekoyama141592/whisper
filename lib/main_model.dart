@@ -17,7 +17,8 @@ class MainModel extends ChangeNotifier {
   // user
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
-  
+  late SharedPreferences prefs;
+
   List<String> likedPostIds = [];
   List<String> bookmarkedPostIds = [];
   List<dynamic> followingUids = [];
@@ -31,6 +32,11 @@ class MainModel extends ChangeNotifier {
   List<String> readNotificationsIds = [];
   List<dynamic> replyNotifications = [];
   List<String> notificationIds = [];
+  // mutes 
+  List<String> mutesReplyIds = [];
+  List<String> muteUids = [];
+  List<String> muteCommentIds = [];
+
   bool newNotificationExists = false;
 
   MainModel() {
@@ -129,9 +135,15 @@ class MainModel extends ChangeNotifier {
   }
 
   Future getReadNotificationIds() async {
-    final prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
     print(readNotificationsIds);
+  }
+
+  void setMutes() {
+    mutesReplyIds = prefs.getStringList('muteReplyIds') ?? [];
+    muteUids = prefs.getStringList('muteUids') ?? [];
+    muteCommentIds = prefs.getStringList('muteCommentIds') ?? [];
   }
 
   void getReplyNotifications() {

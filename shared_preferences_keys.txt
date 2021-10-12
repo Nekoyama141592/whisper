@@ -1,1 +1,4 @@
-readNotificationIds: List<String>
+readNotificationIds: List<String>,
+muteReplyIds: List<String>,
+mutesUids: List<String>,
+muteCommentIds: List<String>,

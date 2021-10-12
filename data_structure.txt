@@ -36,12 +36,15 @@ db{
         createdAt: TimeStamp,
         likesUids: []
         reply: String,
+        replyId; String,
         uid: String,
         userDocId: String,
         userName: String,
         userImageURL: String,
     }
     users{
+        blockUids: [ String ],
+        blockerUids: [ String ],
         bookmarks: [{
             createdAt: TimeStamp,
             postId: String,

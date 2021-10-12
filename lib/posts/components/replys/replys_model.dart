@@ -125,6 +125,7 @@ class ReplysModel extends ChangeNotifier {
       'createdAt': Timestamp.now(),
       'likesUids': [],
       'reply': reply,
+      'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
