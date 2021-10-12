@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// package
+import 'package:flutter_slidable/flutter_slidable.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/main_model.dart';
@@ -23,15 +25,46 @@ class ReplyCard extends StatelessWidget {
     final String userImageURL = reply['userImageURL'];
     final length = 60.0;
     final padding = 0.0;
+    
     return reply['commentId'] == searchReplysModel.giveComment['commentId'] ?
-    ListTile(
-      leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
-      title: Text(reply['userName']),
-      subtitle: Text(
-        reply['commentId'].toString(),
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold
+    Slidable(
+      actionPane: SlidableBehindActionPane(),
+      actionExtentRatio: 0.25,
+      actions: [
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.transparent,
+          icon: Icons.edit,
+          onTap: () => print("edit"),
+        ),
+        IconSlideAction(
+          caption: 'mute User',
+          color: Colors.transparent,
+          icon: Icons.person_off,
+          onTap: () => print("mute User"),
+        ),
+        IconSlideAction(
+          caption: 'mute Post',
+          color: Colors.transparent,
+          icon: Icons.visibility_off,
+          onTap: () => print("mute reply"),
+        ),
+        IconSlideAction(
+          caption: 'block User',
+          color: Colors.transparent,
+          icon: Icons.block,
+          onTap: () => print("blockUser"),
+        ),
+      ],
+      child: ListTile(
+        leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
+        title: Text(reply['userName']),
+        subtitle: Text(
+          reply['commentId'].toString(),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold
+          ),
         ),
       ),
     ) : SizedBox.shrink();

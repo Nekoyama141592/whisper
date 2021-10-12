@@ -71,10 +71,7 @@ class CommentsPage extends ConsumerWidget {
                     commentsModel: commentsModel,
                     replysModel: replysModel,
                     comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i],
-                    currentUserDoc: mainModel.currentUserDoc,
                     currentSongDoc: currentSongDoc,
-                    likedCommentIds: mainModel.likedCommentIds,
-                    likedComments: mainModel.likedComments,
                     mainModel: mainModel,
                   ),
                   onTap: () {

@@ -24,22 +24,8 @@ class TimestampDisplay extends StatelessWidget {
         final createdAtDay = createdAtDate.day.toString();
         final createdAtHour = createdAtDate.hour.toString();
 
-        final Timestamp updatedAt = currentSongDoc['updatedAt'];
-        final updatedAtDate = updatedAt.toDate();
-        final updatedAtYear = updatedAtDate.year.toString();
-        final updatedAtMonth = updatedAtDate.month.toString();
-        final updatedAtDay = updatedAtDate.day.toString();
-        final updatedAtHour = updatedAtDate.hour.toString();
-
-        return createdAt == updatedAt ?
-        Text(createdAtYear + "/" + createdAtMonth + "/" + createdAtDay + " " + createdAtHour + "時台に投稿")
-        : Column(
-          children: [
-            Text(createdAtYear + "/" + createdAtMonth + "/" + createdAtDay + " " + createdAtHour + "時台に投稿"),
-            SizedBox(height: 5.0),
-            Text(updatedAtYear + "/" + updatedAtMonth + "/" + updatedAtDay + " " + updatedAtHour + "時台に更新")
-          ],
-        );
+        return
+        Text(createdAtYear + "/" + createdAtMonth + "/" + createdAtDay + " " + createdAtHour + "時台に投稿");
       }
     );
   }

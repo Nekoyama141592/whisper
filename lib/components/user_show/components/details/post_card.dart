@@ -36,30 +36,23 @@ class PostCard extends StatelessWidget {
         actionExtentRatio: 0.25,
         actions: [
           IconSlideAction(
-            caption: 'Archive',
+            caption: 'mute User',
             color: Colors.transparent,
-            icon: Icons.archive,
-            
-            onTap: () => print("archive"),
+            icon: Icons.person_off,
+            onTap: () => print("mute User"),
           ),
           IconSlideAction(
-            caption: 'Share',
+            caption: 'mute Post',
             color: Colors.transparent,
-            icon: Icons.share,
-            onTap: () => print('Share'),
+            icon: Icons.visibility_off,
+            onTap: () => print("mute comment"),
           ),
           IconSlideAction(
-            caption: 'More',
+            caption: 'block User',
             color: Colors.transparent,
-            icon: Icons.more_horiz,
-            onTap: () => print('More'),
+            icon: Icons.block,
+            onTap: () => print("blockUser"),
           ),
-          IconSlideAction(
-            caption: 'Delete',
-            color: Colors.transparent,
-            icon: Icons.delete,
-            onTap: () => print('Delete'),
-          )
         ],
         child: Container(
           decoration: BoxDecoration(
