@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
-import 'package:whisper/main_model.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -29,7 +28,7 @@ class ReplyCard extends StatelessWidget {
       leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
       title: Text(reply['userName']),
       subtitle: Text(
-        reply['commentId'].toString(),
+        reply['reply'],
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold

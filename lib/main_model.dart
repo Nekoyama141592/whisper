@@ -47,6 +47,7 @@ class MainModel extends ChangeNotifier {
     getReadPost();
     getReadNotificationIds();
     getReplyNotifications();
+    setNotificationIds();
     endLoading();
   }
 
