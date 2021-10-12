@@ -37,7 +37,7 @@ db{
         likesUids: []
         reply: String,
         uid: String,
-        userDocId
+        userDocId: String,
         userName: String,
         userImageURL: String,
     }

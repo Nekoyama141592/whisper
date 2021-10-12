@@ -25,19 +25,12 @@ class ReplyCard extends StatelessWidget {
     final String userImageURL = reply['userImageURL'];
     final length = 60.0;
     final padding = 0.0;
-    
     return reply['commentId'] == searchReplysModel.giveComment['commentId'] ?
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       actions: [
-        reply['uid'] == mainModel.currentUserDoc['uid'] ?
-        IconSlideAction(
-          caption: 'Edit',
-          color: Colors.transparent,
-          icon: Icons.edit,
-          onTap: () => print("edit"),
-        ) : SizedBox.shrink(),
+        
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
