@@ -22,6 +22,7 @@ class RecommendersModel extends ChangeNotifier {
   bool isLoading = false;
   // user
   User? currentUser;
+  late DocumentSnapshot currentUserDoc;
 
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
@@ -52,7 +53,7 @@ class RecommendersModel extends ChangeNotifier {
     startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
-    // await setMutes();
+    await setCurrentUserDoc();
     await getRecommenders();
     listenForStates();
     endLoading();
@@ -70,6 +71,21 @@ class RecommendersModel extends ChangeNotifier {
 
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
+  }
+
+  Future setCurrentUserDoc() async {
+    try{
+      await FirebaseFirestore.instance
+      .collection('users')
+      .where('uid',isEqualTo: currentUser!.uid)
+      .limit(1)
+      .get()
+      .then((qshot) {
+        currentUserDoc = qshot.docs[0];
+      });
+    } catch(e) {
+      print(e.toString());
+    }
   }
 
   Future<void> initAudioPlayer(int i) async {
