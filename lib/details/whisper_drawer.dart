@@ -38,11 +38,12 @@ class WhisperDrawer extends StatelessWidget {
           )
           : SizedBox.shrink(),
           ListTile(
-            title: Text('Account'),
+            title: Text('アカウント'),
             onTap: () {
               routes.toAccountPage(context,mainModel.currentUserDoc,mainModel.currentUser);
             },
           ),
+         
           ListTile(
             title: Text('テーマ変更'),
             trailing:  themeModel.isDarkTheme ? ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,) : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,),

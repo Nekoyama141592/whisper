@@ -30,6 +30,7 @@ class VerifyPasswordResetPage extends ConsumerWidget {
               }, 
             ),
           ),
+          SizedBox(height: 25.0,),
           Center(
             child: RoundedButton(
               text: 'リセットメールを受け取る', 
@@ -39,8 +40,8 @@ class VerifyPasswordResetPage extends ConsumerWidget {
               press: () async {
                 await _verifyPasswordResetModel.sendPasswordResetEmail(context);
               }, 
-              textColor: Colors.black, 
-              buttonColor: kQuaternaryColor
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
             ),
           ),
         ],

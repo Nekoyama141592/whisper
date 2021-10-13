@@ -61,8 +61,8 @@ void toUpdateEmailPage(context,User? currentUser) {
 void toUpdatePassword(context,User? currentUser) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordPage(currentUser: currentUser,)));
 }
-void toReauthenticationPage(context,User? currentUser,AccountModel accountModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,)));
+void toReauthenticationPage(context,User? currentUser,AccountModel accountModel,DocumentSnapshot currentUserDoc) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,currentUserDoc: currentUserDoc,)));
 }
 
 void toBookmarksPage(context,MainModel mainModel) {

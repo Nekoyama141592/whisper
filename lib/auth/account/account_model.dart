@@ -1,4 +1,5 @@
 // material
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +16,8 @@ final accountProvider = ChangeNotifierProvider(
 enum WhichState {
   initialValue,
   updateEmail,
-  updatePassword,     
+  updatePassword,
+  deleteUser     
 }
 
 class AccountModel extends ChangeNotifier {
@@ -34,7 +36,7 @@ class AccountModel extends ChangeNotifier {
   WhichState whichState = WhichState.initialValue;
   String password = '';
   
-  Future reauthenticateWithCredential (BuildContext context,User? currentUser)  async {
+  Future reauthenticateWithCredential (BuildContext context,User? currentUser,DocumentSnapshot currentUserDoc)  async {
     
     currentUser = FirebaseAuth.instance.currentUser;
     final email = currentUser!.email;
@@ -43,10 +45,18 @@ class AccountModel extends ChangeNotifier {
     final User? user = instance.currentUser;
     try {
       await user!.reauthenticateWithCredential(credential);
-      if (whichState == WhichState.updatePassword) {
-        routes.toUpdatePassword(context, currentUser);
-      } else if (whichState == WhichState.updateEmail) {
-        routes.toUpdateEmailPage(context, currentUser);
+      switch(whichState) {
+        case WhichState.initialValue:
+        break;
+        case WhichState.updatePassword:
+          routes.toUpdatePassword(context, currentUser);
+        break;
+        case WhichState.updateEmail:
+          routes.toUpdateEmailPage(context, currentUser);
+        break;
+        case WhichState.deleteUser:
+          showDeleteUserDialog(context, currentUserDoc);
+        break;
       }
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
@@ -60,6 +70,42 @@ class AccountModel extends ChangeNotifier {
     }
   }
 
+  void showDeleteUserDialog(BuildContext context,DocumentSnapshot currentUserDoc) {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text('ユーザー削除'),
+          content: Text('一度削除したら、復元はできません。本当に削除しますか？'),
+          actions: [
+            RoundedButton(
+              text: 'OK', 
+              widthRate: 0.2, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async {
+                final currentUser = FirebaseAuth.instance.currentUser;
+                if (currentUser!.uid == currentUserDoc['uid']) {
+                  await currentUser.delete();
+                  await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(currentUserDoc.id)
+                  .delete().then((_) {
+                    routes.toLoginpage(context);
+                  });
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+                }
+              }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
+            )
+          ],
+        );
+      }
+    );
+  }
+
   void showSignOutDialog(BuildContext context) {
     showDialog(
       context: context, 
@@ -68,7 +114,6 @@ class AccountModel extends ChangeNotifier {
           title: Text('ログアウト'),
           content: Text('ログアウトしますか？'),
           actions: [
-            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel',style: TextStyle(color: Theme.of(context).focusColor,fontWeight: FontWeight.bold),)),
             RoundedButton(
               text: 'OK', 
               widthRate: 0.2, 

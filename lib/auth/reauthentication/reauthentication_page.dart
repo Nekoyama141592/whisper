@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -13,11 +14,14 @@ class ReauthenticationPage extends StatelessWidget {
   const ReauthenticationPage({
     Key? key,
     required this.currentUser,
-    required this.accountModel
+    required this.accountModel,
+    required this.currentUserDoc
   }) : super(key: key);
 
   final User? currentUser;
   final AccountModel accountModel;
+  final DocumentSnapshot currentUserDoc;
+
   @override 
   Widget build(BuildContext context) {
 
@@ -44,7 +48,7 @@ class ReauthenticationPage extends StatelessWidget {
               widthRate: 0.95, 
               verticalPadding: 20.0, 
               horizontalPadding: 10.0, 
-              press: () async { await accountModel.reauthenticateWithCredential(context,currentUser); }, 
+              press: () async { await accountModel.reauthenticateWithCredential(context,currentUser,currentUserDoc); }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary,
             ),

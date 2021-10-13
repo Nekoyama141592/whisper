@@ -30,6 +30,7 @@ class VerifyPage extends ConsumerWidget {
               'assets/svgs/key-pana.svg',
               height: size.height * 0.30,
             ),
+            SizedBox(height: size.height * 0.05),
             Text(
               userEmail + 'にメールを送信しました。ご確認下さい。',
               style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold),

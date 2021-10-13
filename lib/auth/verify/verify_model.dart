@@ -29,7 +29,7 @@ class VerifyModel extends ChangeNotifier {
   }
 
   Future  setTimer(context) async {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+    timer = Timer.periodic(Duration(seconds: 2), (timer) async {
       await checkEmailVerified(context);
     });
   }
@@ -39,8 +39,8 @@ class VerifyModel extends ChangeNotifier {
     await currentUser!.reload();
     if (currentUser!.emailVerified) {
       timer.cancel();
-      routes.toMyApp(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に成功しました!!')));
+      routes.toMyApp(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に失敗しました')));
       print(currentUser!.emailVerified);
