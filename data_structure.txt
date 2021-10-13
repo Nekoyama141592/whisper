@@ -19,16 +19,14 @@ db{
         }],
         createdAt: TimeStamp,
         imageURL: String,
-        // new model　追加していない DB 追加していない
         impression: int,
         isNFTicon: bool,
         isOfficial: bool,
+        isPlayedCount: int,
         likes: [{
             createdAt: TimeStamp,
             uid: String,
         }],
-         // new model　追加していない DB 追加していない
-        NumberOfViews: int,
         postId: String,
         pla
         score: int,

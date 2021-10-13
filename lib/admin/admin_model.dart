@@ -10,31 +10,25 @@ final adminProvider = ChangeNotifierProvider(
 class AdminModel extends ChangeNotifier {
   
   Future adminMove() async {
-    // try {
-    //   WriteBatch batch = FirebaseFirestore.instance.batch();
-    //   return 
-    //   FirebaseFirestore.instance
-    //   .collection('replys')
-    //   .get()
-    //   .then((qshot) {
-    //     qshot.docs.forEach((doc) {
-    //       batch.update(doc.reference, {
-    //         'isNFTicon': false,
-    //         'isOfficial': false,
-    //       });
-    //     });
-    //     return batch.commit();
-    //   });
+    try {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      return 
+      FirebaseFirestore.instance
+      .collection('posts')
+      .get()
+      .then((qshot) {
+        qshot.docs.forEach((doc) {
+          batch.update(doc.reference, {
+            'impression': 0,
+            'isPlayedCount': 0,
+          });
+        });
+        return batch.commit();
+      });
 
-    // } catch(e) {
-    //   print(e.toString());
-    // }
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc('KduGe12Nf9w5JYCZPTAq')
-    .update({
-      'replyNotifications': [],
-      'commentNotifications': [],
-    });
+    } catch(e) {
+      print(e.toString());
+    }
+   
   }
 }

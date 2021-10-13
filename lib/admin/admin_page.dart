@@ -33,12 +33,11 @@ class AdminPage extends ConsumerWidget {
             message: 'Nothing',
             child: Center(
               child: RoundedButton(
-                text: 'Admin', 
+                text: 'Nothing', 
                 widthRate: 0.95, 
                 verticalPadding: 20.0, 
                 horizontalPadding: 10.0, 
                 press: () {
-                  adminModel.adminMove();
                 }, 
                 textColor: Colors.white, 
                 buttonColor: Theme.of(context).colorScheme.secondary
