@@ -33,6 +33,16 @@ class PostCard extends ConsumerWidget {
  Widget build(BuildContext context,ScopedReader watch) {
 
     final postFutures = watch(postsFeaturesProvider);
+    final List<Widget>? deleteIcon = [
+      IconSlideAction(
+        caption: 'Delete',
+        color: Colors.transparent,
+        icon: Icons.delete,
+        onTap: () {
+          bookMarksModel.onDeleteButtonPressed(context, postDoc, mainModel.currentUserDoc, i);
+        },
+      ),
+    ];
     return InkWell(
       onTap: () async {
         await bookMarksModel.initAudioPlayer(i);
@@ -66,7 +76,7 @@ class PostCard extends ConsumerWidget {
               await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, postDoc['uid']);
             },
           ),
-        ] : [],
+        ] : deleteIcon,
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [

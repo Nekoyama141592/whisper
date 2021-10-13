@@ -14,6 +14,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
+// components
+import 'package:whisper/details/rounded_button.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -31,7 +33,6 @@ class UserShowModel extends ChangeNotifier {
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
 
-  List<DocumentSnapshot> currentSongDocs = [];
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -43,7 +44,7 @@ class UserShowModel extends ChangeNotifier {
   final List<AudioSource> afterUris = [];
   // cloudFirestore
   List<String> postIds = [];
-  List<DocumentSnapshot> postDocs = [];
+  List<DocumentSnapshot> userShowDocs = [];
   // refresh
   int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -94,7 +95,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future onRefresh() async {
     refreshIndex = defaultRefreshIndex;
-    postDocs = [];
+    userShowDocs = [];
     await getPosts();
     notifyListeners();
     refreshController.refreshCompleted();
@@ -116,7 +117,7 @@ class UserShowModel extends ChangeNotifier {
         .get()
         .then((qshot) {
           qshot.docs.forEach((DocumentSnapshot? doc) {
-            postDocs.add(doc!);
+            userShowDocs.add(doc!);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
             afterUris.add(source);
@@ -130,12 +131,12 @@ class UserShowModel extends ChangeNotifier {
         await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
-        .startAfterDocument(postDocs[refreshIndex])
+        .startAfterDocument(userShowDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get()
         .then((qshot) {
           qshot.docs.forEach((DocumentSnapshot? doc) {
-            postDocs.add(doc!);
+            userShowDocs.add(doc!);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
             afterUris.add(source);
@@ -338,9 +339,9 @@ class UserShowModel extends ChangeNotifier {
       currentSongDocNotifier.value = currentSongDoc;
       // update playlist
       final playlist = sequenceState.effectiveSequence;
-      playlist.map((item) {
-        currentSongDocs.add(item.tag);
-      });
+      // playlist.map((item) {
+      //   currentSongDocs.add(item.tag);
+      // });
       // update shuffle mode
       isShuffleModeEnabledNotifier.value = 
       sequenceState.shuffleModeEnabled;
@@ -389,5 +390,54 @@ class UserShowModel extends ChangeNotifier {
     await updateUserInfo(context,currentUserDoc);
     isEditing = false;
   }
+
+   void onDeleteButtonPressed(BuildContext context,DocumentSnapshot postDoc,DocumentSnapshot currentUserDoc,int i) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('投稿を削除'),
+          content: Text('投稿を削除しますか？'),
+          actions: [
+            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel',style: TextStyle(color: Theme.of(context).focusColor,fontWeight: FontWeight.bold),)),
+            RoundedButton(
+              text: 'OK', 
+              widthRate: 0.2, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async { await delete(context, postDoc, currentUserDoc, i); }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
+            )
+          ],
+        );
+      }
+    );
+  }
+
   
+  Future delete(BuildContext context,DocumentSnapshot postDoc, DocumentSnapshot currentUserDoc,int i) async {
+    if (currentUserDoc['uid'] != postDoc['uid']) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
+    } else {
+      try {
+        AudioSource source = afterUris[i];
+        afterUris.remove(source);
+        userShowDocs.remove(postDoc);
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: i);
+        }
+        notifyListeners();
+        await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postDoc.id)
+        .delete();
+      } catch(e) {
+        print(e.toString());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+      }
+    }
+  }
+
 }

@@ -29,6 +29,16 @@ class PostResult extends ConsumerWidget {
  Widget build(BuildContext context,ScopedReader watch) {
 
     final postFutures = watch(postsFeaturesProvider);
+    final List<Widget>? deleteIcon = [
+      IconSlideAction(
+        caption: 'Delete',
+        color: Colors.transparent,
+        icon: Icons.delete,
+        onTap: () {
+          postSearchModel.onDeleteButtonPressed(context, result, mainModel.currentUserDoc, i);
+        },
+      ),
+    ];
     
     return InkWell(
       onTap: () async {
@@ -63,7 +73,7 @@ class PostResult extends ConsumerWidget {
               await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, result['uid']);
             },
           ),
-        ] : [],
+        ] : deleteIcon,
         child: Container(
           decoration: BoxDecoration(
             boxShadow: [

@@ -32,11 +32,11 @@ class UserShowPostScreen extends ConsumerWidget {
 
     final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = userShowModel.isLoading;
-    final postDocs = userShowModel.postDocs;
+    final postDocs = userShowModel.userShowDocs;
     final content =  Padding(
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
-        postDocs: userShowModel.postDocs, 
+        postDocs: userShowModel.userShowDocs, 
         route: (){
           routes.toPostShowPage(
           context, 

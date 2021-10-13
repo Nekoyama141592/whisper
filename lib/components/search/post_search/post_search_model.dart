@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:algolia/algolia.dart';
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
+// components
+import 'package:whisper/details/rounded_button.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -224,5 +226,54 @@ class PostSearchModel extends ChangeNotifier{
       }
     });
     notifyListeners();
+  }
+
+   void onDeleteButtonPressed(BuildContext context,Map<String,dynamic> map,DocumentSnapshot currentUserDoc,int i) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('投稿を削除'),
+          content: Text('投稿を削除しますか？'),
+          actions: [
+            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel',style: TextStyle(color: Theme.of(context).focusColor,fontWeight: FontWeight.bold),)),
+            RoundedButton(
+              text: 'OK', 
+              widthRate: 0.2, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async { await delete(context, map, currentUserDoc, i); }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
+            )
+          ],
+        );
+      }
+    );
+  }
+
+
+  Future delete(BuildContext context,Map<String,dynamic> map, DocumentSnapshot currentUserDoc,int i) async {
+    if (currentUserDoc['uid'] != map['uid']) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
+    } else {
+      try {
+        AudioSource source = afterUris[i];
+        afterUris.remove(source);
+        results.remove(map);
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: i);
+        }
+        notifyListeners();
+        await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(map['objectID'])
+        .delete();
+      } catch(e) {
+        print(e.toString());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+      }
+    }
   }
 }
