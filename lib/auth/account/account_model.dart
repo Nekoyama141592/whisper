@@ -86,13 +86,13 @@ class AccountModel extends ChangeNotifier {
               press: () async {
                 final currentUser = FirebaseAuth.instance.currentUser;
                 if (currentUser!.uid == currentUserDoc['uid']) {
-                  await currentUser.delete();
                   await FirebaseFirestore.instance
                   .collection('users')
                   .doc(currentUserDoc.id)
                   .delete().then((_) {
                     routes.toLoginpage(context);
                   });
+                  await currentUser.delete();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
                 }
