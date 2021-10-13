@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/auth/components/forget_password_text.dart';
 // model
 import 'package:whisper/auth/account/account_model.dart';
 
@@ -52,7 +53,8 @@ class ReauthenticationPage extends StatelessWidget {
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary,
             ),
-          )
+          ),
+          ForgetPasswordText()
         ],
       ),
     );

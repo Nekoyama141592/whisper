@@ -23,7 +23,7 @@ class RoundedPasswordField extends ConsumerWidget {
 
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final _provider = watch(roundedPasswordFieldProvider);
+    final model = watch(roundedPasswordFieldProvider);
     return TextFieldContainer(
       child: TextField(
         style: TextStyle(
@@ -32,7 +32,7 @@ class RoundedPasswordField extends ConsumerWidget {
           fontWeight: FontWeight.bold
         ),
         keyboardType: TextInputType.visiblePassword,
-        obscureText: _provider.isObscure,
+        obscureText: model.isObscure,
         onChanged: onChanged,
         cursorColor: kPrimaryColor.withOpacity(0.7),
         decoration: InputDecoration(
@@ -44,10 +44,10 @@ class RoundedPasswordField extends ConsumerWidget {
           ),
           suffixIcon: IconButton(
             color: Colors.black,
-            onPressed: (){_provider.toggleIsObscure();}, 
-            icon: _provider.isObscure ?
-            Icon(Icons.visibility_off)
-            : Icon(Icons.visibility)
+            onPressed: (){model.toggleIsObscure();}, 
+            icon: model.isObscure ?
+            Icon(Icons.visibility)
+            : Icon(Icons.visibility_off)
           ),
           border: InputBorder.none
         ),
