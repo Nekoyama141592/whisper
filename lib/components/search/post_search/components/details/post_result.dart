@@ -37,7 +37,7 @@ class PostResult extends ConsumerWidget {
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: !mainModel.currentUserDoc['uid'] == result['uid'] ?
+        actions: !mainModel.currentUserDoc['uid'] != result['uid'] ?
         [
           IconSlideAction(
             caption: 'mute User',

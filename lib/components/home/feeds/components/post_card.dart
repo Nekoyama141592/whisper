@@ -39,7 +39,7 @@ class PostCard extends ConsumerWidget {
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: mainModel.currentUserDoc['uid'] == postDoc['uid'] ? 
+        actions: mainModel.currentUserDoc['uid'] != postDoc['uid'] ? 
         [
           IconSlideAction(
             caption: 'mute User',
