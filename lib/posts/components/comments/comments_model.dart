@@ -92,6 +92,8 @@ class CommentsModel extends ChangeNotifier {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
       'createdAt': Timestamp.now(),
+      'isNFTicon': false,
+      'isOfficial': false,
       'likesUids': [],
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,

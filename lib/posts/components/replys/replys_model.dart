@@ -123,6 +123,8 @@ class ReplysModel extends ChangeNotifier {
     final map = {
       'commentId': commentId,
       'createdAt': Timestamp.now(),
+      'isNFTicon': false,
+      'isOfficial': false,
       'likesUids': [],
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
@@ -142,6 +144,8 @@ class ReplysModel extends ChangeNotifier {
       .add({
         'commentId': commentId,
         'createdAt': Timestamp.now(),
+        'isNFTicon': false,
+        'isOfficial': false,
         'likesUids': [],
         'reply': reply,
         'uid': currentUserDoc['uid'],

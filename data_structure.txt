@@ -9,6 +9,8 @@ db{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
+            isNFTicon: false,
+            isOfficial: false,
             likesUids: [ String ],
             userDocId: String
             uid: String,
@@ -17,14 +19,20 @@ db{
         }],
         createdAt: TimeStamp,
         imageURL: String,
+        // new model　追加していない DB 追加していない
+        impression: int,
+        isNFTicon: bool,
+        isOfficial: bool,
         likes: [{
             createdAt: TimeStamp,
             uid: String,
         }],
+         // new model　追加していない DB 追加していない
+        NumberOfViews: int,
         postId: String,
+        pla
         score: int,
         title: String,
-        
         uid: String,
         updatedAt: TimeStamp,
         userDocId: String,
@@ -34,6 +42,8 @@ db{
     replys{
         commentId: String,
         createdAt: TimeStamp,
+        isNFTicon: bool,
+        isOfficial: bool,
         likesUids: []
         reply: String,
         replyId; String,
@@ -51,6 +61,8 @@ db{
         commentNotifications: [{
             'comment': String,
             'createdAt': TimeStamp,
+            'isNFTicon': bool,
+            'isOfficial':bool
             'notificationId': String,
             'postId': notificationId,
             'postTitle': String,
@@ -94,6 +106,8 @@ db{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
+            'isNFTicon': bool,
+            'isOfficial':bool
             notificationId: String,
             reply: String,
             uid: String,
