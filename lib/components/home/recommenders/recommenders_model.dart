@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 // notifiers
@@ -38,8 +39,12 @@ class RecommendersModel extends ChangeNotifier {
   final List<AudioSource> afterUris = [];
   // cloudFirestore
   List<String> recommenderPostIds = [];
-  List<String> mutesUids = [];
   List<DocumentSnapshot> recommenderDocs = [];
+  // block and mutes
+  late SharedPreferences prefs;
+  List<String> mutesUids = [];
+  List<String> mutesPostIds = [];
+  List<dynamic> blockingUids = [];
 
   // refresh
   int refreshIndex = defaultRefreshIndex;
@@ -54,6 +59,7 @@ class RecommendersModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     await setCurrentUserDoc();
+    await setMutesAndBlocks();
     await getRecommenders();
     listenForStates();
     endLoading();
@@ -108,6 +114,13 @@ class RecommendersModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future setMutesAndBlocks() async {
+    prefs = await SharedPreferences.getInstance();
+    mutesUids = prefs.getStringList('mutesUids') ?? [];
+    mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
+    blockingUids = currentUserDoc['blockingUids'];
+  }
+
   Future getRecommenders() async {
     final now = DateTime.now();
     final range = now.subtract(Duration(days: 5));
@@ -123,10 +136,12 @@ class RecommendersModel extends ChangeNotifier {
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot? doc) {
-          recommenderDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
+          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+            recommenderDocs.add(doc);
+            Uri song = Uri.parse(doc['audioURL']);
+            UriAudioSource source = AudioSource.uri(song, tag: doc);
+            afterUris.add(source);
+          }
         });
         if (afterUris.isNotEmpty) {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
@@ -142,10 +157,12 @@ class RecommendersModel extends ChangeNotifier {
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot doc) {
-          recommenderDocs.add(doc);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
+          if (!mutesUids.contains(doc['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+            recommenderDocs.add(doc);
+            Uri song = Uri.parse(doc['audioURL']);
+            UriAudioSource source = AudioSource.uri(song, tag: doc);
+            afterUris.add(source);
+          }
         });
         if (afterUris.isNotEmpty) {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);

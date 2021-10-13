@@ -57,12 +57,15 @@ class PostSearchModel extends ChangeNotifier{
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
 
-  Future search() async {
+  Future search(List<String> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
     querySnap.hits.forEach((hit) {
       final map = hit.data;
+       if (!mutesUids.contains(map['uid']) && !mutesPostIds.contains(map['postId']) && !blockingUids.contains(map['uid']) ) {
+
+       }
       results.add(map);
       Uri song = Uri.parse(map['audioURL']);
       UriAudioSource source = AudioSource.uri(song, tag: map);
@@ -74,9 +77,9 @@ class PostSearchModel extends ChangeNotifier{
     }
   }
 
-  Future operation() async {
+  Future operation(List<String> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
     startLoading();
-    await search();
+    await search(mutesUids,mutesPostIds,blockingUids);
     listenForStates();
     endLoading();
   }
@@ -202,7 +205,7 @@ class PostSearchModel extends ChangeNotifier{
   void listenForChangesInSequenceState() {
     audioPlayer.sequenceStateStream.listen((sequenceState) {
       if (sequenceState == null) return;
-      // update current song doc
+      // update current song map
       final currentItem = sequenceState.currentSource;
       final Map<String,dynamic> currentSongMap = currentItem?.tag;
       currentSongMapNotifier.value = currentSongMap;

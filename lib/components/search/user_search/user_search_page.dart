@@ -36,7 +36,7 @@ class UserSearchPage extends ConsumerWidget {
           searchModel: searchModel, 
           controller: searchController, 
           press: () async {
-            await searchModel.operation();
+            await searchModel.operation(mainModel.mutesUids,mainModel.blockingUids);
           }
         ),
         searchModel.isLoading ?

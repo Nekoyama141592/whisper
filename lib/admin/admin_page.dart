@@ -33,7 +33,7 @@ class AdminPage extends ConsumerWidget {
             message: 'Nothing',
             child: Center(
               child: RoundedButton(
-                text: 'AdminMove', 
+                text: 'Nothing', 
                 widthRate: 0.95, 
                 verticalPadding: 20.0, 
                 horizontalPadding: 10.0, 

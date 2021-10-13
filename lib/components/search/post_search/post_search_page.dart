@@ -39,7 +39,7 @@ class PostSearchPage extends ConsumerWidget {
             searchModel: searchModel, 
             controller: searchController, 
             press: () async {
-              await searchModel.operation();
+              await searchModel.operation(mainModel.mutesUids,mainModel.mutesPostIds,mainModel.blockingUids);
             }
           ),
           searchModel.isLoading ?

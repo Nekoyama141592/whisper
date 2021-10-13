@@ -23,18 +23,16 @@ class UserSearchModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-  Future operation() async {
+  Future operation(List<String> mutesUids,List<dynamic> blockingUids) async {
     startLoading();
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
-    // Checking if has [AlgoliaQuerySnapshot]
     querySnap.hits.forEach((hit) {
-      results.add(hit);
+      if (!mutesUids.contains(hit.data['uid']) && !blockingUids.contains(hit.data['uid'])) {
+        results.add(hit);
+      }
     });
-    print('Hits count: ${querySnap.nbHits}');
-    print(results.length.toString() + 'resultsLength');
-    notifyListeners();
     endLoading();
   }
 }

@@ -32,11 +32,13 @@ class CommentCard extends StatelessWidget {
   Widget build(BuildContext context){
     final commentId = comment['commentId'];
     
-    return Slidable(
+    return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) ?
+    SizedBox.shrink()
+    : Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: [
-         
+      actions: !comment['uid'] == mainModel.currentUserDoc['uid'] ?
+      [  
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
@@ -47,7 +49,7 @@ class CommentCard extends StatelessWidget {
           caption: 'mute Post',
           color: Colors.transparent,
           icon: Icons.visibility_off,
-          onTap: () => print("mute comment"),
+          onTap: () => print("mute reply"),
         ),
         IconSlideAction(
           caption: 'block User',
@@ -55,7 +57,7 @@ class CommentCard extends StatelessWidget {
           icon: Icons.block,
           onTap: () => print("blockUser"),
         ),
-      ],
+      ] : [],
       child: Card(
         child: SingleChildScrollView(
           child: Column(

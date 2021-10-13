@@ -26,12 +26,13 @@ class ReplyCard extends StatelessWidget {
     final length = 60.0;
     final padding = 0.0;
     
-    return reply['commentId'] == replysModel.giveComment['commentId'] ?
-    Slidable(
+    return !reply['commentId'] == replysModel.giveComment['commentId'] ||  mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid']) ?
+    SizedBox.shrink()
+    : Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: [
-        
+      actions: !reply['uid'] == mainModel.currentUserDoc['uid'] ?
+      [  
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
@@ -50,7 +51,7 @@ class ReplyCard extends StatelessWidget {
           icon: Icons.block,
           onTap: () => print("blockUser"),
         ),
-      ],
+      ] : [],
       child: ListTile(
         leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
         title: Text(reply['userName']),
@@ -62,7 +63,7 @@ class ReplyCard extends StatelessWidget {
           ),
         ),
       ),
-    ) : SizedBox.shrink();
+    );
   }
 
 }

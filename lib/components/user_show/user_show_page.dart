@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
@@ -30,19 +29,30 @@ class UserShowPage extends ConsumerWidget {
     
     final userShowModel = watch(userShowProvider);
     final followModel = watch(followProvider);
-    
-
+    final List<dynamic> passiveUserBlockingUids = passiveUserDoc['blockingUids'];
     final List<dynamic> followerUids = mainModel.currentUserDoc['followerUids'];
 
     return Scaffold(
       extendBodyBehindAppBar: false,
-      body: userShowModel.isEditing ?
-      SafeArea(child: EditProfileScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,))
-      : GradientScreen(
-        top: SizedBox.shrink(), 
-        header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, followerUids: followerUids, mainModel: mainModel, followModel: followModel),
-        content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel),
-        circular: 35.0
+      body: mainModel.blockingUids.contains(passiveUserDoc['uid']) || mainModel.mutesUids.contains(passiveUserDoc['uid']) || passiveUserBlockingUids.contains(mainModel.currentUserDoc['uid']) ?
+     Column(
+       children: [
+          Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),
+          SizedBox(height: 20.0,),
+          Text('あなたはこのユーザーをミュード、ブロック'),
+          SizedBox(height: 20.0,),
+          Text('もしくは相手にブロックされています')
+       ],
+     )
+      : Container(
+        child: userShowModel.isEditing ?
+        SafeArea(child: EditProfileScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,))
+        : GradientScreen(
+          top: SizedBox.shrink(), 
+          header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, followerUids: followerUids, mainModel: mainModel, followModel: followModel),
+          content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel),
+          circular: 35.0
+        ),
       )
     );
   }
