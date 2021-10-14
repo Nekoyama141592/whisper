@@ -30,45 +30,45 @@ class LikeButton extends ConsumerWidget {
         final likesCount = likes.length;
         final plusOneCount = likes.length + 1;
         return
-        Column(
-          children: [
-            likedPostIds.contains(currentSongDoc['postId']) ?
-            Row(
-              children: [
-                InkWell(
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.red
-                  ),
-                  onTap: () async {
-                    likedPostIds.remove(currentSongDoc['postId']);
-                    postFuturesModel.reload();
-                    await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
-                  },
+        Container(
+          child: likedPostIds.contains(currentSongDoc['postId']) ?
+          Row(
+            children: [
+              InkWell(
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.red
                 ),
-                SizedBox(width: 5.0),
-                Text(
-                  plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
-                  style: TextStyle(color: Colors.red)
-                )
-              ],
-            ) : Row(
-              children: [
-                InkWell(
-                  child: Icon(Icons.favorite),
-                  onTap: () async {
-                    likedPostIds.add(currentSongDoc['postId']);
-                    postFuturesModel.reload();
-                    await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
-                  },
-                ),
-                SizedBox(width: 5.0),
-                Text(
-                  likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
-                )
-              ],
-            ),
-          ],
+                onTap: () async {
+                  likedPostIds.remove(currentSongDoc['postId']);
+                  postFuturesModel.reload();
+                  await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
+                },
+              ),
+              SizedBox(width: 5.0),
+              Text(
+                plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+                style: TextStyle(color: Colors.red)
+              )
+            ],
+          ) 
+          : Row(
+            children: [
+              InkWell(
+                child: Icon(Icons.favorite),
+                onTap: () async {
+                  likedPostIds.add(currentSongDoc['postId']);
+                  postFuturesModel.reload();
+                  await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
+                },
+              ),
+              SizedBox(width: 5.0),
+              Text(
+                likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
+              )
+            ],
+          ),
+          
         );
       }
     );

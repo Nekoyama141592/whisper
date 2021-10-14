@@ -1,23 +1,61 @@
 // material
 import 'package:flutter/material.dart';
 // package
+import 'package:cloud_firestore/cloud_firestore.dart';
+// model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
 
 class ReplyLikeButton extends StatelessWidget {
 
   const ReplyLikeButton({
     Key? key,
+    required this.thisReply,
+    required this.mainModel,
     required this.replysModel
   }) : super(key: key);
 
+  final DocumentSnapshot thisReply;
+  final MainModel mainModel;
   final ReplysModel replysModel;
   @override 
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.favorite),
-      onPressed: () {
-        
-      }, 
+
+    final List<dynamic> likesUids = thisReply['likesUids'];
+    final likesUidsCount = likesUids.length;
+    final plusOneCount = likesUids.length + 1;
+
+    return mainModel.likedReplyDocIds.contains(thisReply.id) ?
+    Row(
+      children: [
+        InkWell(
+          child: Icon(
+            Icons.favorite,
+            color: Colors.red
+          ),
+          onTap: () async {
+            replysModel.unlike(thisReply, mainModel.currentUserDoc, mainModel.likedReplys);
+          },
+        ),
+        SizedBox(width: 5.0),
+        Text(
+          plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+          style: TextStyle(color: Colors.red)
+        )
+      ],
+    ) : Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.favorite),
+          onTap: () async {
+            replysModel.like(thisReply, mainModel.currentUserDoc);
+          },
+        ),
+        SizedBox(width: 5.0),
+        Text(
+          likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
+        )
+      ],
     );
   }
 }

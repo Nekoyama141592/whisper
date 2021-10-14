@@ -150,7 +150,7 @@ class SignupModel extends ChangeNotifier {
       'isNFTicon': false,
       'isOfficial': false,
       'likedComments': [],
-      'likedReplyMaps': [],
+      'likedReplys': [],
       'likes': [],
       'mutesUids': [],
       'readPosts': [],

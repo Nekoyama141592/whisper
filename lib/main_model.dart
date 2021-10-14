@@ -32,6 +32,8 @@ class MainModel extends ChangeNotifier {
   List<String> readNotificationsIds = [];
   List<dynamic> replyNotifications = [];
   List<String> notificationIds = [];
+  List<dynamic> likedReplys = [];
+  List<dynamic> likedReplyDocIds = [];
   // mutes 
   List<String> mutesReplyIds = [];
   List<String> mutesUids = [];
@@ -55,8 +57,12 @@ class MainModel extends ChangeNotifier {
     getLikedCommentIds();
     getReadPost();
     getReadNotificationIds();
+    setMutes();
     getReplyNotifications();
     setNotificationIds();
+    getBlocks();
+    getLikesReplys();
+    getLikedReplyDocIds();
     endLoading();
   }
 
@@ -175,6 +181,15 @@ class MainModel extends ChangeNotifier {
     });
   }
 
+  void getLikesReplys() {
+    likedReplys = currentUserDoc['likedReplys'];
+  }
+
+  void getLikedReplyDocIds() {
+    likedReplys.forEach((likesReply) {
+      likedReplyDocIds.add(likesReply['likedReplyDocId']);
+    });
+  }
   Future regetCurrentUserDoc(String currentUserDocId) async {
     currentUserDoc =  await FirebaseFirestore.instance
     .collection('users')
@@ -182,5 +197,7 @@ class MainModel extends ChangeNotifier {
     .get();
     notifyListeners();
   }
+
+
   
 }
