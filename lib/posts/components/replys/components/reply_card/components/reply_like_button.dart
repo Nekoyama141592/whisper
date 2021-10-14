@@ -47,7 +47,8 @@ class ReplyLikeButton extends StatelessWidget {
           child: Icon(Icons.favorite),
           onTap: () async {
             await replysModel.like(thisReply, mainModel.currentUserDoc);
-          }),
+          }
+        ),
         SizedBox(width: 5.0),
         Text(
           likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
