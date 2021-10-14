@@ -56,7 +56,7 @@ class MainModel extends ChangeNotifier {
     getFollowingUids();
     getLikedCommentIds();
     getReadPost();
-    getReadNotificationIds();
+    await getReadNotificationIds();
     setMutes();
     getReplyNotifications();
     setNotificationIds();

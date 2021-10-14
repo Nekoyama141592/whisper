@@ -54,15 +54,6 @@ class CommentsModel extends ChangeNotifier {
             ),
           ),
           actions: [
-            TextButton(
-              child: Text(
-                'cancel',
-                style: TextStyle(color: Theme.of(context).focusColor),
-              ),
-              onPressed: () { 
-                Navigator.pop(context);
-              },
-            ),
             RoundedButton(
               text: '送信', 
               widthRate: 0.25, 
@@ -168,6 +159,7 @@ class CommentsModel extends ChangeNotifier {
           // likesUids
           List<dynamic> likesUids = postComment['likesUids'];
           likesUids.add(currentUserDoc['uid']);
+          // postComment['likesUids'] = likesUids;
           FirebaseFirestore.instance
           .collection('posts')
           .doc(newCurrentSongDoc.id)
@@ -195,6 +187,10 @@ class CommentsModel extends ChangeNotifier {
     .update({
       'likedComments': likedComments,
     });
+
+  }
+
+  Future unlike() async {
 
   }
 

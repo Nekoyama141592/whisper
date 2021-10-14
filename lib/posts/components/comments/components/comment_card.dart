@@ -37,7 +37,7 @@ class CommentCard extends StatelessWidget {
     : Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !comment['uid'] == mainModel.currentUserDoc['uid'] ?
+      actions: !(comment['uid'] == mainModel.currentUserDoc['uid']) ?
       [  
         IconSlideAction(
           caption: 'mute User',

@@ -31,7 +31,7 @@ class ReplyCard extends StatelessWidget {
     : Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !reply['uid'] == mainModel.currentUserDoc['uid'] ?
+      actions: !(reply['uid'] == mainModel.currentUserDoc['uid']) ?
       [  
         IconSlideAction(
           caption: 'mute User',
