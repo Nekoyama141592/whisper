@@ -33,7 +33,7 @@ class MainModel extends ChangeNotifier {
   List<dynamic> replyNotifications = [];
   List<String> notificationIds = [];
   List<dynamic> likedReplys = [];
-  List<dynamic> likedReplyDocIds = [];
+  List<dynamic> likedReplyIds = [];
   // mutes 
   List<String> mutesReplyIds = [];
   List<String> mutesUids = [];
@@ -187,7 +187,7 @@ class MainModel extends ChangeNotifier {
 
   void getLikedReplyDocIds() {
     likedReplys.forEach((likesReply) {
-      likedReplyDocIds.add(likesReply['likedReplyDocId']);
+      likedReplyIds.add(likesReply['likedReplyId']);
     });
   }
   Future regetCurrentUserDoc(String currentUserDocId) async {

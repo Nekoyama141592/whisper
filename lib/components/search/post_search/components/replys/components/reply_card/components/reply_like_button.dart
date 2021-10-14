@@ -24,7 +24,7 @@ class ReplyLikeButton extends StatelessWidget {
     final likesUidsCount = likesUids.length;
     final plusOneCount = likesUids.length + 1;
 
-    return mainModel.likedReplyDocIds.contains(thisReply['objectID']) ?
+    return mainModel.likedReplyIds.contains(thisReply['replyId']) ?
     Row(
       children: [
         InkWell(
@@ -33,7 +33,7 @@ class ReplyLikeButton extends StatelessWidget {
             color: Colors.red
           ),
           onTap: () async {
-            searchReplysModel.unlike(thisReply, mainModel.currentUserDoc, mainModel.likesReplys);
+            searchReplysModel.unlike(thisReply, mainModel.currentUserDoc, mainModel.likedReplys);
           },
         ),
         SizedBox(width: 5.0),

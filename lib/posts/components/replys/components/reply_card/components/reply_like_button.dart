@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -15,7 +13,7 @@ class ReplyLikeButton extends StatelessWidget {
     required this.replysModel
   }) : super(key: key);
 
-  final DocumentSnapshot thisReply;
+  final Map<String,dynamic> thisReply;
   final MainModel mainModel;
   final ReplysModel replysModel;
   @override 
@@ -25,7 +23,7 @@ class ReplyLikeButton extends StatelessWidget {
     final likesUidsCount = likesUids.length;
     final plusOneCount = likesUids.length + 1;
 
-    return mainModel.likedReplyDocIds.contains(thisReply.id) ?
+    return mainModel.likedReplyIds.contains(thisReply['replyId']) ?
     Row(
       children: [
         InkWell(
@@ -48,9 +46,8 @@ class ReplyLikeButton extends StatelessWidget {
         InkWell(
           child: Icon(Icons.favorite),
           onTap: () async {
-            replysModel.like(thisReply, mainModel.currentUserDoc);
-          },
-        ),
+            await replysModel.like(thisReply, mainModel.currentUserDoc);
+          }),
         SizedBox(width: 5.0),
         Text(
           likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),

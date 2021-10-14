@@ -90,7 +90,7 @@ db{
         }],
         likedReplys: [{
             'createdAt': TimeStamp,
-            'likedReplyDocId': String,
+            'likedReplyId': String,
         }]
         likes: [{
             createdAt: TimeStamp,

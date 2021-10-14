@@ -61,15 +61,6 @@ class ReplysModel extends ChangeNotifier {
             ),
           ),
           actions: [
-            TextButton(
-              child: Text(
-                'cancel',
-                style: TextStyle(color: Theme.of(context).focusColor),
-              ),
-              onPressed: () { 
-                Navigator.pop(context);
-              },
-            ),
             RoundedButton(
               text: '送信', 
               widthRate: 0.25, 
@@ -184,17 +175,23 @@ class ReplysModel extends ChangeNotifier {
     });
   }
 
-  Future<void> like(DocumentSnapshot thisReply,DocumentSnapshot currentUserDoc,) async {
+  Future<void> like(Map<String,dynamic> thisReply,DocumentSnapshot currentUserDoc,) async {
     final newReplyDoc = await setNewReplyDoc(thisReply);
     await updateLikesUidsOfReply(currentUserDoc, newReplyDoc);
     await updateLikesUidsOfReply(currentUserDoc, newReplyDoc);
   }
 
-  Future<DocumentSnapshot> setNewReplyDoc(DocumentSnapshot thisReply) async {
-    final newReplyDoc = await FirebaseFirestore.instance
+  Future<DocumentSnapshot> setNewReplyDoc(Map<String,dynamic> thisReply) async {
+    late DocumentSnapshot newReplyDoc;
+    await FirebaseFirestore.instance
     .collection('replys')
-    .doc(thisReply.id)
-    .get();
+    .where('replyId',isEqualTo: thisReply['replyId'])
+    .limit(1)
+    .get().then((qshot) {
+      qshot.docs.forEach((DocumentSnapshot doc) {
+        newReplyDoc = doc;
+      })
+;    });
     return newReplyDoc;
   }
 
@@ -212,10 +209,10 @@ class ReplysModel extends ChangeNotifier {
   }
 
 
-  Future<void> updateLikedReplysOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot thisReply,List<dynamic> likedReplys) async {
+  Future<void> updateLikedReplysOfUser(DocumentSnapshot currentUserDoc,Map<String,dynamic> thisReply,List<dynamic> likedReplys) async {
     try {
       final newLikedReply = {
-        'likedReplyDocId': thisReply.id,
+        'likedReplyId': thisReply['replyId'],
         'createdAt': Timestamp.now(),
       };
       likedReplys.add(newLikedReply);
@@ -231,7 +228,7 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  Future<void> unlike(DocumentSnapshot thisReply,DocumentSnapshot currentUserDoc,List<dynamic> likedReplys) async {
+  Future<void> unlike(Map<String,dynamic> thisReply,DocumentSnapshot currentUserDoc,List<dynamic> likedReplys) async {
     final newReplyDoc = await setNewReplyDoc(thisReply);
     await removeLikesUidOfReply(currentUserDoc, newReplyDoc);
     await removeLikedReplyOfUser(currentUserDoc, newReplyDoc, likedReplys);
@@ -250,7 +247,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future removeLikedReplyOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot newReplyDoc,List<dynamic> likedReplys) async {
-    likedReplys.removeWhere((likedReply) => likedReply['likedReplyDocId'] == newReplyDoc.id);
+    likedReplys.removeWhere((likedReply) => likedReply['likedReplyId'] == newReplyDoc['replyId']);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
