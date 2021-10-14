@@ -26,44 +26,49 @@ class LikeButton extends ConsumerWidget {
     ValueListenableBuilder<DocumentSnapshot?>(
       valueListenable: currentSongDocNotifier, 
       builder: (_, currentSongDoc, __) {
+        final List<dynamic> likes = currentSongDoc!['likes'];
+        final likesCount = likes.length;
+        final plusOneCount = likes.length + 1;
         return
-        likedPostIds.contains(currentSongDoc!['postId']) ?
-        // IconButton(
-        //   icon: Icon(
-        //     Icons.favorite,
-        //     color: Colors.red,
-        //   ),
-        //   onPressed: () async {
-        //     likedPostIds.remove(currentSongDoc['postId']);
-        //     postFuturesModel.reload();
-        //     await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
-        //   }, 
-        // )
-        // : IconButton(
-        //   icon: Icon(Icons.favorite),
-        //   onPressed: () async {
-        //     likedPostIds.add(currentSongDoc['postId']);
-        //     postFuturesModel.reload();
-        //     await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
-        //   }, 
-        // );
-        InkWell(
-          child: Icon(
-            Icons.favorite,
-            color: Colors.red
-          ),
-          onTap: () async {
-            likedPostIds.remove(currentSongDoc['postId']);
-            postFuturesModel.reload();
-            await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
-          },
-        ) : InkWell(
-          child: Icon(Icons.favorite),
-          onTap: () async {
-            likedPostIds.add(currentSongDoc['postId']);
-            postFuturesModel.reload();
-            await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
-          },
+        Column(
+          children: [
+            likedPostIds.contains(currentSongDoc['postId']) ?
+            Row(
+              children: [
+                InkWell(
+                  child: Icon(
+                    Icons.favorite,
+                    color: Colors.red
+                  ),
+                  onTap: () async {
+                    likedPostIds.remove(currentSongDoc['postId']);
+                    postFuturesModel.reload();
+                    await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
+                  },
+                ),
+                SizedBox(width: 5.0),
+                Text(
+                  plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+                  style: TextStyle(color: Colors.red)
+                )
+              ],
+            ) : Row(
+              children: [
+                InkWell(
+                  child: Icon(Icons.favorite),
+                  onTap: () async {
+                    likedPostIds.add(currentSongDoc['postId']);
+                    postFuturesModel.reload();
+                    await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
+                  },
+                ),
+                SizedBox(width: 5.0),
+                Text(
+                  likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
+                )
+              ],
+            ),
+          ],
         );
       }
     );
