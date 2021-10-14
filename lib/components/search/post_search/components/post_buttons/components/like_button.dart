@@ -27,24 +27,23 @@ class LikeButton extends ConsumerWidget {
       builder: (_, currentSongMap, __) {
         return
         mainModel.likedPostIds.contains(currentSongMap['postId']) ?
-        IconButton(
-          icon: Icon(
+        InkWell(
+          child: Icon(
             Icons.favorite,
-            color: Theme.of(context).highlightColor,
+            color: Colors.red
           ),
-          onPressed: () async {
+          onTap: () async {
             mainModel.likedPostIds.remove(currentSongMap['postId']);
             postFuturesModel.reload();
             await postFuturesModel.unlike(currentUserDoc, currentSongMap, mainModel.likes);
-          }, 
-        )
-        : IconButton(
-          icon: Icon(Icons.favorite),
-          onPressed: () async {
+          },
+        ) : InkWell(
+          child: Icon(Icons.favorite),
+          onTap: () async {
             mainModel.likedPostIds.add(currentSongMap['postId']);
             postFuturesModel.reload();
             await postFuturesModel.like(currentUserDoc, currentSongMap,mainModel.likes);
-          }, 
+          },
         );
       }
     );

@@ -28,24 +28,42 @@ class LikeButton extends ConsumerWidget {
       builder: (_, currentSongDoc, __) {
         return
         likedPostIds.contains(currentSongDoc!['postId']) ?
-        IconButton(
-          icon: Icon(
+        // IconButton(
+        //   icon: Icon(
+        //     Icons.favorite,
+        //     color: Colors.red,
+        //   ),
+        //   onPressed: () async {
+        //     likedPostIds.remove(currentSongDoc['postId']);
+        //     postFuturesModel.reload();
+        //     await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
+        //   }, 
+        // )
+        // : IconButton(
+        //   icon: Icon(Icons.favorite),
+        //   onPressed: () async {
+        //     likedPostIds.add(currentSongDoc['postId']);
+        //     postFuturesModel.reload();
+        //     await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
+        //   }, 
+        // );
+        InkWell(
+          child: Icon(
             Icons.favorite,
-            color: Colors.red,
+            color: Colors.red
           ),
-          onPressed: () async {
+          onTap: () async {
             likedPostIds.remove(currentSongDoc['postId']);
             postFuturesModel.reload();
             await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
-          }, 
-        )
-        : IconButton(
-          icon: Icon(Icons.favorite),
-          onPressed: () async {
+          },
+        ) : InkWell(
+          child: Icon(Icons.favorite),
+          onTap: () async {
             likedPostIds.add(currentSongDoc['postId']);
             postFuturesModel.reload();
             await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
-          }, 
+          },
         );
       }
     );
