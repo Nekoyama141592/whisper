@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
@@ -17,6 +18,7 @@ class SearchReplysModel extends ChangeNotifier {
   bool isLoading = false;
   bool isReplysMode = false;
   Map<String,dynamic> giveComment = {};
+  String ipv6 = '';
 
   void reload() {
     notifyListeners();
@@ -113,16 +115,18 @@ class SearchReplysModel extends ChangeNotifier {
 
   Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
     final commentId = thisComment['commentId'];
-    makeReplyMap(commentId, currentUserDoc);
-    await addReplyToFirestore(commentId, currentUserDoc);
+    if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
+    final map = makeReplyMap(commentId, currentUserDoc);
+    await addReplyToFirestore(map);
     final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
     await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc, currentUserDoc, thisComment);
   }
 
-  void makeReplyMap(String commentId,DocumentSnapshot currentUserDoc) {
+  Map<String,dynamic> makeReplyMap(String commentId,DocumentSnapshot currentUserDoc) {
     final map = {
       'commentId': commentId,
       'createdAt': Timestamp.now(),
+      'ipv6': ipv6,
       'likesUids': [],
       'reply': reply,
       'uid': currentUserDoc['uid'],
@@ -132,21 +136,14 @@ class SearchReplysModel extends ChangeNotifier {
     };
     replyMaps.add(map);
     notifyListeners();
+    return map;
   }
   
-  Future addReplyToFirestore(String commentId, DocumentSnapshot currentUserDoc) async {
+  Future addReplyToFirestore(Map<String,dynamic> map) async {
     try {
       await FirebaseFirestore.instance
       .collection('replys')
-      .add({
-        'commentId': commentId,
-        'createdAt': Timestamp.now(),
-        'likesUids': [],
-        'reply': reply,
-        'uid': currentUserDoc['uid'],
-        'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['imageURL'],
-      });
+      .add(map);
     } catch(e) {
       print(e.toString());
     }

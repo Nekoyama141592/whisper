@@ -39,6 +39,7 @@ dependencies:
   image_cropper: ^1.4.1
   shared_preferences: ^2.0.8
   flutter_slidable: ^0.6.0
+  dart_ipify: ^1.1.1
   
 dev_dependencies:
   flutter_test:

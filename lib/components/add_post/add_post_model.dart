@@ -4,6 +4,7 @@ import 'dart:io';
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,7 +49,8 @@ class AddPostModel extends ChangeNotifier {
   // imagePicker
   XFile? xfile;
   File? croppedFile;
-
+  // IP
+  String ipv6 = '';
   AddPostModel() {
     init();
   }
@@ -229,6 +231,7 @@ class AddPostModel extends ChangeNotifier {
       startLoading();
       final String imageURL = croppedFile == null ? '' : await uploadImage();
       final audioURL = await getPostUrl(context);
+      if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       await addPostToFirebase(context,currentUserDoc,imageURL,audioURL);
       endLoading();
       Navigator.pop(context);
@@ -267,6 +270,7 @@ class AddPostModel extends ChangeNotifier {
           'createdAt': Timestamp.now(),
           'imageURL': imageURL,
           'impression': 0,
+          'ipv6': ipv6,
           'isNFTicon': false,
           'isOfficial': false,
           'isPlayedCount': 0,

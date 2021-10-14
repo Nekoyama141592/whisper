@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
@@ -20,6 +21,8 @@ class SearchCommentsModel extends ChangeNotifier {
   List<dynamic> comments = [];
   bool didCommented = false;
   List<dynamic> postComments = [];
+  // IP
+  String ipv6 = '';
 
   void reload() {
     notifyListeners();
@@ -80,6 +83,7 @@ class SearchCommentsModel extends ChangeNotifier {
   }
 
   Future makeComment(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc) async {
+    if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     makeCommentMap(currentUserDoc, currentSongMap);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc);
@@ -92,6 +96,7 @@ class SearchCommentsModel extends ChangeNotifier {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
       'createdAt': Timestamp.now(),
+      'ipv6': ipv6,
       'likesUids': [],
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,

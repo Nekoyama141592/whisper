@@ -9,6 +9,7 @@ db{
             comment: String,
             commentId: String,
             createdAt: TimeStamp,
+            ipv6: String
             isNFTicon: false,
             isOfficial: false,
             likesUids: [ String ],
@@ -20,6 +21,7 @@ db{
         createdAt: TimeStamp,
         imageURL: String,
         impression: int,
+        ipv6: String,
         isNFTicon: bool,
         isOfficial: bool,
         isPlayedCount: int,
@@ -40,6 +42,7 @@ db{
     replys{
         commentId: String,
         createdAt: TimeStamp,
+        ipv6: String
         isNFTicon: bool,
         isOfficial: bool,
         likesUids: []
