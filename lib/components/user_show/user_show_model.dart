@@ -116,7 +116,9 @@ class UserShowModel extends ChangeNotifier {
         .limit(oneTimeReadCount)
         .get()
         .then((qshot) {
-          qshot.docs.forEach((DocumentSnapshot? doc) {
+          List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+          docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+          docs.forEach((DocumentSnapshot? doc) {
             userShowDocs.add(doc!);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -135,7 +137,9 @@ class UserShowModel extends ChangeNotifier {
         .limit(oneTimeReadCount)
         .get()
         .then((qshot) {
-          qshot.docs.forEach((DocumentSnapshot? doc) {
+          List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+          docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+          docs.forEach((DocumentSnapshot? doc) {
             userShowDocs.add(doc!);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);

@@ -108,6 +108,7 @@ class BookmarksModel extends ChangeNotifier {
 
   void setBookmarkedPostIds() {
     List maps = currentUserDoc['bookmarks'];
+    maps.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
     maps.forEach((map) {
       bookmarkedPostIds.add(map['postId']);
     });

@@ -39,7 +39,7 @@ class FeedsModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   final List<AudioSource> afterUris = [];
   // cloudFirestore
-  List followUids = [];
+  List followingUids = [];
   List<String> feedPostIds = [];
   List<DocumentSnapshot> feedDocs = [];
   // block and mutes
@@ -127,23 +127,13 @@ class FeedsModel extends ChangeNotifier {
 
   void setFollowUids() {
     try {
-      followUids = currentUserDoc['followingUids'];
-      followUids.add(currentUser!.uid);
+      followingUids = currentUserDoc['followingUids'];
+      followingUids.add(currentUser!.uid);
       notifyListeners();
-      print(followUids.length.toString() + "followUidsLength");
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
   }
-
-  void setMutesList() async {
-    try {
-      mutesUids = [];
-    } catch(e){
-      print(e.toString());
-    }
-  }
-
   // getFeeds
   Future getFeeds() async {
 
@@ -151,11 +141,13 @@ class FeedsModel extends ChangeNotifier {
       if (refreshIndex == defaultRefreshIndex) {
         QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
         .collection('posts')
-        .where('uid',whereIn: followUids)
+        .where('uid',whereIn: followingUids)
         .limit(oneTimeReadCount)
         .get();
-        if (snapshots.docs.isNotEmpty) {
-         snapshots.docs.forEach((DocumentSnapshot? doc) {
+        List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshots.docs;
+        docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+        if (docs.isNotEmpty) {
+         docs.forEach((DocumentSnapshot? doc) {
             if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
               feedDocs.add(doc);
               Uri song = Uri.parse(doc['audioURL']);
@@ -171,12 +163,14 @@ class FeedsModel extends ChangeNotifier {
       } else {
         QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
         .collection('posts')
-        .where('uid',whereIn: followUids)
+        .where('uid',whereIn: followingUids)
         .startAfterDocument(feedDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get();
-        if (snapshots.docs.isNotEmpty) {
-          snapshots.docs.forEach((DocumentSnapshot? doc) {
+        List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshots.docs;
+        docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+        if (docs.isNotEmpty) {
+          docs.forEach((DocumentSnapshot? doc) {
             if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
               feedDocs.add(doc);
               Uri song = Uri.parse(doc['audioURL']);
