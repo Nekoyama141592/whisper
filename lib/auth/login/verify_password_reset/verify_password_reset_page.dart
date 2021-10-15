@@ -1,11 +1,11 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/colors.dart';
-
+// components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/details/rounded_button.dart';
-
+// model
 import 'verify_password_reset_model.dart';
 class VerifyPasswordResetPage extends ConsumerWidget {
   @override 

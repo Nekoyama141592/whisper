@@ -1,7 +1,8 @@
+// material
 import 'package:flutter/material.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final verifyPasswordResetProvider = ChangeNotifierProvider((ref) => VerifyPasswordResetModel());
 
@@ -11,10 +12,10 @@ class VerifyPasswordResetModel extends ChangeNotifier {
 
   Future sendPasswordResetEmail (context) async {
     final instance = FirebaseAuth.instance;
-    print(email);
     try{
       await instance.sendPasswordResetEmail(email: email);
       Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(email + 'にメールを送りました')));
     } on FirebaseAuthException catch(e) {
       print(e.toString());
       switch(e.code) {
@@ -22,7 +23,7 @@ class VerifyPasswordResetModel extends ChangeNotifier {
         print('メールアドレスが有効ではありません');
         break;
         case 'auth/missing-android-pkg-name':
-        print('メールアドレスが有効ではありません');
+        print('auth/missing-android-pkg-name');
         break;
         case 'auth/missing-continue-uri':
         print('リクエストには、継続するURLが必要です');

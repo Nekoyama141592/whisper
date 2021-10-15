@@ -8,7 +8,7 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/rounded_input_field.dart';
-import 'package:whisper/auth/components/forget_password_text.dart';
+import 'package:whisper/auth/login/details/forget_password_text.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 // models

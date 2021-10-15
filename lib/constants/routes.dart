@@ -18,7 +18,7 @@ import 'package:whisper/components/notifications/notifications_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
 import 'package:whisper/auth/update_password/update_password_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
-import 'package:whisper/auth/verify_password_reset/verify_password_reset_page.dart';
+import 'package:whisper/auth/login/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';

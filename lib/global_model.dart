@@ -11,5 +11,5 @@ final globalProvider = ChangeNotifierProvider(
 class GlobalModel extends ChangeNotifier {
 
   final isMyShowPageNotifier = ValueNotifier<bool>(true);
-
+  final isLoggedInNotifier = ValueNotifier<bool>(false);
 }
