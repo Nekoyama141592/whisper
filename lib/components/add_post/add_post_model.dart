@@ -268,6 +268,7 @@ class AddPostModel extends ChangeNotifier {
           'bookmarks':[],
           'comments': [],
           'createdAt': Timestamp.now(),
+          'genre': '',
           'imageURL': imageURL,
           'impression': 0,
           'ipv6': ipv6,

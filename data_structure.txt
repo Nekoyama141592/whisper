@@ -19,6 +19,7 @@ db{
             userImageURL: String,
         }],
         createdAt: TimeStamp,
+        genre: String
         imageURL: String,
         impression: int,
         ipv6: String,
