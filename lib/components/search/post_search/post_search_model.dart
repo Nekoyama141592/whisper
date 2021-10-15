@@ -63,7 +63,9 @@ class PostSearchModel extends ChangeNotifier{
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
-    querySnap.hits.forEach((hit) {
+    List<AlgoliaObjectSnapshot> hits = querySnap.hits;
+    hits.sort((a,b) => b.data['likes'].length.compareTo(a.data['likes'].length));
+    hits.forEach((hit) {
       final map = hit.data;
        if (!mutesUids.contains(map['uid']) && !mutesPostIds.contains(map['postId']) && !blockingUids.contains(map['uid']) ) {
 

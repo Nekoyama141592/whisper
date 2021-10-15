@@ -28,7 +28,9 @@ class UserSearchModel extends ChangeNotifier {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
-    querySnap.hits.forEach((hit) {
+    List<AlgoliaObjectSnapshot> hits = querySnap.hits;
+    hits.sort((a,b) => b.data['followerUids'].length.compareTo(a.data['followerUids'].length));
+    hits.forEach((hit) {
       if (!mutesUids.contains(hit.data['uid']) && !blockingUids.contains(hit.data['uid'])) {
         results.add(hit);
       }
