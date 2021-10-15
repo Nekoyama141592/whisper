@@ -83,6 +83,7 @@ db{
         isAdmin: bool,
         isNFTicon: bool,
         isOfficial: bool,
+        isSubscribed: bool,
         likedComments:[{
             commentId: String,
             createdAt: TimeStamp,
