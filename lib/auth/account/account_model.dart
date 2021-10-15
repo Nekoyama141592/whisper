@@ -39,12 +39,11 @@ class AccountModel extends ChangeNotifier {
   Future reauthenticateWithCredential (BuildContext context,User? currentUser,DocumentSnapshot currentUserDoc)  async {
     
     currentUser = FirebaseAuth.instance.currentUser;
-    final email = currentUser!.email;
-    final credential = EmailAuthProvider.credential(email: email!, password: password);
-    final instance = FirebaseAuth.instance;
-    final User? user = instance.currentUser;
+    final String email = currentUser!.email!;
+    final credential = EmailAuthProvider.credential(email: email, password: password);
+
     try {
-      await user!.reauthenticateWithCredential(credential);
+      await currentUser.reauthenticateWithCredential(credential);
       switch(whichState) {
         case WhichState.initialValue:
         break;
