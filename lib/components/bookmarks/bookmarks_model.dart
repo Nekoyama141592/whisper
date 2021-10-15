@@ -147,6 +147,7 @@ class BookmarksModel extends ChangeNotifier {
         if (afterUris.isNotEmpty) {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
+          refreshIndex = afterUris.length + defaultRefreshIndex;
         }
       }
     } catch(e) {

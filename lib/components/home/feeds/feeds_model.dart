@@ -190,7 +190,7 @@ class FeedsModel extends ChangeNotifier {
           }
         }
       }
-      refreshIndex += oneTimeReadCount;
+      refreshIndex = afterUris.length + defaultRefreshIndex;
     } catch(e) {
       print(e.toString());
     }

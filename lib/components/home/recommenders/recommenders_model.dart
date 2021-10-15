@@ -171,7 +171,7 @@ class RecommendersModel extends ChangeNotifier {
           await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
         }
       }
-      refreshIndex += oneTimeReadCount;
+      refreshIndex = afterUris.length + defaultRefreshIndex;
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
     }
