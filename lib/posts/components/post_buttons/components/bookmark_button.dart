@@ -35,17 +35,13 @@ class BookmarkButton extends ConsumerWidget {
             color: Theme.of(context).highlightColor,
           ),
           onPressed: () async {
-            bookmarkedPostIds.remove(currentSongDoc['postId']);
-            postFuturesModel.reload();
-            await postFuturesModel.unbookmark(currentUserDoc, currentSongDoc, bookmarks);
+            await postFuturesModel.unbookmark(bookmarkedPostIds, currentUserDoc, currentSongDoc, bookmarks);
           }, 
         )
         : IconButton(
           icon: Icon(Icons.inventory_2),
           onPressed: () async {
-            bookmarkedPostIds.add(currentSongDoc['postId']);
-            postFuturesModel.reload();
-            await postFuturesModel.bookmark(currentUserDoc, currentSongDoc,bookmarks);
+            await postFuturesModel.bookmark(bookmarkedPostIds, currentUserDoc, currentSongDoc, bookmarks);
           }, 
         );
       }

@@ -30,7 +30,6 @@ db{
             uid: String,
         }],
         postId: String,
-        pla
         score: int,
         title: String,
         uid: String,

@@ -14,10 +14,17 @@ class PostsFeaturesModel extends ChangeNotifier{
   String comment = '';
   bool isLoading = false;
 
-  Future like(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
+  Future like(List<dynamic> likedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
+    final String postId = currentSongDoc['postId'];
+    addPostIdToLikedPostIds(likedPostIds, postId);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
     await addLikesToPost(currentUserDoc, newCurrentSongDoc);
     await addLikesToCurrentUser(currentUserDoc, currentSongDoc,likes);
+  }
+
+  void addPostIdToLikedPostIds(List<dynamic> likedPostIds,String postId) {
+    likedPostIds.add(postId);
+    notifyListeners();
   }
  
   Future addLikesToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
@@ -58,10 +65,17 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-  Future bookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+  Future bookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+    final postId = currentSongDoc['postId'];
+    addPostIdTobookmarkedPostIds(bookmarkedPostIds, postId);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
     await addBookmarksToPost(currentUserDoc, newCurrentSongDoc);
     await addBookmarksToUser(currentUserDoc, currentSongDoc,bookmarks);
+  }
+
+  void addPostIdTobookmarkedPostIds(List<dynamic> bookmarkedPostIds,String postId) {
+    bookmarkedPostIds.remove(postId);
+    notifyListeners();
   }
 
   Future addBookmarksToPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
@@ -101,16 +115,21 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-   Future unbookmark(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+  Future unbookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+    final postId = currentSongDoc['postId'];
+    removePostIdFrombookmarkedPostIds(bookmarkedPostIds, postId);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
     await removeBookmarksOfPost(currentUserDoc, newCurrentSongDoc);
     await removeBookmarksOfUser(currentUserDoc, currentSongDoc, bookmarks);
   }
 
+  void removePostIdFrombookmarkedPostIds(List<dynamic> bookmarkedPostIds,String postId) {
+    bookmarkedPostIds.remove(postId);
+    notifyListeners();
+  }
+
   Future removeBookmarksOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
     try {
-      // User ver
-      // final List bookmarks = currentSongDoc['bookmarks'];
       final List<dynamic> bookmarks = newCurrentSongDoc['bookmarks'];
       bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
       await FirebaseFirestore.instance
@@ -138,11 +157,17 @@ class PostsFeaturesModel extends ChangeNotifier{
     }
   }
 
-   Future unlike(DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
-    // await removeLikeOfPost(currentUserDoc, currentSongDoc);
+   Future unlike(List<dynamic> likedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
+    final postId = currentSongDoc['postId']; 
+    removePostIdFromLikedPostIds(likedPostIds, postId);
     final newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
     await removeLikeOfPost(currentUserDoc, newCurrentSongDoc);
     await removeLikeOfUser(currentUserDoc, currentSongDoc,likes);
+  }
+
+  void removePostIdFromLikedPostIds(List<dynamic> likedPostIds,String postId) {
+    likedPostIds.remove(postId);
+    notifyListeners();
   }
 
   Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {

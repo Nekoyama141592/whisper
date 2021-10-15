@@ -40,9 +40,7 @@ class LikeButton extends ConsumerWidget {
                   color: Colors.red
                 ),
                 onTap: () async {
-                  likedPostIds.remove(currentSongDoc['postId']);
-                  postFuturesModel.reload();
-                  await postFuturesModel.unlike(currentUserDoc, currentSongDoc, likes);
+                  await postFuturesModel.unlike(likedPostIds, currentUserDoc, currentSongDoc, likes);
                 },
               ),
               SizedBox(width: 5.0),
@@ -57,9 +55,7 @@ class LikeButton extends ConsumerWidget {
               InkWell(
                 child: Icon(Icons.favorite),
                 onTap: () async {
-                  likedPostIds.add(currentSongDoc['postId']);
-                  postFuturesModel.reload();
-                  await postFuturesModel.like(currentUserDoc, currentSongDoc,likes);
+                  await postFuturesModel.like(likedPostIds, currentUserDoc, currentSongDoc, likes);
                 },
               ),
               SizedBox(width: 5.0),
