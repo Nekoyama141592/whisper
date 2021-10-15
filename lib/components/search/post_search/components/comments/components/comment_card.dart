@@ -74,7 +74,6 @@ class CommentCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      // child: UserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0),
                       child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
                     ),
                     Expanded(
@@ -91,7 +90,7 @@ class CommentCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CommentLikeButton(searchCommentsModel: searchCommentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, commentId: commentId,likedComments: mainModel.likedComments),
+                        CommentLikeButton(searchCommentsModel: searchCommentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
                         if(comment['uid'] == currentSongMap['uid'] ) ShowReplyButton(searchReplysModel: searchReplysModel,currentSongMap: currentSongMap,currentUserDoc: mainModel.currentUserDoc,thisComment: comment,)
                       ],
                     )

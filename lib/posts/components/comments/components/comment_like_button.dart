@@ -12,7 +12,7 @@ class CommentLikeButton extends StatelessWidget {
     required this.currentUserDoc,
     required this.currentSongDoc,
     required this.likedCommentIds,
-    required this.commentId,
+    required this.comment,
     required this.likedComments
   }) : super(key: key);
 
@@ -20,11 +20,17 @@ class CommentLikeButton extends StatelessWidget {
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot currentSongDoc;
   final List<dynamic> likedCommentIds;
-  final String commentId;
+  final Map<String,dynamic> comment;
   final List<dynamic> likedComments;
   
   @override 
   Widget build(BuildContext context) {
+    
+    final commentId = comment['commentId'];
+    List<dynamic> likesUids = comment['likesUids'];
+    final likesCount = likesUids.length;
+    final plusOneCount = likesUids.length + 1;
+    
     return likedCommentIds.contains(commentId) ?
     IconButton(
       onPressed: () {
@@ -33,9 +39,7 @@ class CommentLikeButton extends StatelessWidget {
     )
     : IconButton(
       onPressed: () async {
-        likedCommentIds.add(commentId);
-        commentsModel.reload();
-        await commentsModel.like(currentUserDoc, currentSongDoc, commentId,likedComments);
+        await commentsModel.like(likedCommentIds,currentUserDoc, currentSongDoc, commentId,likedComments);
       }, 
       icon: Icon(Icons.favorite)
     );

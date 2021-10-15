@@ -90,7 +90,7 @@ class CommentCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: mainModel.likedCommentIds, commentId: commentId,likedComments: mainModel.likedComments),
+                        CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
                         if(comment['uid'] == currentSongDoc['uid'] ) ShowReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
                       ],
                     )

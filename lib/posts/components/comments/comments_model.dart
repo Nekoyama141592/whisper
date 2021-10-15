@@ -142,12 +142,17 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  Future like(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+  Future like(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+    addCommentIdToLikedCommentIds(likedCommentIds, commentId);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
     await updateCommentsOfPostWhenSomeoneLiked(newCurrentSongDoc, commentId, currentUserDoc);
     await updateLikedCommentsOfCurrentUser(commentId, likedComments, currentUserDoc);
   }
   
+  void addCommentIdToLikedCommentIds(List<dynamic> likedCommentIds,String commentId) {
+    likedCommentIds.add(commentId);
+    notifyListeners();
+  }
 
   Future updateCommentsOfPostWhenSomeoneLiked(DocumentSnapshot newCurrentSongDoc,String commentId,DocumentSnapshot currentUserDoc) async {
 
@@ -159,7 +164,6 @@ class CommentsModel extends ChangeNotifier {
           // likesUids
           List<dynamic> likesUids = postComment['likesUids'];
           likesUids.add(currentUserDoc['uid']);
-          // postComment['likesUids'] = likesUids;
           FirebaseFirestore.instance
           .collection('posts')
           .doc(newCurrentSongDoc.id)
@@ -190,10 +194,49 @@ class CommentsModel extends ChangeNotifier {
 
   }
 
-  Future unlike() async {
-
+  Future unlike(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+    removeCommentIdFromLikedCommentIds(likedCommentIds, commentId);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    await removeLikesUidFromComment(newCurrentSongDoc, currentUserDoc, commentId);
+    await removeLikedCommentsFromCurrentUser(currentSongDoc, commentId, likedComments);
   }
 
+  void removeCommentIdFromLikedCommentIds(List<dynamic> likedCommentIds,String commentId) {
+    likedCommentIds.remove(commentId);
+    notifyListeners();
+  }
+
+  Future removeLikesUidFromComment(DocumentSnapshot newCurrentSongDoc,DocumentSnapshot currentUserDoc,String commentId) async {
+    postComments = newCurrentSongDoc['comments'];
+    //Likeが押された時のPost側の処理
+    try{
+      postComments.forEach((postComment) {
+        if (postComment['commentId'] == commentId){
+          // likesUids
+          List<dynamic> likesUids = postComment['likesUids'];
+          likesUids.remove(currentUserDoc['uid']);
+          FirebaseFirestore.instance
+          .collection('posts')
+          .doc(newCurrentSongDoc.id)
+          .update({
+            'comments': postComments,
+          });
+        }
+      });
+    } catch(e) {
+      print(e.toString());
+    }
+  }
+
+  Future removeLikedCommentsFromCurrentUser(DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+    likedComments.removeWhere((likedComment) => likedComment['commentId'] == commentId);
+    await FirebaseFirestore.instance
+    .collection('posts')
+    .doc(currentSongDoc.id)
+    .update({
+      'likedComments': likedComments,
+    });
+  }
 
   Future setPassiveUserDoc(DocumentSnapshot currentSongDoc) async {
     DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance

@@ -13,7 +13,7 @@ class CommentLikeButton extends StatelessWidget {
     required this.currentUserDoc,
     required this.currentSongMap,
     required this.likedCommentIds,
-    required this.commentId,
+    required this.comment,
     required this.likedComments
   }) : super(key: key);
 
@@ -21,24 +21,56 @@ class CommentLikeButton extends StatelessWidget {
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> currentSongMap;
   final List<dynamic> likedCommentIds;
-  final String commentId;
+  final Map<String,dynamic> comment;
   final List<dynamic> likedComments;
   
   @override 
   Widget build(BuildContext context) {
+
+    final commentId = comment['commentId'];
+    List<dynamic> likesUids = comment['likesUids'];
+    final likesCount = likesUids.length;
+    final plusOneCount = likesUids.length + 1;
+
     return likedCommentIds.contains(commentId) ?
-    IconButton(
-      onPressed: () {
-      }, 
-      icon: Icon(Icons.favorite,color: Colors.red,)
-    )
-    : IconButton(
-      onPressed: () async {
-        likedCommentIds.add(commentId);
-        searchCommentsModel.reload();
-        await searchCommentsModel.like(currentUserDoc, currentSongMap, commentId,likedComments);
-      }, 
-      icon: Icon(Icons.favorite)
+    // IconButton(
+    //   onPressed: () {
+    //   }, 
+    //   icon: Icon(Icons.favorite,color: Colors.red,)
+    // )
+    // : IconButton(
+    //   onPressed: () async {
+    //     await searchCommentsModel.like(currentUserDoc, currentSongMap, commentId,likedComments);
+    //   }, 
+    //   icon: Icon(Icons.favorite)
+    // );
+    Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.favorite,color: Colors.red),
+          onTap: () async {
+            await searchCommentsModel.unlike(likedCommentIds, currentUserDoc, currentSongMap, commentId, likedComments);
+          },
+        ),
+        SizedBox(width: 5.0),
+        Text(
+          plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+          style: TextStyle(color: Colors.red)
+        )
+      ],
+    ) : Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.favorite),
+          onTap: () async {
+            await searchCommentsModel.like(likedCommentIds, currentUserDoc, currentSongMap, commentId, likedComments);
+          },
+        ),
+        SizedBox(width: 5.0),
+        Text(
+          plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+        )
+      ],
     );
   }
 
