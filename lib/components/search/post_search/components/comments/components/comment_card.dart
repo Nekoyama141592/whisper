@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/components/search/post_search/components/comments/components/comment_like_button.dart';
@@ -10,8 +11,9 @@ import 'package:whisper/components/search/post_search/components/replys/componen
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
 import 'package:whisper/components/search/post_search/components/comments/search_comments_model.dart';
+import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
 
-class CommentCard extends StatelessWidget {
+class CommentCard extends ConsumerWidget {
 
   const CommentCard({
     Key? key,
@@ -29,33 +31,40 @@ class CommentCard extends StatelessWidget {
   final MainModel mainModel;
 
   @override  
-  Widget build(BuildContext context){
-    final commentId = comment['commentId'];
+  Widget build(BuildContext context,ScopedReader watch) {
     
+    final postFutures = watch(postsFeaturesProvider);
+
     return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) ?
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       actions: !(comment['uid'] == mainModel.currentUserDoc['uid']) ?
-      [  
+      [
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
           icon: Icons.person_off,
-          onTap: () => print("mute User"),
+          onTap: () async {
+            await postFutures.muteUser(mainModel.mutesUids, comment['uid'], mainModel.prefs);
+          } ,
         ),
         IconSlideAction(
           caption: 'mute Post',
           color: Colors.transparent,
           icon: Icons.visibility_off,
-          onTap: () => print("mute reply"),
+          onTap: () async {
+            await postFutures.muteComment(mainModel.mutesCommentIds, comment['commentId'], mainModel.prefs);
+          },
         ),
         IconSlideAction(
           caption: 'block User',
           color: Colors.transparent,
           icon: Icons.block,
-          onTap: () => print("blockUser"),
+          onTap: () async {
+            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, comment['uid']);
+          },
         ),
       ] : [],
       child: Card(

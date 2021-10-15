@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
-  (ref) => PostsFeaturesModel()
+  (ref) => PostsFutures()
 );
 
-class PostsFeaturesModel extends ChangeNotifier{
+class PostsFutures extends ChangeNotifier{
   
   String comment = '';
   bool isLoading = false;
