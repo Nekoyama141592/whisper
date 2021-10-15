@@ -50,7 +50,7 @@ class UserShowButton extends StatelessWidget {
         try {
           followingUids.add(userDoc['uid']);
           followProvider.reload();
-          await followProvider.follow(followingUids, currentUserDoc, userDoc);
+          await followProvider.follow(context,followingUids, currentUserDoc, userDoc);
         } catch(e) {
           print(e.toString());          
         }

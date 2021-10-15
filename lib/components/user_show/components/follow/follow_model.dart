@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,10 +10,14 @@ final followProvider = ChangeNotifierProvider(
 );
 class FollowModel extends ChangeNotifier {
 
-  Future follow(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
-    await addFollowingUidToActiveUser(followingUids,currentUserDoc, passiveUserDoc);
-    final DocumentSnapshot newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
-    await addFollowerUidToPassiveUser(currentUserDoc, newPassiveUserDoc);
+  Future follow(BuildContext context,List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+    if (followingUids.length >= 500) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
+    } else {
+      await addFollowingUidToActiveUser(followingUids,currentUserDoc, passiveUserDoc);
+      final DocumentSnapshot newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
+      await addFollowerUidToPassiveUser(currentUserDoc, newPassiveUserDoc);
+    }
   }
 
   Future unfollow(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
