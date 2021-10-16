@@ -33,6 +33,8 @@ class UserShowHeader extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
 
     final globalModel = watch(globalProvider);
+    final followerCount = followerUids.length;
+    final plusOneCount = followerCount + 1;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(
@@ -71,7 +73,6 @@ class UserShowHeader extends ConsumerWidget {
           Row(
             children: [
               UserImage(
-                // userImageURL: !userShowModel.isEdited ? passiveUserDoc['imageURL'] : userShowModel.downloadURL,
                 userImageURL: passiveUserDoc['imageURL'],
                 length: 60.0,
                 padding: 5.0,
@@ -103,7 +104,7 @@ class UserShowHeader extends ConsumerWidget {
           Row(
             children: [
               Text(
-                'following' + mainModel.followingUids.length.toString(),
+                mainModel.currentUserDoc['uid'] == passiveUserDoc['uid'] ?  mainModel.followingUids.length.toString() + 'following' : passiveUserDoc['followingUids'].length.toString() + 'following',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -112,7 +113,9 @@ class UserShowHeader extends ConsumerWidget {
               ),
               SizedBox(width: 20,),
               Text(
-                'follower' + followerUids.length.toString(),
+                mainModel.followingUids.contains(passiveUserDoc['uid']) ?
+                plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万follower' : plusOneCount.toString() + 'follower'
+                : followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
