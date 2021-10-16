@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/user_image.dart';
-import 'package:whisper/components/user_show/components/details/user_show_button.dart';
+import 'package:whisper/components/user_show/components/follow/user_show_button.dart';
+// other_pages
+import 'package:whisper/components/user_show/components/details/show_description_page.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/global_model.dart';
@@ -78,15 +80,20 @@ class UserShowHeader extends ConsumerWidget {
                 padding: 5.0,
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    passiveUserDoc['description'],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                      overflow: TextOverflow.ellipsis,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage(description: passiveUserDoc['description'],) ));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      passiveUserDoc['description'],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),
