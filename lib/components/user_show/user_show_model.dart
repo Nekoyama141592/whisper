@@ -11,6 +11,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
@@ -56,6 +57,10 @@ class UserShowModel extends ChangeNotifier {
   bool isCropped = false;
   XFile? xfile;
   File? croppedFile;
+  // speed
+  late SharedPreferences prefs;
+  final speedNotifier = ValueNotifier<double>(1.0);
+
 
   UserShowModel() {
     init();
@@ -66,6 +71,8 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     await getPosts();
+    await setPrefs();
+    setSpeed();
     listenForStates();
     endLoading();
   }
@@ -274,6 +281,27 @@ class UserShowModel extends ChangeNotifier {
 
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
+  }
+
+  Future speedControll() async {
+    if (speedNotifier.value == 4.0) {
+      speedNotifier.value = 1.0;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    } else {
+      speedNotifier.value += 0.5;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    }
+  }
+
+  Future setPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void setSpeed() {
+    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+    audioPlayer.setSpeed(speedNotifier.value);
   }
 
   void listenForStates() {

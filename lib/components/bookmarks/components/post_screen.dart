@@ -52,7 +52,9 @@ class PostScreen extends ConsumerWidget {
           postDocs: postDocs, 
           route: () {
             routes.toPostShowPage(
-              context, 
+              context,
+              bookmarksModel.speedNotifier,
+              () async { await bookmarksModel.speedControll(); },
               bookmarksModel.currentSongDocNotifier, 
               bookmarksModel.progressNotifier, 
               bookmarksModel.seek, 

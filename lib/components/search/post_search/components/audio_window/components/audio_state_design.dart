@@ -12,11 +12,14 @@ class AudioStateDesign extends StatelessWidget {
   
   const AudioStateDesign({
     Key? key,
+    required this.speedNotifier,
+    required this.speedControll,
     required this.mainModel,
     required this.postSearchModel
   }) : super(key: key);
   
-  
+  final ValueNotifier<double> speedNotifier;
+  final void Function()? speedControll;
   final PostSearchModel postSearchModel;
   final MainModel mainModel;
 
@@ -27,6 +30,8 @@ class AudioStateDesign extends StatelessWidget {
       child: Column(
         children: [
           AudioControllButtons(
+            speedNotifier: speedNotifier,
+            speedControll: speedControll,
             repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
             onRepeatButtonPressed: postSearchModel.onRepeatButtonPressed, 
             isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 

@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 // components
@@ -41,7 +42,10 @@ class BookmarksModel extends ChangeNotifier {
   // refresh
   int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
-  
+  // speed
+  late SharedPreferences prefs;
+  final speedNotifier = ValueNotifier<double>(1.0);
+
   BookmarksModel() {
     init();
   }
@@ -53,6 +57,8 @@ class BookmarksModel extends ChangeNotifier {
     await setCurrentUserDoc();
     setBookmarkedPostIds();
     await getBookmarks();
+    await setPrefs();
+    setSpeed();
     listenForStates();
     endLoading();
   }
@@ -213,6 +219,27 @@ class BookmarksModel extends ChangeNotifier {
     audioPlayer.seekToNext();
   }
 
+  Future setPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void setSpeed() {
+    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+    audioPlayer.setSpeed(speedNotifier.value);
+  }
+
+  Future speedControll() async {
+    if (speedNotifier.value == 4.0) {
+      speedNotifier.value = 1.0;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    } else {
+      speedNotifier.value += 0.5;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    }
+  }
+  
   void listenForStates() {
     listenForChangesInPlayerState();
     listenForChangesInPlayerPosition();

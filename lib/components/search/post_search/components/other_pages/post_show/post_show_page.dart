@@ -17,11 +17,14 @@ class PostShowPage extends ConsumerWidget {
   
   const PostShowPage({
     Key? key,
+    required this.speedNotifier,
+    required this.speedControll,
     required this.mainModel,
     required this.postSearchModel
   }) : super(key: key);
 
-  
+  final ValueNotifier<double> speedNotifier;
+  final void Function()? speedControll;
   final MainModel mainModel;
   final PostSearchModel postSearchModel;
 
@@ -69,7 +72,7 @@ class PostShowPage extends ConsumerWidget {
                     SizedBox(height: 10.0),
                     PostButtons(currentSongMapNotifier: postSearchModel.currentSongMapNotifier, mainModel: mainModel, searchEditPostInfoModel: searchEditPostInfoModel),
                     SizedBox(height: 10.0),
-                    AudioStateDesign(mainModel: mainModel, postSearchModel: postSearchModel)
+                    AudioStateDesign(speedNotifier: speedNotifier, speedControll: speedControll, mainModel: mainModel, postSearchModel: postSearchModel)
                     
                   ],
                 ),

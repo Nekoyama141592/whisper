@@ -52,6 +52,8 @@ class FeedsModel extends ChangeNotifier {
   // refresh
   int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  // speed
+  final speedNotifier = ValueNotifier<double>(1.0);
 
   FeedsModel() {
     init();
@@ -66,6 +68,7 @@ class FeedsModel extends ChangeNotifier {
     await setMutesAndBlocks();
     setFollowUids();
     await getFeeds();
+    setSpeed();
     listenForStates();
     endLoading();
   }
@@ -243,6 +246,23 @@ class FeedsModel extends ChangeNotifier {
 
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
+  }
+
+  void setSpeed() {
+    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+    audioPlayer.setSpeed(speedNotifier.value);
+  }
+
+  Future speedControll() async {
+    if (speedNotifier.value == 4.0) {
+      speedNotifier.value = 1.0;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    } else {
+      speedNotifier.value += 0.5;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    }
   }
 
   void listenForStates() {

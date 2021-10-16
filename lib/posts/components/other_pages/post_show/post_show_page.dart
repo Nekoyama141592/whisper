@@ -24,6 +24,8 @@ class PostShowPage extends ConsumerWidget {
   
   const PostShowPage({
     Key? key,
+    required this.speedNotifier,
+    required this.speedControll,
     required this.currentSongDocNotifier,
     required this.progressNotifier,
     required this.seek,
@@ -41,6 +43,8 @@ class PostShowPage extends ConsumerWidget {
     required this.mainModel
   }) : super(key: key);
 
+  final ValueNotifier<double> speedNotifier;
+  final void Function()? speedControll;
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
@@ -103,6 +107,8 @@ class PostShowPage extends ConsumerWidget {
                     PostButtons(currentSongDocNotifier: currentSongDocNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
                     SizedBox(height: 10.0),
                     AudioStateDesign(
+                      speedNotifier: speedNotifier,
+                      speedControll: speedControll,
                       bookmarkedPostIds: mainModel.bookmarkedPostIds,
                       likedPostIds: mainModel.likedPostIds,
                       currentSongDocNotifier: currentSongDocNotifier,

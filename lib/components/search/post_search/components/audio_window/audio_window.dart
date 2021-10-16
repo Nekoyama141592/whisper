@@ -28,7 +28,7 @@ class AudioWindow extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final audioWindowHeight = size.height * 0.12;
     return InkWell(
-      onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(mainModel: mainModel, postSearchModel: postSearchModel) ) ); },
+      onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(speedNotifier: postSearchModel.speedNotifier, speedControll: () async { await postSearchModel.speedControll(); }, mainModel: mainModel, postSearchModel: postSearchModel) ) ); },
       child: Container(
         height: audioWindowHeight,
         child: Column(

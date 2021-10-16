@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:algolia/algolia.dart';
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
@@ -35,13 +36,18 @@ class PostSearchModel extends ChangeNotifier{
   final playButtonNotifier = PlayButtonNotifier();
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
+  // speed
+  late SharedPreferences prefs;
+  final speedNotifier = ValueNotifier<double>(1.0);
 
   PostSearchModel() {
     init();
   }
 
-  void init() {
+  void init() async {
     audioPlayer = AudioPlayer();
+    await setPrefs();
+    setSpeed();
   }
 
   void startLoading() {
@@ -67,13 +73,12 @@ class PostSearchModel extends ChangeNotifier{
     hits.sort((a,b) => b.data['likes'].length.compareTo(a.data['likes'].length));
     hits.forEach((hit) {
       final map = hit.data;
-       if (!mutesUids.contains(map['uid']) && !mutesPostIds.contains(map['postId']) && !blockingUids.contains(map['uid']) ) {
-
-       }
-      results.add(map);
-      Uri song = Uri.parse(map['audioURL']);
-      UriAudioSource source = AudioSource.uri(song, tag: map);
-      afterUris.add(source);
+      if (!mutesUids.contains(map['uid']) && !mutesPostIds.contains(map['postId']) && !blockingUids.contains(map['uid']) ) {
+        results.add(map);
+        Uri song = Uri.parse(map['audioURL']);
+        UriAudioSource source = AudioSource.uri(song, tag: map);
+        afterUris.add(source);
+      }
     });
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
@@ -146,6 +151,27 @@ class PostSearchModel extends ChangeNotifier{
 
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
+  }
+
+  Future speedControll() async {
+    if (speedNotifier.value == 4.0) {
+      speedNotifier.value = 1.0;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    } else {
+      speedNotifier.value += 0.5;
+      await audioPlayer.setSpeed(speedNotifier.value);
+      await prefs.setDouble('speed', speedNotifier.value);
+    }
+  }
+
+  Future setPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void setSpeed() {
+    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+    audioPlayer.setSpeed(speedNotifier.value);
   }
 
   void listenForStates() {

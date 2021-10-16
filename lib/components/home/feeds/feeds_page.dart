@@ -41,6 +41,8 @@ class FeedsPage extends ConsumerWidget {
         route: () {
           routes.toPostShowPage(
             context, 
+            feedsModel.speedNotifier,
+            () async { feedsModel.speedControll(); },
             feedsModel.currentSongDocNotifier, 
             feedsModel.progressNotifier, 
             feedsModel.seek, 
