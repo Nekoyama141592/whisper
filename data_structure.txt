@@ -1,4 +1,10 @@
 db{
+    nftOwners{
+        ethPrice: int,
+        link: String,
+        number: int
+        uid: uid,
+    }
     posts{
         audioURL: String,
         bookmarks: [{
@@ -18,7 +24,6 @@ db{
             userName: String,
             userImageURL: String,
         }],
-        // new
         commentsState: String('open','isLocked','onlyFollowingUser')
         createdAt: TimeStamp,
         genre: String
