@@ -54,6 +54,7 @@ db{
         userImageURL: String,
     }
     users{
+        birthDay: TimeStamp,
         blockingUids: [ String ],
         bookmarks: [{
             createdAt: TimeStamp,
@@ -77,6 +78,7 @@ db{
         followerUids:[
             String
         ],
+        gender: String,
         followingUids: [
             String
         ],
