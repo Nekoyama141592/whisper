@@ -18,6 +18,8 @@ db{
             userName: String,
             userImageURL: String,
         }],
+        // new
+        commentsState: String('open','isLocked','onlyFollowingUser')
         createdAt: TimeStamp,
         genre: String
         imageURL: String,

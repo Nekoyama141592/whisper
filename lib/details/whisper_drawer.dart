@@ -50,6 +50,11 @@ class WhisperDrawer extends StatelessWidget {
             ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },) 
             : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },),
           ),
+          ListTile(
+            title: Text('NFT所有者様方'),
+            onTap: () {},
+          ),
+          
         ],
       ),
     );
