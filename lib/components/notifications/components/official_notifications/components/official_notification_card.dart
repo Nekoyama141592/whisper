@@ -18,12 +18,7 @@ class OfiicialNotificationCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            // imageURL
-            leading: CircleAvatar(
-              radius: 24,
-            ),
-            title: Text(notification['uid']),
-            subtitle: Text(notification['isRead'].toString()),
+           
           )
         ],
       ),

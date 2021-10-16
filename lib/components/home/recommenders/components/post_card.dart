@@ -92,12 +92,16 @@ class PostCard extends ConsumerWidget {
               children: [
                 ListTile(
                   leading: RedirectUserImage(userImageURL: postDoc['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: postDoc['userDocId'], mainModel: mainModel),
-                  title: Text(postDoc['userName']),
+                  title: Text(
+                    postDoc['userName'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   subtitle: Text(
                     postDoc['title'],
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 )

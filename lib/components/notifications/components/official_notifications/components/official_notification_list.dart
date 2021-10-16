@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// components
-import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_card.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -19,11 +17,7 @@ class OfficialNotificationList extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: notifications.length,
-      itemBuilder: (BuildContext context, int i) => 
-      ReaplyNotificationCard(replyNotification: notifications[i],mainModel: mainModel,)
-    );
+    return Container();
   }
 
 }

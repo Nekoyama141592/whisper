@@ -65,7 +65,7 @@ class UserShowHeader extends ConsumerWidget {
           ),
           Text(
             passiveUserDoc['userName'],
-            style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold)
+            style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,)
           ),
           SizedBox(height: 10),
           Row(
@@ -84,7 +84,8 @@ class UserShowHeader extends ConsumerWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18.0
+                      fontSize: 18.0,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
