@@ -116,7 +116,7 @@ class SignupModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future signup(context) async {
+  Future signup(BuildContext context) async {
     try{
       UserCredential result = await FirebaseAuth.instance
       .createUserWithEmailAndPassword(
@@ -137,6 +137,7 @@ class SignupModel extends ChangeNotifier {
       }
     }
   }
+  
   Future addUserToFireStore(uid) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
     final imageURL = await uploadImage();
@@ -174,11 +175,15 @@ class SignupModel extends ChangeNotifier {
     showCupertinoModalPopup(
       context: context, 
       builder: (context) {
+        final now = DateTime.now();
         return Container(
           height: MediaQuery.of(context).size.height * 0.3,
           
           child: CupertinoDatePicker(
             backgroundColor: Theme.of(context).focusColor,
+            initialDateTime: DateTime(2010,now.month,now.day),
+            minimumDate: DateTime(1900,now.month,now.day),
+            maximumDate: DateTime(now.year - 12,now.month,now.day),
             mode: CupertinoDatePickerMode.date,
             onDateTimeChanged: (value){
               birthDay = value;

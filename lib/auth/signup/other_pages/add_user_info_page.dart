@@ -103,8 +103,8 @@ class AddUserInfoPage extends StatelessWidget {
                verticalPadding: 20.0, 
                horizontalPadding: 10.0, 
                press: () async {
-                 if (signupModel.userName.isEmpty) {
-                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ニックネームを入力してください')));
+                 if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10)) {
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
                  } else {
                    await signupModel.signup(context);
                  }
