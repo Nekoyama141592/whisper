@@ -86,7 +86,13 @@ class AddPostModel extends ChangeNotifier {
           message: Text('コメントの状態を設定します'),
           actions: [
             CupertinoActionSheetAction(
-              child: const Text('誰でもコメント可能'),
+              child: Text(
+                '誰でもコメント可能',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
               onPressed: () {
                 commentsState = 'open';
                 commentsStateDisplayNameNotifier.value = '誰でもコメント可能';
@@ -94,7 +100,13 @@ class AddPostModel extends ChangeNotifier {
               },
             ),
             CupertinoActionSheetAction(
-              child: const Text('自分以外コメント不可能'),
+              child: Text(
+                '自分以外コメント不可能',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
               onPressed: () {
                 commentsState = 'isLocked';
                 commentsStateDisplayNameNotifier.value = '自分以外コメント不可能';
@@ -102,7 +114,13 @@ class AddPostModel extends ChangeNotifier {
               },
             ),
             CupertinoActionSheetAction(
-              child: const Text('自分とフォロワーのみコメント可能'),
+              child: Text(
+                '自分とフォロワーのみコメント可能',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
               onPressed: () {
                 commentsState = 'onlyFollowingUsers';
                 commentsStateDisplayNameNotifier.value = '自分とフォロワーのみコメント可能';

@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +29,10 @@ class SignupModel extends ChangeNotifier {
   String email = "";
   String password = "";
   bool isObscure = true;
-
+  String gender = "";
+  final displayGenderNotifier = ValueNotifier<String>('');
+  DateTime birthDay = DateTime(1900,10,10);
+  final displayBirthDayNotifier = ValueNotifier<DateTime>(DateTime(1900,10,10));
   // image
   bool isCropped = false;
   XFile? xfile;
@@ -134,10 +138,11 @@ class SignupModel extends ChangeNotifier {
     }
   }
   Future addUserToFireStore(uid) async {
+    final timestampBirthDay = Timestamp.fromDate(birthDay);
     final imageURL = await uploadImage();
     await FirebaseFirestore.instance
     .collection('users').add({
-      'birthDay': Timestamp.now(),
+      'birthDay': timestampBirthDay,
       'blockingUids': [],
       'bookmarks': [],
       'commentNotifications': [],
@@ -146,7 +151,7 @@ class SignupModel extends ChangeNotifier {
       'followNotifications': [],
       'followerUids': [],
       'followingUids': [],
-      'gender': '',
+      'gender': gender,
       'imageURL': imageURL,
       'isAdmin': false,
       'isNFTicon': false,
@@ -164,4 +169,79 @@ class SignupModel extends ChangeNotifier {
       'userName': userName,
     });
   }
+
+  void showCupertinoDatePicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context, 
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          
+          child: CupertinoDatePicker(
+            backgroundColor: Theme.of(context).focusColor,
+            mode: CupertinoDatePickerMode.date,
+            onDateTimeChanged: (value){
+              birthDay = value;
+              displayBirthDayNotifier.value = value;
+            }
+          ),
+        );
+      }
+    );
+  }
+
+  void showGenderCupertinoActionSheet(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              child: Text(
+                '男性',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              onPressed: () {
+                gender = 'male';
+                displayGenderNotifier.value = '男性';
+                Navigator.pop(context);
+              }, 
+            ),
+            CupertinoActionSheetAction(
+              child: Text(
+                '女性',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              onPressed: () {
+                gender = 'female';
+                displayGenderNotifier.value = '女性';
+                Navigator.pop(context);
+              }, 
+            ),
+            CupertinoActionSheetAction(
+              child: Text(
+                '無回答',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              onPressed: () {
+                gender = 'noAnswer';
+                displayGenderNotifier.value = '無回答';
+                Navigator.pop(context);
+              }, 
+            )
+          ],
+        );
+      }
+    );
+  }
+
 }

@@ -80,7 +80,7 @@ class PostCard extends ConsumerWidget {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: kPrimaryColor.withOpacity(0.1),
+                color: Theme.of(context).focusColor.withOpacity(0.3),
                 blurRadius: 20,
                 offset: Offset(0, 5)
               )

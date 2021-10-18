@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // model
 import 'package:whisper/auth/signup/signup_model.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -17,12 +18,23 @@ class AddUserInfoPage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final userNameController = TextEditingController(text: signupModel.userName);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+             Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                color: Theme.of(context).focusColor,
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                }, 
+              ),
+            ),
             RoundedInputField(
               hintText: 'ニックネーム', 
               icon: Icons.person, 
@@ -30,6 +42,60 @@ class AddUserInfoPage extends StatelessWidget {
               onChanged: (text) {
                 signupModel.userName = text;
               }
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ValueListenableBuilder<DateTime>(
+                    valueListenable: signupModel.displayBirthDayNotifier,
+                    builder: (_,birthDay,__) {
+                      return Column(
+                        children: [
+                          RoundedButton(
+                            text: '生年月日', 
+                            widthRate: 0.45, 
+                            verticalPadding: 20, 
+                            horizontalPadding: 10, 
+                            press: () {
+                             signupModel.showCupertinoDatePicker(context);
+                            }, 
+                            textColor: Colors.white, 
+                            buttonColor: Theme.of(context).primaryColor
+                          ),
+                          SizedBox(height: 8.0),
+                          if (birthDay != DateTime(1900,10,10)) Text(
+                            birthDay.year.toString() + '年' + birthDay.month.toString() + '月' + birthDay.day.toString() + '日'
+                          )
+                        ],
+                      );
+                    }
+                  ),
+                  ValueListenableBuilder<String>(
+                    valueListenable: signupModel.displayGenderNotifier,
+                    builder: (_,gender,__) {
+                      return Column(
+                        children: [
+                          RoundedButton(
+                            text: '性別', 
+                            widthRate: 0.45, 
+                            verticalPadding: 20, 
+                            horizontalPadding: 10, 
+                            press: () {
+                              signupModel.showGenderCupertinoActionSheet(context);
+                            }, 
+                            textColor: Colors.white, 
+                            buttonColor: Theme.of(context).primaryColor
+                          ),
+                          SizedBox(height: 8.0),
+                          if(gender.isNotEmpty) Text(gender,style: TextStyle(fontWeight: FontWeight.bold),)
+                        ],
+                      );
+                    }
+                  ),
+                ],
+              ),
             ),
             RoundedButton(
               text: '新規登録',

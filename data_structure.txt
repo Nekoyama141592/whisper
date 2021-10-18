@@ -85,7 +85,7 @@ db{
         followerUids:[
             String
         ],
-        gender: String,
+        gender: String[male,female,noAnswer],
         followingUids: [
             String
         ],
