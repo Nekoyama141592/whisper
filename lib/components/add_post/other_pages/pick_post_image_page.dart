@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
+import 'package:whisper/components/add_post/components/audio_buttons/comments_state_button.dart';
 // model
 import 'package:whisper/components/add_post/add_post_model.dart';
 
@@ -55,7 +56,13 @@ class PickPostImagePage extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.05,
                 ),
-                UploadButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CommentsStateButton(addPostModel: addPostModel),
+                    UploadButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc),
+                  ],
+                )
               ],
             );
           }

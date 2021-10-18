@@ -9,13 +9,13 @@ import 'package:whisper/components/add_post/add_post_model.dart';
 
 class RecordButton extends StatelessWidget {
 
-  RecordButton(this.addPostProvider);
-  final AddPostModel addPostProvider;
+  RecordButton(this.addPostModel);
+  final AddPostModel addPostModel;
   @override  
   Widget build(BuildContext context) {
     return 
     ValueListenableBuilder<AddPostState>(
-      valueListenable: addPostProvider.addPostStateNotifier,
+      valueListenable: addPostModel.addPostStateNotifier,
       builder: (_,value,__) {
         return AudioButton(
           value == AddPostState.recording ?
@@ -28,7 +28,7 @@ class RecordButton extends StatelessWidget {
             color: Theme.of(context).highlightColor,
           ),
           () async {
-            addPostProvider.onRecordButtonPressed(context);
+            addPostModel.onRecordButtonPressed(context);
           }
         );
       }

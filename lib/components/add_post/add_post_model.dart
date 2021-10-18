@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 // material
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,6 +52,10 @@ class AddPostModel extends ChangeNotifier {
   File? croppedFile;
   // IP
   String ipv6 = '';
+  // commentsState
+  final commentsStateDisplayNameNotifier = ValueNotifier<String>('open');
+  String commentsState = 'open';
+
   AddPostModel() {
     init();
   }
@@ -58,10 +63,6 @@ class AddPostModel extends ChangeNotifier {
   void init() {
     audioPlayer = AudioPlayer();
     setCurrentUser();
-  }
-
-  void onFpressed() {
-    addPostStateNotifier.value = AddPostState.uploaded;
   }
 
   void startLoading() {
@@ -74,6 +75,44 @@ class AddPostModel extends ChangeNotifier {
 
   void reload() {
     notifyListeners();
+  }
+
+  void showCommentStatePopUp(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context, 
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          title: Text('コメントの状態'),
+          message: Text('コメントの状態を設定します'),
+          actions: [
+            CupertinoActionSheetAction(
+              child: const Text('誰でもコメント可能'),
+              onPressed: () {
+                commentsState = 'open';
+                commentsStateDisplayNameNotifier.value = '誰でもコメント可能';
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('自分以外コメント不可能'),
+              onPressed: () {
+                commentsState = 'isLocked';
+                commentsStateDisplayNameNotifier.value = '自分以外コメント不可能';
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('自分とフォロワーのみコメント可能'),
+              onPressed: () {
+                commentsState = 'onlyFollowingUsers';
+                commentsStateDisplayNameNotifier.value = '自分とフォロワーのみコメント可能';
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      }
+    );
   }
 
   Future showImagePicker() async {
