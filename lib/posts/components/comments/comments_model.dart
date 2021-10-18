@@ -29,6 +29,30 @@ class CommentsModel extends ChangeNotifier {
   }
 
   void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
+    final String commentsState = currentSongDoc['commentsState'];
+    final List<dynamic> followerUids = currentUserDoc['followerUids'];
+    switch(commentsState){
+      case 'open':
+      showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc);
+      break;
+      case 'isLocked':
+      if (currentSongDoc['uid'] == currentUserDoc['uid']) {
+        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
+      }
+      break;
+      case 'onlyFollowingUsers':
+      if (followerUids.contains(currentSongDoc['uid'])) {
+        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿主がフォローしている人しかコメントできません')));
+      }
+      break;
+    }
+  }
+
+  void showMakeCommentDialogue(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
     showDialog(
       context: context, 
       builder: (_) {

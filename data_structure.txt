@@ -24,7 +24,7 @@ db{
             userName: String,
             userImageURL: String,
         }],
-        commentsState: String('open','isLocked','onlyFollowingUser')
+        commentsState: String('open','isLocked','onlyFollowingUsers')
         createdAt: TimeStamp,
         genre: String
         imageURL: String,

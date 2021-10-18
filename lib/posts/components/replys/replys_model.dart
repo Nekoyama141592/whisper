@@ -36,6 +36,30 @@ class ReplysModel extends ChangeNotifier {
   }
 
   void onAddReplyButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+    final String commentsState = currentSongDoc['commentsState'];
+    final List<dynamic> followerUids = currentUserDoc['followerUids'];
+    switch(commentsState){
+      case 'open':
+      showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+      break;
+      case 'isLocked':
+      if (currentSongDoc['uid'] == currentUserDoc['uid']) {
+        showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リプライは投稿主しかできません')));
+      }
+      break;
+      case 'onlyFollowingUsers':
+      if (followerUids.contains(currentSongDoc['uid'])) {
+        showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿主がフォローしている人しかリプライできません')));
+      }
+      break;
+    }
+  }
+
+  void showMakeReplyDialogue(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
     showDialog(
       context: context, 
       builder: (_) {
