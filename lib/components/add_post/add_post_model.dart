@@ -53,7 +53,7 @@ class AddPostModel extends ChangeNotifier {
   // IP
   String ipv6 = '';
   // commentsState
-  final commentsStateDisplayNameNotifier = ValueNotifier<String>('open');
+  final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
   String commentsState = 'open';
 
   AddPostModel() {
@@ -306,7 +306,7 @@ class AddPostModel extends ChangeNotifier {
           'audioURL': audioURL,
           'bookmarks':[],
           'comments': [],
-          'commentsState': 'open',
+          'commentsState': commentsState,
           'createdAt': Timestamp.now(),
           'genre': '',
           'imageURL': imageURL,
