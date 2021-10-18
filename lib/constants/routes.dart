@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
 // pages
 import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
@@ -22,6 +23,7 @@ import 'package:whisper/auth/login/verify_password_reset/verify_password_reset_p
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';
+import 'package:whisper/auth/account/other_pages/blocking_users/blocking_users_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -80,8 +82,8 @@ void toAdminPage(context,DocumentSnapshot currentUserDoc) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc: currentUserDoc) ));
 }
 
-void toAccountPage(context,DocumentSnapshot currentUserDoc,User? currentUser) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(currentUserDoc: currentUserDoc)));
+void toAccountPage(context,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(mainModel: mainModel,)));
 }
 
 void toNotificationsPage(context,MainModel mainModel,ThemeModel themeModel,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> replyNotifications,DocumentSnapshot currentUserDoc) {
@@ -100,4 +102,11 @@ void toCommentsPage(context,ValueNotifier<DocumentSnapshot?> currentSongDocNotif
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(currentSongDoc: currentSongDocNotifier.value!,mainModel: mainModel,) ));
 }
 
+void toBlockingUsersPage(context, MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => BlockingUsersPage(mainModel: mainModel,) ));
+}
+
+void toMutesUsersPage(context,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => MutesUsersPage(mainModel: mainModel,) ));
+}
 

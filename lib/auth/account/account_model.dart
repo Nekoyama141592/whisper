@@ -1,13 +1,12 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
-// components
-import 'package:whisper/details/rounded_button.dart';
 
 final accountProvider = ChangeNotifierProvider(
   (ref) => AccountModel()
@@ -70,34 +69,59 @@ class AccountModel extends ChangeNotifier {
   }
 
   void showDeleteUserDialog(BuildContext context,DocumentSnapshot currentUserDoc) {
-    showDialog(
+    showCupertinoDialog(context: context, builder: (context) {
+      return CupertinoAlertDialog(
+        title: Text('ユーザー削除'),
+        content: Text('一度削除したら、復元はできません。本当に削除しますか？'),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          CupertinoDialogAction(
+            child: const Text('Ok'),
+            isDestructiveAction: true,
+            onPressed: () async {
+              final currentUser = FirebaseAuth.instance.currentUser;
+              if (currentUser!.uid == currentUserDoc['uid']) {
+                await FirebaseFirestore.instance
+                .collection('users')
+                .doc(currentUserDoc.id)
+                .delete()
+                .then((_) {
+                  Navigator.pop(context);
+                  routes.toLoginpage(context);
+                });
+              }
+            },
+          )
+        ],
+      );
+    });
+  }
+
+  void showSignOutDialog(BuildContext context) {
+    showCupertinoDialog(
       context: context, 
       builder: (_) {
-        return AlertDialog(
-          title: Text('ユーザー削除'),
-          content: Text('一度削除したら、復元はできません。本当に削除しますか？'),
+        return CupertinoAlertDialog(
+          title: Text('ログアウト'),
+          content: Text('ログアウトしますか？'),
           actions: [
-            RoundedButton(
-              text: 'OK', 
-              widthRate: 0.2, 
-              verticalPadding: 20.0, 
-              horizontalPadding: 10.0, 
-              press: () async {
-                final currentUser = FirebaseAuth.instance.currentUser;
-                if (currentUser!.uid == currentUserDoc['uid']) {
-                  await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(currentUserDoc.id)
-                  .delete().then((_) {
-                    routes.toLoginpage(context);
-                  });
-                  await currentUser.delete();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-                }
-              }, 
-              textColor: Colors.white, 
-              buttonColor: Theme.of(context).highlightColor
+            CupertinoDialogAction(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoDialogAction(
+              child: const Text('Ok'),
+              isDestructiveAction: true,
+              onPressed: () async {
+                await signOut(context);
+              },
             )
           ],
         );
@@ -105,30 +129,9 @@ class AccountModel extends ChangeNotifier {
     );
   }
 
-  void showSignOutDialog(BuildContext context) {
-    showDialog(
-      context: context, 
-      builder: (_) {
-        return AlertDialog(
-          title: Text('ログアウト'),
-          content: Text('ログアウトしますか？'),
-          actions: [
-            RoundedButton(
-              text: 'OK', 
-              widthRate: 0.2, 
-              verticalPadding: 20.0, 
-              horizontalPadding: 10.0, 
-              press: () async { await signOut(context); }, 
-              textColor: Colors.white, 
-              buttonColor: Theme.of(context).highlightColor
-            )
-          ],
-        );
-      }
-    );
-  }
   Future signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    Navigator.pop(context);
     routes.toLoginpage(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('一度、Whisperのタブを切るのをおすすめします'))

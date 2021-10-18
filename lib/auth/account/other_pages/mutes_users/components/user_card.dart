@@ -1,24 +1,28 @@
 // material
 import 'package:flutter/material.dart';
+// package
+import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-import 'package:whisper/details/redirect_user_image.dart';
+import 'package:whisper/details/user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_model.dart';
 
-class UserResult extends StatelessWidget {
+class UserCard extends StatelessWidget {
 
-  const UserResult({
+  const UserCard({
     Key? key,
-    required this.result,
-    required this.mainModel
+    required this.userDoc,
+    required this.mainModel,
+    required this.mutesUsersModel
   }) : super(key: key);
-  
-  final Map<String,dynamic> result;
+
+  final DocumentSnapshot userDoc;
   final MainModel mainModel;
+  final MutesUsersModel mutesUsersModel;
 
   @override 
   Widget build(BuildContext context) {
-    
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -34,10 +38,13 @@ class UserResult extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: RedirectUserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['objectID'],mainModel: mainModel,),
-              title: Text(result['userName'],overflow: TextOverflow.ellipsis,),
+              leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['userImageURL']),
+              title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
+              onTap: () async {
+                mutesUsersModel.unMuteUser(mainModel.mutesUids, userDoc['uid']);
+              },
               subtitle: Text(
-                result['description'],
+                userDoc['description'],
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                   fontWeight: FontWeight.bold,

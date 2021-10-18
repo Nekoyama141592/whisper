@@ -213,31 +213,31 @@ class PostsFutures extends ChangeNotifier{
 
   Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs) async {
     mutesPostIds.add(postId);
+    notifyListeners();
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
   Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs) async {
     mutesUids.add(uid);
-    await prefs.setStringList('mutesUids', mutesUids);
-  }
-
-  Future unMuteUser(List<String> mutesUids,String passiveUid,SharedPreferences prefs) async {
-    mutesUids.remove(passiveUid);
+    notifyListeners();
     await prefs.setStringList('mutesUids', mutesUids);
   }
 
   Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {
     mutesReplyIds.add(replyId);
+    notifyListeners();
     await prefs.setStringList('mutesReplyIds', mutesReplyIds);
   }
 
   Future muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
     mutesCommentIds.add(commentId);
+    notifyListeners();
     await prefs.setStringList('mutesCommentIds', mutesCommentIds);
   }
 
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid) async {
     blockingUids.add(passiveUid);
+    notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDoc.id)
@@ -245,6 +245,5 @@ class PostsFutures extends ChangeNotifier{
       'blocingUids': blockingUids,
     }); 
   }
-
 
 }

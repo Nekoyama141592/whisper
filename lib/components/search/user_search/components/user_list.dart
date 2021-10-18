@@ -24,7 +24,6 @@ class UserList extends StatelessWidget {
       child: ListView.builder(
         itemCount: results.length,
         itemBuilder: (BuildContext context, int i) =>
-        // UserResult(result: results[i].data)
         UserResult(result: results[i].data, mainModel: mainModel)
       )
     );

@@ -1,4 +1,5 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,7 +41,7 @@ class WhisperDrawer extends StatelessWidget {
           ListTile(
             title: Text('アカウント'),
             onTap: () {
-              routes.toAccountPage(context,mainModel.currentUserDoc,mainModel.currentUser);
+              routes.toAccountPage(context, mainModel);
             },
           ),
          
@@ -50,8 +51,15 @@ class WhisperDrawer extends StatelessWidget {
             ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },) 
             : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },),
           ),
+          
           ListTile(
-            title: Text('NFT所有者様方'),
+            title: Text('NFTowners'),
+            onTap: () {
+              
+            },
+          ),
+          ListTile(
+            title: Text('Whisperについて'),
             onTap: () {},
           ),
           
