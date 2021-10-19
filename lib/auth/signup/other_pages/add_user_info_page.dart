@@ -114,16 +114,35 @@ class AddUserInfoPage extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Checkbox(
-                  value: signupModel.isChecked, 
-                  onChanged: (value) {
-                    signupModel.toggleIsChecked();
+                ValueListenableBuilder<bool>(
+                  valueListenable: signupModel.isCheckedNotifier,
+                  builder: (_,isChecked,__) {
+                    return InkWell(
+                      child: isChecked ?
+                      Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+                      onTap: () {
+                        signupModel.toggleIsChecked();
+                      },
+                    );
                   }
                 ),
-                TextButton(onPressed: () {}, child: Text('利用規約')),
+                TextButton(onPressed: () {}, child: Text(
+                  '利用規約',
+                  style: TextStyle(
+                    color: Theme.of(context).highlightColor,
+                    fontWeight: FontWeight.bold
+                  ),
+                )),
                 Text('と'),
-                TextButton(onPressed: () {}, child: Text('プライバシーポリシー')),
+                TextButton(onPressed: () {}, child: Text(
+                  'プライバシーポリシー',
+                  style: TextStyle(
+                    color: Theme.of(context).highlightColor,
+                    fontWeight: FontWeight.bold
+                  ),
+                )),
                 Text('に同意する')
               ],
             )

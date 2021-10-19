@@ -34,7 +34,7 @@ class SignupModel extends ChangeNotifier {
   DateTime birthDay = DateTime(1900,10,10);
   final displayBirthDayNotifier = ValueNotifier<DateTime>(DateTime(1900,10,10));
   // Checkbox
-  bool isChecked = false;
+  final isCheckedNotifier = ValueNotifier<bool>(false);
   // image
   bool isCropped = false;
   XFile? xfile;
@@ -57,8 +57,7 @@ class SignupModel extends ChangeNotifier {
   }
 
   void toggleIsChecked() {
-    isChecked = !isChecked;
-    notifyListeners();
+    isCheckedNotifier.value = !isCheckedNotifier.value;
   }
 
   Future showImagePicker() async {
