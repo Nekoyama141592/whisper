@@ -7,8 +7,10 @@ class TosPage extends StatelessWidget {
     Key? key
   }) : super(key: key);
 
-  @override 
+  @override
+
   Widget build(BuildContext context) {
     return Scaffold();
   }
+  
 }

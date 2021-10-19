@@ -211,12 +211,6 @@ class PostsFutures extends ChangeNotifier{
     return newCurrentSongDoc;
   }
 
-  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs) async {
-    mutesPostIds.add(postId);
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-
   Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs) async {
     mutesUids.add(uid);
     notifyListeners();

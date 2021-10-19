@@ -46,7 +46,7 @@ class ReplyCard extends ConsumerWidget {
           } ,
         ),
         IconSlideAction(
-          caption: 'mute Post',
+          caption: 'mute Reply',
           color: Colors.transparent,
           icon: Icons.visibility_off,
           onTap: () async {

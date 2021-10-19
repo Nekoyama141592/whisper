@@ -51,7 +51,7 @@ class CommentCard extends ConsumerWidget {
           } ,
         ),
         IconSlideAction(
-          caption: 'mute Post',
+          caption: 'mute Comment',
           color: Colors.transparent,
           icon: Icons.visibility_off,
           onTap: () async {

@@ -37,7 +37,7 @@ class FeedsModel extends ChangeNotifier {
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
   // just_audio
   late AudioPlayer audioPlayer;
-  final List<AudioSource> afterUris = [];
+  List<AudioSource> afterUris = [];
   // cloudFirestore
   List followingUids = [];
   List<String> feedPostIds = [];
@@ -92,9 +92,47 @@ class FeedsModel extends ChangeNotifier {
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
 
+  Future resetAudioPlayer(int i) async {
+    afterUris = [];
+    feedDocs.forEach((DocumentSnapshot? doc) {
+      Uri song = Uri.parse(doc!['audioURL']);
+      UriAudioSource source = AudioSource.uri(song, tag: doc);
+      afterUris.add(source);
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist,initialIndex: i);
+    } 
+  }
+
+  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
+    mutesPostIds.add(postId);
+    await removeUserShowDoc(postId,i);
+    notifyListeners();
+    await prefs.setStringList('mutesPostIds', mutesPostIds);
+  }
+
+  Future removeUserShowDoc(String postId,int i) async {
+    feedDocs.removeWhere((feedDoc) => feedDoc['postId'] == postId);
+    await resetAudioPlayer(i);
+  }
+
+  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
+    mutesUids.add(uid);
+    await removeTheUsersPost(uid, i);
+    notifyListeners();
+    await prefs.setStringList('mutesUids', mutesUids);
+  }
+
+  Future removeTheUsersPost(String uid,int i) async {
+    feedDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
+    await resetAudioPlayer(i);
+  }
+
   Future onRefresh() async {
     refreshIndex = defaultRefreshIndex;
     feedDocs = [];
+    afterUris = [];
     await getFeeds();
     notifyListeners();
     refreshController.refreshCompleted();

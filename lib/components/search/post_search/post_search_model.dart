@@ -65,6 +65,43 @@ class PostSearchModel extends ChangeNotifier{
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
 
+  Future resetAudioPlayer(int i) async {
+    afterUris = [];
+    results.forEach((result) {
+      Uri song = Uri.parse(result['audioURL']);
+      UriAudioSource source = AudioSource.uri(song, tag: result);
+      afterUris.add(source);
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist,initialIndex: i);
+    } 
+  }
+
+  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
+    mutesPostIds.add(postId);
+    await removeUserShowDoc(postId,i);
+    notifyListeners();
+    await prefs.setStringList('mutesPostIds', mutesPostIds);
+  }
+
+  Future removeUserShowDoc(String postId,int i) async {
+    results.removeWhere((result) => result['postId'] == postId);
+    await resetAudioPlayer(i);
+  }
+
+  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
+    mutesUids.add(uid);
+    await removeTheUsersPost(uid, i);
+    notifyListeners();
+    await prefs.setStringList('mutesUids', mutesUids);
+  }
+
+  Future removeTheUsersPost(String uid,int i) async {
+    results.removeWhere((result) => result['uid'] == uid);
+    await resetAudioPlayer(i);
+  }
+
   Future search(List<String> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);

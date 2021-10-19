@@ -57,7 +57,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await postFutures.muteUser(mainModel.mutesUids, postDoc['uid'], mainModel.prefs);
+              await bookMarksModel.muteUser(mainModel.mutesUids, postDoc['uid'], mainModel.prefs, i);
             } ,
           ),
           IconSlideAction(
@@ -65,7 +65,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await postFutures.mutePost(mainModel.mutesPostIds, postDoc['postId'], mainModel.prefs);
+              await bookMarksModel.mutePost(mainModel.mutesPostIds,postDoc['postId'], mainModel.prefs,i);
             },
           ),
           IconSlideAction(

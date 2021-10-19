@@ -29,6 +29,7 @@ class PostResult extends ConsumerWidget {
  Widget build(BuildContext context,ScopedReader watch) {
 
     final postFutures = watch(postsFeaturesProvider);
+
     final List<Widget>? deleteIcon = [
       IconSlideAction(
         caption: 'Delete',
@@ -62,7 +63,7 @@ class PostResult extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await postFutures.mutePost(mainModel.mutesPostIds, result['postId'], mainModel.prefs);
+              await postSearchModel.mutePost(mainModel.mutesPostIds,result['postId'], mainModel.prefs,i);
             },
           ),
           IconSlideAction(
