@@ -29,7 +29,14 @@ class AddPostContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final postTitleController = TextEditingController(text: addPostModel.postTitleNotifier.value);
+    final postTitleController = TextEditingController.fromValue(
+      TextEditingValue(
+        text: addPostModel.postTitleNotifier.value,
+        selection: TextSelection.collapsed(
+          offset: addPostModel.postTitleNotifier.value.length
+        )
+      )
+    );
     final size = MediaQuery.of(context).size;
     return 
     ValueListenableBuilder<AddPostState>(
