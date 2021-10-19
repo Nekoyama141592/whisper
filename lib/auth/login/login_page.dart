@@ -88,7 +88,7 @@ class LoginPage extends ConsumerWidget {
                               height: size.height * 0.30,
                             ),
                             RoundedInputField(
-                              hintText: "Your Email",
+                              hintText: "Email",
                               icon: Icons.person,
                               controller: emailInputController,
                               onChanged:  (text) {
@@ -105,7 +105,7 @@ class LoginPage extends ConsumerWidget {
                             SizedBox(height: 24),
                             Center(
                               child: RoundedButton(
-                                text: 'login',
+                                text: 'ログイン',
                                 widthRate: 0.8,
                                 verticalPadding: 20.0,
                                 horizontalPadding: 10.0,

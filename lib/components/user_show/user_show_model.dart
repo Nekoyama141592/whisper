@@ -150,12 +150,33 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future onRefresh() async {
-    refreshIndex = defaultRefreshIndex;
-    userShowDocs = [];
-    afterUris = [];
-    await getPosts();
+    await getNewUserShowPosts();
     notifyListeners();
     refreshController.refreshCompleted();
+  }
+
+  Future getNewUserShowPosts() async {
+    QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
+    .collection('posts')
+    .where('uid',isEqualTo: currentUser!.uid)
+    .endBeforeDocument(userShowDocs[0])
+    .limit(oneTimeReadCount)
+    .get();
+    // Sort by oldest first
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
+    docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+    // Insert at the top
+    docs.forEach((DocumentSnapshot? doc) {
+      userShowDocs.insert(0, doc!);
+      Uri song = Uri.parse(doc['audioURL']);
+      UriAudioSource source = AudioSource.uri(song, tag: doc);
+      afterUris.insert(0, source);
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist);
+    }
+    refreshIndex = afterUris.length + defaultRefreshIndex;
   }
 
   Future onLoading() async {

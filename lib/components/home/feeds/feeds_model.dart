@@ -142,12 +142,35 @@ class FeedsModel extends ChangeNotifier {
   }
 
   Future onRefresh() async {
-    refreshIndex = defaultRefreshIndex;
-    feedDocs = [];
-    afterUris = [];
     await getFeeds();
     notifyListeners();
     refreshController.refreshCompleted();
+  }
+
+  Future getNewFeeds() async {
+    QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
+    .collection('posts')
+    .where('uid',whereIn: followingUids)
+    .endBeforeDocument(feedDocs[0])
+    .limit(oneTimeReadCount)
+    .get();
+    // Sort by oldest first
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
+    docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+    // Insert at the top
+    docs.forEach((DocumentSnapshot? doc) {
+      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+        feedDocs.insert(0, doc);
+        Uri song = Uri.parse(doc['audioURL']);
+        UriAudioSource source = AudioSource.uri(song, tag: doc);
+        afterUris.insert(0, source);
+      }
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist);
+    }
+    refreshIndex = afterUris.length + defaultRefreshIndex;
   }
 
   Future onLoading() async {
