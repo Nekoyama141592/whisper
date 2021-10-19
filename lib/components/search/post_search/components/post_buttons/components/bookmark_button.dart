@@ -32,7 +32,7 @@ class BookmarkButton extends ConsumerWidget {
         bookmarkedPostIds.contains(currentSongMap['postId']) ?
         IconButton(
           icon: Icon(
-            Icons.inventory_2,
+            Icons.bookmark,
             color: Colors.red,
           ),
           onPressed: () async {
@@ -40,7 +40,7 @@ class BookmarkButton extends ConsumerWidget {
           }, 
         )
         : IconButton(
-          icon: Icon(Icons.inventory_2),
+          icon: Icon(Icons.bookmark_border),
           onPressed: () async {
             await postFuturesModel.bookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
           }, 
