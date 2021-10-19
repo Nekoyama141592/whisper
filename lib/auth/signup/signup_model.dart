@@ -33,24 +33,31 @@ class SignupModel extends ChangeNotifier {
   final displayGenderNotifier = ValueNotifier<String>('');
   DateTime birthDay = DateTime(1900,10,10);
   final displayBirthDayNotifier = ValueNotifier<DateTime>(DateTime(1900,10,10));
+  // Checkbox
+  bool isChecked = false;
   // image
   bool isCropped = false;
   XFile? xfile;
   File? croppedFile;
   String downloadURL = '';
 
-  startLoading() {
+  void startLoading() {
     isLoading = true;
     notifyListeners();
   }
 
-  endLoading() {
+  void endLoading() {
     isLoading = false;
     notifyListeners();
   }
 
   void toggleIsObsucure() {
     isObscure = !isObscure;
+    notifyListeners();
+  }
+
+  void toggleIsChecked() {
+    isChecked = !isChecked;
     notifyListeners();
   }
 

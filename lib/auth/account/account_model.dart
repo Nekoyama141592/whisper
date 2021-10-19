@@ -132,9 +132,6 @@ class AccountModel extends ChangeNotifier {
   Future signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pop(context);
-    routes.toLoginpage(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('一度、Whisperのタブを切るのをおすすめします'))
-    );
+    routes.toIslogoutedPage(context);
   }
 }

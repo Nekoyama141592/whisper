@@ -99,19 +99,34 @@ class AddUserInfoPage extends StatelessWidget {
             ),
             RoundedButton(
               text: '新規登録',
-               widthRate: 0.95, 
-               verticalPadding: 20.0, 
-               horizontalPadding: 10.0, 
-               press: () async {
-                 if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10)) {
-                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
-                 } else {
-                   await signupModel.signup(context);
-                 }
-               }, 
-               textColor: Colors.white, 
-               buttonColor: Theme.of(context).colorScheme.secondary
-              )
+              widthRate: 0.95, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async {
+                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10)) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
+                } else {
+                  await signupModel.signup(context);
+                }
+              }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).colorScheme.secondary
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              children: [
+                Checkbox(
+                  value: signupModel.isChecked, 
+                  onChanged: (value) {
+                    signupModel.toggleIsChecked();
+                  }
+                ),
+                TextButton(onPressed: () {}, child: Text('利用規約')),
+                Text('と'),
+                TextButton(onPressed: () {}, child: Text('プライバシーポリシー')),
+                Text('に同意する')
+              ],
+            )
           ],
         )
       ),
