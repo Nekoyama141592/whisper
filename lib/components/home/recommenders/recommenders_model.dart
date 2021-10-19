@@ -114,7 +114,7 @@ class RecommendersModel extends ChangeNotifier {
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist,initialIndex: i);
-    } 
+    }
   }
 
   Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
@@ -139,6 +139,18 @@ class RecommendersModel extends ChangeNotifier {
   Future removeTheUsersPost(String uid,int i) async {
     recommenderDocs.removeWhere((recommenderDoc) => recommenderDoc['uid'] == uid);
     await resetAudioPlayer(i);
+  }
+
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
+    blockingUids.add(uid);
+    await removeTheUsersPost(uid, i);
+    notifyListeners();
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'blocingUids': blockingUids,
+    }); 
   }
   
   Future onRefresh() async {

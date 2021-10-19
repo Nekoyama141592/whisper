@@ -129,6 +129,18 @@ class FeedsModel extends ChangeNotifier {
     await resetAudioPlayer(i);
   }
 
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
+    blockingUids.add(uid);
+    await removeTheUsersPost(uid, i);
+    notifyListeners();
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'blocingUids': blockingUids,
+    }); 
+  }
+
   Future onRefresh() async {
     refreshIndex = defaultRefreshIndex;
     feedDocs = [];

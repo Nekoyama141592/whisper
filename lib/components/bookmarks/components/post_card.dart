@@ -21,13 +21,13 @@ class PostCard extends ConsumerWidget {
     required this.i,
     required this.postDoc,
     required this.mainModel,
-    required this.bookMarksModel
+    required this.bookmarksModel
   }) : super(key: key);
   
   final int i;
   final DocumentSnapshot postDoc;
   final MainModel mainModel;
-  final BookmarksModel bookMarksModel;
+  final BookmarksModel bookmarksModel;
 
   @override  
  Widget build(BuildContext context,ScopedReader watch) {
@@ -39,13 +39,13 @@ class PostCard extends ConsumerWidget {
         color: Colors.transparent,
         icon: Icons.delete,
         onTap: () {
-          bookMarksModel.onDeleteButtonPressed(context, postDoc, mainModel.currentUserDoc, i);
+          bookmarksModel.onDeleteButtonPressed(context, postDoc, mainModel.currentUserDoc, i);
         },
       ),
     ];
     return InkWell(
       onTap: () async {
-        await bookMarksModel.initAudioPlayer(i);
+        await bookmarksModel.initAudioPlayer(i);
       },
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
@@ -57,7 +57,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await bookMarksModel.muteUser(mainModel.mutesUids, postDoc['uid'], mainModel.prefs, i);
+              await bookmarksModel.muteUser(mainModel.mutesUids, postDoc['uid'], mainModel.prefs, i);
             } ,
           ),
           IconSlideAction(
@@ -65,7 +65,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await bookMarksModel.mutePost(mainModel.mutesPostIds,postDoc['postId'], mainModel.prefs,i);
+              await bookmarksModel.mutePost(mainModel.mutesPostIds,postDoc['postId'], mainModel.prefs,i);
             },
           ),
           IconSlideAction(
@@ -73,7 +73,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.block,
             onTap: () async {
-              await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, postDoc['uid']);
+              await bookmarksModel.blockUser(mainModel.currentUserDoc,mainModel.blockingUids, postDoc['uid'],i);
             },
           ),
         ] : deleteIcon,

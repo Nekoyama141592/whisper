@@ -73,7 +73,7 @@ class PostCards extends StatelessWidget {
             child: ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: (BuildContext context, int i) =>
-                PostCard(i: i,postDoc: postDocs[i], mainModel: mainModel,bookMarksModel: bookmarksModel,)
+                PostCard(i: i,postDoc: postDocs[i], mainModel: mainModel,bookmarksModel: bookmarksModel,)
             ),
           ),
         ),
