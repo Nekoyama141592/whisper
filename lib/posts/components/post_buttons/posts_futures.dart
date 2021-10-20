@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// constants
+import 'package:whisper/constants/counts.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostsFutures()
@@ -34,12 +36,15 @@ class PostsFutures extends ChangeNotifier{
         'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
       };
+      int score = newCurrentSongDoc['score'];
+      score += likeScore;
       likes.add(map);
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
       .update({
         'likes': likes,
+        'score': score,
       });
     } catch(e) {
       print(e.toString());
@@ -74,7 +79,7 @@ class PostsFutures extends ChangeNotifier{
   }
 
   void addPostIdTobookmarkedPostIds(List<dynamic> bookmarkedPostIds,String postId) {
-    bookmarkedPostIds.remove(postId);
+    bookmarkedPostIds.add(postId);
     notifyListeners();
   }
 
@@ -86,11 +91,14 @@ class PostsFutures extends ChangeNotifier{
         'createdAt': Timestamp.now(),
       };
       bookmarks.add(map);
+      int score = newCurrentSongDoc['score'];
+      score += bookmarkScore;
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
+        'score': score,
       });
     } catch(e) {
       print(e.toString());
@@ -132,11 +140,14 @@ class PostsFutures extends ChangeNotifier{
     try {
       final List<dynamic> bookmarks = newCurrentSongDoc['bookmarks'];
       bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
+      int score = newCurrentSongDoc['score'];
+      score -= bookmarkScore;
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
+        'score': score,
       });
     } catch(e) {
       print(e.toString());
@@ -171,6 +182,9 @@ class PostsFutures extends ChangeNotifier{
   }
 
   Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
+    
+    int score = newCurrentSongDoc['score'];
+    score -= likeScore;
     try {
       final List likes = newCurrentSongDoc['likes'];
       likes.removeWhere((like) => like['uid'] == currentUserDoc['uid']);
@@ -179,6 +193,7 @@ class PostsFutures extends ChangeNotifier{
       .doc(newCurrentSongDoc.id)
       .update({
         'likes': likes,
+        'score': score,
       });
     } catch(e) {
       print(e.toString());

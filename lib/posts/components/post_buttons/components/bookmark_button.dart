@@ -24,15 +24,16 @@ class BookmarkButton extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     
     final postFuturesModel = watch(postsFeaturesProvider);
-    final bookmarksCount = bookmarks.length;
-    final plusOneCount = bookmarksCount + 1;
 
     return 
     ValueListenableBuilder<DocumentSnapshot?>(
       valueListenable: currentSongDocNotifier, 
       builder: (_, currentSongDoc, __) {
+        final List postBookmarks = currentSongDoc!['bookmarks'];
+        final bookmarksCount = postBookmarks.length;
+        final plusOneCount = bookmarksCount + 1;
         return 
-        bookmarkedPostIds.contains(currentSongDoc!['postId']) ?
+        bookmarkedPostIds.contains(currentSongDoc['postId']) ?
         Row(
           children: [
             InkWell(
