@@ -82,13 +82,14 @@ db{
         }]
         createdAt: TimeStamp,
         description: String,
+        followNotifications: []
         followerUids:[
             String
         ],
-        gender: String[male,female,noAnswer],
         followingUids: [
             String
         ],
+        gender: String[male,female,noAnswer],
         imageURL: String,
         isAdmin: bool,
         isNFTicon: bool,
@@ -98,6 +99,7 @@ db{
             commentId: String,
             createdAt: TimeStamp,
         }],
+        likeNotifications: []
         likedReplys: [{
             'createdAt': TimeStamp,
             'likedReplyId': String,
