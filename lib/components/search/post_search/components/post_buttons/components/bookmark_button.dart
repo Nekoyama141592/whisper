@@ -23,27 +23,48 @@ class BookmarkButton extends ConsumerWidget {
 
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
+
     final postFuturesModel = watch(postsFeaturesProvider);
+    final bookmarksCount = bookmarks.length;
+    final plusOneCount = bookmarksCount + 1;
+
     return 
     ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
         return 
         bookmarkedPostIds.contains(currentSongMap['postId']) ?
-        IconButton(
-          icon: Icon(
-            Icons.bookmark,
-            color: Colors.red,
-          ),
-          onPressed: () async {
-            await postFuturesModel.unbookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
-          }, 
+        Row(
+          children: [
+            InkWell(
+              child: Icon(
+                Icons.bookmark,
+                color: Theme.of(context).highlightColor,
+              ),
+              onTap: () async {
+                await postFuturesModel.unbookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
+              }, 
+            ),
+            SizedBox(width: 5.0),
+            if(currentUserDoc['uid'] == currentSongMap['uid']) Text(
+              plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+              style: TextStyle(color: Theme.of(context).highlightColor)
+            )
+          ],
         )
-        : IconButton(
-          icon: Icon(Icons.bookmark_border),
-          onPressed: () async {
-            await postFuturesModel.bookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
-          }, 
+        : Row(
+          children: [
+            InkWell(
+              child: Icon(Icons.bookmark_border),
+              onTap: () async {
+                await postFuturesModel.bookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
+              }, 
+            ),
+            SizedBox(width: 5.0),
+            if(currentUserDoc['uid'] == currentSongMap['uid']) Text(
+              bookmarksCount >= 10000 ? (bookmarksCount/1000.floor()/10).toString() + '万' :  bookmarksCount.toString(),
+            )
+          ],
         );
       }
     );
