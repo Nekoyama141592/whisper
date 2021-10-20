@@ -166,8 +166,6 @@ class RecommendersModel extends ChangeNotifier {
 
     QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
     .collection('posts')
-    .where('createdAt', isGreaterThanOrEqualTo: range)
-    .orderBy('createdAt', descending: true)
     .orderBy('score', descending: true)
     .endBeforeDocument(recommenderDocs[0])
     .limit(oneTimeReadCount)
@@ -178,7 +176,7 @@ class RecommendersModel extends ChangeNotifier {
     docs.reversed;
      // Insert at the top
     docs.forEach((DocumentSnapshot? doc) {
-      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && doc['createdAt'].toDate().isAfter(range) ) {
         recommenderDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -214,13 +212,11 @@ class RecommendersModel extends ChangeNotifier {
       if (refreshIndex == defaultRefreshIndex) {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
-        .where('createdAt', isGreaterThanOrEqualTo: range)
-        .orderBy('createdAt', descending: true)
         .orderBy('score', descending: true)
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && doc['createdAt'].toDate().isAfter(range) ) {
             recommenderDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -234,14 +230,12 @@ class RecommendersModel extends ChangeNotifier {
       } else {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
-        .where('createdAt', isGreaterThanOrEqualTo: range)
-        .orderBy('createdAt', descending: true)
         .orderBy('score', descending: true)
         .startAfterDocument(recommenderDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot doc) {
-          if (!mutesUids.contains(doc['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+          if (!mutesUids.contains(doc['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && doc['createdAt'].toDate().isAfter(range) ) {
             recommenderDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
