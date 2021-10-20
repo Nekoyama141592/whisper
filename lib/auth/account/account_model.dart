@@ -92,7 +92,7 @@ class AccountModel extends ChangeNotifier {
                 .delete()
                 .then((_) {
                   Navigator.pop(context);
-                  routes.toLoginpage(context);
+                  routes.toIsFinishedPage(context, 'ユーザーを消去');
                 });
               }
             },
@@ -132,6 +132,6 @@ class AccountModel extends ChangeNotifier {
   Future signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pop(context);
-    routes.toIslogoutedPage(context);
+    routes.toIsFinishedPage(context,'ログアウトしました');
   }
 }

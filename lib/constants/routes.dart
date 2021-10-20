@@ -24,7 +24,7 @@ import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';
 import 'package:whisper/auth/account/other_pages/blocking_users/blocking_users_page.dart';
-import 'package:whisper/auth/signup/other_pages/is_logouted_page.dart';
+import 'package:whisper/auth/is_finished/is_finished_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -111,7 +111,7 @@ void toMutesUsersPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MutesUsersPage(mainModel: mainModel,) ));
 }
 
-void toIslogoutedPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => IsLogoutedPage() ));
+void toIsFinishedPage(context,String text) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => IsFinishedPage(text: text,) ));
 }
 

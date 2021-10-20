@@ -5,11 +5,14 @@ import 'package:flutter_svg/svg.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 
-class IsLogoutedPage extends StatelessWidget {
+class IsFinishedPage extends StatelessWidget {
 
-  const IsLogoutedPage({
-    Key? key
+  const IsFinishedPage({
+    Key? key,
+    required this.text
   }) : super(key: key);
+
+  final String text;
 
   @override 
   
@@ -23,7 +26,7 @@ class IsLogoutedPage extends StatelessWidget {
         header: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-            'Logoutしました',
+            text,
             style: TextStyle(
               fontSize: 35.0,
               fontWeight: FontWeight.bold
