@@ -161,7 +161,7 @@ class BookmarksModel extends ChangeNotifier {
         await audioPlayer.setAudioSource(playlist);
       }
     }
-
+    refreshIndex = afterUris.length + defaultRefreshIndex;
   }
 
   Future onLoading() async {
@@ -228,16 +228,14 @@ class BookmarksModel extends ChangeNotifier {
           if (afterUris.isNotEmpty) {
             ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
             await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
-          }
-          refreshIndex = afterUris.length + defaultRefreshIndex;
+          }  
         }
-        
       }
     } catch(e) {
       print(e.toString());
     }
+    refreshIndex = afterUris.length + defaultRefreshIndex;
     notifyListeners();
-    refreshIndex += oneTimeReadCount;
   }
 
   void play(List<dynamic> readPostIds,List<dynamic> readPosts,DocumentSnapshot currentUserDoc)  {
