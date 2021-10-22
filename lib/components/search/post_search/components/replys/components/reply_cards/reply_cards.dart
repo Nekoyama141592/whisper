@@ -25,8 +25,6 @@ class ReplyCards extends StatelessWidget {
   
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
-
     return searchReplysModel.isLoading ?
     Loading()
     : StreamBuilder(

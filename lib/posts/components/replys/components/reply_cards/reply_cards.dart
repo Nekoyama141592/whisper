@@ -25,8 +25,6 @@ class ReplyCards extends StatelessWidget {
   
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
-
     return replysModel.isLoading ?
     Loading()
     : StreamBuilder(
@@ -37,7 +35,6 @@ class ReplyCards extends StatelessWidget {
         return !snapshot.hasData || snapshot.data == null ?
         Column(
           children: [
-            SizedBox(height: size.height * 0.25,),
             Nothing(),
           ],
         )
