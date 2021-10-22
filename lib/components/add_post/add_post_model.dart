@@ -286,12 +286,12 @@ class AddPostModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
     } else {
       startLoading();
+      Navigator.pop(context);
       final String imageURL = croppedFile == null ? '' : await uploadImage();
       final audioURL = await getPostUrl(context);
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       await addPostToFirebase(context,currentUserDoc,imageURL,audioURL);
       endLoading();
-      Navigator.pop(context);
     }
   }
 
