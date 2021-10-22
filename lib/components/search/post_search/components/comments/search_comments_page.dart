@@ -33,7 +33,7 @@ class SearchCommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return searchReplysModel.isReplysMode ?
-    SearchReplysPage(searchReplysModel: searchReplysModel, replyMaps: searchReplysModel.replyMaps, currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
+    SearchReplysPage(searchReplysModel: searchReplysModel, currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(

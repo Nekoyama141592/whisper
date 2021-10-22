@@ -30,7 +30,7 @@ class ReplyCard extends ConsumerWidget {
     final length = 60.0;
     final padding = 0.0;
 
-    return !reply['commentId'] == searchReplysModel.giveComment['commentId']  ||  mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid']) ?
+    return  !( reply['commentId'] == searchReplysModel.giveComment['commentId'] ) || mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid'] ) ?
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -67,7 +67,7 @@ class ReplyCard extends ConsumerWidget {
         leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
         title: Text(reply['userName']),
         subtitle: Text(
-          reply['commentId'].toString(),
+          reply['reply'],
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold

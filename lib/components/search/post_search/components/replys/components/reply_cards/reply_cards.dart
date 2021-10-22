@@ -5,21 +5,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/posts/components/replys/components/reply_card/reply_card.dart';
+import 'package:whisper/components/search/post_search/components/replys/components/reply_card/reply_card.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
 
 class ReplyCards extends StatelessWidget {
 
   const ReplyCards({
     Key? key,
     required this.mainModel,
-    required this.replysModel
+    required this.searchReplysModel
   }) : super(key: key);
 
   final MainModel mainModel;
-  final ReplysModel replysModel;
+  final SearchReplysModel searchReplysModel;
 
   @override 
   
@@ -27,17 +27,17 @@ class ReplyCards extends StatelessWidget {
 
     final size = MediaQuery.of(context).size;
 
-    return replysModel.isLoading ?
+    return searchReplysModel.isLoading ?
     Loading()
     : StreamBuilder(
-      stream: replysModel.replysStream,
+      stream: searchReplysModel.replysStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) Text('something went wrong');
         if (snapshot.connectionState == ConnectionState.waiting) Loading();
         return !snapshot.hasData || snapshot.data == null ?
         Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: size.height * 0.25,),
             Nothing(),
           ],
         )
@@ -52,7 +52,7 @@ class ReplyCards extends StatelessWidget {
           child: ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot doc) {
               Map<String, dynamic> reply = doc.data()! as Map<String, dynamic>;
-              return ReplyCard(reply: reply, replysModel: replysModel, mainModel: mainModel);
+              return ReplyCard(reply: reply, searchReplysModel: searchReplysModel, mainModel: mainModel);
             }).toList(),
           ),
         );

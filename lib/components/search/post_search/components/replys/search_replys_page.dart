@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/loading.dart';
 // components
-import 'package:whisper/details/nothing.dart';
-import 'package:whisper/components/search/post_search/components/replys/components/reply_card/reply_card.dart';
+import 'package:whisper/components/search/post_search/components/replys/components/reply_cards/reply_cards.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
@@ -15,7 +14,6 @@ class SearchReplysPage extends StatelessWidget {
   const SearchReplysPage({
     Key? key,
     required this.searchReplysModel,
-    required this.replyMaps,
     required this.currentSongMap,
     required this.currentUserDoc,
     required this.thisComment,
@@ -23,7 +21,6 @@ class SearchReplysPage extends StatelessWidget {
   }) : super(key: key);
 
   final SearchReplysModel searchReplysModel;
-  final List<Map<String,dynamic>> replyMaps;
   final Map<String,dynamic> currentSongMap;
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
@@ -61,21 +58,7 @@ class SearchReplysPage extends StatelessWidget {
                 ),
               ],
             ),
-            replyMaps.isNotEmpty ?
-            Expanded(
-              child: ListView.builder(
-                itemCount: replyMaps.length,
-                itemBuilder: (BuildContext context,int i) {
-                  // return ReplyCard(reply: replyMaps[i],searchReplysModel: searchReplysModel,mainModel: mainModel,);
-                  return ReplyCard(mainModel: mainModel,reply: replyMaps[i],searchReplysModel: searchReplysModel,);
-                }
-              ),
-            ) : Column(
-              children: [
-                SizedBox(height: size.height * 0.25,),
-                Nothing(),
-              ],
-            )
+            Expanded(child: ReplyCards(mainModel: mainModel, searchReplysModel: searchReplysModel) )
           ]
         )
       ),
