@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/counts.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 
@@ -14,10 +15,12 @@ final replysProvider = ChangeNotifierProvider(
 class ReplysModel extends ChangeNotifier {
 
   String reply = "";
-  List<Map<String,dynamic>> replyMaps = [];
   bool isLoading = false;
   bool isReplysMode = false;
   Map<String,dynamic> giveComment = {};
+  // snapshots
+  int refreshIndex = oneTimeReadCount;
+  late Stream<QuerySnapshot> replysStream;
   // IP
   String ipv6 = '';
 
@@ -91,9 +94,9 @@ class ReplysModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 10.0, 
               press: () async { 
+                Navigator.pop(context);
                 await makeReply(currentSongDoc, currentUserDoc, thisComment);
                 reply = "";
-                Navigator.pop(context);
               }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
@@ -104,29 +107,15 @@ class ReplysModel extends ChangeNotifier {
     );
   }
 
-  Future getReplyDocs(BuildContext context,Map<String,dynamic> thisComment) async {
+  void getReplyDocs(BuildContext context,Map<String,dynamic> thisComment)  {
     isReplysMode = true;
-    startLoading();
     giveComment = thisComment;
-    try{
-      await FirebaseFirestore.instance
-      .collection('replys')
-      .get()
-      .then((qshot) {
-        if (qshot.docs.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('まだリプライはありません')));
-        } else {
-            qshot.docs.forEach((DocumentSnapshot doc) {
-              final map = doc.data() as Map<String,dynamic>;
-              replyMaps.add(map);
-          });
-          notifyListeners();
-        }
-      });
-    } catch(e) {
-      print(e.toString());
-    }
-    endLoading();
+    replysStream = FirebaseFirestore.instance
+    .collection('replys')
+    .where('commentId',isEqualTo: thisComment['commentId'])
+    .limit(refreshIndex)
+    .snapshots();
+    notifyListeners();
   }
 
   Future makeReply(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
@@ -153,8 +142,6 @@ class ReplysModel extends ChangeNotifier {
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };
-    replyMaps.add(map);
-    notifyListeners();
     return map;
   }
   

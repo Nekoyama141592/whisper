@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/loading.dart';
 // components
-import 'package:whisper/details/nothing.dart';
-import 'package:whisper/posts/components/replys/components/reply_card/reply_card.dart';
+import 'package:whisper/posts/components/replys/components/reply_cards/reply_cards.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -15,7 +14,6 @@ class ReplysPage extends StatelessWidget {
   const ReplysPage({
     Key? key,
     required this.replysModel,
-    required this.replyMaps,
     required this.currentSongDoc,
     required this.currentUserDoc,
     required this.thisComment,
@@ -23,7 +21,6 @@ class ReplysPage extends StatelessWidget {
   }) : super(key: key);
 
   final ReplysModel replysModel;
-  final List<Map<String,dynamic>> replyMaps;
   final DocumentSnapshot currentSongDoc;
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
@@ -61,20 +58,7 @@ class ReplysPage extends StatelessWidget {
                 ),
               ],
             ),
-            replyMaps.isNotEmpty ?
-            Expanded(
-              child: ListView.builder(
-                itemCount: replyMaps.length,
-                itemBuilder: (BuildContext context,int i) {
-                  return ReplyCard(reply: replyMaps[i],replysModel: replysModel,mainModel: mainModel,);
-                }
-              ),
-            ) : Column(
-              children: [
-                SizedBox(height: size.height * 0.25,),
-                Nothing(),
-              ],
-            )
+            ReplyCards(mainModel: mainModel, replysModel: replysModel)
           ]
         )
       ),
