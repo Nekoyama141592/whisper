@@ -159,6 +159,7 @@ class UserShowModel extends ChangeNotifier {
     QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
     .collection('posts')
     .where('uid',isEqualTo: currentUser!.uid)
+    .orderBy('createdAt')
     .endBeforeDocument(userShowDocs[0])
     .limit(oneTimeReadCount)
     .get();
@@ -191,6 +192,7 @@ class UserShowModel extends ChangeNotifier {
         await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
+        .orderBy('createdAt')
         .limit(oneTimeReadCount)
         .get()
         .then((qshot) {
@@ -211,6 +213,7 @@ class UserShowModel extends ChangeNotifier {
         await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
+        .orderBy('createdAt')
         .startAfterDocument(userShowDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get()
@@ -227,12 +230,13 @@ class UserShowModel extends ChangeNotifier {
         if (afterUris.isNotEmpty) {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
-          refreshIndex = afterUris.length + defaultRefreshIndex;
+          
         }
       }
     } catch(e) {
       print(e.toString());
     }
+    refreshIndex = afterUris.length + defaultRefreshIndex;
     notifyListeners();
   }
 
