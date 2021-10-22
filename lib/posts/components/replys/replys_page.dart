@@ -29,7 +29,7 @@ class ReplysPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final replyEditingController = TextEditingController();
-    final size = MediaQuery.of(context).size;
+    
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_comment),
@@ -41,7 +41,6 @@ class ReplysPage extends StatelessWidget {
         child: replysModel.isLoading ?
         Loading()
         : Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -58,7 +57,7 @@ class ReplysPage extends StatelessWidget {
                 ),
               ],
             ),
-            ReplyCards(mainModel: mainModel, replysModel: replysModel)
+            Expanded(child: ReplyCards(mainModel: mainModel, replysModel: replysModel))
           ]
         )
       ),

@@ -30,7 +30,7 @@ class ReplyCard extends ConsumerWidget {
     final length = 60.0;
     final padding = 0.0;
     
-    return !reply['commentId'] == replysModel.giveComment['commentId'] ||  mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid']) ?
+    return  !( reply['commentId'] == replysModel.giveComment['commentId'] ) || mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid'] )?
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),
