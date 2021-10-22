@@ -151,6 +151,7 @@ class FeedsModel extends ChangeNotifier {
     QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
     .collection('posts')
     .where('uid',whereIn: followingUids)
+    .orderBy('createdAt')
     .endBeforeDocument(feedDocs[0])
     .limit(oneTimeReadCount)
     .get();
@@ -218,6 +219,7 @@ class FeedsModel extends ChangeNotifier {
         QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',whereIn: followingUids)
+        .orderBy('createdAt')
         .limit(oneTimeReadCount)
         .get();
         List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshots.docs;
@@ -240,6 +242,7 @@ class FeedsModel extends ChangeNotifier {
         QuerySnapshot<Map<String, dynamic>> snapshots = await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',whereIn: followingUids)
+        .orderBy('createdAt')
         .startAfterDocument(feedDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get();
