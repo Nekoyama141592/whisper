@@ -113,6 +113,7 @@ class ReplysModel extends ChangeNotifier {
     replysStream = FirebaseFirestore.instance
     .collection('replys')
     .where('commentId',isEqualTo: thisComment['commentId'])
+    .orderBy('likesUidsCount')
     .limit(refreshIndex)
     .snapshots();
     notifyListeners();
