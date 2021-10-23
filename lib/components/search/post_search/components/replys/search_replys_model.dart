@@ -219,6 +219,7 @@ class SearchReplysModel extends ChangeNotifier {
 
   Future<void> updateLikesUidsOfReply(DocumentSnapshot currentUserDoc,DocumentSnapshot newReplyDoc) async {
     List<dynamic> likesUids = newReplyDoc['likesUids'];
+    int likesUidsCount = newReplyDoc['likesUidsCount'];
     final String uid = currentUserDoc['uid'];
     likesUids.add(uid);
     await FirebaseFirestore.instance
@@ -226,6 +227,7 @@ class SearchReplysModel extends ChangeNotifier {
     .doc(newReplyDoc.id)
     .update({
       'likesUids': likesUids,
+      'likesUidsCount': likesUidsCount + 1,
     });
   }
 
@@ -263,6 +265,7 @@ class SearchReplysModel extends ChangeNotifier {
 
   Future removeLikesUidOfReply(DocumentSnapshot currentUserDoc,DocumentSnapshot newReplyDoc) async {
     List<dynamic> likesUids = newReplyDoc['likesUids'];
+    int likesUidsCount = newReplyDoc['likesUidsCount'];
     likesUids.remove(currentUserDoc['uid']);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -270,6 +273,7 @@ class SearchReplysModel extends ChangeNotifier {
     .doc(newReplyDoc.id)
     .update({
       'likesUids': likesUids,
+      'likesUidsCount': likesUidsCount - 1,
     });
   }
 

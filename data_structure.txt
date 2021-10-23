@@ -53,6 +53,7 @@ db{
         isNFTicon: bool,
         isOfficial: bool,
         likesUids: []
+        likesUidsCount: int
         reply: String,
         replyId; String,
         uid: String,

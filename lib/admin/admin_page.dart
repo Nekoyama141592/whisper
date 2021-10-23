@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/counts.dart';
 // components
 import 'package:whisper/details/no_right.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -33,11 +34,12 @@ class AdminPage extends ConsumerWidget {
             message: 'Nothing',
             child: Center(
               child: RoundedButton(
-                text: 'Nothing', 
+                text: 'Move', 
                 widthRate: 0.95, 
                 verticalPadding: 20.0, 
                 horizontalPadding: 10.0, 
                 press: () {
+                  
                 }, 
                 textColor: Colors.white, 
                 buttonColor: Theme.of(context).colorScheme.secondary
