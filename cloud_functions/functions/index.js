@@ -29,16 +29,16 @@ exports.createPost = functions.firestore
     }
 );
 
-// exports.updatePost = functions.firestore
-// .document('posts/{id}')
-// .onUpdate(
-//     async (snap, context) => {
-//         const afterUpdate = snap.after.data();
-//         afterUpdate.objectID = snap.after.id;
-//         var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
-//         index.saveObject(afterUpdate);
-//     }
-// );
+exports.updatePost = functions.firestore
+.document('posts/{id}')
+.onUpdate(
+    async (snap, context) => {
+        const afterUpdate = snap.after.data();
+        afterUpdate.objectID = snap.after.id;
+        var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
+        index.saveObject(afterUpdate);
+    }
+);
 
 exports.deletePost = functions.firestore
 .document('posts/{id}')
