@@ -28,6 +28,7 @@ class CommentsPage extends ConsumerWidget {
     final commentsModel = watch(commentsProvider);
     final replysModel = watch(replysProvider);
     final commentEditingController = TextEditingController();
+    commentsModel.sortCommentsByLikesUidsCount(currentSongDoc['comments']);
 
     return replysModel.isReplysMode ?
     ReplysPage(replysModel: replysModel, currentSongDoc: currentSongDoc, currentUserDoc: mainModel.currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
@@ -65,19 +66,17 @@ class CommentsPage extends ConsumerWidget {
             Expanded(
               child: ListView.builder(
                 itemCount: commentsModel.didCommented ? commentsModel.comments.length :  currentSongDoc['comments'].length,
-                itemBuilder: (BuildContext context, int i) =>
-                InkWell(
-                  child: CommentCard(
+                itemBuilder: (BuildContext context, int i) {
+                  
+                  return CommentCard(
                     commentsModel: commentsModel,
                     replysModel: replysModel,
                     comment: commentsModel.didCommented ? commentsModel.comments[i] : currentSongDoc['comments'][i],
                     currentSongDoc: currentSongDoc,
                     mainModel: mainModel,
-                  ),
-                  onTap: () {
-                    print(commentsModel.comments.length);
-                  },
-                )
+                  );
+                }
+                
               ),
             )
             : Nothing(),

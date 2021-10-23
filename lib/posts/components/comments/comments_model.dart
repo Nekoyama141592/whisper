@@ -28,6 +28,10 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void sortCommentsByLikesUidsCount(List<dynamic> comments) {
+    comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
+  }
+
   void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
     final String commentsState = currentSongDoc['commentsState'];
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
