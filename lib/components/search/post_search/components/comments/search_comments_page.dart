@@ -33,8 +33,6 @@ class SearchCommentsPage extends ConsumerWidget {
     final searchReplysModel = watch(searchReplysProvider);
     final commentEditingController = TextEditingController();
 
-    searchCommentsModel.sortCommentsByLikesUidsCount(currentSongMap['comments']);
-
     return searchReplysModel.isReplysMode ?
     SearchReplysPage(searchReplysModel: searchReplysModel, currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
     : Scaffold(

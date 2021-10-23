@@ -134,8 +134,6 @@ class SearchCommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                thisComments.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-                notifyListeners();
                 Navigator.pop(context);
               }, 
               child: Text(
@@ -148,7 +146,6 @@ class SearchCommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                thisComments.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
                 Navigator.pop(context);
               }, 
               child: Text(
