@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -104,6 +105,56 @@ class SearchCommentsModel extends ChangeNotifier {
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
             )
+          ],
+        );
+      }
+    );
+  }
+
+  void showSortDialogue(BuildContext context,List<dynamic> thisComments) {
+    showCupertinoDialog(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                sortCommentsByLikesUidsCount(thisComments);
+              }, 
+              child: Text(
+                'いいね順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                thisComments.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+              }, 
+              child: Text(
+                '新しい順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                thisComments.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+              }, 
+              child: Text(
+                '古い順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
           ],
         );
       }

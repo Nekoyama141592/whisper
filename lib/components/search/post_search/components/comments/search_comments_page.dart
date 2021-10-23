@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/components/search/post_search/components/comments/components/comment_card.dart';
+import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_page.dart';
+import 'package:whisper/components/search/post_search/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
@@ -52,20 +53,7 @@ class SearchCommentsPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    color: Theme.of(context).focusColor,
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }, 
-                  ),
-                ),
-              ],
-            ),
+            CommentsOrReplysHeader(onMenuPressed: () { searchCommentsModel.showSortDialogue(context, currentSongMap['comments']); }),
             currentSongMap['comments'].isNotEmpty  || searchCommentsModel.comments.isNotEmpty ?
             Expanded(
               child: ListView.builder(

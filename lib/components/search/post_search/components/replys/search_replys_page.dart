@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/loading.dart';
 // components
+import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/components/search/post_search/components/replys/components/reply_cards/reply_cards.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -29,7 +30,6 @@ class SearchReplysPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final replyEditingController = TextEditingController();
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_comment),
@@ -43,21 +43,7 @@ class SearchReplysPage extends StatelessWidget {
         : Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    color: Theme.of(context).focusColor,
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      searchReplysModel.isReplysMode = false;
-                      searchReplysModel.reload();
-                    }, 
-                  ),
-                ),
-              ],
-            ),
+            CommentsOrReplysHeader(onMenuPressed: onMenuPressed),
             Expanded(child: ReplyCards(mainModel: mainModel, searchReplysModel: searchReplysModel) )
           ]
         )

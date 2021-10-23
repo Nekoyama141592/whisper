@@ -107,6 +107,8 @@ class ReplysModel extends ChangeNotifier {
     );
   }
 
+  
+
   void getReplyDocs(BuildContext context,Map<String,dynamic> thisComment)  {
     isReplysMode = true;
     giveComment = thisComment;

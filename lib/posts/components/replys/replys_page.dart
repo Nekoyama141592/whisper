@@ -1,9 +1,10 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // components
+import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/replys/components/reply_cards/reply_cards.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -42,21 +43,7 @@ class ReplysPage extends StatelessWidget {
         Loading()
         : Column(
           children: [
-            Row(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    color: Theme.of(context).focusColor,
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      replysModel.isReplysMode = false;
-                      replysModel.reload();
-                    }, 
-                  ),
-                ),
-              ],
-            ),
+            CommentsOrReplysHeader(onMenuPressed: onMenuPressed),
             Expanded(child: ReplyCards(mainModel: mainModel, replysModel: replysModel))
           ]
         )

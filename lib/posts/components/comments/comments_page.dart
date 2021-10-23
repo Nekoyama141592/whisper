@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/posts/components/comments/components/comment_card.dart';
+import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
+import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -48,20 +49,7 @@ class CommentsPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    color: Theme.of(context).focusColor,
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }, 
-                  ),
-                ),
-              ],
-            ),
+            CommentsOrReplysHeader(onMenuPressed: () { commentsModel.showSortDialogue(context, currentSongDoc['comments']); }),
             currentSongDoc['comments'].isNotEmpty  || commentsModel.comments.isNotEmpty ?
             Expanded(
               child: ListView.builder(
