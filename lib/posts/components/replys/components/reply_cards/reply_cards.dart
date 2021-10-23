@@ -1,4 +1,5 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,19 +33,8 @@ class ReplyCards extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) Text('something went wrong');
         if (snapshot.connectionState == ConnectionState.waiting) Loading();
-        return !snapshot.hasData || snapshot.data == null ?
-        Column(
-          children: [
-            Nothing(),
-          ],
-        )
-        : snapshot.data!.docs.isEmpty ?
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Nothing(),
-          ],
-        )
+        return !snapshot.hasData || snapshot.data == null || snapshot.data!.docs.isEmpty ?
+        SizedBox.shrink()
         : Center(
           child: ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot doc) {
