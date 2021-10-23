@@ -49,7 +49,7 @@ class CommentsPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CommentsOrReplysHeader(onMenuPressed: () { commentsModel.showSortDialogue(context, currentSongDoc['comments']); }),
+            CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: () { commentsModel.showSortDialogue(context, currentSongDoc['comments']); }),
             currentSongDoc['comments'].isNotEmpty  || commentsModel.comments.isNotEmpty ?
             Expanded(
               child: ListView.builder(

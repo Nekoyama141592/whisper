@@ -112,6 +112,7 @@ class CommentsModel extends ChangeNotifier {
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
+                Navigator.pop(context);
                 sortCommentsByLikesUidsCount(thisComments);
               }, 
               child: Text(
@@ -124,7 +125,9 @@ class CommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
+                Navigator.pop(context);
                 thisComments.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+                notifyListeners();
               }, 
               child: Text(
                 '新しい順',
@@ -136,10 +139,24 @@ class CommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
+                Navigator.pop(context);
                 thisComments.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+                notifyListeners();
               }, 
               child: Text(
                 '古い順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text(
+                'キャンセル',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor,

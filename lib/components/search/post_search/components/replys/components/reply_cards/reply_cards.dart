@@ -33,7 +33,7 @@ class ReplyCards extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) Text('something went wrong');
         if (snapshot.connectionState == ConnectionState.waiting) Loading();
-        return !snapshot.hasData || snapshot.data == null || snapshot.data!.docs.isEmpty ?
+        return !snapshot.hasData || snapshot.data == null ?
         SizedBox.shrink()
         : Center(
           child: ListView(

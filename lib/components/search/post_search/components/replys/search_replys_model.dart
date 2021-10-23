@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -116,13 +117,96 @@ class SearchReplysModel extends ChangeNotifier {
     );
   }
 
+  void showSortDialogue(BuildContext context,Map<String,dynamic> thisComment) {
+    showCupertinoDialog(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('リプライを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                replysStream = FirebaseFirestore.instance
+                .collection('replys')
+                .where('commentId',isEqualTo: thisComment['commentId'])
+                .orderBy('likesUidsCount',descending: true )
+                .limit(refreshIndex)
+                .snapshots();
+                notifyListeners();
+              }, 
+              child: Text(
+                'いいね順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                replysStream = FirebaseFirestore.instance
+                .collection('replys')
+                .where('commentId',isEqualTo: thisComment['commentId'])
+                .orderBy('createdAt',descending: true)
+                .limit(refreshIndex)
+                .snapshots();
+                notifyListeners();
+              }, 
+              child: Text(
+                '新しい順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                replysStream = FirebaseFirestore.instance
+                .collection('replys')
+                .where('commentId',isEqualTo: thisComment['commentId'])
+                .orderBy('createdAt',descending: false)
+                .limit(refreshIndex)
+                .snapshots();
+                notifyListeners();
+              }, 
+              child: Text(
+                '古い順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+          ],
+        );
+      }
+    );
+  }
+
   void getReplyDocs(BuildContext context,Map<String,dynamic> thisComment)  {
     isReplysMode = true;
     giveComment = thisComment;
     replysStream = FirebaseFirestore.instance
     .collection('replys')
     .where('commentId',isEqualTo: thisComment['commentId'])
-    .orderBy('likesUidsCount')
+    .orderBy('likesUidsCount',descending: true)
     .limit(refreshIndex)
     .snapshots();
     notifyListeners();

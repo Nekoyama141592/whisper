@@ -53,7 +53,7 @@ class SearchCommentsPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CommentsOrReplysHeader(onMenuPressed: () { searchCommentsModel.showSortDialogue(context, currentSongMap['comments']); }),
+            CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: () { searchCommentsModel.showSortDialogue(context, currentSongMap['comments']); }),
             currentSongMap['comments'].isNotEmpty  || searchCommentsModel.comments.isNotEmpty ?
             Expanded(
               child: ListView.builder(

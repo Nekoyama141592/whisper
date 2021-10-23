@@ -43,7 +43,13 @@ class ReplysPage extends StatelessWidget {
         Loading()
         : Column(
           children: [
-            CommentsOrReplysHeader(onMenuPressed: onMenuPressed),
+            CommentsOrReplysHeader(
+              onBackButtonPressed: () {
+                replysModel.isReplysMode = false;
+                replysModel.reload();
+              },
+              onMenuPressed: () { replysModel.showSortDialogue(context, thisComment); }
+            ),
             Expanded(child: ReplyCards(mainModel: mainModel, replysModel: replysModel))
           ]
         )

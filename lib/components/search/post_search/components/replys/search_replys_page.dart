@@ -43,7 +43,13 @@ class SearchReplysPage extends StatelessWidget {
         : Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CommentsOrReplysHeader(onMenuPressed: onMenuPressed),
+            CommentsOrReplysHeader(
+              onBackButtonPressed: () {
+                searchReplysModel.isReplysMode = false;
+                searchReplysModel.reload();
+              },
+              onMenuPressed: () { searchReplysModel.showSortDialogue(context,thisComment ); }
+            ),
             Expanded(child: ReplyCards(mainModel: mainModel, searchReplysModel: searchReplysModel) )
           ]
         )
