@@ -147,6 +147,7 @@ class SearchReplysModel extends ChangeNotifier {
       'likesUids': [],
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
+      'score': 0,
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],

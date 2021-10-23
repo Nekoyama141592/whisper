@@ -52,10 +52,11 @@ db{
         ipv6: String
         isNFTicon: bool,
         isOfficial: bool,
-        likesUids: []
+        likesUids: [],
         likesUidsCount: int
         reply: String,
         replyId; String,
+        score: int,
         uid: String,
         userDocId: String,
         userName: String,

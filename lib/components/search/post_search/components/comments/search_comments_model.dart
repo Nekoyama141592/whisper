@@ -126,6 +126,7 @@ class SearchCommentsModel extends ChangeNotifier {
       'createdAt': Timestamp.now(),
       'ipv6': ipv6,
       'likesUids': [],
+      'score': 0,
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
