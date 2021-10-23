@@ -159,7 +159,7 @@ class UserShowModel extends ChangeNotifier {
     QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
     .collection('posts')
     .where('uid',isEqualTo: currentUser!.uid)
-    .orderBy('createdAt')
+    .orderBy('createdAt',descending: true)
     .endBeforeDocument(userShowDocs[0])
     .limit(oneTimeReadCount)
     .get();
@@ -192,7 +192,7 @@ class UserShowModel extends ChangeNotifier {
         await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
-        .orderBy('createdAt')
+        .orderBy('createdAt',descending: true)
         .limit(oneTimeReadCount)
         .get()
         .then((qshot) {
@@ -213,7 +213,7 @@ class UserShowModel extends ChangeNotifier {
         await FirebaseFirestore.instance
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
-        .orderBy('createdAt')
+        .orderBy('createdAt',descending: true)
         .startAfterDocument(userShowDocs[refreshIndex])
         .limit(oneTimeReadCount)
         .get()
