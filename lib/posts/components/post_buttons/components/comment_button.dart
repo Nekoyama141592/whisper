@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/routes.dart' as routes;
+// models
 import 'package:whisper/main_model.dart';
 
 
@@ -17,16 +16,13 @@ class CommentButton extends StatelessWidget {
   }) : super(key: key);
 
   final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
-  void Function()? toCommentsPage;
+  final void Function()? toCommentsPage;
   final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
     return 
     IconButton(
-      // onPressed: () {
-      //   routes.toCommentsPage(context, mainModel.likedCommentIds, mainModel.likedComments, currentSongDocNotifier, mainModel.currentUserDoc,mainModel); 
-      // }, 
       onPressed: toCommentsPage,
       icon: Icon(Icons.comment)
     );
