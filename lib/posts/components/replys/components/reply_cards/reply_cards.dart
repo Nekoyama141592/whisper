@@ -34,14 +34,7 @@ class ReplyCards extends StatelessWidget {
         if (snapshot.hasError) Text('something went wrong');
         if (snapshot.connectionState == ConnectionState.waiting) Loading();
         return !snapshot.hasData || snapshot.data == null  ?
-        Center(
-          child: ElevatedButton(
-            onPressed: () {
-              print(snapshot.data!.docs.isEmpty);
-            }, 
-            child: Text('A')
-          ),
-        )
+        SizedBox.shrink()
         : Center(
           child: ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot doc) {

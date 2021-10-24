@@ -43,6 +43,7 @@ class SearchReplysModel extends ChangeNotifier {
   void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
     final String commentsState = currentSongMap['commentsState'];
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
+    reply = '';
     switch(commentsState){
       case 'open':
       showMakeReplyDialogue(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
@@ -104,9 +105,8 @@ class SearchReplysModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 10.0, 
               press: () async { 
-                await makeReply(currentSongMap, currentUserDoc, thisComment);
-                reply = "";
                 Navigator.pop(context);
+                await makeReply(currentSongMap, currentUserDoc, thisComment);
               }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor

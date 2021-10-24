@@ -42,6 +42,7 @@ class ReplysModel extends ChangeNotifier {
   void onAddReplyButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
     final String commentsState = currentSongDoc['commentsState'];
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
+    reply = '';
     switch(commentsState){
       case 'open':
       showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
@@ -97,7 +98,6 @@ class ReplysModel extends ChangeNotifier {
               press: () async { 
                 Navigator.pop(context);
                 await makeReply(currentSongDoc, currentUserDoc, thisComment);
-                reply = "";
               }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
@@ -199,7 +199,7 @@ class ReplysModel extends ChangeNotifier {
     replysStream = FirebaseFirestore.instance
     .collection('replys')
     .where('commentId',isEqualTo: thisComment['commentId'])
-    // .orderBy('likesUidsCount',descending: true )
+    .orderBy('likesUidsCount',descending: true )
     .limit(refreshIndex)
     .snapshots();
     notifyListeners();
