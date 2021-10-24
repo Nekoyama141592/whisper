@@ -52,49 +52,47 @@ class CommentsPage extends ConsumerWidget {
         },
       ),
 
-      body: SafeArea(
-        child: ValueListenableBuilder<List<dynamic>>(
-          valueListenable: currentSongMapCommentsNotifier,
-          builder: (_,currentSongMapComments,__) {
-            return SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
-                  currentSongMapComments.isNotEmpty ?
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: currentSongMapComments.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        
-                        return CommentCard(
-                          commentsModel: commentsModel,
-                          replysModel: replysModel,
-                          comment: currentSongMapComments[i],
-                          currentSongDoc: currentSongDoc,
-                          mainModel: mainModel,
-                        );
-                      }
+      body: ValueListenableBuilder<List<dynamic>>(
+        valueListenable: currentSongMapCommentsNotifier,
+        builder: (_,currentSongMapComments,__) {
+          return currentSongMapComments.isNotEmpty ?
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
+                
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: currentSongMapComments.length,
+                    itemBuilder: (BuildContext context, int i) {
                       
-                    ),
-                  )
-                  : Nothing(),
-                  Center(
-                    child: RoundedButton(
-                      text: '並び替え実行', 
-                      widthRate: 0.40, 
-                      verticalPadding: 16.0, 
-                      horizontalPadding: 0.0, 
-                      press: () { commentsModel.reload(); }, 
-                      textColor: Colors.white, 
-                      buttonColor: Theme.of(context).primaryColor
-                    ),
-                  )
-                ],
-              ),
-            );
-          }
-        ),
+                      return CommentCard(
+                        commentsModel: commentsModel,
+                        replysModel: replysModel,
+                        comment: currentSongMapComments[i],
+                        currentSongDoc: currentSongDoc,
+                        mainModel: mainModel,
+                      );
+                    }
+                    
+                  ),
+                ),
+                Center(
+                  child: RoundedButton(
+                    text: '並び替え実行', 
+                    widthRate: 0.40, 
+                    verticalPadding: 16.0, 
+                    horizontalPadding: 0.0, 
+                    press: () { commentsModel.reload(); }, 
+                    textColor: Colors.white, 
+                    buttonColor: Theme.of(context).primaryColor
+                  ),
+                )
+              ],
+            ),
+          ) : Nothing();
+        }
       ),
     );
   }
