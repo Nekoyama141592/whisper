@@ -22,39 +22,48 @@ class ReplyLikeButton extends StatelessWidget {
 
     final List<dynamic> likesUids = thisReply['likesUids'];
     final likesUidsCount = likesUids.length;
-    final plusOneCount = likesUids.length + 1;
 
     return mainModel.likedReplyIds.contains(thisReply['replyId']) ?
-    Row(
-      children: [
-        InkWell(
-          child: Icon(
-            Icons.favorite,
-            color: Colors.red
+    Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5.0
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            child: Icon(
+              Icons.favorite,
+              color: Colors.red
+            ),
+            onTap: () async {
+              await searchReplysModel.unlike(mainModel.likedReplyIds, thisReply, mainModel.currentUserDoc, mainModel.likedReplys);
+            },
           ),
-          onTap: () async {
-            await searchReplysModel.unlike(mainModel.likedReplyIds, thisReply, mainModel.currentUserDoc, mainModel.likedReplys);
-          },
-        ),
-        SizedBox(width: 5.0),
-        Text(
-          plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
-          style: TextStyle(color: Colors.red)
-        )
-      ],
-    ) : Row(
-      children: [
-        InkWell(
-          child: Icon(Icons.favorite),
-          onTap: () async {
-            await searchReplysModel.like(mainModel.likedReplyIds, thisReply, mainModel.currentUserDoc);
-          },
-        ),
-        SizedBox(width: 5.0),
-        Text(
-          likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
-        )
-      ],
+          SizedBox(width: 5.0),
+          Text(
+            likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
+            style: TextStyle(color: Colors.red)
+          )
+        ],
+      ),
+    ) : Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5.0
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            child: Icon(Icons.favorite),
+            onTap: () async {
+              await searchReplysModel.like(mainModel.likedReplyIds, thisReply, mainModel.currentUserDoc);
+            },
+          ),
+          SizedBox(width: 5.0),
+          Text(
+            likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
+          )
+        ],
+      ),
     );
   }
 }

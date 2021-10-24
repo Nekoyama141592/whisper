@@ -5,8 +5,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
-import 'package:whisper/main_model.dart';
+import 'package:whisper/components/search/post_search/components/replys/components/reply_card/components/reply_like_button.dart';
 // models
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
 
@@ -63,15 +64,45 @@ class ReplyCard extends ConsumerWidget {
         ),
       ]
       : [],
-      child: ListTile(
-        leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
-        title: Text(reply['userName']),
-        subtitle: Text(
-          reply['reply'],
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold
-          ),
+      
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(4.0))
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0
+                    ),
+                    child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: Column(
+                        children: [
+                          Text(reply['userName']),
+                          SizedBox(height: 10.0,),
+                          Text(reply['reply'])
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ReplyLikeButton(thisReply: reply, mainModel: mainModel, searchReplysModel: searchReplysModel)
+                    ],
+                  )
+                ]
+              ),
+            ),
+          ],
         ),
       ),
     );
