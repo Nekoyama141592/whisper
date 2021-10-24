@@ -224,6 +224,8 @@ class SearchCommentsModel extends ChangeNotifier {
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': comment,
         'createdAt': Timestamp.now(),
+        'isNFTicon': false,
+        'isOfficial': false,
         'notificationId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'postId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'postTitle': currentSongMap['title'],
