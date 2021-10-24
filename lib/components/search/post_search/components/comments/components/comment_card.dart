@@ -68,46 +68,44 @@ class CommentCard extends ConsumerWidget {
         ),
       ] : [],
       child: Card(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(4.0))
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0
-                      ),
-                      child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        child: Column(
-                          children: [
-                            Text(comment['userName']),
-                            SizedBox(height: 10.0,),
-                            Text(comment['comment'])
-                          ],
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CommentLikeButton(searchCommentsModel: searchCommentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
-                        if(comment['uid'] == currentSongMap['uid'] ) ShowReplyButton(searchReplysModel: searchReplysModel,currentSongMap: currentSongMap,currentUserDoc: mainModel.currentUserDoc,thisComment: comment,)
-                      ],
-                    )
-                  ]
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(4.0))
               ),
-            ],
-          ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0
+                    ),
+                    child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: Column(
+                        children: [
+                          Text(comment['userName']),
+                          SizedBox(height: 10.0,),
+                          Text(comment['comment'])
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CommentLikeButton(searchCommentsModel: searchCommentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
+                      if(comment['uid'] == currentSongMap['uid'] ) ShowReplyButton(searchReplysModel: searchReplysModel,currentSongMap: currentSongMap,currentUserDoc: mainModel.currentUserDoc,thisComment: comment,)
+                    ],
+                  )
+                ]
+              ),
+            ),
+          ],
         ),
       ),
     );
