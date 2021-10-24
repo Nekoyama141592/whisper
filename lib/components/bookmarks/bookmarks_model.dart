@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +28,7 @@ class BookmarksModel extends ChangeNotifier {
   late DocumentSnapshot currentUserDoc;
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
+  final currentSongMapCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -75,6 +77,86 @@ class BookmarksModel extends ChangeNotifier {
 
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
+  }
+
+  void sortCommentsByLikesUidsCount() {
+    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
+    comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
+  }
+
+  void sortCommentsByNewestFirst() {
+    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
+    comments.sort((a,b) => b['createdAt'].toDate().compareTo(a['createdAt'].toDate() ));
+  }
+
+  void sortCommentsByOldestFirst() {
+    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
+    comments.sort((a,b) => a['createdAt'].toDate().compareTo(b['createdAt'].toDate() ));
+  }
+
+  void showSortDialogue(BuildContext context) {
+    showCupertinoDialog(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                sortCommentsByLikesUidsCount();
+              }, 
+              child: Text(
+                'いいね順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                sortCommentsByNewestFirst();
+              }, 
+              child: Text(
+                '新しい順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                sortCommentsByOldestFirst();
+              }, 
+              child: Text(
+                '古い順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+          ],
+        );
+      }
+    );
   }
 
   Future initAudioPlayer(int i) async {
@@ -377,8 +459,9 @@ class BookmarksModel extends ChangeNotifier {
       if (sequenceState == null) return;
       // update current song doc
       final currentItem = sequenceState.currentSource;
-      final DocumentSnapshot? currentSongDoc = currentItem?.tag;
+      final DocumentSnapshot<Map<String,dynamic>>? currentSongDoc = currentItem?.tag;
       currentSongDocNotifier.value = currentSongDoc;
+      currentSongMapCommentsNotifier.value = currentSongDoc!.data()!['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       // playlist.map((item) {

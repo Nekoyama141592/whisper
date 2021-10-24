@@ -57,7 +57,7 @@ class FeedsPage extends ConsumerWidget {
             () { feedsModel.onNextSongButtonPressed(); },
             () {
               feedsModel.pause();
-              routes.toCommentsPage(context, feedsModel.currentSongDocNotifier, mainModel);
+              routes.toCommentsPage(context, () { feedsModel.showSortDialogue(context); }, feedsModel.audioPlayer, feedsModel.currentSongMapCommentsNotifier, feedsModel.currentSongDocNotifier, mainModel);
             },
             () {
               feedsModel.pause();

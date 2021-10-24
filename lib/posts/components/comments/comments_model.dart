@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 
@@ -18,10 +19,6 @@ class CommentsModel extends ChangeNotifier {
   // comment
   String comment = "";
   Map<String,dynamic> postComment = {};
-  // change
-  List<dynamic> comments = [];
-  bool didCommented = false;
-  List<dynamic> postComments = [];
   // IP
   String ipv6 = '';
 
@@ -29,27 +26,26 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sortCommentsByLikesUidsCount(List<dynamic> thisComments) {
-    comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
-  }
+ 
 
-  void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
+  void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
     final String commentsState = currentSongDoc['commentsState'];
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
+    audioPlayer.pause();
     switch(commentsState){
       case 'open':
-      showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc);
+      showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
       break;
       case 'isLocked':
       if (currentSongDoc['uid'] == currentUserDoc['uid']) {
-        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc);
+        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
       }
       break;
       case 'onlyFollowingUsers':
       if (followerUids.contains(currentSongDoc['uid'])) {
-        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc);
+        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿主がフォローしている人しかコメントできません')));
       }
@@ -57,7 +53,7 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  void showMakeCommentDialogue(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
+  void showMakeCommentDialogue(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
     showDialog(
       context: context, 
       builder: (_) {
@@ -89,7 +85,7 @@ class CommentsModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 0.0, 
               press: () async { 
-                await makeComment(currentSongDoc, currentUserDoc); 
+                await makeComment(currentSongDoc, currentUserDoc,currentSongMapCommentsNotifier); 
                 comment = '';
                 Navigator.pop(context);
               }, 
@@ -102,80 +98,17 @@ class CommentsModel extends ChangeNotifier {
     );
   }
 
-  void showSortDialogue(BuildContext context,List<dynamic> thisComments) {
-    showCupertinoDialog(
-      context: context, 
-      builder: (context) {
-        return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-                sortCommentsByLikesUidsCount(thisComments);
-              }, 
-              child: Text(
-                'いいね順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
-              child: Text(
-                '新しい順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-                
-              }, 
-              child: Text(
-                '古い順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
-              child: Text(
-                'キャンセル',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-          ],
-        );
-      }
-    );
-  }
-
-  Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc) async {
+  
+  Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    makeCommentMap(currentUserDoc, currentSongDoc);
+    final newCommentMap = makeCommentMap(currentUserDoc, currentSongDoc,currentSongMapCommentsNotifier);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
-    await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc);
+    await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc,newCommentMap);
     final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc);
     await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
   }
 
-  void makeCommentMap(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc) {
+  Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
     final commentMap = {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
@@ -190,15 +123,16 @@ class CommentsModel extends ChangeNotifier {
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };
-    comments = currentSongDoc['comments'];
-    comments.add(commentMap);
-    didCommented = true;
+    currentSongMapCommentsNotifier.value.add(commentMap);
     notifyListeners();
+    return commentMap;
   }
 
 
-  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot newCurrentSongDoc) async {
+  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot newCurrentSongDoc,Map<String,dynamic> newCommentMap) async {
     try{
+      final List<dynamic> comments = newCurrentSongDoc['comments'];
+      comments.add(newCommentMap);
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
@@ -250,10 +184,10 @@ class CommentsModel extends ChangeNotifier {
 
   Future updateCommentsOfPostWhenSomeoneLiked(DocumentSnapshot newCurrentSongDoc,String commentId,DocumentSnapshot currentUserDoc) async {
 
-    postComments = newCurrentSongDoc['comments'];
+    final List<dynamic> comments = newCurrentSongDoc['comments'];
     //Likeが押された時のPost側の処理
     try{
-      postComments.forEach((postComment) {
+      comments.forEach((postComment) {
         if (postComment['commentId'] == commentId){
           // likesUids
           List<dynamic> likesUids = postComment['likesUids'];
@@ -262,7 +196,7 @@ class CommentsModel extends ChangeNotifier {
           .collection('posts')
           .doc(newCurrentSongDoc.id)
           .update({
-            'comments': postComments,
+            'comments': comments,
           });
         }
       });
@@ -301,10 +235,10 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future removeLikesUidFromComment(DocumentSnapshot newCurrentSongDoc,DocumentSnapshot currentUserDoc,String commentId) async {
-    postComments = newCurrentSongDoc['comments'];
+    final List<dynamic> comments = newCurrentSongDoc['comments'];
     //Likeが押された時のPost側の処理
     try{
-      postComments.forEach((postComment) {
+      comments.forEach((postComment) {
         if (postComment['commentId'] == commentId){
           // likesUids
           List<dynamic> likesUids = postComment['likesUids'];
@@ -313,7 +247,7 @@ class CommentsModel extends ChangeNotifier {
           .collection('posts')
           .doc(newCurrentSongDoc.id)
           .update({
-            'comments': postComments,
+            'comments': comments,
           });
         }
       });

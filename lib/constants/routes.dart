@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
+import 'package:just_audio/just_audio.dart';
 // pages
 import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
@@ -23,6 +23,7 @@ import 'package:whisper/auth/login/verify_password_reset/verify_password_reset_p
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';
+import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
 import 'package:whisper/auth/account/other_pages/blocking_users/blocking_users_page.dart';
 import 'package:whisper/auth/is_finished/is_finished_page.dart';
 // notifiers
@@ -99,8 +100,8 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
-void toCommentsPage(context,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(currentSongDoc: currentSongDocNotifier.value!,mainModel: mainModel,) ));
+void toCommentsPage(context, void Function()? showSortDialogue,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(showSortDialogue: showSortDialogue,audioPlayer: audioPlayer, currentSongMapCommentsNotifier: currentSongMapCommentsNotifier, currentSongDoc: currentSongDocNotifier.value!, mainModel: mainModel) ));
 }
 
 void toBlockingUsersPage(context, MainModel mainModel) {

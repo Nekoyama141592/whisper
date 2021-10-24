@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -53,7 +52,7 @@ class RecommendersPage extends ConsumerWidget {
             () { recommendersModel.onNextSongButtonPressed(); },
             () {
               recommendersModel.pause();
-              routes.toCommentsPage(context, recommendersModel.currentSongDocNotifier, mainModel);
+              routes.toCommentsPage(context, () { recommendersModel.showSortDialogue(context); }, recommendersModel.audioPlayer, recommendersModel.currentSongMapCommentsNotifier, recommendersModel.currentSongDocNotifier, mainModel);
             },
             () {
               recommendersModel.pause();

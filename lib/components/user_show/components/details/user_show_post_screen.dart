@@ -56,7 +56,7 @@ class UserShowPostScreen extends ConsumerWidget {
           () { userShowModel.onNextSongButtonPressed(); },
           () {
             userShowModel.pause();
-            routes.toCommentsPage(context, userShowModel.currentSongDocNotifier, mainModel);
+            routes.toCommentsPage(context, () { userShowModel.showSortDialogue(context); }, userShowModel.audioPlayer, userShowModel.currentSongMapCommentsNotifier, userShowModel.currentSongDocNotifier, mainModel);
           },
           () {
             userShowModel.pause();

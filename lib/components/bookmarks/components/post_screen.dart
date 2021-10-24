@@ -69,7 +69,7 @@ class PostScreen extends ConsumerWidget {
               () { bookmarksModel.onNextSongButtonPressed(); },
               () {
                 bookmarksModel.pause();
-                routes.toCommentsPage(context, bookmarksModel.currentSongDocNotifier, mainModel);
+                routes.toCommentsPage(context, () { bookmarksModel.showSortDialogue(context); }, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapCommentsNotifier, bookmarksModel.currentSongDocNotifier, mainModel);
               },
               () {
                 bookmarksModel.pause();
