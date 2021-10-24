@@ -86,23 +86,27 @@ class RecommendersModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  void sortCommentsByLikesUidsCount() {
+  void sortCommentsByLikesUidsCount(BuildContext context) {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
     currentSongMapCommentsNotifier.value = comments;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('左下から並び替えを実行'), duration: Duration(seconds: 1 ),) );
   }
 
-  void sortCommentsByNewestFirst() {
+  void sortCommentsByNewestFirst(BuildContext context) {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => b['createdAt'].toDate().compareTo(a['createdAt'].toDate() ));
     currentSongMapCommentsNotifier.value = comments;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('左下から並び替えを実行'), duration: Duration(seconds: 1),) );
   }
 
-  void sortCommentsByOldestFirst() {
+  void sortCommentsByOldestFirst(BuildContext context) {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => a['createdAt'].toDate().compareTo(b['createdAt'].toDate() ));
     currentSongMapCommentsNotifier.value = comments;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('左下から並び替えを実行'), duration: Duration(seconds: 1),) );
   }
+
 
   void showSortDialogue(BuildContext context) {
     showCupertinoDialog(
@@ -115,7 +119,7 @@ class RecommendersModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(context);
-                sortCommentsByLikesUidsCount();
+                sortCommentsByLikesUidsCount(context);
               }, 
               child: Text(
                 'いいね順',
@@ -128,7 +132,7 @@ class RecommendersModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(context);
-                sortCommentsByNewestFirst();
+                sortCommentsByNewestFirst(context);
               }, 
               child: Text(
                 '新しい順',
@@ -141,7 +145,7 @@ class RecommendersModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(context);
-                sortCommentsByOldestFirst();
+                sortCommentsByOldestFirst(context);
               }, 
               child: Text(
                 '古い順',

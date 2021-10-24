@@ -78,15 +78,17 @@ class CommentsPage extends ConsumerWidget {
                     
                   ),
                 ),
-                Center(
-                  child: RoundedButton(
-                    text: '並び替え実行', 
-                    widthRate: 0.40, 
-                    verticalPadding: 16.0, 
-                    horizontalPadding: 0.0, 
-                    press: () { commentsModel.reload(); }, 
-                    textColor: Colors.white, 
-                    buttonColor: Theme.of(context).primaryColor
+                Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: InkWell(
+                      child: Icon(
+                        Icons.sort,
+                        size: 32.0,
+                      ),
+                      onTap: () { commentsModel.reload(); },
+                    ),
                   ),
                 )
               ],

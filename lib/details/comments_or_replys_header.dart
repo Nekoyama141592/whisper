@@ -16,16 +16,16 @@ class CommentsOrReplysHeader extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(20.0),
       child: Row(
         children: [
           InkWell(
-            child: Icon(Icons.arrow_back),
+            child: Icon(Icons.arrow_back,size: 32.0,),
             onTap: onBackButtonPressed,
           ),
           Expanded(child: SizedBox()),
           InkWell(
-            child: Icon(Icons.menu_open),
+            child: Icon(Icons.menu_open,size: 32.0,),
             onTap: onMenuPressed,
           )
         ],
