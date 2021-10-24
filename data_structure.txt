@@ -37,6 +37,7 @@ db{
             createdAt: TimeStamp,
             uid: String,
         }],
+        link: String
         postId: String,
         score: int,
         title: String,
