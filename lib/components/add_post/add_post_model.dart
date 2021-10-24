@@ -22,6 +22,8 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
+// components
+import 'package:whisper/details/rounded_input_field.dart';
 
 
 final addPostProvider = ChangeNotifierProvider(
@@ -55,6 +57,8 @@ class AddPostModel extends ChangeNotifier {
   // commentsState
   final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
   String commentsState = 'open';
+  // link 
+  String link = '';
 
   AddPostModel() {
     init();
@@ -75,6 +79,25 @@ class AddPostModel extends ChangeNotifier {
 
   void reload() {
     notifyListeners();
+  }
+
+  void showAddLinkDialogue(BuildContext context, TextEditingController linkEditingController) {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text('リンクを追加'),
+          content: RoundedInputField(
+            hintText: 'https://', 
+            icon: Icons.add_link, 
+            controller: linkEditingController, 
+            onChanged: (text) {
+              link = text;
+            }
+          )
+        );
+      }
+    );
   }
 
   void showCommentStatePopUp(BuildContext context) {
@@ -334,6 +357,7 @@ class AddPostModel extends ChangeNotifier {
           'isOfficial': false,
           'isPlayedCount': 0,
           'likes':[],
+          'link': link,
           'postId': 'post' + currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
           'score': 0,
           'title': postTitleNotifier.value,
