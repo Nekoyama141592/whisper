@@ -17,9 +17,8 @@ class RedirectToUrlButton extends StatelessWidget {
   Widget build(BuildContext context) {
     
   
-    return currentSongDoc['link'].isEmpty ?
-    SizedBox.shrink()
-    : InkWell(
+    return 
+    InkWell(
         onTap: () async {
         if ( await canLaunch(currentSongDoc['link'])) {
           await launch(currentSongDoc['link']);

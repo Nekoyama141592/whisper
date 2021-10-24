@@ -39,8 +39,8 @@ class PostButtons extends StatelessWidget {
             LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc!, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
             BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
             CommentButton(currentSongDoc: currentSongDoc,mainModel: mainModel,toCommentsPage: toCommentsPage),
-            EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, toEditingMode: toEditingMode,),
-            RedirectToUrlButton(currentSongDoc: currentSongDoc,)
+            if (mainModel.currentUserDoc['uid'] == currentSongDoc['uid']) EditButton(currentSongDoc: currentSongDoc, toEditingMode: toEditingMode,),
+            if (currentSongDoc['link'].isNotEmpty) RedirectToUrlButton(currentSongDoc: currentSongDoc,)
           ],
         );
       }
