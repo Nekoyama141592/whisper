@@ -18,13 +18,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/details/rounded_button.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 // components
-import 'package:whisper/details/rounded_input_field.dart';
-
 
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
@@ -85,16 +84,54 @@ class AddPostModel extends ChangeNotifier {
     showDialog(
       context: context, 
       builder: (_) {
-        return AlertDialog(
-          title: Text('リンクを追加'),
-          content: RoundedInputField(
-            hintText: 'https://', 
-            icon: Icons.add_link, 
-            controller: linkEditingController, 
-            onChanged: (text) {
-              link = text;
-            }
-          )
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(16.0)
+            )
+          ),
+          child: AlertDialog(
+            title: Text('リンクを追加'),
+            content: TextField(
+              controller: linkEditingController,
+              keyboardType: TextInputType.url,
+              style: TextStyle(
+                fontWeight: FontWeight.bold
+              ),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'https://'
+              ),
+    
+              onChanged: (text) {
+                link = text;
+              },
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  link = '';
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Theme.of(context).focusColor,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+              ),
+              RoundedButton(
+                text: 'OK', 
+                widthRate: 0.25, 
+                verticalPadding: 12.0, 
+                horizontalPadding: 0.0, 
+                press: () { Navigator.pop(context); }, 
+                textColor: Colors.white, 
+                buttonColor: Theme.of(context).highlightColor
+              )
+            ],
+          ),
         );
       }
     );

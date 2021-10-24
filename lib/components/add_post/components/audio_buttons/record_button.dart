@@ -18,16 +18,17 @@ class RecordButton extends StatelessWidget {
       valueListenable: addPostModel.addPostStateNotifier,
       builder: (_,value,__) {
         return AudioButton(
-          value == AddPostState.recording ?
+          description: value == AddPostState.recording ?
           '停止する'
           : '録音する',
-          value == AddPostState.recording ?
-          Icon(Icons.pause)
+          icon: value == AddPostState.recording ?
+          Icon(Icons.pause, size: 100.0,)
           : Icon(
             Icons.fiber_manual_record,
             color: Theme.of(context).highlightColor,
+            size: 100.0,
           ),
-          () async {
+          press: () async {
             addPostModel.onRecordButtonPressed(context);
           }
         );

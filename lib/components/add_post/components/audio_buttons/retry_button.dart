@@ -14,12 +14,13 @@ class RetryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     AudioButton(
-      text,
-      Icon(
+      description: text,
+      icon: Icon(
         Icons.replay,
         color: Theme.of(context).highlightColor,
+        size: 100.0,
       ),
-      (){
+      press: (){
         addPostModel.onRecordAgainButtonPressed();
         addPostModel.resetMeasure();
       }

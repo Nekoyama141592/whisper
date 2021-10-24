@@ -25,12 +25,13 @@ class ArrowForwardButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     AudioButton(
-      text,
-      Icon(
+      description: text,
+      icon: Icon(
         Icons.arrow_forward,
         color: Theme.of(context).highlightColor,
+        size: 100.0,
       ),
-      (){
+      press: (){
         if (addPostModel.postTitleNotifier.value.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Post titleを入力してください')));
         } else {

@@ -21,12 +21,13 @@ class UploadButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     AudioButton(
-      '公開する',
-      Icon(
+      description:  '公開する',
+      icon: Icon(
         Icons.upload_file,
         color: Theme.of(context).highlightColor,
+        size: 80.0,
       ),
-      () async {
+      press: () async {
         await addPostModel.onUploadButtonPressed(context,currentUserDoc);
       }
     );

@@ -20,31 +20,11 @@ class CommentsStateButton extends StatelessWidget {
     return ValueListenableBuilder<String>(
       valueListenable: addPostModel.commentsStateDisplayNameNotifier,
       builder: (_,commentsStateDisplayName,__) {
-        return Column(
-          children: [
-            IconButton(
-              iconSize: 100,
-              tooltip: commentsStateDisplayName,
-              icon: Icon(
-                Icons.comment,
-                color: Theme.of(context).focusColor,
-              ),
-              onPressed: () {
-                addPostModel.showCommentStatePopUp(context);
-              }, 
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 5
-              ),
-              child: Text(
-                commentsStateDisplayName,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            )
-          ],
+        
+        return AudioButton(
+          description: commentsStateDisplayName, 
+          icon: Icon(Icons.comment,color: Theme.of(context).focusColor,size: 80.0, ),
+          press: () { addPostModel.showCommentStatePopUp(context); },
         );
       }
     );
