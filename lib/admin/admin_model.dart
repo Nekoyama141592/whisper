@@ -14,12 +14,12 @@ class AdminModel extends ChangeNotifier {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       return 
       FirebaseFirestore.instance
-      .collection('replys')
+      .collection('posts')
       .get()
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(doc.reference, {
-            'likesUidsCount': 0,
+            'comments': [],
           });
         });
         return batch.commit();
