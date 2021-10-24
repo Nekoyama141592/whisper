@@ -20,8 +20,8 @@ db{
             isOfficial: false,
             likesUids: [ String ],
             score: int,
-            userDocId: String
             uid: String,
+            userDocId: String,
             userName: String,
             userImageURL: String,
         }],
