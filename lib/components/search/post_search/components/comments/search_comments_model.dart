@@ -189,6 +189,8 @@ class SearchCommentsModel extends ChangeNotifier {
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
       'createdAt': Timestamp.now(),
       'ipv6': ipv6,
+      'isNFTicon': false,
+      'isOfficial': false,
       'likesUids': [],
       'score': 0,
       'uid': currentUserDoc['uid'],
