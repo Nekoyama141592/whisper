@@ -10,24 +10,21 @@ class LikeButton extends ConsumerWidget {
   
   const LikeButton({
     required this.currentUserDoc,
-    required this.currentSongDocNotifier,
+    required this.currentSongDoc,
     required this.likedPostIds,
     required this.likes
   });
   
   final DocumentSnapshot currentUserDoc;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final DocumentSnapshot currentSongDoc;
   final List likedPostIds;
   final List likes;
   
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
-    return 
-    ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier, 
-      builder: (_, currentSongDoc, __) {
-        final List<dynamic> likes = currentSongDoc!['likes'];
+    
+        final List<dynamic> likes = currentSongDoc['likes'];
         final likesCount = likes.length;
         final plusOneCount = likes.length + 1;
         return
@@ -67,7 +64,6 @@ class LikeButton extends ConsumerWidget {
           ),
           
         );
-      }
-    );
+      
   }
 }

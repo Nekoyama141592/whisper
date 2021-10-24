@@ -30,16 +30,20 @@ class PostButtons extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
-        BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
-        CommentButton(currentSongDocNotifier: currentSongDocNotifier,mainModel: mainModel,toCommentsPage: toCommentsPage),
-        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongDocNotifier: currentSongDocNotifier, toEditingMode: toEditingMode,),
-        // RedirectToUrlButton(url: currentSongDocNotifier.value!['link'])
-        RedirectToUrlButton(currentSongDocNotifier: currentSongDocNotifier,)
-      ],
+    return ValueListenableBuilder<DocumentSnapshot?>(
+      valueListenable: currentSongDocNotifier,
+      builder: (_,currentSongDoc,__) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc!, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
+            BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
+            CommentButton(currentSongDoc: currentSongDoc,mainModel: mainModel,toCommentsPage: toCommentsPage),
+            EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, toEditingMode: toEditingMode,),
+            RedirectToUrlButton(currentSongDoc: currentSongDoc,)
+          ],
+        );
+      }
     );
   }
 }

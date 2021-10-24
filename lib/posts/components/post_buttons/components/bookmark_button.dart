@@ -11,13 +11,13 @@ class BookmarkButton extends ConsumerWidget {
   const BookmarkButton({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongDocNotifier,
+    required this.currentSongDoc,
     required this.bookmarkedPostIds,
     required this.bookmarks
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final DocumentSnapshot currentSongDoc;
   final List bookmarkedPostIds;
   final List bookmarks;
   @override  
@@ -25,11 +25,8 @@ class BookmarkButton extends ConsumerWidget {
     
     final postFuturesModel = watch(postsFeaturesProvider);
 
-    return 
-    ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier, 
-      builder: (_, currentSongDoc, __) {
-        final List postBookmarks = currentSongDoc!['bookmarks'];
+   
+        final List postBookmarks = currentSongDoc['bookmarks'];
         final bookmarksCount = postBookmarks.length;
         final plusOneCount = bookmarksCount + 1;
         return 
@@ -66,8 +63,7 @@ class BookmarkButton extends ConsumerWidget {
             )
           ],
         );
-      }
-    );
+    
     
   }
 }

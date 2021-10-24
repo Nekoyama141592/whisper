@@ -10,22 +10,19 @@ class CommentButton extends StatelessWidget {
 
   CommentButton({
     Key? key,
-    required this.currentSongDocNotifier,
+    required this.currentSongDoc,
     required this.toCommentsPage,
     required this.mainModel
   }) : super(key: key);
 
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final DocumentSnapshot currentSongDoc;
   final void Function()? toCommentsPage;
   final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
    
-    return ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier,
-      builder: (_,currentSongDoc,__) {
-        final int commentsCount = currentSongDoc!['comments'].length;
+        final int commentsCount = currentSongDoc['comments'].length;
         return Row(
           children: [
             InkWell(
@@ -38,8 +35,6 @@ class CommentButton extends StatelessWidget {
             )
           ],
         );
-      }
-    );
-
+    
   }
 }
