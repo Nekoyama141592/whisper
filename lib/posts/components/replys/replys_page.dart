@@ -50,7 +50,7 @@ class ReplysPage extends StatelessWidget {
               },
               onMenuPressed: () { replysModel.showSortDialogue(context, thisComment); }
             ),
-            Expanded(child: ReplyCards(mainModel: mainModel, replysModel: replysModel))
+            Expanded(child: ReplyCards(thisComment: thisComment,mainModel: mainModel, replysModel: replysModel))
           ]
         )
       ),

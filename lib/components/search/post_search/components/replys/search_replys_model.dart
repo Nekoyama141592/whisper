@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 // components
@@ -27,8 +28,10 @@ class SearchReplysModel extends ChangeNotifier {
   late Stream<QuerySnapshot> replysStream;
   // IP
   String ipv6 = '';
-  // state
+  // refresh
   SortState sortState = SortState.byLikedUidsCount;
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   void reload() {
     notifyListeners();
   }
@@ -216,6 +219,38 @@ class SearchReplysModel extends ChangeNotifier {
     .limit(refreshIndex)
     .snapshots();
     notifyListeners();
+  }
+
+  Future onLoading(Map<String,dynamic> thisComment) async {
+    refreshIndex += oneTimeReadCount;
+    switch(sortState) {
+      case SortState.byLikedUidsCount:
+      replysStream = FirebaseFirestore.instance
+      .collection('replys')
+      .where('commentId',isEqualTo: thisComment['commentId'])
+      .orderBy('likesUidsCount',descending: true )
+      .limit(refreshIndex)
+      .snapshots();
+      break;
+      case SortState.byNewestFirst:
+      replysStream = FirebaseFirestore.instance
+      .collection('replys')
+      .where('commentId',isEqualTo: thisComment['commentId'])
+      .orderBy('createdAt',descending: true)
+      .limit(refreshIndex)
+      .snapshots();
+      break;
+      case SortState.byOldestFirst:
+      replysStream = FirebaseFirestore.instance
+      .collection('replys')
+      .where('commentId',isEqualTo: thisComment['commentId'])
+      .orderBy('createdAt',descending: false)
+      .limit(refreshIndex)
+      .snapshots();
+      break;
+    }
+    notifyListeners();
+    refreshController.loadComplete();
   }
 
   Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {

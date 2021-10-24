@@ -50,7 +50,7 @@ class SearchReplysPage extends StatelessWidget {
               },
               onMenuPressed: () { searchReplysModel.showSortDialogue(context,thisComment ); }
             ),
-            Expanded(child: ReplyCards(mainModel: mainModel, searchReplysModel: searchReplysModel) )
+            Expanded(child: ReplyCards(thisComment: thisComment,mainModel: mainModel, searchReplysModel: searchReplysModel) )
           ]
         )
       ),
