@@ -47,9 +47,6 @@ class WhisperDrawer extends StatelessWidget {
          
           ListTile(
             title: Text('テーマ変更'),
-            // trailing:  themeModel.isDarkTheme ? 
-            // ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },) 
-            // : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },),
             trailing: CupertinoSwitch(
               value: themeModel.isDarkTheme, 
               onChanged: (value) { themeModel.setIsDartTheme(value); },
