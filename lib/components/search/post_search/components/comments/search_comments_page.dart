@@ -2,10 +2,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/nothing.dart';
+import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/components/search/post_search/components/replys/search_replys_page.dart';
 import 'package:whisper/components/search/post_search/components/comments/components/comment_card.dart';
@@ -18,13 +19,17 @@ class SearchCommentsPage extends ConsumerWidget {
   
   const SearchCommentsPage({
     Key? key,
+    required this.showSortDialogue,
+    required this.audioPlayer,
+    required this.currentSongMapCommentsNotifier,
     required this.currentSongMap,
-    required this.currentUserDoc,
     required this.mainModel
   }) : super(key: key);
   
+  final void Function()? showSortDialogue;
+  final AudioPlayer audioPlayer;
+  final ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier;
   final Map<String,dynamic> currentSongMap;
-  final DocumentSnapshot currentUserDoc;
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
@@ -34,7 +39,7 @@ class SearchCommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return searchReplysModel.isReplysMode ?
-    SearchReplysPage(searchReplysModel: searchReplysModel, currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
+    SearchReplysPage(searchReplysModel: searchReplysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: searchReplysModel.giveComment, mainModel: mainModel)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -43,36 +48,52 @@ class SearchCommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  { 
-          searchCommentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController,currentUserDoc); 
+          searchCommentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController,mainModel.currentUserDoc); 
         },
       ),
 
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: () { searchCommentsModel.showSortDialogue(context, currentSongMap['comments']); }),
-            currentSongMap['comments'].isNotEmpty  || searchCommentsModel.comments.isNotEmpty ?
-            Expanded(
-              child: ListView.builder(
-                itemCount: searchCommentsModel.didCommented ? searchCommentsModel.comments.length :  currentSongMap['comments'].length,
-                itemBuilder: (BuildContext context, int i) =>
-                InkWell(
-                  child: CommentCard(
-                    comment: searchCommentsModel.didCommented ? searchCommentsModel.comments[i] : currentSongMap['comments'][i],
-                    searchCommentsModel: searchCommentsModel, 
-                    searchReplysModel: searchReplysModel,
-                    currentSongMap: currentSongMap, 
-                    mainModel: mainModel
-                  ),
-                  onTap: () {
-                    print(searchCommentsModel.comments.length);
-                  },
-                )
+        child: ValueListenableBuilder<List<dynamic>>(
+          valueListenable: currentSongMapCommentsNotifier,
+          builder: (_,currentSongMapComments,__) {
+            return SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
+                  currentSongMapComments.isNotEmpty ?
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: currentSongMapComments.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        
+                        return CommentCard(
+                          comment: searchCommentsModel.didCommented ? searchCommentsModel.comments[i] : currentSongMap['comments'][i],
+                          searchCommentsModel: searchCommentsModel, 
+                          searchReplysModel: searchReplysModel,
+                          currentSongMap: currentSongMap, 
+                          mainModel: mainModel
+                        );
+                      }
+                      
+                    ),
+                  )
+                  : Nothing(),
+                  Center(
+                    child: RoundedButton(
+                      text: '並び替え実行', 
+                      widthRate: 0.40, 
+                      verticalPadding: 16.0, 
+                      horizontalPadding: 0.0, 
+                      press: () { searchCommentsModel.reload(); }, 
+                      textColor: Colors.white, 
+                      buttonColor: Theme.of(context).primaryColor
+                    ),
+                  )
+                ],
               ),
-            )
-            : Nothing(),
-          ],
+            );
+          }
         ),
       ),
     );

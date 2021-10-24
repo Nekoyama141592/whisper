@@ -70,7 +70,7 @@ class PostShowPage extends ConsumerWidget {
                     SizedBox(height: 10.0),
                     CurrentSongTitle(currentSongMapNotifier: postSearchModel.currentSongMapNotifier),
                     SizedBox(height: 10.0),
-                    PostButtons(currentSongMapNotifier: postSearchModel.currentSongMapNotifier, mainModel: mainModel, searchEditPostInfoModel: searchEditPostInfoModel),
+                    PostButtons(currentSongMapNotifier: postSearchModel.currentSongMapNotifier, postSearchModel: postSearchModel,mainModel: mainModel, searchEditPostInfoModel: searchEditPostInfoModel),
                     SizedBox(height: 10.0),
                     AudioStateDesign(speedNotifier: speedNotifier, speedControll: speedControll, mainModel: mainModel, postSearchModel: postSearchModel)
                     

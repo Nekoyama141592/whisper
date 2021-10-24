@@ -89,16 +89,19 @@ class RecommendersModel extends ChangeNotifier {
   void sortCommentsByLikesUidsCount() {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
+    currentSongMapCommentsNotifier.value = comments;
   }
 
   void sortCommentsByNewestFirst() {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => b['createdAt'].toDate().compareTo(a['createdAt'].toDate() ));
+    currentSongMapCommentsNotifier.value = comments;
   }
 
   void sortCommentsByOldestFirst() {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => a['createdAt'].toDate().compareTo(b['createdAt'].toDate() ));
+    currentSongMapCommentsNotifier.value = comments;
   }
 
   void showSortDialogue(BuildContext context) {

@@ -31,7 +31,6 @@ class FeedsModel extends ChangeNotifier {
   late DocumentSnapshot currentUserDoc;
   // notifiers
   final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
-  // TODO: new
   final currentSongMapCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
@@ -95,21 +94,18 @@ class FeedsModel extends ChangeNotifier {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
     currentSongMapCommentsNotifier.value = comments;
-    Timer(Duration(seconds: 1),(){ notifyListeners(); } );
   }
 
   void sortCommentsByNewestFirst() {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => b['createdAt'].toDate().compareTo(a['createdAt'].toDate() ));
     currentSongMapCommentsNotifier.value = comments;
-    Timer(Duration(seconds: 1),(){ notifyListeners(); } );
   }
 
   void sortCommentsByOldestFirst() {
     List<dynamic> comments =  currentSongMapCommentsNotifier.value;
     comments.sort((a,b) => a['createdAt'].toDate().compareTo(b['createdAt'].toDate() ));
     currentSongMapCommentsNotifier.value = comments;
-    Timer(Duration(seconds: 1),(){ notifyListeners(); } );
   }
 
   void showSortDialogue(BuildContext context) {
@@ -497,7 +493,6 @@ class FeedsModel extends ChangeNotifier {
       final currentItem = sequenceState.currentSource;
       final DocumentSnapshot<Map<String,dynamic>>? currentSongDoc = currentItem?.tag;
       currentSongDocNotifier.value = currentSongDoc;
-      // TODO: new
       currentSongMapCommentsNotifier.value = currentSongDoc!.data()!['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
