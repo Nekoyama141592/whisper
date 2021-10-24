@@ -19,6 +19,7 @@ db{
             isNFTicon: false,
             isOfficial: false,
             likesUids: [ String ],
+            score
             userDocId: String
             uid: String,
             userName: String,
