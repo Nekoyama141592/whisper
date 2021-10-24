@@ -1,5 +1,4 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/components/search/post_search/components/comments/search_comments_page.dart';
@@ -11,21 +10,21 @@ class CommentButton extends StatelessWidget {
 
   CommentButton({
     Key? key,
-    required this.currentSongDocNotifier,
+    required this.currentSongMapNotifier,
     required this.postSearchModel,
     required this.mainModel
   }) : super(key: key);
 
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final PostSearchModel postSearchModel;
   final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier,
+    return ValueListenableBuilder<Map<String,dynamic>>(
+      valueListenable: currentSongMapNotifier,
       builder: (_,currentSongDoc,__) {
-        final int commentsCount = currentSongDoc!['comments'].length;
+        final int commentsCount = currentSongDoc['comments'].length;
         return Row(
           children: [
             InkWell(

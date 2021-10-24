@@ -32,7 +32,7 @@ class PostButtons extends StatelessWidget {
       children: [
         LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, mainModel: mainModel),
         BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, bookmarkedPostIds: mainModel.bookmarkedPostIds, bookmarks: mainModel.bookmarks),
-        CommentButton(postSearchModel: postSearchModel, mainModel: mainModel),
+        CommentButton(currentSongMapNotifier: currentSongMapNotifier,postSearchModel: postSearchModel, mainModel: mainModel),
         EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, searchEditPostInfoModel: searchEditPostInfoModel)
       ],
     );
