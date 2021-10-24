@@ -307,9 +307,14 @@ class ReplysModel extends ChangeNotifier {
       'commentId': commentId,
       'comment': comment,
       'createdAt': Timestamp.now(),
+      'isNFTicon': false,
+      'isOfficial': false,
       'notificationId': notificationId,
       'reply': reply,
       'uid': currentUserDoc['uid'],
+      'userDocId': currentUserDoc.id,
+      'userName': currentUserDoc['userName'],
+      'userImageURL': currentUserDoc['imageURL'],
     };
 
     List<dynamic> replyNotifications = passiveUserDoc['replyNotifications'];
