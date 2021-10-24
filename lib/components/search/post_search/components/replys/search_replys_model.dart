@@ -229,6 +229,7 @@ class SearchReplysModel extends ChangeNotifier {
       'isNFTicon': false,
       'isOfficial': false,
       'likesUids': [],
+      'likesUidsCount': 0,
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
       'score': 0,

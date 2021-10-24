@@ -196,12 +196,16 @@ class ReplysModel extends ChangeNotifier {
   void getReplyDocs(BuildContext context,Map<String,dynamic> thisComment)  {
     isReplysMode = true;
     giveComment = thisComment;
-    replysStream = FirebaseFirestore.instance
-    .collection('replys')
-    .where('commentId',isEqualTo: thisComment['commentId'])
-    .orderBy('likesUidsCount',descending: true )
-    .limit(refreshIndex)
-    .snapshots();
+    try {
+      replysStream = FirebaseFirestore.instance
+      .collection('replys')
+      .where('commentId',isEqualTo: thisComment['commentId'])
+      .orderBy('likesUidsCount',descending: true )
+      .limit(refreshIndex)
+      .snapshots();
+    } catch(e) {
+      print(e.toString());
+    }
     notifyListeners();
   }
 
@@ -222,6 +226,7 @@ class ReplysModel extends ChangeNotifier {
       'isNFTicon': false,
       'isOfficial': false,
       'likesUids': [],
+      'likesUidsCount': 0,
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
       'score': 0,
