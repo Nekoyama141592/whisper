@@ -5,10 +5,12 @@ import 'package:whisper/components/search/post_search/components/post_buttons/co
 import 'package:whisper/components/search/post_search/components/post_buttons/components/comment_button.dart';
 import 'package:whisper/components/search/post_search/components/post_buttons/components/edit_button.dart';
 import 'package:whisper/components/search/post_search/components/post_buttons/components/like_button.dart';
+import 'package:whisper/components/search/post_search/components/post_buttons/components/redirect_to_url_button.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/post_search_model.dart';
 import 'package:whisper/components/search/post_search/components/other_pages/post_show/components/edit_post_info/search_edit_post_info_model.dart';
+
 
 
 class PostButtons extends StatelessWidget {
@@ -33,7 +35,8 @@ class PostButtons extends StatelessWidget {
         LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, mainModel: mainModel),
         BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, bookmarkedPostIds: mainModel.bookmarkedPostIds, bookmarks: mainModel.bookmarks),
         CommentButton(currentSongMapNotifier: currentSongMapNotifier,postSearchModel: postSearchModel, mainModel: mainModel),
-        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, searchEditPostInfoModel: searchEditPostInfoModel)
+        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, searchEditPostInfoModel: searchEditPostInfoModel),
+        RedirectToUrlButton(currentSongMapNotifier: currentSongMapNotifier)
       ],
     );
   }
