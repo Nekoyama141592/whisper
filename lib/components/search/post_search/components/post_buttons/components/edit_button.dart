@@ -24,12 +24,12 @@ class EditButton extends StatelessWidget {
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
         return currentUserDoc['uid'] != currentSongMap['uid'] ? SizedBox.shrink()
-        : IconButton(
-          onPressed: () {
+        : InkWell(
+          onTap: () {
             searchEditPostInfoModel.isEditing = true;
             searchEditPostInfoModel.reload();
           }, 
-          icon: Icon(Icons.edit)
+          child: Icon(Icons.edit)
         );
       }
     );
