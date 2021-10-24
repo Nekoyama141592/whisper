@@ -10,8 +10,8 @@ final themeProvider = ChangeNotifierProvider(
 class ThemeModel extends ChangeNotifier {
   bool isDarkTheme = true;
 
-  void toggoleIsDarkTheme() {
-    isDarkTheme = !isDarkTheme;
+  void setIsDartTheme(value) {
+    isDarkTheme = value;
     notifyListeners();
   }
 }

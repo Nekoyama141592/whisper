@@ -1,6 +1,6 @@
 // material
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:whisper/constants/colors.dart';
@@ -47,9 +47,13 @@ class WhisperDrawer extends StatelessWidget {
          
           ListTile(
             title: Text('テーマ変更'),
-            trailing:  themeModel.isDarkTheme ? 
-            ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },) 
-            : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },),
+            // trailing:  themeModel.isDarkTheme ? 
+            // ToggleIcon(iconData: Icons.toggle_on,color: kPrimaryColor,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },) 
+            // : ToggleIcon(iconData: Icons.toggle_off,color: Colors.grey,toggleTheme: () { themeModel.toggoleIsDarkTheme(); },),
+            trailing: CupertinoSwitch(
+              value: themeModel.isDarkTheme, 
+              onChanged: (value) { themeModel.setIsDartTheme(value); },
+            ),
           ),
           
           ListTile(

@@ -9,6 +9,22 @@ class PrivacyAndTos extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('必要事項'),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('利用規約'),
+            trailing: Icon(Icons.arrow_forward_ios),
+          ),
+          ListTile(
+            title: Text('プライバシーポリシー'),
+            trailing: Icon(Icons.arrow_forward_ios),
+          ),
+        ],
+      )
+    );
   }
 }
