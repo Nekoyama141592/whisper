@@ -33,8 +33,8 @@ class PostsFutures extends ChangeNotifier{
     try {
       final List likes = newCurrentSongDoc['likes'];
       final Map<String, dynamic> map = {
-        'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
+        'uid': currentUserDoc['uid'],
       };
       int score = newCurrentSongDoc['score'];
       score += likeScore;
@@ -87,8 +87,8 @@ class PostsFutures extends ChangeNotifier{
     try {
       final List bookmarks = newCurrentSongDoc['bookmarks'];
       final Map<String, dynamic> map = {
-        'uid': currentUserDoc['uid'],
         'createdAt': Timestamp.now(),
+        'uid': currentUserDoc['uid'],
       };
       bookmarks.add(map);
       int score = newCurrentSongDoc['score'];
