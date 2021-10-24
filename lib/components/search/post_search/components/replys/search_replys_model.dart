@@ -14,6 +14,8 @@ final searchReplysProvider = ChangeNotifierProvider(
   (ref) => SearchReplysModel()
 );
 
+enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst}
+
 class SearchReplysModel extends ChangeNotifier {
 
   String reply = "";
@@ -25,7 +27,8 @@ class SearchReplysModel extends ChangeNotifier {
   late Stream<QuerySnapshot> replysStream;
   // IP
   String ipv6 = '';
-
+  // state
+  SortState sortState = SortState.byLikedUidsCount;
   void reload() {
     notifyListeners();
   }
@@ -127,6 +130,7 @@ class SearchReplysModel extends ChangeNotifier {
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
+                sortState = SortState.byLikedUidsCount;
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
@@ -146,6 +150,7 @@ class SearchReplysModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
+                sortState = SortState.byNewestFirst;
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
@@ -165,6 +170,7 @@ class SearchReplysModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
+                sortState = SortState.byOldestFirst;
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
