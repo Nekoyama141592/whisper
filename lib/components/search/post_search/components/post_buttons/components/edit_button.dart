@@ -10,28 +10,24 @@ class EditButton extends StatelessWidget {
   const EditButton({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongMapNotifier,
+    required this.currentSongMap,
     required this.searchEditPostInfoModel,
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
-  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
+  final Map<String,dynamic> currentSongMap;
   final SearchEditPostInfoModel searchEditPostInfoModel;
   @override 
   
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Map<String,dynamic>>(
-      valueListenable: currentSongMapNotifier, 
-      builder: (_, currentSongMap, __) {
-        return currentUserDoc['uid'] != currentSongMap['uid'] ? SizedBox.shrink()
-        : InkWell(
-          onTap: () {
-            searchEditPostInfoModel.isEditing = true;
-            searchEditPostInfoModel.reload();
-          }, 
-          child: Icon(Icons.edit)
-        );
-      }
+    
+    return InkWell(
+      onTap: () {
+        searchEditPostInfoModel.isEditing = true;
+        searchEditPostInfoModel.reload();
+      }, 
+      child: Icon(Icons.edit)
     );
+     
   }
 }

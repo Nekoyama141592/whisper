@@ -29,15 +29,20 @@ class PostButtons extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, mainModel: mainModel),
-        BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, bookmarkedPostIds: mainModel.bookmarkedPostIds, bookmarks: mainModel.bookmarks),
-        CommentButton(currentSongMapNotifier: currentSongMapNotifier,postSearchModel: postSearchModel, mainModel: mainModel),
-        EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongMapNotifier: currentSongMapNotifier, searchEditPostInfoModel: searchEditPostInfoModel),
-        RedirectToUrlButton(currentSongMapNotifier: currentSongMapNotifier)
-      ],
+    return ValueListenableBuilder<Map<String,dynamic>>(
+      valueListenable: currentSongMapNotifier,
+      builder: (_,currentSongMap,__) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, mainModel: mainModel),
+            BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, bookmarkedPostIds: mainModel.bookmarkedPostIds, bookmarks: mainModel.bookmarks),
+            CommentButton(currentSongMap: currentSongMap,postSearchModel: postSearchModel, mainModel: mainModel),
+            if(mainModel.currentUserDoc['uid'] == currentSongMap['uid']) EditButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, searchEditPostInfoModel: searchEditPostInfoModel),
+            if(currentSongMap['link'].isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap)
+          ],
+        );
+      }
     );
   }
 }

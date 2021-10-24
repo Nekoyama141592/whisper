@@ -11,59 +11,55 @@ class LikeButton extends ConsumerWidget {
   
   const LikeButton({
     required this.currentUserDoc,
-    required this.currentSongMapNotifier,
+    required this.currentSongMap,
     required this.mainModel
   });
   
   final DocumentSnapshot currentUserDoc;
-  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
+  final Map<String,dynamic> currentSongMap;
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
-    return 
-    ValueListenableBuilder<Map<String,dynamic>>(
-      valueListenable: currentSongMapNotifier, 
-      builder: (_, currentSongMap, __) {
-        final List<dynamic> likes = currentSongMap['likes'];
-        final likesCount = likes.length;
-        final plusOneCount = likes.length + 1;
-        return
-        mainModel.likedPostIds.contains(currentSongMap['postId']) ?
-        Row(
-          children: [
-            InkWell(
-              child: Icon(
-                Icons.favorite,
-                color: Colors.red
-              ),
-              onTap: () async {
-                mainModel.likedPostIds.remove(currentSongMap['postId']);
-                postFuturesModel.reload();
-                await postFuturesModel.unlike(mainModel.likedPostIds, currentUserDoc, currentSongMap, likes);
-              },
-            ),
-            SizedBox(width: 5.0),
-            Text(
-              plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
-              style: TextStyle(color: Colors.red)
-            )
-          ],
-        ) : Row(
-          children: [
-            InkWell(
-              child: Icon(Icons.favorite),
-              onTap: () async {
-               await postFuturesModel.like(mainModel.likedPostIds, currentUserDoc, currentSongMap, likes);
-              },
-            ),
-            SizedBox(width: 5.0),
-            Text(
-              likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
-            )
-          ],
-        );
-      }
+    
+    final List<dynamic> likes = currentSongMap['likes'];
+    final likesCount = likes.length;
+    final plusOneCount = likes.length + 1;
+    return
+    mainModel.likedPostIds.contains(currentSongMap['postId']) ?
+    Row(
+      children: [
+        InkWell(
+          child: Icon(
+            Icons.favorite,
+            color: Colors.red
+          ),
+          onTap: () async {
+            mainModel.likedPostIds.remove(currentSongMap['postId']);
+            postFuturesModel.reload();
+            await postFuturesModel.unlike(mainModel.likedPostIds, currentUserDoc, currentSongMap, likes);
+          },
+        ),
+        SizedBox(width: 5.0),
+        Text(
+          plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+          style: TextStyle(color: Colors.red)
+        )
+      ],
+    ) : Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.favorite),
+          onTap: () async {
+            await postFuturesModel.like(mainModel.likedPostIds, currentUserDoc, currentSongMap, likes);
+          },
+        ),
+        SizedBox(width: 5.0),
+        Text(
+          likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
+        )
+      ],
     );
+    
   }
 }
