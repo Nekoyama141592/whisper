@@ -306,12 +306,17 @@ class SearchReplysModel extends ChangeNotifier {
     final String notificationId = 'replyNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = thisComment['comment'];
     Map<String,dynamic> map = {
-      'commentId': commentId,
       'comment': comment,
+      'commentId': commentId,
       'createdAt': Timestamp.now(),
+      'isNFTicon': false,
+      'isOfficial': false,
       'notificationId': notificationId,
       'reply': reply,
       'uid': currentUserDoc['uid'],
+      'userDocId': currentUserDoc.id,
+      'userName': currentUserDoc['userName'],
+      'userImageURL': currentUserDoc['imageURL'],
     };
 
     List<dynamic> replyNotifications = passiveUserDoc['replyNotifications'];
