@@ -26,6 +26,10 @@ import 'package:whisper/posts/components/comments/comments_page.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
 import 'package:whisper/auth/account/other_pages/blocking_users/blocking_users_page.dart';
 import 'package:whisper/auth/is_finished/is_finished_page.dart';
+import 'package:whisper/privacy_and_tos/other_pages/compliance_page.dart';
+import 'package:whisper/privacy_and_tos/other_pages/privacy_page.dart';
+import 'package:whisper/privacy_and_tos/other_pages/tos_page.dart';
+import 'package:whisper/privacy_and_tos/important_matters_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -115,4 +119,21 @@ void toMutesUsersPage(context,MainModel mainModel) {
 void toIsFinishedPage(context,String text) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => IsFinishedPage(text: text,) ));
 }
+
+void toCompliancePage(context) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CompliancePage() ));
+}
+
+void toPrivacyPage(context) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPage() ));
+}
+
+void toTosPage(context) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => TosPage() ));
+}
+
+void toImportantMattersPage(context) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ImportantMattersPage() ));
+}
+
 

@@ -1,9 +1,11 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
 
-class PrivacyAndTos extends StatelessWidget {
+class ImportantMattersPage extends StatelessWidget {
 
-  const PrivacyAndTos({
+  const ImportantMattersPage({
     Key? key
   }) : super(key: key);
 
@@ -18,10 +20,17 @@ class PrivacyAndTos extends StatelessWidget {
           ListTile(
             title: Text('利用規約'),
             trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () { routes.toTosPage(context); },
           ),
           ListTile(
             title: Text('プライバシーポリシー'),
             trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () { routes.toPrivacyPage(context); },
+          ),
+          ListTile(
+            title: Text('コンプライアンスポリシー'),
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () { routes.toCompliancePage(context); },
           ),
         ],
       )
