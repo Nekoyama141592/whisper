@@ -32,16 +32,43 @@ class CommentLikeButton extends StatelessWidget {
     final plusOneCount = likesUids.length + 1;
     
     return likedCommentIds.contains(commentId) ?
-    IconButton(
-      onPressed: () {
-      }, 
-      icon: Icon(Icons.favorite,color: Colors.red,)
-    )
-    : IconButton(
-      onPressed: () async {
-        await commentsModel.like(likedCommentIds,currentUserDoc, currentSongDoc, commentId,likedComments);
-      }, 
-      icon: Icon(Icons.favorite)
+    Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5.0
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            child: Icon(Icons.favorite,color: Colors.red),
+            onTap: () async {
+              await commentsModel.unlike(likedCommentIds, currentUserDoc, currentSongDoc, commentId, likedComments);
+            },
+          ),
+          SizedBox(width: 5.0),
+          Text(
+            plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+            style: TextStyle(color: Colors.red)
+          )
+        ],
+      ),
+    ) : Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5.0
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            child: Icon(Icons.favorite),
+            onTap: () async {
+              await commentsModel.like(likedCommentIds, currentUserDoc, currentSongDoc, commentId, likedComments);
+            },
+          ),
+          SizedBox(width: 5.0),
+          Text(
+            likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
+          )
+        ],
+      ),
     );
   }
 
