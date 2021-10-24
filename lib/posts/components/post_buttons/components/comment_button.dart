@@ -21,10 +21,24 @@ class CommentButton extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
-    return 
-    IconButton(
-      onPressed: toCommentsPage,
-      icon: Icon(Icons.comment)
+   
+    return ValueListenableBuilder<DocumentSnapshot?>(
+      valueListenable: currentSongDocNotifier,
+      builder: (_,currentSongDoc,__) {
+        final int commentsCount = currentSongDoc!['comments'].length;
+        return Row(
+          children: [
+            InkWell(
+              child: Icon(Icons.comment),
+              onTap: toCommentsPage,
+            ),
+            SizedBox(width: 5.0),
+            Text(
+              commentsCount >= 10000 ? (commentsCount/1000.floor()/10).toString() + '万' :  commentsCount.toString(),
+            )
+          ],
+        );
+      }
     );
 
   }

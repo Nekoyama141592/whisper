@@ -1,4 +1,5 @@
 // material
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/components/search/post_search/components/comments/search_comments_page.dart';
@@ -10,21 +11,34 @@ class CommentButton extends StatelessWidget {
 
   CommentButton({
     Key? key,
+    required this.currentSongDocNotifier,
     required this.postSearchModel,
     required this.mainModel
   }) : super(key: key);
 
+  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
   final PostSearchModel postSearchModel;
   final MainModel mainModel;
 
   @override  
   Widget build(BuildContext context) {
-    return 
-    IconButton(
-      onPressed: () { 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCommentsPage(showSortDialogue: () { postSearchModel.showSortDialogue(context); }, audioPlayer: postSearchModel.audioPlayer, currentSongMapCommentsNotifier: postSearchModel.currentSongMapCommentsNotifier, currentSongMap: postSearchModel.currentSongMapNotifier.value, mainModel: mainModel) ));
-      }, 
-      icon: Icon(Icons.comment)
+    return ValueListenableBuilder<DocumentSnapshot?>(
+      valueListenable: currentSongDocNotifier,
+      builder: (_,currentSongDoc,__) {
+        final int commentsCount = currentSongDoc!['comments'].length;
+        return Row(
+          children: [
+            InkWell(
+              child: Icon(Icons.comment),
+              onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCommentsPage(showSortDialogue: () { postSearchModel.showSortDialogue(context); }, audioPlayer: postSearchModel.audioPlayer, currentSongMapCommentsNotifier: postSearchModel.currentSongMapCommentsNotifier, currentSongMap: postSearchModel.currentSongMapNotifier.value, mainModel: mainModel) )); },
+            ),
+            SizedBox(width: 5.0),
+            Text(
+              commentsCount >= 10000 ? (commentsCount/1000.floor()/10).toString() + '万' :  commentsCount.toString(),
+            )
+          ],
+        );
+      }
     );
 
   }
