@@ -4,11 +4,87 @@ service cloud.firestore {
   function isAuthenticated(){
     return request.auth != null;
   }
-  
+
+  function isValidUser(user) {
+    return user.size() == 27
+    && 'birthDay' in user && user.birthDay is timestamp
+    && 'blockingUids' in user && user.blockingUids is list
+    && 'bookmarks' in user && user.bookmarks is list
+    && 'commentNotifications' in user && user.commentNotifications is list
+    && 'createdAt' in user && user.createdAt is timestamp
+    && 'description' in user && user.description is string
+    && 'followNotifications' in user && user.followNotifications is list
+    && 'followerUids' in user && user.followerUids is list
+    && 'followingUids' in user && user.followerUids is list
+    && 'gender' in user && user.gender is string
+    && 'imageURL' in user && user.imageURL is string
+    && 'isAdmin' in user && user.isAdmin is bool
+    && 'isNFTicon' in user && user.isNFTicon is bool
+    && 'isOfficial' in user && user.isOfficial is bool
+    && 'isSubscribed' in user && user.isSubscribed is bool
+    && 'likedComments' in user && user.likedComments is list
+    && 'likeNotifications' in user && user.likeNotifications is list
+    && 'likedReplys' in user && user.likedReplys is list
+    && 'likes' in user && user.likes is list
+    && 'link'  in user && user.link is string
+    && 'mutesUids' in user && user.mutesUids is list
+    && 'readPosts' in user && user.readPosts is list
+    && 'replyNotifications' in user && user.replyNotifications is list
+    && 'subUserName' in user && user.subUserName is string
+    && 'uid'  in user && user.uid is string
+    && 'updatedAt' in user && user.updatedAt is timestamp
+    && 'userName' in user && user.userName is string;
+  }
+
+  function isValidPost(post) {
+    return post.size() == 22
+    && 'audioURL' in post && post.audioURL is string
+    && 'bookmarks' in post && post.bookmarks is list
+    && 'comments' in post && post.comments is list 
+    && 'commentsState' in post && post.commentsState is string
+    && 'createdAt' in post && post.createdAt is timestamp
+    && 'genre' in post && post.genre is string
+    && 'imageURL' in post && post.imageURL is string
+    && 'impression' in post && post.impression is int
+    && 'ipv6' in post && post.ipv6 is string
+    && 'isNFTicon' in post && post.isNFTicon is bool
+    && 'isOfficial' in post && post.isOfficial is bool
+    && 'isPlayedCount' in post && post.isPlayedCount is int
+    && 'likes' in post && post.likes is list
+    && 'link' in post && post.link is string
+    && 'postId' in post && post.postId is string
+    && 'score' in post && post.score is int
+    && 'title' in post && post.title is string
+    && 'uid' in post && post.uid is string
+    && 'updatedAt' in post && post.updatedAt is timestamp
+    && 'userDocId' in post && post.userDocId is string
+    && 'userImageURL' in post && post.userImageURL is string
+    && 'userName' in post && post.userName is string;
+  }
+
+  function isValidReply(reply) {
+    return reply.size == 14
+    && 'commentId' in reply && reply.commentId is string
+    && 'createdAt' in reply && reply.createdAt is timestamp
+    && 'ipv6' in reply && reply.ipv6 is string
+    && 'isNFTicon' in reply && reply.isNFTicon is bool
+    && 'isOfficial' in reply && reply.isOfficial is bool
+    && 'likesUids' in reply && reply.likesUids is list
+    && 'likesUidsCount' in reply && reply.likesUidsCount is int
+    && 'reply' in reply && reply.reply is string
+    && 'replyId' in reply && reply.replyId is string
+    && 'score' in reply && reply.score is int
+    && 'uid' in reply && reply.uid is string
+    && 'userDocId' in reply && reply.userDocId is string
+    && 'userName' in reply && reply.userName is string
+    && 'userImageURL' in reply && reply.userImageURL is string;
+  }
+
   match /databases/{database}/documents {
     
     match /users/{userId} {
       allow create: if isAuthenticated()
+      && isValidUser(request.resource.data)
       && request.resource.data.uid == request.auth.uid;
       allow update: if isAuthenticated()
       && request.resource.data.followingUids.size() <= 500;
@@ -18,6 +94,7 @@ service cloud.firestore {
     }
     match /posts/{postId} {
       allow create: if isAuthenticated()
+      && isValidPost(request.resource.data)
       && request.resource.data.uid == request.auth.uid;
       allow update: if isAuthenticated();
       allow read: if isAuthenticated();
@@ -27,6 +104,7 @@ service cloud.firestore {
 
     match /replys/{replyId} {
       allow create: if isAuthenticated()
+      && isValidReply(request.resource.data)
       && request.resource.data.uid == request.auth.uid;
       allow update: if isAuthenticated();
       allow read: if isAuthenticated();
