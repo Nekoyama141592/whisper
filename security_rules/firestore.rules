@@ -63,7 +63,8 @@ service cloud.firestore {
   }
 
   function isValidReply(reply) {
-    return reply.size == 14
+    return 
+    reply.size() == 14
     && 'commentId' in reply && reply.commentId is string
     && 'createdAt' in reply && reply.createdAt is timestamp
     && 'ipv6' in reply && reply.ipv6 is string
