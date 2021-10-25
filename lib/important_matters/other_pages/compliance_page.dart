@@ -1,18 +1,17 @@
 // material
 import 'package:flutter/material.dart';
 
-class TosPage extends StatelessWidget {
+class CompliancePage extends StatelessWidget {
 
-  const TosPage({
+  const CompliancePage({
     Key? key
   }) : super(key: key);
 
-  @override
-
+  @override 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('利用規約'),
+        title: Text('コンプライアンスポリシー'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(15.0)
@@ -21,5 +20,4 @@ class TosPage extends StatelessWidget {
       ),
     );
   }
-  
 }
