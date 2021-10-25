@@ -351,6 +351,7 @@ class AddPostModel extends ChangeNotifier {
       final audioURL = await getPostUrl(context);
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       await addPostToFirebase(context,currentUserDoc,imageURL,audioURL);
+      postTitleNotifier.value = '';
       endLoading();
     }
   }
@@ -379,8 +380,10 @@ class AddPostModel extends ChangeNotifier {
   
   Future addPostToFirebase(context,DocumentSnapshot currentUserDoc,String imageURL,String audioURL) async {
       try {
+        final String postId = 'post' + currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
         await FirebaseFirestore.instance.collection('posts')
-        .add({
+        .doc(postId)
+        .set({
           'audioURL': audioURL,
           'bookmarks':[],
           'comments': [],
@@ -395,7 +398,7 @@ class AddPostModel extends ChangeNotifier {
           'isPlayedCount': 0,
           'likes':[],
           'link': link,
-          'postId': 'post' + currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+          'postId': postId,
           'score': 0,
           'title': postTitleNotifier.value,
           'uid': currentUser!.uid,

@@ -148,7 +148,9 @@ class SignupModel extends ChangeNotifier {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
     final imageURL = await uploadImage();
     await FirebaseFirestore.instance
-    .collection('users').add({
+    .collection('users')
+    .doc(uid)
+    .set({
       'birthDay': timestampBirthDay,
       'blockingUids': [],
       'bookmarks': [],

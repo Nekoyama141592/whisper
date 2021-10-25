@@ -287,7 +287,8 @@ class SearchReplysModel extends ChangeNotifier {
     try {
       await FirebaseFirestore.instance
       .collection('replys')
-      .add(map);
+      .doc(map['replyId'])
+      .set(map);
     } catch(e) {
       print(e.toString());
     }
