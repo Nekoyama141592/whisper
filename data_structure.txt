@@ -112,6 +112,7 @@ db{
             createdAt: TimeStamp,
             likedPostId: String,
         }],
+        link: String,
         mutesUids:[
             String
         ],
