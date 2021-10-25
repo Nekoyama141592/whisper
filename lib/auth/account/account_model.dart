@@ -90,9 +90,14 @@ class AccountModel extends ChangeNotifier {
                 .collection('users')
                 .doc(currentUserDoc.id)
                 .delete()
-                .then((_) {
-                  Navigator.pop(context);
-                  routes.toIsFinishedPage(context, 'ユーザーを消去');
+                .then((_) async {
+                  try {
+                    await currentUser.delete();
+                    Navigator.pop(context);
+                    routes.toIsFinishedPage(context, 'ユーザーを消去');
+                  } catch(e) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+                  }
                 });
               }
             },

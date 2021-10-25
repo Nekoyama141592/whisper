@@ -1,6 +1,8 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/auth/signup/signup_model.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -103,7 +105,7 @@ class AddUserInfoPage extends StatelessWidget {
               verticalPadding: 20.0, 
               horizontalPadding: 10.0, 
               press: () async {
-                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10)) {
+                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10) || !signupModel.isCheckedNotifier.value) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
                 } else {
                   await signupModel.signup(context);
@@ -128,7 +130,9 @@ class AddUserInfoPage extends StatelessWidget {
                     );
                   }
                 ),
-                TextButton(onPressed: () {}, child: Text(
+                TextButton(onPressed: () {
+                  routes.toTosPage(context);
+                }, child: Text(
                   '利用規約',
                   style: TextStyle(
                     color: Theme.of(context).highlightColor,
@@ -136,7 +140,9 @@ class AddUserInfoPage extends StatelessWidget {
                   ),
                 )),
                 Text('と'),
-                TextButton(onPressed: () {}, child: Text(
+                TextButton(onPressed: () {
+                  routes.toPrivacyPage(context);
+                }, child: Text(
                   'プライバシーポリシー',
                   style: TextStyle(
                     color: Theme.of(context).highlightColor,

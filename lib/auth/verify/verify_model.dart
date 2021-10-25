@@ -42,7 +42,7 @@ class VerifyModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に成功しました!!')));
       routes.toMyApp(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に失敗しました')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証が完了していません')));
       print(currentUser!.emailVerified);
     }
   }

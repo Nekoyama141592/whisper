@@ -17,29 +17,22 @@ class ForgetPasswordText extends StatelessWidget {
         vertical: 5
       ),
       child: Center(
-        child: RichText(
-          text: TextSpan(
+        child: TextButton(
+          onPressed: () async {
+            final currentUser = FirebaseAuth.instance.currentUser;
+            final String email = currentUser!.email!;
+            await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(email + 'にメールを送信しました')));
+          },
+          child: Text(
+            'パスワードを忘れた場合',
             style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold
+              color: Theme.of(context).highlightColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 18
             ),
-            children: [
-              TextSpan(
-                text: 'パスワードを忘れた場合',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 18
-                ),
-                recognizer: TapGestureRecognizer()..onTap = () async {
-                  final currentUser = FirebaseAuth.instance.currentUser;
-                  final String email = currentUser!.email!;
-                  await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(email + 'にメールを送信しました')));
-                }
-              )
-            ]
           )
-        )
+        ),
       ),
     );
   }

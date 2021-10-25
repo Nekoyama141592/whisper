@@ -43,6 +43,7 @@ class ReauthenticationPage extends StatelessWidget {
               }, 
             ),
           ),
+          SizedBox(height: 16.0),
           Center(
             child: RoundedButton(
               text: '認証する', 

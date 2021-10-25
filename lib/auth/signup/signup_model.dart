@@ -191,9 +191,9 @@ class SignupModel extends ChangeNotifier {
           
           child: CupertinoDatePicker(
             backgroundColor: Theme.of(context).focusColor,
-            initialDateTime: DateTime(2010,now.month,now.day),
-            minimumDate: DateTime(1900,now.month,now.day),
-            maximumDate: DateTime(now.year - 12,now.month,now.day),
+            initialDateTime: DateTime(now.year - 18,12,31),
+            minimumDate: DateTime(1900,12,31),
+            maximumDate: DateTime(now.year - 6,12,31),
             mode: CupertinoDatePickerMode.date,
             onDateTimeChanged: (value){
               birthDay = value;
