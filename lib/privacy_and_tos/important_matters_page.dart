@@ -14,6 +14,11 @@ class ImportantMattersPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('必要事項'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15.0)
+          )
+        ),
       ),
       body: ListView(
         children: [

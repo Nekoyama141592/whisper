@@ -61,7 +61,9 @@ class WhisperDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Whisperについて'),
-            onTap: () {},
+            onTap: () {
+              routes.toImportantMattersPage(context);
+            },
           ),
           
         ],

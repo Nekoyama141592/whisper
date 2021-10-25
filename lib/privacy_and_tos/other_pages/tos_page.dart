@@ -10,7 +10,16 @@ class TosPage extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('利用規約'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15.0)
+          )
+        ),
+      ),
+    );
   }
   
 }
