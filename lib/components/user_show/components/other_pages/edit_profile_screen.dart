@@ -32,6 +32,8 @@ class EditProfileScreen extends ConsumerWidget {
     final descriptionController = TextEditingController(
       text: currentUserDoc['description']
     );
+    final linkController = TextEditingController(text: currentUserDoc['link']);
+
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -86,6 +88,17 @@ class EditProfileScreen extends ConsumerWidget {
               controller: descriptionController,
               onChanged: (text){
                 userShowModel.description = text;
+              },
+            ),
+            Text('リンク'),
+            TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'https://'
+              ),
+              controller: linkController,
+              onChanged: (text){
+                userShowModel.link = text;
               },
             ),
           ],

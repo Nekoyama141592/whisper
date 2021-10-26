@@ -54,6 +54,8 @@ class UserShowModel extends ChangeNotifier {
   bool isEditing = false;
   String userName = '';
   String description = '';
+  String link = '';
+  // post
   String downloadURL = '';
   bool isCropped = false;
   XFile? xfile;
@@ -556,6 +558,7 @@ class UserShowModel extends ChangeNotifier {
   void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
     userName = currentUserDoc['userName'];
     description = currentUserDoc['description'];
+    link = currentUserDoc['link'];
     isEditing = true;
     notifyListeners();
   }
@@ -571,9 +574,10 @@ class UserShowModel extends ChangeNotifier {
         .collection('users')
         .doc(currentUserDoc.id)
         .update({
-          'userName': userName,
-          'updatedAt': Timestamp.now(),
           'description': description,
+          'link': link,
+          'updatedAt': Timestamp.now(),
+          'userName': userName,
         });
         notifyListeners();
       } catch(e) {

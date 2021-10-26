@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
-import 'package:whisper/components/user_show/components/edit_profile/edit_profile_screen.dart';
+import 'package:whisper/components/user_show/components/other_pages/edit_profile_screen.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';

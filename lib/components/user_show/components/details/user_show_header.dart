@@ -109,31 +109,40 @@ class UserShowHeader extends ConsumerWidget {
             ],
           ),
           SizedBox(height: 16),
-          Row(
-            children: [
-              Text(
-                mainModel.currentUserDoc['uid'] == passiveUserDoc['uid'] ?  mainModel.followingUids.length.toString() + 'following' : passiveUserDoc['followingUids'].length.toString() + 'following',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  mainModel.currentUserDoc['uid'] == passiveUserDoc['uid'] ?  mainModel.followingUids.length.toString() + 'following' : passiveUserDoc['followingUids'].length.toString() + 'following',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0
+                  ),
                 ),
-              ),
-              SizedBox(width: 20,),
-              Text(
-                mainModel.followingUids.contains(passiveUserDoc['uid']) ?
-                plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万follower' : plusOneCount.toString() + 'follower'
-                : followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0
+                SizedBox(width: 20,),
+                Text(
+                  mainModel.followingUids.contains(passiveUserDoc['uid']) ?
+                  plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万follower' : plusOneCount.toString() + 'follower'
+                  : followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0
+                  ),
                 ),
-              ),
-              SizedBox(width: 20),
-              LinkButton(link: passiveUserDoc['link'])
-            ],
-          )
+                SizedBox(width: 20),
+                LinkButton(
+                  // link: passiveUserDoc['link']
+                  link: 'https://aaaaaaaaaaaaaajfoijapoeijhgoaijhio;ghe;iohgaoeiha;oianeoaheioah',
+                )
+              ],
+            ),
+          ),
+          
         ],
       ),
     );
