@@ -38,6 +38,8 @@ class PostsFutures extends ChangeNotifier{
       };
       int score = newCurrentSongDoc['score'];
       score += likeScore;
+      int likesCount = newCurrentSongDoc['likesCount'];
+      likesCount += 1;
       likes.add(map);
       await FirebaseFirestore.instance
       .collection('posts')
@@ -45,6 +47,7 @@ class PostsFutures extends ChangeNotifier{
       .update({
         'likes': likes,
         'score': score,
+        'likesCount': likesCount,
       });
     } catch(e) {
       print(e.toString());
@@ -142,6 +145,7 @@ class PostsFutures extends ChangeNotifier{
       bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
       int score = newCurrentSongDoc['score'];
       score -= bookmarkScore;
+      
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
@@ -185,6 +189,8 @@ class PostsFutures extends ChangeNotifier{
     
     int score = newCurrentSongDoc['score'];
     score -= likeScore;
+    int likesCount = newCurrentSongDoc['likesCount'];
+    likesCount -= 1;
     try {
       final List likes = newCurrentSongDoc['likes'];
       likes.removeWhere((like) => like['uid'] == currentUserDoc['uid']);
@@ -194,6 +200,7 @@ class PostsFutures extends ChangeNotifier{
       .update({
         'likes': likes,
         'score': score,
+        'likesCount': likesCount,
       });
     } catch(e) {
       print(e.toString());

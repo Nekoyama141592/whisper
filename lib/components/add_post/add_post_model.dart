@@ -397,6 +397,7 @@ class AddPostModel extends ChangeNotifier {
           'isOfficial': false,
           'isPlayedCount': 0,
           'likes':[],
+          'likesCount': 0,
           'link': link,
           'postId': postId,
           'score': 0,

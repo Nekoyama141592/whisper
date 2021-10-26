@@ -37,6 +37,9 @@ class PostsFeaturesModel extends ChangeNotifier{
       };
       int score = newCurrentSongDoc['score'];
       score += likeScore;
+      int likesCount = newCurrentSongDoc['likesCount'];
+      likesCount += 1;
+
       likes.add(map);
       await FirebaseFirestore.instance
       .collection('posts')
@@ -44,6 +47,7 @@ class PostsFeaturesModel extends ChangeNotifier{
       .update({
         'likes': likes,
         'score': score,
+        'likesCount': likesCount,
       });
     } catch(e) {
       print(e.toString());
@@ -183,16 +187,19 @@ class PostsFeaturesModel extends ChangeNotifier{
 
   Future removeLikeOfPost(DocumentSnapshot currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
     try {
-      int score = newCurrentSongDoc['score'];
-      score -= likeScore;
       final List likes = newCurrentSongDoc['likes'];
       likes.removeWhere((like) => like['uid'] == currentUserDoc['uid']);
+      int score = newCurrentSongDoc['score'];
+      score -= likeScore;
+      int likesCount = newCurrentSongDoc['likesCount'];
+      likesCount -= 1;
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
       .update({
         'likes': likes,
         'score': score,
+        'likesCount': likesCount,
       });
     } catch(e) {
       print(e.toString());
