@@ -26,13 +26,7 @@ class RedirectToUrlButton extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
         }
       },
-      child: Row(
-        children: [
-          Icon(Icons.link),
-          SizedBox(width: 5.0),
-          Text(currentSongDoc['link'],style: TextStyle(fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,)
-        ],
-      ),
+      child: Icon(Icons.link),
     );
      
   }

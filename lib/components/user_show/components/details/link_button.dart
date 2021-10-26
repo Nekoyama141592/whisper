@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:marquee/marquee.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkButton extends StatelessWidget {
@@ -16,17 +17,10 @@ class LinkButton extends StatelessWidget {
   
   Widget build(BuildContext context) {
     return InkWell(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.link),
-          SizedBox(width: 5.0),
-          Text(
-            link,
-            style: TextStyle(fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          )
-        ],
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Icon(Icons.link),
+        ),
       ),
       onTap: () async {
         if ( await canLaunch(link) ) {
