@@ -99,7 +99,8 @@ service cloud.firestore {
       allow create: if isAuthenticated()
       && isValidPost(request.resource.data)
       && request.resource.data.uid == request.auth.uid;
-      allow update: if isAuthenticated();
+      allow update: if isAuthenticated()
+      && isValidPost(request.resource.data);
       allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
@@ -109,7 +110,8 @@ service cloud.firestore {
       allow create: if isAuthenticated()
       && isValidReply(request.resource.data)
       && request.resource.data.uid == request.auth.uid;
-      allow update: if isAuthenticated();
+      allow update: if isAuthenticated()
+      && isValidReply(request.resource.data);
       allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;

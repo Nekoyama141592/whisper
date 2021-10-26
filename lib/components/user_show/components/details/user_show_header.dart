@@ -135,9 +135,8 @@ class UserShowHeader extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(width: 20),
-                LinkButton(
-                  // link: passiveUserDoc['link']
-                  link: 'https://aaaaaaaaaaaaaajfoijapoeijhgoaijhio;ghe;iohgaoeiha;oianeoaheioah',
+                if (passiveUserDoc['link'].isNotEmpty) LinkButton(
+                  link: passiveUserDoc['link']
                 )
               ],
             ),
