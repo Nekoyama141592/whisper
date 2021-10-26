@@ -97,11 +97,14 @@ class PostsFeaturesModel extends ChangeNotifier{
       bookmarks.add(map);
       int score = newCurrentSongDoc['score'];
       score += bookmarkScore;
+      int bookmarksCount = newCurrentSongDoc['bookmarksCount'];
+      bookmarksCount += 1;
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
+        'bookmarksCount': bookmarksCount,
         'score': score,
       });
     } catch(e) {
@@ -146,12 +149,15 @@ class PostsFeaturesModel extends ChangeNotifier{
       bookmarks.removeWhere((bookmark) => bookmark['uid'] == currentUserDoc['uid']);
       int score = newCurrentSongDoc['score'];
       score -= bookmarkScore;
+      int bookmarksCount = newCurrentSongDoc['bookmarksCount'];
+      bookmarksCount -= 1;
       await FirebaseFirestore.instance
       .collection('posts')
       .doc(newCurrentSongDoc.id)
       .update({
         'bookmarks': bookmarks,
         'score': score,
+        'bookmarksCount': bookmarksCount,
       });
     } catch(e) {
       print(e.toString());

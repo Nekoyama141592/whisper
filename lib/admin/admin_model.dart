@@ -19,7 +19,7 @@ class AdminModel extends ChangeNotifier {
       .then((qshot) {
         qshot.docs.forEach((doc) {
           batch.update(doc.reference, {
-            'likesCount': 0,
+            'bookmarksCount': 0,
           });
         });
         return batch.commit();

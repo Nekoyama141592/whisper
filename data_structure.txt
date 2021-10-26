@@ -11,6 +11,7 @@ db{
             createdAt: TimeStamp,
             uid: String,
         }],
+        bookmarksCount: int,
         comments: [{
             comment: String,
             commentId: String,

@@ -39,7 +39,7 @@ class AdminPage extends ConsumerWidget {
                 verticalPadding: 20.0, 
                 horizontalPadding: 10.0, 
                 press: () {
-                  
+                  adminModel.adminMove();
                 }, 
                 textColor: Colors.white, 
                 buttonColor: Theme.of(context).colorScheme.secondary
