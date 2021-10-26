@@ -1,11 +1,11 @@
+// dart
 import 'dart:async';
-
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:whisper/constants/routes.dart' as routes;
 final updateEmailProvider = ChangeNotifierProvider(
   (ref) => UpdateEmailModel()
 );
