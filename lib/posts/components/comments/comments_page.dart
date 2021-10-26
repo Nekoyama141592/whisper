@@ -7,7 +7,6 @@ import 'package:just_audio/just_audio.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
-import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
@@ -55,13 +54,13 @@ class CommentsPage extends ConsumerWidget {
       body: ValueListenableBuilder<List<dynamic>>(
         valueListenable: currentSongMapCommentsNotifier,
         builder: (_,currentSongMapComments,__) {
-          return currentSongMapComments.isNotEmpty ?
+          return
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
-                
+                currentSongMapComments.isNotEmpty ?
                 Expanded(
                   child: ListView.builder(
                     itemCount: currentSongMapComments.length,
@@ -77,7 +76,7 @@ class CommentsPage extends ConsumerWidget {
                     }
                     
                   ),
-                ),
+                ) : SizedBox.shrink(),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Align(
@@ -93,7 +92,7 @@ class CommentsPage extends ConsumerWidget {
                 )
               ],
             ),
-          ) : Nothing();
+          );
         }
       ),
     );

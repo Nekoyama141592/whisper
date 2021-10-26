@@ -55,13 +55,13 @@ class SearchCommentsPage extends ConsumerWidget {
       body: ValueListenableBuilder<List<dynamic>>(
         valueListenable: currentSongMapCommentsNotifier,
         builder: (_,currentSongMapComments,__) {
-          return currentSongMapComments.isNotEmpty ?
+          return 
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
-                
+                currentSongMapComments.isNotEmpty ?
                 Expanded(
                   child: ListView.builder(
                     itemCount: currentSongMapComments.length,
@@ -77,7 +77,7 @@ class SearchCommentsPage extends ConsumerWidget {
                     }
                     
                   ),
-                ),
+                ) : SizedBox.shrink(),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Align(
@@ -93,7 +93,7 @@ class SearchCommentsPage extends ConsumerWidget {
                 )
               ],
             ),
-          ) : Nothing();
+          );
         }
       ),
     );
