@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/follow/user_show_button.dart';
+import 'package:whisper/components/user_show/components/details/link_button.dart';
 // other_pages
 import 'package:whisper/components/user_show/components/details/show_description_page.dart';
 // models
@@ -129,7 +130,8 @@ class UserShowHeader extends ConsumerWidget {
                   fontSize: 18.0
                 ),
               ),
-              SizedBox(width: 20,),
+              SizedBox(width: 20),
+              LinkButton(link: passiveUserDoc['link'])
             ],
           )
         ],
