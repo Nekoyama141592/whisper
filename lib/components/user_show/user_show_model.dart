@@ -27,6 +27,8 @@ final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
 );
 
+enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst }
+
 class UserShowModel extends ChangeNotifier {
 
   bool isLoading = false;
@@ -180,6 +182,81 @@ class UserShowModel extends ChangeNotifier {
       }
     );
   }
+
+  void showSortPostDocsDialogue(BuildContext context,String uid) {
+    showCupertinoDialog(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('投稿を並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () async {
+                userShowDocs = [];
+                afterUris = [];
+                refreshIndex = defaultRefreshIndex;
+                // getDocsFromFirestore
+                // makeQuery
+                refreshIndex = afterUris.length + defaultRefreshIndex;
+              }, 
+              child: Text(
+                'いいね順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                userShowDocs = [];
+                afterUris = [];
+                refreshIndex = defaultRefreshIndex;
+                // getDocsFromFirestore
+                // makeQuery
+                refreshIndex = afterUris.length + defaultRefreshIndex;
+              }, 
+              child: Text(
+                '新しい順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                userShowDocs = [];
+                afterUris = [];
+                refreshIndex = defaultRefreshIndex;
+                // getDocsFromFirestore
+                // makeQuery
+                refreshIndex = afterUris.length + defaultRefreshIndex;
+              }, 
+              child: Text(
+                '古い順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () { Navigator.pop(context); }, 
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+          ],
+        );
+      }
+    );
+  } 
 
   void reload() {
     notifyListeners();
