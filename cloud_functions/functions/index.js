@@ -62,6 +62,17 @@ exports.createUser = functions.firestore
     }
 );
 
+exports.updateUser = functions.firestore
+.document('users/{id}')
+.onUpdate(
+    async (snap,context) => {
+        const afterUpdate = snap.after.data();
+        afterUpdate.objectID = snap.after.id;
+        var index = client.initIndex(ALGOLIA_USERS_INDEX_NAME);
+        index.saveObject(afterUpdate);
+    }
+);
+
 exports.deleteUser = functions.firestore
 .document('users/{id}')
 .onDelete(
