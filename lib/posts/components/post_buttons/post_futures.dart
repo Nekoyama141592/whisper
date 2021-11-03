@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:just_audio/just_audio.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 
@@ -238,7 +239,7 @@ class PostFutures extends ChangeNotifier{
     return newCurrentSongDoc;
   }
 
-  Future muteUser(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid,) async {
+  Future muteUser(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid) async {
     mutesUids.add(uid);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -247,6 +248,32 @@ class PostFutures extends ChangeNotifier{
     .update({
       'mutesUids': mutesUids,
     }); 
+  }
+
+  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+    mutesUids.add(uid);
+    postDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
+    await resetAudioPlayer(i,afterUris,postDocs,audioPlayer);
+    notifyListeners();
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'mutesUids': mutesUids,
+    }); 
+  }
+
+   Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<DocumentSnapshot> postDocs,AudioPlayer audioPlayer) async {
+    afterUris = [];
+    postDocs.forEach((DocumentSnapshot? doc) {
+      Uri song = Uri.parse(doc!['audioURL']);
+      UriAudioSource source = AudioSource.uri(song, tag: doc);
+      afterUris.add(source);
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist,initialIndex: i);
+    } 
   }
 
   Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {
