@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/loading.dart';
-import 'package:whisper/components/search/post_search/components//post_list.dart';
+import 'package:whisper/components/search/post_search/components//post_cards.dart';
 import 'package:whisper/components/search/post_search/components/search_input_field.dart';
 // model
 import 'post_search_model.dart';
@@ -44,7 +44,7 @@ class PostSearchPage extends ConsumerWidget {
           ),
           searchModel.isLoading ?
           Loading() 
-          : PostList(
+          : PostCards(
             results: searchModel.results,
             mainModel: mainModel,
             postSearchModel: postSearchModel,

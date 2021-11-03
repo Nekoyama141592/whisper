@@ -261,10 +261,11 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+    // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     mutesUids.add(uid);
-    postDocs.removeWhere((postDoc) => postDoc['uid'] == uid);
-    await resetAudioPlayer(i,afterUris,postDocs,audioPlayer);
+    posts.removeWhere((postDoc) => postDoc['uid'] == uid);
+    await resetAudioPlayer(i,afterUris,posts,audioPlayer);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
@@ -274,10 +275,11 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future blockUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future blockUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+    // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     blockingUids.add(passiveUid);
-    postDocs.removeWhere((postDoc) => postDoc['uid'] == passiveUid);
-    await resetAudioPlayer(i, afterUris, postDocs, audioPlayer);
+    posts.removeWhere((postDoc) => postDoc['uid'] == passiveUid);
+    await resetAudioPlayer(i, afterUris, posts, audioPlayer);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
@@ -287,17 +289,19 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+    // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     mutesPostIds.add(postId);
-    postDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
-    await resetAudioPlayer(i, afterUris, postDocs, audioPlayer);
+    posts.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
+    await resetAudioPlayer(i, afterUris, posts, audioPlayer);
     notifyListeners();
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-   Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<DocumentSnapshot> postDocs,AudioPlayer audioPlayer) async {
+   Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<dynamic> posts,AudioPlayer audioPlayer) async {
+     // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     afterUris = [];
-    postDocs.forEach((DocumentSnapshot doc) {
+    posts.forEach((dynamic doc) {
       Uri song = Uri.parse(doc['audioURL']);
       UriAudioSource source = AudioSource.uri(song, tag: doc);
       afterUris.add(source);

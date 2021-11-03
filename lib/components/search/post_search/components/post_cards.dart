@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'post_result.dart';
+import 'post_card.dart';
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // model
@@ -13,9 +13,9 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-class PostList extends ConsumerWidget {
+class PostCards extends ConsumerWidget {
 
-  const PostList({
+  const PostCards({
     Key? key,
     required this.results,
     required this.mainModel,
@@ -48,7 +48,7 @@ class PostList extends ConsumerWidget {
             child: ListView.builder(
               itemCount: results.length,
               itemBuilder: (BuildContext context, int i) =>
-              PostResult(
+              PostCard(
                 result: results[i],
                 i: i,
                 mainModel: mainModel,

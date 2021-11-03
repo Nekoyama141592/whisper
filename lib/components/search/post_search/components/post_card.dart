@@ -10,9 +10,9 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
-class PostResult extends ConsumerWidget {
+class PostCard extends ConsumerWidget {
 
-  const PostResult({
+  const PostCard({
     Key? key,
     required this.result,
     required this.i,
