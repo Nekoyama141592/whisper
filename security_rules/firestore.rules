@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 27
+    return user.size() == 28
     && 'birthDay' in user && user.birthDay is timestamp
     && 'blockingUids' in user && user.blockingUids is list
     && 'bookmarks' in user && user.bookmarks is list
@@ -21,6 +21,7 @@ service cloud.firestore {
     && 'isAdmin' in user && user.isAdmin is bool
     && 'isNFTicon' in user && user.isNFTicon is bool
     && 'isOfficial' in user && user.isOfficial is bool
+    && 'isSubAdmin' in user && user.isSubAdmin is bool
     && 'isSubscribed' in user && user.isSubscribed is bool
     && 'likedComments' in user && user.likedComments is list
     && 'likeNotifications' in user && user.likeNotifications is list
@@ -83,6 +84,10 @@ service cloud.firestore {
     && 'userImageURL' in reply && reply.userImageURL is string;
   }
 
+  // function isValidNFTowners(nftOwners) {
+    
+  // }
+
   match /databases/{database}/documents {
     
     match /users/{userId} {
@@ -115,6 +120,10 @@ service cloud.firestore {
       allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
+    }
+
+    match /nftOwners/{nftOwnerId} {
+      allow read, write: if true,
     }
     
   }

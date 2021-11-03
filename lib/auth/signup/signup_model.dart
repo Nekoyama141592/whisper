@@ -165,6 +165,7 @@ class SignupModel extends ChangeNotifier {
       'isAdmin': false,
       'isNFTicon': false,
       'isOfficial': false,
+      'isSubAdmin': false,
       'isSubscribed': false,
       'likedComments': [],
       'likeNotifications': [],
