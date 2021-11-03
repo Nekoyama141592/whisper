@@ -151,9 +151,9 @@ class MainModel extends ChangeNotifier {
 
   void setMutes() {
     mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
-    mutesUids = prefs.getStringList('mutesUids') ?? [];
+    mutesUids = currentUserDoc['mutesUids'];
     mutesCommentIds = prefs.getStringList('mutesCommentIds') ?? [];
-    mutesPostIds = prefs.getStringList('mutesPOstIds') ?? [];
+    mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
   }
 
   void getReplyNotifications() {
