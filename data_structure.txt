@@ -41,6 +41,7 @@ db{
         }],
         likesCount: int,
         link: String
+        noDisplayUids: list,
         postId: String,
         score: int,
         title: String,

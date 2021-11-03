@@ -57,6 +57,7 @@ service cloud.firestore {
     && 'likes' in post && post.likes is list
     && 'likesCount' in post && post.likesCount is int
     && 'link' in post && post.link is string
+    && 'noDisplayUids' in post && post.noDisplayUids is list
     && 'postId' in post && post.postId is string
     && 'score' in post && post.score is int
     && 'title' in post && post.title is string
