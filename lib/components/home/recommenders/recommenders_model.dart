@@ -225,14 +225,7 @@ class RecommendersModel extends ChangeNotifier {
     recommenderDocs.removeWhere((recommenderDoc) => recommenderDoc['postId'] == postId);
     await resetAudioPlayer(i);
   }
-
-  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
-    mutesUids.add(uid);
-    await removeTheUsersPost(uid, i);
-    notifyListeners();
-    await prefs.setStringList('mutesUids', mutesUids);
-  }
-
+  
   Future removeTheUsersPost(String uid,int i) async {
     recommenderDocs.removeWhere((recommenderDoc) => recommenderDoc['uid'] == uid);
     await resetAudioPlayer(i);

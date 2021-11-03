@@ -195,14 +195,7 @@ class BookmarksModel extends ChangeNotifier {
     bookmarkedDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
     await resetAudioPlayer(i);
   }
-
-  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
-    mutesUids.add(uid);
-    await removeTheUsersPost(uid, i);
-    notifyListeners();
-    await prefs.setStringList('mutesUids', mutesUids);
-  }
-
+  
   Future removeTheUsersPost(String uid,int i) async {
     bookmarkedDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['uid'] == uid);
     await resetAudioPlayer(i);

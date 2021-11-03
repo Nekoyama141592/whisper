@@ -292,13 +292,6 @@ class UserShowModel extends ChangeNotifier {
     await resetAudioPlayer(i);
   }
 
-  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
-    mutesUids.add(uid);
-    await removeTheUsersPost(uid, i);
-    notifyListeners();
-    await prefs.setStringList('mutesUids', mutesUids);
-  }
-
   Future removeTheUsersPost(String uid,int i) async {
     userShowDocs.removeWhere((userShowDoc) => userShowDoc['uid'] == uid);
     await resetAudioPlayer(i);
