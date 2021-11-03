@@ -52,6 +52,7 @@ db{
     }
     replys{
         elementId: String,
+        elementState: string [ comment ],
         createdAt: TimeStamp,
         ipv6: String
         isNFTicon: bool,

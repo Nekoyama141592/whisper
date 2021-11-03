@@ -266,11 +266,11 @@ class ReplysModel extends ChangeNotifier {
   Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot currentUserDoc) {
     final map = {
       'elementId': elementId,
-      
+      'elementState': elementState,
       'createdAt': Timestamp.now(),
       'ipv6': ipv6,
-      'isNFTicon': false,
-      'isOfficial': false,
+      'isNFTicon': currentUserDoc['isNFTicon'],
+      'isOfficial': currentUserDoc['isOfficial'],
       'likesUids': [],
       'likesUidsCount': 0,
       'reply': reply,
