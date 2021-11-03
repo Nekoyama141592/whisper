@@ -170,7 +170,7 @@ class SignupModel extends ChangeNotifier {
       'isOfficial': false,
       'isSubAdmin': false,
       'isSubscribed': false,
-      'language': ,
+      'language': language,
       'likedComments': [],
       'likeNotifications': [],
       'likedReplys': [],
@@ -205,6 +205,32 @@ class SignupModel extends ChangeNotifier {
               displayBirthDayNotifier.value = value;
             }
           ),
+        );
+      }
+    );
+  }
+
+  void showLanguageCupertinoActionSheet(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              child: Text(
+                '日本語',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              onPressed: () {
+                language = 'ja';
+                displayLanguageNotifier.value = '日本語';
+                Navigator.pop(context);
+              }, 
+            ),
+          ],
         );
       }
     );
