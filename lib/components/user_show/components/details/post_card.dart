@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
-import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class PostCard extends ConsumerWidget {
   
@@ -56,7 +54,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await userShowModel.muteUser(mainModel.mutesUids, postDoc['uid'], mainModel.prefs, i);
+              await postFutures.muteUserFromPost(mainModel.currentUserDoc, mainModel.mutesUids, postDoc['uid'], i, userShowModel.userShowDocs,userShowModel.afterUris, userShowModel.audioPlayer);
             } ,
           ),
           IconSlideAction(

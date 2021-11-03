@@ -207,18 +207,6 @@ class FeedsModel extends ChangeNotifier {
     await resetAudioPlayer(i);
   }
 
-  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
-    mutesUids.add(uid);
-    await removeTheUsersPost(uid, i);
-    notifyListeners();
-    await prefs.setStringList('mutesUids', mutesUids);
-  }
-
-  Future removeTheUsersPost(String uid,int i) async {
-    feedDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
-    await resetAudioPlayer(i);
-  }
-
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
     blockingUids.add(uid);
     await removeTheUsersPost(uid, i);
@@ -229,6 +217,11 @@ class FeedsModel extends ChangeNotifier {
     .update({
       'blocingUids': blockingUids,
     }); 
+  }
+
+  Future removeTheUsersPost(String uid,int i) async {
+    feedDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
+    await resetAudioPlayer(i);
   }
 
   Future onRefresh() async {

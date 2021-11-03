@@ -9,7 +9,7 @@ import 'package:whisper/details/redirect_user_image.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
-import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class ReplyCard extends ConsumerWidget {
 
@@ -43,7 +43,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel.mutesUids, reply['uid'], mainModel.prefs);
+            await postFutures.muteUser(mainModel.currentUserDoc,mainModel.mutesUids, reply['uid']);
           } ,
         ),
         IconSlideAction(

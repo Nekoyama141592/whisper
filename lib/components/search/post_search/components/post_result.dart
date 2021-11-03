@@ -8,7 +8,7 @@ import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/post_search/post_search_model.dart';
-import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class PostResult extends ConsumerWidget {
 
@@ -55,7 +55,7 @@ class PostResult extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await postFutures.muteUser(mainModel.mutesUids, result['uid'], mainModel.prefs);
+              await postFutures.muteUser(mainModel.currentUserDoc,mainModel.mutesUids, result['uid']);
             } ,
           ),
           IconSlideAction(

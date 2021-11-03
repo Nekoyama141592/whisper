@@ -11,7 +11,7 @@ import 'package:whisper/posts/components/comments/components/show_replys_button.
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
-import 'package:whisper/posts/components/post_buttons/posts_futures.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class CommentCard extends ConsumerWidget {
 
@@ -46,7 +46,7 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel.mutesUids, comment['uid'], mainModel.prefs);
+            await postFutures.muteUser(mainModel.currentUserDoc,mainModel.mutesUids, comment['uid']);
           } ,
         ),
         IconSlideAction(
