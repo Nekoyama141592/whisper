@@ -225,15 +225,11 @@ class RecommendersModel extends ChangeNotifier {
     recommenderDocs.removeWhere((recommenderDoc) => recommenderDoc['postId'] == postId);
     await resetAudioPlayer(i);
   }
-  
-  Future removeTheUsersPost(String uid,int i) async {
-    recommenderDocs.removeWhere((recommenderDoc) => recommenderDoc['uid'] == uid);
-    await resetAudioPlayer(i);
-  }
 
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
     blockingUids.add(uid);
-    await removeTheUsersPost(uid, i);
+    recommenderDocs.removeWhere((recommenderDoc) => recommenderDoc['uid'] == uid);
+    await resetAudioPlayer(i);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')

@@ -209,7 +209,8 @@ class FeedsModel extends ChangeNotifier {
 
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
     blockingUids.add(uid);
-    await removeTheUsersPost(uid, i);
+    feedDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
+    await resetAudioPlayer(i);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
@@ -217,11 +218,6 @@ class FeedsModel extends ChangeNotifier {
     .update({
       'blocingUids': blockingUids,
     }); 
-  }
-
-  Future removeTheUsersPost(String uid,int i) async {
-    feedDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
-    await resetAudioPlayer(i);
   }
 
   Future onRefresh() async {

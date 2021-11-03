@@ -292,14 +292,10 @@ class UserShowModel extends ChangeNotifier {
     await resetAudioPlayer(i);
   }
 
-  Future removeTheUsersPost(String uid,int i) async {
-    userShowDocs.removeWhere((userShowDoc) => userShowDoc['uid'] == uid);
-    await resetAudioPlayer(i);
-  }
-
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
     blockingUids.add(uid);
-    await removeTheUsersPost(uid, i);
+    userShowDocs.removeWhere((userShowDoc) => userShowDoc['uid'] == uid);
+    await resetAudioPlayer(i);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
