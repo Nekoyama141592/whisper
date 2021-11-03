@@ -21,6 +21,7 @@ enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst}
 class ReplysModel extends ChangeNotifier {
 
   String reply = "";
+  String elementState = 'comment';
   bool isLoading = false;
   bool isReplysMode = false;
   Map<String,dynamic> giveComment = {};
@@ -265,6 +266,7 @@ class ReplysModel extends ChangeNotifier {
   Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot currentUserDoc) {
     final map = {
       'elementId': elementId,
+      
       'createdAt': Timestamp.now(),
       'ipv6': ipv6,
       'isNFTicon': false,
@@ -307,6 +309,7 @@ class ReplysModel extends ChangeNotifier {
     final comment = thisComment['comment'];
     Map<String,dynamic> map = {
       'elementId': elementId,
+      'elementState': elementState,
       'comment': comment,
       'createdAt': Timestamp.now(),
       'isNFTicon': currentUserDoc['isNFTicon'],
