@@ -402,7 +402,7 @@ class AddPostModel extends ChangeNotifier {
           'link': link,
           'noDisplayUids': [],
           'postId': postId,
-          'score': 0,
+          'score': 100,
           'title': postTitleNotifier.value,
           'uid': currentUser!.uid,
           'updatedAt': Timestamp.now(),

@@ -120,7 +120,7 @@ class CommentsModel extends ChangeNotifier {
       'isNFTicon': currentUserDoc['isNFTicon'],
       'isOfficial': currentUserDoc['isOfficial'],
       'likesUids': [],
-      'score': 0,
+      'score': 100,
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
