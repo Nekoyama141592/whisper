@@ -88,9 +88,14 @@ service cloud.firestore {
     && 'userImageURL' in reply && reply.userImageURL is string;
   }
 
-  // function isValidNFTowners(nftOwners) {
-    
-  // }
+  function isValidNFTowners(nftOwner) {
+    return 
+    nftOwner.size() == 4
+    && 'ethPrice' in nftOwner && nftOwner.ethPrice is int
+    && 'link' in nftOwner && nftOwner.link is string
+    && 'number' in nftOwner && nftOwner.number is int
+    && 'uid' in nftOwner && nftOwner.uid is string;
+  }
 
   match /databases/{database}/documents {
     
@@ -127,8 +132,10 @@ service cloud.firestore {
     }
 
     match /nftOwners/{nftOwnerId} {
-      allow read: if true;
-      allow write: if true;
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidNFTowners(request.resource.data);
+      allow update: if isAuthenticated() && isValidNFTowners(request.resource.data);
+      allow delete: if false;
     }
     
   }
