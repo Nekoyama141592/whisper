@@ -1,7 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/posts/components/details/square_post_image.dart';
@@ -26,7 +25,7 @@ class PostShowPage extends ConsumerWidget {
     Key? key,
     required this.speedNotifier,
     required this.speedControll,
-    required this.currentSongDocNotifier,
+    required this.currentSongMapNotifier,
     required this.progressNotifier,
     required this.seek,
     required this.repeatButtonNotifier,
@@ -45,7 +44,7 @@ class PostShowPage extends ConsumerWidget {
 
   final ValueNotifier<double> speedNotifier;
   final void Function()? speedControll;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
   final RepeatButtonNotifier repeatButtonNotifier;
@@ -64,7 +63,7 @@ class PostShowPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final editPostInfoModel = watch(editPostInfoProvider);
-    final currentSongDoc = currentSongDocNotifier.value;
+    final currentSongMap = currentSongMapNotifier.value;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -72,7 +71,7 @@ class PostShowPage extends ConsumerWidget {
       extendBodyBehindAppBar: false,
       body: SafeArea(
         child: editPostInfoModel.isEditing ?
-        EditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc!, editPostInfoModel: editPostInfoModel)
+        EditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel)
         : Column(
           children: [
             Padding(
@@ -90,7 +89,7 @@ class PostShowPage extends ConsumerWidget {
                     }, 
                   ),
                   SizedBox(width: size.width * 0.38),
-                  TimestampDisplay(currentSongDocNotifier: currentSongDocNotifier)
+                  TimestampDisplay(currentSongMapNotifier: currentSongMapNotifier)
                 ],
               ),
             ),
@@ -99,19 +98,19 @@ class PostShowPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SquarePostImage(currentSongDocNotifier: currentSongDocNotifier),
-                    CurrentSongUserName(currentSongDocNotifier: currentSongDocNotifier),
+                    SquarePostImage(currentSongMapNotifier: currentSongMapNotifier),
+                    CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
                     SizedBox(height: 10.0),
-                    CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier),
+                    CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier),
                     SizedBox(height: 10.0),
-                    PostButtons(currentSongDocNotifier: currentSongDocNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                    PostButtons(currentSongMapNotifier: currentSongMapNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
                     SizedBox(height: 10.0),
                     AudioStateDesign(
                       speedNotifier: speedNotifier,
                       speedControll: speedControll,
                       bookmarkedPostIds: mainModel.bookmarkedPostIds,
                       likedPostIds: mainModel.likedPostIds,
-                      currentSongDocNotifier: currentSongDocNotifier,
+                      currentSongMapNotifier: currentSongMapNotifier,
                       progressNotifier: progressNotifier,
                       seek: seek,
                       repeatButtonNotifier: repeatButtonNotifier,

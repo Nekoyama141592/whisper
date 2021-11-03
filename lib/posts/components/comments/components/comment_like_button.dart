@@ -10,7 +10,7 @@ class CommentLikeButton extends StatelessWidget {
     Key? key,
     required this.commentsModel,
     required this.currentUserDoc,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.likedCommentIds,
     required this.comment,
     required this.likedComments
@@ -18,7 +18,7 @@ class CommentLikeButton extends StatelessWidget {
 
   final CommentsModel commentsModel;
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final List<dynamic> likedCommentIds;
   final Map<String,dynamic> comment;
   final List<dynamic> likedComments;
@@ -41,7 +41,7 @@ class CommentLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite,color: Colors.red),
             onTap: () async {
-              await commentsModel.unlike(likedCommentIds, currentUserDoc, currentSongDoc, commentId, likedComments);
+              await commentsModel.unlike(likedCommentIds, currentUserDoc, currentSongMap, commentId, likedComments);
             },
           ),
           SizedBox(width: 5.0),
@@ -60,7 +60,7 @@ class CommentLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await commentsModel.like(likedCommentIds, currentUserDoc, currentSongDoc, commentId, likedComments);
+              await commentsModel.like(likedCommentIds, currentUserDoc, currentSongMap, commentId, likedComments);
             },
           ),
           SizedBox(width: 5.0),

@@ -77,8 +77,8 @@ void toBookmarksPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(mainModel: mainModel) ));
 }
 
-void toPostShowPage(context,ValueNotifier<double> speedNotifier,void Function()? speedControll,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()? onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed,void Function()? toCommentsPage,void Function()? toEditingMode,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) =>PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentSongDocNotifier: currentSongDocNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel) ));
+void toPostShowPage(context,ValueNotifier<double> speedNotifier,void Function()? speedControll,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,ProgressNotifier progressNotifier,void Function(Duration)? seek,RepeatButtonNotifier repeatButtonNotifier,void Function()? onRepeatButtonPressed,ValueNotifier<bool> isFirstSongNotifier,void Function()? onPreviousSongButtonPressed,PlayButtonNotifier playButtonNotifier,void Function()? play,void Function()? pause,ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed,void Function()? toCommentsPage,void Function()? toEditingMode,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) =>PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentSongMapNotifier: currentSongMapNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel) ));
 }
 
 void toUserShowPage(context,DocumentSnapshot passiveUserDoc,MainModel mainModel) {
@@ -104,8 +104,8 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
-void toCommentsPage(context, void Function()? showSortDialogue,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier,ValueNotifier<DocumentSnapshot?> currentSongDocNotifier,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(showSortDialogue: showSortDialogue,audioPlayer: audioPlayer, currentSongMapCommentsNotifier: currentSongMapCommentsNotifier, currentSongDoc: currentSongDocNotifier.value!, mainModel: mainModel) ));
+void toCommentsPage(context, void Function()? showSortDialogue,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(showSortDialogue: showSortDialogue,audioPlayer: audioPlayer, currentSongMapCommentsNotifier: currentSongMapCommentsNotifier, currentSongMap: currentSongMapNotifier.value, mainModel: mainModel) ));
 }
 
 void toBlockingUsersPage(context, MainModel mainModel) {

@@ -1,11 +1,9 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 // components
-import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
@@ -21,14 +19,14 @@ class CommentsPage extends ConsumerWidget {
     required this.showSortDialogue,
     required this.audioPlayer,
     required this.currentSongMapCommentsNotifier,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.mainModel
   }) : super(key: key);
 
   final void Function()? showSortDialogue;
   final AudioPlayer audioPlayer;
   final ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final MainModel mainModel;
 
   @override  
@@ -38,7 +36,7 @@ class CommentsPage extends ConsumerWidget {
     final commentEditingController = TextEditingController();
 
     return replysModel.isReplysMode ?
-    ReplysPage(replysModel: replysModel, currentSongDoc: currentSongDoc, currentUserDoc: mainModel.currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
+    ReplysPage(replysModel: replysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
     : Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -47,7 +45,7 @@ class CommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  {
-          commentsModel.onFloatingActionButtonPressed(context, currentSongDoc,commentEditingController, mainModel.currentUserDoc,audioPlayer ,currentSongMapCommentsNotifier); 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer ,currentSongMapCommentsNotifier); 
         },
       ),
 
@@ -70,7 +68,7 @@ class CommentsPage extends ConsumerWidget {
                         commentsModel: commentsModel,
                         replysModel: replysModel,
                         comment: currentSongMapComments[i],
-                        currentSongDoc: currentSongDoc,
+                        currentSongMap: currentSongMap,
                         mainModel: mainModel,
                       );
                     }

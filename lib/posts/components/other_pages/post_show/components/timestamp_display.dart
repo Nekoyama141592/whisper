@@ -7,17 +7,17 @@ class TimestampDisplay extends StatelessWidget {
 
   const TimestampDisplay({
     Key? key,
-    required this.currentSongDocNotifier
+    required this.currentSongMapNotifier
   }) : super(key: key);
 
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier, 
-      builder: (_,currentSongDoc,__) {
+    return ValueListenableBuilder<Map<String,dynamic>>(
+      valueListenable: currentSongMapNotifier, 
+      builder: (_,currentSongMap,__) {
         
-        final Timestamp createdAt = currentSongDoc!['createdAt'];
+        final Timestamp createdAt = currentSongMap['createdAt'];
         final createdAtDate = createdAt.toDate();
         final createdAtYear = createdAtDate.year.toString();
         final createdAtMonth = createdAtDate.month.toString();

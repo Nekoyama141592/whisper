@@ -1,17 +1,15 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditButton extends StatelessWidget {
   
   const EditButton({
     Key? key,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.toEditingMode,
   }) : super(key: key);
   
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final void Function()? toEditingMode;
   @override 
   

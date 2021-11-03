@@ -28,24 +28,24 @@ class CommentsModel extends ChangeNotifier {
 
  
 
-  void onFloatingActionButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
-    final String commentsState = currentSongDoc['commentsState'];
+  void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
+    final String commentsState = currentSongMap['commentsState'];
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
     audioPlayer.pause();
     switch(commentsState){
       case 'open':
-      showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
+      showMakeCommentDialogue(context, currentSongMap, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
       break;
       case 'isLocked':
-      if (currentSongDoc['uid'] == currentUserDoc['uid']) {
-        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
+      if (currentSongMap['uid'] == currentUserDoc['uid']) {
+        showMakeCommentDialogue(context, currentSongMap, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
       }
       break;
       case 'onlyFollowingUsers':
-      if (followerUids.contains(currentSongDoc['uid'])) {
-        showMakeCommentDialogue(context, currentSongDoc, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
+      if (followerUids.contains(currentSongMap['uid'])) {
+        showMakeCommentDialogue(context, currentSongMap, commentEditingController, currentUserDoc,currentSongMapCommentsNotifier);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿主がフォローしている人しかコメントできません')));
       }
@@ -53,7 +53,7 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  void showMakeCommentDialogue(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
+  void showMakeCommentDialogue(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
     showDialog(
       context: context, 
       builder: (_) {
@@ -85,7 +85,7 @@ class CommentsModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 0.0, 
               press: () async { 
-                await makeComment(currentSongDoc, currentUserDoc,currentSongMapCommentsNotifier); 
+                await makeComment(currentSongMap, currentUserDoc,currentSongMapCommentsNotifier); 
                 comment = '';
                 Navigator.pop(context);
               }, 
@@ -99,16 +99,16 @@ class CommentsModel extends ChangeNotifier {
   }
 
   
-  Future makeComment(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) async {
+  Future makeComment(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final newCommentMap = makeCommentMap(currentUserDoc, currentSongDoc,currentSongMapCommentsNotifier);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final newCommentMap = makeCommentMap(currentUserDoc, currentSongMap,currentSongMapCommentsNotifier);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc,newCommentMap);
-    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc);
-    await updateCommentNotificationsOfPassiveUser(currentSongDoc, currentUserDoc,passiveUserDoc);
+    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
+    await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
   }
 
-  Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
+  Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
     final commentMap = {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
@@ -144,7 +144,7 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  Future updateCommentNotificationsOfPassiveUser(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future updateCommentNotificationsOfPassiveUser(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
     try{
       List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
       final Map<String,dynamic> newCommentNotificationMap = {
@@ -154,7 +154,7 @@ class CommentsModel extends ChangeNotifier {
         'isOfficial': false,
         'notificationId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'postId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
-        'postTitle': currentSongDoc['title'],
+        'postTitle': currentSongMap['title'],
         'uid': currentUserDoc['uid'],
         'userDocId': currentUserDoc.id,
         'userName': currentUserDoc['userName'],
@@ -172,9 +172,9 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  Future like(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+  Future like(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,String commentId,List<dynamic> likedComments) async {
     addCommentIdToLikedCommentIds(likedCommentIds, commentId);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await updateCommentsOfPostWhenSomeoneLiked(newCurrentSongDoc, commentId, currentUserDoc);
     await updateLikedCommentsOfCurrentUser(commentId, likedComments, currentUserDoc);
   }
@@ -224,11 +224,11 @@ class CommentsModel extends ChangeNotifier {
 
   }
 
-  Future unlike(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+  Future unlike(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,String commentId,List<dynamic> likedComments) async {
     removeCommentIdFromLikedCommentIds(likedCommentIds, commentId);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await removeLikesUidFromComment(newCurrentSongDoc, currentUserDoc, commentId);
-    await removeLikedCommentsFromCurrentUser(currentSongDoc, commentId, likedComments);
+    await removeLikedCommentsFromCurrentUser(currentSongMap, commentId, likedComments);
   }
 
   void removeCommentIdFromLikedCommentIds(List<dynamic> likedCommentIds,String commentId) {
@@ -258,28 +258,28 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  Future removeLikedCommentsFromCurrentUser(DocumentSnapshot currentSongDoc,String commentId,List<dynamic> likedComments) async {
+  Future removeLikedCommentsFromCurrentUser(Map<String,dynamic> currentSongMap,String commentId,List<dynamic> likedComments) async {
     likedComments.removeWhere((likedComment) => likedComment['commentId'] == commentId);
     await FirebaseFirestore.instance
     .collection('posts')
-    .doc(currentSongDoc.id)
+    .doc(currentSongMap['postId'])
     .update({
       'likedComments': likedComments,
     });
   }
 
-  Future setPassiveUserDoc(DocumentSnapshot currentSongDoc) async {
+  Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
     DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
-    .doc(currentSongDoc['userDocId'])
+    .doc(currentSongMap['userDocId'])
     .get();
     return passiveUserDoc;
   }
 
-  Future getNewCurrentSongDoc(DocumentSnapshot currentSongDoc) async {
+  Future getNewCurrentSongDoc(Map<String,dynamic> currentSongMap) async {
     DocumentSnapshot newCurrentSongDoc = await FirebaseFirestore.instance
     .collection('posts')
-    .doc(currentSongDoc.id)
+    .doc(currentSongMap['postId'])
     .get();
     return newCurrentSongDoc;
   }

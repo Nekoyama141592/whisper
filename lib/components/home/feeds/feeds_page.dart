@@ -43,7 +43,7 @@ class FeedsPage extends ConsumerWidget {
             context, 
             feedsModel.speedNotifier,
             () async { feedsModel.speedControll(); },
-            feedsModel.currentSongDocNotifier, 
+            feedsModel.currentSongMapNotifier, 
             feedsModel.progressNotifier, 
             feedsModel.seek, 
             feedsModel.repeatButtonNotifier, 
@@ -57,7 +57,7 @@ class FeedsPage extends ConsumerWidget {
             () { feedsModel.onNextSongButtonPressed(); },
             () {
               feedsModel.pause();
-              routes.toCommentsPage(context, () { feedsModel.showSortDialogue(context); }, feedsModel.audioPlayer, feedsModel.currentSongMapCommentsNotifier, feedsModel.currentSongDocNotifier, mainModel);
+              routes.toCommentsPage(context, () { feedsModel.showSortDialogue(context); }, feedsModel.audioPlayer, feedsModel.currentSongMapCommentsNotifier, feedsModel.currentSongMapNotifier, mainModel);
             },
             () {
               feedsModel.pause();
@@ -69,7 +69,7 @@ class FeedsPage extends ConsumerWidget {
         }, 
         progressNotifier: feedsModel.progressNotifier, 
         seek: feedsModel.seek, 
-        currentSongDocNotifier: feedsModel.currentSongDocNotifier ,
+        currentSongMapNotifier: feedsModel.currentSongMapNotifier ,
         playButtonNotifier: feedsModel.playButtonNotifier, 
         play: () { feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
         pause: () { feedsModel.pause(); }, 

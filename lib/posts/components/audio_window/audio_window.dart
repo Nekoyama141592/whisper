@@ -23,7 +23,7 @@ class AudioWindow extends StatelessWidget {
     required this.route,
     required this.progressNotifier,
     required this.seek,
-    required this.currentSongDocNotifier,
+    required this.currentSongMapNotifier,
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
@@ -38,7 +38,7 @@ class AudioWindow extends StatelessWidget {
   final void Function()? route;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final PlayButtonNotifier playButtonNotifier;
   final void Function()? play;
   final void Function()? pause;
@@ -62,12 +62,12 @@ class AudioWindow extends StatelessWidget {
             AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
             Row(
               children: [
-                AudioWindowUserImage(currentSongDocNotifier: currentSongDocNotifier, mainModel: mainModel),
+                AudioWindowUserImage(currentSongMapNotifier: currentSongMapNotifier, mainModel: mainModel),
                 Expanded(
                   child: Column(
                     children: [
-                      CurrentSongUserName(currentSongDocNotifier: currentSongDocNotifier),
-                      CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
+                      CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
+                      CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier)
                     ],
                   ),
                 ),

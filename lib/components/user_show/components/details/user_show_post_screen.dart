@@ -42,7 +42,7 @@ class UserShowPostScreen extends ConsumerWidget {
           context, 
           userShowModel.speedNotifier,
           () async { await userShowModel.speedControll(); },
-          userShowModel.currentSongDocNotifier, 
+          userShowModel.currentSongMapNotifier, 
           userShowModel.progressNotifier, 
           userShowModel.seek, 
           userShowModel.repeatButtonNotifier, 
@@ -56,7 +56,7 @@ class UserShowPostScreen extends ConsumerWidget {
           () { userShowModel.onNextSongButtonPressed(); },
           () {
             userShowModel.pause();
-            routes.toCommentsPage(context, () { userShowModel.showSortDialogue(context); }, userShowModel.audioPlayer, userShowModel.currentSongMapCommentsNotifier, userShowModel.currentSongDocNotifier, mainModel);
+            routes.toCommentsPage(context, () { userShowModel.showSortDialogue(context); }, userShowModel.audioPlayer, userShowModel.currentSongMapCommentsNotifier, userShowModel.currentSongMapNotifier, mainModel);
           },
           () {
             userShowModel.pause();
@@ -68,7 +68,7 @@ class UserShowPostScreen extends ConsumerWidget {
         },
         progressNotifier: userShowModel.progressNotifier,
         seek: userShowModel.seek,
-        currentSongDocNotifier: userShowModel.currentSongDocNotifier,
+        currentSongMapNotifier: userShowModel.currentSongMapNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
         play: (){
           userShowModel.play(mainModel.readPostIds, mainModel.readPosts, currentUserDoc);

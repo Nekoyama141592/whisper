@@ -11,13 +11,13 @@ class BookmarkButton extends ConsumerWidget {
   const BookmarkButton({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.bookmarkedPostIds,
     required this.bookmarks
   }) : super(key: key);
   
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final List bookmarkedPostIds;
   final List bookmarks;
   @override  
@@ -26,11 +26,11 @@ class BookmarkButton extends ConsumerWidget {
     final postFuturesModel = watch(postsFeaturesProvider);
 
    
-        final List postBookmarks = currentSongDoc['bookmarks'];
+        final List postBookmarks = currentSongMap['bookmarks'];
         final bookmarksCount = postBookmarks.length;
         final plusOneCount = bookmarksCount + 1;
         return 
-        bookmarkedPostIds.contains(currentSongDoc['postId']) ?
+        bookmarkedPostIds.contains(currentSongMap['postId']) ?
         Row(
           children: [
             InkWell(
@@ -39,11 +39,11 @@ class BookmarkButton extends ConsumerWidget {
                 color: Theme.of(context).highlightColor,
               ),
               onTap: () async {
-                await postFuturesModel.unbookmark(bookmarkedPostIds, currentUserDoc, currentSongDoc, bookmarks);
+                await postFuturesModel.unbookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
               }, 
             ),
             SizedBox(width: 5.0),
-            if(currentUserDoc['uid'] == currentSongDoc['uid']) Text(
+            if(currentUserDoc['uid'] == currentSongMap['uid']) Text(
               plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
               style: TextStyle(color: Theme.of(context).highlightColor)
             )
@@ -54,11 +54,11 @@ class BookmarkButton extends ConsumerWidget {
             InkWell(
               child: Icon(Icons.bookmark_border),
               onTap: () async {
-                await postFuturesModel.bookmark(bookmarkedPostIds, currentUserDoc, currentSongDoc, bookmarks);
+                await postFuturesModel.bookmark(bookmarkedPostIds, currentUserDoc, currentSongMap, bookmarks);
               }, 
             ),
             SizedBox(width: 5.0),
-            if(currentUserDoc['uid'] == currentSongDoc['uid']) Text(
+            if(currentUserDoc['uid'] == currentSongMap['uid']) Text(
               bookmarksCount >= 10000 ? (bookmarksCount/1000.floor()/10).toString() + '万' :  bookmarksCount.toString(),
             )
           ],

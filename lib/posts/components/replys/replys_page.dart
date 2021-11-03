@@ -15,14 +15,14 @@ class ReplysPage extends StatelessWidget {
   const ReplysPage({
     Key? key,
     required this.replysModel,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.currentUserDoc,
     required this.thisComment,
     required this.mainModel
   }) : super(key: key);
 
   final ReplysModel replysModel;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
   final MainModel mainModel;
@@ -35,7 +35,7 @@ class ReplysPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_comment),
         onPressed: () {
-          replysModel.onAddReplyButtonPressed(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+          replysModel.onAddReplyButtonPressed(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
         },
       ),
       body: SafeArea(

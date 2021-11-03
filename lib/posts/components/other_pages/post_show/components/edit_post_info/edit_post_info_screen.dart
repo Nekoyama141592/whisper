@@ -16,12 +16,12 @@ class EditPostInfoScreen extends StatelessWidget {
   const EditPostInfoScreen({
     Key? key,
     required this.currentUserDoc,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.editPostInfoModel
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final EditPostInfoModel editPostInfoModel;
   @override 
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class EditPostInfoScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
     final postTitleController = TextEditingController(text: editPostInfoModel.postTitle);
-    final String imageURL = currentSongDoc['imageURL'];
-    final String userImageURL = currentSongDoc['userImageURL'];
+    final String imageURL = currentSongMap['imageURL'];
+    final String userImageURL = currentSongMap['userImageURL'];
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
 
     return Scaffold(
@@ -64,7 +64,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       verticalPadding: 10, 
                       horizontalPadding: 5, 
                       press: () async  {
-                        await editPostInfoModel.updatePostInfo(currentSongDoc,currentUserDoc,context);
+                        await editPostInfoModel.updatePostInfo(currentSongMap,currentUserDoc,context);
                       },
                       textColor: Colors.white, 
                       buttonColor: Theme.of(context).highlightColor
@@ -115,7 +115,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     editPostInfoModel.postTitle = text;
                   },
                   decoration: InputDecoration(
-                    hintText: currentSongDoc['title'],
+                    hintText: currentSongMap['title'],
                     hintStyle: TextStyle(fontWeight: FontWeight.bold)
                   ),
                 )

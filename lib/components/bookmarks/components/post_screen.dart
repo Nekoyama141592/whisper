@@ -55,7 +55,7 @@ class PostScreen extends ConsumerWidget {
               context,
               bookmarksModel.speedNotifier,
               () async { await bookmarksModel.speedControll(); },
-              bookmarksModel.currentSongDocNotifier, 
+              bookmarksModel.currentSongMapNotifier, 
               bookmarksModel.progressNotifier, 
               bookmarksModel.seek, 
               bookmarksModel.repeatButtonNotifier, 
@@ -69,7 +69,7 @@ class PostScreen extends ConsumerWidget {
               () { bookmarksModel.onNextSongButtonPressed(); },
               () {
                 bookmarksModel.pause();
-                routes.toCommentsPage(context, () { bookmarksModel.showSortDialogue(context); }, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapCommentsNotifier, bookmarksModel.currentSongDocNotifier, mainModel);
+                routes.toCommentsPage(context, () { bookmarksModel.showSortDialogue(context); }, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapCommentsNotifier, bookmarksModel.currentSongMapNotifier, mainModel);
               },
               () {
                 bookmarksModel.pause();
@@ -81,7 +81,7 @@ class PostScreen extends ConsumerWidget {
           }, 
           progressNotifier: bookmarksModel.progressNotifier, 
           seek: bookmarksModel.seek, 
-          currentSongDocNotifier: bookmarksModel.currentSongDocNotifier ,
+          currentSongMapNotifier: bookmarksModel.currentSongMapNotifier ,
           playButtonNotifier: bookmarksModel.playButtonNotifier, 
           play: () { bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
           pause: () { bookmarksModel.pause(); }, 

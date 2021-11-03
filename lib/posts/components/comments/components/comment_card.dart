@@ -1,13 +1,12 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
-import 'package:whisper/posts/components/replys/components/reply_card/components/show_replys_button.dart';
+import 'package:whisper/posts/components/comments/components/show_replys_button.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -21,14 +20,14 @@ class CommentCard extends ConsumerWidget {
     required this.comment,
     required this.commentsModel,
     required this.replysModel,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.mainModel
   }): super(key: key);
   
   final Map<String,dynamic> comment;
   final CommentsModel commentsModel;
   final ReplysModel replysModel;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context,ScopedReader watch) {
@@ -98,8 +97,8 @@ class CommentCard extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
-                      if(comment['uid'] == currentSongDoc['uid'] ) ShowReplyButton(replysModel: replysModel, currentSongDoc: currentSongDoc, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
+                      CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
+                      if(comment['uid'] == currentSongMap['uid'] ) ShowReplyButton(replysModel: replysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
                     ],
                   )
                 ]

@@ -16,12 +16,12 @@ class PostsFutures extends ChangeNotifier{
   String comment = '';
   bool isLoading = false;
 
-  Future like(List<dynamic> likedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
-    final String postId = currentSongDoc['postId'];
+  Future like(List<dynamic> likedPostIds,DocumentSnapshot currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
+    final String postId = currentSongMap['postId'];
     addPostIdToLikedPostIds(likedPostIds, postId);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await addLikesToPost(currentUserDoc, newCurrentSongDoc);
-    await addLikesToCurrentUser(currentUserDoc, currentSongDoc,likes);
+    await addLikesToCurrentUser(currentUserDoc, currentSongMap,likes);
   }
 
   void addPostIdToLikedPostIds(List<dynamic> likedPostIds,String postId) {
@@ -54,10 +54,10 @@ class PostsFutures extends ChangeNotifier{
     }
   }
   
-  Future addLikesToCurrentUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
+  Future addLikesToCurrentUser(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
     try{
       final Map<String, dynamic> map = {
-        'likedPostId': currentSongDoc['postId'],
+        'likedPostId': currentSongMap['postId'],
         'createdAt': Timestamp.now(),
       };
       likes.add(map);
@@ -73,12 +73,12 @@ class PostsFutures extends ChangeNotifier{
     }
   }
 
-  Future bookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
-    final postId = currentSongDoc['postId'];
+  Future bookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
+    final postId = currentSongMap['postId'];
     addPostIdTobookmarkedPostIds(bookmarkedPostIds, postId);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await addBookmarksToPost(currentUserDoc, newCurrentSongDoc);
-    await addBookmarksToUser(currentUserDoc, currentSongDoc,bookmarks);
+    await addBookmarksToUser(currentUserDoc, currentSongMap,bookmarks);
   }
 
   void addPostIdTobookmarkedPostIds(List<dynamic> bookmarkedPostIds,String postId) {
@@ -111,10 +111,10 @@ class PostsFutures extends ChangeNotifier{
     }
   }
 
-  Future addBookmarksToUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+  Future addBookmarksToUser(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
     try{
       final Map<String, dynamic> map = {
-        'postId': currentSongDoc['postId'],
+        'postId': currentSongMap['postId'],
         'createdAt': Timestamp.now(),
       };
       bookmarks.add(map);
@@ -129,12 +129,12 @@ class PostsFutures extends ChangeNotifier{
     }
   }
 
-  Future unbookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
-    final postId = currentSongDoc['postId'];
+  Future unbookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
+    final postId = currentSongMap['postId'];
     removePostIdFrombookmarkedPostIds(bookmarkedPostIds, postId);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await removeBookmarksOfPost(currentUserDoc, newCurrentSongDoc);
-    await removeBookmarksOfUser(currentUserDoc, currentSongDoc, bookmarks);
+    await removeBookmarksOfUser(currentUserDoc, currentSongMap, bookmarks);
   }
 
   void removePostIdFrombookmarkedPostIds(List<dynamic> bookmarkedPostIds,String postId) {
@@ -163,9 +163,9 @@ class PostsFutures extends ChangeNotifier{
     }
   }
 
-  Future removeBookmarksOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,List<dynamic> bookmarks) async {
+  Future removeBookmarksOfUser(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
     try{
-      bookmarks.removeWhere((bookmark) => bookmark['postId'] == currentSongDoc['postId']);
+      bookmarks.removeWhere((bookmark) => bookmark['postId'] == currentSongMap['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -177,12 +177,12 @@ class PostsFutures extends ChangeNotifier{
     }
   }
 
-   Future unlike(List<dynamic> likedPostIds,DocumentSnapshot currentUserDoc, DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
-    final postId = currentSongDoc['postId']; 
+   Future unlike(List<dynamic> likedPostIds,DocumentSnapshot currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
+    final postId = currentSongMap['postId']; 
     removePostIdFromLikedPostIds(likedPostIds, postId);
-    final newCurrentSongDoc = await getNewCurrentSongDoc(currentSongDoc);
+    final newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await removeLikeOfPost(currentUserDoc, newCurrentSongDoc);
-    await removeLikeOfUser(currentUserDoc, currentSongDoc,likes);
+    await removeLikeOfUser(currentUserDoc, currentSongMap,likes);
   }
 
   void removePostIdFromLikedPostIds(List<dynamic> likedPostIds,String postId) {
@@ -212,9 +212,9 @@ class PostsFutures extends ChangeNotifier{
     }
   }
   
-  Future removeLikeOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot currentSongDoc,List<dynamic> likes) async {
+  Future removeLikeOfUser(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
     try{
-      likes.removeWhere((like) => like['likedPostId'] == currentSongDoc['postId']);
+      likes.removeWhere((like) => like['likedPostId'] == currentSongMap['postId']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -230,10 +230,10 @@ class PostsFutures extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future getNewCurrentSongDoc(DocumentSnapshot currentSongDoc) async {
+  Future getNewCurrentSongDoc(Map<String,dynamic> currentSongMap) async {
     DocumentSnapshot newCurrentSongDoc = await FirebaseFirestore.instance
     .collection('posts')
-    .doc(currentSongDoc.id)
+    .doc(currentSongMap['postId'])
     .get();
     return newCurrentSongDoc;
   }

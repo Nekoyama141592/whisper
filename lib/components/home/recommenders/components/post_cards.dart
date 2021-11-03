@@ -20,7 +20,7 @@ class PostCards extends StatelessWidget {
     required this.route,
     required this.progressNotifier,
     required this.seek,
-    required this.currentSongDocNotifier,
+    required this.currentSongMapNotifier,
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
@@ -41,7 +41,7 @@ class PostCards extends StatelessWidget {
   final void Function()? route;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final PlayButtonNotifier playButtonNotifier;
   final void Function()? play;
   final void Function()? pause;
@@ -84,7 +84,7 @@ class PostCards extends StatelessWidget {
           route: route, 
           progressNotifier: progressNotifier, 
           seek: seek, 
-          currentSongDocNotifier: currentSongDocNotifier, 
+          currentSongMapNotifier: currentSongMapNotifier, 
           playButtonNotifier: playButtonNotifier, 
           play: play, 
           pause: pause, 

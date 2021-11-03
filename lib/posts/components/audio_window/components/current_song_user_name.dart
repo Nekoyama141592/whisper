@@ -1,26 +1,24 @@
 // material
 import 'package:flutter/cupertino.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CurrentSongUserName extends StatelessWidget {
   
   const CurrentSongUserName({
     Key? key,
-    required this.currentSongDocNotifier
+    required this.currentSongMapNotifier
   }) : super(key: key);
 
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   
   @override
   
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier, 
-      builder: (_, currentSongDoc, __) {
+    return ValueListenableBuilder<Map<String,dynamic>>(
+      valueListenable: currentSongMapNotifier, 
+      builder: (_, currentSongMap, __) {
         return Text(
-          currentSongDoc!['userName'], 
+          currentSongMap['userName'], 
           style: TextStyle(
             fontSize: 20
           ),

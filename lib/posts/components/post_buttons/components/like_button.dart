@@ -10,13 +10,13 @@ class LikeButton extends ConsumerWidget {
   
   const LikeButton({
     required this.currentUserDoc,
-    required this.currentSongDoc,
+    required this.currentSongMap,
     required this.likedPostIds,
     required this.likes
   });
   
   final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot currentSongDoc;
+  final Map<String,dynamic> currentSongMap;
   final List likedPostIds;
   final List likes;
   
@@ -24,12 +24,12 @@ class LikeButton extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
     
-        final List<dynamic> likes = currentSongDoc['likes'];
+        final List<dynamic> likes = currentSongMap['likes'];
         final likesCount = likes.length;
         final plusOneCount = likes.length + 1;
         return
         Container(
-          child: likedPostIds.contains(currentSongDoc['postId']) ?
+          child: likedPostIds.contains(currentSongMap['postId']) ?
           Row(
             children: [
               InkWell(
@@ -38,7 +38,7 @@ class LikeButton extends ConsumerWidget {
                   color: Colors.red
                 ),
                 onTap: () async {
-                  await postFuturesModel.unlike(likedPostIds, currentUserDoc, currentSongDoc, likes);
+                  await postFuturesModel.unlike(likedPostIds, currentUserDoc, currentSongMap, likes);
                 },
               ),
               SizedBox(width: 5.0),
@@ -53,7 +53,7 @@ class LikeButton extends ConsumerWidget {
               InkWell(
                 child: Icon(Icons.favorite),
                 onTap: () async {
-                  await postFuturesModel.like(likedPostIds, currentUserDoc, currentSongDoc, likes);
+                  await postFuturesModel.like(likedPostIds, currentUserDoc, currentSongMap, likes);
                 },
               ),
               SizedBox(width: 5.0),

@@ -87,15 +87,15 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,BuildContext context) async {
-    final String currentSongDocImageURL = currentSongDoc['imageURL'];
-    final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongDoc['userImageURL'];
+  Future updatePostInfo(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,BuildContext context) async {
+    final String currentSongDocImageURL = currentSongMap['imageURL'];
+    final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongMap['userImageURL'];
     final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
     
     try{
       await FirebaseFirestore.instance
       .collection('posts')
-      .doc(currentSongDoc.id)
+      .doc(currentSongMap['postId'])
       .update({
         'title': postTitle,
         'imageURL': imageURL,

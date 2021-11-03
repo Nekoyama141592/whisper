@@ -15,14 +15,14 @@ import 'package:whisper/posts/components/other_pages/post_show/components/edit_p
 class PostButtons extends StatelessWidget {
 
   const PostButtons({
-    required this.currentSongDocNotifier,
+    required this.currentSongMapNotifier,
     required this.toCommentsPage,
     required this.toEditingMode,
     required this.mainModel,
     required this.editPostInfoModel
   });
 
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final void Function()? toCommentsPage;
   final void Function()? toEditingMode;
   final MainModel mainModel;
@@ -30,17 +30,17 @@ class PostButtons extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<DocumentSnapshot?>(
-      valueListenable: currentSongDocNotifier,
-      builder: (_,currentSongDoc,__) {
+    return ValueListenableBuilder<Map<String,dynamic>>(
+      valueListenable: currentSongMapNotifier,
+      builder: (_,currentSongMap,__) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc!, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
-            BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongDoc: currentSongDoc, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
-            CommentButton(currentSongDoc: currentSongDoc,mainModel: mainModel,toCommentsPage: toCommentsPage),
-            if (mainModel.currentUserDoc['uid'] == currentSongDoc['uid']) EditButton(currentSongDoc: currentSongDoc, toEditingMode: toEditingMode,),
-            if (currentSongDoc['link'].isNotEmpty) RedirectToUrlButton(currentSongDoc: currentSongDoc,)
+            LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
+            BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
+            CommentButton(currentSongMap: currentSongMap,mainModel: mainModel,toCommentsPage: toCommentsPage),
+            if (mainModel.currentUserDoc['uid'] == currentSongMap['uid']) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),
+            if (currentSongMap['link'].isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap,)
           ],
         );
       }

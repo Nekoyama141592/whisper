@@ -6,7 +6,6 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:whisper/components/search/post_search/components/replys/search_replys_model.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 // components
@@ -48,24 +47,24 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onAddReplyButtonPressed(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
-    final String commentsState = currentSongDoc['commentsState'];
+  void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+    final String commentsState = currentSongMap['commentsState'];
     final List<dynamic> followerUids = currentUserDoc['followerUids'];
     reply = '';
     switch(commentsState){
       case 'open':
-      showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+      showMakeReplyDialogue(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
       break;
       case 'isLocked':
-      if (currentSongDoc['uid'] == currentUserDoc['uid']) {
-        showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+      if (currentSongMap['uid'] == currentUserDoc['uid']) {
+        showMakeReplyDialogue(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リプライは投稿主しかできません')));
       }
       break;
       case 'onlyFollowingUsers':
-      if (followerUids.contains(currentSongDoc['uid'])) {
-        showMakeReplyDialogue(context, currentSongDoc, replyEditingController, currentUserDoc, thisComment);
+      if (followerUids.contains(currentSongMap['uid'])) {
+        showMakeReplyDialogue(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('投稿主がフォローしている人しかリプライできません')));
       }
@@ -73,7 +72,7 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  void showMakeReplyDialogue(BuildContext context,DocumentSnapshot currentSongDoc,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+  void showMakeReplyDialogue(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
     showDialog(
       context: context, 
       builder: (_) {
@@ -106,7 +105,7 @@ class ReplysModel extends ChangeNotifier {
               horizontalPadding: 10.0, 
               press: () async { 
                 Navigator.pop(context);
-                await makeReply(currentSongDoc, currentUserDoc, thisComment);
+                await makeReply(currentSongMap, currentUserDoc, thisComment);
               }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
@@ -252,12 +251,12 @@ class ReplysModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future makeReply(DocumentSnapshot currentSongDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
+  Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
     final commentId = thisComment['commentId'];
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final map = makeReplyMap(commentId, currentUserDoc);
     await addReplyToFirestore(map);
-    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongDoc['userDocId']);
+    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
     await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc, currentUserDoc, thisComment);
   }
 

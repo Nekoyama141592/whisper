@@ -29,7 +29,7 @@ class RecommendersModel extends ChangeNotifier {
   late DocumentSnapshot currentUserDoc;
 
   // notifiers
-  final currentSongDocNotifier = ValueNotifier<DocumentSnapshot?>(null);
+  final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final currentSongMapCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
@@ -488,8 +488,8 @@ class RecommendersModel extends ChangeNotifier {
       // update current song doc
       final currentItem = sequenceState.currentSource;
       final DocumentSnapshot<Map<String,dynamic>>? currentSongDoc = currentItem?.tag;
-      currentSongDocNotifier.value = currentSongDoc;
-      currentSongMapCommentsNotifier.value = currentSongDoc!.data()!['comments'];
+      currentSongMapNotifier.value = currentSongDoc!.data() as Map<String,dynamic>;
+      currentSongMapCommentsNotifier.value = currentSongDoc.data()!['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       // playlist.map((item) {

@@ -38,7 +38,7 @@ class RecommendersPage extends ConsumerWidget {
             context,
             recommendersModel.speedNotifier,
             () async { await recommendersModel.speedControll(); },
-            recommendersModel.currentSongDocNotifier, 
+            recommendersModel.currentSongMapNotifier, 
             recommendersModel.progressNotifier, 
             recommendersModel.seek, 
             recommendersModel.repeatButtonNotifier, 
@@ -52,7 +52,7 @@ class RecommendersPage extends ConsumerWidget {
             () { recommendersModel.onNextSongButtonPressed(); },
             () {
               recommendersModel.pause();
-              routes.toCommentsPage(context, () { recommendersModel.showSortDialogue(context); }, recommendersModel.audioPlayer, recommendersModel.currentSongMapCommentsNotifier, recommendersModel.currentSongDocNotifier, mainModel);
+              routes.toCommentsPage(context, () { recommendersModel.showSortDialogue(context); }, recommendersModel.audioPlayer, recommendersModel.currentSongMapCommentsNotifier, recommendersModel.currentSongMapNotifier, mainModel);
             },
             () {
               recommendersModel.pause();
@@ -64,7 +64,7 @@ class RecommendersPage extends ConsumerWidget {
         },  
         progressNotifier: recommendersModel.progressNotifier, 
         seek: recommendersModel.seek, 
-        currentSongDocNotifier: recommendersModel.currentSongDocNotifier ,
+        currentSongMapNotifier: recommendersModel.currentSongMapNotifier ,
         playButtonNotifier: recommendersModel.playButtonNotifier, 
         play: () { recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
         pause: () { recommendersModel.pause(); }, 

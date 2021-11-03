@@ -20,7 +20,7 @@ class AudioStateDesign extends StatelessWidget {
     required this.speedControll,
     required this.bookmarkedPostIds,
     required this.likedPostIds,
-    required this.currentSongDocNotifier,
+    required this.currentSongMapNotifier,
     required this.progressNotifier,
     required this.seek,
     required this.repeatButtonNotifier,
@@ -38,7 +38,7 @@ class AudioStateDesign extends StatelessWidget {
   final void Function()? speedControll;
   final List bookmarkedPostIds;
   final List likedPostIds;
-  final ValueNotifier<DocumentSnapshot?> currentSongDocNotifier;
+  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
   final RepeatButtonNotifier repeatButtonNotifier;
@@ -59,7 +59,7 @@ class AudioStateDesign extends StatelessWidget {
         children: [
           AudioControllButtons(speedControll: speedControll,speedNotifier: speedNotifier,repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed),
           AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
-          CurrentSongTitle(currentSongDocNotifier: currentSongDocNotifier)
+          CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier)
         ],
       ),
     );
