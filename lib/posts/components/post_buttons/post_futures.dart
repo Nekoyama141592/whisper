@@ -250,9 +250,20 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid) async {
+    blockingUids.add(passiveUid);
+    notifyListeners();
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'blocingUids': blockingUids,
+    }); 
+  }
+
   Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
     mutesUids.add(uid);
-    postDocs.removeWhere((feedDoc) => feedDoc['uid'] == uid);
+    postDocs.removeWhere((postDoc) => postDoc['uid'] == uid);
     await resetAudioPlayer(i,afterUris,postDocs,audioPlayer);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -260,6 +271,19 @@ class PostFutures extends ChangeNotifier{
     .doc(currentUserDoc.id)
     .update({
       'mutesUids': mutesUids,
+    }); 
+  }
+
+  Future blockUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+    blockingUids.add(passiveUid);
+    postDocs.removeWhere((postDoc) => postDoc['uid'] == passiveUid);
+    await resetAudioPlayer(i, afterUris, postDocs, audioPlayer);
+    notifyListeners();
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'blocingUids': blockingUids,
     }); 
   }
 
@@ -286,17 +310,6 @@ class PostFutures extends ChangeNotifier{
     mutesCommentIds.add(commentId);
     notifyListeners();
     await prefs.setStringList('mutesCommentIds', mutesCommentIds);
-  }
-
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid) async {
-    blockingUids.add(passiveUid);
-    notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .update({
-      'blocingUids': blockingUids,
-    }); 
   }
 
 }

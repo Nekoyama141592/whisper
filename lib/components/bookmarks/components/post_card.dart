@@ -71,7 +71,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.block,
             onTap: () async {
-              await bookmarksModel.blockUser(mainModel.currentUserDoc,mainModel.blockingUids, postDoc['uid'],i);
+              await postFutures.blockUserFromPost(mainModel.currentUserDoc,mainModel.blockingUids,postDoc['uid'],i,bookmarksModel.bookmarkedDocs,bookmarksModel.afterUris,bookmarksModel.audioPlayer);
             },
           ),
         ] : deleteIcon,

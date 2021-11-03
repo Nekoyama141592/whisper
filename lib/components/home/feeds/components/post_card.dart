@@ -70,7 +70,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.block,
             onTap: () async {
-              await feedsModel.blockUser(mainModel.currentUserDoc,mainModel.blockingUids, postDoc['uid'],i);
+              await postFutures.blockUserFromPost(mainModel.currentUserDoc,mainModel.blockingUids,postDoc['uid'],i,feedsModel.feedDocs,feedsModel.afterUris,feedsModel.audioPlayer);
             },
           ),
         ] : deleteIcon,

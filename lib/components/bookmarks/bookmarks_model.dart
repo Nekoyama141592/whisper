@@ -195,19 +195,6 @@ class BookmarksModel extends ChangeNotifier {
     bookmarkedDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
     await resetAudioPlayer(i);
   }
-
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
-    blockingUids.add(uid);
-    bookmarkedDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['uid'] == uid);
-    await resetAudioPlayer(i);
-    notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .update({
-      'blocingUids': blockingUids,
-    }); 
-  }
   
   Future onRefresh() async {
     await getNewBookmarks();
