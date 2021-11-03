@@ -179,6 +179,7 @@ class SignupModel extends ChangeNotifier {
       'mutesUids': [],
       'readPosts': [],
       'replyNotifications': [],
+      'score': 100,
       'subUserName': uid,
       'uid' : uid,
       'updatedAt': Timestamp.now(),

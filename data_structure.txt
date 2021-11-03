@@ -140,6 +140,7 @@ db{
             userName: String,
             userImageURL: String,
         }],
+        score: int,
         subUserName: String,
         uid: String,
         updatedAt: String,
