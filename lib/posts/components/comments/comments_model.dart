@@ -107,7 +107,11 @@ class CommentsModel extends ChangeNotifier {
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
-      await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
+      final List<dynamic> mutesUids = passiveUserDoc['mutesUids'];
+      final List<dynamic> blockingUids = passiveUserDoc['blockingUids'];
+      if (!mutesUids.contains(currentUserDoc['uid']) && blockingUids.contains(currentUserDoc['uid'])) {
+        await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
+      }
     }
   }
 

@@ -258,8 +258,12 @@ class ReplysModel extends ChangeNotifier {
     final map = makeReplyMap(elementId, currentUserDoc);
     await addReplyToFirestore(map);
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
-        final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
-      await updateReplyNotificationsOfPassiveUser(elementId, passiveUserDoc, currentUserDoc, thisComment);
+      final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
+      final List<dynamic> mutesUids = passiveUserDoc['mutesUids'];
+      final List<dynamic> blockingUids = passiveUserDoc['blockingUids'];
+      if (!mutesUids.contains(currentUserDoc['uid']) && blockingUids.contains(currentUserDoc['uid'])) {
+        await updateReplyNotificationsOfPassiveUser(elementId, passiveUserDoc, currentUserDoc, thisComment);
+      }
     }
   }
 
