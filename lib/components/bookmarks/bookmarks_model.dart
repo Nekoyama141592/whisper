@@ -186,14 +186,10 @@ class BookmarksModel extends ChangeNotifier {
 
   Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
     mutesPostIds.add(postId);
-    await removeUserShowDoc(postId,i);
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-
-  Future removeUserShowDoc(String postId,int i) async {
     bookmarkedDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
     await resetAudioPlayer(i);
+    notifyListeners();
+    await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
   
   Future onRefresh() async {
