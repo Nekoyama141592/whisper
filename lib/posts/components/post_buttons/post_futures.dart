@@ -297,8 +297,8 @@ class PostFutures extends ChangeNotifier{
 
    Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<DocumentSnapshot> postDocs,AudioPlayer audioPlayer) async {
     afterUris = [];
-    postDocs.forEach((DocumentSnapshot? doc) {
-      Uri song = Uri.parse(doc!['audioURL']);
+    postDocs.forEach((DocumentSnapshot doc) {
+      Uri song = Uri.parse(doc['audioURL']);
       UriAudioSource source = AudioSource.uri(song, tag: doc);
       afterUris.add(source);
     });
