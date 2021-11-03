@@ -168,6 +168,7 @@ class SignupModel extends ChangeNotifier {
       'isOfficial': false,
       'isSubAdmin': false,
       'isSubscribed': false,
+      'language': ,
       'likedComments': [],
       'likeNotifications': [],
       'likedReplys': [],

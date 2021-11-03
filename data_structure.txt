@@ -103,6 +103,7 @@ db{
         isOfficial: bool,
         isSubAdmin: bool,
         isSubscribed: bool,
+        language: String ja:en,
         likedComments:[{
             commentId: String,
             createdAt: TimeStamp,
