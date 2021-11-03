@@ -104,8 +104,11 @@ class CommentsModel extends ChangeNotifier {
     final newCommentMap = makeCommentMap(currentUserDoc, currentSongMap,currentSongMapCommentsNotifier);
     final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
     await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc,newCommentMap);
-    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
-    await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
+    // notification
+    if (currentSongMap['uid'] != currentUserDoc['uid']) {
+      final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
+      await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
+    }
   }
 
   Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {

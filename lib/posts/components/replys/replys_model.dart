@@ -256,8 +256,10 @@ class ReplysModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final map = makeReplyMap(commentId, currentUserDoc);
     await addReplyToFirestore(map);
-    final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
-    await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc, currentUserDoc, thisComment);
+    if (currentSongMap['uid'] != currentUserDoc['uid']) {
+        final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
+      await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc, currentUserDoc, thisComment);
+    }
   }
 
   Map<String,dynamic> makeReplyMap(String commentId,DocumentSnapshot currentUserDoc) {
