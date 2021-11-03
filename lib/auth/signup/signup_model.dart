@@ -86,7 +86,7 @@ class SignupModel extends ChangeNotifier {
       ],
       androidUiSettings: const AndroidUiSettings(
         toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
+        toolbarColor: kTertiaryColor,
         toolbarWidgetColor: Colors.white,
         // initAspectRatio: CropAspectRatioPreset.original,
         initAspectRatio: CropAspectRatioPreset.square,
