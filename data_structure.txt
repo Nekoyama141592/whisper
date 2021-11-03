@@ -120,9 +120,11 @@ db{
             likedPostId: String,
         }],
         link: String,
-        mutesUids:[
-            String
-        ],
+        mutesReplyIds: List<String>,
+        mutesUids: List<String>,
+        mutesCommentIds: List<String>,
+        mutesPostIds: List<String>,
+        readNotificationIds: [ String ]
         readPosts: [{
             'createdAt': TimeStamp,
             'postId': String
