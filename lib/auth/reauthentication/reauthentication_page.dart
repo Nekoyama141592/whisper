@@ -30,6 +30,11 @@ class ReauthenticationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('認証ページ'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15.0)
+          )
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

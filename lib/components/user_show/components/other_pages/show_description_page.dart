@@ -13,7 +13,14 @@ class ShowDescriptionPage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('description')),
+      appBar: AppBar(
+        title: Text('自己紹介'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(15.0)
+          )
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
