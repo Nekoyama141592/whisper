@@ -63,7 +63,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await bookmarksModel.mutePost(mainModel.mutesPostIds,postDoc['postId'], mainModel.prefs,i);
+              await postFutures.mutePost(mainModel.mutesPostIds,postDoc['postId'],mainModel.prefs,i, bookmarksModel.bookmarkedDocs,bookmarksModel.afterUris, bookmarksModel.audioPlayer);
             },
           ),
           IconSlideAction(

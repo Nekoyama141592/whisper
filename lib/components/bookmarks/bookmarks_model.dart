@@ -170,28 +170,6 @@ class BookmarksModel extends ChangeNotifier {
     ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
-
-  Future resetAudioPlayer(int i) async {
-    afterUris = [];
-    bookmarkedDocs.forEach((DocumentSnapshot? doc) {
-      Uri song = Uri.parse(doc!['audioURL']);
-      UriAudioSource source = AudioSource.uri(song, tag: doc);
-      afterUris.add(source);
-    });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: i);
-    } 
-  }
-
-  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
-    mutesPostIds.add(postId);
-    bookmarkedDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
-    await resetAudioPlayer(i);
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-  
   Future onRefresh() async {
     await getNewBookmarks();
     notifyListeners();

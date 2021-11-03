@@ -287,6 +287,14 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
+  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i,List<DocumentSnapshot> postDocs,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+    mutesPostIds.add(postId);
+    postDocs.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
+    await resetAudioPlayer(i, afterUris, postDocs, audioPlayer);
+    notifyListeners();
+    await prefs.setStringList('mutesPostIds', mutesPostIds);
+  }
+
    Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<DocumentSnapshot> postDocs,AudioPlayer audioPlayer) async {
     afterUris = [];
     postDocs.forEach((DocumentSnapshot? doc) {

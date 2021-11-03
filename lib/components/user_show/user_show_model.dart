@@ -267,27 +267,6 @@ class UserShowModel extends ChangeNotifier {
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
 
-  Future resetAudioPlayer(int i) async {
-    afterUris = [];
-    userShowDocs.forEach((DocumentSnapshot? doc) {
-      Uri song = Uri.parse(doc!['audioURL']);
-      UriAudioSource source = AudioSource.uri(song, tag: doc);
-      afterUris.add(source);
-    });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: i);
-    } 
-  }
-
-  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
-    mutesPostIds.add(postId);
-    userShowDocs.removeWhere((userShowDoc) => userShowDoc['postId'] == postId);
-    await resetAudioPlayer(i);
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-
   Future onRefresh() async {
     await getNewUserShowPosts();
     notifyListeners();
