@@ -163,6 +163,7 @@ class SignupModel extends ChangeNotifier {
       'gender': gender,
       'imageURL': imageURL,
       'isAdmin': false,
+      'isKeyAccount': false,
       'isNFTicon': false,
       'isOfficial': false,
       'isSubAdmin': false,

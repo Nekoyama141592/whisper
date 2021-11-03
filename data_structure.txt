@@ -99,6 +99,7 @@ db{
         imageURL: String,
         isAdmin: bool,
         isNFTicon: bool,
+        isKeyAccount: bool,
         isOfficial: bool,
         isSubAdmin: bool,
         isSubscribed: bool,
