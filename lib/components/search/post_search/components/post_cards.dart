@@ -35,7 +35,7 @@ class PostCards extends ConsumerWidget {
     return results.isEmpty ?
     Column(
       children: [
-        SizedBox(height: size.height * 0.16,),
+        SizedBox(height: size.height * 0.16),
         Nothing(),
       ],
     )
