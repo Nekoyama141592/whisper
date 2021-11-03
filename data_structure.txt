@@ -51,7 +51,7 @@ db{
         userName: String
     }
     replys{
-        commentId: String,
+        elementId: String,
         createdAt: TimeStamp,
         ipv6: String
         isNFTicon: bool,
@@ -127,7 +127,7 @@ db{
         }]
         replyNotifications: [{
             comment: String,
-            commentId: String,
+            elementId: String,
             createdAt: TimeStamp,
             'isNFTicon': bool,
             'isOfficial':bool

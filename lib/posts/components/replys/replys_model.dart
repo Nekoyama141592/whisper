@@ -129,7 +129,7 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
-                .where('commentId',isEqualTo: thisComment['commentId'])
+                .where('elementId',isEqualTo: thisComment['elementId'])
                 .orderBy('likesUidsCount',descending: true )
                 .limit(refreshIndex)
                 .snapshots();
@@ -149,7 +149,7 @@ class ReplysModel extends ChangeNotifier {
                 sortState = SortState.byNewestFirst;
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
-                .where('commentId',isEqualTo: thisComment['commentId'])
+                .where('elementId',isEqualTo: thisComment['elementId'])
                 .orderBy('createdAt',descending: true)
                 .limit(refreshIndex)
                 .snapshots();
@@ -169,7 +169,7 @@ class ReplysModel extends ChangeNotifier {
                 sortState = SortState.byOldestFirst;
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
-                .where('commentId',isEqualTo: thisComment['commentId'])
+                .where('elementId',isEqualTo: thisComment['elementId'])
                 .orderBy('createdAt',descending: false)
                 .limit(refreshIndex)
                 .snapshots();
@@ -209,7 +209,7 @@ class ReplysModel extends ChangeNotifier {
     try {
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('commentId',isEqualTo: thisComment['commentId'])
+      .where('elementId',isEqualTo: thisComment['elementId'])
       .orderBy('likesUidsCount',descending: true )
       .limit(refreshIndex)
       .snapshots();
@@ -225,7 +225,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byLikedUidsCount:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('commentId',isEqualTo: thisComment['commentId'])
+      .where('elementId',isEqualTo: thisComment['elementId'])
       .orderBy('likesUidsCount',descending: true )
       .limit(refreshIndex)
       .snapshots();
@@ -233,7 +233,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byNewestFirst:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('commentId',isEqualTo: thisComment['commentId'])
+      .where('elementId',isEqualTo: thisComment['elementId'])
       .orderBy('createdAt',descending: true)
       .limit(refreshIndex)
       .snapshots();
@@ -241,7 +241,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byOldestFirst:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('commentId',isEqualTo: thisComment['commentId'])
+      .where('elementId',isEqualTo: thisComment['elementId'])
       .orderBy('createdAt',descending: false)
       .limit(refreshIndex)
       .snapshots();
@@ -252,19 +252,19 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
-    final commentId = thisComment['commentId'];
+    final elementId = thisComment['elementId'];
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final map = makeReplyMap(commentId, currentUserDoc);
+    final map = makeReplyMap(elementId, currentUserDoc);
     await addReplyToFirestore(map);
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
         final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
-      await updateReplyNotificationsOfPassiveUser(commentId, passiveUserDoc, currentUserDoc, thisComment);
+      await updateReplyNotificationsOfPassiveUser(elementId, passiveUserDoc, currentUserDoc, thisComment);
     }
   }
 
-  Map<String,dynamic> makeReplyMap(String commentId,DocumentSnapshot currentUserDoc) {
+  Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot currentUserDoc) {
     final map = {
-      'commentId': commentId,
+      'elementId': elementId,
       'createdAt': Timestamp.now(),
       'ipv6': ipv6,
       'isNFTicon': false,
@@ -301,12 +301,12 @@ class ReplysModel extends ChangeNotifier {
     return passiveUserDoc;
   }
 
-  Future updateReplyNotificationsOfPassiveUser(String commentId,DocumentSnapshot passiveUserDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
+  Future updateReplyNotificationsOfPassiveUser(String elementId,DocumentSnapshot passiveUserDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
 
     final String notificationId = 'replyNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = thisComment['comment'];
     Map<String,dynamic> map = {
-      'commentId': commentId,
+      'elementId': elementId,
       'comment': comment,
       'createdAt': Timestamp.now(),
       'isNFTicon': currentUserDoc['isNFTicon'],
