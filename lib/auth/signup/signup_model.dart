@@ -33,6 +33,8 @@ class SignupModel extends ChangeNotifier {
   final displayGenderNotifier = ValueNotifier<String>('');
   DateTime birthDay = DateTime(1900,10,10);
   final displayBirthDayNotifier = ValueNotifier<DateTime>(DateTime(1900,10,10));
+  String language = '';
+  final displayLanguageNotifier = ValueNotifier<String>('');
   // Checkbox
   final isCheckedNotifier = ValueNotifier<bool>(false);
   // image
@@ -239,6 +241,20 @@ class SignupModel extends ChangeNotifier {
               onPressed: () {
                 gender = 'female';
                 displayGenderNotifier.value = '女性';
+                Navigator.pop(context);
+              }, 
+            ),
+            CupertinoActionSheetAction(
+              child: Text(
+                'その他',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              onPressed: () {
+                gender = 'others';
+                displayGenderNotifier.value = 'その他';
                 Navigator.pop(context);
               }, 
             ),

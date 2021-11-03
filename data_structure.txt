@@ -95,7 +95,7 @@ db{
         followingUids: [
             String
         ],
-        gender: String[male,female,noAnswer],
+        gender: String[male,female,others,noAnswer],
         imageURL: String,
         isAdmin: bool,
         isNFTicon: bool,
