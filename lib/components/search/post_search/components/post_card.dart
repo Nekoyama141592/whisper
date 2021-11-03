@@ -55,7 +55,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await postFutures.muteUser(mainModel.currentUserDoc,mainModel.mutesUids, result['uid']);
+              await postFutures.muteUserFromPost(mainModel.currentUserDoc, mainModel.mutesUids, result['uid'], i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer);
             } ,
           ),
           IconSlideAction(
@@ -63,7 +63,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await postSearchModel.mutePost(mainModel.mutesPostIds,result['postId'], mainModel.prefs,i);
+              await postFutures.mutePost(mainModel.mutesPostIds,result['postId'],mainModel.prefs,i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer);
             },
           ),
           IconSlideAction(
@@ -71,7 +71,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.block,
             onTap: () async {
-              await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, result['uid']);
+              await postFutures.blockUserFromPost(mainModel.currentUserDoc,mainModel.blockingUids,result['uid'],i,postSearchModel.results,postSearchModel.afterUris,postSearchModel.audioPlayer);
             },
           ),
         ] : deleteIcon,
