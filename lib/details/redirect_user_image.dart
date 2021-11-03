@@ -35,12 +35,16 @@ class RedirectUserImage extends ConsumerWidget {
 
     return InkWell(
       onTap: () async {
-        globalModel.isMyShowPageNotifier.value = false;
-        final passiveUserDoc = await FirebaseFirestore.instance
+        final DocumentSnapshot<Map<String, dynamic>>? passiveUserDoc = await FirebaseFirestore.instance
         .collection('users')
         .doc(passiveUserDocId)
         .get();
-        routes.toUserShowPage(context, passiveUserDoc, mainModel);
+        if (passiveUserDoc == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));
+        } else {
+          globalModel.isMyShowPageNotifier.value = false;
+          routes.toUserShowPage(context, passiveUserDoc, mainModel);
+        }
       },
       child: UserImage(padding: padding, length: length, userImageURL: userImageURL)
     );
