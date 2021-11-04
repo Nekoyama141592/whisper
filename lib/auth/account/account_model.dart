@@ -86,24 +86,31 @@ class AccountModel extends ChangeNotifier {
             onPressed: () async {
               final currentUser = FirebaseAuth.instance.currentUser;
               if (currentUser!.uid == currentUserDoc['uid']) {
-                await FirebaseFirestore.instance
-                .collection('users')
-                .doc(currentUserDoc.id)
-                .delete()
-                .then((_) async {
-                  try {
-                    await currentUser.delete();
-                    Navigator.pop(context);
-                    routes.toIsFinishedPage(context, 'ユーザーを消去');
-                  } catch(e) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-                  }
-                });
+                await deleteUserFromFireStoreAndFirebaseAuth(context, currentUserDoc);
               }
             },
           )
         ],
       );
+    });
+  }
+
+  Future deletePostsOfCurrentUser() async {}
+  Future deleteReplysOfCurrentUser() async {}
+  
+  Future deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot currentUserDoc) async {
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .delete()
+    .then((_) async {
+      try {
+        await currentUser!.delete();
+        Navigator.pop(context);
+        routes.toIsFinishedPage(context, 'ユーザーを消去');
+      } catch(e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+      }
     });
   }
 
