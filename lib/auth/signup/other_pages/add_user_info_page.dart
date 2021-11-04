@@ -20,7 +20,9 @@ class AddUserInfoPage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final userNameController = TextEditingController(text: signupModel.userName);
-
+    final buttonWidthRate = 0.30;
+    final buttonVerticalPadding = 20.0;
+    final buttonHorizontalPadding = 0.0;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,9 +59,9 @@ class AddUserInfoPage extends StatelessWidget {
                         children: [
                           RoundedButton(
                             text: '生年月日', 
-                            widthRate: 0.45, 
-                            verticalPadding: 20, 
-                            horizontalPadding: 10, 
+                            widthRate: buttonWidthRate, 
+                            verticalPadding: 20.0, 
+                            horizontalPadding: buttonHorizontalPadding, 
                             press: () {
                              signupModel.showCupertinoDatePicker(context);
                             }, 
@@ -81,9 +83,9 @@ class AddUserInfoPage extends StatelessWidget {
                         children: [
                           RoundedButton(
                             text: '言語', 
-                            widthRate: 0.45, 
-                            verticalPadding: 20, 
-                            horizontalPadding: 10, 
+                            widthRate: buttonWidthRate, 
+                            verticalPadding: buttonVerticalPadding, 
+                            horizontalPadding: buttonHorizontalPadding, 
                             press: () {
                               signupModel.showLanguageCupertinoActionSheet(context);
                             }, 
@@ -103,9 +105,9 @@ class AddUserInfoPage extends StatelessWidget {
                         children: [
                           RoundedButton(
                             text: '性別', 
-                            widthRate: 0.45, 
-                            verticalPadding: 20, 
-                            horizontalPadding: 10, 
+                            widthRate: buttonWidthRate, 
+                            verticalPadding: buttonVerticalPadding, 
+                            horizontalPadding: buttonHorizontalPadding, 
                             press: () {
                               signupModel.showGenderCupertinoActionSheet(context);
                             }, 

@@ -13,6 +13,7 @@ class UserCard extends StatelessWidget {
   const UserCard({
     Key? key,
     required this.userDoc,
+    
     required this.mainModel,
     required this.mutesUsersModel
   }) : super(key: key);
@@ -41,7 +42,7 @@ class UserCard extends StatelessWidget {
               leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['userImageURL']),
               title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
               onTap: () async {
-                mutesUsersModel.unMuteUser(mainModel.mutesUids, userDoc['uid']);
+                mutesUsersModel.unMuteUser(mainModel.mutesUids, userDoc['uid'],mainModel.currentUserDoc);
               },
               subtitle: Text(
                 userDoc['description'],

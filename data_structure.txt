@@ -2,8 +2,10 @@ db{
     nftOwners{
         ethPrice: int,
         link: String,
+        userName; String,
         number: int
         uid: uid,
+        userImageURL: String,
     }
     posts{
         audioURL: String,

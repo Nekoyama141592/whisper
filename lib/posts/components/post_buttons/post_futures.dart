@@ -239,7 +239,7 @@ class PostFutures extends ChangeNotifier{
     return newCurrentSongDoc;
   }
 
-  Future muteUser(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid) async {
+  Future muteUser(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid) async {
     mutesUids.add(uid);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -261,7 +261,7 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<String> mutesUids,String uid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
     // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     mutesUids.add(uid);
     posts.removeWhere((postDoc) => postDoc['uid'] == uid);

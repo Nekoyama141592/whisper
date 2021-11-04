@@ -200,7 +200,7 @@ class PostSearchModel extends ChangeNotifier{
     }); 
   }
 
-  Future search(List<String> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
+  Future search(List<dynamic> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
@@ -221,7 +221,7 @@ class PostSearchModel extends ChangeNotifier{
     }
   }
 
-  Future operation(List<String> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
+  Future operation(List<dynamic> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
     startLoading();
     await search(mutesUids,mutesPostIds,blockingUids);
     listenForStates();

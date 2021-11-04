@@ -84,14 +84,12 @@ class CommentCard extends ConsumerWidget {
                     child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
                   ),
                   Expanded(
-                    child: SizedBox(
-                      child: Column(
-                        children: [
-                          Text(comment['userName']),
-                          SizedBox(height: 10.0,),
-                          Text(comment['comment'])
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        Text(comment['userName']),
+                        SizedBox(height: 10.0,),
+                        Text(comment['comment'])
+                      ],
                     ),
                   ),
                   Row(

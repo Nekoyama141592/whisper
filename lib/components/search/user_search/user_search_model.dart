@@ -23,7 +23,7 @@ class UserSearchModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-  Future operation(List<String> mutesUids,List<dynamic> blockingUids) async {
+  Future operation(List<dynamic> mutesUids,List<dynamic> blockingUids) async {
     startLoading();
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);

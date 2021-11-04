@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:whisper/constants/colors.dart';
-// components
-import 'package:whisper/details/toggle_icon.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -56,7 +53,7 @@ class WhisperDrawer extends StatelessWidget {
           ListTile(
             title: Text('NFTowners'),
             onTap: () {
-              
+              routes.toNFTownersPage(context);
             },
           ),
           ListTile(

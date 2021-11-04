@@ -235,6 +235,20 @@ class SignupModel extends ChangeNotifier {
                 Navigator.pop(context);
               }, 
             ),
+            CupertinoActionSheetAction(
+              child: Text(
+                'English',
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              onPressed: () {
+                language = 'en';
+                displayLanguageNotifier.value = '英語';
+                Navigator.pop(context);
+              }, 
+            ),
           ],
         );
       }

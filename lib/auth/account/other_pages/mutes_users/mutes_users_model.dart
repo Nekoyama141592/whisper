@@ -63,10 +63,14 @@ class MutesUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future unMuteUser(List<String> mutesUids,String passiveUid) async {
+  Future unMuteUser(List<dynamic> mutesUids,String passiveUid,DocumentSnapshot currentUserDoc) async {
     removeMutesUserDoc(passiveUid);
     mutesUids.remove(passiveUid);
-    await prefs.setStringList('mutesUids', mutesUids);
+    await FirebaseFirestore.instance
+    .doc(currentUserDoc.id)
+    .update({
+      'mutesUids': mutesUids,
+    });
   }
 
 }
