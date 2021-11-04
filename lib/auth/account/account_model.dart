@@ -84,8 +84,9 @@ class AccountModel extends ChangeNotifier {
             child: const Text('Ok'),
             isDestructiveAction: true,
             onPressed: () async {
-              final currentUser = FirebaseAuth.instance.currentUser;
               if (currentUser!.uid == currentUserDoc['uid']) {
+                await deletePostsOfCurrentUser();
+                await deleteReplysOfCurrentUser();
                 await deleteUserFromFireStoreAndFirebaseAuth(context, currentUserDoc);
               }
             },
@@ -95,8 +96,51 @@ class AccountModel extends ChangeNotifier {
     });
   }
 
-  Future deletePostsOfCurrentUser() async {}
-  Future deleteReplysOfCurrentUser() async {}
+  Future deletePostsOfCurrentUser() async {
+    await FirebaseFirestore.instance
+    .collection('posts')
+    .where('uid',isEqualTo: currentUser!.uid)
+    .get()
+    .then((qshot) {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      final docs = qshot.docs;
+      int index = 0;
+      docs.forEach((DocumentSnapshot doc) async {
+        if ((index + 1) % 500 == 0) {
+          // commit by 500 and initialize batch instance
+          await batch.commit();
+          batch = FirebaseFirestore.instance.batch();
+        }
+        batch.delete(doc.reference);
+        index++;
+      });
+      // last commit
+      return batch.commit();
+    });
+  }
+  
+  Future deleteReplysOfCurrentUser() async {
+    await FirebaseFirestore.instance
+    .collection('replys')
+    .where('uid',isEqualTo: currentUser!.uid)
+    .get()
+    .then((qshot) {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+      final docs = qshot.docs;
+      int index = 0;
+      docs.forEach((DocumentSnapshot doc) async {
+        if ((index + 1) % 500 == 0) {
+          // commit by 500 and initialize batch instance
+          await batch.commit();
+          batch = FirebaseFirestore.instance.batch();
+        }
+        batch.delete(doc.reference);
+        index++;
+      });
+      // last commit
+      return batch.commit();
+    });
+  }
   
   Future deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot currentUserDoc) async {
     await FirebaseFirestore.instance
