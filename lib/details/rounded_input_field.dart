@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// package
+import 'package:clipboard/clipboard.dart';
 // components
 import 'text_field_container.dart';
 
@@ -23,6 +25,9 @@ class RoundedInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        onTap: () async {
+          await FlutterClipboard.paste();
+        },
         style: TextStyle(
           color: Colors.black,
           fontSize: 20,

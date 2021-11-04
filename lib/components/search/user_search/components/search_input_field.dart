@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// packages
+import 'package:clipboard/clipboard.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 // components
@@ -25,6 +27,9 @@ class SearchInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child:TextField(
+        onTap: () async {
+          await FlutterClipboard.paste();
+        },
         style: TextStyle(
           color: Colors.black,
           fontSize: 20,
