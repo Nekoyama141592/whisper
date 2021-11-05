@@ -45,7 +45,7 @@ service cloud.firestore {
   }
 
   function isValidPost(post) {
-    return post.size() == 24
+    return post.size() == 25
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
