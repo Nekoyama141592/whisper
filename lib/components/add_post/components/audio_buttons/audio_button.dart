@@ -29,7 +29,8 @@ class AudioButton extends StatelessWidget {
           child: Text(
             description,
             style: TextStyle(
-              fontWeight: FontWeight.bold
+              fontWeight: FontWeight.bold,
+              overflow: TextOverflow.ellipsis
             ),
           ),
         )

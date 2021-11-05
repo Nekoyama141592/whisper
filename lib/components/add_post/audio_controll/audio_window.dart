@@ -24,6 +24,7 @@ class AudioWindow extends StatelessWidget {
     
     final size = MediaQuery.of(context).size;
     final audioWindowHeight = size.height * 0.15;
+    final fontSize = 20.0;
     final progressNotifier = addPostModel.progressNotifier;
     final seek = addPostModel.seek;
 
@@ -51,8 +52,10 @@ class AudioWindow extends StatelessWidget {
                     Text(
                       currentUserDoc['userName'],
                       style: TextStyle(
-                        fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     ValueListenableBuilder<String>(
                       valueListenable: addPostModel.postTitleNotifier,
@@ -62,7 +65,8 @@ class AudioWindow extends StatelessWidget {
                           postTitle,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSize
                           ),
                         );
                       }
