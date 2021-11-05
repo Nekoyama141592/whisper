@@ -131,8 +131,7 @@ service cloud.firestore {
 
     match /replys/{replyId} {
       allow create: if isAuthenticated()
-      && isValidReply(request.resource.data)
-      && request.resource.data.uid == request.auth.uid;
+      && isValidReply(request.resource.data);
       allow update: if isAuthenticated()
       && isValidReply(request.resource.data);
       allow read: if isAuthenticated();
