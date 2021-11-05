@@ -130,7 +130,7 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
-                .where('elementId',isEqualTo: thisComment['elementId'])
+                .where('elementId',isEqualTo: thisComment['commentId'])
                 .orderBy('likesUidsCount',descending: true )
                 .limit(refreshIndex)
                 .snapshots();
@@ -150,7 +150,7 @@ class ReplysModel extends ChangeNotifier {
                 sortState = SortState.byNewestFirst;
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
-                .where('elementId',isEqualTo: thisComment['elementId'])
+                .where('elementId',isEqualTo: thisComment['commentId'])
                 .orderBy('createdAt',descending: true)
                 .limit(refreshIndex)
                 .snapshots();
@@ -170,7 +170,7 @@ class ReplysModel extends ChangeNotifier {
                 sortState = SortState.byOldestFirst;
                 replysStream = FirebaseFirestore.instance
                 .collection('replys')
-                .where('elementId',isEqualTo: thisComment['elementId'])
+                .where('elementId',isEqualTo: thisComment['commentId'])
                 .orderBy('createdAt',descending: false)
                 .limit(refreshIndex)
                 .snapshots();
@@ -210,7 +210,7 @@ class ReplysModel extends ChangeNotifier {
     try {
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('elementId',isEqualTo: thisComment['elementId'])
+      .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('likesUidsCount',descending: true )
       .limit(refreshIndex)
       .snapshots();
@@ -226,7 +226,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byLikedUidsCount:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('elementId',isEqualTo: thisComment['elementId'])
+      .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('likesUidsCount',descending: true )
       .limit(refreshIndex)
       .snapshots();
@@ -234,7 +234,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byNewestFirst:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('elementId',isEqualTo: thisComment['elementId'])
+      .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('createdAt',descending: true)
       .limit(refreshIndex)
       .snapshots();
@@ -242,7 +242,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byOldestFirst:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
-      .where('elementId',isEqualTo: thisComment['elementId'])
+      .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('createdAt',descending: false)
       .limit(refreshIndex)
       .snapshots();
@@ -253,7 +253,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
-    final elementId = thisComment['elementId'];
+    final elementId = thisComment['commentId'];
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final map = makeReplyMap(elementId, currentUserDoc);
     await addReplyToFirestore(map);
