@@ -58,9 +58,9 @@ class CommentsPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
-                currentSongMapComments.isNotEmpty ?
                 Expanded(
-                  child: ListView.builder(
+                  child: currentSongMapComments.isNotEmpty ?
+                  ListView.builder(
                     itemCount: currentSongMapComments.length,
                     itemBuilder: (BuildContext context, int i) {
                       
@@ -72,9 +72,8 @@ class CommentsPage extends ConsumerWidget {
                         mainModel: mainModel,
                       );
                     }
-                    
-                  ),
-                ) : SizedBox.shrink(),
+                  ) : SizedBox()
+                ),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Align(

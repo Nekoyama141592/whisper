@@ -72,64 +72,66 @@ class PostShowPage extends ConsumerWidget {
       body: SafeArea(
         child: editPostInfoModel.isEditing ?
         EditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel)
-        : Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 20.0
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    color: Theme.of(context).focusColor,
-                    icon: Icon(Icons.keyboard_arrow_down),
-                    onPressed: (){
-                      Navigator.pop(context);
-                    }, 
-                  ),
-                  SizedBox(width: size.width * 0.38),
-                  TimestampDisplay(currentSongMapNotifier: currentSongMapNotifier)
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        : SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20.0
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SquarePostImage(currentSongMapNotifier: currentSongMapNotifier),
-                    CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
-                    SizedBox(height: 10.0),
-                    CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier),
-                    SizedBox(height: 10.0),
-                    PostButtons(currentSongMapNotifier: currentSongMapNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
-                    SizedBox(height: 10.0),
-                    AudioStateDesign(
-                      speedNotifier: speedNotifier,
-                      speedControll: speedControll,
-                      bookmarkedPostIds: mainModel.bookmarkedPostIds,
-                      likedPostIds: mainModel.likedPostIds,
-                      currentSongMapNotifier: currentSongMapNotifier,
-                      progressNotifier: progressNotifier,
-                      seek: seek,
-                      repeatButtonNotifier: repeatButtonNotifier,
-                      onRepeatButtonPressed: onRepeatButtonPressed,
-                      isFirstSongNotifier: isFirstSongNotifier,
-                      onPreviousSongButtonPressed: onPreviousSongButtonPressed,
-                      playButtonNotifier: playButtonNotifier,
-                      play: play,
-                      pause: pause,
-                      isLastSongNotifier: isLastSongNotifier,
-                      onNextSongButtonPressed: onNextSongButtonPressed,
+                    IconButton(
+                      color: Theme.of(context).focusColor,
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      }, 
                     ),
-                    
+                    SizedBox(width: size.width * 0.38),
+                    TimestampDisplay(currentSongMapNotifier: currentSongMapNotifier)
                   ],
                 ),
               ),
-            ),
-            
-          ],
+              SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SquarePostImage(currentSongMapNotifier: currentSongMapNotifier),
+                      CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
+                      SizedBox(height: 10.0),
+                      CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier),
+                      SizedBox(height: 10.0),
+                      PostButtons(currentSongMapNotifier: currentSongMapNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                      SizedBox(height: 10.0),
+                      AudioStateDesign(
+                        speedNotifier: speedNotifier,
+                        speedControll: speedControll,
+                        bookmarkedPostIds: mainModel.bookmarkedPostIds,
+                        likedPostIds: mainModel.likedPostIds,
+                        currentSongMapNotifier: currentSongMapNotifier,
+                        progressNotifier: progressNotifier,
+                        seek: seek,
+                        repeatButtonNotifier: repeatButtonNotifier,
+                        onRepeatButtonPressed: onRepeatButtonPressed,
+                        isFirstSongNotifier: isFirstSongNotifier,
+                        onPreviousSongButtonPressed: onPreviousSongButtonPressed,
+                        playButtonNotifier: playButtonNotifier,
+                        play: play,
+                        pause: pause,
+                        isLastSongNotifier: isLastSongNotifier,
+                        onNextSongButtonPressed: onNextSongButtonPressed,
+                      ),
+                      
+                    ],
+                  ),
+                ),
+              ),
+              
+            ],
+          ),
         )
       ),
     );

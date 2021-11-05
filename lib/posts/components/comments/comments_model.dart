@@ -85,9 +85,9 @@ class CommentsModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 0.0, 
               press: () async { 
+                // Navigator.pop(context);
                 await makeComment(currentSongMap, currentUserDoc,currentSongMapCommentsNotifier); 
                 comment = '';
-                Navigator.pop(context);
               }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).primaryColor
