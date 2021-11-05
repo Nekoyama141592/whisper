@@ -118,8 +118,7 @@ service cloud.firestore {
     }
     match /posts/{postId} {
       allow create: if isAuthenticated()
-      && isValidPost(request.resource.data)
-      && request.resource.data.uid == request.auth.uid;
+      && isValidPost(request.resource.data);
       allow update: if isAuthenticated()
       && isValidPost(request.resource.data);
       allow read: if isAuthenticated();
