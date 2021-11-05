@@ -51,40 +51,40 @@ class AudioWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final audioWindowHeight = size.height * 0.12;
     return InkWell(
       onTap: route,
       child: Container(
-        height: audioWindowHeight,
-        child: Column(
-          children: [
-            AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
-            Row(
-              children: [
-                AudioWindowUserImage(currentSongMapNotifier: currentSongMapNotifier, mainModel: mainModel),
-                Expanded(
-                  child: Column(
-                    children: [
-                      CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
-                      CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier)
-                    ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
+              Row(
+                children: [
+                  AudioWindowUserImage(currentSongMapNotifier: currentSongMapNotifier, mainModel: mainModel),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
+                        CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier)
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      PreviousSongButton(isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed),
-                      PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause),
-                      NextSongButton(isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed)
-                    ],
-                  ),
-                  
-                )
-              ],
-            ),
-          ],
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        PreviousSongButton(isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed),
+                        PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause),
+                        NextSongButton(isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed)
+                      ],
+                    ),
+                    
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
