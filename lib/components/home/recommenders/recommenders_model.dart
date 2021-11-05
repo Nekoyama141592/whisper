@@ -224,7 +224,7 @@ class RecommendersModel extends ChangeNotifier {
     docs.reversed;
      // Insert at the top
     docs.forEach((DocumentSnapshot? doc) {
-      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
+      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
         recommenderDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -256,7 +256,6 @@ class RecommendersModel extends ChangeNotifier {
     final range = now.subtract(Duration(days: 5));
     
     try {
-
       if (refreshIndex == defaultRefreshIndex) {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
@@ -264,7 +263,7 @@ class RecommendersModel extends ChangeNotifier {
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
+          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
             
             recommenderDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
