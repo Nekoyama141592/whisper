@@ -9,7 +9,7 @@ ThemeData lightThemeData(BuildContext context) {
   return ThemeData.light().copyWith(
     primaryColor: kPrimaryColor,
     highlightColor: kTertiaryColor,
-    focusColor: Colors.white,
+    focusColor: Colors.black,
     scaffoldBackgroundColor: kBackgroundColor,
     // appBarTheme: AppBarTheme(),
     iconTheme: IconThemeData(color: kContentColorLightTheme),
