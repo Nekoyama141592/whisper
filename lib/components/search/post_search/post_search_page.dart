@@ -32,25 +32,25 @@ class PostSearchPage extends ConsumerWidget {
         )
       )
     );
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SearchInputField(
-            searchModel: searchModel, 
-            controller: searchController, 
-            press: () async {
-              await searchModel.operation(mainModel.mutesUids,mainModel.mutesPostIds,mainModel.blockingUids);
-            }
-          ),
-          searchModel.isLoading ?
-          Loading() 
-          : PostCards(
+    return Column(
+      children: [
+        SearchInputField(
+          searchModel: searchModel, 
+          controller: searchController, 
+          press: () async {
+            await searchModel.operation(mainModel.mutesUids,mainModel.mutesPostIds,mainModel.blockingUids);
+          }
+        ),
+        searchModel.isLoading ?
+        Loading() 
+        : Expanded(
+          child: PostCards(
             results: searchModel.results,
             mainModel: mainModel,
             postSearchModel: postSearchModel,
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }
