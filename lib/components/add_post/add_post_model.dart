@@ -400,6 +400,7 @@ class AddPostModel extends ChangeNotifier {
           'likes':[],
           'likesCount': 0,
           'link': link,
+          'noDisplayWords': currentUserDoc['noDisplayWordsOfMyPost'],
           'noDisplayUids': currentUserDoc['blockingUids'],
           'postId': postId,
           'score': 100,

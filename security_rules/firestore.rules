@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 35
+    return user.size() == 37
     && 'birthDay' in user && user.birthDay is timestamp
     && 'blockingUids' in user && user.blockingUids is list
     && 'bookmarks' in user && user.bookmarks is list
@@ -34,6 +34,8 @@ service cloud.firestore {
     && 'mutesUids' in user && user.mutesUids is list
     && 'mutesCommentIds' in user && user.mutesCommentIds is list
     && 'mutesPostIds' in user && user.mutesPostIds is list
+    && 'noDisplayWordsOfComments' in user && user.noDisplayWordsOfComments is list
+    && 'noDisplayWordsOfMyPost' in user && user.noDisplayWordsOfMyPost is list
     && 'readNotificationIds' in user && user.readNotificationIds is list
     && 'readPosts' in user && user.readPosts is list
     && 'replyNotifications' in user && user.replyNotifications is list
@@ -45,7 +47,7 @@ service cloud.firestore {
   }
 
   function isValidPost(post) {
-    return post.size() == 25
+    return post.size() == 26
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -62,6 +64,7 @@ service cloud.firestore {
     && 'likes' in post && post.likes is list
     && 'likesCount' in post && post.likesCount is int
     && 'link' in post && post.link is string
+    && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayUids' in post && post.noDisplayUids is list
     && 'postId' in post && post.postId is string
     && 'score' in post && post.score is int

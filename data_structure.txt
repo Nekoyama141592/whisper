@@ -126,6 +126,8 @@ db{
         mutesUids: List<String>,
         mutesCommentIds: List<String>,
         mutesPostIds: List<String>,
+        noDisplayWordsOfComments: List<String>,
+        noDisplayWordsOfMyPost: List<String>,
         readNotificationIds: [ String ]
         readPosts: [{
             'createdAt': TimeStamp,
