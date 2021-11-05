@@ -78,7 +78,6 @@ class AudioWindow extends StatelessWidget {
                       PreviousSongButton(isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed),
                       PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause),
                       NextSongButton(isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed)
-                      
                     ],
                   ),
                   
