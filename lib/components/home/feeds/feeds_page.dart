@@ -13,7 +13,6 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/feeds/feeds_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-
 class FeedsPage extends ConsumerWidget {
   
   const FeedsPage({
