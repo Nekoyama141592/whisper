@@ -474,7 +474,10 @@ class RecommendersModel extends ChangeNotifier {
               widthRate: 0.2, 
               verticalPadding: 20.0, 
               horizontalPadding: 10.0, 
-              press: () async { await delete(context, postDoc, currentUserDoc, i); }, 
+              press: () async { 
+                Navigator.pop(context);
+                await delete(context, postDoc, currentUserDoc, i); 
+              }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).highlightColor
             )
