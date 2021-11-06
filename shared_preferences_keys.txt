@@ -1,6 +1,5 @@
 readNotificationIds: List<String>,
 mutesReplyIds: List<String>,
-mutesUids: List<String>,
 mutesCommentIds: List<String>,
 mutesPostIds: List<String>,
 speed: double,

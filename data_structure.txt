@@ -147,6 +147,7 @@ db{
             userImageURL: String,
         }],
         score: int,
+        searchHistorys: List<String>,
         subUserName: String,
         uid: String,
         updatedAt: String,
