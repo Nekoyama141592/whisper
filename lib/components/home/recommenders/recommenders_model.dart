@@ -496,6 +496,7 @@ class RecommendersModel extends ChangeNotifier {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: i);
         }
+        refreshIndex = recommenderDocs.length -1;
         notifyListeners();
         await FirebaseFirestore.instance
         .collection('posts')

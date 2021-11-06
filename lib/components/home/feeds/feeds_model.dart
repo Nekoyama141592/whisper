@@ -501,6 +501,7 @@ class FeedsModel extends ChangeNotifier {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: i);
         }
+        refreshIndex = afterUris.length -1;
         notifyListeners();
         await FirebaseFirestore.instance
         .collection('posts')
