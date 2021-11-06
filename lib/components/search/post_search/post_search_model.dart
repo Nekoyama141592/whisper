@@ -152,35 +152,35 @@ class PostSearchModel extends ChangeNotifier{
   }
 
   Future resetAudioPlayer(int i) async {
-    afterUris = [];
-    results.forEach((result) {
-      Uri song = Uri.parse(result['audioURL']);
-      UriAudioSource source = AudioSource.uri(song, tag: result);
-      afterUris.add(source);
-    });
+    // Abstractions in post_futures.dart cause Range errors.
+    AudioSource source = afterUris[i];
+    afterUris.remove(source);
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: i);
+      await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
     } 
   }
 
   Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
+    // Abstractions in post_futures.dart cause Range errors.
     mutesPostIds.add(postId);
-    await removeUserShowDoc(postId,i);
+    results.removeWhere((result) => result['postId'] == postId);
+    await resetAudioPlayer(i);
     notifyListeners();
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-  Future removeUserShowDoc(String postId,int i) async {
-    results.removeWhere((result) => result['postId'] == postId);
-    await resetAudioPlayer(i);
-  }
-
-  Future muteUser(List<String> mutesUids,String uid,SharedPreferences prefs,int i) async {
+  Future muteUser(List<dynamic> mutesUids,String uid,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc) async {
+    // Abstractions in post_futures.dart cause Range errors.
     mutesUids.add(uid);
     await removeTheUsersPost(uid, i);
     notifyListeners();
-    await prefs.setStringList('mutesUids', mutesUids);
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(currentUserDoc.id)
+    .update({
+      'mutesUids': mutesUids,
+    }); 
   }
 
   Future removeTheUsersPost(String uid,int i) async {
@@ -189,6 +189,7 @@ class PostSearchModel extends ChangeNotifier{
   }
 
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
+    // Abstractions in post_futures.dart cause Range errors.
     blockingUids.add(uid);
     await removeTheUsersPost(uid, i);
     notifyListeners();

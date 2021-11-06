@@ -53,7 +53,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await postFutures.muteUserFromPost(mainModel.currentUserDoc, mainModel.mutesUids, result['uid'], i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer,postSearchModel.results.length - 1);
+              await postSearchModel.muteUser(mainModel.mutesUids, result['uid'], mainModel.prefs, i, mainModel.currentUserDoc);
             } ,
           ),
           IconSlideAction(
@@ -61,7 +61,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await postFutures.mutePost(mainModel.mutesPostIds,result['postId'],mainModel.prefs,i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer,postSearchModel.results.length - 1);
+              await postSearchModel.mutePost(mainModel.mutesPostIds, result['postId'], mainModel.prefs, i);
             },
           ),
           IconSlideAction(
@@ -69,7 +69,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.block,
             onTap: () async {
-              await postFutures.blockUserFromPost(mainModel.currentUserDoc, mainModel.blockingUids, result['uid'], i, postSearchModel.results,postSearchModel.afterUris,postSearchModel.audioPlayer,postSearchModel.results.length - 1);
+              await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, result['uid'], i);
             },
           ),
         ] : deleteIcon,
