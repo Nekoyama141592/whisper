@@ -24,9 +24,11 @@ class LikeButton extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
     
-        final List<dynamic> likes = currentSongMap['likes'];
-        final likesCount = likes.length;
-        final plusOneCount = likes.length + 1;
+        List<dynamic> likesOfCurrentSong = currentSongMap['likes'];
+        final likesCount = likesOfCurrentSong.length;
+        likesOfCurrentSong.removeWhere((likeOfCurrentSong) => likeOfCurrentSong['uid'] == currentUserDoc['uid']);
+        final plusOneCount = likesOfCurrentSong.length + 1;
+
         return
         Container(
           child: likedPostIds.contains(currentSongMap['postId']) ?
@@ -43,6 +45,7 @@ class LikeButton extends ConsumerWidget {
               ),
               SizedBox(width: 5.0),
               Text(
+                
                 plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
                 style: TextStyle(color: Colors.red)
               )

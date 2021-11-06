@@ -27,9 +27,10 @@ class CommentLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final commentId = comment['commentId'];
-    List<dynamic> likesUids = comment['likesUids'];
-    final likesCount = likesUids.length;
-    final plusOneCount = likesUids.length + 1;
+    List<dynamic> likesUidsOfComment = comment['likesUids'];
+    final likesCount = likesUidsOfComment.length;
+    likesUidsOfComment.remove(currentUserDoc['uid']);
+    final plusOneCount = likesUidsOfComment.length + 1;
     
     return likedCommentIds.contains(commentId) ?
     Padding(
