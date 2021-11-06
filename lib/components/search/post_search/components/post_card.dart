@@ -29,7 +29,6 @@ class PostCard extends ConsumerWidget {
  Widget build(BuildContext context,ScopedReader watch) {
 
     final postFutures = watch(postsFeaturesProvider);
-
     final List<Widget>? deleteIcon = [
       IconSlideAction(
         caption: 'Delete',
@@ -40,7 +39,6 @@ class PostCard extends ConsumerWidget {
         },
       ),
     ];
-    
     return InkWell(
       onTap: () async {
         await postSearchModel.initAudioPlayer(i);
@@ -48,14 +46,14 @@ class PostCard extends ConsumerWidget {
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: mainModel.currentUserDoc['uid'] != result['uid'] ?
+        actions: mainModel.currentUserDoc['uid'] != result['uid'] ? 
         [
           IconSlideAction(
             caption: 'mute User',
             color: Colors.transparent,
             icon: Icons.person_off,
             onTap: () async {
-              await postFutures.muteUserFromPost(mainModel.currentUserDoc, mainModel.mutesUids, result['uid'], i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer);
+              await postFutures.muteUserFromPost(mainModel.currentUserDoc, mainModel.mutesUids, result['uid'], i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer,postSearchModel.results.length - 1);
             } ,
           ),
           IconSlideAction(
@@ -63,7 +61,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.visibility_off,
             onTap: () async {
-              await postFutures.mutePost(mainModel.mutesPostIds,result['postId'],mainModel.prefs,i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer);
+              await postFutures.mutePost(mainModel.mutesPostIds,result['postId'],mainModel.prefs,i, postSearchModel.results,postSearchModel.afterUris, postSearchModel.audioPlayer,postSearchModel.results.length - 1);
             },
           ),
           IconSlideAction(
@@ -71,7 +69,7 @@ class PostCard extends ConsumerWidget {
             color: Colors.transparent,
             icon: Icons.block,
             onTap: () async {
-              await postFutures.blockUserFromPost(mainModel.currentUserDoc,mainModel.blockingUids,result['uid'],i,postSearchModel.results,postSearchModel.afterUris,postSearchModel.audioPlayer);
+              await postFutures.blockUserFromPost(mainModel.currentUserDoc, mainModel.blockingUids, result['uid'], i, postSearchModel.results,postSearchModel.afterUris,postSearchModel.audioPlayer,postSearchModel.results.length - 1);
             },
           ),
         ] : deleteIcon,
@@ -90,7 +88,7 @@ class PostCard extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: RedirectUserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['userDocId'],mainModel: mainModel,),
+                  leading: RedirectUserImage(userImageURL: result['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: result['userDocId'], mainModel: mainModel),
                   title: Text(
                     result['userName'],
                     overflow: TextOverflow.ellipsis,

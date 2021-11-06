@@ -240,6 +240,7 @@ class PostFutures extends ChangeNotifier{
   }
 
   Future muteUser(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid) async {
+    // use on comment or reply
     mutesUids.add(uid);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -251,6 +252,7 @@ class PostFutures extends ChangeNotifier{
   }
 
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid) async {
+    // use on comment or reply
     blockingUids.add(passiveUid);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -261,12 +263,11 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer,int refreshIndex) async {
     // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     mutesUids.add(uid);
     posts.removeWhere((postDoc) => postDoc['uid'] == uid);
-    await resetAudioPlayer(i,afterUris,posts,audioPlayer);
-    notifyListeners();
+    await resetAudioPlayer(i,afterUris,posts,audioPlayer,refreshIndex);
     await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDoc.id)
@@ -275,12 +276,11 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future blockUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future blockUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer,int refreshIndex) async {
     // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     blockingUids.add(passiveUid);
     posts.removeWhere((postDoc) => postDoc['uid'] == passiveUid);
-    await resetAudioPlayer(i, afterUris, posts, audioPlayer);
-    notifyListeners();
+    await resetAudioPlayer(i, afterUris, posts, audioPlayer,refreshIndex);
     await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDoc.id)
@@ -289,27 +289,27 @@ class PostFutures extends ChangeNotifier{
     }); 
   }
 
-  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer) async {
+  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer,int refreshIndex) async {
     // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
     mutesPostIds.add(postId);
     posts.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
-    await resetAudioPlayer(i, afterUris, posts, audioPlayer);
-    notifyListeners();
+    await resetAudioPlayer(i, afterUris, posts, audioPlayer,refreshIndex);
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-   Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<dynamic> posts,AudioPlayer audioPlayer) async {
-     // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
-    afterUris = [];
-    posts.forEach((dynamic doc) {
-      Uri song = Uri.parse(doc['audioURL']);
-      UriAudioSource source = AudioSource.uri(song, tag: doc);
-      afterUris.add(source);
-    });
+   Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<dynamic> posts,AudioPlayer audioPlayer,int refreshIndex) async {
+    // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
+    AudioSource source = afterUris[i];
+    afterUris.remove(source);
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: i);
-    } 
+      await audioPlayer.setAudioSource(
+        playlist,
+        initialIndex: i == 0 ? i :  i - 1
+      );
+    }
+    // refreshIndex = posts.length -1;
+    notifyListeners();
   }
 
   Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {

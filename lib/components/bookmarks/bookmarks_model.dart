@@ -467,10 +467,11 @@ class BookmarksModel extends ChangeNotifier {
         AudioSource source = afterUris[i];
         afterUris.remove(source);
         bookmarkedDocs.remove(postDoc);
-        if (afterUris.isNotEmpty) {
+        if (afterUris.isNotEmpty || afterUris.length != 1 ) {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: i);
+          await audioPlayer.setAudioSource(playlist,initialIndex: i - 1);
         }
+        refreshIndex = afterUris.length -1;
         notifyListeners();
         await FirebaseFirestore.instance
         .collection('posts')
