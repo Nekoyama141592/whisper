@@ -30,8 +30,14 @@ class ReplyCard extends ConsumerWidget {
     final String userImageURL = reply['userImageURL'];
     final length = 60.0;
     final padding = 0.0;
-    
-    return  !( reply['commentId'] == replysModel.giveComment['commentId'] ) || mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid'] )?
+    final fontSize = 16.0;
+    final whisperTextStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize,
+      overflow: TextOverflow.ellipsis
+    );
+    // return  ! (mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid'] )?
+    return !mainModel.blockingUids.contains(reply['uid']) && mainModel.mutesUids.contains(reply['uid']) ?
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -73,6 +79,7 @@ class ReplyCard extends ConsumerWidget {
                 borderRadius: BorderRadius.all(Radius.circular(4.0))
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -84,9 +91,15 @@ class ReplyCard extends ConsumerWidget {
                     child: SizedBox(
                       child: Column(
                         children: [
-                          Text(reply['userName']),
+                          Text(
+                            reply['userName'],
+                            style: whisperTextStyle
+                          ),
                           SizedBox(height: 10.0,),
-                          Text(reply['reply'])
+                          Text(
+                            reply['reply'],
+                            style: whisperTextStyle
+                          )
                         ],
                       ),
                     ),

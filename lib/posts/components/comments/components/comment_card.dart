@@ -33,6 +33,12 @@ class CommentCard extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
     
     final postFutures = watch(postsFeaturesProvider);
+    final fontSize = 16.0;
+    final whisperTextStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize,
+      overflow: TextOverflow.ellipsis
+    );
 
     return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) ?
     SizedBox.shrink()
@@ -86,9 +92,15 @@ class CommentCard extends ConsumerWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Text(comment['userName']),
+                        Text(
+                          comment['userName'],
+                          style: whisperTextStyle,
+                        ),
                         SizedBox(height: 10.0,),
-                        Text(comment['comment'])
+                        Text(
+                          comment['comment'],
+                          style: whisperTextStyle,
+                        )
                       ],
                     ),
                   ),

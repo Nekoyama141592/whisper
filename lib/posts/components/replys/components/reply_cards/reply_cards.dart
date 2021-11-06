@@ -37,21 +37,20 @@ class ReplyCards extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) Loading();
         return !snapshot.hasData || snapshot.data == null  ?
         SizedBox.shrink()
-        : Center(
-          child: SmartRefresher(
-            enablePullUp: true,
-            enablePullDown: false,
-            header: WaterDropHeader(),
-            controller: replysModel.refreshController,
-            onLoading: () {
-              replysModel.onLoading(thisComment);
-            },
-            child: ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                Map<String, dynamic> reply = doc.data()! as Map<String, dynamic>;
-                return ReplyCard(reply: reply, replysModel: replysModel, mainModel: mainModel);
-              }).toList(),
-            ),
+        : 
+        SmartRefresher(
+          enablePullUp: true,
+          enablePullDown: false,
+          header: WaterDropHeader(),
+          controller: replysModel.refreshController,
+          onLoading: () {
+            replysModel.onLoading(thisComment);
+          },
+          child: ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot doc) {
+              Map<String, dynamic> reply = doc.data()! as Map<String, dynamic>;
+              return ReplyCard(reply: reply, replysModel: replysModel, mainModel: mainModel);
+            }).toList(),
           ),
         );
       }
