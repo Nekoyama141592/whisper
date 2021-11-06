@@ -313,24 +313,20 @@ class FeedsModel extends ChangeNotifier {
   void play(List<dynamic> readPostIds,List<dynamic> readPosts,DocumentSnapshot currentUserDoc)  {
     audioPlayer.play();
     notifyListeners();
-    audioPlayer.sequenceStateStream.listen((sequenceState) {
-      final currentItem = sequenceState!.currentSource;
-      final DocumentSnapshot? currentSongDoc = currentItem?.tag;
-      final postId = currentSongDoc!['postId'];
-      if (!readPostIds.contains(postId)) {
-        final map = {
-          'createdAt': Timestamp.now(),
-          'postId': postId,
-        };
-        readPosts.add(map);
-        FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUserDoc.id)
-        .update({
-          'readPosts': readPosts,
-        });
-      }
-    });
+    final postId = currentSongMapNotifier.value['postId'];
+    if (!readPostIds.contains(postId)) {
+      final map = {
+        'createdAt': Timestamp.now(),
+        'postId': postId,
+      };
+      readPosts.add(map);
+      FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUserDoc.id)
+      .update({
+        'readPosts': readPosts,
+      });
+    }
   }
 
 

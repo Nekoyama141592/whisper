@@ -236,24 +236,20 @@ class PostSearchModel extends ChangeNotifier{
   void play(List<dynamic> readPostIds,List<dynamic> readPosts,DocumentSnapshot currentUserDoc)  {
     audioPlayer.play();
     notifyListeners();
-    audioPlayer.sequenceStateStream.listen((sequenceState) {
-      final currentItem = sequenceState!.currentSource;
-      final Map<String,dynamic> currentSongMap = currentItem?.tag;
-      final postId = currentSongMap['postId'];
-      if (!readPostIds.contains(postId)) {
-        final map = {
-          'createdAt': Timestamp.now(),
-          'postId': postId,
-        };
-        readPosts.add(map);
-        FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUserDoc.id)
-        .update({
-          'readPosts': readPosts,
-        });
-      }
-    });
+    final postId = currentSongMapNotifier.value['postId'];
+    if (!readPostIds.contains(postId)) {
+      final map = {
+        'createdAt': Timestamp.now(),
+        'postId': postId,
+      };
+      readPosts.add(map);
+      FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUserDoc.id)
+      .update({
+        'readPosts': readPosts,
+      });
+    }
   }
 
 
