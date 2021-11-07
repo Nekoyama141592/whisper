@@ -197,7 +197,7 @@ class PostSearchModel extends ChangeNotifier{
     .collection('users')
     .doc(currentUserDoc.id)
     .update({
-      'blocingUids': blockingUids,
+      'blockingUids': blockingUids,
     }); 
   }
 
