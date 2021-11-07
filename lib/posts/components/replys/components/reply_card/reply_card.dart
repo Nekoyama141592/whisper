@@ -36,8 +36,8 @@ class ReplyCard extends ConsumerWidget {
       fontSize: fontSize,
       overflow: TextOverflow.ellipsis
     );
-    // return  ! (mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid'] )?
-    return !mainModel.blockingUids.contains(reply['uid']) && mainModel.mutesUids.contains(reply['uid']) ?
+    return mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid']) ?
+
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),

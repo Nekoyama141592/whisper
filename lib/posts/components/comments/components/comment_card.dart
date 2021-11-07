@@ -29,6 +29,7 @@ class CommentCard extends ConsumerWidget {
   final ReplysModel replysModel;
   final Map<String,dynamic> currentSongMap;
   final MainModel mainModel;
+
   @override  
   Widget build(BuildContext context,ScopedReader watch) {
     
@@ -41,6 +42,7 @@ class CommentCard extends ConsumerWidget {
     );
 
     return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) ?
+    
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),
