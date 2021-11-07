@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // package
+import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
@@ -46,6 +47,10 @@ class RedirectUserImage extends ConsumerWidget {
           routes.toUserShowPage(context, passiveUserDoc, mainModel);
         }
       },
+      onLongPress: mainModel.currentUserDoc['isAdmin'] ? () async {
+        await FlutterClipboard.copy(passiveUserDocId);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
+      } : null,
       child: UserImage(padding: padding, length: length, userImageURL: userImageURL)
     );
   }

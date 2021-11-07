@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // package
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
@@ -42,7 +43,7 @@ class CommentCard extends ConsumerWidget {
     );
 
     return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) ?
-    
+
     SizedBox.shrink()
     : Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -74,49 +75,55 @@ class CommentCard extends ConsumerWidget {
           },
         ),
       ]: [],
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.all(Radius.circular(4.0))
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0
+      child: InkWell(
+        onLongPress: mainModel.currentUserDoc['isAdmin'] ? () async {
+          await FlutterClipboard.copy(comment['uid']);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
+        } : null,
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(4.0))
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0
+                      ),
+                      child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
                     ),
-                    child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
-                  ),
-                  Expanded(
-                    child: Column(
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            comment['userName'],
+                            style: whisperTextStyle,
+                          ),
+                          SizedBox(height: 10.0,),
+                          Text(
+                            comment['comment'],
+                            style: whisperTextStyle,
+                          )
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          comment['userName'],
-                          style: whisperTextStyle,
-                        ),
-                        SizedBox(height: 10.0,),
-                        Text(
-                          comment['comment'],
-                          style: whisperTextStyle,
-                        )
+                        CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
+                        if(comment['uid'] == currentSongMap['uid'] ) ShowReplyButton(replysModel: replysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
                       ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
-                      if(comment['uid'] == currentSongMap['uid'] ) ShowReplyButton(replysModel: replysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
-                    ],
-                  )
-                ]
+                    )
+                  ]
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
