@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -40,6 +38,9 @@ class UpdateEmailPage extends ConsumerWidget {
               controller: newEmailInputController, 
               onChanged:  (text) {
                 _updateEmailModel.newEmail = text;
+              },
+              paste: (value) {
+                _updateEmailModel.newEmail = value;
               },
             ),
             SizedBox(height: 16,),

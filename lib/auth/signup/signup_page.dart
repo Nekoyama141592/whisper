@@ -123,6 +123,9 @@ class SignupPage extends ConsumerWidget {
                               onChanged:  (text) {
                                 signupModel.email = text;
                               },
+                              paste: (value) {
+                                signupModel.email = value;
+                              },
                             ),
                             RoundedPasswordField(
                               hintText: "password",
@@ -130,7 +133,9 @@ class SignupPage extends ConsumerWidget {
                               onChanged:  (text) {
                                 signupModel.password = text;
                               },
-                              
+                              paste: (value) {
+                                signupModel.password = value;
+                              },
                             ),
                             
                             SizedBox(height: 24),

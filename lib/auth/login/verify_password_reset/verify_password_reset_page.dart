@@ -28,6 +28,9 @@ class VerifyPasswordResetPage extends ConsumerWidget {
               onChanged:  (text) {
                 _verifyPasswordResetModel.email = text;
               }, 
+              paste: (value) {
+                _verifyPasswordResetModel.email = value;
+              },
             ),
           ),
           SizedBox(height: 25.0,),

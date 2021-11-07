@@ -32,6 +32,7 @@ class PostCards extends ConsumerWidget {
     final editPostInfoModel = watch(editPostInfoProvider);
 
     return
+    results.isNotEmpty ?
     SizedBox(
       height: size.height * 0.65,
       child: Column(
@@ -108,6 +109,6 @@ class PostCards extends ConsumerWidget {
           )
         ],
       ),
-    );
+    ) : SizedBox.shrink();
   }
 }

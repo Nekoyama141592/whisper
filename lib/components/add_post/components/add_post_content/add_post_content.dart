@@ -102,7 +102,10 @@ class AddPostContent extends StatelessWidget {
                     controller: postTitleController, 
                     onChanged:  (text) {
                       addPostModel.postTitleNotifier.value = text;
-                    }, 
+                    },
+                    paste: (value) {
+                      addPostModel.postTitleNotifier.value = value;
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(

@@ -40,7 +40,10 @@ class UpdatePasswordPage extends ConsumerWidget {
               controller: newPasswordInputController, 
               onChanged:  (text) {
                 _updatePasswordModel.newPassword = text;
-              }, 
+              },
+              paste: (value) {
+                _updatePasswordModel.newPassword = value;
+              },
             ),
           ),
           Center(
@@ -49,6 +52,9 @@ class UpdatePasswordPage extends ConsumerWidget {
               controller: confirmPasswordInputController, 
               onChanged:  (text) {
                 _updatePasswordModel.confirmPassword = text;
+              },
+              paste: (value) {
+                _updatePasswordModel.confirmPassword = value;
               },
             ),
           ),

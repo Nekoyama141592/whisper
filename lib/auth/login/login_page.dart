@@ -94,13 +94,19 @@ class LoginPage extends ConsumerWidget {
                               onChanged:  (text) {
                                 loginModel.email = text;
                               },
+                              paste: (value) {
+                                loginModel.email = value;
+                              },
                             ),
                             RoundedPasswordField(
                               hintText: 'Password', 
                               controller: passwordInputController, 
                               onChanged: (text) {
                                 loginModel.password = text;
-                              }
+                              },
+                              paste: (value) {
+                                loginModel.password = value;
+                              },
                             ),
                             SizedBox(height: 24),
                             Center(

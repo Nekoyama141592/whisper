@@ -45,7 +45,10 @@ class ReauthenticationPage extends StatelessWidget {
               controller: passwordInputController, 
               onChanged: (text) {
                 accountModel.password = text;
-              }, 
+              },
+              paste: (value) {
+                accountModel.password = value;
+              },
             ),
           ),
           SizedBox(height: 16.0),

@@ -45,7 +45,10 @@ class AddUserInfoPage extends StatelessWidget {
               controller: userNameController, 
               onChanged: (text) {
                 signupModel.userName = text;
-              }
+              },
+              paste: (value) {
+                signupModel.userName = value;
+              },
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
