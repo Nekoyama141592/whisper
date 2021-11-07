@@ -307,6 +307,7 @@ class BookmarksModel extends ChangeNotifier {
           QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
           .collection('posts')
           .where('postId', whereIn: bookmarkedPostIds)
+          .startAfterDocument(bookmarkedDocs.last)
           .limit(oneTimeReadCount)
           .get();
           snapshots.docs.forEach((DocumentSnapshot? doc) {

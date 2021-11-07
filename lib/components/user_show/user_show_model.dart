@@ -382,7 +382,7 @@ class UserShowModel extends ChangeNotifier {
         .collection('posts')
         .where('uid',isEqualTo: currentUser!.uid)
         .orderBy('createdAt',descending: true)
-        .startAfterDocument(userShowDocs[refreshIndex])
+        .startAfterDocument(userShowDocs.last)
         .limit(oneTimeReadCount)
         .get()
         .then((qshot) {

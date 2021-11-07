@@ -329,7 +329,7 @@ class RecommendersModel extends ChangeNotifier {
         QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
         .collection('posts')
         .orderBy('score', descending: true)
-        .startAfterDocument(recommenderDocs[refreshIndex])
+        .startAfterDocument(recommenderDocs.last)
         .limit(oneTimeReadCount)
         .get();
         snapshots.docs.forEach((DocumentSnapshot? doc) {

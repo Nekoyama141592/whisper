@@ -334,7 +334,7 @@ class FeedsModel extends ChangeNotifier {
         .collection('posts')
         .where('uid',whereIn: followingUids)
         .orderBy('createdAt',descending: true)
-        .startAfterDocument(feedDocs[refreshIndex])
+        .startAfterDocument(feedDocs.last)
         .limit(oneTimeReadCount)
         .get();
         List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshots.docs;
