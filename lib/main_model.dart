@@ -79,16 +79,10 @@ class MainModel extends ChangeNotifier {
   Future setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
     try{
-      await FirebaseFirestore.instance
+      currentUserDoc = await FirebaseFirestore.instance
       .collection('users')
-      .where('uid',isEqualTo: currentUser!.uid)
-      .limit(1)
-      .get()
-      .then((qshot){
-        qshot.docs.forEach((DocumentSnapshot doc) {
-          currentUserDoc = doc;
-        });
-      });
+      .doc(currentUser!.uid)
+      .get();
     } catch(e) {
       print(e.toString());
     }

@@ -43,11 +43,10 @@ class FeedsModel extends ChangeNotifier {
   List<AudioSource> afterUris = [];
   // cloudFirestore
   List followingUids = [];
-  List<String> feedPostIds = [];
   List<DocumentSnapshot> feedDocs = [];
   // block and mutes
   late SharedPreferences prefs;
-  List<String> mutesUids = [];
+  List<dynamic> mutesUids = [];
   List<String> mutesPostIds = [];
   List<dynamic> blockingUids = [];
   //repost
@@ -278,14 +277,10 @@ class FeedsModel extends ChangeNotifier {
   
   Future setCurrentUserDoc() async {
     try{
-      await FirebaseFirestore.instance
+      currentUserDoc = await FirebaseFirestore.instance
       .collection('users')
-      .where('uid',isEqualTo: currentUser!.uid)
-      .limit(1)
-      .get()
-      .then((qshot) {
-        currentUserDoc = qshot.docs[0];
-      });
+      .doc(currentUser!.uid)
+      .get();
     } catch(e) {
       print(e.toString());
     }
