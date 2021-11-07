@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'post_card.dart';
 import 'package:whisper/details/nothing.dart';
+import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -47,13 +47,27 @@ class PostCards extends ConsumerWidget {
           Expanded(
             child: ListView.builder(
               itemCount: results.length,
-              itemBuilder: (BuildContext context, int i) =>
-              PostCard(
-                result: results[i],
-                i: i,
-                mainModel: mainModel,
-                postSearchModel: postSearchModel
-              )
+              itemBuilder: (BuildContext context, int i) {
+                final Map<String,dynamic> post = results[i];
+                return 
+                PostCard(
+                  post: post,
+                  onDeleteButtonPressed: () { postSearchModel.onDeleteButtonPressed(context, results[i], mainModel.currentUserDoc, i); },
+                  initAudioPlayer: () async {
+                    await postSearchModel.initAudioPlayer(i);
+                  },
+                  muteUser: () async {
+                    await postSearchModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc);
+                  },
+                  mutePost: () async {
+                    await postSearchModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
+                  },
+                  blockUser: () async {
+                    await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i);
+                  },
+                  mainModel: mainModel,
+                );
+              }
             )
           ),
           AudioWindow(

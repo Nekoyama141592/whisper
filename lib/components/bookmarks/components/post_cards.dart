@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
-import 'package:whisper/components/bookmarks/components/post_card.dart';
+import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -72,8 +72,27 @@ class PostCards extends StatelessWidget {
             onLoading: onLoading,
             child: ListView.builder(
               itemCount: postDocs.length,
-              itemBuilder: (BuildContext context, int i) =>
-                PostCard(i: i,postDoc: postDocs[i], mainModel: mainModel,bookmarksModel: bookmarksModel,)
+              itemBuilder: (BuildContext context, int i) {
+                final Map<String,dynamic> post = postDocs[i].data() as Map<String,dynamic>;
+                return 
+                PostCard(
+                  post: post,
+                  onDeleteButtonPressed: () { bookmarksModel.onDeleteButtonPressed(context, postDocs[i], mainModel.currentUserDoc, i); },
+                  initAudioPlayer: () async {
+                    await bookmarksModel.initAudioPlayer(i);
+                  },
+                  muteUser: () async {
+                    await bookmarksModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc);
+                  },
+                  mutePost: () async {
+                    await bookmarksModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
+                  },
+                  blockUser: () async {
+                    await bookmarksModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i);
+                  },
+                  mainModel: mainModel,
+                );
+              }
             ),
           ),
         ),

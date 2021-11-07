@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
-import 'package:whisper/components/home/recommenders/components/post_card.dart';
+import 'package:whisper/posts/components/details/post_card.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -70,13 +70,27 @@ class PostCards extends StatelessWidget {
             onLoading: onLoading,
             child: ListView.builder(
               itemCount: postDocs.length,
-              itemBuilder: (BuildContext context, int i) =>
+              itemBuilder: (BuildContext context, int i) {
+                final Map<String,dynamic> post = postDocs[i].data() as Map<String,dynamic>;
+                return 
                 PostCard(
-                  i: i,
-                  postDoc: postDocs[i], 
+                  post: post,
+                  onDeleteButtonPressed: () { recommendersModel.onDeleteButtonPressed(context, postDocs[i], mainModel.currentUserDoc, i); },
+                  initAudioPlayer: () async {
+                    await recommendersModel.initAudioPlayer(i);
+                  },
+                  muteUser: () async {
+                    await recommendersModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc);
+                  },
+                  mutePost: () async {
+                    await recommendersModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
+                  },
+                  blockUser: () async {
+                    await recommendersModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i);
+                  },
                   mainModel: mainModel,
-                  recommendersModel: recommendersModel,
-                )
+                );
+              }
             ),
           ),
         ),
