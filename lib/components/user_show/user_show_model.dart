@@ -50,7 +50,6 @@ class UserShowModel extends ChangeNotifier {
   List<String> postIds = [];
   List<DocumentSnapshot> userShowDocs = [];
   // refresh
-  int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // Edit profile
   bool isEditing = false;
@@ -189,16 +188,14 @@ class UserShowModel extends ChangeNotifier {
       builder: (context) {
         return CupertinoActionSheet(
           title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('投稿を並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('投稿を新たに取得します',style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
                 userShowDocs = [];
                 afterUris = [];
-                refreshIndex = defaultRefreshIndex;
                 // getDocsFromFirestore
                 // makeQuery
-                refreshIndex = afterUris.length + defaultRefreshIndex;
               }, 
               child: Text(
                 'いいね順',
@@ -212,10 +209,8 @@ class UserShowModel extends ChangeNotifier {
               onPressed: () {
                 userShowDocs = [];
                 afterUris = [];
-                refreshIndex = defaultRefreshIndex;
                 // getDocsFromFirestore
                 // makeQuery
-                refreshIndex = afterUris.length + defaultRefreshIndex;
               }, 
               child: Text(
                 '新しい順',
@@ -229,10 +224,8 @@ class UserShowModel extends ChangeNotifier {
               onPressed: () {
                 userShowDocs = [];
                 afterUris = [];
-                refreshIndex = defaultRefreshIndex;
                 // getDocsFromFirestore
                 // makeQuery
-                refreshIndex = afterUris.length + defaultRefreshIndex;
               }, 
               child: Text(
                 '古い順',
@@ -345,66 +338,69 @@ class UserShowModel extends ChangeNotifier {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist);
     }
-    refreshIndex = afterUris.length + defaultRefreshIndex;
   }
 
   Future onLoading() async {
-    await getPosts();
+    await getOldUserShowPosts();
     refreshController.loadComplete();
     notifyListeners();
   }
 
   Future getPosts() async {
     try {
-      if (refreshIndex == defaultRefreshIndex) {
-        await FirebaseFirestore.instance
-        .collection('posts')
-        .where('uid',isEqualTo: currentUser!.uid)
-        .orderBy('createdAt',descending: true)
-        .limit(oneTimeReadCount)
-        .get()
-        .then((qshot) {
-          List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-          docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-          docs.forEach((DocumentSnapshot? doc) {
-            userShowDocs.add(doc!);
-            Uri song = Uri.parse(doc['audioURL']);
-            UriAudioSource source = AudioSource.uri(song, tag: doc);
-            afterUris.add(source);
-          });
+      await FirebaseFirestore.instance
+      .collection('posts')
+      .where('uid',isEqualTo: currentUser!.uid)
+      .orderBy('createdAt',descending: true)
+      .limit(oneTimeReadCount)
+      .get()
+      .then((qshot) {
+        List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+        docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+        docs.forEach((DocumentSnapshot? doc) {
+          userShowDocs.add(doc!);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
         });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist);
-        }
-      } else {
-        await FirebaseFirestore.instance
-        .collection('posts')
-        .where('uid',isEqualTo: currentUser!.uid)
-        .orderBy('createdAt',descending: true)
-        .startAfterDocument(userShowDocs.last)
-        .limit(oneTimeReadCount)
-        .get()
-        .then((qshot) {
-          List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-          docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-          docs.forEach((DocumentSnapshot? doc) {
-            userShowDocs.add(doc!);
-            Uri song = Uri.parse(doc['audioURL']);
-            UriAudioSource source = AudioSource.uri(song, tag: doc);
-            afterUris.add(source);
-          });
-        });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
-          
-        }
+      });
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist);
       }
     } catch(e) {
       print(e.toString());
     }
-    refreshIndex = afterUris.length + defaultRefreshIndex;
+    notifyListeners();
+  }
+
+  Future<void> getOldUserShowPosts() async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('posts')
+      .where('uid',isEqualTo: currentUser!.uid)
+      .orderBy('createdAt',descending: true)
+      .startAfterDocument(userShowDocs.last)
+      .limit(oneTimeReadCount)
+      .get()
+      .then((qshot) async {
+        final lastIndex = userShowDocs.lastIndexOf(userShowDocs.last);
+        List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+        docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+        docs.forEach((DocumentSnapshot? doc) {
+          userShowDocs.add(doc!);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+        });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
+        }
+      });
+    } catch(e) {
+      print(e.toString());
+    }
     notifyListeners();
   }
 
@@ -702,7 +698,6 @@ class UserShowModel extends ChangeNotifier {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: i);
         }
-        refreshIndex = afterUris.length -1;
         notifyListeners();
         await FirebaseFirestore.instance
         .collection('posts')

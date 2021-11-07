@@ -42,7 +42,6 @@ class BookmarksModel extends ChangeNotifier {
   List<String> bookmarkedPostIds = [];
   List<DocumentSnapshot> bookmarkedDocs = [];
   // refresh
-  int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
   late SharedPreferences prefs;
@@ -251,11 +250,10 @@ class BookmarksModel extends ChangeNotifier {
         await audioPlayer.setAudioSource(playlist);
       }
     }
-    refreshIndex = afterUris.length + defaultRefreshIndex;
   }
 
   Future onLoading() async {
-    await getBookmarks();
+    await getOldBookmarks();
     refreshController.loadComplete();
     notifyListeners();
   }
@@ -287,45 +285,52 @@ class BookmarksModel extends ChangeNotifier {
   Future getBookmarks () async {
     try{
       if (bookmarkedPostIds.isNotEmpty) {
-        if (refreshIndex == defaultRefreshIndex) {
-          QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
-          .collection('posts')
-          .where('postId', whereIn: bookmarkedPostIds)
-          .limit(oneTimeReadCount)
-          .get();
-          snapshots.docs.forEach((DocumentSnapshot? doc) {
-            bookmarkedDocs.add(doc!);
-            Uri song = Uri.parse(doc['audioURL']);
-            UriAudioSource source = AudioSource.uri(song, tag: doc);
-            afterUris.add(source);
-          });
-          if (afterUris.isNotEmpty) {
-            ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-            await audioPlayer.setAudioSource(playlist);
-          }
-        } else {
-          QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
-          .collection('posts')
-          .where('postId', whereIn: bookmarkedPostIds)
-          .startAfterDocument(bookmarkedDocs.last)
-          .limit(oneTimeReadCount)
-          .get();
-          snapshots.docs.forEach((DocumentSnapshot? doc) {
-            bookmarkedDocs.add(doc!);
-            Uri song = Uri.parse(doc['audioURL']);
-            UriAudioSource source = AudioSource.uri(song, tag: doc);
-            afterUris.add(source);
-          });
-          if (afterUris.isNotEmpty) {
-            ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-            await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
-          }  
+        QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('postId', whereIn: bookmarkedPostIds)
+        .limit(oneTimeReadCount)
+        .get();
+        snapshots.docs.forEach((DocumentSnapshot? doc) {
+          bookmarkedDocs.add(doc!);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+        });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist);
         }
       }
     } catch(e) {
       print(e.toString());
     }
-    refreshIndex = afterUris.length + defaultRefreshIndex;
+    notifyListeners();
+  }
+
+  Future<void> getOldBookmarks() async {
+    try {
+      if (bookmarkedPostIds.isEmpty) {
+        QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('postId', whereIn: bookmarkedPostIds)
+        .startAfterDocument(bookmarkedDocs.last)
+        .limit(oneTimeReadCount)
+        .get();
+        final lastIndex = bookmarkedDocs.lastIndexOf(bookmarkedDocs.last);
+        snapshots.docs.forEach((DocumentSnapshot? doc) {
+          bookmarkedDocs.add(doc!);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+        });
+        if (afterUris.isNotEmpty) {
+          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+          await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
+        }  
+      }
+    } catch(e) {
+      print(e.toString());
+    }
     notifyListeners();
   }
 
@@ -523,7 +528,6 @@ class BookmarksModel extends ChangeNotifier {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: i - 1);
         }
-        refreshIndex = afterUris.length -1;
         notifyListeners();
         await FirebaseFirestore.instance
         .collection('posts')

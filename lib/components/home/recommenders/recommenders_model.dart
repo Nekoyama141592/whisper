@@ -41,16 +41,14 @@ class RecommendersModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<String> recommenderPostIds = [];
   List<DocumentSnapshot> recommenderDocs = [];
   // block and mutes
   late SharedPreferences prefs;
-  List<String> mutesUids = [];
+  List<dynamic> mutesUids = [];
   List<String> mutesPostIds = [];
   List<dynamic> blockingUids = [];
   List<dynamic> readPostIds = [];
   // refresh
-  int refreshIndex = defaultRefreshIndex;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
   final speedNotifier = ValueNotifier<double>(1.0);
@@ -183,14 +181,10 @@ class RecommendersModel extends ChangeNotifier {
 
   Future setCurrentUserDoc() async {
     try{
-      await FirebaseFirestore.instance
+      currentUserDoc = await FirebaseFirestore.instance
       .collection('users')
-      .where('uid',isEqualTo: currentUser!.uid)
-      .limit(1)
-      .get()
-      .then((qshot) {
-        currentUserDoc = qshot.docs[0];
-      });
+      .doc(currentUser!.uid)
+      .get();
     } catch(e) {
       print(e.toString());
     }
@@ -285,18 +279,18 @@ class RecommendersModel extends ChangeNotifier {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist);
     }
-    refreshIndex = afterUris.length + defaultRefreshIndex;
   }
 
   Future onLoading() async {
-    await getRecommenders();
+    await getOldRecommenders();
     refreshController.loadComplete();
     notifyListeners();
   }
 
   Future setMutesAndBlocks() async {
     prefs = await SharedPreferences.getInstance();
-    mutesUids = prefs.getStringList('mutesUids') ?? [];
+    // mutesUids = prefs.getStringList('mutesUids') ?? [];
+    mutesUids = currentUserDoc['mutesUids'];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     blockingUids = currentUserDoc['blockingUids'];
   }
@@ -306,48 +300,55 @@ class RecommendersModel extends ChangeNotifier {
     final range = now.subtract(Duration(days: 5));
     
     try {
-      if (refreshIndex == defaultRefreshIndex) {
-        QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
-        .collection('posts')
-        .orderBy('score', descending: true)
-        .limit(oneTimeReadCount)
-        .get();
-        snapshots.docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-            
-            recommenderDocs.add(doc);
-            Uri song = Uri.parse(doc['audioURL']);
-            UriAudioSource source = AudioSource.uri(song, tag: doc);
-            afterUris.add(source);
-          }
-        });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist);
+      QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
+      .collection('posts')
+      .orderBy('score', descending: true)
+      .limit(oneTimeReadCount)
+      .get();
+      snapshots.docs.forEach((DocumentSnapshot? doc) {
+        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
+          
+          recommenderDocs.add(doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
         }
-      } else {
-        QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
-        .collection('posts')
-        .orderBy('score', descending: true)
-        .startAfterDocument(recommenderDocs.last)
-        .limit(oneTimeReadCount)
-        .get();
-        snapshots.docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-            recommenderDocs.add(doc);
-            Uri song = Uri.parse(doc['audioURL']);
-            UriAudioSource source = AudioSource.uri(song, tag: doc);
-            afterUris.add(source);
-          }
-        });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: refreshIndex);
-        }
+      });
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist);
       }
-      refreshIndex = afterUris.length + defaultRefreshIndex;
     } catch(e) {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!");
+    }
+    notifyListeners();
+  }
+
+  Future<void> getOldRecommenders() async {
+    try {
+      final now = DateTime.now();
+      final range = now.subtract(Duration(days: 5));
+      QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
+      .collection('posts')
+      .orderBy('score', descending: true)
+      .startAfterDocument(recommenderDocs.last)
+      .limit(oneTimeReadCount)
+      .get();
+      final lastIndex = recommenderDocs.lastIndexOf(recommenderDocs.last);
+      snapshots.docs.forEach((DocumentSnapshot? doc) {
+        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
+          recommenderDocs.add(doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc);
+          afterUris.add(source);
+        }
+      });
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
+      }
+    } catch(e) {
+      print(e.toString());
     }
     notifyListeners();
   }
@@ -546,7 +547,6 @@ class RecommendersModel extends ChangeNotifier {
           ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
           await audioPlayer.setAudioSource(playlist,initialIndex: i);
         }
-        refreshIndex = recommenderDocs.length -1;
         notifyListeners();
         await FirebaseFirestore.instance
         .collection('posts')
