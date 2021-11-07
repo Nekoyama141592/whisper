@@ -99,7 +99,7 @@ service cloud.firestore {
 
   function isValidNFTowners(nftOwner) {
     return 
-    nftOwner.size() == 4
+    nftOwner.size() == 6
     && 'ethPrice' in nftOwner && nftOwner.ethPrice is int
     && 'link' in nftOwner && nftOwner.link is string
     && 'userName' in nftOwner && nftOwner.name is string
