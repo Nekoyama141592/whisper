@@ -28,7 +28,10 @@ class SearchInputField extends StatelessWidget {
     return TextFieldContainer(
       child:TextField(
         onTap: () async {
-          await FlutterClipboard.paste();
+          await FlutterClipboard.paste()
+          .then((value) {
+            searchModel.searchTerm = value;
+          });
         },
         style: TextStyle(
           color: Colors.black,

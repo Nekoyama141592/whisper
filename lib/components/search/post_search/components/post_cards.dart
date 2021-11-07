@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // model
@@ -32,14 +31,8 @@ class PostCards extends ConsumerWidget {
     final size = MediaQuery.of(context).size;
     final editPostInfoModel = watch(editPostInfoProvider);
 
-    return results.isEmpty ?
-    Column(
-      children: [
-        SizedBox(height: size.height * 0.16),
-        Nothing(),
-      ],
-    )
-    : SizedBox(
+    return
+    SizedBox(
       height: size.height * 0.65,
       child: Column(
         mainAxisSize: MainAxisSize.min,
