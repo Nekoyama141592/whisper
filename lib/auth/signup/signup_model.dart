@@ -15,7 +15,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
-
 final signupProvider = ChangeNotifierProvider(
   (ref) => SignupModel()
 );

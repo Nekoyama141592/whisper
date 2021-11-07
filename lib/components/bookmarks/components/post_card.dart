@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // model
 
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
-import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
-class PostCard extends ConsumerWidget {
+class PostCard extends StatelessWidget {
   
   const PostCard({
     Key? key,
@@ -28,9 +26,8 @@ class PostCard extends ConsumerWidget {
   final BookmarksModel bookmarksModel;
 
   @override  
- Widget build(BuildContext context,ScopedReader watch) {
+ Widget build(BuildContext context) {
 
-    final postFutures = watch(postsFeaturesProvider);
     final List<Widget>? deleteIcon = [
       IconSlideAction(
         caption: 'Delete',
