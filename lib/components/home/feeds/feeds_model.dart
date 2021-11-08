@@ -364,6 +364,7 @@ class FeedsModel extends ChangeNotifier {
     if (!readPostIds.contains(postId)) {
       final map = {
         'createdAt': Timestamp.now(),
+        'durationInt': 0,
         'postId': postId,
       };
       readPosts.add(map);

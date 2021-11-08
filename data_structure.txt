@@ -131,7 +131,8 @@ db{
         readNotificationIds: [ String ]
         readPosts: [{
             'createdAt': TimeStamp,
-            'postId': String
+            'durationInt': int,
+            'postId': String,
         }]
         replyNotifications: [{
             comment: String,
