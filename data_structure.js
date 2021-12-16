@@ -45,6 +45,7 @@ db: {
         link: String
         noDisplayUids: list,
         postId: String,
+        positiveScore: 0,
         score: int,
         title: String,
         uid: String,

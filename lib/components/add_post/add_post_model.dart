@@ -403,6 +403,7 @@ class AddPostModel extends ChangeNotifier {
           'noDisplayWords': currentUserDoc['noDisplayWordsOfMyPost'],
           'noDisplayUids': currentUserDoc['blockingUids'],
           'postId': postId,
+          'positiveScore': 0,
           'score': 100,
           'title': postTitleNotifier.value,
           'uid': currentUser!.uid,
