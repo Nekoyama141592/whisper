@@ -190,6 +190,7 @@ class SignupModel extends ChangeNotifier {
       'uid' : uid,
       'updatedAt': Timestamp.now(),
       'userName': userName,
+      'walletAddress': ''
     });
   }
 

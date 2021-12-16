@@ -1,4 +1,4 @@
-db{
+db: {
     nftOwners{
         ethPrice: int,
         link: String,
@@ -81,7 +81,7 @@ db{
             'comment': String,
             'createdAt': TimeStamp,
             'isNFTicon': bool,
-            'isOfficial':bool
+            'isOfficial':bool,
             'notificationId': String,
             'postId': notificationId,
             'postTitle': String,
@@ -128,18 +128,18 @@ db{
         mutesPostIds: List<String>,
         noDisplayWordsOfComments: List<String>,
         noDisplayWordsOfMyPost: List<String>,
-        readNotificationIds: [ String ]
+        readNotificationIds: [ String ],
         readPosts: [{
             'createdAt': TimeStamp,
             'durationInt': int,
             'postId': String,
-        }]
+        }],
         replyNotifications: [{
             comment: String,
             elementId: String,
             createdAt: TimeStamp,
             'isNFTicon': bool,
-            'isOfficial':bool
+            'isOfficial':bool,
             notificationId: String,
             reply: String,
             uid: String,
@@ -153,5 +153,6 @@ db{
         uid: String,
         updatedAt: String,
         userName: String,
+        walletAddress: String,
     }
 }
