@@ -94,6 +94,7 @@ db: {
         description: String,
         dmState: ["onlyFollowingAndFollowed","open"],
         followNotifications: [],
+        followersCount: int,
         followerUids:[
             String
         ],
