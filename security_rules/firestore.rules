@@ -6,13 +6,14 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 39
+    return user.size() == 42
     && 'birthDay' in user && user.birthDay is timestamp
     && 'blockingUids' in user && user.blockingUids is list
     && 'bookmarks' in user && user.bookmarks is list
     && 'commentNotifications' in user && user.commentNotifications is list
     && 'createdAt' in user && user.createdAt is timestamp
     && 'description' in user && user.description is string
+    && 'dmState' in user && user.dmState is string
     && 'followNotifications' in user && user.followNotifications is list
     && 'followerUids' in user && user.followerUids is list
     && 'followingUids' in user && user.followerUids is list
@@ -24,6 +25,7 @@ service cloud.firestore {
     && 'isOfficial' in user && user.isOfficial is bool
     && 'isSubAdmin' in user && user.isSubAdmin is bool
     && 'isSubscribed' in user && user.isSubscribed is bool
+    && 'joiningCommunityIds' in user && user.joiningCommunityIds is list
     && 'language' in user && user.language is string
     && 'likedComments' in user && user.likedComments is list
     && 'likeNotifications' in user && user.likeNotifications is list
@@ -36,8 +38,10 @@ service cloud.firestore {
     && 'mutesPostIds' in user && user.mutesPostIds is list
     && 'noDisplayWordsOfComments' in user && user.noDisplayWordsOfComments is list
     && 'noDisplayWordsOfMyPost' in user && user.noDisplayWordsOfMyPost is list
+    && 'otherLinks' in user && user.otherLinks is list 
     && 'readNotificationIds' in user && user.readNotificationIds is list
     && 'readPosts' in user && user.readPosts is list
+    && 'recommendState' in user && user.recommendState is string
     && 'replyNotifications' in user && user.replyNotifications is list
     && 'score' in user && user.score is int
     && 'searchHistory' in user && user.searchHistory is list

@@ -89,10 +89,11 @@ db: {
             'userDocId': String,
             'userName': String,
             'userImageURL': String,
-        }]
+        }],
         createdAt: TimeStamp,
         description: String,
-        followNotifications: []
+        dmState: ["onlyFollowingAndFollowed","open"],
+        followNotifications: [],
         followerUids:[
             String
         ],
@@ -107,16 +108,17 @@ db: {
         isOfficial: bool,
         isSubAdmin: bool,
         isSubscribed: bool,
-        language: String ja:en,
+        joiningCommunityIds,List<String>,
+        language: String ja,en,
         likedComments:[{
             commentId: String,
             createdAt: TimeStamp,
         }],
-        likeNotifications: []
+        likeNotifications: [],
         likedReplys: [{
             'createdAt': TimeStamp,
             'likedReplyId': String,
-        }]
+        }],
         likes: [{
             createdAt: TimeStamp,
             likedPostId: String,
@@ -128,12 +130,14 @@ db: {
         mutesPostIds: List<String>,
         noDisplayWordsOfComments: List<String>,
         noDisplayWordsOfMyPost: List<String>,
+        otherLinks: List<String>,
         readNotificationIds: [ String ],
         readPosts: [{
             'createdAt': TimeStamp,
             'durationInt': int,
             'postId': String,
         }],
+        recommendState: 'recommendable',
         replyNotifications: [{
             comment: String,
             elementId: String,
