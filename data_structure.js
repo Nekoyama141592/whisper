@@ -127,6 +127,7 @@ db: {
         mutesReplyIds: List<String>,
         mutesUids: List<String>,
         mutesCommentIds: List<String>,
+        mutesIpv6s: List<String>,
         mutesPostIds: List<String>,
         noDisplayWordsOfComments: List<String>,
         noDisplayWordsOfMyPost: List<String>,

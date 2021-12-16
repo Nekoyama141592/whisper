@@ -35,6 +35,7 @@ service cloud.firestore {
     && 'mutesReplyIds' in user && user.mutesReplyIds is list
     && 'mutesUids' in user && user.mutesUids is list
     && 'mutesCommentIds' in user && user.mutesCommentIds is list
+    && 'mutesIpv6s' in user && user.mutesIpv6s is list
     && 'mutesPostIds' in user && user.mutesPostIds is list
     && 'noDisplayWordsOfComments' in user && user.noDisplayWordsOfComments is list
     && 'noDisplayWordsOfMyPost' in user && user.noDisplayWordsOfMyPost is list
