@@ -74,6 +74,7 @@ service cloud.firestore {
     && 'link' in post && post.link is string
     && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayUids' in post && post.noDisplayUids is list
+    && 'negativeScore' in post && post.negativeScore is int
     && 'postId' in post && post.postId is string
     && 'positiveScore' in post && post.positiveScore is int
     && 'score' in post && post.score is int

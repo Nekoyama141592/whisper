@@ -42,8 +42,10 @@ db: {
             uid: String,
         }],
         likesCount: int,
-        link: String
+        link: String,
+        noDisplayWords: list,
         noDisplayUids: list,
+        negativeScore: int,
         postId: String,
         positiveScore: 0,
         score: int,
