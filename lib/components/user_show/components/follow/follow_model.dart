@@ -21,8 +21,9 @@ class FollowModel extends ChangeNotifier {
   }
 
   Future unfollow(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
-    await removeFollowingUidOfActiveUser(followingUids,currentUserDoc, passiveUserDoc);
-    await removeFollowerUidOfPassiveUser(currentUserDoc, passiveUserDoc);
+    final DocumentSnapshot newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
+    await removeFollowingUidOfActiveUser(followingUids,currentUserDoc, newPassiveUserDoc);
+    await removeFollowerUidOfPassiveUser(currentUserDoc, newPassiveUserDoc);
   }
   
   Future addFollowingUidToActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
@@ -43,19 +44,23 @@ class FollowModel extends ChangeNotifier {
       final List<dynamic> followerUids = newPassiveUserDoc['followerUids'];
       final String newFollowerUid = currentUserDoc['uid'];
       followerUids.add(newFollowerUid);
+      int followersCount = newPassiveUserDoc['followersCount'];
+      followersCount += 1;
       await FirebaseFirestore.instance
       .collection('users')
       .doc(newPassiveUserDoc.id)
       .update({
         'followerUids': followerUids,
+        'followersCount': followersCount,
       });
     } catch(e) {
       print(e.toString());
     }
   }
 
-  Future removeFollowingUidOfActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future removeFollowingUidOfActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot newPassiveUserDoc) async {
     try{
+      followingUids.remove(newPassiveUserDoc['uid']);
       await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUserDoc.id)
@@ -67,16 +72,18 @@ class FollowModel extends ChangeNotifier {
     } 
   }
 
-  Future removeFollowerUidOfPassiveUser(DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future removeFollowerUidOfPassiveUser(DocumentSnapshot currentUserDoc,DocumentSnapshot newPassiveUserDoc) async {
     try{
-      final List<dynamic> followerUids = passiveUserDoc['followerUids'];
-      final String removeFollowerUid = currentUserDoc['uid'];
-      followerUids.remove(removeFollowerUid);
+      List<dynamic> followerUids = newPassiveUserDoc['followerUids'];
+      followerUids.remove(currentUserDoc['uid']);
+      int followersCount = newPassiveUserDoc['followersCount'];
+      followersCount -= 1;
       await FirebaseFirestore.instance
       .collection('users')
-      .doc(passiveUserDoc.id)
+      .doc(newPassiveUserDoc.id)
       .update({
         'followerUids': followerUids,
+        'followersCount': followersCount,
       });
     } catch(e) {
       print(e.toString());
