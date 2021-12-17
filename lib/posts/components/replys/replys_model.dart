@@ -277,6 +277,8 @@ class ReplysModel extends ChangeNotifier {
       'isOfficial': currentUserDoc['isOfficial'],
       'likesUids': [],
       'likesUidsCount': 0,
+      'negativeScore': 0,
+      'positiveScore': 0,
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
       'score': 100,

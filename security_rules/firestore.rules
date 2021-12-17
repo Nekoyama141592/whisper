@@ -50,7 +50,7 @@ service cloud.firestore {
     && 'subUserName' in user && user.subUserName is string
     && 'uid'  in user && user.uid is string
     && 'updatedAt' in user && user.updatedAt is timestamp
-    && 'userName' in user && user.userName is string;
+    && 'userName' in user && user.userName is string
     && 'walletAddress' in user && user.walletAddress is string;
   }
 
@@ -88,7 +88,7 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 15
+    reply.size() == 17
     && 'elementId' in reply && reply.elementId is string
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
@@ -97,6 +97,8 @@ service cloud.firestore {
     && 'isOfficial' in reply && reply.isOfficial is bool
     && 'likesUids' in reply && reply.likesUids is list
     && 'likesUidsCount' in reply && reply.likesUidsCount is int
+    && 'negativeScore' in reply && reply.negativeScore is int
+    && 'positiveScore' in reply && reply.positiveScore is int
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string
     && 'score' in reply && reply.score is int
@@ -157,7 +159,7 @@ service cloud.firestore {
     }
 
     match /comments/{commentId} {
-      allow read: if false:
+      allow read: if false;
       allow create: if false;
       allow update: if false;
       allow delete: if false;
