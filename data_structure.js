@@ -92,7 +92,7 @@ db: {
             'isNFTicon': bool,
             'isOfficial':bool,
             'notificationId': String,
-            'postId': notificationId,
+            'notificationId': notificationId,
             'postTitle': String,
             'uid': String,
             'userDocId': String,
