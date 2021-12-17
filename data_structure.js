@@ -30,9 +30,10 @@ db: {
             userName: String,
             userImageURL: String,
         }],
-        commentsState: String('open','isLocked','onlyFollowingUsers')
+        commentsState: String('open','isLocked','onlyFollowingUsers'),
         createdAt: TimeStamp,
-        genre: String
+        country: string,
+        genre: String,
         imageURL: String,
         impression: int,
         ipv6: String,

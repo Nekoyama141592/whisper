@@ -390,6 +390,7 @@ class AddPostModel extends ChangeNotifier {
           'comments': [],
           'commentsState': commentsState,
           'createdAt': Timestamp.now(),
+          'country': '',
           'genre': '',
           'imageURL': imageURL,
           'impression': 0,
