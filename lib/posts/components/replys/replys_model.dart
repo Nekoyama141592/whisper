@@ -257,6 +257,7 @@ class ReplysModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final map = makeReplyMap(elementId, currentUserDoc);
     await addReplyToFirestore(map);
+    // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
       final List<dynamic> mutesUids = passiveUserDoc['mutesUids'];

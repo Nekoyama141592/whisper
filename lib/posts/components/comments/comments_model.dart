@@ -101,9 +101,8 @@ class CommentsModel extends ChangeNotifier {
   
   Future makeComment(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final newCommentMap = makeCommentMap(currentUserDoc, currentSongMap,currentSongMapCommentsNotifier);
-    final DocumentSnapshot newCurrentSongDoc = await getNewCurrentSongDoc(currentSongMap);
-    await updateCommentsOfPostWhenMakeComment(newCurrentSongDoc,newCommentMap);
+    final commentMap = makeCommentMap(currentUserDoc, currentSongMap,currentSongMapCommentsNotifier);
+    await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -114,6 +113,7 @@ class CommentsModel extends ChangeNotifier {
       }
     }
   }
+
 
   Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier) {
     final commentMap = {
@@ -126,6 +126,7 @@ class CommentsModel extends ChangeNotifier {
       'likesUids': [],
       'negativeScore': 0,
       'positiveScore': 0,
+      'postId': currentSongMap['postId'],
       'score': 100,
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
@@ -135,22 +136,6 @@ class CommentsModel extends ChangeNotifier {
     currentSongMapCommentsNotifier.value.add(commentMap);
     notifyListeners();
     return commentMap;
-  }
-
-
-  Future updateCommentsOfPostWhenMakeComment(DocumentSnapshot newCurrentSongDoc,Map<String,dynamic> newCommentMap) async {
-    try{
-      final List<dynamic> comments = newCurrentSongDoc['comments'];
-      comments.add(newCommentMap);
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .doc(newCurrentSongDoc.id)
-      .update({
-        'comments': comments,
-      });
-    } catch(e) {
-      print(e.toString());
-    }
   }
 
   Future updateCommentNotificationsOfPassiveUser(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
