@@ -147,7 +147,6 @@ class CommentsModel extends ChangeNotifier {
         'isNFTicon': currentUserDoc['isNFTicon'],
         'isOfficial': currentUserDoc['isOfficial'],
         'notificationId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
-        'postId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'postTitle': currentSongMap['title'],
         'uid': currentUserDoc['uid'],
         'userDocId': currentUserDoc.id,
