@@ -205,11 +205,6 @@ class UserShowModel extends ChangeNotifier {
     }); 
   }
 
-  Future removeTheUsersPost(String uid,int i) async {
-    userShowDocs.removeWhere((result) => result['uid'] == uid);
-    await resetAudioPlayer(i);
-  }
-
   Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
     // Abstractions in post_futures.dart cause Range errors.
     blockingUids.add(uid);
@@ -221,6 +216,11 @@ class UserShowModel extends ChangeNotifier {
     .update({
       'blockingUids': blockingUids,
     }); 
+  }
+
+  Future removeTheUsersPost(String uid,int i) async {
+    userShowDocs.removeWhere((result) => result['uid'] == uid);
+    await resetAudioPlayer(i);
   }
 
   Future onRefresh() async {
