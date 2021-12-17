@@ -93,6 +93,17 @@ class CommentsModel extends ChangeNotifier {
           ),
           actions: [
             RoundedButton(
+              text: '戻る', 
+              widthRate: 0.25, 
+              verticalPadding: 10.0, 
+              horizontalPadding: 0.0, 
+              press: () async { 
+                Navigator.pop(context);
+              }, 
+              textColor: Theme.of(context).primaryColor, 
+              buttonColor: Theme.of(context).focusColor
+            ),
+            RoundedButton(
               text: '送信', 
               widthRate: 0.25, 
               verticalPadding: 10.0, 

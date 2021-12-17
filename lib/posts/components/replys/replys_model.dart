@@ -99,6 +99,18 @@ class ReplysModel extends ChangeNotifier {
           ),
           actions: [
             RoundedButton(
+              text: '戻る', 
+              widthRate: 0.25, 
+              verticalPadding: 10.0, 
+              horizontalPadding: 10.0, 
+              press: () async { 
+                Navigator.pop(context);
+                await makeReply(currentSongMap, currentUserDoc, thisComment);
+              }, 
+              textColor: Theme.of(context).primaryColor, 
+              buttonColor: Theme.of(context).focusColor
+            ),
+            RoundedButton(
               text: '送信', 
               widthRate: 0.25, 
               verticalPadding: 10.0, 
