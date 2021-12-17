@@ -1,0 +1,1 @@
+enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst}

@@ -31,7 +31,6 @@ class PostSearchModel extends ChangeNotifier{
   List<Map<String,dynamic>> results = [];
    // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
-  final currentSongMapCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -60,90 +59,6 @@ class PostSearchModel extends ChangeNotifier{
   void endLoading() {
     isLoading = false;
     notifyListeners();
-  }
-
-  void sortCommentsByLikesUidsCount() {
-    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
-    comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
-    currentSongMapCommentsNotifier.value = comments;
-  }
-
-  void sortCommentsByNewestFirst() {
-    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
-    comments.sort((a,b) => b['createdAt'].toDate().compareTo(a['createdAt'].toDate() ));
-    currentSongMapCommentsNotifier.value = comments;
-  }
-
-  void sortCommentsByOldestFirst() {
-    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
-    comments.sort((a,b) => a['createdAt'].toDate().compareTo(b['createdAt'].toDate() ));
-    currentSongMapCommentsNotifier.value = comments;
-  }
-
-  void showSortDialogue(BuildContext context) {
-    showCupertinoDialog(
-      context: context, 
-      builder: (context) {
-        return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                sortCommentsByLikesUidsCount();
-                Navigator.pop(context);
-              }, 
-              child: Text(
-                'いいね順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                sortCommentsByNewestFirst();
-                Navigator.pop(context);
-                
-              }, 
-              child: Text(
-                '新しい順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                sortCommentsByOldestFirst();
-                Navigator.pop(context);
-              }, 
-              child: Text(
-                '古い順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
-              child: Text(
-                'キャンセル',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-          ],
-        );
-      }
-    );
   }
 
   Future initAudioPlayer(int i) async {
@@ -372,7 +287,6 @@ class PostSearchModel extends ChangeNotifier{
       final currentItem = sequenceState.currentSource;
       final Map<String,dynamic> currentSongMap = currentItem?.tag;
       currentSongMapNotifier.value = currentSongMap;
-      currentSongMapCommentsNotifier.value = currentSongMap['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       // update shuffle mode

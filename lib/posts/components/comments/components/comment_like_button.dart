@@ -27,11 +27,8 @@ class CommentLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final commentId = comment['commentId'];
-    List<dynamic> likesUidsOfComment = comment['likesUids'];
-    final likesCount = likesUidsOfComment.length;
-    likesUidsOfComment.remove(currentUserDoc['uid']);
-    final plusOneCount = likesUidsOfComment.length + 1;
-    
+    final likesUidsCount = comment['likesUidsCount']; 
+    final displayLikesUidsCount =  likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString();
     return likedCommentIds.contains(commentId) ?
     Padding(
       padding: const EdgeInsets.symmetric(
@@ -42,12 +39,12 @@ class CommentLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite,color: Colors.red),
             onTap: () async {
-              await commentsModel.unlike(likedCommentIds, currentUserDoc, currentSongMap, commentId, likedComments);
+              await commentsModel.unlike(likedCommentIds, comment, currentUserDoc, likedComments);
             },
           ),
           SizedBox(width: 5.0),
           Text(
-            plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+            displayLikesUidsCount,
             style: TextStyle(color: Colors.red)
           )
         ],
@@ -61,12 +58,12 @@ class CommentLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await commentsModel.like(likedCommentIds, currentUserDoc, currentSongMap, commentId, likedComments);
+              await commentsModel.like(likedCommentIds, currentUserDoc, comment, likedComments);
             },
           ),
           SizedBox(width: 5.0),
           Text(
-            likesCount >= 10000 ? (likesCount/1000.floor()/10).toString() + '万' :  likesCount.toString(),
+            displayLikesUidsCount
           )
         ],
       ),

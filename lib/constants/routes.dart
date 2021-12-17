@@ -105,8 +105,8 @@ void toPickPostImagePage(context,AddPostModel addPostModel, DocumentSnapshot cur
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, currentUserDoc: currentUserDoc) ));
 }
 
-void toCommentsPage(context, void Function()? showSortDialogue,AudioPlayer audioPlayer,ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(showSortDialogue: showSortDialogue,audioPlayer: audioPlayer, currentSongMapCommentsNotifier: currentSongMapCommentsNotifier, currentSongMap: currentSongMapNotifier.value, mainModel: mainModel) ));
+void toCommentsPage(context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, currentSongMap: currentSongMapNotifier.value, mainModel: mainModel) ));
 }
 
 void toBlockingUsersPage(context, MainModel mainModel) {

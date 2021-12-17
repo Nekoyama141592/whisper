@@ -21,8 +21,6 @@ class CommentButton extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
-   
-        final int commentsCount = currentSongMap['comments'].length;
         return Row(
           children: [
             InkWell(
@@ -30,9 +28,7 @@ class CommentButton extends StatelessWidget {
               onTap: toCommentsPage,
             ),
             SizedBox(width: 5.0),
-            Text(
-              commentsCount >= 10000 ? (commentsCount/1000.floor()/10).toString() + '万' :  commentsCount.toString(),
-            )
+            
           ],
         );
     

@@ -11,6 +11,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
+import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class PostScreen extends ConsumerWidget {
@@ -28,6 +29,7 @@ class PostScreen extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
 
     final editPostInfoModel = watch(editPostInfoProvider); 
+    final commentsModel = watch(commentsProvider);
     final postDocs = bookmarksModel.bookmarkedDocs;
     return GradientScreen(
       top: SizedBox.shrink(), 
@@ -68,8 +70,8 @@ class PostScreen extends ConsumerWidget {
               bookmarksModel.isLastSongNotifier, 
               () { bookmarksModel.onNextSongButtonPressed(); },
               () {
-                bookmarksModel.pause();
-                routes.toCommentsPage(context, () { bookmarksModel.showSortDialogue(context); }, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapCommentsNotifier, bookmarksModel.currentSongMapNotifier, mainModel);
+                commentsModel.setCommentsStream(bookmarksModel.currentSongMapNotifier.value['postId']);
+                routes.toCommentsPage(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel);
               },
               () {
                 bookmarksModel.pause();

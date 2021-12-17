@@ -54,8 +54,9 @@ service cloud.firestore {
     && 'walletAddress' in user && user.walletAddress is string;
   }
 
+  
   function isValidPost(post) {
-    return post.size() == 27
+    return post.size() == 28
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -88,7 +89,7 @@ service cloud.firestore {
 
   function isValidComment(comment) {
     return
-    comment.size() == 15
+    comment.size() == 16
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
@@ -96,6 +97,7 @@ service cloud.firestore {
     && 'isNFTicon' in comment && comment.isNFTicon is bool
     && 'isOfficial' in comment && comment.isOfficial is bool
     && 'likesUids' in comment && comment.likesUids is list
+    && 'likesUidsCount' in comment && comment.likesUidsCount is int
     && 'negativeScore' in comment && comment.negativeScore is int
     && 'positiveScore' in comment && comment.positiveScore is int
     && 'postId' in comment && comment.postId is string
@@ -140,13 +142,6 @@ service cloud.firestore {
   }
 
   match /databases/{database}/documents {
-    
-    match /comments/{commentId} {
-      allow read: if false;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
-    }
 
     match /users/{userId} {
       allow create: if isAuthenticated()
@@ -159,21 +154,31 @@ service cloud.firestore {
       && request.auth.uid == resource.data.uid;
     }
     match /posts/{postId} {
+      allow read: if isAuthenticated();
       allow create: if isAuthenticated()
       && isValidPost(request.resource.data);
       allow update: if isAuthenticated()
       && isValidPost(request.resource.data);
-      allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
     }
 
     match /replys/{replyId} {
+      allow read: if isAuthenticated();
       allow create: if isAuthenticated()
       && isValidReply(request.resource.data);
       allow update: if isAuthenticated()
       && isValidReply(request.resource.data);
+      allow delete: if isAuthenticated()
+      && request.auth.uid == resource.data.uid;
+    }
+
+    match /comments/{commentId} {
       allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+      && isValidComment(request.resource.data);
+      allow update: if isAuthenticated()
+      && isValidComment(request.resource.data);
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
     }

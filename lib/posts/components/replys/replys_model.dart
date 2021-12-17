@@ -10,13 +10,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:whisper/constants/counts.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
+// states
+import 'package:whisper/constants/sort_states.dart';
 
 final replysProvider = ChangeNotifierProvider(
   (ref) => ReplysModel()
 );
-
-
-enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst}
 
 class ReplysModel extends ChangeNotifier {
 
@@ -339,30 +338,17 @@ class ReplysModel extends ChangeNotifier {
     });
   }
 
-  Future<void> like(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot currentUserDoc,) async {
+  Future<void> like(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot currentUserDoc,List<dynamic> likedReplys) async {
     final replyId = thisReply['replyId'];
-    addReplyIdToLikedReplyIds(likedReplyIds, replyId);
-    final newReplyDoc = await setNewReplyDoc(thisReply);
-    await updateLikesUidsOfReply(currentUserDoc, newReplyDoc);
-    await updateLikesUidsOfReply(currentUserDoc, newReplyDoc);
-  }
-
-  void addReplyIdToLikedReplyIds(List<dynamic> likedReplyIds,String replyId) {
     likedReplyIds.add(replyId);
     notifyListeners();
-  } 
+    final newReplyDoc = await setNewReplyDoc(thisReply);
+    await updateLikesUidsOfReply(currentUserDoc, newReplyDoc);
+    await updateLikedReplysOfUser(currentUserDoc, thisReply, likedReplys);
+  }
 
   Future<DocumentSnapshot> setNewReplyDoc(Map<String,dynamic> thisReply) async {
-    late DocumentSnapshot newReplyDoc;
-    await FirebaseFirestore.instance
-    .collection('replys')
-    .where('replyId',isEqualTo: thisReply['replyId'])
-    .limit(1)
-    .get().then((qshot) {
-      qshot.docs.forEach((DocumentSnapshot doc) {
-        newReplyDoc = doc;
-      })
-;    });
+    DocumentSnapshot newReplyDoc = await FirebaseFirestore.instance.collection('replys').doc(thisReply['replyId']).get();
     return newReplyDoc;
   }
 
@@ -372,9 +358,7 @@ class ReplysModel extends ChangeNotifier {
     int likesUidsCount = newReplyDoc['likesUidsCount'];
     likesUids.add(uid);
     notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('replys')
-    .doc(newReplyDoc.id)
+    await FirebaseFirestore.instance.collection('replys').doc(newReplyDoc.id)
     .update({
       'likesUids': likesUids,
       'likesUidsCount': likesUidsCount + 1,
@@ -390,9 +374,7 @@ class ReplysModel extends ChangeNotifier {
       };
       likedReplys.add(newLikedReply);
       notifyListeners();
-      await FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUserDoc.id)
+      await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
       .update({
         'likedReplys': likedReplys,
       });

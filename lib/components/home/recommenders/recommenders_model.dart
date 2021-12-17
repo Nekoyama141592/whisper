@@ -30,7 +30,6 @@ class RecommendersModel extends ChangeNotifier {
 
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
-  final currentSongMapCommentsNotifier = ValueNotifier<List<dynamic>>([]);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -83,94 +82,6 @@ class RecommendersModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
-
-  void sortCommentsByLikesUidsCount(BuildContext context) {
-    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
-    comments.sort((a,b) => b['likesUids'].length.compareTo(a['likesUids'].length ));
-    currentSongMapCommentsNotifier.value = comments;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('左下から並び替えを実行'), duration: Duration(seconds: 1 ),) );
-  }
-
-  void sortCommentsByNewestFirst(BuildContext context) {
-    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
-    comments.sort((a,b) => b['createdAt'].toDate().compareTo(a['createdAt'].toDate() ));
-    currentSongMapCommentsNotifier.value = comments;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('左下から並び替えを実行'), duration: Duration(seconds: 1),) );
-  }
-
-  void sortCommentsByOldestFirst(BuildContext context) {
-    List<dynamic> comments =  currentSongMapCommentsNotifier.value;
-    comments.sort((a,b) => a['createdAt'].toDate().compareTo(b['createdAt'].toDate() ));
-    currentSongMapCommentsNotifier.value = comments;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('左下から並び替えを実行'), duration: Duration(seconds: 1),) );
-  }
-
-
-  void showSortDialogue(BuildContext context) {
-    showCupertinoDialog(
-      context: context, 
-      builder: (context) {
-        return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-                sortCommentsByLikesUidsCount(context);
-              }, 
-              child: Text(
-                'いいね順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-                sortCommentsByNewestFirst(context);
-              }, 
-              child: Text(
-                '新しい順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-                sortCommentsByOldestFirst(context);
-              }, 
-              child: Text(
-                '古い順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
-              child: Text(
-                'キャンセル',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-          ],
-        );
-      }
-    );
-  }
-
 
   void getReadPostIds() {
     List<dynamic> readPosts = currentUserDoc['readPosts'];
@@ -490,7 +401,6 @@ class RecommendersModel extends ChangeNotifier {
       final currentItem = sequenceState.currentSource;
       final DocumentSnapshot<Map<String,dynamic>>? currentSongDoc = currentItem?.tag;
       currentSongMapNotifier.value = currentSongDoc!.data() as Map<String,dynamic>;
-      currentSongMapCommentsNotifier.value = currentSongDoc.data()!['comments'];
       // update playlist
       final playlist = sequenceState.effectiveSequence;
       // playlist.map((item) {

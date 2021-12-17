@@ -12,6 +12,7 @@ import 'package:whisper/details/loading.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
+import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class UserShowPostScreen extends ConsumerWidget {
@@ -31,6 +32,7 @@ class UserShowPostScreen extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
 
     final editPostInfoModel = watch(editPostInfoProvider);
+    final commentsModel = watch(commentsProvider);
     final isLoading = userShowModel.isLoading;
     final postDocs = userShowModel.userShowDocs;
     final content =  Padding(
@@ -55,8 +57,8 @@ class UserShowPostScreen extends ConsumerWidget {
           userShowModel.isLastSongNotifier, 
           () { userShowModel.onNextSongButtonPressed(); },
           () {
-            userShowModel.pause();
-            routes.toCommentsPage(context, () { userShowModel.showSortDialogue(context); }, userShowModel.audioPlayer, userShowModel.currentSongMapCommentsNotifier, userShowModel.currentSongMapNotifier, mainModel);
+            commentsModel.setCommentsStream(userShowModel.currentSongMapNotifier.value['postId']);
+            routes.toCommentsPage(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel);
           },
           () {
             userShowModel.pause();

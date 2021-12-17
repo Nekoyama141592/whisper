@@ -10,6 +10,7 @@ import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/components/search/post_search/components/search_input_field.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/components/search/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
@@ -30,6 +31,7 @@ class PostCards extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     
     final editPostInfoModel = watch(editPostInfoProvider);
+    final commentsModel = watch(commentsProvider);
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
         text: postSearchModel.searchTerm,
@@ -101,8 +103,8 @@ class PostCards extends ConsumerWidget {
                     postSearchModel.isLastSongNotifier, 
                     () { postSearchModel.onNextSongButtonPressed(); },
                     () {
-                      postSearchModel.pause();
-                      routes.toCommentsPage(context, () { postSearchModel.showSortDialogue(context); }, postSearchModel.audioPlayer, postSearchModel.currentSongMapCommentsNotifier, postSearchModel.currentSongMapNotifier, mainModel);
+                      commentsModel.setCommentsStream(postSearchModel.currentSongMapNotifier.value['postId']);
+                      routes.toCommentsPage(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel);
                     },
                     () {
                       postSearchModel.pause();

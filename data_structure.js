@@ -7,6 +7,7 @@ db: {
         isNFTicon: false,
         isOfficial: false,
         likesUids: [ String ],
+        likesUidsCount: int,
         negativeScore: int,
         positiveScore: int,
         postId: string,
@@ -20,7 +21,7 @@ db: {
         ethPrice: int,
         link: String,
         userName; String,
-        number: int
+        number: int,
         uid: uid,
         userImageURL: String,
     }

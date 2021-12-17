@@ -1,9 +1,12 @@
 // material
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
+import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
@@ -16,16 +19,12 @@ class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
     Key? key,
-    required this.showSortDialogue,
     required this.audioPlayer,
-    required this.currentSongMapCommentsNotifier,
     required this.currentSongMap,
     required this.mainModel
   }) : super(key: key);
 
-  final void Function()? showSortDialogue;
   final AudioPlayer audioPlayer;
-  final ValueNotifier<List<dynamic>> currentSongMapCommentsNotifier;
   final Map<String,dynamic> currentSongMap;
   final MainModel mainModel;
 
@@ -45,53 +44,50 @@ class CommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  {
-          commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer ,currentSongMapCommentsNotifier); 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer); 
         },
       ),
 
-      body: ValueListenableBuilder<List<dynamic>>(
-        valueListenable: currentSongMapCommentsNotifier,
-        builder: (_,currentSongMapComments,__) {
-          return
-          SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: showSortDialogue,),
-                Expanded(
-                  child: currentSongMapComments.isNotEmpty ?
-                  ListView.builder(
-                    itemCount: currentSongMapComments.length,
-                    itemBuilder: (BuildContext context, int i) {
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: (){
+              commentsModel.showSortDialogue(context, currentSongMap);
+            },),
+            Expanded(
+              child: StreamBuilder(
+                stream: commentsModel.commentsStream,
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) Text('something went wrong');
+                  if (snapshot.connectionState == ConnectionState.waiting) Loading();
+                  return !snapshot.hasData || snapshot.data == null  ?
+                  SizedBox.shrink()
+                  : SmartRefresher(
+                    enablePullUp: true,
+                    enablePullDown: false,
+                    header: WaterDropHeader(),
+                    controller: replysModel.refreshController,
+                    child: ListView(
+                      children: snapshot.data!.docs.map((DocumentSnapshot doc) {
+                        Map<String, dynamic> comment = doc.data()! as Map<String, dynamic>;
+                        return CommentCard(
+                          commentsModel: commentsModel,
+                          replysModel: replysModel,
+                          comment: comment,
+                          currentSongMap: currentSongMap,
+                          mainModel: mainModel,
+                        );
+                      }).toList() 
                       
-                      return CommentCard(
-                        commentsModel: commentsModel,
-                        replysModel: replysModel,
-                        comment: currentSongMapComments[i],
-                        currentSongMap: currentSongMap,
-                        mainModel: mainModel,
-                      );
-                    }
-                  ) : SizedBox()
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: InkWell(
-                      child: Icon(
-                        Icons.sort,
-                        size: 32.0,
-                      ),
-                      onTap: () { commentsModel.reload(); },
                     ),
-                  ),
-                )
-              ],
+                  );
+                }
+              )
             ),
-          );
-        }
-      ),
+          ],
+        ),
+      )
     );
   }
 }

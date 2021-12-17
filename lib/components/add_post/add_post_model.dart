@@ -387,7 +387,6 @@ class AddPostModel extends ChangeNotifier {
           'audioURL': audioURL,
           'bookmarks':[],
           'bookmarksCount': 0,
-          'comments': [],
           'commentsState': commentsState,
           'createdAt': Timestamp.now(),
           'country': '',
