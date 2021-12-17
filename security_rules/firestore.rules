@@ -55,11 +55,10 @@ service cloud.firestore {
   }
 
   function isValidPost(post) {
-    return post.size() == 28
+    return post.size() == 27
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
-    && 'comments' in post && post.comments is list 
     && 'commentsState' in post && post.commentsState is string
     && 'createdAt' in post && post.createdAt is timestamp
     && 'country' in post && post.country is string
@@ -85,6 +84,26 @@ service cloud.firestore {
     && 'userDocId' in post && post.userDocId is string
     && 'userImageURL' in post && post.userImageURL is string
     && 'userName' in post && post.userName is string;
+  }
+
+  function isValidComment(comment) {
+    return
+    comment.size() == 15
+    && 'comment' in comment && comment.comment is string
+    && 'commentId' in comment && comment.commentId is string
+    && 'createdAt' in comment && comment.createdAt is timestamp
+    && 'ipv6' in comment && comment.ipv6 is string
+    && 'isNFTicon' in comment && comment.isNFTicon is bool
+    && 'isOfficial' in comment && comment.isOfficial is bool
+    && 'likesUids' in comment && comment.likesUids is list
+    && 'negativeScore' in comment && comment.negativeScore is int
+    && 'positiveScore' in comment && comment.positiveScore is int
+    && 'postId' in comment && comment.postId is string
+    && 'score' in comment && comment.score is int
+    && 'uid' in comment && comment.uid is string
+    && 'userDocId' in comment && comment.userDocId is string
+    && 'userName' in comment && comment.userName is string
+    && 'userImageURL' in comment && comment.userImageURL is string
   }
 
   function isValidReply(reply) {
@@ -122,6 +141,13 @@ service cloud.firestore {
 
   match /databases/{database}/documents {
     
+    match /comments/{commentId} {
+      allow read: if false;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
     match /users/{userId} {
       allow create: if isAuthenticated()
       && isValidUser(request.resource.data)
@@ -158,13 +184,5 @@ service cloud.firestore {
       allow update: if isAuthenticated() && isValidNFTowners(request.resource.data);
       allow delete: if false;
     }
-
-    match /comments/{commentId} {
-      allow read: if false;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
-    }
-    
   }
 }
