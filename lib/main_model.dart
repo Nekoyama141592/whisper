@@ -37,6 +37,7 @@ class MainModel extends ChangeNotifier {
   // mutes 
   List<String> mutesReplyIds = [];
   List<dynamic> mutesUids = [];
+  List<dynamic> mutesIpv6s = [];
   List<String> mutesCommentIds = [];
   List<String> mutesPostIds = [];
   // block
@@ -146,6 +147,7 @@ class MainModel extends ChangeNotifier {
   void setMutes() {
     mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
     mutesUids = currentUserDoc['mutesUids'];
+    mutesIpv6s = currentUserDoc['mutesIpv6s'];
     mutesCommentIds = prefs.getStringList('mutesCommentIds') ?? [];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
   }

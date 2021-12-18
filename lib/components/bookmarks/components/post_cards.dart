@@ -82,13 +82,13 @@ class PostCards extends StatelessWidget {
                     await bookmarksModel.initAudioPlayer(i);
                   },
                   muteUser: () async {
-                    await bookmarksModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc);
+                    await bookmarksModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6s,post);
                   },
                   mutePost: () async {
                     await bookmarksModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
                   },
                   blockUser: () async {
-                    await bookmarksModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i);
+                    await bookmarksModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i,mainModel.mutesIpv6s,post);
                   },
                   mainModel: mainModel,
                 );

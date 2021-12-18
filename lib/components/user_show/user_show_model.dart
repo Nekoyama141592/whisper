@@ -192,22 +192,23 @@ class UserShowModel extends ChangeNotifier {
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-  Future muteUser(List<dynamic> mutesUids,String uid,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc) async {
+  Future muteUser(List<dynamic> mutesUids,String uid,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6s,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
     mutesUids.add(uid);
+    mutesIpv6s.add(post['ipv6']);
     await removeTheUsersPost(uid, i);
     notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
+    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
     .update({
       'mutesUids': mutesUids,
+      'mutesIpv6s': mutesIpv6s,
     }); 
   }
 
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i) async {
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i,List<dynamic> mutesIpv6s,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
     blockingUids.add(uid);
+    mutesIpv6s.add(post['ipv6']);
     await removeTheUsersPost(uid, i);
     notifyListeners();
     await FirebaseFirestore.instance
@@ -215,6 +216,7 @@ class UserShowModel extends ChangeNotifier {
     .doc(currentUserDoc.id)
     .update({
       'blockingUids': blockingUids,
+      'mutesIpv6s': mutesIpv6s,
     }); 
   }
 

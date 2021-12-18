@@ -71,13 +71,13 @@ class PostCards extends ConsumerWidget {
                         await postSearchModel.initAudioPlayer(i);
                       },
                       muteUser: () async {
-                        await postSearchModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc);
+                        await postSearchModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6s,post);
                       },
                       mutePost: () async {
                         await postSearchModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
                       },
                       blockUser: () async {
-                        await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i);
+                        await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i,mainModel.mutesIpv6s,post);
                       },
                       mainModel: mainModel,
                     );
@@ -95,7 +95,7 @@ class PostCards extends ConsumerWidget {
                     postSearchModel.seek, 
                     postSearchModel.repeatButtonNotifier, 
                     () { postSearchModel.onRepeatButtonPressed(); }, 
-                    postSearchModel.isFirstSongNotifier, 
+                    postSearchModel.isFirstSongNotifier,
                     () { postSearchModel.onPreviousSongButtonPressed(); }, 
                     postSearchModel.playButtonNotifier, 
                     () { postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
