@@ -116,8 +116,9 @@ class RecommendersModel extends ChangeNotifier {
     } 
   }
 
-  Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i) async {
+  Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
+    final postId = post['postId'];
     mutesPostIds.add(postId);
     recommenderDocs.removeWhere((result) => result['postId'] == postId);
     await resetAudioPlayer(i);

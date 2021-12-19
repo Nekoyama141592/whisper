@@ -85,7 +85,7 @@ class PostCards extends StatelessWidget {
                     await bookmarksModel.muteUser(mainModel.mutesUids, mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,post);
                   },
                   mutePost: () async {
-                    await bookmarksModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
+                    await bookmarksModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
                   },
                   blockUser: () async {
                     await bookmarksModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids,i,mainModel.mutesIpv6AndUids,post);

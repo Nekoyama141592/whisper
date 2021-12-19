@@ -74,7 +74,7 @@ class PostCards extends ConsumerWidget {
                         await postSearchModel.muteUser(mainModel.mutesUids, mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,post);
                       },
                       mutePost: () async {
-                        await postSearchModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
+                        await postSearchModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
                       },
                       blockUser: () async {
                         await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, i,mainModel.mutesIpv6AndUids,post);
