@@ -23,9 +23,12 @@ class CommentNotifications extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final List<dynamic> list = mainModel.commentNotifications;
-    final content = CommentNotificationList(currentUserDoc: currentUserDoc,mainModel: mainModel,);
+    final content = CommentNotificationList(currentUserDoc: currentUserDoc,mainModel: mainModel);
+    final reload = () async {
+      await mainModel.setCurrentUser();
+    };
     return list.isEmpty ?
-    Nothing()
-    : NotificationJudgeScreen(list: list, content: content);
+    Nothing(reload: reload)
+    : NotificationJudgeScreen(list: list, content: content,reload: reload);
   }
 }

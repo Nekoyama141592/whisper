@@ -95,7 +95,10 @@ class UserShowPostScreen extends ConsumerWidget {
     Loading()
     : JudgeScreen(
       list: postDocs, 
-      content: content
+      content: content,
+      reload: () async {
+        await userShowModel.getPosts();
+      },
     );
     
   }

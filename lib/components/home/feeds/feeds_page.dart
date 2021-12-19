@@ -36,7 +36,10 @@ class FeedsPage extends ConsumerWidget {
     return isLoading ?
     Loading()
     : JudgeScreen(
-      list: postDocs, 
+      list: postDocs,
+      reload: () async {
+        await feedsModel.getFeeds();
+      },
       content: PostCards(
         postDocs: postDocs, 
         route: () {

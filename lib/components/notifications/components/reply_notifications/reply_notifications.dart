@@ -22,8 +22,11 @@ class ReplyNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     final list = replyNotifications;
     final content = ReplyNotificationList(notifications: replyNotifications,mainModel: mainModel,);
+    final reload = () async {
+      await mainModel.setCurrentUser();
+    };
     return list.isEmpty ?
-    Nothing()
-    : NotificationJudgeScreen(list: list, content: content);
+    Nothing(reload: reload)
+    : NotificationJudgeScreen(list: list, content: content,reload: reload);
   }
 }

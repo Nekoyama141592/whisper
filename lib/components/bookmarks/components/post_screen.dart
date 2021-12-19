@@ -45,7 +45,7 @@ class PostScreen extends ConsumerWidget {
         ),
       ),
       content: postDocs.isEmpty ?
-      Nothing()
+      Nothing(reload: () async { bookmarksModel.getBookmarks(); })
       : Padding(
         padding: const EdgeInsets.only(
           top: 20.0

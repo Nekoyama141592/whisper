@@ -29,6 +29,7 @@ class BlockingUsersPage extends ConsumerWidget {
       Loading()
       : JudgeScreen(
         list: blockingUsersModel.blockingUserDocs, 
+        reload: () async { mainModel.setCurrentUser(); },
         content: UserCards(userDocs: blockingUsersModel.blockingUserDocs,mainModel: mainModel,blockingUsersModel: blockingUsersModel,)
       )
     );
