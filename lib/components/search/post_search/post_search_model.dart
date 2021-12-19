@@ -85,8 +85,9 @@ class PostSearchModel extends ChangeNotifier{
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-  Future muteUser(List<dynamic> mutesUids,String uid,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
+  Future muteUser(List<dynamic> mutesUids,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
+    final String uid = post['uid'];
     mutesUids.add(uid);
     mutesIpv6AndUids.add({
       'ipv6': post['ipv6'],
@@ -101,8 +102,9 @@ class PostSearchModel extends ChangeNotifier{
     }); 
   }
 
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String uid,int i,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,int i,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
+    final String uid = post['uid'];
     blockingUids.add(uid);
     mutesIpv6AndUids.add({
       'ipv6': post['ipv6'],
