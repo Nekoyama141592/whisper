@@ -71,15 +71,17 @@ class BlockingUsersModel extends ChangeNotifier {
     }
   }
 
-  Future unBlockUser(String passiveUid,List<dynamic> blockingUids,DocumentSnapshot currentUserDoc) async {
+  Future unBlockUser(String passiveUid,List<dynamic> blockingUids,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids) async {
     blockingUserDocs.removeWhere((blockingUserDoc) => blockingUserDoc['uid'] == passiveUid);
     notifyListeners();
+    mutesIpv6AndUids.removeWhere((mutesIpv6AndUid) => mutesIpv6AndUid['uid'] == passiveUid);
     blockingUids.remove(passiveUid);
     await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDoc.id)
     .update({
       'blockingUids': blockingUids,
+      'mutesIpv6AndUids': mutesIpv6AndUids,
     });
   }
 

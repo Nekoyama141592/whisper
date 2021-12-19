@@ -41,7 +41,7 @@ class UserCard extends StatelessWidget {
               leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['userImageURL']),
               title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
               onTap: () async {
-                await blockingUsersModel.unBlockUser(userDoc['uid'], mainModel.blockingUids, mainModel.currentUserDoc);
+                await blockingUsersModel.unBlockUser(userDoc['uid'], mainModel.blockingUids, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids);
               },
               subtitle: Text(
                 userDoc['description'],

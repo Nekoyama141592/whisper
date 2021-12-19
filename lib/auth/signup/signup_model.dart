@@ -181,7 +181,7 @@ class SignupModel extends ChangeNotifier {
       'mutesReplyIds': [],
       'mutesUids': [],
       'mutesCommentIds': [],
-      'mutesIpv6s': [],
+      'mutesIpv6AndUids': [],
       'mutesPostIds': [],
       'noDisplayWordsOfComments': [],
       'noDisplayWordsOfMyPost': [],

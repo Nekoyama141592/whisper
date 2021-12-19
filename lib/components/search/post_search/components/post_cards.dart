@@ -71,13 +71,13 @@ class PostCards extends ConsumerWidget {
                         await postSearchModel.initAudioPlayer(i);
                       },
                       muteUser: () async {
-                        await postSearchModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6s,post);
+                        await postSearchModel.muteUser(mainModel.mutesUids, post['uid'], mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,post);
                       },
                       mutePost: () async {
                         await postSearchModel.mutePost(mainModel.mutesPostIds, post['postId'], mainModel.prefs, i);
                       },
                       blockUser: () async {
-                        await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i,mainModel.mutesIpv6s,post);
+                        await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, post['uid'], i,mainModel.mutesIpv6AndUids,post);
                       },
                       mainModel: mainModel,
                     );
