@@ -25,8 +25,8 @@ service cloud.firestore {
     && 'isNFTicon' in user && user.isNFTicon is bool
     && 'isOfficial' in user && user.isOfficial is bool
     && 'isSubAdmin' in user && user.isSubAdmin is bool
-    && 'isSubscribed' in user && user.isSubscribed is bool
-    && 'joiningCommunityIds' in user && user.joiningCommunityIds is list
+    && 'subscriptions' in user && user.subscriptions is list
+    && 'joiningGroups' in user && user.joiningGroups is list
     && 'language' in user && user.language is string
     && 'likedComments' in user && user.likedComments is list
     && 'likeNotifications' in user && user.likeNotifications is list

@@ -118,8 +118,14 @@ db: {
         isKeyAccount: bool,
         isOfficial: bool,
         isSubAdmin: bool,
-        isSubscribed: bool,
-        joiningCommunityIds,List<String>,
+        subscriptions: List<Map<String,dynamic>{
+            'subscriptionId': String,
+            'planName': String,
+        }>,
+        joiningGroups: List<Map<String,dynamic> {
+            'groupName': String,
+            'groupId': String,
+        }>,
         language: String ja,en,
         likedComments:[{
             commentId: String,
@@ -145,7 +151,10 @@ db: {
         mutesPostIds: List<String>,
         noDisplayWordsOfComments: List<String>,
         noDisplayWordsOfMyPost: List<String>,
-        otherLinks: List<String>,
+        otherLinks: List<Map<String,dynamic>{
+            'description': String,
+            'link': String,
+        }>,
         readNotificationIds: [ String ],
         readPosts: [{
             'createdAt': TimeStamp,
@@ -173,5 +182,22 @@ db: {
         updatedAt: String,
         userName: String,
         walletAddress: String,
+    }
+
+    watchLists {
+        creatorUid: String,
+        uids: [ String ],
+        label: String ,
+        watchListId: String,
+        createdAt: TimeStamp,
+        updatedAt: TimeStamp,
+    }
+    bookmarkLabels {
+        creatorUid: String,
+        postIds: [ String ],
+        label: String,
+        bookmarkLabelId: String,
+        createdAt: TimeStamp,
+        updatedAt: TimeStamp,
     }
 }
