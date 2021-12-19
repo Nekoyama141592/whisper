@@ -155,6 +155,7 @@ class SignupModel extends ChangeNotifier {
       'birthDay': timestampBirthDay,
       'blockingUids': [],
       'bookmarks': [],
+      'bookmarkLabels': [],
       'commentNotifications': [],
       'createdAt': Timestamp.now(),
       'description': '',
@@ -196,7 +197,8 @@ class SignupModel extends ChangeNotifier {
       'uid' : uid,
       'updatedAt': Timestamp.now(),
       'userName': userName,
-      'walletAddress': ''
+      'walletAddress': '',
+      'watchLists': [],
     });
   }
 

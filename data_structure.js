@@ -93,6 +93,10 @@
             "createdAt": TimeStamp,
             "postId": String,
         }],
+        'bookmarkLabels': List<Map<String,dynamic> {
+            'label': String,
+            'bookmarkLabelId': String,
+        }>,
         "commentNotifications": [{
             'comment': String,
             'createdAt': TimeStamp,
@@ -189,6 +193,10 @@
         "updatedAt": String,
         "userName": String,
         "walletAddress": String,
+        "watchLists": List<Map<String,dynamic> {
+            "label": String,
+            "watchListId": String,
+        }>,
     }
     "watchLists" {
         "creatorUid": String,
