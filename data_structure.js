@@ -10,7 +10,7 @@
         "likesUidsCount": int,
         "negativeScore": int,
         "positiveScore": int,
-        "postId": string,
+        "postId": String,
         "score": int,
         "uid": String,
         "userDocId": String,
@@ -34,7 +34,8 @@
         "bookmarksCount": int,
         "commentsState": String('open','isLocked','onlyFollowingUsers'),
         "createdAt": TimeStamp,
-        "country": string,
+        "country": String,
+        "description": String,
         "genre": String,
         "imageURL": String,
         "impression": int,
@@ -51,6 +52,11 @@
         "noDisplayWords": list,
         "noDisplayUids": list,
         "negativeScore": int,
+        "otherLinks": List<Map<String,dynamic> {
+            'description': String,
+            'link': String,
+            'label'
+        }>,
         "postId": String,
         "positiveScore": 0,
         "score": int,
@@ -63,7 +69,7 @@
     }
     replys{
         "elementId": String,
-        "elementState": string [ comment ],
+        "elementState": String [ comment ],
         "createdAt": TimeStamp,
         "ipv6": String,
         "isNFTicon": bool,
@@ -154,6 +160,7 @@
         "otherLinks": List<Map<String,dynamic>{
             'description': String,
             'link': String,
+            'label': String,
         }>,
         "readNotificationIds": [ String ],
         "readPosts": [{
@@ -183,7 +190,6 @@
         "userName": String,
         "walletAddress": String,
     }
-
     "watchLists" {
         "creatorUid": String,
         "uids": [ String ],

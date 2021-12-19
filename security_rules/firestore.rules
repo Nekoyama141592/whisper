@@ -56,13 +56,14 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 28
+    return post.size() == 30
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
     && 'commentsState' in post && post.commentsState is string
     && 'createdAt' in post && post.createdAt is timestamp
     && 'country' in post && post.country is string
+    && 'description' in post && post.description is string
     && 'genre' in post && post.genre is string
     && 'imageURL' in post && post.imageURL is string
     && 'impression' in post && post.impression is int
@@ -76,6 +77,7 @@ service cloud.firestore {
     && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayUids' in post && post.noDisplayUids is list
     && 'negativeScore' in post && post.negativeScore is int
+    && 'otherLinks' in post && post.otherLinks is list
     && 'postId' in post && post.postId is string
     && 'positiveScore' in post && post.positiveScore is int
     && 'score' in post && post.score is int
@@ -141,6 +143,27 @@ service cloud.firestore {
     && 'userImageURL' in nftOwner && nftOwner.userImageURL is string;
   }
 
+  function isValidWatchList(watchList) {
+    return
+    watchList.size() == 6
+    && 'creatorUid' in watchList && watchList.creatorUid is string
+    && 'uids' in watchList && watchList.uids is list
+    && 'label' in watchList && watchList.label is string
+    && 'watchListId' in watchList && watchList.watchListId is string
+    && 'createdAt' in watchList && watchList.createdAt is timestamp
+    && 'updatedAt' in watchList && watchList.updatedAt is timestamp
+  }
+
+  function isValidBookmarkLabel(bookmarkLabel) {
+    return
+    bookmarkLabel.size() == 6
+    && 'creatorUid' in bookmarkLabel && bookmarkLabel.creatorUid is string
+    && 'postIds' in bookmarkLabel && bookmarkLabel.postIds is list
+    && 'label' in bookmarkLabel && bookmarkLabel.label is string
+    && 'bookmarkLableId' in bookmarkLabel && bookmarkLabel.postIds is string
+    && 'createdAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp
+    && 'updatedAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp
+  }
   match /databases/{database}/documents {
 
     match /users/{userId} {
@@ -188,6 +211,26 @@ service cloud.firestore {
       allow create: if isAuthenticated() && isValidNFTowners(request.resource.data);
       allow update: if isAuthenticated() && isValidNFTowners(request.resource.data);
       allow delete: if false;
+    }
+
+    match /watchLists/{watchList} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+      && isValidWatchList(request.resource.data);
+      allow update: if isAuthenticated()
+      && isValidWatchList(request.resource.data);
+      allow delete: if isAuthenticated()
+      && request.auth.uid == resource.data.uid;
+    }
+
+    match /bookmarkLabels/{bookmarkLabel} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated()
+      && isValidBookmarkLabel(request.resource.data);
+      allow update: if isAuthenticated()
+      && isValidBookmarkLabel(request.resource.data);
+      allow delete: if isAuthenticated()
+      && request.auth.uid == resource.data.uid;
     }
   }
 }
