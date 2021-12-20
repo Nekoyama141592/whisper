@@ -132,7 +132,13 @@ class CommentsModel extends ChangeNotifier {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
       final List<dynamic> mutesUids = passiveUserDoc['mutesUids'];
       final List<dynamic> blockingUids = passiveUserDoc['blockingUids'];
-      if (!mutesUids.contains(currentUserDoc['uid']) && blockingUids.contains(currentUserDoc['uid'])) {
+      // mutesIpv6s
+      List<dynamic> mutesIpv6s = [];
+      final List<dynamic> mutesIpv6AndUids = passiveUserDoc['mutesIpv6AndUids'];
+      mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
+        mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+      });
+      if ( !mutesUids.contains(currentUserDoc['uid']) && !blockingUids.contains(currentUserDoc['uid']) && !mutesIpv6s.contains(currentUserDoc['uid']) ) {
         await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
       }
     }
