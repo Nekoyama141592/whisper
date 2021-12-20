@@ -152,7 +152,7 @@ class CommentsModel extends ChangeNotifier {
       'negativeScore': 0,
       'positiveScore': 0,
       'postId': currentSongMap['postId'],
-      'score': 100,
+      'score': 10000,
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],

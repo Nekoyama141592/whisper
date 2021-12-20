@@ -191,7 +191,7 @@ class SignupModel extends ChangeNotifier {
       'readPosts': [],
       'recommendState': 'recommendable',
       'replyNotifications': [],
-      'score': 100,
+      'score': 10000,
       'searchHistory': [],
       'subUserName': uid,
       'uid' : uid,

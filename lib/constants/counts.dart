@@ -1,3 +1,3 @@
 const int oneTimeReadCount = 30;
-const int likeScore = 2;
-const int bookmarkScore = 3;
+const int likeScore = 200;
+const int bookmarkScore = 300;
