@@ -38,7 +38,9 @@ class FeedsPage extends ConsumerWidget {
     : JudgeScreen(
       list: postDocs,
       reload: () async {
+        feedsModel.startLoading();
         await feedsModel.getFeeds();
+        feedsModel.endLoading();
       },
       content: PostCards(
         postDocs: postDocs, 

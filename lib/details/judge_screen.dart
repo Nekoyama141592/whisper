@@ -11,7 +11,7 @@ class JudgeScreen extends StatelessWidget {
     Key? key,
     required this.list,
     required this.content,
-    required this.reload
+    required this.reload,
   }) : super(key: key);
   
   final List<DocumentSnapshot> list;

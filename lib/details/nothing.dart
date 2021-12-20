@@ -9,7 +9,7 @@ class Nothing extends StatelessWidget {
 
   const Nothing({
     Key? key,
-    required this.reload
+    required this.reload,
   }) : super(key: key);
 
   final void Function()? reload;

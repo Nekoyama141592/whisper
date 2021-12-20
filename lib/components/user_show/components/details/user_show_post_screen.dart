@@ -97,7 +97,9 @@ class UserShowPostScreen extends ConsumerWidget {
       list: postDocs, 
       content: content,
       reload: () async {
+        userShowModel.startLoading();
         await userShowModel.getPosts();
+        userShowModel.endLoading();
       },
     );
     

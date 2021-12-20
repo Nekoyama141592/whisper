@@ -14,7 +14,7 @@ class CommentNotifications extends StatelessWidget {
   const CommentNotifications({
     Key? key,
     required this.currentUserDoc,
-    required this.mainModel
+    required this.mainModel,
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
