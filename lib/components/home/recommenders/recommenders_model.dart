@@ -47,6 +47,7 @@ class RecommendersModel extends ChangeNotifier {
   List<String> mutesPostIds = [];
   List<dynamic> blockingUids = [];
   List<dynamic> readPostIds = [];
+  List<dynamic> mutesIpv6s = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
@@ -191,7 +192,7 @@ class RecommendersModel extends ChangeNotifier {
      // Insert at the top
     docs.forEach((DocumentSnapshot? doc) {
       // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && doc['createdAt'].toDate().isAfter(range) ) {
+        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
         recommenderDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -215,6 +216,11 @@ class RecommendersModel extends ChangeNotifier {
     mutesUids = currentUserDoc['mutesUids'];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     blockingUids = currentUserDoc['blockingUids'];
+    // mutesIpv6s
+    final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
+    mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
+      mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+    });
   }
 
   Future getRecommenders() async {
@@ -229,7 +235,7 @@ class RecommendersModel extends ChangeNotifier {
       .get();
       snapshots.docs.forEach((DocumentSnapshot? doc) {
         // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && doc['createdAt'].toDate().isAfter(range) ) {
+        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
           
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
@@ -260,7 +266,7 @@ class RecommendersModel extends ChangeNotifier {
       final lastIndex = recommenderDocs.lastIndexOf(recommenderDocs.last);
       snapshots.docs.forEach((DocumentSnapshot? doc) {
         // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && doc['createdAt'].toDate().isAfter(range) ) {
+        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
           recommenderDocs.add(doc);
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);

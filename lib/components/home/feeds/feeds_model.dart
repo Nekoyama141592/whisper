@@ -48,6 +48,7 @@ class FeedsModel extends ChangeNotifier {
   List<dynamic> mutesUids = [];
   List<String> mutesPostIds = [];
   List<dynamic> blockingUids = [];
+  List<dynamic> mutesIpv6s = [];
   //repost
   bool isReposted = false;
   // refresh
@@ -174,7 +175,7 @@ class FeedsModel extends ChangeNotifier {
     docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
     // Insert at the top
     docs.forEach((DocumentSnapshot? doc) {
-      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) ) {
         feedDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -198,6 +199,11 @@ class FeedsModel extends ChangeNotifier {
     mutesUids = prefs.getStringList('mutesUids') ?? [];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     blockingUids = currentUserDoc['blockingUids'];
+    // mutesIpv6s
+    final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
+    mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
+      mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+    });
   }
   
   Future setCurrentUserDoc() async {
@@ -234,7 +240,7 @@ class FeedsModel extends ChangeNotifier {
       docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
       if (docs.isNotEmpty) {
         docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) ) {
             feedDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -265,7 +271,7 @@ class FeedsModel extends ChangeNotifier {
       docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
       if (docs.isNotEmpty) {
         docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) ) {
+          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) ) {
             feedDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
