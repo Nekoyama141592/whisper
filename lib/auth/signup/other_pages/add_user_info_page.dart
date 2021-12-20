@@ -26,7 +26,7 @@ class AddUserInfoPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
              Align(
@@ -126,22 +126,6 @@ class AddUserInfoPage extends StatelessWidget {
                 ],
               ),
             ),
-            RoundedButton(
-              text: '新規登録',
-              widthRate: 0.95, 
-              verticalPadding: 20.0, 
-              horizontalPadding: 10.0, 
-              press: () async {
-                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10) || !signupModel.isCheckedNotifier.value || signupModel.language.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
-                } else {
-                  await signupModel.signup(context);
-                }
-              }, 
-              textColor: Colors.white, 
-              buttonColor: Theme.of(context).colorScheme.secondary
-            ),
-            SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -178,7 +162,22 @@ class AddUserInfoPage extends StatelessWidget {
                 )),
                 Text('に同意する')
               ],
-            )
+            ),
+            RoundedButton(
+              text: '新規登録',
+              widthRate: 0.95, 
+              verticalPadding: 20.0, 
+              horizontalPadding: 10.0, 
+              press: () async {
+                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10) || !signupModel.isCheckedNotifier.value || signupModel.language.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
+                } else {
+                  await signupModel.signup(context);
+                }
+              }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).colorScheme.secondary
+            ),
           ],
         )
       ),

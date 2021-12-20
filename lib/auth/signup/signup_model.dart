@@ -192,7 +192,7 @@ class SignupModel extends ChangeNotifier {
       'recommendState': 'recommendable',
       'replyNotifications': [],
       'score': 100,
-      'searchHistorys': [],
+      'searchHistory': [],
       'subUserName': uid,
       'uid' : uid,
       'updatedAt': Timestamp.now(),

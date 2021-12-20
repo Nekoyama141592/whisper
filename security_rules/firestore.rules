@@ -16,8 +16,8 @@ service cloud.firestore {
     && 'description' in user && user.description is string
     && 'dmState' in user && user.dmState is string
     && 'followNotifications' in user && user.followNotifications is list
-    && 'followerUids' in user && user.followerUids is list
     && 'followersCount' in user && user.followersCount is int
+    && 'followerUids' in user && user.followerUids is list
     && 'followingUids' in user && user.followerUids is list
     && 'gender' in user && user.gender is string
     && 'imageURL' in user && user.imageURL is string
