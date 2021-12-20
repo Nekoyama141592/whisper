@@ -157,6 +157,7 @@ class SignupModel extends ChangeNotifier {
       'bookmarks': [],
       'bookmarkLabels': [],
       'commentNotifications': [],
+      'country': '',
       'createdAt': Timestamp.now(),
       'description': '',
       'dmState': 'onlyFollowingAndFollowed',

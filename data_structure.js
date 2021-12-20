@@ -110,6 +110,7 @@
             'userName': String,
             'userImageURL': String,
         }],
+        "country": String,
         "createdAt": TimeStamp,
         "description": String,
         "dmState": ["onlyFollowingAndFollowed","open"],
