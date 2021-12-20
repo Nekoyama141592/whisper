@@ -75,7 +75,7 @@ class UserShowModel extends ChangeNotifier {
     setCurrentUser();
     await getPosts();
     await setPrefs();
-    setSpeed();
+    await setSpeed();
     listenForStates();
     endLoading();
   }
@@ -459,9 +459,9 @@ class UserShowModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
   }
 
-  void setSpeed() {
+  Future<void> setSpeed() async {
     speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    audioPlayer.setSpeed(speedNotifier.value);
+    await audioPlayer.setSpeed(speedNotifier.value);
   }
 
   void listenForStates() {
