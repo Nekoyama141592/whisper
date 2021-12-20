@@ -18,7 +18,7 @@ service cloud.firestore {
     && 'followNotifications' in user && user.followNotifications is list
     && 'followersCount' in user && user.followersCount is int
     && 'followerUids' in user && user.followerUids is list
-    && 'followingUids' in user && user.followerUids is list
+    && 'followingUids' in user && user.followingUids is list
     && 'gender' in user && user.gender is string
     && 'imageURL' in user && user.imageURL is string
     && 'isAdmin' in user && user.isAdmin is bool
@@ -33,15 +33,15 @@ service cloud.firestore {
     && 'likeNotifications' in user && user.likeNotifications is list
     && 'likedReplys' in user && user.likedReplys is list
     && 'likes' in user && user.likes is list
-    && 'link'  in user && user.link is string
+    && 'link' in user && user.link is string
     && 'mutesReplyIds' in user && user.mutesReplyIds is list
     && 'mutesUids' in user && user.mutesUids is list
     && 'mutesCommentIds' in user && user.mutesCommentIds is list
-    && 'mutesIpv6AndUids' in user && user.mutesIpv6sAndUids is list
+    && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
     && 'mutesPostIds' in user && user.mutesPostIds is list
     && 'noDisplayWordsOfComments' in user && user.noDisplayWordsOfComments is list
     && 'noDisplayWordsOfMyPost' in user && user.noDisplayWordsOfMyPost is list
-    && 'otherLinks' in user && user.otherLinks is list 
+    && 'otherLinks' in user && user.otherLinks is list
     && 'readNotificationIds' in user && user.readNotificationIds is list
     && 'readPosts' in user && user.readPosts is list
     && 'recommendState' in user && user.recommendState is string
@@ -49,7 +49,7 @@ service cloud.firestore {
     && 'score' in user && user.score is int
     && 'searchHistory' in user && user.searchHistory is list
     && 'subUserName' in user && user.subUserName is string
-    && 'uid'  in user && user.uid is string
+    && 'uid' in user && user.uid is string
     && 'updatedAt' in user && user.updatedAt is timestamp
     && 'userName' in user && user.userName is string
     && 'walletAddress' in user && user.walletAddress is string
@@ -109,7 +109,7 @@ service cloud.firestore {
     && 'uid' in comment && comment.uid is string
     && 'userDocId' in comment && comment.userDocId is string
     && 'userName' in comment && comment.userName is string
-    && 'userImageURL' in comment && comment.userImageURL is string
+    && 'userImageURL' in comment && comment.userImageURL is string;
   }
 
   function isValidReply(reply) {
@@ -153,7 +153,7 @@ service cloud.firestore {
     && 'label' in watchList && watchList.label is string
     && 'watchListId' in watchList && watchList.watchListId is string
     && 'createdAt' in watchList && watchList.createdAt is timestamp
-    && 'updatedAt' in watchList && watchList.updatedAt is timestamp
+    && 'updatedAt' in watchList && watchList.updatedAt is timestamp;
   }
 
   function isValidBookmarkLabel(bookmarkLabel) {
@@ -164,7 +164,7 @@ service cloud.firestore {
     && 'label' in bookmarkLabel && bookmarkLabel.label is string
     && 'bookmarkLableId' in bookmarkLabel && bookmarkLabel.postIds is string
     && 'createdAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp
-    && 'updatedAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp
+    && 'updatedAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp;
   }
   match /databases/{database}/documents {
 

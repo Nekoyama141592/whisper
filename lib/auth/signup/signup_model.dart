@@ -101,7 +101,7 @@ class SignupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future uploadImage() async {
+  Future<String> uploadImage() async {
     final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
     if (userName.isEmpty) {
       print('userNameを入力してください');
@@ -147,7 +147,7 @@ class SignupModel extends ChangeNotifier {
   
   Future addUserToFireStore(uid) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
-    final imageURL = await uploadImage();
+    final String imageURL = await uploadImage();
     await FirebaseFirestore.instance
     .collection('users')
     .doc(uid)
@@ -172,7 +172,7 @@ class SignupModel extends ChangeNotifier {
       'isOfficial': false,
       'isSubAdmin': false,
       'subscriptions': [],
-      'joiningGroups':[],
+      'joiningGroups': [],
       'language': language,
       'likedComments': [],
       'likeNotifications': [],
@@ -186,7 +186,7 @@ class SignupModel extends ChangeNotifier {
       'mutesPostIds': [],
       'noDisplayWordsOfComments': [],
       'noDisplayWordsOfMyPost': [],
-      'otherLinks':[],
+      'otherLinks': [],
       'readNotificationIds': [],
       'readPosts': [],
       'recommendState': 'recommendable',
