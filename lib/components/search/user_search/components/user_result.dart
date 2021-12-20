@@ -18,7 +18,7 @@ class UserResult extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    
+    final followersCount = result['followersCount'];
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -38,6 +38,14 @@ class UserResult extends StatelessWidget {
               title: Text(result['userName'],overflow: TextOverflow.ellipsis,),
               subtitle: Text(
                 result['description'],
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
+                  fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              trailing: Text(
+                followersCount >= 10000 ? (followersCount/1000.floor()/10).toString() + '万' :  followersCount.toString(),
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                   fontWeight: FontWeight.bold,
