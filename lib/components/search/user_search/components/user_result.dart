@@ -35,12 +35,19 @@ class UserResult extends StatelessWidget {
           children: [
             ListTile(
               leading: RedirectUserImage(userImageURL: result['imageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['objectID'],mainModel: mainModel,),
-              title: Text(result['userName'],overflow: TextOverflow.ellipsis,),
+              title: Text(
+                result['userName'],
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  fontSize: 20.0
+                ),
+              ),
               subtitle: Text(
                 result['description'],
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                   fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

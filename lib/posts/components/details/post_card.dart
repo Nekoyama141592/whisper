@@ -83,7 +83,10 @@ class PostCard extends StatelessWidget {
                   leading: RedirectUserImage(userImageURL: post['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: post['userDocId'], mainModel: mainModel),
                   title: Text(
                     post['userName'],
-                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 20.0
+                    ),
                   ),
                   subtitle: Text(
                     post['title'],
@@ -91,6 +94,7 @@ class PostCard extends StatelessWidget {
                       color: Theme.of(context).focusColor,
                       fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis,
+                      fontSize: 18.0
                     ),
                   ),
                 )
