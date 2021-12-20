@@ -173,7 +173,7 @@ class AccountModel extends ChangeNotifier {
       try {
         await currentUser!.delete();
         Navigator.pop(context);
-        routes.toIsFinishedPage(context, 'ユーザーを消去');
+        routes.toIsFinishedPage(context, 'ユーザーを消去しました');
       } catch(e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
       }
