@@ -89,7 +89,7 @@ class BookmarksModel extends ChangeNotifier {
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
-    } 
+    }
   }
 
   Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {

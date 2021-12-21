@@ -196,7 +196,7 @@ class FeedsModel extends ChangeNotifier {
 
   Future setMutesAndBlocks() async {
     prefs = await SharedPreferences.getInstance();
-    mutesUids = prefs.getStringList('mutesUids') ?? [];
+    mutesUids = currentUserDoc['mutesUids'];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     blockingUids = currentUserDoc['blockingUids'];
     // mutesIpv6s
