@@ -340,7 +340,7 @@ class CommentsModel extends ChangeNotifier {
                 sortState = SortState.byOldestFirst;
                 commentsStream = FirebaseFirestore.instance
                 .collection('comments')
-                .where('commentId',isEqualTo: postId)
+                .where('postId',isEqualTo: postId)
                 .orderBy('createdAt',descending: false)
                 .limit(refreshIndex)
                 .snapshots();
