@@ -48,8 +48,6 @@ class UserShowButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          followingUids.add(userDoc['uid']);
-          followProvider.reload();
           await followProvider.follow(context,followingUids, currentUserDoc, userDoc);
         } catch(e) {
           print(e.toString());          
@@ -65,8 +63,6 @@ class UserShowButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          followingUids.remove(userDoc['uid']);
-          followProvider.reload();
           await followProvider.unfollow(followingUids, currentUserDoc, userDoc);
         } catch(e) {
           print(e.toString());          

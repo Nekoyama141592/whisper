@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,8 +29,7 @@ enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst }
 class UserShowModel extends ChangeNotifier {
 
   bool isLoading = false;
-  User? currentUser;
-  
+  late DocumentSnapshot passiveUserDoc;
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -62,17 +60,12 @@ class UserShowModel extends ChangeNotifier {
   late SharedPreferences prefs;
   final speedNotifier = ValueNotifier<double>(1.0);
 
-
-  UserShowModel() {
-    init();
-  }
-
-  void init() async {
+  Future<void> init(DocumentSnapshot givePassiveUserDoc,SharedPreferences givePrefs) async {
     startLoading();
     audioPlayer = AudioPlayer();
-    setCurrentUser();
+    passiveUserDoc = givePassiveUserDoc;
+    prefs = givePrefs;
     await getPosts();
-    await setPrefs();
     await setSpeed();
     listenForStates();
     endLoading();
@@ -88,11 +81,6 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentUser() {
-    currentUser = FirebaseAuth.instance.currentUser;
-  }
-
-  
   void showSortPostDocsDialogue(BuildContext context,String uid) {
     showCupertinoDialog(
       context: context, 
@@ -241,7 +229,7 @@ class UserShowModel extends ChangeNotifier {
   Future getNewUserShowPosts() async {
     QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
     .collection('posts')
-    .where('uid',isEqualTo: currentUser!.uid)
+    .where('uid',isEqualTo: passiveUserDoc['uid'])
     .orderBy('createdAt',descending: true)
     .endBeforeDocument(userShowDocs[0])
     .limit(oneTimeReadCount)
@@ -272,7 +260,7 @@ class UserShowModel extends ChangeNotifier {
     try {
       await FirebaseFirestore.instance
       .collection('posts')
-      .where('uid',isEqualTo: currentUser!.uid)
+      .where('uid',isEqualTo: passiveUserDoc['uid'])
       .orderBy('createdAt',descending: true)
       .limit(oneTimeReadCount)
       .get()
@@ -300,7 +288,7 @@ class UserShowModel extends ChangeNotifier {
     try {
       await FirebaseFirestore.instance
       .collection('posts')
-      .where('uid',isEqualTo: currentUser!.uid)
+      .where('uid',isEqualTo: passiveUserDoc['uid'])
       .orderBy('createdAt',descending: true)
       .startAfterDocument(userShowDocs.last)
       .limit(oneTimeReadCount)
@@ -451,10 +439,6 @@ class UserShowModel extends ChangeNotifier {
       await audioPlayer.setSpeed(speedNotifier.value);
       await prefs.setDouble('speed', speedNotifier.value);
     }
-  }
-
-  Future setPrefs() async {
-    prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> setSpeed() async {
