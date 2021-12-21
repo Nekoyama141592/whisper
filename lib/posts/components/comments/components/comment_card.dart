@@ -42,7 +42,7 @@ class CommentCard extends ConsumerWidget {
       overflow: TextOverflow.ellipsis
     );
 
-    return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) ?
+    return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) || mainModel.mutesCommentIds.contains(comment['uid']) || mainModel.mutesIpv6s.contains(comment['uid']) ?
 
     SizedBox.shrink()
     : Slidable(

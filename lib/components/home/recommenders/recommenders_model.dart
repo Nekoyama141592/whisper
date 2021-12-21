@@ -152,9 +152,7 @@ class RecommendersModel extends ChangeNotifier {
     });
     await removeTheUsersPost(uid, i);
     notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
+    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
     .update({
       'blockingUids': blockingUids,
       'mutesIpv6AndUids': mutesIpv6AndUids,
@@ -232,7 +230,6 @@ class RecommendersModel extends ChangeNotifier {
       .limit(oneTimeReadCount)
       .get();
       snapshots.docs.forEach((DocumentSnapshot? doc) {
-        // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
         if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
           
           recommenderDocs.add(doc);
