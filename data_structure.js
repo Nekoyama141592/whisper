@@ -89,6 +89,10 @@
     users{
         "birthDay": TimeStamp,
         "blockingUids": [ String ],
+        "blockingIpv6AndUids": List<Map<String,dynamic> {
+            'uid': String,
+            'ipv6': String,
+        }>, // unUsed
         "bookmarks": [{
             "createdAt": TimeStamp,
             "postId": String,
