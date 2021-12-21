@@ -114,7 +114,6 @@
             'userName': String,
             'userImageURL': String,
         }],
-        "country": String,
         "createdAt": TimeStamp,
         "description": String,
         "dmState": ["onlyFollowingAndFollowed","open"],
@@ -133,14 +132,6 @@
         "isKeyAccount": bool,
         "isOfficial": bool,
         "isSubAdmin": bool,
-        "subscriptions": List<Map<String,dynamic>{
-            'subscriptionId': String,
-            'planName': String,
-        }>,
-        "joiningGroups": List<Map<String,dynamic> {
-            'groupName': String,
-            'groupId': String,
-        }>,
         "language": String ja,en,
         "likedComments":[{
             commentId: String,
@@ -156,16 +147,14 @@
             likedPostId: String,
         }],
         "link": String,
-        "mutesReplyIds": List<String>,
+        
         "mutesUids": List<String>,
-        "mutesCommentIds": List<String>,
+        
         "mutesIpv6AndUids": List<Map<String,dynamic>>{
             'ipv6': String,
             'uid': String,
         },
-        "mutesPostIds": List<String>,
-        "noDisplayWordsOfComments": List<String>,
-        "noDisplayWordsOfMyPost": List<String>,
+        'noDisplayWords': List<String>,
         "otherLinks": List<Map<String,dynamic>{
             'description': String,
             'link': String,
@@ -192,7 +181,7 @@
             "userImageURL": String,
         }],
         "score": int,
-        "searchHistorys": List<String>,
+        "searchHistory": List<String>,
         "subUserName": String,
         "uid": String,
         "updatedAt": String,
