@@ -16,8 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
-// components
-import 'package:whisper/details/rounded_button.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
