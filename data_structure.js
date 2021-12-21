@@ -55,7 +55,7 @@
         "otherLinks": List<Map<String,dynamic> {
             'description': String,
             'link': String,
-            'label'
+            'label': String,
         }>,
         "postId": String,
         "positiveScore": 0,
