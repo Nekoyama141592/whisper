@@ -36,7 +36,7 @@ class UserShowHeader extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
 
     final globalModel = watch(globalProvider);
-    final followerCount = followerUids.length;
+    final followerCount = passiveUserDoc['followersCount'];
     final plusOneCount = followerCount + 1;
 
     return Padding(
