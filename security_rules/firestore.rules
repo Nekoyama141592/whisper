@@ -35,7 +35,7 @@ service cloud.firestore {
     && 'link' in user && user.link is string
     && 'mutesUids' in user && user.mutesUids is list
     && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
-    && 'noDiaplayWords' in user && user.noDiaplayWords is list
+    && 'noDisplayWords' in user && user.noDisplayWords is list
     && 'otherLinks' in user && user.otherLinks is list
     && 'readNotificationIds' in user && user.readNotificationIds is list
     && 'readPosts' in user && user.readPosts is list
