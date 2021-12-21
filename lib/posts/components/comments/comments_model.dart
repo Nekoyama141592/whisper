@@ -339,7 +339,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byOldestFirst;
                 commentsStream = FirebaseFirestore.instance
-                .collection('replys')
+                .collection('comments')
                 .where('commentId',isEqualTo: postId)
                 .orderBy('createdAt',descending: false)
                 .limit(refreshIndex)
