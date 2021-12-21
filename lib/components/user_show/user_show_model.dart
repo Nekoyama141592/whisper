@@ -258,6 +258,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future getPosts() async {
     try {
+      userShowDocs = [];
       await FirebaseFirestore.instance
       .collection('posts')
       .where('uid',isEqualTo: passiveUserDoc['uid'])
