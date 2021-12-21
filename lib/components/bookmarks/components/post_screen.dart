@@ -74,7 +74,7 @@ class PostScreen extends ConsumerWidget {
               bookmarksModel.isLastSongNotifier, 
               () { bookmarksModel.onNextSongButtonPressed(); },
               () {
-                commentsModel.setCommentsStream(bookmarksModel.currentSongMapNotifier.value['postId']);
+                commentsModel.getCommentsStream(bookmarksModel.currentSongMapNotifier.value['postId']);
                 routes.toCommentsPage(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel);
               },
               () {

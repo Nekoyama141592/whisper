@@ -62,7 +62,7 @@ class FeedsPage extends ConsumerWidget {
             feedsModel.isLastSongNotifier, 
             () { feedsModel.onNextSongButtonPressed(); },
             () {
-              commentsModel.setCommentsStream(feedsModel.currentSongMapNotifier.value['postId']);
+              commentsModel.getCommentsStream(feedsModel.currentSongMapNotifier.value['postId']);
               routes.toCommentsPage(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel);
             },
             () {

@@ -103,7 +103,7 @@ class PostCards extends ConsumerWidget {
                     postSearchModel.isLastSongNotifier, 
                     () { postSearchModel.onNextSongButtonPressed(); },
                     () {
-                      commentsModel.setCommentsStream(postSearchModel.currentSongMapNotifier.value['postId']);
+                      commentsModel.getCommentsStream(postSearchModel.currentSongMapNotifier.value['postId']);
                       routes.toCommentsPage(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel);
                     },
                     () {

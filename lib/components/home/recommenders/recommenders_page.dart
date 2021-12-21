@@ -58,7 +58,7 @@ class RecommendersPage extends ConsumerWidget {
             recommendersModel.isLastSongNotifier, 
             () { recommendersModel.onNextSongButtonPressed(); },
             () {
-              commentsModel.setCommentsStream(recommendersModel.currentSongMapNotifier.value['postId']);
+              commentsModel.getCommentsStream(recommendersModel.currentSongMapNotifier.value['postId']);
               routes.toCommentsPage(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel);
             },
             () {

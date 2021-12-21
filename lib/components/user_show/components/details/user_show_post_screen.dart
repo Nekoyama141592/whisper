@@ -57,7 +57,7 @@ class UserShowPostScreen extends ConsumerWidget {
           userShowModel.isLastSongNotifier, 
           () { userShowModel.onNextSongButtonPressed(); },
           () {
-            commentsModel.setCommentsStream(userShowModel.currentSongMapNotifier.value['postId']);
+            commentsModel.getCommentsStream(userShowModel.currentSongMapNotifier.value['postId']);
             routes.toCommentsPage(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel);
           },
           () {

@@ -22,7 +22,7 @@ class ShowReplyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        replysModel.getReplyDocs(context,thisComment);
+        replysModel.getReplysStream(context,thisComment);
       }, 
       icon: Icon(Icons.mode_comment)
     );

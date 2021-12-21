@@ -25,7 +25,7 @@ class ReplysModel extends ChangeNotifier {
   bool isReplysMode = false;
   Map<String,dynamic> giveComment = {};
   // snapshots
-  int refreshIndex = oneTimeReadCount;
+  int limitIndex = oneTimeReadCount;
   late Stream<QuerySnapshot> replysStream;
   // IP
   String ipv6 = '';
@@ -143,7 +143,7 @@ class ReplysModel extends ChangeNotifier {
                 .collection('replys')
                 .where('elementId',isEqualTo: thisComment['commentId'])
                 .orderBy('likesUidsCount',descending: true )
-                .limit(refreshIndex)
+                .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
               }, 
@@ -163,7 +163,7 @@ class ReplysModel extends ChangeNotifier {
                 .collection('replys')
                 .where('elementId',isEqualTo: thisComment['commentId'])
                 .orderBy('createdAt',descending: true)
-                .limit(refreshIndex)
+                .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
               }, 
@@ -183,7 +183,7 @@ class ReplysModel extends ChangeNotifier {
                 .collection('replys')
                 .where('elementId',isEqualTo: thisComment['commentId'])
                 .orderBy('createdAt',descending: false)
-                .limit(refreshIndex)
+                .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
               }, 
@@ -215,7 +215,7 @@ class ReplysModel extends ChangeNotifier {
 
   
 
-  void getReplyDocs(BuildContext context,Map<String,dynamic> thisComment)  {
+  void getReplysStream(BuildContext context,Map<String,dynamic> thisComment)  {
     isReplysMode = true;
     giveComment = thisComment;
     try {
@@ -223,7 +223,7 @@ class ReplysModel extends ChangeNotifier {
       .collection('replys')
       .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('likesUidsCount',descending: true )
-      .limit(refreshIndex)
+      .limit(limitIndex)
       .snapshots();
     } catch(e) {
       print(e.toString());
@@ -232,14 +232,14 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future onLoading(Map<String,dynamic> thisComment) async {
-    refreshIndex += oneTimeReadCount;
+    limitIndex += oneTimeReadCount;
     switch(sortState) {
       case SortState.byLikedUidsCount:
       replysStream = FirebaseFirestore.instance
       .collection('replys')
       .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('likesUidsCount',descending: true )
-      .limit(refreshIndex)
+      .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byNewestFirst:
@@ -247,7 +247,7 @@ class ReplysModel extends ChangeNotifier {
       .collection('replys')
       .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('createdAt',descending: true)
-      .limit(refreshIndex)
+      .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byOldestFirst:
@@ -255,7 +255,7 @@ class ReplysModel extends ChangeNotifier {
       .collection('replys')
       .where('elementId',isEqualTo: thisComment['commentId'])
       .orderBy('createdAt',descending: false)
-      .limit(refreshIndex)
+      .limit(limitIndex)
       .snapshots();
       break;
     }

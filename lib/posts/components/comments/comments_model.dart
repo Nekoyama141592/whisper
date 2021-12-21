@@ -25,7 +25,7 @@ class CommentsModel extends ChangeNotifier {
   String comment = "";
   Map<String,dynamic> postComment = {};
   // snapshots
-  int refreshIndex = oneTimeReadCount;
+  int limitIndex = oneTimeReadCount;
   late Stream<QuerySnapshot> commentsStream;
   // IP
   String ipv6 = '';
@@ -37,8 +37,8 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCommentsStream(String postId) {
-    commentsStream = FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).limit(oneTimeReadCount).snapshots();
+  void getCommentsStream(String postId) {
+    commentsStream = FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).limit(limitIndex).snapshots();
   }
 
   void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer) {
@@ -302,7 +302,7 @@ class CommentsModel extends ChangeNotifier {
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
                 .orderBy('likesUidsCount',descending: true )
-                .limit(refreshIndex)
+                .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
               }, 
@@ -322,7 +322,7 @@ class CommentsModel extends ChangeNotifier {
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
                 .orderBy('createdAt',descending: true)
-                .limit(refreshIndex)
+                .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
               }, 
@@ -342,7 +342,7 @@ class CommentsModel extends ChangeNotifier {
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
                 .orderBy('createdAt',descending: false)
-                .limit(refreshIndex)
+                .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
               }, 
@@ -370,5 +370,37 @@ class CommentsModel extends ChangeNotifier {
         );
       }
     );
+  }
+
+  Future onLoading(Map<String,dynamic> currentSongMap) async {
+    limitIndex += oneTimeReadCount;
+    switch(sortState) {
+      case SortState.byLikedUidsCount:
+      commentsStream = FirebaseFirestore.instance
+      .collection('comments')
+      .where('postId',isEqualTo: currentSongMap['postId'])
+      .orderBy('likesUidsCount',descending: true )
+      .limit(limitIndex)
+      .snapshots();
+      break;
+      case SortState.byNewestFirst:
+      commentsStream = FirebaseFirestore.instance
+      .collection('comments')
+      .where('postId',isEqualTo: currentSongMap['postId'])
+      .orderBy('createdAt',descending: true)
+      .limit(limitIndex)
+      .snapshots();
+      break;
+      case SortState.byOldestFirst:
+      commentsStream = FirebaseFirestore.instance
+      .collection('comments')
+      .where('postId',isEqualTo: currentSongMap['postId'])
+      .orderBy('createdAt',descending: false)
+      .limit(limitIndex)
+      .snapshots();
+      break;
+    }
+    notifyListeners();
+    refreshController.loadComplete();
   }
 }
