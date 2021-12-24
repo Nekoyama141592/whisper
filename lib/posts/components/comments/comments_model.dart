@@ -48,7 +48,8 @@ class CommentsModel extends ChangeNotifier {
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
     await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).limit(oneTimeReadCount).get().then((qshot) {
-      qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+      // add causes reversed
+      qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
   }
@@ -337,7 +338,8 @@ class CommentsModel extends ChangeNotifier {
                 .orderBy('createdAt',descending: true)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
-                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                  // .add cause reversed
+                  qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
                 });
                 notifyListeners();
               }, 
@@ -360,7 +362,8 @@ class CommentsModel extends ChangeNotifier {
                 .orderBy('createdAt',descending: false)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
-                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                  // add cause reversed
+                  qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
                 });
                 notifyListeners();
               }, 
