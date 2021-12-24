@@ -11,7 +11,7 @@ import 'package:whisper/constants/counts.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // states
-import 'package:whisper/constants/sort_states.dart';
+import 'package:whisper/constants/states.dart';
 
 final replysProvider = ChangeNotifierProvider(
   (ref) => ReplysModel()

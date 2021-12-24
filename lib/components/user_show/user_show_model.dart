@@ -19,12 +19,12 @@ import 'package:whisper/constants/counts.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// states
+import 'package:whisper/constants/states.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
 );
-
-enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst }
 
 class UserShowModel extends ChangeNotifier {
 
@@ -59,6 +59,8 @@ class UserShowModel extends ChangeNotifier {
   // speed
   late SharedPreferences prefs;
   final speedNotifier = ValueNotifier<double>(1.0);
+  // states
+  SortState sortState = SortState.byNewestFirst;
 
   Future<void> init(DocumentSnapshot givePassiveUserDoc,SharedPreferences givePrefs) async {
     startLoading();

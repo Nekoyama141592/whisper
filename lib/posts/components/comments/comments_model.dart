@@ -13,7 +13,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/rounded_button.dart';
 // states
-import 'package:whisper/constants/sort_states.dart';
+import 'package:whisper/constants/states.dart';
 // models
 import 'package:whisper/main_model.dart';
 
