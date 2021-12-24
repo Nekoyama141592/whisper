@@ -53,16 +53,16 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 30
+    return post.size() == 32
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
     && 'commentsState' in post && post.commentsState is string
     && 'createdAt' in post && post.createdAt is timestamp
     && 'country' in post && post.country is string
-    && 'description' in post && post.description is string
-    && 'genre' in post && post.genre is string
-    && 'hashTags' in post && post.hashTags is list
+    && 'description' in post && post.description is string // un used
+    && 'genre' in post && post.genre is string // un used
+    && 'hashTags' in post && post.hashTags is list // un used
     && 'imageURL' in post && post.imageURL is string
     && 'impression' in post && post.impression is int
     && 'ipv6' in post && post.ipv6 is string
@@ -79,6 +79,7 @@ service cloud.firestore {
     && 'postId' in post && post.postId is string
     && 'positiveScore' in post && post.positiveScore is int
     && 'score' in post && post.score is int
+    && 'tagUids' in post && post.tagUids is list
     && 'title' in post && post.title is string
     && 'uid' in post && post.uid is string
     && 'updatedAt' in post && post.updatedAt is timestamp

@@ -63,6 +63,7 @@
         "postId": String,
         "positiveScore": 0,
         "score": int,
+        "tagUids": List<String>,
         "title": String,
         "uid": String,
         "updatedAt": TimeStamp,
