@@ -2,37 +2,43 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/user_show/user_show_model.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   
   const EditProfileScreen({
     Key? key,
-    required this.userShowModel,
-    required this.currentUserDoc,
-    required this.mainModel
+    required this.onEditButtonPressed,
+    required this.onSaveButtonPressed,
+    required this.showImagePicker,
+    required this.onUserNameChanged,
+    required this.onDescriptionChanged,
+    required this.onLinkChanged,
+    required this.mainModel,
   }) : super(key: key);
 
-  final UserShowModel userShowModel;
-  final DocumentSnapshot currentUserDoc;
+  final void Function()? onEditButtonPressed;
+  final void Function()? onSaveButtonPressed;
+  final void Function()? showImagePicker;
+  final void Function(String)? onUserNameChanged;
+  final void Function(String)? onDescriptionChanged;
+  final void Function(String)? onLinkChanged;
   final MainModel mainModel;
   
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
 
     final userNameController = TextEditingController(
-      text: currentUserDoc['userName'] 
+      text: mainModel.currentUserDoc['userName'] 
     );
     final descriptionController = TextEditingController(
-      text: currentUserDoc['description']
+      text: mainModel.currentUserDoc['description']
     );
-    final linkController = TextEditingController(text: currentUserDoc['link']);
+    final linkController = TextEditingController(text: mainModel.currentUserDoc['link']);
 
     final size = MediaQuery.of(context).size;
     return Padding(
@@ -44,10 +50,7 @@ class EditProfileScreen extends ConsumerWidget {
             Row(
               children: [
                 TextButton(
-                  onPressed: () {
-                    userShowModel.isEditing = false;
-                    userShowModel.reload();
-                  }, 
+                  onPressed: onEditButtonPressed,
                   child: Text(
                     'Cancel',
                     style: TextStyle(
@@ -62,33 +65,26 @@ class EditProfileScreen extends ConsumerWidget {
                   widthRate: 0.25, 
                   verticalPadding: 10.0, 
                   horizontalPadding: 5.0, 
-                  press: () async  {
-                    await userShowModel.onSaveButtonPressed(context,currentUserDoc);
-                    await mainModel.regetCurrentUserDoc(currentUserDoc.id);
-                  },
+                  press: onSaveButtonPressed,
                   textColor: Colors.white, 
                   buttonColor: Theme.of(context).highlightColor
                 )
               ],
             ),
             
-            InkWell(child: UserImage(userImageURL: currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: () async { await userShowModel.showImagePicker(); },),
+            InkWell(child: UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: showImagePicker,),
             Text('名前'),
             TextFormField(
               keyboardType: TextInputType.text,
               controller: userNameController,
-              onChanged: (text){
-                userShowModel.userName = text;
-              },
+              onChanged: onUserNameChanged
             ),
             Text('自己紹介'),
             TextFormField(
               keyboardType: TextInputType.multiline,
               maxLines: 10,
               controller: descriptionController,
-              onChanged: (text){
-                userShowModel.description = text;
-              },
+              onChanged: onDescriptionChanged
             ),
             Text('リンク'),
             TextFormField(
@@ -97,9 +93,7 @@ class EditProfileScreen extends ConsumerWidget {
                 hintText: 'https://'
               ),
               controller: linkController,
-              onChanged: (text){
-                userShowModel.link = text;
-              },
+              onChanged: onLinkChanged,
             ),
           ],
         ),

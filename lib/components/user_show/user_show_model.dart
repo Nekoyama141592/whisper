@@ -15,12 +15,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // states
 import 'package:whisper/constants/states.dart';
+// models
+import 'package:whisper/main_model.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
@@ -28,8 +31,9 @@ final userShowProvider = ChangeNotifierProvider(
 
 class UserShowModel extends ChangeNotifier {
 
-  bool isLoading = false;
   late DocumentSnapshot passiveUserDoc;
+  String passiveUid = '';
+  bool isLoading = false;
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -42,7 +46,6 @@ class UserShowModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<String> postIds = [];
   List<DocumentSnapshot> userShowDocs = [];
   // refresh
   late RefreshController refreshController;
@@ -67,11 +70,18 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
     passiveUserDoc = givePassiveUserDoc;
+    passiveUid = givePassiveUserDoc['uid'];
     prefs = givePrefs;
     await getPosts();
     await setSpeed();
     listenForStates();
     endLoading();
+  }
+
+  void theSameUserIcon(BuildContext context,MainModel mainModel) {
+    audioPlayer = AudioPlayer();
+    refreshController = RefreshController(initialRefresh: false);
+    routes.toUserShowPage(context, passiveUserDoc, mainModel);
   }
 
   void startLoading() {

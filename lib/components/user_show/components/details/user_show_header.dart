@@ -5,37 +5,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/user_image.dart';
-import 'package:whisper/components/user_show/components/follow/user_show_button.dart';
+import 'package:whisper/components/user_show/components/follow/follow_or_edit_button.dart';
 import 'package:whisper/components/user_show/components/details/link_button.dart';
 // other_pages
 import 'package:whisper/components/user_show/components/other_pages/show_description_page.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/global_model.dart';
-import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 
 class UserShowHeader extends ConsumerWidget {
 
   const UserShowHeader({
     Key? key,
-    required this.userShowModel,
     required this.passiveUserDoc,
-    required this.followerUids,
+    required this.onEditButtonPressed,
+    required this.backArrow,
    required this.mainModel,
    required this.followModel
   }) : super(key: key);
 
-  final UserShowModel userShowModel;
   final DocumentSnapshot passiveUserDoc;
-  final List followerUids;
+  final void Function()? onEditButtonPressed;
+  final Widget backArrow;
   final MainModel mainModel;
   final FollowModel followModel;
 
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
 
-    final globalModel = watch(globalProvider);
     final followerCount = passiveUserDoc['followersCount'];
     final plusOneCount = followerCount + 1;
 
@@ -49,25 +46,8 @@ class UserShowHeader extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ValueListenableBuilder<bool>(
-            valueListenable: globalModel.isMyShowPageNotifier,
-            builder: (_,value,__) {
-              return value ?
-              SizedBox.shrink()
-              : Column(
-                children: [
-                  InkWell(
-                    child: Icon(Icons.arrow_back),
-                    onTap: () {
-                      Navigator.pop(context);
-                      globalModel.isMyShowPageNotifier.value = true;
-                    },
-                  ),
-                  SizedBox(height: 10.0,)
-                ],
-              );
-            }
-          ),
+          backArrow,
+          SizedBox(height: 10.0,),
           Text(
             passiveUserDoc['userName'],
             style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,)
@@ -99,12 +79,12 @@ class UserShowHeader extends ConsumerWidget {
                   ),
                 ),
               ),
-              UserShowButton(
+              FollowOrEditButton(
                 currentUserDoc: mainModel.currentUserDoc, 
                 userDoc: passiveUserDoc, 
-                userShowModel: userShowModel, 
                 followingUids: mainModel.followingUids, 
-                followProvider: followModel
+                followModel: followModel,
+                onEditButtonPressed: onEditButtonPressed,
               ),
             ],
           ),

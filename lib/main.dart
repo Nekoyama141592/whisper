@@ -18,7 +18,7 @@ import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/components/search/search_page.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 import 'package:whisper/components/add_post/other_pages/which_type.dart';
-import 'package:whisper/components/user_show/user_show_page.dart';
+import 'package:whisper/components/my_profile/my_profile_page.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
@@ -101,7 +101,7 @@ class MyHomePage extends ConsumerWidget {
           WhichType(currentUserDoc: mainModel.currentUserDoc),
           BookmarksPage(mainModel: mainModel),
           // UserShowPage(passiveUserDoc: mainModel.currentUserDoc, mainModel: mainModel)
-          Container()
+          MyProfilePage(mainModel: mainModel)
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),

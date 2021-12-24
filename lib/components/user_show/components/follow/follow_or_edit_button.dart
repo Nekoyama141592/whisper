@@ -5,25 +5,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 import 'package:whisper/details/rounded_button.dart';
-// model
-import 'package:whisper/components/user_show/user_show_model.dart';
 
-class UserShowButton extends StatelessWidget {
+class FollowOrEditButton extends StatelessWidget {
   
-  const UserShowButton({
+  const FollowOrEditButton({
     Key? key,
     required this.currentUserDoc,
     required this.userDoc,
-    required this.userShowModel,
     required this.followingUids,
-    required this.followProvider
+    required this.followModel,
+    required this.onEditButtonPressed
   }) : super(key: key);
 
   final DocumentSnapshot currentUserDoc;
   final DocumentSnapshot userDoc;
-  final UserShowModel userShowModel;
   final List followingUids;
-  final FollowModel followProvider;
+  final FollowModel followModel;
+  final void Function()? onEditButtonPressed;
   @override 
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
@@ -34,9 +32,7 @@ class UserShowButton extends StatelessWidget {
       widthRate: 0.25,
       verticalPadding: verticalPadding,
       horizontalPadding: 0.0,
-      press: () {
-        userShowModel.onEditButtonPressed(currentUserDoc);
-      }, 
+      press: onEditButtonPressed,
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
     )
@@ -48,7 +44,7 @@ class UserShowButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await followProvider.follow(context,followingUids, currentUserDoc, userDoc);
+          await followModel.follow(context,followingUids, currentUserDoc, userDoc);
         } catch(e) {
           print(e.toString());          
         }
@@ -63,7 +59,7 @@ class UserShowButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await followProvider.unfollow(followingUids, currentUserDoc, userDoc);
+          await followModel.unfollow(followingUids, currentUserDoc, userDoc);
         } catch(e) {
           print(e.toString());          
         }

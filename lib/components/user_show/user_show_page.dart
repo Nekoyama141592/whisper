@@ -30,7 +30,6 @@ class UserShowPage extends ConsumerWidget {
     final userShowModel = watch(userShowProvider);
     final followModel = watch(followProvider);
     final List<dynamic> passiveUserBlockingUids = passiveUserDoc['blockingUids'];
-    final List<dynamic> followerUids = mainModel.currentUserDoc['followerUids'];
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -46,11 +45,45 @@ class UserShowPage extends ConsumerWidget {
      )
       : Container(
         child: userShowModel.isEditing ?
-        SafeArea(child: EditProfileScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,))
+        SafeArea(
+          child: EditProfileScreen(
+            onEditButtonPressed: () {
+              userShowModel.onEditButtonPressed(mainModel.currentUserDoc);
+            },
+            onSaveButtonPressed: () async {
+              await userShowModel.onSaveButtonPressed(context,mainModel.currentUserDoc);
+              await mainModel.regetCurrentUserDoc(mainModel.currentUserDoc.id);
+            },
+            showImagePicker: () async { userShowModel.showImagePicker(); },
+            onUserNameChanged: (text) {
+              userShowModel.userName = text;
+            },
+            onDescriptionChanged: (text) {
+              userShowModel.description = text;
+            },
+            onLinkChanged: (text) {
+              userShowModel.link = text;
+            },
+            mainModel: mainModel,
+          )
+        )
         : GradientScreen(
           top: SizedBox.shrink(), 
-          header: UserShowHeader(userShowModel: userShowModel, passiveUserDoc: passiveUserDoc, followerUids: followerUids, mainModel: mainModel, followModel: followModel),
-          content: UserShowPostScreen(userShowModel: userShowModel, currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel),
+          header: UserShowHeader(
+            onEditButtonPressed: () {
+              userShowModel.onEditButtonPressed(mainModel.currentUserDoc);
+            },
+            passiveUserDoc: passiveUserDoc, 
+            backArrow: InkWell(
+              child: Icon(Icons.arrow_back),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            mainModel: mainModel, 
+            followModel: followModel
+          ),
+          content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
           circular: 35.0
         ),
       )

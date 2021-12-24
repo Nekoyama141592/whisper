@@ -10,7 +10,6 @@ import 'user_image.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/global_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 
 class RedirectUserImage extends ConsumerWidget {
@@ -32,18 +31,19 @@ class RedirectUserImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,ScopedReader watch) {
-
-    final globalModel = watch(globalProvider);
     final userShowModel = watch(userShowProvider);
     return InkWell(
       onTap: () async {
-        final DocumentSnapshot<Map<String, dynamic>> givePassiveUserDoc = await FirebaseFirestore.instance.collection('users').doc(passiveUserDocId).get();
-        if (!givePassiveUserDoc.exists) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));
+        if (userShowModel.passiveUid != passiveUserDocId) {
+          final DocumentSnapshot<Map<String, dynamic>> givePassiveUserDoc = await FirebaseFirestore.instance.collection('users').doc(passiveUserDocId).get();
+          if (!givePassiveUserDoc.exists) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));
+          } else {
+            routes.toUserShowPage(context, givePassiveUserDoc, mainModel);
+            await userShowModel.init(givePassiveUserDoc,mainModel.prefs);
+          }
         } else {
-          globalModel.isMyShowPageNotifier.value = false;
-          routes.toUserShowPage(context, givePassiveUserDoc, mainModel);
-          await userShowModel.init(givePassiveUserDoc,mainModel.prefs);
+          userShowModel.theSameUserIcon(context, mainModel);
         }
       },
       onLongPress: mainModel.currentUserDoc['isAdmin'] ? () async {
