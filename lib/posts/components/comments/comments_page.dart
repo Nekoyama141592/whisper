@@ -1,12 +1,10 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
-import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
@@ -47,47 +45,43 @@ class CommentsPage extends ConsumerWidget {
           commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer); 
         },
       ),
-
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: (){
               commentsModel.showSortDialogue(context, currentSongMap);
             },),
             Expanded(
-              child: StreamBuilder(
-                stream: commentsModel.commentsStream,
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) Text('something went wrong');
-                  if (snapshot.connectionState == ConnectionState.waiting) Loading();
-                  return !snapshot.hasData || snapshot.data == null  ?
-                  SizedBox.shrink()
-                  : SmartRefresher(
-                    enablePullUp: true,
-                    enablePullDown: false,
-                    header: WaterDropHeader(),
-                    controller: replysModel.refreshController,
-                    child: ListView(
-                      children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                        Map<String, dynamic> comment = doc.data()! as Map<String, dynamic>;
-                        return CommentCard(
-                          commentsModel: commentsModel,
-                          replysModel: replysModel,
-                          comment: comment,
-                          currentSongMap: currentSongMap,
-                          mainModel: mainModel,
-                        );
-                      }).toList() 
-                      
-                    ),
-                  );
-                }
+              child: SmartRefresher(
+                enablePullUp: true,
+                enablePullDown: true,
+                onLoading: () async {
+                  print('Loading');
+                  await commentsModel.onLoading(currentSongMap);
+                },
+                onRefresh: () {
+                  commentsModel.onRefresh(context, currentSongMap);
+                },
+                header: WaterDropHeader(),
+                controller: commentsModel.refreshController,
+                child: ListView.builder(
+                  itemCount: commentsModel.commentDocs.length,
+                  itemBuilder: (BuildContext context,int i) {
+                    Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
+                    return CommentCard(
+                      commentsModel: commentsModel,
+                      replysModel: replysModel,
+                      comment: comment,
+                      currentSongMap: currentSongMap,
+                      mainModel: mainModel,
+                    );
+                  }
+                ),
               )
-            ),
+            )
           ],
         ),
-      )
+      ),
     );
   }
 }

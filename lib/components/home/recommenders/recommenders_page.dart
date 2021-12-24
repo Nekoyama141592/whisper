@@ -57,9 +57,8 @@ class RecommendersPage extends ConsumerWidget {
             () { recommendersModel.pause(); }, 
             recommendersModel.isLastSongNotifier, 
             () { recommendersModel.onNextSongButtonPressed(); },
-            () {
-              commentsModel.getCommentsStream(recommendersModel.currentSongMapNotifier.value['postId']);
-              routes.toCommentsPage(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel);
+            () async {
+              await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, recommendersModel.currentSongMapNotifier.value['postId']);
             },
             () {
               recommendersModel.pause();

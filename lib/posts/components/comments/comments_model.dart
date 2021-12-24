@@ -9,10 +9,13 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/rounded_button.dart';
 // states
 import 'package:whisper/constants/sort_states.dart';
+// models
+import 'package:whisper/main_model.dart';
 
 final commentsProvider = ChangeNotifierProvider(
   (ref) => CommentsModel()
@@ -24,21 +27,30 @@ class CommentsModel extends ChangeNotifier {
   // comment
   String comment = "";
   Map<String,dynamic> postComment = {};
-  // snapshots
-  int limitIndex = oneTimeReadCount;
-  late Stream<QuerySnapshot> commentsStream;
+  // comments
+  List<DocumentSnapshot> commentDocs = [];
   // IP
   String ipv6 = '';
   // refresh
-  SortState sortState = SortState.byLikedUidsCount;
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  SortState sortState = SortState.byNewestFirst;
+  late RefreshController refreshController;
 
   void reload() {
     notifyListeners();
   }
 
-  void getCommentsStream(String postId) {
-    commentsStream = FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).limit(limitIndex).snapshots();
+  Future<void> init(BuildContext context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,MainModel mainModel,String postId) async {
+    refreshController = RefreshController(initialRefresh: false);
+    routes.toCommentsPage(context, audioPlayer, currentSongMapNotifier, mainModel);
+    await getCommentDocs(postId);
+  }
+
+  Future<void> getCommentDocs(String postId) async {
+    commentDocs = [];
+    await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).limit(oneTimeReadCount).get().then((qshot) {
+      qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+    });
+    notifyListeners();
   }
 
   void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer) {
@@ -300,14 +312,18 @@ class CommentsModel extends ChangeNotifier {
           message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             CupertinoActionSheetAction(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
-                commentsStream = FirebaseFirestore.instance
+                commentDocs = [];
+                sortState = SortState.byLikedUidsCount;
+                await FirebaseFirestore.instance
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
                 .orderBy('likesUidsCount',descending: true )
-                .limit(limitIndex)
-                .snapshots();
+                .limit(oneTimeReadCount)
+                .get().then((qshot) {
+                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                });
                 notifyListeners();
               }, 
               child: Text(
@@ -319,15 +335,18 @@ class CommentsModel extends ChangeNotifier {
               )
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
+                commentDocs = [];
                 sortState = SortState.byNewestFirst;
-                commentsStream = FirebaseFirestore.instance
+                await FirebaseFirestore.instance
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
                 .orderBy('createdAt',descending: true)
-                .limit(limitIndex)
-                .snapshots();
+                .limit(oneTimeReadCount)
+                .get().then((qshot) {
+                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                });
                 notifyListeners();
               }, 
               child: Text(
@@ -339,15 +358,18 @@ class CommentsModel extends ChangeNotifier {
               )
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
+                commentDocs = [];
                 sortState = SortState.byOldestFirst;
-                commentsStream = FirebaseFirestore.instance
+                await FirebaseFirestore.instance
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
                 .orderBy('createdAt',descending: false)
-                .limit(limitIndex)
-                .snapshots();
+                .limit(oneTimeReadCount)
+                .get().then((qshot) {
+                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                });
                 notifyListeners();
               }, 
               child: Text(
@@ -376,32 +398,69 @@ class CommentsModel extends ChangeNotifier {
     );
   }
 
-  Future onLoading(Map<String,dynamic> currentSongMap) async {
-    limitIndex += oneTimeReadCount;
+  Future<void> onRefresh(BuildContext context,Map<String,dynamic> currentSongMap) async {
     switch(sortState) {
       case SortState.byLikedUidsCount:
-      commentsStream = FirebaseFirestore.instance
-      .collection('comments')
-      .where('postId',isEqualTo: currentSongMap['postId'])
-      .orderBy('likesUidsCount',descending: true )
-      .limit(limitIndex)
-      .snapshots();
       break;
       case SortState.byNewestFirst:
-      commentsStream = FirebaseFirestore.instance
+      QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
       .collection('comments')
       .where('postId',isEqualTo: currentSongMap['postId'])
       .orderBy('createdAt',descending: true)
-      .limit(limitIndex)
-      .snapshots();
+      .endBeforeDocument(commentDocs[0])
+      .limit(oneTimeReadCount)
+      .get();
+      // Sort by oldest first
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
+      docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+      // Insert at the top
+      docs.forEach((doc) {
+        commentDocs.insert(0, doc);
+      });
       break;
       case SortState.byOldestFirst:
-      commentsStream = FirebaseFirestore.instance
+      break;
+    }
+    notifyListeners();
+    refreshController.refreshCompleted();
+  }
+
+  Future<void> onLoading(Map<String,dynamic> currentSongMap) async {
+    switch(sortState) {
+      case SortState.byLikedUidsCount:
+      await FirebaseFirestore.instance
+      .collection('comments')
+      .where('postId',isEqualTo: currentSongMap['postId'])
+      .orderBy('likesUidsCount',descending: true )
+      .startAfterDocument(commentDocs.last)
+      .limit(oneTimeReadCount)
+      .get().then((qshot) {
+        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { 
+          commentDocs.add(doc); 
+        });
+      });
+      break;
+      case SortState.byNewestFirst:
+      await FirebaseFirestore.instance
+      .collection('comments')
+      .where('postId',isEqualTo: currentSongMap['postId'])
+      .orderBy('createdAt',descending: true)
+      .startAfterDocument(commentDocs.last)
+      .limit(oneTimeReadCount)
+      .get().then((qshot) {
+        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+      });
+      break;
+      case SortState.byOldestFirst:
+      await FirebaseFirestore.instance
       .collection('comments')
       .where('postId',isEqualTo: currentSongMap['postId'])
       .orderBy('createdAt',descending: false)
-      .limit(limitIndex)
-      .snapshots();
+      .startAfterDocument(commentDocs.last)
+      .limit(oneTimeReadCount)
+      .get().then((qshot) {
+        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+      });
       break;
     }
     notifyListeners();

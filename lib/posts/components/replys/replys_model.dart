@@ -30,7 +30,7 @@ class ReplysModel extends ChangeNotifier {
   // IP
   String ipv6 = '';
   // refresh
-  SortState sortState = SortState.byLikedUidsCount;
+  SortState sortState = SortState.byNewestFirst;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   
   void reload() {
