@@ -106,6 +106,7 @@
         "commentNotifications": [{
             'comment': String,
             'createdAt': TimeStamp,
+            'followersCount': int,
             'isNFTicon': bool,
             'isOfficial':bool,
             'notificationId': String,
@@ -171,8 +172,9 @@
         "recommendState": 'recommendable',
         "replyNotifications": [{
             "comment": String,
-            "elementId": String,
             "createdAt": TimeStamp,
+            "elementId": String,
+            "followersCount": int,
             'isNFTicon': bool,
             'isOfficial':bool,
             "notificationId": String,

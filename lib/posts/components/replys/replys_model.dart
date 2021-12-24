@@ -333,10 +333,11 @@ class ReplysModel extends ChangeNotifier {
     final String notificationId = 'replyNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = thisComment['comment'];
     Map<String,dynamic> map = {
-      'elementId': elementId,
-      'elementState': elementState,
       'comment': comment,
       'createdAt': Timestamp.now(),
+      'elementId': elementId,
+      'elementState': elementState,
+      'followersCount': currentUserDoc['followersCount'],
       'isNFTicon': currentUserDoc['isNFTicon'],
       'isOfficial': currentUserDoc['isOfficial'],
       'notificationId': notificationId,

@@ -174,6 +174,7 @@ class CommentsModel extends ChangeNotifier {
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': comment,
         'createdAt': Timestamp.now(),
+        'followersCount': currentUserDoc['followersCount'],
         'isNFTicon': currentUserDoc['isNFTicon'],
         'isOfficial': currentUserDoc['isOfficial'],
         'notificationId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
