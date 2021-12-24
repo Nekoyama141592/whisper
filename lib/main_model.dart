@@ -139,7 +139,6 @@ class MainModel extends ChangeNotifier {
   Future getReadNotificationIds() async {
     prefs = await SharedPreferences.getInstance();
     readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
-    print(readNotificationsIds);
   }
 
   void setMutes() {

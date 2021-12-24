@@ -109,7 +109,6 @@ class CommentsModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 0.0, 
               press: () async { 
-                Navigator.pop(context);
                 await makeComment(currentSongMap, currentUserDoc); 
                 comment = '';
               }, 

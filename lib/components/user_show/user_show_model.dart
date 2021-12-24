@@ -45,7 +45,7 @@ class UserShowModel extends ChangeNotifier {
   List<String> postIds = [];
   List<DocumentSnapshot> userShowDocs = [];
   // refresh
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  late RefreshController refreshController;
   // Edit profile
   bool isEditing = false;
   String userName = '';
@@ -63,6 +63,7 @@ class UserShowModel extends ChangeNotifier {
   Future<void> init(DocumentSnapshot givePassiveUserDoc,SharedPreferences givePrefs) async {
     startLoading();
     audioPlayer = AudioPlayer();
+    refreshController = RefreshController(initialRefresh: false);
     passiveUserDoc = givePassiveUserDoc;
     prefs = givePrefs;
     await getPosts();
