@@ -290,6 +290,7 @@ class ReplysModel extends ChangeNotifier {
       'elementId': elementId,
       'elementState': elementState,
       'createdAt': Timestamp.now(),
+      'followersCount': currentUserDoc['followersCount'],
       'ipv6': ipv6,
       'isNFTicon': currentUserDoc['isNFTicon'],
       'isOfficial': currentUserDoc['isOfficial'],

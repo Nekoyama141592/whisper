@@ -150,6 +150,7 @@ class CommentsModel extends ChangeNotifier {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
       'createdAt': Timestamp.now(),
+      'followersCount': currentUserDoc['followersCount'],
       'ipv6': ipv6,
       'isNFTicon': currentUserDoc['isNFTicon'],
       'isOfficial': currentUserDoc['isOfficial'],

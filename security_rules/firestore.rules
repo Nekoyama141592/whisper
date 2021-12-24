@@ -88,10 +88,11 @@ service cloud.firestore {
 
   function isValidComment(comment) {
     return
-    comment.size() == 16
+    comment.size() == 17
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
+    && 'followersCount' in comment && comment.followersCount is int
     && 'ipv6' in comment && comment.ipv6 is string
     && 'isNFTicon' in comment && comment.isNFTicon is bool
     && 'isOfficial' in comment && comment.isOfficial is bool
@@ -109,10 +110,11 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 17
+    reply.size() == 18
     && 'elementId' in reply && reply.elementId is string
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
+    && 'followersCount' in reply && reply.followersCount is int
     && 'ipv6' in reply && reply.ipv6 is string
     && 'isNFTicon' in reply && reply.isNFTicon is bool
     && 'isOfficial' in reply && reply.isOfficial is bool
