@@ -173,20 +173,6 @@ class AddPostModel extends ChangeNotifier {
                 Navigator.pop(context);
               },
             ),
-            CupertinoActionSheetAction(
-              child: Text(
-                '自分とフォロワーのみコメント可能',
-                style: TextStyle(
-                  color: Theme.of(context).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              onPressed: () {
-                commentsState = 'onlyFollowingUsers';
-                commentsStateDisplayNameNotifier.value = '自分とフォロワーのみコメント可能';
-                Navigator.pop(context);
-              },
-            )
           ],
         );
       }

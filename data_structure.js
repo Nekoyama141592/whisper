@@ -36,7 +36,7 @@
         }],
         "bookmarksCount": int,
         "commentsCount": int,
-        "commentsState": String('open','isLocked','onlyFollowingUsers'),
+        "commentsState": String('open','isLocked'),
         "createdAt": TimeStamp,
         "country": String,
         "description": String,

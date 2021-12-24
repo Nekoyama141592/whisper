@@ -100,7 +100,8 @@ class MyHomePage extends ConsumerWidget {
           ),
           WhichType(currentUserDoc: mainModel.currentUserDoc),
           BookmarksPage(mainModel: mainModel),
-         UserShowPage(passiveUserDoc: mainModel.currentUserDoc, mainModel: mainModel)
+          // UserShowPage(passiveUserDoc: mainModel.currentUserDoc, mainModel: mainModel)
+          Container()
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),
