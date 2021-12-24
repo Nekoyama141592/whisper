@@ -88,7 +88,7 @@ service cloud.firestore {
 
   function isValidComment(comment) {
     return
-    comment.size() == 17
+    comment.size() == 18
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
@@ -99,6 +99,7 @@ service cloud.firestore {
     && 'likesUids' in comment && comment.likesUids is list
     && 'likesUidsCount' in comment && comment.likesUidsCount is int
     && 'negativeScore' in comment && comment.negativeScore is int
+    && 'passiveUid' in comment && comment.passiveUid is string
     && 'positiveScore' in comment && comment.positiveScore is int
     && 'postId' in comment && comment.postId is string
     && 'score' in comment && comment.score is int
@@ -110,7 +111,7 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 18
+    reply.size() == 19
     && 'elementId' in reply && reply.elementId is string
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
@@ -121,6 +122,7 @@ service cloud.firestore {
     && 'likesUids' in reply && reply.likesUids is list
     && 'likesUidsCount' in reply && reply.likesUidsCount is int
     && 'negativeScore' in reply && reply.negativeScore is int
+    && 'passiveUid' in reply && reply.passiveUid is string
     && 'positiveScore' in reply && reply.positiveScore is int
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string
