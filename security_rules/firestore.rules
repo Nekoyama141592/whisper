@@ -92,7 +92,7 @@ service cloud.firestore {
 
   function isValidComment(comment) {
     return
-    comment.size() == 18
+    comment.size() == 19
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
@@ -106,6 +106,7 @@ service cloud.firestore {
     && 'passiveUid' in comment && comment.passiveUid is string
     && 'positiveScore' in comment && comment.positiveScore is int
     && 'postId' in comment && comment.postId is string
+    && 'replysCount' in comment && comment.replysCount is int
     && 'score' in comment && comment.score is int
     && 'uid' in comment && comment.uid is string
     && 'userDocId' in comment && comment.userDocId is string

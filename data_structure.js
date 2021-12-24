@@ -1,5 +1,5 @@
 "db": {
-    "comment": [{
+    "comments": [{
         "comment": String,
         "commentId": String,
         "createdAt": TimeStamp,
@@ -13,6 +13,7 @@
         "passiveUid": string,
         "positiveScore": int,
         "postId": String,
+        "replysCount": int,
         "score": int,
         "uid": String,
         "userDocId": String,
