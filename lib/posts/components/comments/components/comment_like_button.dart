@@ -27,8 +27,10 @@ class CommentLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final commentId = comment['commentId'];
-    final likesUidsCount = comment['likesUidsCount']; 
-    final displayLikesUidsCount =  likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString();
+    List<dynamic> likesUids = comment['likesUids'];
+    final likesUidsCount = likesUids.length;
+    likesUids.remove(currentUserDoc['uid']); 
+    final plusOneCount = likesUidsCount + 1;
     return likedCommentIds.contains(commentId) ?
     Padding(
       padding: const EdgeInsets.symmetric(
@@ -44,7 +46,7 @@ class CommentLikeButton extends StatelessWidget {
           ),
           SizedBox(width: 5.0),
           Text(
-            displayLikesUidsCount,
+            plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
             style: TextStyle(color: Colors.red)
           )
         ],
@@ -63,7 +65,7 @@ class CommentLikeButton extends StatelessWidget {
           ),
           SizedBox(width: 5.0),
           Text(
-            displayLikesUidsCount
+            likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
           )
         ],
       ),
