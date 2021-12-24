@@ -47,7 +47,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
-    await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).limit(oneTimeReadCount).get().then((qshot) {
+    await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
       // add causes reversed
       qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
