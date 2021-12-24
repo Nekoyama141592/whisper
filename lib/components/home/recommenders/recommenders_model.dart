@@ -231,7 +231,6 @@ class RecommendersModel extends ChangeNotifier {
       .get();
       snapshots.docs.forEach((DocumentSnapshot? doc) {
         if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
-          
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -262,7 +261,6 @@ class RecommendersModel extends ChangeNotifier {
       snapshots.docs.forEach((DocumentSnapshot? doc) {
         // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
         if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
-          recommenderDocs.add(doc);
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);
