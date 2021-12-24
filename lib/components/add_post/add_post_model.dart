@@ -398,6 +398,7 @@ class AddPostModel extends ChangeNotifier {
           'ipv6': ipv6,
           'isNFTicon': currentUserDoc['isNFTicon'],
           'isOfficial': currentUserDoc['isOfficial'],
+          'isPinned': false,
           'isPlayedCount': 0,
           'likes':[],
           'likesCount': 0,

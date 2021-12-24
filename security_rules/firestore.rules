@@ -53,7 +53,7 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 32
+    return post.size() == 33
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -64,22 +64,23 @@ service cloud.firestore {
     && 'genre' in post && post.genre is string // un used
     && 'hashTags' in post && post.hashTags is list // un used
     && 'imageURL' in post && post.imageURL is string
-    && 'impression' in post && post.impression is int
+    && 'impression' in post && post.impression is int // un used
     && 'ipv6' in post && post.ipv6 is string
     && 'isNFTicon' in post && post.isNFTicon is bool
     && 'isOfficial' in post && post.isOfficial is bool
+    && 'isPinned' in post && post.isPinned is bool // un used
     && 'isPlayedCount' in post && post.isPlayedCount is int
     && 'likes' in post && post.likes is list
     && 'likesCount' in post && post.likesCount is int
     && 'link' in post && post.link is string
     && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayUids' in post && post.noDisplayUids is list
-    && 'negativeScore' in post && post.negativeScore is int
-    && 'otherLinks' in post && post.otherLinks is list
+    && 'negativeScore' in post && post.negativeScore is int // un used
+    && 'otherLinks' in post && post.otherLinks is list // un used
     && 'postId' in post && post.postId is string
     && 'positiveScore' in post && post.positiveScore is int
     && 'score' in post && post.score is int
-    && 'tagUids' in post && post.tagUids is list
+    && 'tagUids' in post && post.tagUids is list // un used
     && 'title' in post && post.title is string
     && 'uid' in post && post.uid is string
     && 'updatedAt' in post && post.updatedAt is timestamp

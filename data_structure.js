@@ -45,6 +45,7 @@
         "ipv6": String,
         "isNFTicon": bool,
         "isOfficial": bool,
+        "isPinned": bool,
         "isPlayedCount": int,
         "likes": [{
             createdAt: TimeStamp,
