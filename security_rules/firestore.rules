@@ -62,6 +62,7 @@ service cloud.firestore {
     && 'country' in post && post.country is string
     && 'description' in post && post.description is string
     && 'genre' in post && post.genre is string
+    && 'hashTags' in post && post.hashTags is list
     && 'imageURL' in post && post.imageURL is string
     && 'impression' in post && post.impression is int
     && 'ipv6' in post && post.ipv6 is string

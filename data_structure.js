@@ -39,6 +39,7 @@
         "country": String,
         "description": String,
         "genre": String,
+        "hashTags": List<String>,
         "imageURL": String,
         "impression": int,
         "ipv6": String,

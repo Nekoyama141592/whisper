@@ -392,6 +392,7 @@ class AddPostModel extends ChangeNotifier {
           'country': '',
           'description': '',
           'genre': '',
+          'hashTags': [],
           'imageURL': imageURL,
           'impression': 0,
           'ipv6': ipv6,
