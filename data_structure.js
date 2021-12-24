@@ -34,6 +34,7 @@
             "uid": String,
         }],
         "bookmarksCount": int,
+        "commentsCount": int,
         "commentsState": String('open','isLocked','onlyFollowingUsers'),
         "createdAt": TimeStamp,
         "country": String,

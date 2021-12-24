@@ -53,10 +53,11 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 33
+    return post.size() == 34
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
+    && 'commentsCount' in post && post.commentsCount is int // un used
     && 'commentsState' in post && post.commentsState is string
     && 'createdAt' in post && post.createdAt is timestamp
     && 'country' in post && post.country is string
