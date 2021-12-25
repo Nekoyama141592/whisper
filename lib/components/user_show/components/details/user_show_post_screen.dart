@@ -91,7 +91,10 @@ class UserShowPostScreen extends ConsumerWidget {
           userShowModel.isFirstSongNotifier, 
           () { userShowModel.onPreviousSongButtonPressed(); }, 
           userShowModel.playButtonNotifier, 
-          () { userShowModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+          () async { 
+            userShowModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+            await officialAdsensesModel.onPlayButtonPressed(context);
+          }, 
           () { userShowModel.pause(); }, 
           userShowModel.isLastSongNotifier, 
           () { userShowModel.onNextSongButtonPressed(); },

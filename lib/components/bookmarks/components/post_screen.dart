@@ -71,7 +71,10 @@ class PostScreen extends ConsumerWidget {
               bookmarksModel.isFirstSongNotifier, 
               () { bookmarksModel.onPreviousSongButtonPressed(); }, 
               bookmarksModel.playButtonNotifier, 
-              () { bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+              () async { 
+                bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+                await officialAdsensesModel.onPlayButtonPressed(context);
+              }, 
               () { bookmarksModel.pause(); }, 
               bookmarksModel.isLastSongNotifier, 
               () { bookmarksModel.onNextSongButtonPressed(); },

@@ -100,7 +100,10 @@ class PostCards extends ConsumerWidget {
                     postSearchModel.isFirstSongNotifier,
                     () { postSearchModel.onPreviousSongButtonPressed(); }, 
                     postSearchModel.playButtonNotifier, 
-                    () { postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+                    () async { 
+                      postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+                      await officialAdsensesModel.onPlayButtonPressed(context);
+                    }, 
                     () { postSearchModel.pause(); }, 
                     postSearchModel.isLastSongNotifier, 
                     () { postSearchModel.onNextSongButtonPressed(); },

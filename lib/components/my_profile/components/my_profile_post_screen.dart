@@ -90,7 +90,10 @@ class MyProfilePostScreen extends ConsumerWidget {
           myProfileModel.isFirstSongNotifier, 
           () { myProfileModel.onPreviousSongButtonPressed(); }, 
           myProfileModel.playButtonNotifier, 
-          () { myProfileModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+          () async { 
+            myProfileModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+            await officialAdsensesModel.onPlayButtonPressed(context);
+          }, 
           () { myProfileModel.pause(); }, 
           myProfileModel.isLastSongNotifier, 
           () { myProfileModel.onNextSongButtonPressed(); },

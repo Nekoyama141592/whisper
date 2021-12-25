@@ -55,7 +55,10 @@ class RecommendersPage extends ConsumerWidget {
             recommendersModel.isFirstSongNotifier, 
             () { recommendersModel.onPreviousSongButtonPressed(); }, 
             recommendersModel.playButtonNotifier, 
-            () { recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+            () async { 
+              recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+              await officialAdsensesModel.onPlayButtonPressed(context);
+            }, 
             () { recommendersModel.pause(); }, 
             recommendersModel.isLastSongNotifier, 
             () { recommendersModel.onNextSongButtonPressed(); },

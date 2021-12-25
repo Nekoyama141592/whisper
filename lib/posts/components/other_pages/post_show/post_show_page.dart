@@ -39,7 +39,7 @@ class PostShowPage extends ConsumerWidget {
     required this.onNextSongButtonPressed,
     required this.toCommentsPage,
     required this.toEditingMode,
-    required this.mainModel
+    required this.mainModel,
   }) : super(key: key);
 
   final ValueNotifier<double> speedNotifier;

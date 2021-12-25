@@ -59,7 +59,10 @@ class FeedsPage extends ConsumerWidget {
             feedsModel.isFirstSongNotifier, 
             () { feedsModel.onPreviousSongButtonPressed(); }, 
             feedsModel.playButtonNotifier, 
-            () { feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+            () async { 
+              feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
+              await officialAdsensesModel.onPlayButtonPressed(context);
+            }, 
             () { feedsModel.pause(); }, 
             feedsModel.isLastSongNotifier, 
             () { feedsModel.onNextSongButtonPressed(); },

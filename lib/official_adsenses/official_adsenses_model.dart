@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flash/flash.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,13 +79,14 @@ class OfficialAdsensesModel extends ChangeNotifier {
                 ),
               ),
               indicatorColor: Theme.of(context).primaryColor,
-              icon: Icon(Icons.info),
+              icon: Icon(Icons.info,color: Theme.of(context).primaryColor,),
               primaryAction: TextButton(
                 onPressed: () => controller.dismiss(),
                 child: Text(
                   'DISMISS',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor
                   ),
                 ),
               ),
