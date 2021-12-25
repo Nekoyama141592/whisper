@@ -65,6 +65,7 @@ class RedirectToUrlButton extends StatelessWidget {
                     isDestructiveAction: true,
                     onPressed: () async {
                       Navigator.pop(context);
+                      await Future.delayed(Duration(seconds: 1));
                       await launch(link);
                     },
                   )
