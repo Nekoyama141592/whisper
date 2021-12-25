@@ -3,9 +3,11 @@ import 'dart:math';
 import 'dart:async';
 // material
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flash/flash.dart';
 // packages
+import 'package:flash/flash.dart';
+import 'package:clipboard/clipboard.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
@@ -53,8 +55,14 @@ class OfficialAdsensesModel extends ChangeNotifier {
           boxShadows: kElevationToShadow[8],
           forwardAnimationCurve: Curves.easeInCirc,
           reverseAnimationCurve: Curves.bounceIn,
-          onTap: () {
-            controller.dismiss();
+          onTap: () async {
+            final String link = result['link'];
+            await controller.dismiss();
+            if (await canLaunch(link)) {
+              await launch(link);
+            } else {
+              context.showToast('このURLは不適です');
+            }
           },
           child: DefaultTextStyle(
             style: TextStyle(fontWeight: FontWeight.bold), 
