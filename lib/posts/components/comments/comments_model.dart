@@ -48,8 +48,7 @@ class CommentsModel extends ChangeNotifier {
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
     await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
-      // add causes reversed
-      qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+      qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
   }
@@ -114,7 +113,7 @@ class CommentsModel extends ChangeNotifier {
               verticalPadding: 10.0, 
               horizontalPadding: 0.0, 
               press: () async { 
-                await makeComment(currentSongMap, currentUserDoc); 
+                await makeComment(context,currentSongMap, currentUserDoc); 
                 comment = '';
               }, 
               textColor: Colors.white, 
@@ -127,10 +126,11 @@ class CommentsModel extends ChangeNotifier {
   }
 
   
-  Future makeComment(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc) async {
+  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
     await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('新しい順で上にスクロールするとあなたのコメントが新しく表示されます')));
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -338,8 +338,7 @@ class CommentsModel extends ChangeNotifier {
                 .orderBy('createdAt',descending: true)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
-                  // .add cause reversed
-                  qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
                 });
                 notifyListeners();
               }, 
@@ -362,8 +361,7 @@ class CommentsModel extends ChangeNotifier {
                 .orderBy('createdAt',descending: false)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
-                  // add cause reversed
-                  qshot.docs.reversed.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
+                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
                 });
                 notifyListeners();
               }, 
