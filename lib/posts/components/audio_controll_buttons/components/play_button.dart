@@ -33,7 +33,7 @@ class PlayButton extends StatelessWidget {
             return IconButton(
               icon: Icon(Icons.play_arrow),
               iconSize: iconSize,
-              onPressed: play
+              onPressed: play,
             );
           case ButtonState.playing:
             return IconButton(

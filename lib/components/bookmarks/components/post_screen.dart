@@ -12,6 +12,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class PostScreen extends ConsumerWidget {
@@ -30,6 +31,7 @@ class PostScreen extends ConsumerWidget {
 
     final editPostInfoModel = watch(editPostInfoProvider); 
     final commentsModel = watch(commentsProvider);
+    final officialAdsensesModel = watch(officialAdsensesProvider); 
     final postDocs = bookmarksModel.bookmarkedDocs;
     return GradientScreen(
       top: SizedBox.shrink(), 
@@ -88,7 +90,10 @@ class PostScreen extends ConsumerWidget {
           seek: bookmarksModel.seek, 
           currentSongMapNotifier: bookmarksModel.currentSongMapNotifier ,
           playButtonNotifier: bookmarksModel.playButtonNotifier, 
-          play: () { bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+          play: () async { 
+            bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
+            await officialAdsensesModel.onPlayButtonPressed(context);
+          }, 
           pause: () { bookmarksModel.pause(); }, 
           currentUserDoc: mainModel.currentUserDoc,
           refreshController: bookmarksModel.refreshController,

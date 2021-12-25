@@ -12,6 +12,7 @@ import 'package:whisper/components/home/feeds/components/post_cards.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/feeds/feeds_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class FeedsPage extends ConsumerWidget {
@@ -29,6 +30,7 @@ class FeedsPage extends ConsumerWidget {
     
     final feedsModel = watch(feedsProvider);
     final commentsModel = watch(commentsProvider);
+    final officialAdsensesModel = watch(officialAdsensesProvider); 
     final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.feedDocs;
@@ -76,7 +78,10 @@ class FeedsPage extends ConsumerWidget {
         seek: feedsModel.seek, 
         currentSongMapNotifier: feedsModel.currentSongMapNotifier ,
         playButtonNotifier: feedsModel.playButtonNotifier, 
-        play: () { feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+        play: () async { 
+          feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
+          await officialAdsensesModel.onPlayButtonPressed(context);
+        }, 
         pause: () { feedsModel.pause(); }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: feedsModel.refreshController,

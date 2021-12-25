@@ -12,6 +12,7 @@ import 'package:whisper/components/home/recommenders/components/post_cards.dart'
 import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class RecommendersPage extends ConsumerWidget {
@@ -27,6 +28,7 @@ class RecommendersPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final recommendersModel = watch(recommendersProvider);
     final commentsModel = watch(commentsProvider);
+    final officialAdsensesModel = watch(officialAdsensesProvider); 
     final editPostInfoModel = watch(editPostInfoProvider);
 
     return recommendersModel.isLoading ?
@@ -72,7 +74,10 @@ class RecommendersPage extends ConsumerWidget {
         seek: recommendersModel.seek, 
         currentSongMapNotifier: recommendersModel.currentSongMapNotifier ,
         playButtonNotifier: recommendersModel.playButtonNotifier, 
-        play: () { recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+        play: () async { 
+          recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
+          await officialAdsensesModel.onPlayButtonPressed(context);
+        }, 
         pause: () { recommendersModel.pause(); }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: recommendersModel.refreshController,

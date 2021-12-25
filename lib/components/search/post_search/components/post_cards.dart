@@ -11,6 +11,7 @@ import 'package:whisper/components/search/post_search/components/search_input_fi
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/components/search/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
@@ -32,6 +33,7 @@ class PostCards extends ConsumerWidget {
     
     final editPostInfoModel = watch(editPostInfoProvider);
     final commentsModel = watch(commentsProvider);
+    final officialAdsensesModel = watch(officialAdsensesProvider); 
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
         text: postSearchModel.searchTerm,
@@ -117,7 +119,10 @@ class PostCards extends ConsumerWidget {
                 seek: postSearchModel.seek, 
                 currentSongMapNotifier: postSearchModel.currentSongMapNotifier ,
                 playButtonNotifier: postSearchModel.playButtonNotifier, 
-                play: () { postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); }, 
+                play: () async { 
+                  postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
+                  await officialAdsensesModel.onPlayButtonPressed(context);
+                }, 
                 pause: () { postSearchModel.pause(); }, 
                 currentUserDoc: mainModel.currentUserDoc,
                 isFirstSongNotifier: postSearchModel.isFirstSongNotifier,

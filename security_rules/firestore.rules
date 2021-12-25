@@ -238,5 +238,10 @@ service cloud.firestore {
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
     }
+
+    match /officialAdsenses/{officialAdsense} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
   }
 }

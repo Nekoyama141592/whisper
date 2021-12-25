@@ -14,6 +14,7 @@ import 'package:whisper/components/user_show/components/details/post_cards.dart'
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/my_profile/my_profile_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class MyProfilePostScreen extends ConsumerWidget {
@@ -31,6 +32,7 @@ class MyProfilePostScreen extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
     final editPostInfoModel = watch(editPostInfoProvider);
     final commentsModel = watch(commentsProvider);
+    final officialAdsensesModel = watch(officialAdsensesProvider); 
     final isLoading = myProfileModel.isLoading;
     final postDocs = myProfileModel.myProfileDocs;
     final Widget posts = Expanded(
@@ -107,10 +109,11 @@ class MyProfilePostScreen extends ConsumerWidget {
         seek: myProfileModel.seek,
         currentSongMapNotifier: myProfileModel.currentSongMapNotifier,
         playButtonNotifier: myProfileModel.playButtonNotifier,
-        play: (){
+        play: () async {
           myProfileModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+          await officialAdsensesModel.onPlayButtonPressed(context);
         },
-        pause: (){
+        pause: () {
           myProfileModel.pause();
         }, 
         currentUserDoc: mainModel.currentUserDoc,

@@ -14,6 +14,7 @@ import 'package:whisper/components/user_show/components/details/post_cards.dart'
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class UserShowPostScreen extends ConsumerWidget {
@@ -32,6 +33,7 @@ class UserShowPostScreen extends ConsumerWidget {
 
     final editPostInfoModel = watch(editPostInfoProvider);
     final commentsModel = watch(commentsProvider);
+    final officialAdsensesModel = watch(officialAdsensesProvider); 
     final isLoading = userShowModel.isLoading;
     final postDocs = userShowModel.userShowDocs;
     final Widget posts = Expanded(
@@ -108,15 +110,16 @@ class UserShowPostScreen extends ConsumerWidget {
         seek: userShowModel.seek,
         currentSongMapNotifier: userShowModel.currentSongMapNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
-        play: (){
+        play: () async {
           userShowModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
+          await officialAdsensesModel.onPlayButtonPressed(context);
         },
-        pause: (){
+        pause: () {
           userShowModel.pause();
         }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: userShowModel.refreshController,
-        onRefresh: (){ userShowModel.onRefresh(); },
+        onRefresh: () { userShowModel.onRefresh(); },
         onLoading: () { userShowModel.onLoading(); },
         isFirstSongNotifier: userShowModel.isFirstSongNotifier,
         onPreviousSongButtonPressed: () { userShowModel.onPreviousSongButtonPressed(); },
