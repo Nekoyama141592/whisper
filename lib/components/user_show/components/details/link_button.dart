@@ -64,7 +64,7 @@ class LinkButton extends StatelessWidget {
                     isDestructiveAction: true,
                     onPressed: () async {
                       Navigator.pop(context);
-                      Future.delayed(Duration(seconds:1));
+                      await Future.delayed(Duration(seconds:1));
                       await launch(link);
                     },
                   )
