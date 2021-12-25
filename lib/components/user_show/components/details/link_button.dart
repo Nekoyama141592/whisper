@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-// package
+// packages
 import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 
