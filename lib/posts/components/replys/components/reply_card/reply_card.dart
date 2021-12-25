@@ -49,23 +49,16 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel.currentUserDoc,mainModel.mutesUids, reply['uid']);
+            await postFutures.muteUser(mainModel.mutesUids,mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,reply);
           } ,
         ),
-        IconSlideAction(
-          caption: 'mute Reply',
-          color: Colors.transparent,
-          icon: Icons.visibility_off,
-          onTap: () async {
-            await postFutures.muteReply(mainModel.mutesReplyIds, reply['replyId'], mainModel.prefs);
-          },
-        ),
+
         IconSlideAction(
           caption: 'block User',
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, reply['uid']);
+            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, mainModel.mutesIpv6AndUids,reply);
           },
         ),
       ] : [],

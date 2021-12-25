@@ -55,23 +55,16 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel.currentUserDoc,mainModel.mutesUids, comment['uid']);
+            await postFutures.muteUser(mainModel.mutesUids,mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,comment);
           } ,
         ),
-        IconSlideAction(
-          caption: 'mute Post',
-          color: Colors.transparent,
-          icon: Icons.visibility_off,
-          onTap: () async {
-            await postFutures.muteComment(mainModel.mutesCommentIds, comment['commentId'], mainModel.prefs);
-          },
-        ),
+
         IconSlideAction(
           caption: 'block User',
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, comment['uid']);
+            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, mainModel.mutesIpv6AndUids,comment);
           },
         ),
       ]: [],

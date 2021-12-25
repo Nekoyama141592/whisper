@@ -75,7 +75,12 @@ class OfficialAdsensesModel extends ChangeNotifier {
               icon: Icon(Icons.info),
               primaryAction: TextButton(
                 onPressed: () => controller.dismiss(),
-                child: Text('DISMISS'),
+                child: Text(
+                  'DISMISS',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
               ),
               
             )

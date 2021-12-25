@@ -238,84 +238,47 @@ class PostFutures extends ChangeNotifier{
     return newCurrentSongDoc;
   }
 
-  Future muteUser(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid) async {
+ Future muteUser(List<dynamic> mutesUids,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> map) async {
+    // Abstractions in post_futures.dart cause Range errors.
     // use on comment or reply
+    final String uid = map['uid'];
     mutesUids.add(uid);
+    mutesIpv6AndUids.add({
+      'ipv6': map['ipv6'],
+      'uid': uid,
+    });
     notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
+    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
     .update({
       'mutesUids': mutesUids,
+      'mutesIpv6AndUids': mutesIpv6AndUids,
     }); 
   }
 
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid) async {
+  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> map) async {
+    // Abstractions in post_futures.dart cause Range errors.
     // use on comment or reply
-    blockingUids.add(passiveUid);
+    final String uid = map['uid'];
+    blockingUids.add(uid);
+    mutesIpv6AndUids.add({
+      'ipv6': map['ipv6'],
+      'uid': uid,
+    });
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDoc.id)
     .update({
-      'blocingUids': blockingUids,
+      'blockingUids': blockingUids,
+      'mutesIpv6AndUids': mutesIpv6AndUids,
     }); 
   }
 
-  // Future muteUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> mutesUids,String uid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer,int refreshIndex) async {
-  //   // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
-  //   mutesUids.add(uid);
-  //   posts.removeWhere((postDoc) => postDoc['uid'] == uid);
-  //   await resetAudioPlayer(i,afterUris,posts,audioPlayer,refreshIndex);
-  //   await FirebaseFirestore.instance
-  //   .collection('users')
-  //   .doc(currentUserDoc.id)
-  //   .update({
-  //     'mutesUids': mutesUids,
-  //   }); 
-  // }
-
-  // Future blockUserFromPost(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,String passiveUid,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer,int refreshIndex) async {
-  //   // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
-  //   blockingUids.add(passiveUid);
-  //   posts.removeWhere((postDoc) => postDoc['uid'] == passiveUid);
-  //   await resetAudioPlayer(i, afterUris, posts, audioPlayer,refreshIndex);
-  //   await FirebaseFirestore.instance
-  //   .collection('users')
-  //   .doc(currentUserDoc.id)
-  //   .update({
-  //     'blocingUids': blockingUids,
-  //   }); 
-  // }
-
-  // Future mutePost(List<String> mutesPostIds,String postId,SharedPreferences prefs,int i,List<dynamic> posts,List<AudioSource> afterUris,AudioPlayer audioPlayer,int refreshIndex) async {
-  //   // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
-  //   mutesPostIds.add(postId);
-  //   posts.removeWhere((bookmarkedDoc) => bookmarkedDoc['postId'] == postId);
-  //   await resetAudioPlayer(i, afterUris, posts, audioPlayer,refreshIndex);
-  //   await prefs.setStringList('mutesPostIds', mutesPostIds);
-  // }
-
-  //  Future resetAudioPlayer(int i,List<AudioSource> afterUris,List<dynamic> posts,AudioPlayer audioPlayer,int refreshIndex) async {
-  //   // posts is List<DocumentSnapshot> or List<Map<String,dynamic>>
-    // AudioSource source = afterUris[i];
-    // afterUris.remove(source);
-  //   if (afterUris.isNotEmpty) {
-  //     ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-  //     await audioPlayer.setAudioSource(
-  //       playlist,
-  //       initialIndex: i == 0 ? i :  i - 1
-  //     );
-  //   }
-  //   // refreshIndex = posts.length -1;
+  // Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {
+  //   mutesReplyIds.add(replyId);
   //   notifyListeners();
+  //   await prefs.setStringList('mutesReplyIds', mutesReplyIds);
   // }
-
-  Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {
-    mutesReplyIds.add(replyId);
-    notifyListeners();
-    await prefs.setStringList('mutesReplyIds', mutesReplyIds);
-  }
 
   Future muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
     mutesCommentIds.add(commentId);
