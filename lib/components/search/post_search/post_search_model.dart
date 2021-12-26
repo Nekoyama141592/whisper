@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:algolia/algolia.dart';
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -60,8 +61,8 @@ class PostSearchModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blockingUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesPostIds}) {
-    return isDisplayUidFromMap(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, map: map) && !mutesPostIds.contains(map['postId']);
+  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesPostIds}) {
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, map: map) && !mutesPostIds.contains(map['postId']);
   }
 
   Future initAudioPlayer(int i) async {
@@ -89,39 +90,22 @@ class PostSearchModel extends ChangeNotifier{
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-  Future muteUser(List<dynamic> mutesUids,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
+  Future muteUser({ required List<dynamic> mutesUids, required int i, required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post}) async {
     // Abstractions in post_futures.dart cause Range errors.
     final String uid = post['uid'];
     await removeTheUsersPost(uid, i);
-    mutesUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': post['ipv6'],
-      'uid': uid,
-    });
+    voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
     notifyListeners();
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,int i,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
+  Future blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids, required int i, required Map<String,dynamic> post}) async {
     // Abstractions in post_futures.dart cause Range errors.
     final String uid = post['uid'];
     await removeTheUsersPost(uid, i);
-    blockingUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': post['ipv6'],
-      'uid': uid,
-    });
+    voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
     notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .update({
-      'blockingUids': blockingUids,
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
+    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
   Future removeTheUsersPost(String uid,int i) async {
@@ -129,7 +113,7 @@ class PostSearchModel extends ChangeNotifier{
     await resetAudioPlayer(i);
   }
 
-  Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blockingUids, required List<dynamic> mutesIpv6s}) async {
+  Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s}) async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
@@ -137,7 +121,7 @@ class PostSearchModel extends ChangeNotifier{
     hits.sort((a,b) => b.data['likes'].length.compareTo(a.data['likes'].length));
     hits.forEach((hit) {
       final map = hit.data;
-      if ( isValidReadPost(map: map, mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, mutesPostIds: mutesPostIds) ) {
+      if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, mutesPostIds: mutesPostIds) ) {
         results.add(map);
         Uri song = Uri.parse(map['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: map);
@@ -150,9 +134,9 @@ class PostSearchModel extends ChangeNotifier{
     }
   }
 
-  Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blockingUids, required List<dynamic> mutesIpv6s}) async {
+  Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s}) async {
     startLoading();
-    await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s);
+    await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s);
     listenForStates();
     endLoading();
   }

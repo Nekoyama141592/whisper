@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -44,7 +45,8 @@ class RecommendersModel extends ChangeNotifier {
   late SharedPreferences prefs;
   List<dynamic> mutesUids = [];
   List<String> mutesPostIds = [];
-  List<dynamic> blockingUids = [];
+  List<dynamic> blocksUids = [];
+  List<dynamic> blocksIpv6s = [];
   List<dynamic> readPostIds = [];
   List<dynamic> mutesIpv6s = [];
   // refresh
@@ -91,7 +93,7 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   bool isValidReadPost({ required DocumentSnapshot doc, required DateTime range}) {
-    return isDisplayUidFromMap(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, map: doc.data() as Map<String,dynamic> ) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, map: doc.data() as Map<String,dynamic> ) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
   } 
 
   Future setCurrentUserDoc() async {
@@ -130,37 +132,22 @@ class RecommendersModel extends ChangeNotifier {
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
 
-  Future muteUser(List<dynamic> mutesUids,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
+  Future muteUser({ required List<dynamic> mutesUids, required int i, required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post}) async {
     // Abstractions in post_futures.dart cause Range errors.
     final String uid = post['uid'];
     await removeTheUsersPost(uid, i);
-    mutesUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': post['ipv6'],
-      'uid': uid,
-    });
+    voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
     notifyListeners();
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,int i,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
+  Future blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids, required int i, required Map<String,dynamic> post}) async {
     // Abstractions in post_futures.dart cause Range errors.
     final String uid = post['uid'];
     await removeTheUsersPost(uid, i);
-    blockingUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': post['ipv6'],
-      'uid': uid,
-    });
+    voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
     notifyListeners();
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'blockingUids': blockingUids,
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
+    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
   
   Future removeTheUsersPost(String uid,int i) async {
@@ -213,7 +200,11 @@ class RecommendersModel extends ChangeNotifier {
   Future setMutesAndBlocks() async {
     prefs = await SharedPreferences.getInstance();
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
-    blockingUids = currentUserDoc['blockingUids'];
+    final List<dynamic> blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
+    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
+      blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+      blocksUids.add(blocksIpv6AndUid['uid']);
+    });
     // mutesIpv6s
     final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
     mutesIpv6AndUids.forEach((mutesIpv6AndUid) {

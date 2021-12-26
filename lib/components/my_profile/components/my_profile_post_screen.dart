@@ -59,13 +59,13 @@ class MyProfilePostScreen extends ConsumerWidget {
                 await myProfileModel.initAudioPlayer(i);
               },
               muteUser: () async {
-                await myProfileModel.muteUser(mainModel.mutesUids,mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,post);
+                await myProfileModel.muteUser(mutesUids: mainModel.mutesUids, i: i, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post);
               },
               mutePost: () async {
                 await myProfileModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
               },
               blockUser: () async {
-                await myProfileModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, i,mainModel.mutesIpv6AndUids,post);
+                await myProfileModel.blockUser(blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, post: post);
               },
               mainModel: mainModel,
             );

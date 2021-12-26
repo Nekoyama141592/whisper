@@ -43,7 +43,7 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize,
       overflow: TextOverflow.ellipsis
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blockingUids: mainModel.blockingUids, mutesIpv6s: mainModel.mutesIpv6s, map: comment ) && !mainModel.mutesCommentIds.contains(comment['commentId']) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, map: comment ) && !mainModel.mutesCommentIds.contains(comment['commentId']) ?
 
     Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -55,7 +55,7 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel.mutesUids,mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,comment);
+            await postFutures.muteUser(mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, map: comment);
           } ,
         ),
 
@@ -64,7 +64,7 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, mainModel.mutesIpv6AndUids,comment);
+            await postFutures.blockUser(blocksUids: mainModel.blocksUids,currentUserDoc: mainModel.currentUserDoc,blocksIpv6AndUids: mainModel.blocksIpv6AndUids,map: comment);
           },
         ),
       ]: [],

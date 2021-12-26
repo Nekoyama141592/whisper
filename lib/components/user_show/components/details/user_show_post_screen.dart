@@ -66,7 +66,7 @@ class UserShowPostScreen extends ConsumerWidget {
                 await userShowModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
               },
               blockUser: () async {
-                await userShowModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, i,mainModel.mutesIpv6AndUids,post);
+                await userShowModel.blockUser(mainModel.currentUserDoc, mainModel.blocksUids, i,mainModel.mutesIpv6AndUids,post);
               },
               mainModel: mainModel,
             );

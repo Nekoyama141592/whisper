@@ -33,7 +33,7 @@ class UserShowPage extends ConsumerWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: false,
-      body: mainModel.blockingUids.contains(passiveUserDoc['uid']) || mainModel.mutesUids.contains(passiveUserDoc['uid']) || passiveUserBlockingUids.contains(mainModel.currentUserDoc['uid']) ?
+      body: mainModel.blocksUids.contains(passiveUserDoc['uid']) || mainModel.mutesUids.contains(passiveUserDoc['uid']) || passiveUserBlockingUids.contains(mainModel.currentUserDoc['uid']) ?
      Column(
        children: [
           Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),

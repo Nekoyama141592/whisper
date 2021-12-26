@@ -54,7 +54,7 @@ class UserRankingPage extends ConsumerWidget {
             itemCount: userRankingModel.userDocs.length,
             itemBuilder: (BuildContext context, int i) {
               final DocumentSnapshot<Map<String,dynamic>> userDoc = userRankingModel.userDocs[i];
-              return mainModel.mutesUids.contains(userDoc['uid']) || mainModel.blockingUids.contains(userDoc['uid']) ?
+              return mainModel.mutesUids.contains(userDoc['uid']) || mainModel.blocksUids.contains(userDoc['uid']) ?
               ListTile(
                 title: Text('非表示'),
                 leading: Icon(Icons.block),

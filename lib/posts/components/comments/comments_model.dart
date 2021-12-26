@@ -132,8 +132,15 @@ class CommentsModel extends ChangeNotifier {
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
-      final List<dynamic> blockingUids = passiveUserDoc['blockingUids'];
-      // mutesIpv6s
+      // blocks
+      List<dynamic> blocksIpv6s = [];
+      List<dynamic> blocksUids = [];
+      final List<dynamic> blocksIpv6AndUids = passiveUserDoc['blocksIpv6AndUids'];
+      blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
+        blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+        blocksUids.add(blocksIpv6AndUid['uid']);
+      });
+      // mutes
       List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
       final List<dynamic> mutesIpv6AndUids = passiveUserDoc['mutesIpv6AndUids'];
@@ -141,7 +148,7 @@ class CommentsModel extends ChangeNotifier {
         mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
         mutesUids.add(mutesIpv6AndUid['uid']);
       });
-      if ( isDisplayUid(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
+      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
         await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
       }
     }

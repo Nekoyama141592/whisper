@@ -35,14 +35,16 @@ class MainModel extends ChangeNotifier {
   List<dynamic> likedReplys = [];
   List<dynamic> likedReplyIds = [];
   // mutes 
-  List<String> mutesReplyIds = [];
   List<dynamic> mutesUids = [];
-  List<dynamic> mutesIpv6AndUids = [];
   List<dynamic> mutesIpv6s = [];
+  List<dynamic> mutesIpv6AndUids = [];
+  List<String> mutesReplyIds = [];
   List<String> mutesCommentIds = [];
   List<String> mutesPostIds = [];
   // block
-  List<dynamic> blockingUids = [];
+  List<dynamic> blocksUids = [];
+  List<dynamic> blocksIpv6s = [];
+  List<dynamic> blocksIpv6AndUids = [];
 
   bool newNotificationExists = false;
 
@@ -157,7 +159,11 @@ class MainModel extends ChangeNotifier {
   }
 
   void getBlocks() {
-    blockingUids = currentUserDoc['blockingUids'];
+    blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
+    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
+      blocksUids.add(blocksIpv6AndUid['uid']);
+      blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+    });
   }
 
   void setNotificationIds() {

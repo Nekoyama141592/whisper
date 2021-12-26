@@ -40,7 +40,7 @@ class ReplyCard extends ConsumerWidget {
       overflow: TextOverflow.ellipsis
     );
     // 
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blockingUids: mainModel.blockingUids, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && mainModel.mutesReplyIds.contains(reply['replyId']) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && mainModel.mutesReplyIds.contains(reply['replyId']) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -52,7 +52,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel.mutesUids,mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,reply);
+            await postFutures.muteUser(mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, map: reply);
           } ,
         ),
 
@@ -61,7 +61,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, mainModel.mutesIpv6AndUids,reply);
+            await postFutures.blockUser(blocksUids: mainModel.blocksUids,currentUserDoc: mainModel.currentUserDoc,blocksIpv6AndUids: mainModel.blocksIpv6AndUids,map: reply);
           },
         ),
       ] : [],
@@ -120,5 +120,4 @@ class ReplyCard extends ConsumerWidget {
       ),
     ) : SizedBox.shrink();
   }
-
 }

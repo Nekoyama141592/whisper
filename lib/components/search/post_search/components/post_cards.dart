@@ -51,7 +51,7 @@ class PostCards extends ConsumerWidget {
           searchModel: postSearchModel, 
           controller: searchController, 
           press: () async {
-            await postSearchModel.operation(mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blockingUids: mainModel.blockingUids, mutesIpv6s: mainModel.mutesIpv6s);
+            await postSearchModel.operation(mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s);
           }
         ),
         results.isNotEmpty ?
@@ -73,13 +73,13 @@ class PostCards extends ConsumerWidget {
                         await postSearchModel.initAudioPlayer(i);
                       },
                       muteUser: () async {
-                        await postSearchModel.muteUser(mainModel.mutesUids, mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,post);
+                        await postSearchModel.muteUser(mutesUids: mainModel.mutesUids, i: i, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post);
                       },
                       mutePost: () async {
                         await postSearchModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
                       },
                       blockUser: () async {
-                        await postSearchModel.blockUser(mainModel.currentUserDoc, mainModel.blockingUids, i,mainModel.mutesIpv6AndUids,post);
+                        await postSearchModel.blockUser(blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, post: post);
                       },
                       mainModel: mainModel,
                     );

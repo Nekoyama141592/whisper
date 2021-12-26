@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -238,46 +239,18 @@ class PostFutures extends ChangeNotifier{
     return newCurrentSongDoc;
   }
 
- Future muteUser(List<dynamic> mutesUids,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> map) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    // use on comment or reply
-    final String uid = map['uid'];
-    mutesUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': map['ipv6'],
-      'uid': uid,
-    });
+  Future muteUser({ required List<dynamic> mutesUids,required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) async {
+
+    voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: map);
     notifyListeners();
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> map) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    // use on comment or reply
-    final String uid = map['uid'];
-    blockingUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': map['ipv6'],
-      'uid': uid,
-    });
+  Future blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids, required Map<String,dynamic> map}) async {
+    voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: map);
     notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .update({
-      'blockingUids': blockingUids,
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
+    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
-
-  // Future muteReply(List<String> mutesReplyIds,String replyId,SharedPreferences prefs) async {
-  //   mutesReplyIds.add(replyId);
-  //   notifyListeners();
-  //   await prefs.setStringList('mutesReplyIds', mutesReplyIds);
-  // }
 
   Future muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
     mutesCommentIds.add(commentId);
