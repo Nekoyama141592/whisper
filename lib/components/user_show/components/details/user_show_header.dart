@@ -48,9 +48,17 @@ class UserShowHeader extends ConsumerWidget {
         children: [
           backArrow,
           SizedBox(height: 10.0,),
-          Text(
-            passiveUserDoc['userName'],
-            style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,)
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  passiveUserDoc['userName'],
+                  style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,)
+                ),
+              ),
+              SizedBox(width: 5.0),
+              passiveUserDoc['isOfficial'] ? Icon(Icons.verified) : SizedBox.shrink()
+            ],
           ),
           SizedBox(height: 10),
           Row(
