@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 42 // max48
+    return user.size() == 41 // max48
     && 'birthDay' in user && user.birthDay is timestamp
     && 'blockingUids' in user && user.blockingUids is list
     && 'blockingIpv6AndUids' in user && user.blockingIpv6AndUids is list
@@ -33,7 +33,6 @@ service cloud.firestore {
     && 'likedReplys' in user && user.likedReplys is list
     && 'likes' in user && user.likes is list
     && 'link' in user && user.link is string
-    && 'mutesUids' in user && user.mutesUids is list
     && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
     && 'noDisplayWords' in user && user.noDisplayWords is list
     && 'otherLinks' in user && user.otherLinks is list

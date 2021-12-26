@@ -204,7 +204,6 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
     await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
     .update({
-      'mutesUids': mutesUids,
       'mutesIpv6AndUids': mutesIpv6AndUids,
     }); 
   }
