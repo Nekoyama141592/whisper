@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
+import 'package:whisper/constants/bools.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -29,16 +31,20 @@ class UserShowPage extends ConsumerWidget {
     
     final userShowModel = watch(userShowProvider);
     final followModel = watch(followProvider);
-    final List<dynamic> passiveUserBlockingUids = passiveUserDoc['blockingUids'];
+    List<dynamic> blocksIpv6AndUids = passiveUserDoc['blocksIpv6AndUids'];
+    List<dynamic> passiveBlocksUids = [];
+    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
+      passiveBlocksUids.add(blocksIpv6AndUid['uid']);
+    });
 
     return Scaffold(
       extendBodyBehindAppBar: false,
-      body: mainModel.blocksUids.contains(passiveUserDoc['uid']) || mainModel.mutesUids.contains(passiveUserDoc['uid']) || passiveUserBlockingUids.contains(mainModel.currentUserDoc['uid']) ?
+      body: isDisplayShowPage(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, passiveBlocksUids: passiveBlocksUids, currentUserDoc: mainModel.currentUserDoc) ?
      Column(
        children: [
           Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),
           SizedBox(height: 20.0,),
-          Text('あなたはこのユーザーをミュード、ブロック'),
+          Text('あなたはこのユーザーをミュート、ブロック'),
           SizedBox(height: 20.0,),
           Text('もしくは相手にブロックされています')
        ],
