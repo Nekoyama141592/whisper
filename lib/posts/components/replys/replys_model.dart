@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 // states
 import 'package:whisper/constants/states.dart';
@@ -242,16 +243,17 @@ class ReplysModel extends ChangeNotifier {
     await addReplyToFirestore(map);
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
-      final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap['userDocId']);
-      final List<dynamic> mutesUids = passiveUserDoc['mutesUids'];
+      final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
       final List<dynamic> blockingUids = passiveUserDoc['blockingUids'];
       // mutesIpv6s
+      List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
       final List<dynamic> mutesIpv6AndUids = passiveUserDoc['mutesIpv6AndUids'];
       mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
         mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+        mutesUids.add(mutesIpv6AndUid['uid']);
       });
-      if ( !mutesUids.contains(currentUserDoc['uid']) && !blockingUids.contains(currentUserDoc['uid']) && !mutesIpv6s.contains(currentUserDoc['uid']) ) {
+      if ( isDisplayUid(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
         await updateReplyNotificationsOfPassiveUser(elementId, passiveUserDoc, currentUserDoc, thisComment);
       }
     }
@@ -293,10 +295,10 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  Future setPassiveUserDoc(String passiveUserDocId) async {
+  Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
     DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
-    .doc(passiveUserDocId)
+    .doc(currentSongMap['userDocId'])
     .get();
     return passiveUserDoc;
   }

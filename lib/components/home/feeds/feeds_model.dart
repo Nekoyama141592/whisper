@@ -11,6 +11,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -86,7 +87,9 @@ class FeedsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  
+  bool isValidReadPost({ required DocumentSnapshot doc}) {
+    return isDisplayUidFromMap(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s,map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
+  }
 
   Future initAudioPlayer(int i) async {
     ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
@@ -172,8 +175,8 @@ class FeedsModel extends ChangeNotifier {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
     docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
     // Insert at the top
-    docs.forEach((DocumentSnapshot? doc) {
-      if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) ) {
+    docs.forEach((DocumentSnapshot doc) {
+      if ( isValidReadPost(doc: doc) ) {
         feedDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -194,13 +197,13 @@ class FeedsModel extends ChangeNotifier {
 
   Future setMutesAndBlocks() async {
     prefs = await SharedPreferences.getInstance();
-    mutesUids = currentUserDoc['mutesUids'];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     blockingUids = currentUserDoc['blockingUids'];
     // mutesIpv6s
     final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
     mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
       mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+      mutesUids.add(mutesIpv6AndUid['uid']);
     });
   }
   
@@ -237,8 +240,8 @@ class FeedsModel extends ChangeNotifier {
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshots.docs;
       docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
       if (docs.isNotEmpty) {
-        docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) ) {
+        docs.forEach((DocumentSnapshot doc) {
+          if ( isValidReadPost(doc: doc) ) {
             feedDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -268,8 +271,8 @@ class FeedsModel extends ChangeNotifier {
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshots.docs;
       docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
       if (docs.isNotEmpty) {
-        docs.forEach((DocumentSnapshot? doc) {
-          if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) ) {
+        docs.forEach((DocumentSnapshot doc) {
+          if ( isValidReadPost(doc: doc) ) {
             feedDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);
             UriAudioSource source = AudioSource.uri(song, tag: doc);

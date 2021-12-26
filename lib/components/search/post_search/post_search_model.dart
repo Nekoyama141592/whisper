@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:algolia/algolia.dart';
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -57,6 +58,10 @@ class PostSearchModel extends ChangeNotifier{
   void endLoading() {
     isLoading = false;
     notifyListeners();
+  }
+
+  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blockingUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesPostIds}) {
+    return isDisplayUidFromMap(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, map: map) && !mutesPostIds.contains(map['postId']);
   }
 
   Future initAudioPlayer(int i) async {
@@ -125,7 +130,7 @@ class PostSearchModel extends ChangeNotifier{
     await resetAudioPlayer(i);
   }
 
-  Future search(List<dynamic> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
+  Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blockingUids, required List<dynamic> mutesIpv6s}) async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
@@ -133,7 +138,7 @@ class PostSearchModel extends ChangeNotifier{
     hits.sort((a,b) => b.data['likes'].length.compareTo(a.data['likes'].length));
     hits.forEach((hit) {
       final map = hit.data;
-      if (!mutesUids.contains(map['uid']) && !mutesPostIds.contains(map['postId']) && !blockingUids.contains(map['uid']) ) {
+      if ( isValidReadPost(map: map, mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, mutesPostIds: mutesPostIds) ) {
         results.add(map);
         Uri song = Uri.parse(map['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: map);
@@ -146,9 +151,9 @@ class PostSearchModel extends ChangeNotifier{
     }
   }
 
-  Future operation(List<dynamic> mutesUids,List<String> mutesPostIds,List<dynamic> blockingUids) async {
+  Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blockingUids, required List<dynamic> mutesIpv6s}) async {
     startLoading();
-    await search(mutesUids,mutesPostIds,blockingUids);
+    await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s);
     listenForStates();
     endLoading();
   }

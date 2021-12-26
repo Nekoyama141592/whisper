@@ -9,6 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -88,6 +89,10 @@ class RecommendersModel extends ChangeNotifier {
       readPostIds.add(readPost['postId']);
     });
   }
+
+  bool isValidReadPost({ required DocumentSnapshot doc, required DateTime range}) {
+    return isDisplayUidFromMap(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, map: doc.data() as Map<String,dynamic> ) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
+  } 
 
   Future setCurrentUserDoc() async {
     try{
@@ -186,9 +191,8 @@ class RecommendersModel extends ChangeNotifier {
      // Sort by oldest first
     docs.reversed;
      // Insert at the top
-    docs.forEach((DocumentSnapshot? doc) {
-      // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
+    docs.forEach((DocumentSnapshot doc) {
+      if (isValidReadPost(doc: doc, range: range)) {
         recommenderDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -209,19 +213,19 @@ class RecommendersModel extends ChangeNotifier {
 
   Future setMutesAndBlocks() async {
     prefs = await SharedPreferences.getInstance();
-    mutesUids = currentUserDoc['mutesUids'];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     blockingUids = currentUserDoc['blockingUids'];
     // mutesIpv6s
     final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
     mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
       mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+      mutesUids.add(mutesIpv6AndUid['uid']);
     });
   }
 
   Future getRecommenders() async {
     final now = DateTime.now();
-    final range = now.subtract(Duration(days: 5));
+    final DateTime range = now.subtract(Duration(days: 5));
     
     try {
       QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
@@ -229,8 +233,8 @@ class RecommendersModel extends ChangeNotifier {
       .orderBy('score', descending: true)
       .limit(oneTimeReadCount)
       .get();
-      snapshots.docs.forEach((DocumentSnapshot? doc) {
-        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
+      snapshots.docs.forEach((DocumentSnapshot doc) {
+        if (isValidReadPost(doc: doc, range: range)) {
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -258,9 +262,8 @@ class RecommendersModel extends ChangeNotifier {
       .limit(oneTimeReadCount)
       .get();
       final lastIndex = recommenderDocs.lastIndexOf(recommenderDocs.last);
-      snapshots.docs.forEach((DocumentSnapshot? doc) {
-        // if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !readPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range) ) {
-        if (!mutesUids.contains(doc!['uid']) && !mutesPostIds.contains(doc['postId']) && !blockingUids.contains(doc['uid']) && !mutesIpv6s.contains(doc['ipv6']) && doc['createdAt'].toDate().isAfter(range) ) {
+      snapshots.docs.forEach((DocumentSnapshot doc) {
+        if (isValidReadPost(doc: doc, range: range)) {
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);

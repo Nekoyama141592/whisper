@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/bools.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
@@ -41,11 +43,9 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize,
       overflow: TextOverflow.ellipsis
     );
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blockingUids: mainModel.blockingUids, mutesIpv6s: mainModel.mutesIpv6s, map: comment ) && !mainModel.mutesCommentIds.contains(comment['commentId']) ?
 
-    return mainModel.blockingUids.contains(comment['uid']) || mainModel.mutesUids.contains(comment['uid']) || mainModel.mutesCommentIds.contains(comment['uid']) || mainModel.mutesIpv6s.contains(comment['uid']) ?
-
-    SizedBox.shrink()
-    : Slidable(
+    Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       actions: !(comment['uid'] == mainModel.currentUserDoc['uid']) ?
@@ -119,6 +119,6 @@ class CommentCard extends ConsumerWidget {
           ),
         ),
       ),
-    );
+    ) : SizedBox.shrink();
   }
 }

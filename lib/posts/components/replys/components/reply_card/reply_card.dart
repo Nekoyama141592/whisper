@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/bools.dart';
 // components
 import 'package:whisper/posts/components/replys/components/reply_card/components/reply_like_button.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -37,9 +39,10 @@ class ReplyCard extends ConsumerWidget {
       fontSize: fontSize,
       overflow: TextOverflow.ellipsis
     );
-    return mainModel.blockingUids.contains(reply['uid']) || mainModel.mutesUids.contains(reply['uid']) || mainModel.mutesReplyIds.contains(reply['uid']) || mainModel.mutesIpv6s.contains(reply['uid']) ?
-    SizedBox.shrink()
-    : Slidable(
+    // 
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blockingUids: mainModel.blockingUids, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && mainModel.mutesReplyIds.contains(reply['replyId']) ?
+    
+    Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
       actions: !(reply['uid'] == mainModel.currentUserDoc['uid']) ?
@@ -115,7 +118,7 @@ class ReplyCard extends ConsumerWidget {
           ),
         ),
       ),
-    );
+    ) : SizedBox.shrink();
   }
 
 }

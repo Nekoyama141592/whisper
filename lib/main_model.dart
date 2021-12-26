@@ -143,10 +143,10 @@ class MainModel extends ChangeNotifier {
 
   void setMutes() {
     mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
-    mutesUids = currentUserDoc['mutesUids'];
     mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
     mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-      mutesIpv6s.add(mutesIpv6AndUid);
+      mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+      mutesUids.add(mutesIpv6AndUid['uid']);
     });
     mutesCommentIds = prefs.getStringList('mutesCommentIds') ?? [];
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];

@@ -51,7 +51,7 @@ class PostCards extends ConsumerWidget {
           searchModel: postSearchModel, 
           controller: searchController, 
           press: () async {
-            await postSearchModel.operation(mainModel.mutesUids,mainModel.mutesPostIds,mainModel.blockingUids);
+            await postSearchModel.operation(mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blockingUids: mainModel.blockingUids, mutesIpv6s: mainModel.mutesIpv6s);
           }
         ),
         results.isNotEmpty ?

@@ -10,6 +10,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // states
@@ -131,15 +132,16 @@ class CommentsModel extends ChangeNotifier {
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
-      final List<dynamic> mutesUids = passiveUserDoc['mutesUids'];
       final List<dynamic> blockingUids = passiveUserDoc['blockingUids'];
       // mutesIpv6s
+      List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
       final List<dynamic> mutesIpv6AndUids = passiveUserDoc['mutesIpv6AndUids'];
       mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
         mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+        mutesUids.add(mutesIpv6AndUid['uid']);
       });
-      if ( !mutesUids.contains(currentUserDoc['uid']) && !blockingUids.contains(currentUserDoc['uid']) && !mutesIpv6s.contains(currentUserDoc['uid']) ) {
+      if ( isDisplayUid(mutesUids: mutesUids, blockingUids: blockingUids, mutesIpv6s: mutesIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
         await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
       }
     }
