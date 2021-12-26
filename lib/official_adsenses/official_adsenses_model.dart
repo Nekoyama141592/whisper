@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flash/flash.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,6 +58,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
           onTap: () async {
             final String link = result['link'];
             await controller.dismiss();
+            await FlutterClipboard.copy(link);
             if (await canLaunch(link)) {
               await launch(link);
             } else {
