@@ -35,6 +35,8 @@ class CommentsModel extends ChangeNotifier {
   SortState sortState = SortState.byNewestFirst;
   late RefreshController refreshController;
 
+  int commentScrollFlashBarCount = 0;
+
   void reload() {
     notifyListeners();
   }
@@ -122,8 +124,8 @@ class CommentsModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
     await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
-    int commentScrollFlashBarCount = prefs.getInt('commentScrollFlashBarCount') ?? 0;
-    if (commentScrollFlashBarCount <= 3) {
+    commentScrollFlashBarCount = prefs.getInt('commentScrollFlashBarCount') ?? 0;
+    if (commentScrollFlashBarCount <= commentScrollFlashBarConstantCount) {
       showTopFlash(context);
     }
     // notification
@@ -141,7 +143,7 @@ class CommentsModel extends ChangeNotifier {
         await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
       }
     }
-    if (commentScrollFlashBarCount <= 3) {
+    if (commentScrollFlashBarCount <= commentScrollFlashBarConstantCount) {
       commentScrollFlashBarCount += 1;
       await prefs.setInt('commentScrollFlashBarCount', commentScrollFlashBarCount);
     }
