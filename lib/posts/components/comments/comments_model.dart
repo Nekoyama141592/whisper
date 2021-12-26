@@ -2,16 +2,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/routes.dart' as routes;
-// components
-import 'package:whisper/details/rounded_button.dart';
 // states
 import 'package:whisper/constants/states.dart';
 // models
@@ -53,16 +53,16 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer) {
+  void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer,{ required SharedPreferences prefs}) {
     final String commentsState = currentSongMap['commentsState'];
     audioPlayer.pause();
     switch(commentsState){
       case 'open':
-      showMakeCommentDialogue(context, currentSongMap, commentEditingController, currentUserDoc);
+      showMakeCommentInputFlashBar(context, currentSongMap, commentEditingController, currentUserDoc,prefs: prefs);
       break;
       case 'isLocked':
       if (currentSongMap['uid'] == currentUserDoc['uid']) {
-        showMakeCommentDialogue(context, currentSongMap, commentEditingController, currentUserDoc);
+        showMakeCommentInputFlashBar(context, currentSongMap, commentEditingController, currentUserDoc,prefs: prefs);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
       }
@@ -70,67 +70,62 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  void showMakeCommentDialogue(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc) {
-    showDialog(
-      context: context, 
-      builder: (_) {
-        return AlertDialog(
-          title: Text('comment'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Container(
-                  child: TextField(
-                    controller: commentEditingController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (text) {
-                      comment = text;
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-          actions: [
-            RoundedButton(
-              text: '戻る', 
-              widthRate: 0.25, 
-              verticalPadding: 10.0, 
-              horizontalPadding: 0.0, 
-              press: () async { 
-                Navigator.pop(context);
-              }, 
-              textColor: Theme.of(context).primaryColor, 
-              buttonColor: Theme.of(context).focusColor
-            ),
-            RoundedButton(
-              text: '送信', 
-              widthRate: 0.25, 
-              verticalPadding: 10.0, 
-              horizontalPadding: 0.0, 
-              press: () async { 
-                await makeComment(context,currentSongMap, currentUserDoc); 
-                comment = '';
-              }, 
-              textColor: Colors.white, 
-              buttonColor: Theme.of(context).primaryColor
-            )
-          ],
+  void showMakeCommentInputFlashBar(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc ,{ required SharedPreferences prefs}) {
+    
+    context.showFlashBar(
+      persistent: true,
+      borderWidth: 3.0,
+      behavior: FlashBehavior.fixed,
+      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+      title: Row(
+        children: [
+          Text('コメントを入力'),
+        ],
+      ),
+      content: Form(
+        child: TextFormField(
+          controller: commentEditingController,
+          autofocus: true,
+          style: TextStyle(fontWeight: FontWeight.bold),
+          onChanged: (text) {
+            comment = text;
+          },
+        )
+      ),
+      primaryActionBuilder: (context, controller, _) {
+        return IconButton(
+          onPressed: () async {
+            if (commentEditingController.text.isEmpty) {
+              controller.dismiss();
+            } else {
+              await makeComment(context, currentSongMap, currentUserDoc,prefs);
+              comment = '';
+              controller.dismiss();
+            }
+          },
+          icon: Icon(Icons.send, color: Colors.amber),
+        );
+      },
+      negativeActionBuilder: (context,controller,__) {
+        return InkWell(
+          child: Icon(Icons.close),
+          onTap: () {
+            controller.dismiss();
+          },
         );
       }
     );
   }
 
   
-  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc) async {
+  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,SharedPreferences prefs) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
     await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('新しい順で上にスクロールするとあなたのコメントが新しく表示されます')));
+    int commentScrollFlashBarCount = prefs.getInt('commentScrollFlashBarCount') ?? 0;
+    if (commentScrollFlashBarCount <= 3) {
+      showTopFlash(context);
+    }
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -145,6 +140,10 @@ class CommentsModel extends ChangeNotifier {
       if ( !mutesUids.contains(currentUserDoc['uid']) && !blockingUids.contains(currentUserDoc['uid']) && !mutesIpv6s.contains(currentUserDoc['uid']) ) {
         await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
       }
+    }
+    if (commentScrollFlashBarCount <= 3) {
+      commentScrollFlashBarCount += 1;
+      await prefs.setInt('commentScrollFlashBarCount', commentScrollFlashBarCount);
     }
   }
 
@@ -458,5 +457,54 @@ class CommentsModel extends ChangeNotifier {
     }
     notifyListeners();
     refreshController.loadComplete();
+  }
+
+  void showTopFlash(BuildContext context,{ bool persistent = true}) {
+    showFlash(
+      context: context, 
+      persistent: persistent,
+      duration: Duration(seconds: 5),
+      builder: (_, controller) {
+        return Flash(
+          controller: controller, 
+          margin: EdgeInsets.all(8.0),
+          backgroundColor: Theme.of(context).focusColor,
+          behavior: FlashBehavior.fixed,
+          position: FlashPosition.top,
+          borderRadius: BorderRadius.circular(8.0),
+          borderColor: Theme.of(context).highlightColor,
+          boxShadows: kElevationToShadow[8],
+          forwardAnimationCurve: Curves.easeInCirc,
+          reverseAnimationCurve: Curves.bounceIn,
+          onTap: () {
+            controller.dismiss();
+          },
+          child: DefaultTextStyle(
+            style: TextStyle(fontWeight: FontWeight.bold), 
+            child: FlashBar(
+              content: Text(
+                '新しい順で上にスクロールするとコメントが表示されます',
+                style: TextStyle(
+                  color: Theme.of(context).scaffoldBackgroundColor
+                ),
+              ),
+              indicatorColor: Theme.of(context).primaryColor,
+              icon: Icon(Icons.info,color: Theme.of(context).primaryColor,),
+              primaryAction: TextButton(
+                onPressed: () => controller.dismiss(),
+                child: Text(
+                  'DISMISS',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor
+                  ),
+                ),
+              ),
+              
+            )
+          )
+        );
+      }
+    );
   }
 }

@@ -49,6 +49,7 @@ class UserShowHeader extends ConsumerWidget {
           backArrow,
           SizedBox(height: 10.0,),
           Row(
+            mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
                 child: Text(
@@ -57,7 +58,7 @@ class UserShowHeader extends ConsumerWidget {
                 ),
               ),
               SizedBox(width: 5.0),
-              passiveUserDoc['isOfficial'] ? Icon(Icons.verified) : SizedBox.shrink()
+              !passiveUserDoc['isOfficial'] ? Icon(Icons.verified) : SizedBox.shrink()
             ],
           ),
           SizedBox(height: 10),

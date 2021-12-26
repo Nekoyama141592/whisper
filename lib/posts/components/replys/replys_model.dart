@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
-// components
-import 'package:whisper/details/rounded_button.dart';
 // states
 import 'package:whisper/constants/states.dart';
 
@@ -48,65 +47,54 @@ class ReplysModel extends ChangeNotifier {
   }
 
   void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
-    reply = '';
     if (thisComment['uid'] == currentUserDoc['uid'] || currentSongMap['uid'] == currentUserDoc['uid']) {
-      showMakeReplyDialogue(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
+      showMakeReplyInputFlashBar(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたはこのコメントに返信できません')));
     }
   }
 
-  void showMakeReplyDialogue(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
-    showDialog(
-      context: context, 
-      builder: (_) {
-        return AlertDialog(
-          title: Text('reply'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Container(
-                  child: TextField(
-                    controller: replyEditingController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (text) {
-                      reply = text;
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-          actions: [
-            RoundedButton(
-              text: '戻る', 
-              widthRate: 0.25, 
-              verticalPadding: 10.0, 
-              horizontalPadding: 10.0, 
-              press: () async { 
-                Navigator.pop(context);
-                await makeReply(currentSongMap, currentUserDoc, thisComment);
-              }, 
-              textColor: Theme.of(context).primaryColor, 
-              buttonColor: Theme.of(context).focusColor
-            ),
-            RoundedButton(
-              text: '送信', 
-              widthRate: 0.25, 
-              verticalPadding: 10.0, 
-              horizontalPadding: 10.0, 
-              press: () async { 
-                Navigator.pop(context);
-                await makeReply(currentSongMap, currentUserDoc, thisComment);
-              }, 
-              textColor: Colors.white, 
-              buttonColor: Theme.of(context).primaryColor
-            )
-          ],
+  void showMakeReplyInputFlashBar(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+    context.showFlashBar(
+      persistent: true,
+      borderWidth: 3.0,
+      behavior: FlashBehavior.fixed,
+      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+      title: Row(
+        children: [
+          Text('リプライを入力'),
+        ],
+      ),
+      content: Form(
+        child: TextFormField(
+          controller: replyEditingController,
+          autofocus: true,
+          style: TextStyle(fontWeight: FontWeight.bold),
+          onChanged: (text) {
+            reply = text;
+          },
+        )
+      ),
+      primaryActionBuilder: (context, controller, _) {
+        return IconButton(
+          onPressed: () async {
+            if (reply.isEmpty) {
+              controller.dismiss();
+            } else {
+              await makeReply(currentSongMap, currentUserDoc, thisComment);
+              reply = '';
+              controller.dismiss();
+            }
+          },
+          icon: Icon(Icons.send, color: Colors.amber),
+        );
+      },
+      negativeActionBuilder: (context,controller,__) {
+        return InkWell(
+          child: Icon(Icons.close),
+          onTap: () {
+            controller.dismiss();
+          },
         );
       }
     );

@@ -3,3 +3,4 @@ const int likeScore = 200;
 const int bookmarkScore = 300;
 const int officialAdsenseIntervalSeconds = 180;
 const int officialAdsenseDisplaySeconds = 5;
+const int topFlashDisplaySeconds = 2;

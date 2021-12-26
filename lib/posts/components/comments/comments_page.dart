@@ -42,7 +42,7 @@ class CommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  {
-          commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer); 
+          commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer,prefs: mainModel.prefs); 
         },
       ),
       body: SafeArea(
@@ -56,7 +56,6 @@ class CommentsPage extends ConsumerWidget {
                 enablePullUp: true,
                 enablePullDown: true,
                 onLoading: () async {
-                  print('Loading');
                   await commentsModel.onLoading(currentSongMap);
                 },
                 onRefresh: () {
