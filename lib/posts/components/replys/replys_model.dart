@@ -48,7 +48,10 @@ class ReplysModel extends ChangeNotifier {
   }
 
   void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
-    if (thisComment['uid'] == currentUserDoc['uid'] || currentSongMap['uid'] == currentUserDoc['uid']) {
+    // コメントの投稿主が自分の場合
+    // このPostの投稿主が自分の場合
+    // このPostの投稿主とコメントの投稿主が一致している場合
+    if (thisComment['uid'] == currentUserDoc['uid'] || currentSongMap['uid'] == currentUserDoc['uid'] || thisComment['uid'] == currentSongMap['uid']) {
       showMakeReplyInputFlashBar(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたはこのコメントに返信できません')));
