@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,9 +38,9 @@ class RedirectToUrlButton extends StatelessWidget {
                           color: Theme.of(context).highlightColor,
                           fontWeight: FontWeight.bold
                         ),
-                        recognizer: TapGestureRecognizer()..onTap = () {
-                          FlutterClipboard.copy(link).then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リンクをコピーしました')));
+                        recognizer: TapGestureRecognizer()..onTap = () async {
+                          await FlutterClipboard.copy(link).then((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
                           });
                         },
                       ),
