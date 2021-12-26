@@ -5,6 +5,7 @@
         'createdAt': TimeStamp,
         'followersCount': int,
         'ipv6': String,
+        'isDelete': false,
         'isNFTicon': false,
         'isOfficial': false,
         'likesUids': [ String ],
@@ -45,6 +46,7 @@
         'imageURL': String,
         'impression': int,
         'ipv6': String,
+        'isDelete': bool,
         'isNFTicon': bool,
         'isOfficial': bool,
         'isPinned': bool,
@@ -74,12 +76,13 @@
         'userImageURL': String,
         'userName': String
     }
-    replys{
+    'replys'{
         'elementId': String,
         'elementState': String [ comment ],
         'createdAt': TimeStamp,
         'followersCount': int,
         'ipv6': String,
+        'isDelete': bool,
         'isNFTicon': bool,
         'isOfficial': bool,
         'likesUids': [],
@@ -95,7 +98,7 @@
         'userName': String,
         'userImageURL': String,
     }
-    users{
+    'users'{
         'birthDay': TimeStamp,
         'blockingIpv6AndUids': List<Map<String,dynamic> {
             'uid': String,
@@ -113,6 +116,7 @@
             'comment': String,
             'createdAt': TimeStamp,
             'followersCount': int,
+            'isDelete': bool,
             'isNFTicon': bool,
             'isOfficial':bool,
             'notificationId': String,
@@ -138,6 +142,7 @@
         'gender': String[male,female,others,noAnswer],
         'imageURL': String,
         'isAdmin': bool,
+        'isDelete': bool,
         'isNFTicon': bool,
         'isKeyAccount': bool,
         'isOfficial': bool,
@@ -180,6 +185,7 @@
             'createdAt': TimeStamp,
             'elementId': String,
             'followersCount': int,
+            'isDelete': bool,
             'isNFTicon': bool,
             'isOfficial':bool,
             'notificationId': String,

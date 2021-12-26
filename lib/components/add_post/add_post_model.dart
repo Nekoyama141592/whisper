@@ -383,6 +383,7 @@ class AddPostModel extends ChangeNotifier {
           'imageURL': imageURL,
           'impression': 0,
           'ipv6': ipv6,
+          'isDelete': false,
           'isNFTicon': currentUserDoc['isNFTicon'],
           'isOfficial': currentUserDoc['isOfficial'],
           'isPinned': false,

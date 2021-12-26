@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 40 // max48
+    return user.size() == 41 // max48
     && 'birthDay' in user && user.birthDay is timestamp
     && 'blocksIpv6AndUids' in user && user.blockingIpv6AndUids is list
     && 'bookmarks' in user && user.bookmarks is list
@@ -22,6 +22,7 @@ service cloud.firestore {
     && 'gender' in user && user.gender is string
     && 'imageURL' in user && user.imageURL is string
     && 'isAdmin' in user && user.isAdmin is bool
+    && 'isDelete' in user && user.isDelete is bool
     && 'isKeyAccount' in user && user.isKeyAccount is bool
     && 'isNFTicon' in user && user.isNFTicon is bool
     && 'isOfficial' in user && user.isOfficial is bool
@@ -51,7 +52,7 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 34
+    return post.size() == 35
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -65,6 +66,7 @@ service cloud.firestore {
     && 'imageURL' in post && post.imageURL is string
     && 'impression' in post && post.impression is int // un used
     && 'ipv6' in post && post.ipv6 is string
+    && 'isDelete' in post && post.isDelete is bool
     && 'isNFTicon' in post && post.isNFTicon is bool
     && 'isOfficial' in post && post.isOfficial is bool
     && 'isPinned' in post && post.isPinned is bool // un used
@@ -90,12 +92,13 @@ service cloud.firestore {
 
   function isValidComment(comment) {
     return
-    comment.size() == 19
+    comment.size() == 20
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
     && 'followersCount' in comment && comment.followersCount is int
     && 'ipv6' in comment && comment.ipv6 is string
+    && 'isDelete' in comment && comment.isDelete is bool
     && 'isNFTicon' in comment && comment.isNFTicon is bool
     && 'isOfficial' in comment && comment.isOfficial is bool
     && 'likesUids' in comment && comment.likesUids is list
@@ -114,12 +117,13 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 19
+    reply.size() == 20
     && 'elementId' in reply && reply.elementId is string
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
     && 'followersCount' in reply && reply.followersCount is int
     && 'ipv6' in reply && reply.ipv6 is string
+    && 'isDelete' in reply && reply.isDelete is bool
     && 'isNFTicon' in reply && reply.isNFTicon is bool
     && 'isOfficial' in reply && reply.isOfficial is bool
     && 'likesUids' in reply && reply.likesUids is list
