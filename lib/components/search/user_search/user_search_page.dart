@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/components/search/user_search/components/user_list.dart';
-// model
+// models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/user_search/user_search_model.dart';
 

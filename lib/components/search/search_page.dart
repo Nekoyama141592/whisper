@@ -7,6 +7,7 @@ import 'package:whisper/components/search/constants/tab_bar_elements.dart';
 import 'package:whisper/details/whisper_drawer.dart';
 // pages
 import 'package:whisper/components/search/user_search/user_search_page.dart';
+import 'package:whisper/components/search/ranking/user_ranking_page.dart';
 import 'package:whisper/components/search/post_search/post_search_page.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -51,8 +52,9 @@ class SearchPage extends ConsumerWidget {
         body: 
         TabBarView(
           children: [
+            UserSearchPage(mainModel: mainModel),
+            UserRankingPage(mainModel: mainModel),
             PostSearchPage(mainModel: mainModel, postSearchModel: postSearchModel),
-            UserSearchPage(mainModel: mainModel)
           ]
         )
       ),

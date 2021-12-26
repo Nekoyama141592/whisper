@@ -1,7 +1,9 @@
+// material
 import 'package:flutter/material.dart';
-
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:algolia/algolia.dart';
+// algolia
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 
 final searchProvider = ChangeNotifierProvider(

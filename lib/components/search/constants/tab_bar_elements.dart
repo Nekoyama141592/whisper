@@ -4,6 +4,7 @@ class TabBarElements {
 }
 
 final List<TabBarElements>  tabBarElements= [
+  TabBarElements('users'),
+  TabBarElements('ranking'),
   TabBarElements('posts'),
-  TabBarElements('users')
 ];
