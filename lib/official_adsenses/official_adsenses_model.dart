@@ -32,7 +32,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
         Timer.periodic(Duration(seconds: officialAdsenseIntervalSeconds), (_) async {
           randIndex = rand.nextInt(officialAdsenseDocs.length);
           final result = officialAdsenseDocs[randIndex];
-          showTopFlash(context, result);
+          showTopFlash(context, result, margin: EdgeInsets.all(8.0));
         });
       }
     }
@@ -62,7 +62,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
             if (await canLaunch(link)) {
               await launch(link);
             } else {
-              context.showToast('このURLは不適です');
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは不適切です')));
             }
           },
           child: DefaultTextStyle(
