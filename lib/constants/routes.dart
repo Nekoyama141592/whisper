@@ -13,7 +13,6 @@ import 'package:whisper/posts/components/other_pages/post_show/post_show_page.da
 import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/auth/signup/other_pages/add_user_info_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
-import 'package:whisper/admin/admin_page.dart';
 import 'package:whisper/auth/account/account_page.dart';
 import 'package:whisper/components/notifications/notifications_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
@@ -84,9 +83,6 @@ void toPostShowPage(context,ValueNotifier<double> speedNotifier,void Function()?
 
 void toUserShowPage(context,DocumentSnapshot passiveUserDoc,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveUserDoc: passiveUserDoc, mainModel: mainModel)));
-}
-void toAdminPage(context,DocumentSnapshot currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage(currentUserDoc: currentUserDoc) ));
 }
 
 void toAccountPage(context,MainModel mainModel) {

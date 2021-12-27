@@ -26,15 +26,6 @@ class WhisperDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          
-          mainModel.currentUserDoc['isAdmin'] ?
-          ListTile(
-            title: Text('Admin'),
-            onTap: () {
-              routes.toAdminPage(context,mainModel.currentUserDoc);
-            },
-          )
-          : SizedBox.shrink(),
           ListTile(
             title: Text('アカウント'),
             onTap: () {
