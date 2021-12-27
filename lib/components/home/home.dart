@@ -19,34 +19,13 @@ class Home extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.likedCommentIds,
-    required this.likedComments,
-    required this.bookmarks,
-    required this.likes,
-    required this.replyNotifications,
-    required this.readPostIds,
-    required this.readPosts,
-    required this.readNotificationIds
   }) : super(key: key);
   
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List likedCommentIds;
-  final List likedComments;
-  final List bookmarks;
-  final List likes;
-  final List replyNotifications;
-  final List readPostIds;
-  final List readPosts;
-  final List<String> readNotificationIds;
 
   @override  
   Widget build(BuildContext context) {
-    final currentUserDoc = mainModel.currentUserDoc;
     return DefaultTabController(
       length: tabBarElements.length, 
       child: Scaffold(

@@ -62,14 +62,6 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final mainModel = watch(mainProvider);
     final whisperBottomNavigationbarModel = watch(whisperBottomNavigationbarProvider);
-    final likedPostIds = mainModel.likedPostIds;
-    final bookmarkedPostIds = mainModel.bookmarkedPostIds;
-    final likedCommentIds = mainModel.likedCommentIds;
-    final likedComments = mainModel.likedComments;
-    final bookmarks = mainModel.bookmarks;
-    final likes = mainModel.likes;
-    final replyNotifications = mainModel.replyNotifications;
-    final readPostIds = mainModel.readPostIds;
 
     return Scaffold(
       body: mainModel.isLoading ?
@@ -83,16 +75,6 @@ class MyHomePage extends ConsumerWidget {
           Home(
             mainModel: mainModel, 
             themeModel: themeModel, 
-            bookmarkedPostIds: bookmarkedPostIds, 
-            likedPostIds: likedPostIds,
-            likedCommentIds: likedCommentIds,
-            likedComments: likedComments,
-            bookmarks: bookmarks,
-            likes: likes,
-            replyNotifications: replyNotifications,
-            readPostIds: readPostIds,
-            readPosts: mainModel.readPosts,
-            readNotificationIds: mainModel.readNotificationIds
           ),
           SearchPage(
             mainModel: mainModel,
