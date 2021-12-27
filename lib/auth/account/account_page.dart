@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
-import 'package:flash/flash.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
@@ -31,7 +30,7 @@ class AccountPage extends ConsumerWidget {
       body: Column(
         children: [
           ListTile(
-            title: Text(accountModel.currentUser!.email!),
+            title: Text(accountModel.currentUser!.email! + "(変更する)"),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               accountModel.whichState = WhichState.updateEmail;

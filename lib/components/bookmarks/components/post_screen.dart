@@ -49,7 +49,7 @@ class PostScreen extends ConsumerWidget {
       content: postDocs.isEmpty ?
       Nothing(reload: () async { 
         bookmarksModel.startLoading();
-        await bookmarksModel.getBookmarks(); 
+        await bookmarksModel.getBookmarks(mainModel.bookmarkedPostIds); 
         bookmarksModel.endLoading();
       })
       : Padding(

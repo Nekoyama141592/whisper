@@ -55,7 +55,7 @@ class BookmarksModel extends ChangeNotifier {
     setCurrentUser();
     await setCurrentUserDoc();
     setBookmarkedPostIds();
-    await getBookmarks();
+    await getBookmarks(bookmarkedPostIds);
     await setPrefs();
     setSpeed();
     listenForStates();
@@ -125,12 +125,12 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future onRefresh() async {
-    await getNewBookmarks();
+    await getNewBookmarks(bookmarkedPostIds);
     notifyListeners();
     refreshController.refreshCompleted();
   }
 
-  Future getNewBookmarks() async {
+  Future getNewBookmarks(List<dynamic> bookmarkedPostIds) async {
     
     if (bookmarkedPostIds.isNotEmpty) {
       QuerySnapshot<Map<String, dynamic>>  newSnapshots = await FirebaseFirestore.instance
@@ -157,7 +157,7 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future onLoading() async {
-    await getOldBookmarks();
+    await getOldBookmarks(bookmarkedPostIds);
     refreshController.loadComplete();
     notifyListeners();
   }
@@ -186,7 +186,7 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getBookmarks () async {
+  Future getBookmarks (List<dynamic> bookmarkedPostIds) async {
     try{
       if (bookmarkedPostIds.isNotEmpty) {
         QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
@@ -211,7 +211,7 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getOldBookmarks() async {
+  Future<void> getOldBookmarks(List<dynamic> bookmarkedPostIds) async {
     try {
       if (bookmarkedPostIds.isEmpty) {
         QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance

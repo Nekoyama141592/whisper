@@ -40,6 +40,11 @@ class EditProfileScreen extends ConsumerWidget {
     );
     final linkController = TextEditingController(text: mainModel.currentUserDoc['link']);
 
+    final textStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 20.0
+    );
+
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -73,20 +78,22 @@ class EditProfileScreen extends ConsumerWidget {
             ),
             
             InkWell(child: UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: showImagePicker,),
-            Text('名前'),
+            Text('名前',style: textStyle,),
             TextFormField(
               keyboardType: TextInputType.text,
               controller: userNameController,
-              onChanged: onUserNameChanged
+              onChanged: onUserNameChanged,
+              style: textStyle
             ),
-            Text('自己紹介'),
+            Text('自己紹介',style: textStyle,),
             TextFormField(
               keyboardType: TextInputType.multiline,
               maxLines: 10,
               controller: descriptionController,
-              onChanged: onDescriptionChanged
+              onChanged: onDescriptionChanged,
+              style: textStyle
             ),
-            Text('リンク'),
+            Text('リンク',style: textStyle,),
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
@@ -94,6 +101,7 @@ class EditProfileScreen extends ConsumerWidget {
               ),
               controller: linkController,
               onChanged: onLinkChanged,
+              style: textStyle
             ),
           ],
         ),

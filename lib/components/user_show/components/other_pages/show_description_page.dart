@@ -12,6 +12,12 @@ class ShowDescriptionPage extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
+    
+    final textStyle = TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('自己紹介'),
@@ -27,7 +33,7 @@ class ShowDescriptionPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(description)
+              Text(description,style: textStyle)
             ],
           ),
         ),

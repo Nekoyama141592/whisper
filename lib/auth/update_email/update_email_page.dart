@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,8 +22,9 @@ class UpdateEmailPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     
-    final _updateEmailModel = watch(updateEmailProvider);
-    final newEmailInputController = TextEditingController(text: _updateEmailModel.newEmail);
+    final updateEmailModel = watch(updateEmailProvider);
+    final newEmailInputController = TextEditingController(text: updateEmailModel.newEmail);
+    final textStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0);
     
     return Scaffold(
       appBar: AppBar(
@@ -37,10 +39,10 @@ class UpdateEmailPage extends ConsumerWidget {
               icon: Icons.email, 
               controller: newEmailInputController, 
               onChanged:  (text) {
-                _updateEmailModel.newEmail = text;
+                updateEmailModel.newEmail = text;
               },
               paste: (value) {
-                _updateEmailModel.newEmail = value;
+                updateEmailModel.newEmail = value;
               },
             ),
             SizedBox(height: 16,),
@@ -50,13 +52,36 @@ class UpdateEmailPage extends ConsumerWidget {
               verticalPadding: 20.0,
               horizontalPadding: 10.0,
               press: () async {
-                await _updateEmailModel.verifyBeforeUpdateEmail(context);        
+                await updateEmailModel.verifyBeforeUpdateEmail(context);        
               }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary,
             ),
-            Text('リンクをタップしても変更が反映されない場合は'),
-            Text('一度、Whisperのタブを切ってください')
+            SizedBox(height: 16,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '送信された確認メールのリンクをタップしても変更が反映されない場合は',
+                      style: textStyle,
+                    ),
+                    TextSpan(
+                      text: 'ログアウト',
+                      style: TextStyle(color: Theme.of(context).highlightColor, fontWeight: FontWeight.bold, fontSize: 25.0 ),
+                      recognizer: TapGestureRecognizer()..onTap = () async {
+                        updateEmailModel.showSignOutDialog(context);
+                      },
+                    ),
+                    TextSpan(
+                      text: 'してください',
+                      style: textStyle,
+                    )
+                  ]
+                )
+              )
+            ),
           ],
         ),
       ),

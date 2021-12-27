@@ -210,6 +210,7 @@ class AccountModel extends ChangeNotifier {
   Future signOut(BuildContext context) async {
     Navigator.pop(context);
     await FirebaseAuth.instance.signOut();
+    Future.delayed(Duration(seconds: 1));
     routes.toIsFinishedPage(context,'ログアウトしました');
   }
 }
