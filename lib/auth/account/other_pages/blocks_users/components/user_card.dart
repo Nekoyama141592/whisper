@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
-import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/redirect_user_image.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -41,7 +41,7 @@ class UserCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['imageURL']),
+              leading: RedirectUserImage(userImageURL: userDoc['imageURL'], length: 50.0, padding: 0.0, passiveUserDocId: userDoc['uid'], mainModel: mainModel),
               title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
               onTap: () async {
                 voids.showCupertinoDialogue(context: context, title: 'ブロック解除', content: 'このユーザーのブロックを解除しますか？', action: () async {

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
-import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/notifications/notification_model.dart';
