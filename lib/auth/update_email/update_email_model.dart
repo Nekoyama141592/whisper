@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // constants
-import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/voids.dart' as voids;
 
 final updateEmailProvider = ChangeNotifierProvider(
   (ref) => UpdateEmailModel()
@@ -44,7 +44,7 @@ class UpdateEmailModel extends ChangeNotifier {
               child: const Text('Ok'),
               isDestructiveAction: true,
               onPressed: () async {
-                await signOut(context);
+                await voids.signOut(context);
               },
             )
           ],
@@ -53,10 +53,5 @@ class UpdateEmailModel extends ChangeNotifier {
     );
   }
 
-  Future signOut(BuildContext context) async {
-    Navigator.pop(context);
-    await FirebaseAuth.instance.signOut();
-    Future.delayed(Duration(seconds: 1));
-    routes.toIsFinishedPage(context,'ログアウトしました');
-  }
+  
 }

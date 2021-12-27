@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/voids.dart' as voids;
 // models
 import 'package:whisper/main_model.dart';
 
@@ -175,7 +176,7 @@ class AccountModel extends ChangeNotifier {
       try {
         await currentUser!.delete();
         Navigator.pop(context);
-        routes.toIsFinishedPage(context, 'ユーザーを消去しました');
+        routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
       } catch(e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
       }
@@ -200,7 +201,7 @@ class AccountModel extends ChangeNotifier {
               child: const Text('Ok'),
               isDestructiveAction: true,
               onPressed: () async {
-                await signOut(context);
+                await voids.signOut(context);
               },
             )
           ],
@@ -209,10 +210,4 @@ class AccountModel extends ChangeNotifier {
     );
   }
 
-  Future signOut(BuildContext context) async {
-    Navigator.pop(context);
-    await FirebaseAuth.instance.signOut();
-    Future.delayed(Duration(seconds: 1));
-    routes.toIsFinishedPage(context,'ログアウトしました');
-  }
 }

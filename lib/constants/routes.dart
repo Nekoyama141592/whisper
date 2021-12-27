@@ -113,8 +113,8 @@ void toMutesUsersPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MutesUsersPage(mainModel: mainModel,) ));
 }
 
-void toIsFinishedPage(context,String text) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => IsFinishedPage(text: text,) ));
+void toIsFinishedPage({ required BuildContext context, required String title, required String text}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => IsFinishedPage(title: title, text: text,) ));
 }
 
 void toCompliancePage(context) {

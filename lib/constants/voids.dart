@@ -1,5 +1,10 @@
+// material
+import 'package:flutter/material.dart';
 // packages
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
+import 'package:whisper/constants/routes.dart' as routes;
 
 void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
   final String uid = map['uid'];
@@ -32,5 +37,11 @@ Future<void> updateBlocksIpv6AndUids({ required List<dynamic> blocksIpv6AndUids,
   await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
   .update({
     'blocksIpv6AndUids': blocksIpv6AndUids,
-  }); 
+  });
+}
+
+Future signOut(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  Navigator.pop(context);
+  routes.toIsFinishedPage(context: context, title: 'ログアウトしました', text: 'お疲れ様でした');
 }

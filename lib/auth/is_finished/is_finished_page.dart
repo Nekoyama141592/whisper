@@ -9,9 +9,11 @@ class IsFinishedPage extends StatelessWidget {
 
   const IsFinishedPage({
     Key? key,
-    required this.text,
+    required this.title,
+    required this.text
   }) : super(key: key);
 
+  final String title;
   final String text;
 
   @override 
@@ -26,7 +28,7 @@ class IsFinishedPage extends StatelessWidget {
         header: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-            text,
+            title,
             style: TextStyle(
               fontSize: 25.0,
               fontWeight: FontWeight.bold
@@ -52,7 +54,7 @@ class IsFinishedPage extends StatelessWidget {
                     vertical: 20
                   ),
                   child: Text(
-                    'ユーザーも投稿もコメントも削除されました。お疲れ様でした',
+                    text,
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold
