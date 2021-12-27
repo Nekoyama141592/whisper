@@ -15,6 +15,10 @@ class MutesUsersModel extends ChangeNotifier {
   bool isLoading = false;
   List<DocumentSnapshot> mutesUserDocs = [];
 
+  MutesUsersModel() {
+    init();
+  }
+
   Future init() async {
     startLoading();
     final DocumentSnapshot currentUserDoc = await setCurrentUserDoc();

@@ -15,6 +15,10 @@ class BlocksUsersModel extends ChangeNotifier {
   bool isLoading = false;
   List<DocumentSnapshot> blocksUserDocs = [];
 
+  BlocksUsersModel() {
+    init();
+  }
+
   Future init() async {
     startLoading();
     final DocumentSnapshot currentUserDoc = await setCurrentUserDoc();

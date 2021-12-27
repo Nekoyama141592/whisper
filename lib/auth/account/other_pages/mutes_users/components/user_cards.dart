@@ -23,11 +23,14 @@ class UserCards extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: userDocs.length,
-      itemBuilder: (context,i) {
-        return UserCard(userDoc: userDocs[i],mainModel: mainModel,mutesUsersModel: mutesUsersModel,);
-      }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: userDocs.length,
+        itemBuilder: (context,i) {
+          return UserCard(userDoc: userDocs[i],mainModel: mainModel,mutesUsersModel: mutesUsersModel,);
+        }
+      ),
     );
   }
 }
