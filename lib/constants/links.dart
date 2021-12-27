@@ -1,1 +1,1 @@
-const openSeaLink = 'https://opensea.io/whisper_creator';
+const openSeaLink = 'https://opensea.io/whisper_sns_official';
