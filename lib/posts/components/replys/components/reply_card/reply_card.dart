@@ -40,7 +40,7 @@ class ReplyCard extends ConsumerWidget {
       overflow: TextOverflow.ellipsis
     );
     // 
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(reply['replyId']) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, blocksIpv6s: mainModel.blocksIpv6s, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(reply['replyId']) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),

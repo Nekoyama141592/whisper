@@ -61,8 +61,8 @@ class PostSearchModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesPostIds}) {
-    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, map: map) && !mutesPostIds.contains(map['postId']);
+  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds}) {
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: map) && !mutesPostIds.contains(map['postId']);
   }
 
   Future initAudioPlayer(int i) async {
@@ -113,7 +113,7 @@ class PostSearchModel extends ChangeNotifier{
     await resetAudioPlayer(i);
   }
 
-  Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s}) async {
+  Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required blocksIpv6s}) async {
     results = [];
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
@@ -121,7 +121,7 @@ class PostSearchModel extends ChangeNotifier{
     hits.sort((a,b) => b.data['likes'].length.compareTo(a.data['likes'].length));
     hits.forEach((hit) {
       final Map<String,dynamic> map = hit.data;
-      if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, mutesPostIds: mutesPostIds) ) {
+      if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds) ) {
         results.add(map);
         Uri song = Uri.parse(map['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: map);
@@ -134,9 +134,9 @@ class PostSearchModel extends ChangeNotifier{
     }
   }
 
-  Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s}) async {
+  Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
     startLoading();
-    await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s);
+    await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s,);
     listenForStates();
     endLoading();
   }

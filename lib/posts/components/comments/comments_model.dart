@@ -148,7 +148,7 @@ class CommentsModel extends ChangeNotifier {
         mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
         mutesUids.add(mutesIpv6AndUid['uid']);
       });
-      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
+      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
         await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
       }
     }

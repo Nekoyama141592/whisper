@@ -90,7 +90,7 @@ class FeedsModel extends ChangeNotifier {
   }
 
   bool isValidReadPost({ required DocumentSnapshot doc}) {
-    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s,map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
   }
 
   Future initAudioPlayer(int i) async {
