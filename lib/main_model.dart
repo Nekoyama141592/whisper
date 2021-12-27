@@ -28,12 +28,12 @@ class MainModel extends ChangeNotifier {
   List<dynamic> likes = [];
   List<dynamic> readPosts = [];
   List<dynamic> readPostIds = [];
-  List<dynamic> commentNotifications = [];
-  List<String> readNotificationsIds = [];
-  List<dynamic> replyNotifications = [];
-  List<String> notificationIds = [];
+  List<String> readNotificationIds = [];
   List<dynamic> likedReplys = [];
   List<dynamic> likedReplyIds = [];
+  // notifications
+  List<dynamic> commentNotifications = [];
+  List<dynamic> replyNotifications = [];
   // mutes 
   List<dynamic> mutesUids = [];
   List<dynamic> mutesIpv6s = [];
@@ -46,8 +46,6 @@ class MainModel extends ChangeNotifier {
   List<dynamic> blocksIpv6s = [];
   List<dynamic> blocksIpv6AndUids = [];
 
-  bool newNotificationExists = false;
-
   MainModel() {
     init();
   }
@@ -55,6 +53,7 @@ class MainModel extends ChangeNotifier {
   void init() async {
     startLoading();
     await setCurrentUser();
+    await getReadNotificationIds();
     getLikedPostIds();
     getLikesReplys();
     getBookmarkedPostIds();
@@ -63,8 +62,6 @@ class MainModel extends ChangeNotifier {
     getReadPost();
     setMutes();
     getBlocks();
-    await getReadNotificationIds();
-    setNotificationIds();
     endLoading();
   }
 
@@ -151,28 +148,11 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  void setNotificationIds() {
-    replyNotifications = currentUserDoc['replyNotifications'];
-    replyNotifications.forEach((replyNotification) {
-      final notificationId = replyNotification['notificationId'];
-      if (!readNotificationsIds.contains(notificationId)) {
-        newNotificationExists = true;
-      }
-      notificationIds.add(notificationId);
-    });
-    commentNotifications = currentUserDoc['commentNotifications'];
-    commentNotifications.forEach((commentNotification) {
-      final notificationId = commentNotification['notificationId'];
-      if (!readNotificationsIds.contains(notificationId)) {
-        newNotificationExists = true;
-      }
-      notificationIds.add(notificationId);
-    });
-  }
-
   Future<void> getReadNotificationIds() async {
     prefs = await SharedPreferences.getInstance();
-    readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
+    readNotificationIds = prefs.getStringList('readNotificationIds') ?? [];
+    commentNotifications = currentUserDoc['commentNotifications'];
+    replyNotifications = currentUserDoc['replyNotifications'];
   }
 
   void getLikesReplys() {
@@ -182,7 +162,7 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  Future regetCurrentUserDoc(String currentUserDocId) async {
+  Future<void> regetCurrentUserDoc(String currentUserDocId) async {
     currentUserDoc =  await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDocId)
@@ -190,6 +170,17 @@ class MainModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> addNotificationIdToReadNotificationIds({ required Map<String,dynamic> notification}) async {
+    final String notificationId = notification['notificationId'];
+    readNotificationIds.add(notificationId);
+    notifyListeners();
+    await prefs.setStringList('readNotificationIds', readNotificationIds);
+  }
 
+  Future<void> regetNotifications() async {
+    await regetCurrentUserDoc(currentUser!.uid);
+    commentNotifications = currentUserDoc['commentNotifications'];
+    replyNotifications = currentUserDoc['replyNotifications'];
+  }
   
 }

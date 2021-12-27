@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/colors.dart';
-import 'package:whisper/constants/routes.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
@@ -15,20 +16,11 @@ class NotificationIcon extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.bookmarkedPostIds,
-    required this.likedPostIds,
-    required this.replyNotifications,
-    required this.currentUserDoc,
-    required this.readNotificationIds
   }) : super(key: key);
 
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List replyNotifications;
-  final DocumentSnapshot currentUserDoc;
-  final List<String> readNotificationIds;
+
   @override  
   Widget build(BuildContext context) {
     return 
@@ -36,17 +28,9 @@ class NotificationIcon extends StatelessWidget {
       padding: EdgeInsets.all(20.0),
       child: InkWell(
         onTap: () {
-          toNotificationsPage(
-            context, 
-            mainModel,
-            themeModel,
-            bookmarkedPostIds, 
-            likedPostIds,
-            replyNotifications,
-            currentUserDoc,
-          );
+          routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel);
         },
-        child: mainModel.newNotificationExists ?
+        child: newNotificationExists(readNotificationIds: mainModel.readNotificationIds, currentUserDoc: mainModel.currentUserDoc) ?
         Stack(
           children: [
             Icon(Icons.notifications),

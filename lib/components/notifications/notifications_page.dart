@@ -19,18 +19,10 @@ class NotificationsPage extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.bookmarkedPostIds,
-    required this.replyNotifications,
-    required this.likedPostIds,
-    required this.currentUserDoc
   });
 
   final MainModel mainModel;
-  final List bookmarkedPostIds;
-  final List likedPostIds;
-  final List replyNotifications;
   final ThemeModel themeModel;
-  final DocumentSnapshot currentUserDoc;
 
   @override  
   Widget build(BuildContext context) {
@@ -65,8 +57,8 @@ class NotificationsPage extends StatelessWidget {
         drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: TabBarView(
           children: [
-            CommentNotifications(currentUserDoc: currentUserDoc,mainModel: mainModel,),
-            ReplyNotifications(replyNotifications: replyNotifications,mainModel: mainModel,),
+            CommentNotifications(currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel,),
+            ReplyNotifications(replyNotifications: mainModel.replyNotifications, mainModel: mainModel,),
             OfficialNotifications(),
           ]
         ),

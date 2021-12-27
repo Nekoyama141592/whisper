@@ -15,3 +15,22 @@ bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic
   final String myUid = currentUserDoc['uid'];
   return ( !mutesUids.contains(myUid) && blocksUids.contains(myUid) && passiveBlocksUids.contains(myUid) );
 }
+
+bool newNotificationExists({ required List<dynamic> readNotificationIds, required DocumentSnapshot currentUserDoc }) {
+  List<dynamic> replyNotifications = currentUserDoc['replyNotifications'];
+  bool x = false;
+  replyNotifications.forEach((replyNotification) {
+    final notificationId = replyNotification['notificationId'];
+    if (!readNotificationIds.contains(notificationId)) {
+      x = true;
+    }
+  });
+  List<dynamic> commentNotifications = currentUserDoc['commentNotifications'];
+  commentNotifications.forEach((commentNotification) {
+    final notificationId = commentNotification['notificationId'];
+    if (!readNotificationIds.contains(notificationId)) {
+      x = true;
+    }
+  });
+  return x;
+}

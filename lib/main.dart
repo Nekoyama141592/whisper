@@ -92,7 +92,7 @@ class MyHomePage extends ConsumerWidget {
             replyNotifications: replyNotifications,
             readPostIds: readPostIds,
             readPosts: mainModel.readPosts,
-            readNotificationIds: mainModel.readNotificationsIds
+            readNotificationIds: mainModel.readNotificationIds
           ),
           SearchPage(
             mainModel: mainModel,
@@ -100,7 +100,6 @@ class MyHomePage extends ConsumerWidget {
           ),
           WhichType(currentUserDoc: mainModel.currentUserDoc),
           BookmarksPage(mainModel: mainModel),
-          // UserShowPage(passiveUserDoc: mainModel.currentUserDoc, mainModel: mainModel)
           MyProfilePage(mainModel: mainModel)
         ],
       ),

@@ -89,8 +89,8 @@ void toAccountPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(mainModel: mainModel,)));
 }
 
-void toNotificationsPage(context,MainModel mainModel,ThemeModel themeModel,List<dynamic> bookmarkedPostIds,List<dynamic> likedPostIds,List<dynamic> replyNotifications,DocumentSnapshot currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel, bookmarkedPostIds: bookmarkedPostIds, likedPostIds: likedPostIds,replyNotifications: replyNotifications,currentUserDoc: currentUserDoc) ));
+void toNotificationsPage({ required BuildContext context, required MainModel mainModel, required ThemeModel themeModel}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel) ));
 }
 
 void toAddPostPage (context,AddPostModel addPostModel,DocumentSnapshot currentUserDoc) {
