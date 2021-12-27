@@ -58,7 +58,7 @@
         'likesCount': int,
         'link': String,
         'noDisplayWords': list,
-        'noDisplayUids': list,
+        'noDisplayIpv6AndUids': list,
         'negativeScore': int,
         'otherLinks': List<Map<String,dynamic> {
             'description': String,
@@ -100,7 +100,7 @@
     }
     'users'{
         'birthDay': TimeStamp,
-        'blockingIpv6AndUids': List<Map<String,dynamic> {
+        'blocksIpv6AndUids': List<Map<String,dynamic> {
             'uid': String,
             'ipv6': String,
         }>, // unUsed
