@@ -227,5 +227,6 @@
     'officialAdsenses' {
         'title': String,
         'subTitle': String,
+        'createdAt': TimeStamp,
     }
 }

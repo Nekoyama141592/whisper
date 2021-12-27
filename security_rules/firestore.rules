@@ -148,7 +148,7 @@ service cloud.firestore {
     && 'userName' in nftOwner && nftOwner.name is string
     && 'number' in nftOwner && nftOwner.number is int
     && 'uid' in nftOwner && nftOwner.uid is string
-    && '10000usdPrice' in nftOwner && nftOwner.usdPrice is 
+    && '10000usdPrice' in nftOwner && nftOwner.usdPrice is int
     && 'userImageURL' in nftOwner && nftOwner.userImageURL is string;
   }
 

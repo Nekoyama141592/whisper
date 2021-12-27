@@ -14,6 +14,9 @@ class NFTownerCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
+    final int x = map['10000ethPrice'];
+    final double doubleX = x.toDouble()/10000;
+    
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,7 +46,7 @@ class NFTownerCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        map['10000ethPrice'].toDouble()/10000.toString() + 'ETH',
+                        doubleX.toString() + "ETH",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 5.0),
