@@ -120,7 +120,7 @@ class PostSearchModel extends ChangeNotifier{
     List<AlgoliaObjectSnapshot> hits = querySnap.hits;
     hits.sort((a,b) => b.data['likes'].length.compareTo(a.data['likes'].length));
     hits.forEach((hit) {
-      final map = hit.data;
+      final Map<String,dynamic> map = hit.data;
       if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, mutesPostIds: mutesPostIds) ) {
         results.add(map);
         Uri song = Uri.parse(map['audioURL']);
@@ -351,4 +351,5 @@ class PostSearchModel extends ChangeNotifier{
       }
     }
   }
+
 }
