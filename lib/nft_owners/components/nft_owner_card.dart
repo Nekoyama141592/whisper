@@ -43,7 +43,7 @@ class NFTownerCard extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        map['ethPrice'].toString() + 'ETH',
+                        map['10000ethPrice'].toDouble()/10000.toString() + 'ETH',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 5.0),

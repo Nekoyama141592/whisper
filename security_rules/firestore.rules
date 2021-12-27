@@ -142,12 +142,13 @@ service cloud.firestore {
 
   function isValidNFTowners(nftOwner) {
     return 
-    nftOwner.size() == 6
-    && 'ethPrice' in nftOwner && nftOwner.ethPrice is int
+    nftOwner.size() == 7
+    && '10000ethPrice' in nftOwner && nftOwner.ethPrice is int
     && 'link' in nftOwner && nftOwner.link is string
     && 'userName' in nftOwner && nftOwner.name is string
     && 'number' in nftOwner && nftOwner.number is int
     && 'uid' in nftOwner && nftOwner.uid is string
+    && '10000usdPrice' in nftOwner && nftOwner.usdPrice is 
     && 'userImageURL' in nftOwner && nftOwner.userImageURL is string;
   }
 
