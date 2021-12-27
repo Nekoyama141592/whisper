@@ -80,7 +80,7 @@ class MainModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future setCurrentUser() async {
+  Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
     try{
       currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();

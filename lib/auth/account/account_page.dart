@@ -101,7 +101,7 @@ class AccountPage extends ConsumerWidget {
                       isDestructiveAction: true,
                       onPressed: () {
                         Navigator.pop(context);
-                        routes.toBlockingUsersPage(context, mainModel);
+                        routes.toBlocksUsersPage(context, mainModel);
                       },
                     )
                   ],

@@ -23,7 +23,7 @@ import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
-import 'package:whisper/auth/account/other_pages/blocking_users/blocking_users_page.dart';
+import 'package:whisper/auth/account/other_pages/blocks_users/blocks_users_page.dart';
 import 'package:whisper/auth/is_finished/is_finished_page.dart';
 import 'package:whisper/important_matters/other_pages/compliance_page.dart';
 import 'package:whisper/important_matters/other_pages/privacy_page.dart';
@@ -105,8 +105,8 @@ void toCommentsPage(context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dyn
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, currentSongMap: currentSongMapNotifier.value, mainModel: mainModel) ));
 }
 
-void toBlockingUsersPage(context, MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BlockingUsersPage(mainModel: mainModel,) ));
+void toBlocksUsersPage(context, MainModel mainModel) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => BlocksUsersPage(mainModel: mainModel,) ));
 }
 
 void toMutesUsersPage(context,MainModel mainModel) {

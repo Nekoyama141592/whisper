@@ -39,10 +39,10 @@ class UserCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['userImageURL']),
+              leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['imageURL']),
               title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
               onTap: () async {
-                mutesUsersModel.unMuteUser(mainModel.mutesUids, userDoc['uid'],mainModel.currentUserDoc,mainModel.mutesIpv6AndUids);
+                await mutesUsersModel.unMuteUser(passiveUid: userDoc['uid'], mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids);
               },
               subtitle: Text(
                 userDoc['description'],

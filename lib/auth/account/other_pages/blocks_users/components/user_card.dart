@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/auth/account/other_pages/blocking_users/blocking_users_model.dart';
+import 'package:whisper/auth/account/other_pages/blocks_users/blocks_users_model.dart';
 
 class UserCard extends StatelessWidget {
 
@@ -14,12 +14,12 @@ class UserCard extends StatelessWidget {
     Key? key,
     required this.userDoc,
     required this.mainModel,
-    required this.blockingUsersModel
+    required this.blocksUsersModel
   }) : super(key: key);
 
   final DocumentSnapshot userDoc;
   final MainModel mainModel;
-  final BlockingUsersModel blockingUsersModel;
+  final BlocksUsersModel blocksUsersModel;
 
   @override 
   Widget build(BuildContext context) {
@@ -38,10 +38,10 @@ class UserCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['userImageURL']),
+              leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['imageURL']),
               title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
               onTap: () async {
-                await blockingUsersModel.unBlockUser(userDoc['uid'], mainModel.blocksUids, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids);
+                await blocksUsersModel.unBlockUser(passiveUid: userDoc['uid'], blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids);
               },
               subtitle: Text(
                 userDoc['description'],

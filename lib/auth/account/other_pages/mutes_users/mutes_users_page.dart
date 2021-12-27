@@ -25,13 +25,15 @@ class MutesUsersPage extends ConsumerWidget {
     final mutesUsersModel = watch(mutesUsersProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('MutingUsers'),
+        title: Text('ミュートしているユーザー'),
       ),
       body: mutesUsersModel.isLoading ?
       Loading()
       : JudgeScreen(
         list: mutesUsersModel.mutesUserDocs,
-        reload: () async { mainModel.setCurrentUser(); },
+        reload: () async {
+          await mutesUsersModel.getMutesUserDocs(mutesUids: mainModel.mutesUids);
+        },
         content: UserCards(userDocs: mutesUsersModel.mutesUserDocs,mainModel: mainModel,mutesUsersModel: mutesUsersModel,)
       )
     );
