@@ -1,5 +1,5 @@
 // material
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,4 +44,26 @@ Future signOut(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
   Navigator.pop(context);
   routes.toIsFinishedPage(context: context, title: 'ログアウトしました', text: 'お疲れ様でした');
+}
+
+void showCupertinoDialogue({required BuildContext context, required String title, required String content, required void Function()? action}) {
+  showCupertinoDialog(context: context, builder: (context) {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        CupertinoDialogAction(
+          child: const Text('Cancel'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        CupertinoDialogAction(
+          child: const Text('OK'),
+          isDestructiveAction: true,
+          onPressed: action,
+        )
+      ],
+    );
+  });
 }

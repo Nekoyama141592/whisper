@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 
 final blocksUsersProvider = ChangeNotifierProvider(
   (ref) => BlocksUsersModel()
@@ -65,11 +67,7 @@ class BlocksUsersModel extends ChangeNotifier {
     // back
     blocksIpv6AndUids.removeWhere((blocksIpv6AndUid) => blocksIpv6AndUid['uid'] == passiveUid);
     blocksUids.remove(passiveUid);
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'blocksUids': blocksUids,
-      'blocksIpv6AndUids': blocksIpv6AndUids,
-    });
+    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
 

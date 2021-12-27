@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 
 final mutesUsersProvider = ChangeNotifierProvider(
   (ref) => MutesUsersModel()
@@ -65,11 +67,7 @@ class MutesUsersModel extends ChangeNotifier {
     // back
     mutesIpv6AndUids.removeWhere((mutesIpv6AndUid) => mutesIpv6AndUid['uid'] == passiveUid);
     mutesUids.remove(passiveUid);
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'mutesUids': mutesUids,
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    });
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
 }

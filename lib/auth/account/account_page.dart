@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'account_model.dart';
@@ -57,27 +59,10 @@ class AccountPage extends ConsumerWidget {
             title: Text('ミュートしているユーザー'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              showCupertinoDialog(context: context, builder: (context) {
-                return CupertinoAlertDialog(
-                  title: Text('注意'),
-                  content: Text('ミュートしているユーザーが表示されます。'),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: const Text('Cancel'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: const Text('Ok'),
-                      isDestructiveAction: true,
-                      onPressed: () {
-                        Navigator.pop(context);
-                        routes.toMutesUsersPage(context, mainModel);
-                      },
-                    )
-                  ],
-                );
+              voids.showCupertinoDialogue(context: context, title: '注意', content: 'ミュートしているユーザーが表示されます', action: () async {
+                Navigator.pop(context);
+                await Future.delayed(Duration(milliseconds: dialogueMilliSeconds));
+                routes.toMutesUsersPage(context, mainModel);
               });
             },
           ),

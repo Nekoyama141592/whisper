@@ -5,3 +5,4 @@ const int bookmarkScore = 300;
 // const int officialAdsenseDisplaySeconds = 10;
 const int topFlashDisplaySeconds = 4;
 const int commentScrollFlashBarConstantCount = 2;
+const int dialogueMilliSeconds = 500;

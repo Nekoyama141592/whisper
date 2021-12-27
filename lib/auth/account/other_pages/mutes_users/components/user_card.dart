@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/user_image.dart';
+// constants
+import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_model.dart';
@@ -41,8 +44,12 @@ class UserCard extends StatelessWidget {
             ListTile(
               leading: UserImage(padding: 0.0, length: 50.9, userImageURL: userDoc['imageURL']),
               title: Text(userDoc['userName'],overflow: TextOverflow.ellipsis,),
-              onTap: () async {
-                await mutesUsersModel.unMuteUser(passiveUid: userDoc['uid'], mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids);
+              onTap: () {
+                voids.showCupertinoDialogue(context: context, title: 'ミュート解除', content: 'このユーザーのミュートを解除しますか？', action: () async {
+                  Navigator.pop(context);
+                  await Future.delayed(Duration(milliseconds: dialogueMilliSeconds));
+                  await await mutesUsersModel.unMuteUser(passiveUid: userDoc['uid'], mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids);
+                });
               },
               subtitle: Text(
                 userDoc['description'],
