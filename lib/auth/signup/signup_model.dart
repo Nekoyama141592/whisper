@@ -153,6 +153,7 @@ class SignupModel extends ChangeNotifier {
     .doc(uid)
     .set({
       'birthDay': timestampBirthDay,
+      'browsingHistory': [],
       'blocksIpv6AndUids': [],
       'bookmarks': [],
       'bookmarkLabels': [],

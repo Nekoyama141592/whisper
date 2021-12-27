@@ -100,6 +100,7 @@
     }
     'users'{
         'birthDay': TimeStamp,
+        'browsingHistory': list,
         'blocksIpv6AndUids': List<Map<String,dynamic> {
             'uid': String,
             'ipv6': String,
