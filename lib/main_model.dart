@@ -56,17 +56,15 @@ class MainModel extends ChangeNotifier {
     startLoading();
     await setCurrentUser();
     getLikedPostIds();
+    getLikesReplys();
     getBookmarkedPostIds();
     getFollowingUids();
     getLikedCommentIds();
     getReadPost();
-    await getReadNotificationIds();
     setMutes();
-    getReplyNotifications();
-    setNotificationIds();
     getBlocks();
-    getLikesReplys();
-    getLikedReplyDocIds();
+    await getReadNotificationIds();
+    setNotificationIds();
     endLoading();
   }
 
@@ -134,15 +132,6 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  void setCommentNotifications() {
-    commentNotifications = currentUserDoc['commentNotifications'];
-  }
-
-  Future getReadNotificationIds() async {
-    prefs = await SharedPreferences.getInstance();
-    readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
-  }
-
   void setMutes() {
     mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
     mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
@@ -154,10 +143,6 @@ class MainModel extends ChangeNotifier {
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
   }
 
-  void getReplyNotifications() {
-    replyNotifications = currentUserDoc['replyNotifications'];
-  }
-
   void getBlocks() {
     blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
@@ -167,6 +152,7 @@ class MainModel extends ChangeNotifier {
   }
 
   void setNotificationIds() {
+    replyNotifications = currentUserDoc['replyNotifications'];
     replyNotifications.forEach((replyNotification) {
       final notificationId = replyNotification['notificationId'];
       if (!readNotificationsIds.contains(notificationId)) {
@@ -174,6 +160,7 @@ class MainModel extends ChangeNotifier {
       }
       notificationIds.add(notificationId);
     });
+    commentNotifications = currentUserDoc['commentNotifications'];
     commentNotifications.forEach((commentNotification) {
       final notificationId = commentNotification['notificationId'];
       if (!readNotificationsIds.contains(notificationId)) {
@@ -183,15 +170,18 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  void getLikesReplys() {
-    likedReplys = currentUserDoc['likedReplys'];
+  Future<void> getReadNotificationIds() async {
+    prefs = await SharedPreferences.getInstance();
+    readNotificationsIds = prefs.getStringList('readNotificationIds') ?? [];
   }
 
-  void getLikedReplyDocIds() {
+  void getLikesReplys() {
+    likedReplys = currentUserDoc['likedReplys'];
     likedReplys.forEach((likesReply) {
       likedReplyIds.add(likesReply['likedReplyId']);
     });
   }
+
   Future regetCurrentUserDoc(String currentUserDocId) async {
     currentUserDoc =  await FirebaseFirestore.instance
     .collection('users')
