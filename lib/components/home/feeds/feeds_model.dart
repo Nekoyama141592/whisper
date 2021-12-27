@@ -229,6 +229,7 @@ class FeedsModel extends ChangeNotifier {
       docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
       if (docs.isNotEmpty) {
         docs.forEach((DocumentSnapshot doc) {
+          print(isValidReadPost(doc: doc));
           if ( isValidReadPost(doc: doc) ) {
             feedDocs.add(doc);
             Uri song = Uri.parse(doc['audioURL']);

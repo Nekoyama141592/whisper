@@ -37,7 +37,7 @@ class RecommendersPage extends ConsumerWidget {
       list: recommendersModel.recommenderDocs,
       reload: () async {
         recommendersModel.startLoading();
-        recommendersModel.getRecommenders();
+        await recommendersModel.getRecommenders();
         recommendersModel.endLoading();
       },
       content: PostCards(
