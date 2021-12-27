@@ -225,8 +225,10 @@
         'updatedAt': TimeStamp,
     }
     'officialAdsenses' {
+        'displaySeconds': int,
         'title': String,
         'subTitle': String,
+        'intervalSeconds': int,
         'createdAt': TimeStamp,
     }
 }

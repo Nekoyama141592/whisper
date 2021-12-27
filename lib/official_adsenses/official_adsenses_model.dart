@@ -25,24 +25,24 @@ class OfficialAdsensesModel extends ChangeNotifier {
   Future<void> onPlayButtonPressed(BuildContext context) async {
     if (!isPlayed) {
       isPlayed = true;
-      await FirebaseFirestore.instance.collection('officialAdsenses').limit(oneTimeReadCount).get().then((qshot) {
+      await FirebaseFirestore.instance.collection('officialAdsenses').orderBy('createdAt',descending: false).limit(oneTimeReadCount).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdsenseDocs.add(doc); } );
       });
       if (officialAdsenseDocs.isNotEmpty) {
-        Timer.periodic(Duration(seconds: officialAdsenseIntervalSeconds), (_) async {
+        Timer.periodic(Duration(seconds: officialAdsenseDocs.first['intervalSeconds']), (_) async {
           randIndex = rand.nextInt(officialAdsenseDocs.length);
           final result = officialAdsenseDocs[randIndex];
-          showTopFlash(context, result, margin: EdgeInsets.all(8.0));
+          showTopFlash(context: context, result: result, firstAdsense: officialAdsenseDocs.first,margin: EdgeInsets.all(8.0));
         });
       }
     }
   }
 
-  void showTopFlash(BuildContext context, DocumentSnapshot<Map<String,dynamic>> result,{ bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
+  void showTopFlash({ required BuildContext context, required DocumentSnapshot<Map<String,dynamic>> result, required DocumentSnapshot<Map<String,dynamic>> firstAdsense,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
     showFlash(
       context: context, 
       persistent: persistent,
-      duration: Duration(seconds: officialAdsenseDisplaySeconds),
+      duration: Duration(seconds: firstAdsense['displaySeconds']),
       builder: (_, controller) {
         return Flash(
           controller: controller, 
