@@ -393,7 +393,7 @@ class AddPostModel extends ChangeNotifier {
           'link': link,
           'negativeScore': 0,
           'noDisplayWords': currentUserDoc['noDisplayWords'],
-          'noDisplayUids': currentUserDoc['blockingUids'],
+          'noDisplayIpv6AndUids': currentUserDoc['blocksIpv6AndUids'],
           'otherLinks': [],
           'postId': postId,
           'positiveScore': 0,
