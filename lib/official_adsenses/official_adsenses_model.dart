@@ -58,7 +58,10 @@ class OfficialAdsensesModel extends ChangeNotifier {
           onTap: () async {
             final String link = result['link'];
             await controller.dismiss();
-            await FlutterClipboard.copy(link);
+            await FlutterClipboard.copy(link).then((_) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リンクをコピーしました')));
+            });
+            await Future.delayed(Duration(milliseconds: 500));
             if (await canLaunch(link)) {
               await launch(link);
             } else {

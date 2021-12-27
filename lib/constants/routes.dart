@@ -67,11 +67,11 @@ void toVerifyPasswordResetPage(context) {
 void toUpdateEmailPage(context,User? currentUser) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateEmailPage(currentUser: currentUser,)));
 }
-void toUpdatePassword(context,User? currentUser) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordPage(currentUser: currentUser,)));
+void toUpdatePassword({ required BuildContext context,required User? currentUser}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordPage(currentUser: currentUser )));
 }
-void toReauthenticationPage(context,User? currentUser,AccountModel accountModel,DocumentSnapshot currentUserDoc) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,currentUserDoc: currentUserDoc,)));
+void toReauthenticationPage({required context, required User? currentUser, required AccountModel accountModel, required MainModel mainModel }) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,mainModel: mainModel,)));
 }
 
 void toBookmarksPage(context,MainModel mainModel) {

@@ -34,7 +34,7 @@ class AccountPage extends ConsumerWidget {
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               accountModel.whichState = WhichState.updateEmail;
-              routes.toReauthenticationPage(context, accountModel.currentUser, accountModel,mainModel.currentUserDoc);
+              routes.toReauthenticationPage(context: context, currentUser: accountModel.currentUser, accountModel: accountModel, mainModel: mainModel);
             },
           ),
           ListTile(
@@ -42,7 +42,7 @@ class AccountPage extends ConsumerWidget {
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               accountModel.whichState = WhichState.updatePassword;
-              routes.toReauthenticationPage(context, accountModel.currentUser,accountModel,mainModel.currentUserDoc);
+              routes.toReauthenticationPage(context: context, currentUser: accountModel.currentUser, accountModel: accountModel, mainModel: mainModel);
             },
           ),
            ListTile(
@@ -50,7 +50,7 @@ class AccountPage extends ConsumerWidget {
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               accountModel.whichState = WhichState.deleteUser;
-              routes.toReauthenticationPage(context, accountModel.currentUser, accountModel,mainModel.currentUserDoc);
+              routes.toReauthenticationPage(context: context, currentUser: accountModel.currentUser, accountModel: accountModel, mainModel: mainModel);
             },
           ),
           ListTile(

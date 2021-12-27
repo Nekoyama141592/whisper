@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
 final signupProvider = ChangeNotifierProvider(
@@ -124,23 +125,27 @@ class SignupModel extends ChangeNotifier {
   }
 
   Future signup(BuildContext context) async {
-    try{
-      UserCredential result = await FirebaseAuth.instance
-      .createUserWithEmailAndPassword(
-        email: email, 
-        password: password,
-      );
-      User? user = result.user;
-      addUserToFireStore(user!.uid);
-      routes.toVerifyPage(context);
-    } on FirebaseAuthException catch(e) {
-      print(e.code);
-      if (e.code == 'weak-password') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが弱いです')));
-      } else if (e.code == 'email-already-in-use') {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスはすでに使われています')));
-      } else {
-        print(e.toString());
+    if (commonPasswords.contains(password)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ありふれたパスワードです。変更してください')));
+    } else {
+      try{
+        UserCredential result = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+          email: email, 
+          password: password,
+        );
+        User? user = result.user;
+        await addUserToFireStore(user!.uid);
+        routes.toVerifyPage(context);
+      } on FirebaseAuthException catch(e) {
+        print(e.code);
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが弱いです')));
+        } else if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスはすでに使われています')));
+        } else {
+          print(e.toString());
+        }
       }
     }
   }

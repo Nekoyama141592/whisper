@@ -10,12 +10,13 @@ import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 // model
 import 'update_password_model.dart';
+import 'package:whisper/main_model.dart';
 
 class UpdatePasswordPage extends ConsumerWidget {
 
   const UpdatePasswordPage({
     Key? key,
-    required this.currentUser
+    required this.currentUser,
   }) : super(key: key);
 
   final User? currentUser;
@@ -65,7 +66,7 @@ class UpdatePasswordPage extends ConsumerWidget {
               verticalPadding: 20.0,
               horizontalPadding: 10.0,
               press:  () async {
-                await _updatePasswordModel.onUpdateButtonPressed(context);
+                await _updatePasswordModel.onUpdateButtonPressed(context: context);
               }, 
               textColor: Colors.white, 
               buttonColor: kSecondaryColor

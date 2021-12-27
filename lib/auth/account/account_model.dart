@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+// models
+import 'package:whisper/main_model.dart';
 
 final accountProvider = ChangeNotifierProvider(
   (ref) => AccountModel()
@@ -35,7 +37,7 @@ class AccountModel extends ChangeNotifier {
   WhichState whichState = WhichState.initialValue;
   String password = '';
   
-  Future reauthenticateWithCredential (BuildContext context,User? currentUser,DocumentSnapshot currentUserDoc)  async {
+  Future reauthenticateWithCredential ({required BuildContext context,required User? currentUser,required MainModel mainModel})  async {
     
     currentUser = FirebaseAuth.instance.currentUser;
     final String email = currentUser!.email!;
@@ -47,13 +49,13 @@ class AccountModel extends ChangeNotifier {
         case WhichState.initialValue:
         break;
         case WhichState.updatePassword:
-          routes.toUpdatePassword(context, currentUser);
+          routes.toUpdatePassword(context: context, currentUser: currentUser );
         break;
         case WhichState.updateEmail:
           routes.toUpdateEmailPage(context, currentUser);
         break;
         case WhichState.deleteUser:
-          showDeleteUserDialog(context, currentUserDoc);
+          showDeleteUserDialog(context, mainModel.currentUserDoc);
         break;
       }
     } on FirebaseAuthException catch(e) {
