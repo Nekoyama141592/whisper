@@ -157,6 +157,7 @@ class SignupModel extends ChangeNotifier {
     .collection('users')
     .doc(uid)
     .set({
+      'authNotifications': [],
       'birthDay': timestampBirthDay,
       'browsingHistory': [],
       'blocksIpv6AndUids': [],

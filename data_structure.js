@@ -99,6 +99,9 @@
         'userImageURL': String,
     }
     'users'{
+        'authNotifications': List<String,dynamic> {
+            
+        },
         'birthDay': TimeStamp,
         'browsingHistory': list,
         'blocksIpv6AndUids': List<Map<String,dynamic> {
