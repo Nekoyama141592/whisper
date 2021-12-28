@@ -1,8 +1,6 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-
-// models
+// model
 import 'package:whisper/main_model.dart';
 
 
@@ -21,16 +19,14 @@ class CommentButton extends StatelessWidget {
 
   @override  
   Widget build(BuildContext context) {
-        return Row(
-          children: [
-            InkWell(
-              child: Icon(Icons.comment),
-              onTap: toCommentsPage,
-            ),
-            SizedBox(width: 5.0),
-            
-          ],
-        );
-    
+    return Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.comment),
+          onTap: toCommentsPage,
+        ),
+        SizedBox(width: 5.0),  
+      ],
+    );
   }
 }
