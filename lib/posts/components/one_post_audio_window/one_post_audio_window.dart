@@ -21,7 +21,7 @@ class OnePostAudioWindow extends StatelessWidget {
     required this.pause,
     required this.title,
     required this.currentUserDoc,
-    required this.onTap
+    required this.route
   }) : super(key: key);
   
   final ProgressNotifier progressNotifier;
@@ -31,7 +31,7 @@ class OnePostAudioWindow extends StatelessWidget {
   final void Function()? pause;
   final Widget title;
   final DocumentSnapshot currentUserDoc;
-  final void Function()? onTap;
+  final void Function()? route;
 
   Widget build(BuildContext context) {
     
@@ -42,7 +42,7 @@ class OnePostAudioWindow extends StatelessWidget {
     return Container(
       height: audioWindowHeight,
       child: InkWell(
-        onTap: onTap,
+        onTap: route,
         child: Column(
           children: [
             AudioProgressBar(progressNotifier: progressNotifier, seek: seek),

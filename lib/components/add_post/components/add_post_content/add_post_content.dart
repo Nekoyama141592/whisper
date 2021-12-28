@@ -39,7 +39,7 @@ class AddPostContent extends StatelessWidget {
     );
     final size = MediaQuery.of(context).size;
     final Widget onePostAudioWindow = OnePostAudioWindow(
-      onTap: null,
+      route: null,
       progressNotifier: addPostModel.progressNotifier, 
       playButtonNotifier: addPostModel.playButtonNotifier, 
       seek: addPostModel.seek, 

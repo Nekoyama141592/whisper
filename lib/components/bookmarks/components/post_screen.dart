@@ -33,6 +33,7 @@ class PostScreen extends ConsumerWidget {
     final commentsModel = watch(commentsProvider);
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final postDocs = bookmarksModel.bookmarkedDocs;
+    
     return GradientScreen(
       top: SizedBox.shrink(), 
       header: Padding(
