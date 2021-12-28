@@ -6,18 +6,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
-// model
-import 'package:whisper/components/add_post/add_post_model.dart';
+// notifiers
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 
-class AudioWindow extends StatelessWidget {
+class OnePostAudioWindow extends StatelessWidget {
   
-  const AudioWindow({
+  const OnePostAudioWindow({
     Key? key,
-    required this.addPostModel,
+    required this.progressNotifier,
+    required this.playButtonNotifier,
+    required this.seek,
+    required this.play,
+    required this.pause,
+    required this.title,
     required this.currentUserDoc,
   }) : super(key: key);
   
-  final AddPostModel addPostModel;
+  final ProgressNotifier progressNotifier;
+  final PlayButtonNotifier playButtonNotifier;
+  final void Function(Duration) seek;
+  final void Function()? play;
+  final void Function()? pause;
+  final Widget title;
   final DocumentSnapshot currentUserDoc;
 
   Widget build(BuildContext context) {
@@ -25,12 +36,6 @@ class AudioWindow extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final audioWindowHeight = size.height * 0.15;
     final fontSize = 20.0;
-    final progressNotifier = addPostModel.progressNotifier;
-    final seek = addPostModel.seek;
-
-    final playButtonNotifier = addPostModel.playButtonNotifier;
-    final play = () { addPostModel.play(); };
-    final pause = () { addPostModel.pause(); };
 
     return Container(
       height: audioWindowHeight,
@@ -57,20 +62,7 @@ class AudioWindow extends StatelessWidget {
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    ValueListenableBuilder<String>(
-                      valueListenable: addPostModel.postTitleNotifier,
-                      builder: (_,postTitle,__) {
-                        return 
-                        Text(
-                          postTitle,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontSize
-                          ),
-                        );
-                      }
-                    )
+                    title
                   ],
                 ),
               ),

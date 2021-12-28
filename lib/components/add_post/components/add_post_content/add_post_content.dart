@@ -9,7 +9,7 @@ import 'package:whisper/components/add_post/components/audio_buttons/record_butt
 import 'package:whisper/components/add_post/components/audio_buttons/retry_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/arrow_forward_button.dart';
 import 'package:whisper/components/add_post/components/add_post_content/components/indicator.dart';
-import 'package:whisper/components/add_post/audio_controll/audio_window.dart';
+import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_window.dart';
 import 'package:whisper/components/add_post/components/add_post_content/components/recording_time.dart';
 // notifier
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
@@ -38,6 +38,28 @@ class AddPostContent extends StatelessWidget {
       )
     );
     final size = MediaQuery.of(context).size;
+    final Widget onePostAudioWindow = OnePostAudioWindow(
+      progressNotifier: addPostModel.progressNotifier, 
+      playButtonNotifier: addPostModel.playButtonNotifier, 
+      seek: addPostModel.seek, 
+      play: () { addPostModel.play(); }, 
+      pause: () { addPostModel.pause(); },
+      title: ValueListenableBuilder<String>(
+        valueListenable: addPostModel.postTitleNotifier,
+        builder: (_,postTitle,__) {
+          return 
+          Text(
+            postTitle,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0
+            ),
+          );
+        }
+      ),
+      currentUserDoc: currentUserDoc
+    );
     return 
     ValueListenableBuilder<AddPostState>(
       valueListenable: addPostModel.addPostStateNotifier,
@@ -112,11 +134,11 @@ class AddPostContent extends StatelessWidget {
                       vertical: 20
                     ),
                   ),
-                  AudioWindow(addPostModel: addPostModel, currentUserDoc: currentUserDoc)
+                  onePostAudioWindow
                 ],
               ): SizedBox(),
               value == AddPostState.uploaded ?
-              AudioWindow(addPostModel: addPostModel, currentUserDoc: currentUserDoc) : SizedBox.shrink()
+              onePostAudioWindow : SizedBox.shrink()
             ],
           ),
         );
