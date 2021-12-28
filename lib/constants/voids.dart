@@ -1,10 +1,14 @@
 // material
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+// models
+import 'package:whisper/main_model.dart';
+import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 
 void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
   final String uid = map['uid'];
@@ -66,4 +70,16 @@ void showCupertinoDialogue({required BuildContext context, required String title
       ],
     );
   });
+}
+
+Future<void> toOneCommentsPageByMap({ required BuildContext context ,required MainModel mainModel , required Map<String,dynamic> notification, required OneCommentModel oneCommentModel, required String giveCommentId}) async {
+  await mainModel.addNotificationIdToReadNotificationIds(notification: notification);
+  // Plaase don`t notification['commentId'].
+  // Please use commentNotification['commentId'], replyNotification['elementId']
+  bool commentExists = await oneCommentModel.init(giveCommentId: giveCommentId);
+  if (commentExists) {
+    routes.toOneCommentPage(context: context, mainModel: mainModel);
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
+  }
 }

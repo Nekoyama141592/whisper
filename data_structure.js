@@ -188,7 +188,6 @@
         'recommendState': 'recommendable',
         'replyNotifications': [{
             'comment': String,
-            'commentId': String,
             'createdAt': TimeStamp,
             'elementId': String,
             'elementState': String,

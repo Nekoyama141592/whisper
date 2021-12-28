@@ -321,7 +321,6 @@ class ReplysModel extends ChangeNotifier {
     final comment = thisComment['comment'];
     Map<String,dynamic> map = {
       'comment': comment,
-      'commentId': thisComment['commentId'],
       'createdAt': Timestamp.now(),
       'elementId': elementId,
       'elementState': elementState,
