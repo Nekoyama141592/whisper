@@ -120,7 +120,7 @@ service cloud.firestore {
   function isValidReply(reply) {
     return 
     reply.size() == 21
-    && 'elementId' in reply && reply.elementId is string
+    && 'elementId' in reply && reply.elementId is string // commentId
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
     && 'followersCount' in reply && reply.followersCount is int

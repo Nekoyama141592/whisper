@@ -30,6 +30,7 @@ import 'package:whisper/important_matters/other_pages/privacy_page.dart';
 import 'package:whisper/important_matters/other_pages/tos_page.dart';
 import 'package:whisper/important_matters/important_matters_page.dart';
 import 'package:whisper/nft_owners/nft_owners_page.dart';
+import 'package:whisper/one_post/one_comment/one_comment_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -137,4 +138,7 @@ void toNFTownersPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => NFTownersPage() ));
 }
 
+void toOneCommentPage ({ required BuildContext context, required MainModel mainModel} ) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => OneCommentPage(mainModel: mainModel,) ));
+}
 

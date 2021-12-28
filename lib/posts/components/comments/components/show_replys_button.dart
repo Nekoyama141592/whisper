@@ -10,13 +10,11 @@ class ShowReplyButton extends StatelessWidget {
   const ShowReplyButton({
     Key? key,
     required this.replysModel,
-    required this.currentSongMap,
     required this.currentUserDoc,
     required this.thisComment
   }) : super(key: key);
 
   final ReplysModel replysModel;
-  final Map<String,dynamic> currentSongMap;
   final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
   Widget build(BuildContext context) {

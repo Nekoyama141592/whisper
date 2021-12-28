@@ -10,7 +10,6 @@ class CommentLikeButton extends StatelessWidget {
     Key? key,
     required this.commentsModel,
     required this.currentUserDoc,
-    required this.currentSongMap,
     required this.likedCommentIds,
     required this.comment,
     required this.likedComments
@@ -18,7 +17,6 @@ class CommentLikeButton extends StatelessWidget {
 
   final CommentsModel commentsModel;
   final DocumentSnapshot currentUserDoc;
-  final Map<String,dynamic> currentSongMap;
   final List<dynamic> likedCommentIds;
   final Map<String,dynamic> comment;
   final List<dynamic> likedComments;

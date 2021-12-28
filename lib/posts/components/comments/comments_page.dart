@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/details/comments_or_replys_header.dart';
+import 'package:whisper/details/nothing.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
@@ -45,7 +46,8 @@ class CommentsPage extends ConsumerWidget {
           commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer,prefs: mainModel.prefs); 
         },
       ),
-      body: SafeArea(
+      body: commentsModel.commentDocs.isNotEmpty ?
+      SafeArea(
         child: Column(
           children: [
             CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: (){
@@ -71,7 +73,6 @@ class CommentsPage extends ConsumerWidget {
                       commentsModel: commentsModel,
                       replysModel: replysModel,
                       comment: comment,
-                      currentSongMap: currentSongMap,
                       mainModel: mainModel,
                     );
                   }
@@ -80,7 +81,9 @@ class CommentsPage extends ConsumerWidget {
             )
           ],
         ),
-      ),
+      ) : Nothing(reload: () async {
+        await commentsModel.getCommentDocs(currentSongMap['postId']);
+      }),
     );
   }
 }

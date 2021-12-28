@@ -23,14 +23,12 @@ class CommentCard extends ConsumerWidget {
     required this.comment,
     required this.commentsModel,
     required this.replysModel,
-    required this.currentSongMap,
     required this.mainModel
   }): super(key: key);
   
   final Map<String,dynamic> comment;
   final CommentsModel commentsModel;
   final ReplysModel replysModel;
-  final Map<String,dynamic> currentSongMap;
   final MainModel mainModel;
 
   @override  
@@ -108,8 +106,8 @@ class CommentCard extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
-                        ShowReplyButton(replysModel: replysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
+                        CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
+                        ShowReplyButton(replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
                       ],
                     )
                   ]
