@@ -119,7 +119,7 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 20
+    reply.size() == 21
     && 'elementId' in reply && reply.elementId is string
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
@@ -132,6 +132,7 @@ service cloud.firestore {
     && 'likesUidsCount' in reply && reply.likesUidsCount is int
     && 'negativeScore' in reply && reply.negativeScore is int
     && 'passiveUid' in reply && reply.passiveUid is string
+    && 'postId' in reply && reply.postId is string
     && 'positiveScore' in reply && reply.positiveScore is int
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string

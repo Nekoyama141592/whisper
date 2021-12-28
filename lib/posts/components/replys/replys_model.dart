@@ -242,8 +242,8 @@ class ReplysModel extends ChangeNotifier {
   Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
     final elementId = thisComment['commentId'];
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final map = makeReplyMap(elementId, currentUserDoc,currentSongMap);
-    await addReplyToFirestore(map);
+    final newReplyMap = makeReplyMap(elementId, currentUserDoc,currentSongMap);
+    await addReplyToFirestore(newReplyMap);
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -264,13 +264,13 @@ class ReplysModel extends ChangeNotifier {
         mutesUids.add(mutesIpv6AndUid['uid']);
       });
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s ,uid: currentUserDoc['uid'], ipv6: ipv6) ) {
-        await updateReplyNotificationsOfPassiveUser(elementId, passiveUserDoc, currentUserDoc, thisComment);
+        await updateReplyNotificationsOfPassiveUser(elementId: elementId, passiveUserDoc: passiveUserDoc, currentUserDoc: currentUserDoc, thisComment: thisComment, newReplyMap: newReplyMap);
       }
     }
   }
 
   Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap) {
-    final map = {
+    final newReplyMap = {
       'elementId': elementId,
       'elementState': elementState,
       'createdAt': Timestamp.now(),
@@ -283,6 +283,7 @@ class ReplysModel extends ChangeNotifier {
       'likesUidsCount': 0,
       'negativeScore': 0,
       'passiveUid': currentSongMap['uid'],
+      'postId': currentSongMap['postId'],
       'positiveScore': 0,
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
@@ -292,7 +293,7 @@ class ReplysModel extends ChangeNotifier {
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };
-    return map;
+    return newReplyMap;
   }
   
   Future addReplyToFirestore(Map<String,dynamic> map) async {
@@ -314,12 +315,13 @@ class ReplysModel extends ChangeNotifier {
     return passiveUserDoc;
   }
 
-  Future updateReplyNotificationsOfPassiveUser(String elementId,DocumentSnapshot passiveUserDoc,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
+  Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot passiveUserDoc, required DocumentSnapshot currentUserDoc, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
 
     final String notificationId = 'replyNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = thisComment['comment'];
     Map<String,dynamic> map = {
       'comment': comment,
+      'commentId': thisComment['commentId'],
       'createdAt': Timestamp.now(),
       'elementId': elementId,
       'elementState': elementState,
@@ -329,7 +331,9 @@ class ReplysModel extends ChangeNotifier {
       'isOfficial': currentUserDoc['isOfficial'],
       'notificationId': notificationId,
       'passiveUid': passiveUserDoc['uid'],
+      'postId': thisComment['postId'],
       'reply': reply,
+      'replyId': newReplyMap['replyId'],
       'uid': currentUserDoc['uid'],
       'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],

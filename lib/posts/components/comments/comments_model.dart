@@ -149,7 +149,7 @@ class CommentsModel extends ChangeNotifier {
         mutesUids.add(mutesIpv6AndUid['uid']);
       });
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
-        await updateCommentNotificationsOfPassiveUser(currentSongMap, currentUserDoc,passiveUserDoc);
+        await updateCommentNotificationsOfPassiveUser(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, newCommentMap: commentMap);
       }
     }
     if (commentScrollFlashBarCount <= commentScrollFlashBarConstantCount) {
@@ -185,11 +185,12 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future updateCommentNotificationsOfPassiveUser(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot currentUserDoc, required DocumentSnapshot passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
     try{
       List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
       final Map<String,dynamic> newCommentNotificationMap = {
-        'comment': comment,
+        'comment': newCommentMap['comment'],
+        'commentId': newCommentMap['commentId'],
         'createdAt': Timestamp.now(),
         'followersCount': currentUserDoc['followersCount'],
         'isDelete': false,
@@ -198,6 +199,7 @@ class CommentsModel extends ChangeNotifier {
         'notificationId': 'commentNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
         'passiveUid': currentSongMap['uid'],
         'postTitle': currentSongMap['title'],
+        'postId': currentSongMap['postId'],
         'uid': currentUserDoc['uid'],
         'userDocId': currentUserDoc.id,
         'userName': currentUserDoc['userName'],

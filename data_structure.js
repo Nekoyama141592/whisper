@@ -89,6 +89,7 @@
         'likesUidsCount': int,
         'negativeScore': int,
         'passiveUid': string,
+        'postId': string,
         'positiveScore': int,
         'reply': String,
         'replyId': String,
@@ -100,7 +101,7 @@
     }
     'users'{
         'authNotifications': List<String,dynamic> {
-            
+
         },
         'birthDay': TimeStamp,
         'browsingHistory': list,
@@ -118,15 +119,16 @@
         }>,
         'commentNotifications': [{
             'comment': String,
+            'commentId': String,
             'createdAt': TimeStamp,
             'followersCount': int,
             'isDelete': bool,
             'isNFTicon': bool,
-            'isOfficial':bool,
+            'isOfficial': bool,
             'notificationId': String,
-            'notificationId': notificationId,
             'passiveUid': String,
             'postTitle': String,
+            'postId': String,
             'uid': String,
             'userDocId': String,
             'userName': String,
@@ -186,15 +188,19 @@
         'recommendState': 'recommendable',
         'replyNotifications': [{
             'comment': String,
+            'commentId': String,
             'createdAt': TimeStamp,
             'elementId': String,
+            'elementState': String,
             'followersCount': int,
             'isDelete': bool,
             'isNFTicon': bool,
-            'isOfficial':bool,
+            'isOfficial': bool,
             'notificationId': String,
             'passiveUid': String,
+            'postId': String,
             'reply': String,
+            'replyId': String,
             'uid': String,
             'userDocId': String,
             'userName': String,
