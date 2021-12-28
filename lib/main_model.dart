@@ -181,6 +181,7 @@ class MainModel extends ChangeNotifier {
     await regetCurrentUserDoc(currentUser!.uid);
     commentNotifications = currentUserDoc['commentNotifications'];
     replyNotifications = currentUserDoc['replyNotifications'];
+    notifyListeners();
   }
   
 }
