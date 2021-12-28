@@ -22,7 +22,7 @@ class ReplyNotificationList extends StatelessWidget {
     return ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) => 
-      ReaplyNotificationCard(replyNotification: notifications[i],mainModel: mainModel,)
+      ReaplyNotificationCard(notification: notifications[i],mainModel: mainModel,)
     );
   }
 

@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 // constants
-import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/voids.dart' as voids;
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
@@ -30,6 +30,7 @@ class CommentNotificationCard extends ConsumerWidget {
     final userImageURL = notification['userImageURL'];
     final String notificationId = notification['notificationId'];
     final OneCommentModel oneCommentModel = watch(oneCommentProvider);
+    
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -45,13 +46,8 @@ class CommentNotificationCard extends ConsumerWidget {
             title: Text(notification['userName'],style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,),),
             subtitle: Text(notification['comment'],style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
             onTap: () async {
-              await mainModel.addNotificationIdToReadNotificationIds(notification: notification);
-              bool commentExists = await oneCommentModel.init(giveCommentId: notification['commentId']);
-              if (commentExists) {
-                routes.toOneCommentPage(context: context, mainModel: mainModel);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
-              }
+              final String giveCommentId = notification['commentId'];
+              await voids.toOneCommentsPageByMap(context: context, mainModel: mainModel, notification: notification, oneCommentModel: oneCommentModel, giveCommentId: giveCommentId);
             },
           )
         ],
