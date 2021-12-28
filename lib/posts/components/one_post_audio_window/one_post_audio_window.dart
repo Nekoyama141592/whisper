@@ -21,6 +21,7 @@ class OnePostAudioWindow extends StatelessWidget {
     required this.pause,
     required this.title,
     required this.currentUserDoc,
+    required this.onTap
   }) : super(key: key);
   
   final ProgressNotifier progressNotifier;
@@ -30,6 +31,7 @@ class OnePostAudioWindow extends StatelessWidget {
   final void Function()? pause;
   final Widget title;
   final DocumentSnapshot currentUserDoc;
+  final void Function()? onTap;
 
   Widget build(BuildContext context) {
     
@@ -39,44 +41,47 @@ class OnePostAudioWindow extends StatelessWidget {
 
     return Container(
       height: audioWindowHeight,
-      child: Column(
-        children: [
-          AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.03,
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          children: [
+            AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.03,
+                  ),
+                  child: UserImage(userImageURL: currentUserDoc['imageURL'],length: 60.0,padding: 5.0,)
                 ),
-                child: UserImage(userImageURL: currentUserDoc['imageURL'],length: 60.0,padding: 5.0,)
-              ),
-              Container(
-                width: size.width * 0.55,
-                child: Column(
-                  children: [
-                    Text(
-                      currentUserDoc['userName'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize
+                Container(
+                  width: size.width * 0.55,
+                  child: Column(
+                    children: [
+                      Text(
+                        currentUserDoc['userName'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSize
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    title
-                  ],
+                      title
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause)
-                  ],
-                ),
-              )
-            ],
-          )
-        ]
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      PlayButton(playButtonNotifier: playButtonNotifier, play: play, pause: pause)
+                    ],
+                  ),
+                )
+              ],
+            )
+          ]
+        ),
       ),
     );
   }

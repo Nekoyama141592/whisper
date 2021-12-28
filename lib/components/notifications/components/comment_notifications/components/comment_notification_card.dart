@@ -10,6 +10,7 @@ import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 
 class CommentNotificationCard extends ConsumerWidget {
@@ -29,6 +30,7 @@ class CommentNotificationCard extends ConsumerWidget {
 
     final userImageURL = notification['userImageURL'];
     final String notificationId = notification['notificationId'];
+    final OnePostModel onePostModel = watch(onePostProvider);
     final OneCommentModel oneCommentModel = watch(oneCommentProvider);
     
     return Card(
@@ -47,7 +49,8 @@ class CommentNotificationCard extends ConsumerWidget {
             subtitle: Text(notification['comment'],style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
             onTap: () async {
               final String giveCommentId = notification['commentId'];
-              await voids.toOneCommentsPageByMap(context: context, mainModel: mainModel, notification: notification, oneCommentModel: oneCommentModel, giveCommentId: giveCommentId);
+              final String givePostId = notification['postId'];
+              await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification, oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: giveCommentId, givePostId: givePostId);
             },
           )
         ],

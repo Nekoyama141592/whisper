@@ -9,6 +9,7 @@ import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 
 class ReaplyNotificationCard extends ConsumerWidget {
@@ -29,6 +30,7 @@ class ReaplyNotificationCard extends ConsumerWidget {
     final length = 60.0;
     final padding = 0.0;
     final notificationId = notification['notificationId'];
+    final OnePostModel onePostModel = watch(onePostProvider);
     final OneCommentModel oneCommentModel = watch(oneCommentProvider);
 
     return Card(
@@ -48,7 +50,8 @@ class ReaplyNotificationCard extends ConsumerWidget {
             onTap: () async {
               // Please don`t use notification['commentId']. The commentNotification is different from replyNotification.
               final String giveCommentId = notification['elementId'];
-              await voids.toOneCommentsPageByMap(context: context, mainModel: mainModel, notification: notification, oneCommentModel: oneCommentModel, giveCommentId: giveCommentId);
+              final String givePostId = notification['postId'];
+              await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification, oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: giveCommentId, givePostId: givePostId);
             },
           ),
           

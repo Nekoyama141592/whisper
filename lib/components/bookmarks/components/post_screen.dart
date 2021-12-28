@@ -82,9 +82,7 @@ class PostScreen extends ConsumerWidget {
                 await commentsModel.init(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel, bookmarksModel.currentSongMapNotifier.value['postId']);
               },
               () {
-                bookmarksModel.pause();
-                editPostInfoModel.isEditing = true;
-                editPostInfoModel.reload();
+                bookmarksModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
               },
               mainModel
             );

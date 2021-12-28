@@ -15,6 +15,8 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// model
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final bookmarksProvider = ChangeNotifierProvider(
   (ref) => BookmarksModel()
@@ -107,7 +109,7 @@ class BookmarksModel extends ChangeNotifier {
     await removeTheUsersPost(uid, i);
     voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
     notifyListeners();
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
+    await voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
   Future blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids, required int i, required Map<String,dynamic> post}) async {
@@ -116,7 +118,7 @@ class BookmarksModel extends ChangeNotifier {
     await removeTheUsersPost(uid, i);
     voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
     notifyListeners();
-    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
+    await voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
 
   Future removeTheUsersPost(String uid,int i) async {
@@ -297,6 +299,12 @@ class BookmarksModel extends ChangeNotifier {
   void setSpeed() {
     speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
     audioPlayer.setSpeed(speedNotifier.value);
+  }
+
+  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
+    pause();
+    editPostInfoModel.isEditing = true;
+    notifyListeners();
   }
 
   Future speedControll() async {
