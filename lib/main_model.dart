@@ -54,8 +54,10 @@ class MainModel extends ChangeNotifier {
   
   void init() async {
     startLoading();
+    prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
-    await getReadNotificationIds();
+    getReadNotificationIds();
+    getNotificationIds();
     getLikedPostIds();
     getLikesReplys();
     getBookmarkedPostIds();
@@ -150,9 +152,11 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  Future<void> getReadNotificationIds() async {
-    prefs = await SharedPreferences.getInstance();
+  void getReadNotificationIds() {
     readNotificationIds = prefs.getStringList('readNotificationIds') ?? [];
+  }
+
+  void getNotificationIds() {
     commentNotifications = currentUserDoc['commentNotifications'];
     commentNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
     replyNotifications = currentUserDoc['replyNotifications'];
@@ -183,9 +187,11 @@ class MainModel extends ChangeNotifier {
 
   Future<void> regetNotifications() async {
     await regetCurrentUserDoc(currentUser!.uid);
-    commentNotifications = currentUserDoc['commentNotifications'];
-    replyNotifications = currentUserDoc['replyNotifications'];
+    getNotificationIds();
     notifyListeners();
   }
   
+  void reload() {
+    notifyListeners();
+  }
 }
