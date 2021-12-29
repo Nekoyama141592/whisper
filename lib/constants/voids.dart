@@ -19,6 +19,21 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
+void setMutesAndBlocks({ required SharedPreferences prefs ,required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
+  // 代入は使えないが.addは反映される
+  currentUserDoc['mutesIpv6AndUids'].forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
+  mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
+    mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+    mutesUids.add(mutesIpv6AndUid['uid']);
+  });
+  (prefs.getStringList('mutesPostIds') ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
+  currentUserDoc['blocksIpv6AndUids'].forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
+  blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
+    blocksUids.add(blocksIpv6AndUid['uid']);
+    blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+  });
+}
+
 void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
   final String uid = map['uid'];
   final String ipv6 = map['ipv6'];
@@ -291,7 +306,7 @@ Future initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSo
     final postId = post['postId'];
     mainModel.mutesPostIds.add(postId);
     results.removeWhere((result) => result['postId'] == postId);
-    resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+    await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     mainModel.reload();
     await mainModel.prefs.setStringList('mutesPostIds', mainModel.mutesPostIds);
   }

@@ -44,11 +44,13 @@ class FeedsModel extends ChangeNotifier {
   List<DocumentSnapshot> feedDocs = [];
   // block and mutes
   late SharedPreferences prefs;
+  List<dynamic> mutesIpv6AndUids = [];
   List<dynamic> mutesUids = [];
+  List<dynamic> mutesIpv6s = [];
   List<String> mutesPostIds = [];
+  List<dynamic> blocksIpv6AndUids = [];
   List<dynamic> blocksUids = [];
   List<dynamic> blocksIpv6s = [];
-  List<dynamic> mutesIpv6s = [];
   //repost
   bool isReposted = false;
   // refresh
@@ -67,7 +69,7 @@ class FeedsModel extends ChangeNotifier {
     // await
     prefs = await SharedPreferences.getInstance();
     await setCurrentUserDoc();
-    await setMutesAndBlocks();
+    voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     setFollowUids();
     await getFeeds();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
@@ -129,21 +131,6 @@ class FeedsModel extends ChangeNotifier {
     await getOldFeeds();
     refreshController.loadComplete();
     notifyListeners();
-  }
-
-  Future setMutesAndBlocks() async {
-    mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
-    final List<dynamic> blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
-    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-      blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
-      blocksUids.add(blocksIpv6AndUid['uid']);
-    });
-    // mutesIpv6s
-    final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
-    mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-      mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
-      mutesUids.add(mutesIpv6AndUid['uid']);
-    });
   }
   
   Future setCurrentUserDoc() async {

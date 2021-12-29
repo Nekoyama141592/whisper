@@ -94,8 +94,7 @@ class MyProfileModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
   void showSortPostDocsDialogue(BuildContext context,String uid) {

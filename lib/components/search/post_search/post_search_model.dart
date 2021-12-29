@@ -97,28 +97,4 @@ class PostSearchModel extends ChangeNotifier{
     audioPlayer.seek(position);
   }
 
-  Future delete(BuildContext context,Map<String,dynamic> map, DocumentSnapshot currentUserDoc,int i) async {
-    if (currentUserDoc['uid'] != map['uid']) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
-    } else {
-      try {
-        AudioSource source = afterUris[i];
-        afterUris.remove(source);
-        results.remove(map);
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: i);
-        }
-        notifyListeners();
-        await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(map['postId'])
-        .delete();
-      } catch(e) {
-        print(e.toString());
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-      }
-    }
-  }
-
 }

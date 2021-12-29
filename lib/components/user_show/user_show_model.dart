@@ -282,14 +282,12 @@ class UserShowModel extends ChangeNotifier {
         CropAspectRatioPreset.square,
       ]
       : [
-        // CropAspectRatioPreset.original,
         CropAspectRatioPreset.square,
       ],
       androidUiSettings: const AndroidUiSettings(
         toolbarTitle: 'Cropper',
         toolbarColor: kPrimaryColor,
         toolbarWidgetColor: Colors.white,
-        // initAspectRatio: CropAspectRatioPreset.original,
         initAspectRatio: CropAspectRatioPreset.square,
         lockAspectRatio: false
       ),
@@ -310,15 +308,9 @@ class UserShowModel extends ChangeNotifier {
     }
     try {
       await FirebaseStorage.instance
-      .ref()
-      .child('users')
-      .child(currentUserDoc['uid'] + dateTime + '.jpg')
-      .putFile(croppedFile!);
+      .ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
       downloadURL = await FirebaseStorage.instance
-      .ref()
-      .child('users')
-      .child(currentUserDoc['uid'] + dateTime + '.jpg')
-      .getDownloadURL();
+      .ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
     } catch(e) {
       print(e.toString());
     }

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -64,8 +65,7 @@ class MainModel extends ChangeNotifier {
     getFollowingUids();
     getLikedCommentIds();
     getReadPost();
-    setMutes();
-    getBlocks();
+    setMutesAndBlocks();
     endLoading();
   }
 
@@ -133,23 +133,10 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  void setMutes() {
+  void setMutesAndBlocks() {
+    voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
-    mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
-    mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-      mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
-      mutesUids.add(mutesIpv6AndUid['uid']);
-    });
     mutesCommentIds = prefs.getStringList('mutesCommentIds') ?? [];
-    mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
-  }
-
-  void getBlocks() {
-    blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
-    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-      blocksUids.add(blocksIpv6AndUid['uid']);
-      blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
-    });
   }
 
   void getReadNotificationIds() {
