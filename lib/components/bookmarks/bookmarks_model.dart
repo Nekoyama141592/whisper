@@ -85,22 +85,12 @@ class BookmarksModel extends ChangeNotifier {
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
 
-  Future resetAudioPlayer(int i) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    AudioSource source = afterUris[i];
-    afterUris.remove(source);
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
-    }
-  }
-
   Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
     final postId = post['postId'];
     mutesPostIds.add(postId);
     bookmarkedDocs.removeWhere((result) => result['postId'] == postId);
-    await resetAudioPlayer(i);
+    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
     await prefs.setStringList('mutesPostIds', mutesPostIds);
   }
@@ -125,7 +115,7 @@ class BookmarksModel extends ChangeNotifier {
 
   Future removeTheUsersPost(String uid,int i) async {
     bookmarkedDocs.removeWhere((result) => result['uid'] == uid);
-    await resetAudioPlayer(i);
+    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   }
 
   Future onRefresh() async {

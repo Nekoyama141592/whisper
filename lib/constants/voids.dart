@@ -262,12 +262,7 @@ Future delete({ required BuildContext context, required AudioPlayer audioPlayer,
   } else {
     try {
       results.remove(results[i]);
-      AudioSource source = afterUris[i];
-      afterUris.remove(source);
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
-      } 
+      await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
       await FirebaseFirestore.instance.collection('posts').doc(postMap['postId']).delete();
     } catch(e) {
@@ -277,7 +272,12 @@ Future delete({ required BuildContext context, required AudioPlayer audioPlayer,
   }
 }
 
-Future resetAudioPlayer(int i) async {
-  
+Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required AudioPlayer audioPlayer, required int i }) async {
+  // Abstractions in post_futures.dart cause Range errors.
+  AudioSource source = afterUris[i];
+  afterUris.remove(source);
+  if (afterUris.isNotEmpty) {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
+  } 
 }
-
