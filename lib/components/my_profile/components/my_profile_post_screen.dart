@@ -57,7 +57,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             return 
             PostCard(
               post: post,
-              onDeleteButtonPressed: () { myProfileModel.onDeleteButtonPressed(context, postDocs[i], mainModel.currentUserDoc, i); },
+              onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, results: myProfileModel.myProfileDocs, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
                 await myProfileModel.initAudioPlayer(i);
               },

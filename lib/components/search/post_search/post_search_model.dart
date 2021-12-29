@@ -144,34 +144,6 @@ class PostSearchModel extends ChangeNotifier{
   void seek(Duration position) {
     audioPlayer.seek(position);
   }
-  
-
-  void onDeleteButtonPressed(BuildContext context,Map<String,dynamic> map,DocumentSnapshot currentUserDoc,int i) {
-    showCupertinoDialog(
-      context: context, builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('投稿削除'),
-          content: Text('一度削除したら、復元はできません。本当に削除しますか？'),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoDialogAction(
-              child: const Text('Ok'),
-              isDestructiveAction: true,
-              onPressed: () async {
-                await delete(context, map, currentUserDoc, i);
-              },
-            )
-          ],
-        );
-      }
-    );
-  }
-
 
   Future delete(BuildContext context,Map<String,dynamic> map, DocumentSnapshot currentUserDoc,int i) async {
     if (currentUserDoc['uid'] != map['uid']) {

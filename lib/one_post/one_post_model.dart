@@ -33,14 +33,16 @@ class OnePostModel extends ChangeNotifier {
   List<AudioSource> afterUris = [];
   // post
   late DocumentSnapshot<Map<String,dynamic>> onePostDoc;
+  List<DocumentSnapshot<Map<String,dynamic>>> onePostDocList = [];
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   String postId = '';
-
   Future<bool> init({ required String givePostId}) async {
     startLoading();
     if (postId != givePostId) {
+      onePostDocList = [];
       postId = givePostId;
       onePostDoc = await FirebaseFirestore.instance.collection('posts').doc(postId).get();
+      onePostDocList.add(onePostDoc);
       currentSongMapNotifier.value = onePostDoc.data()!;
       Uri song = Uri.parse(onePostDoc['audioURL']);
       UriAudioSource audioSource = AudioSource.uri(song,tag: onePostDoc);
@@ -66,54 +68,5 @@ class OnePostModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final postId = post['postId'];
-    mutesPostIds.add(postId);
-    currentSongMapNotifier.value = {};
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-
-  Future muteUser({ required List<dynamic> mutesUids, required int i, required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post}) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
-    currentSongMapNotifier.value = {};
-    notifyListeners();
-    await voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
-  }
-
-  Future blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids, required int i, required Map<String,dynamic> post}) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
-    currentSongMapNotifier.value = {};
-    notifyListeners();
-    await voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
-  }
   
-  void onDeleteButtonPressed(BuildContext context,DocumentSnapshot postDoc,DocumentSnapshot currentUserDoc,int i) {
-    voids.showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await delete(context, postDoc, currentUserDoc, i); });
-  }
-
-  Future delete(BuildContext context,DocumentSnapshot postDoc, DocumentSnapshot currentUserDoc,int i) async {
-    if (currentUserDoc['uid'] != postDoc['uid']) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
-    } else {
-      try {
-        AudioSource source = afterUris[i];
-        afterUris.remove(source);
-        currentSongMapNotifier.value = {};
-        if (afterUris.isNotEmpty || afterUris.length != 1 ) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: i - 1);
-        }
-        notifyListeners();
-        await FirebaseFirestore.instance.collection('posts').doc(postDoc.id).delete();
-      } catch(e) {
-        print(e.toString());
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-      }
-    }
-  }
-
 }

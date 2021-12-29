@@ -251,4 +251,33 @@ void pause({ required AudioPlayer audioPlayer}) {
   audioPlayer.pause();
 }
 
+void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> results,required MainModel mainModel, required int i}) {
+  showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await delete(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, results: results, mainModel: mainModel, i: i) ;});
+}
+
+Future delete({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> results,required MainModel mainModel, required int i}) async {
+  Navigator.pop(context);
+  if (mainModel.currentUserDoc['uid'] != postMap['uid']) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
+  } else {
+    try {
+      results.remove(results[i]);
+      AudioSource source = afterUris[i];
+      afterUris.remove(source);
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
+      } 
+      mainModel.reload();
+      await FirebaseFirestore.instance.collection('posts').doc(postMap['postId']).delete();
+    } catch(e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+    }
+  }
+}
+
+Future resetAudioPlayer(int i) async {
+  
+}
 

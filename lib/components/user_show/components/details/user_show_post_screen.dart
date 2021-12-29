@@ -55,7 +55,7 @@ class UserShowPostScreen extends ConsumerWidget {
             return 
             PostCard(
               post: post,
-              onDeleteButtonPressed: () { userShowModel.onDeleteButtonPressed(context, postDocs[i], mainModel.currentUserDoc, i); },
+              onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: userShowModel.afterUris, results: userShowModel.userShowDocs, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
                 await userShowModel.initAudioPlayer(i);
               },

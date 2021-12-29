@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
@@ -75,7 +77,7 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { recommendersModel.onDeleteButtonPressed(context, postDocs[i], mainModel.currentUserDoc, i); },
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, results: recommendersModel.recommenderDocs, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await recommendersModel.initAudioPlayer(i);
                   },
