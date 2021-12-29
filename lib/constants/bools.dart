@@ -18,7 +18,7 @@ bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynami
 }
 
 bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
-  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
+  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data()! ) && !mutesPostIds.contains(doc['postId']);
 }
 
 bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> passiveBlocksUids, required DocumentSnapshot currentUserDoc }) {
@@ -51,23 +51,24 @@ bool isNotiRecentNotification({ required Map<String,dynamic> notification}) {
 }
 
 bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
+  // post is DocumentSnapshot<Map<String,dynamic>> or Map<String,dynamic>
   switch(postType) {
     case PostType.bookmarks:
     return true;
 
     case PostType.feeds:
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc);
+    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc );
 
     case PostType.myProfile:
     return true;
 
     case PostType.postSearch:
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc);
+    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc );
 
     case PostType.recommenders:
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
+    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
 
     case PostType.userShow:
     return true;

@@ -35,14 +35,14 @@ class RecommendersPage extends ConsumerWidget {
     return recommendersModel.isLoading ?
     Loading()
     : JudgeScreen(
-      list: recommendersModel.recommenderDocs,
+      list: recommendersModel.posts,
       reload: () async {
         recommendersModel.startLoading();
         await recommendersModel.getRecommenders();
         recommendersModel.endLoading();
       },
       content: PostCards(
-        postDocs: recommendersModel.recommenderDocs, 
+        postDocs: recommendersModel.posts, 
         route: () {
           routes.toPostShowPage(
             context: context,

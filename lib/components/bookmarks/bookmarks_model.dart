@@ -39,7 +39,7 @@ class BookmarksModel extends ChangeNotifier {
   List<AudioSource> afterUris = [];
   // cloudFirestore
   List<String> bookmarkedPostIds = [];
-  List<DocumentSnapshot> bookmarkedDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
@@ -89,32 +89,6 @@ class BookmarksModel extends ChangeNotifier {
     refreshController.refreshCompleted();
   }
 
-  Future getNewBookmarks(List<dynamic> bookmarkedPostIds) async {
-    
-    if (bookmarkedPostIds.isNotEmpty) {
-      QuerySnapshot<Map<String, dynamic>>  newSnapshots = await FirebaseFirestore.instance
-      .collection('posts')
-      .where('postId', whereIn: bookmarkedPostIds)
-      .endBeforeDocument(bookmarkedDocs.first)
-      .limit(oneTimeReadCount)
-      .get();
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-      // Sort by oldest first
-      docs.reversed;
-      // Insert at the top
-      docs.forEach((DocumentSnapshot? doc) {
-        bookmarkedDocs.insert(0, doc!);
-        Uri song = Uri.parse(doc['audioURL']);
-        UriAudioSource source = AudioSource.uri(song, tag: doc);
-        afterUris.insert(0, source);
-      });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
-      }
-    }
-  }
-
   Future onLoading() async {
     await getOldBookmarks(bookmarkedPostIds);
     refreshController.loadComplete();
@@ -138,24 +112,33 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getNewBookmarks(List<dynamic> bookmarkedPostIds) async {
+    
+    if (bookmarkedPostIds.isNotEmpty) {
+      await FirebaseFirestore.instance
+      .collection('posts')
+      .where('postId', whereIn: bookmarkedPostIds)
+      .endBeforeDocument(posts.first)
+      .limit(oneTimeReadCount)
+      .get()
+      .then((qshot) {
+        voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      });
+    }
+  }
+
+
   Future getBookmarks (List<dynamic> bookmarkedPostIds) async {
     try{
       if (bookmarkedPostIds.isNotEmpty) {
-        QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
+        await FirebaseFirestore.instance
         .collection('posts')
         .where('postId', whereIn: bookmarkedPostIds)
         .limit(oneTimeReadCount)
-        .get();
-        snapshots.docs.forEach((DocumentSnapshot? doc) {
-          bookmarkedDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
+        .get()
+        .then((qshot) {
+          voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
         });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist);
-        }
       }
     } catch(e) {
       print(e.toString());
@@ -166,23 +149,15 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> getOldBookmarks(List<dynamic> bookmarkedPostIds) async {
     try {
       if (bookmarkedPostIds.isEmpty) {
-        QuerySnapshot<Map<String, dynamic>>  snapshots = await FirebaseFirestore.instance
+        await FirebaseFirestore.instance
         .collection('posts')
         .where('postId', whereIn: bookmarkedPostIds)
-        .startAfterDocument(bookmarkedDocs.last)
+        .startAfterDocument(posts.last)
         .limit(oneTimeReadCount)
-        .get();
-        final lastIndex = bookmarkedDocs.lastIndexOf(bookmarkedDocs.last);
-        snapshots.docs.forEach((DocumentSnapshot? doc) {
-          bookmarkedDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
+        .get()
+        .then((qshot) {
+          voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
         });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
-        }  
       }
     } catch(e) {
       print(e.toString());

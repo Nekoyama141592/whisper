@@ -79,18 +79,18 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.bookmarkedDocs, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await voids.initAudioPlayer(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: bookmarksModel.bookmarkedDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
+                    await voids.muteUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: bookmarksModel.posts, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.bookmarkedDocs );
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: bookmarksModel.bookmarkedDocs, post: post, mainModel: mainModel);
+                    await voids.blockUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: bookmarksModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

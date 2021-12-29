@@ -46,7 +46,7 @@ class UserShowModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<DocumentSnapshot> userShowDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
   late RefreshController refreshController;
   // Edit profile
@@ -105,7 +105,7 @@ class UserShowModel extends ChangeNotifier {
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
-                userShowDocs = [];
+                posts = [];
                 afterUris = [];
                 // getDocsFromFirestore
                 // makeQuery
@@ -120,7 +120,7 @@ class UserShowModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                userShowDocs = [];
+                posts = [];
                 afterUris = [];
                 // getDocsFromFirestore
                 // makeQuery
@@ -135,7 +135,7 @@ class UserShowModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                userShowDocs = [];
+                posts = [];
                 afterUris = [];
                 // getDocsFromFirestore
                 // makeQuery
@@ -175,27 +175,16 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future getNewUserShowPosts() async {
-    QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
     .collection('posts')
     .where('uid',isEqualTo: passiveUserDoc['uid'])
     .orderBy('createdAt',descending: true)
-    .endBeforeDocument(userShowDocs.first)
+    .endBeforeDocument(posts.first)
     .limit(oneTimeReadCount)
-    .get();
-    // Sort by oldest first
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-    docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
-    // Insert at the top
-    docs.forEach((DocumentSnapshot? doc) {
-      userShowDocs.insert(0, doc!);
-      Uri song = Uri.parse(doc['audioURL']);
-      UriAudioSource source = AudioSource.uri(song, tag: doc);
-      afterUris.insert(0, source);
+    .get()
+    .then((qshot) {
+      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist);
-    }
   }
 
   Future onLoading() async {
@@ -206,7 +195,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future getPosts() async {
     try {
-      userShowDocs = [];
+      posts = [];
       await FirebaseFirestore.instance
       .collection('posts')
       .where('uid',isEqualTo: passiveUserDoc['uid'])
@@ -214,19 +203,8 @@ class UserShowModel extends ChangeNotifier {
       .limit(oneTimeReadCount)
       .get()
       .then((qshot) {
-        List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-        docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-        docs.forEach((DocumentSnapshot? doc) {
-          userShowDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
-        });
+        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
-      }
     } catch(e) {
       print(e.toString());
     }
@@ -239,23 +217,11 @@ class UserShowModel extends ChangeNotifier {
       .collection('posts')
       .where('uid',isEqualTo: passiveUserDoc['uid'])
       .orderBy('createdAt',descending: true)
-      .startAfterDocument(userShowDocs.last)
+      .startAfterDocument(posts.last)
       .limit(oneTimeReadCount)
       .get()
-      .then((qshot) async {
-        final lastIndex = userShowDocs.lastIndexOf(userShowDocs.last);
-        List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-        docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-        docs.forEach((DocumentSnapshot? doc) {
-          userShowDocs.add(doc!);
-          Uri song = Uri.parse(doc['audioURL']);
-          UriAudioSource source = AudioSource.uri(song, tag: doc);
-          afterUris.add(source);
-        });
-        if (afterUris.isNotEmpty) {
-          ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-          await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
-        }
+      .then((qshot) {
+        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       });
     } catch(e) {
       print(e.toString());

@@ -36,7 +36,7 @@ class MyProfilePostScreen extends ConsumerWidget {
     final commentsModel = watch(commentsProvider);
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final isLoading = myProfileModel.isLoading;
-    final postDocs = myProfileModel.myProfileDocs;
+    final postDocs = myProfileModel.posts;
 
     final Widget posts = Expanded(
       child: SmartRefresher(
@@ -57,18 +57,18 @@ class MyProfilePostScreen extends ConsumerWidget {
             return 
             PostCard(
               post: post,
-              onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, posts: myProfileModel.myProfileDocs, mainModel: mainModel, i: i); },
+              onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, posts: myProfileModel.posts, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
                 await voids.initAudioPlayer(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, i: i);
               },
               muteUser: () async {
-                await voids.muteUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: myProfileModel.myProfileDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
+                await voids.muteUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: myProfileModel.posts, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
               },
               mutePost: () async {
-                await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.myProfileDocs );
+                await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.posts );
               },
               blockUser: () async {
-                await voids.blockUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: myProfileModel.myProfileDocs, post: post, mainModel: mainModel);
+                await voids.blockUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: myProfileModel.posts, post: post, mainModel: mainModel);
               },
               mainModel: mainModel,
             );
@@ -79,7 +79,7 @@ class MyProfilePostScreen extends ConsumerWidget {
     final content =  Padding(
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
-        postDocs: myProfileModel.myProfileDocs, 
+        postDocs: myProfileModel.posts, 
         route: () {
           routes.toPostShowPage(
             context: context,

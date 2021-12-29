@@ -93,28 +93,11 @@ class FeedsModel extends ChangeNotifier {
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
   }
-
-  bool isValidReadPost({ required DocumentSnapshot doc}) {
-    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
-  }
   
   Future onRefresh() async {
     await getNewFeeds();
     notifyListeners();
     refreshController.refreshCompleted();
-  }
-
-  Future getNewFeeds() async {
-    await FirebaseFirestore.instance
-    .collection('posts')
-    .where('uid',whereIn: followingUids)
-    .orderBy('createdAt',descending: true)
-    .endBeforeDocument(posts.first)
-    .limit(oneTimeReadCount)
-    .get()
-    .then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-    });
   }
 
   Future onLoading() async {
@@ -140,6 +123,19 @@ class FeedsModel extends ChangeNotifier {
       print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
   }
+  Future getNewFeeds() async {
+    await FirebaseFirestore.instance
+    .collection('posts')
+    .where('uid',whereIn: followingUids)
+    .orderBy('createdAt',descending: true)
+    .endBeforeDocument(posts.first)
+    .limit(oneTimeReadCount)
+    .get()
+    .then((qshot) {
+      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+    });
+  }
+
   // getFeeds
   Future getFeeds() async {
 

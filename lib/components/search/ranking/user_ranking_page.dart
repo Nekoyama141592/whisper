@@ -24,9 +24,7 @@ class UserRankingPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
     final userRankingModel = watch(userRankingProvider);
-    return userRankingModel.isLoading ?
-    Loading()
-    : GradientScreen(
+    return GradientScreen(
         top: SizedBox.shrink(), 
         header: Padding(
           padding: const EdgeInsets.all(20),
@@ -40,7 +38,9 @@ class UserRankingPage extends ConsumerWidget {
           ),
         ),
       circular: 35.0,
-      content: SmartRefresher(
+      content: userRankingModel.isLoading ?
+      SizedBox.shrink()
+      : SmartRefresher(
         controller: userRankingModel.refreshController,
         enablePullDown: false,
         enablePullUp: true,

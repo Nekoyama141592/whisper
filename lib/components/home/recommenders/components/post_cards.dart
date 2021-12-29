@@ -77,18 +77,18 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, posts: recommendersModel.recommenderDocs, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await voids.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: recommendersModel.recommenderDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
+                    await voids.muteUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: recommendersModel.posts, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.recommenderDocs );
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: recommendersModel.recommenderDocs, post: post, mainModel: mainModel);
+                    await voids.blockUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: recommendersModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );
