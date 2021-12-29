@@ -1,24 +1,23 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 class ArrowForwardButton extends StatelessWidget {
 
   ArrowForwardButton({
     Key? key,
     required this.addPostModel,
-    required this.currentUserDoc,
+    required this.mainModel,
     required this.text,
     
   }) : super(key: key);
   final AddPostModel addPostModel;
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   final String text;
   
   @override  
@@ -35,7 +34,7 @@ class ArrowForwardButton extends StatelessWidget {
         if (addPostModel.postTitleNotifier.value.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Post titleを入力してください')));
         } else {
-          routes.toPickPostImagePage(context, addPostModel, currentUserDoc);
+          routes.toPickPostImagePage(context: context, addPostModel: addPostModel, mainModel: mainModel);
         }
       }
     );

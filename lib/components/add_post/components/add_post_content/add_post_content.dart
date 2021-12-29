@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
@@ -14,6 +13,7 @@ import 'package:whisper/components/add_post/components/add_post_content/componen
 // notifier
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 
 class AddPostContent extends StatelessWidget {
@@ -21,11 +21,11 @@ class AddPostContent extends StatelessWidget {
   const AddPostContent({
     Key? key,
     required this.addPostModel,
-    required this.currentUserDoc
+    required this.mainModel,
   }) : super(key: key);
 
   final AddPostModel addPostModel;
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AddPostContent extends StatelessWidget {
           );
         }
       ),
-      currentUserDoc: currentUserDoc
+      currentUserDoc: mainModel.currentUserDoc
     );
     return 
     ValueListenableBuilder<AddPostState>(
@@ -109,7 +109,7 @@ class AddPostContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RetryButton(addPostModel,'やりなおす'),
-                  ArrowForwardButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc, text: '次へ')
+                  ArrowForwardButton(addPostModel: addPostModel, mainModel: mainModel, text: '次へ')
                 ],
               )
               : RetryButton(addPostModel,'次の投稿を行う'),

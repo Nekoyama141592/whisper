@@ -1,7 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
@@ -10,15 +9,16 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/gradient_screen.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 
 class WhichType extends ConsumerWidget {
 
   WhichType({
     Key? key,
-    required this.currentUserDoc
+    required this.mainModel
   }) : super(key: key);
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
 
   @override 
   Widget build(BuildContext context, ScopedReader watch) {
@@ -37,7 +37,7 @@ class WhichType extends ConsumerWidget {
           ),
         ),
       ),
-      content: Content(currentUserDoc: currentUserDoc, addPostModel: addPostModel),
+      content: Content(mainModel: mainModel, addPostModel: addPostModel),
       circular: 35.0
     );
   }
@@ -46,11 +46,11 @@ class WhichType extends ConsumerWidget {
 class Content extends StatelessWidget {
   const Content({
     Key? key,
-    required this.currentUserDoc,
+    required this.mainModel,
     required this.addPostModel
   }) : super(key: key);
 
-  final DocumentSnapshot<Object?> currentUserDoc;
+  final MainModel mainModel;
   final AddPostModel addPostModel;
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class Content extends StatelessWidget {
                 verticalPadding: 20.0,
                 horizontalPadding: 10.0,
                 press: () {
-                  routes.toAddPostPage(context, addPostModel,currentUserDoc);
+                  routes.toAddPostPage(context: context, addPostModel: addPostModel, mainModel: mainModel);
                 }, 
                 textColor: Colors.white, 
                 buttonColor: Theme.of(context).highlightColor

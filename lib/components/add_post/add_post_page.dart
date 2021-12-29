@@ -1,10 +1,8 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
+import 'package:whisper/main_model.dart';
 // model
 import 'add_post_model.dart';
 import 'package:whisper/components/add_post/components/add_post_content/add_post_content.dart';
@@ -13,11 +11,11 @@ class AddPostPage extends StatelessWidget {
 
   AddPostPage({
     Key? key,
-    required this.currentUserDoc,
+    required this.mainModel,
     required this.addPostModel
   }) : super(key: key);
 
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   final AddPostModel addPostModel;
   
   @override  
@@ -48,7 +46,7 @@ class AddPostPage extends StatelessWidget {
             )
           ),
         ),
-        content: AddPostContent(addPostModel: addPostModel, currentUserDoc: currentUserDoc),
+        content: AddPostContent(addPostModel: addPostModel, mainModel: mainModel),
         circular: 35.0,
       ),
     );

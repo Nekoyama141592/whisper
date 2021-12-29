@@ -8,6 +8,7 @@ import 'package:whisper/components/add_post/components/audio_buttons/upload_butt
 import 'package:whisper/components/add_post/components/audio_buttons/comments_state_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/add_link_button.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 
 class PickPostImagePage extends StatelessWidget {
@@ -15,11 +16,11 @@ class PickPostImagePage extends StatelessWidget {
   const PickPostImagePage({
     Key? key,
     required this.addPostModel,
-    required this.currentUserDoc
+    required this.mainModel
   }) : super(key: key);
 
   final AddPostModel addPostModel;
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   
   @override 
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class PickPostImagePage extends StatelessWidget {
                         color: Theme.of(context).highlightColor
                       ),
                     ),
-                    child: value ? Image.file(addPostModel.croppedFile!) : Image.network(currentUserDoc['imageURL']),
+                    child: value ? Image.file(addPostModel.croppedFile!) : Image.network(mainModel.currentUserDoc['imageURL']),
                   ),
                   SizedBox(
                     height: size.height * 0.05,
@@ -77,7 +78,7 @@ class PickPostImagePage extends StatelessWidget {
                           AddLinkButton(addPostModel: addPostModel),
                         ],
                       ),
-                      Center(child: UploadButton(addPostModel: addPostModel, currentUserDoc: currentUserDoc)),
+                      Center(child: UploadButton(addPostModel: addPostModel, currentUserDoc: mainModel.currentUserDoc)),
                     ],
                   ),
                 ],
