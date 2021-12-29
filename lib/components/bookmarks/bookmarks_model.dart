@@ -79,8 +79,8 @@ class BookmarksModel extends ChangeNotifier {
 
   Future onRefresh() async {
     await getNewBookmarks(bookmarkedPostIds);
-    notifyListeners();
     refreshController.refreshCompleted();
+    notifyListeners();
   }
 
   Future onLoading() async {

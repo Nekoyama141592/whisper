@@ -106,8 +106,8 @@ class RecommendersModel extends ChangeNotifier {
   
   Future onRefresh() async {
     await getNewRecommenders();
-    notifyListeners();
     refreshController.refreshCompleted();
+    notifyListeners();
   }
 
   Future onLoading() async {

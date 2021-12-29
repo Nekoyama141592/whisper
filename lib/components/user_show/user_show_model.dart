@@ -101,8 +101,8 @@ class UserShowModel extends ChangeNotifier {
 
   Future onRefresh() async {
     await getNewUserShowPosts();
-    notifyListeners();
     refreshController.refreshCompleted();
+    notifyListeners();
   }
 
   Future getNewUserShowPosts() async {
@@ -150,13 +150,7 @@ class UserShowModel extends ChangeNotifier {
     croppedFile = null;
     croppedFile = await ImageCropper.cropImage(
       sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?
-      [
-        CropAspectRatioPreset.square,
-      ]
-      : [
-        CropAspectRatioPreset.square,
-      ],
+      aspectRatioPresets: Platform.isAndroid ?[ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
       androidUiSettings: const AndroidUiSettings(
         toolbarTitle: 'Cropper',
         toolbarColor: kPrimaryColor,
@@ -168,10 +162,7 @@ class UserShowModel extends ChangeNotifier {
         title: 'Cropper',
       )
     );
-    if (croppedFile != null) {
-      isCropped = true;
-    }
-    notifyListeners();
+    if (croppedFile != null) { isCropped = true; }
   }
 
   Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
@@ -184,9 +175,7 @@ class UserShowModel extends ChangeNotifier {
       .ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
       downloadURL = await FirebaseStorage.instance
       .ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
-    } catch(e) {
-      print(e.toString());
-    }
+    } catch(e) { print(e.toString()); }
     return downloadURL;
   }
 

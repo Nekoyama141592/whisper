@@ -103,20 +103,21 @@ class MyProfileModel extends ChangeNotifier {
 
   Future onRefresh() async {
     await getNewMyProfilePosts();
-    notifyListeners();
     refreshController.refreshCompleted();
-  }
-
-  Future getNewMyProfilePosts() async {
-    await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get().then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-    });
+    notifyListeners();
   }
 
   Future onLoading() async {
     await getOldMyProfilePosts();
     refreshController.loadComplete();
     notifyListeners();
+  }
+
+
+  Future getNewMyProfilePosts() async {
+    await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get().then((qshot) {
+      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+    });
   }
 
   Future getPosts() async {
@@ -158,14 +159,12 @@ class MyProfileModel extends ChangeNotifier {
         CropAspectRatioPreset.square,
       ]
       : [
-        // CropAspectRatioPreset.original,
         CropAspectRatioPreset.square,
       ],
       androidUiSettings: const AndroidUiSettings(
         toolbarTitle: 'Cropper',
         toolbarColor: kPrimaryColor,
         toolbarWidgetColor: Colors.white,
-        // initAspectRatio: CropAspectRatioPreset.original,
         initAspectRatio: CropAspectRatioPreset.square,
         lockAspectRatio: false
       ),
@@ -176,7 +175,6 @@ class MyProfileModel extends ChangeNotifier {
     if (croppedFile != null) {
       isCropped = true;
     }
-    notifyListeners();
   }
 
   Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {

@@ -95,8 +95,8 @@ class FeedsModel extends ChangeNotifier {
   
   Future onRefresh() async {
     await getNewFeeds();
-    notifyListeners();
     refreshController.refreshCompleted();
+    notifyListeners();
   }
 
   Future onLoading() async {
