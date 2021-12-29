@@ -205,9 +205,6 @@ class OnePostModel extends ChangeNotifier {
       currentSongMapNotifier.value = currentSongDoc!.data() as Map<String,dynamic>;
       // update playlist
       final playlist = sequenceState.effectiveSequence;
-      // playlist.map((item) {
-      //   currentSongDocs.add(item.tag);
-      // });
       // update shuffle mode
       isShuffleModeEnabledNotifier.value = 
       sequenceState.shuffleModeEnabled;

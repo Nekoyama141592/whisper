@@ -49,7 +49,7 @@ class PostSearchModel extends ChangeNotifier{
 
   Future<void> init() async {
     audioPlayer = AudioPlayer();
-    await setPrefs();
+    prefs = await SharedPreferences.getInstance();
     await setSpeed(prefs: prefs);
   }
 
@@ -210,10 +210,6 @@ class PostSearchModel extends ChangeNotifier{
       await audioPlayer.setSpeed(speedNotifier.value);
       await prefs.setDouble('speed', speedNotifier.value);
     }
-  }
-
-  Future setPrefs() async {
-    prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> setSpeed({ required SharedPreferences prefs }) async {

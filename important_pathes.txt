@@ -1,0 +1,10 @@
+// songs
+// command + P
+lib/constants/voids.dart
+lib/components/bookmarks/bookmarks_model.dart
+lib/components/home/feeds/feeds_model.dart
+lib/components/home/recommenders/recommenders_model.dart
+lib/components/user_show/user_show_model.dart
+lib/components/search/post_search/post_search_model.dart
+lib/components/my_profile/my_profile_model.dart
+lib/one_post/one_post_model.dart
