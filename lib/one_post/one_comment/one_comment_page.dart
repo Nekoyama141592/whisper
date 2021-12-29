@@ -52,7 +52,7 @@ class OneCommentPage extends ConsumerWidget {
                   routes.toPostShowPage(
                     context: context,
                     speedNotifier: onePostModel.speedNotifier,
-                    speedControll:  () async { onePostModel.speedControll(prefs: mainModel.prefs); },
+                    speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
                     currentSongMapNotifier: onePostModel.currentSongMapNotifier, 
                     progressNotifier: onePostModel.progressNotifier, 
                     seek: onePostModel.seek, 

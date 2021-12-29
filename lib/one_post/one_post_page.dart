@@ -29,7 +29,7 @@ class OnePostPage extends ConsumerWidget {
     return Scaffold(
       body: PostShowPage(
         speedNotifier: onePostModel.speedNotifier, 
-        speedControll: () { onePostModel.speedControll(prefs: mainModel.prefs); },
+        speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
         currentSongMapNotifier: onePostModel.currentSongMapNotifier, 
         progressNotifier: onePostModel.progressNotifier, 
         seek: onePostModel.seek, 

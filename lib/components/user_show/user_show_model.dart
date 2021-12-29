@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -74,7 +75,7 @@ class UserShowModel extends ChangeNotifier {
     passiveUid = givePassiveUserDoc['uid'];
     prefs = givePrefs;
     await getPosts();
-    await setSpeed(prefs: prefs);
+    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     listenForStates();
     endLoading();
   }
@@ -441,23 +442,6 @@ class UserShowModel extends ChangeNotifier {
 
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
-  }
-
-  Future speedControll({ required SharedPreferences prefs}) async {
-    if (speedNotifier.value == 4.0) {
-      speedNotifier.value = 1.0;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    } else {
-      speedNotifier.value += 0.5;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    }
-  }
-
-  Future<void> setSpeed({ required SharedPreferences prefs }) async {
-    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    await audioPlayer.setSpeed(speedNotifier.value);
   }
 
   void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {

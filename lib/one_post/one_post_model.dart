@@ -120,23 +120,6 @@ class OnePostModel extends ChangeNotifier {
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
   }
-
-  void setSpeed({ required SharedPreferences prefs}) {
-    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    audioPlayer.setSpeed(speedNotifier.value);
-  }
-
-  Future speedControll({ required SharedPreferences prefs }) async {
-    if (speedNotifier.value == 4.0) {
-      speedNotifier.value = 1.0;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    } else {
-      speedNotifier.value += 0.5;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    }
-  }
   
   void listenForStates() {
     listenForChangesInPlayerState();

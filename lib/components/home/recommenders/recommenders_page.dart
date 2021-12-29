@@ -47,7 +47,7 @@ class RecommendersPage extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: recommendersModel.speedNotifier,
-            speedControll:  () async { recommendersModel.speedControll(prefs: mainModel.prefs); },
+            speedControll:  () async { await voids.speedControll(audioPlayer: recommendersModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: recommendersModel.speedNotifier); },
             currentSongMapNotifier: recommendersModel.currentSongMapNotifier, 
             progressNotifier: recommendersModel.progressNotifier, 
             seek: recommendersModel.seek, 

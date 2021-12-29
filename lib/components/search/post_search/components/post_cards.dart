@@ -92,7 +92,7 @@ class PostCards extends ConsumerWidget {
                   routes.toPostShowPage(
                     context: context,
                     speedNotifier: postSearchModel.speedNotifier,
-                    speedControll:  () async { postSearchModel.speedControll(prefs: mainModel.prefs); },
+                    speedControll:  () async { await voids.setSpeed(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },
                     currentSongMapNotifier: postSearchModel.currentSongMapNotifier, 
                     progressNotifier: postSearchModel.progressNotifier, 
                     seek: postSearchModel.seek, 

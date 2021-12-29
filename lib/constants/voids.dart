@@ -5,8 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+// notifiers
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
@@ -112,5 +117,22 @@ Future<void> onNotificationPressed({ required BuildContext context ,required Mai
     }
   } else {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
+  }
+}
+
+Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
+  speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+  await audioPlayer.setSpeed(speedNotifier.value);
+}
+
+Future<void> speedControll({ required ValueNotifier<double> speedNotifier, required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
+  if (speedNotifier.value == 4.0) {
+    speedNotifier.value = 1.0;
+    await audioPlayer.setSpeed(speedNotifier.value);
+    await prefs.setDouble('speed', speedNotifier.value);
+  } else {
+    speedNotifier.value += 0.5;
+    await audioPlayer.setSpeed(speedNotifier.value);
+    await prefs.setDouble('speed', speedNotifier.value);
   }
 }

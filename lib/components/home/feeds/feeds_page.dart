@@ -51,7 +51,7 @@ class FeedsPage extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: feedsModel.speedNotifier,
-            speedControll:  () async { feedsModel.speedControll(prefs: mainModel.prefs); },
+            speedControll:  () async { await voids.speedControll(audioPlayer: feedsModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: feedsModel.speedNotifier); },
             currentSongMapNotifier: feedsModel.currentSongMapNotifier, 
             progressNotifier: feedsModel.progressNotifier, 
             seek: feedsModel.seek, 

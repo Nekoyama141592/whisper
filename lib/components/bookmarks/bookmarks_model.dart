@@ -59,7 +59,7 @@ class BookmarksModel extends ChangeNotifier {
     setBookmarkedPostIds();
     await getBookmarks(bookmarkedPostIds);
     prefs = await SharedPreferences.getInstance();
-    setSpeed();
+    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     listenForStates();
     endLoading();
   }
@@ -292,27 +292,10 @@ class BookmarksModel extends ChangeNotifier {
     audioPlayer.seekToNext();
   }
 
-  void setSpeed() {
-    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    audioPlayer.setSpeed(speedNotifier.value);
-  }
-
   void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
     pause();
     editPostInfoModel.isEditing = true;
     notifyListeners();
-  }
-
-  Future speedControll({ required SharedPreferences prefs}) async {
-    if (speedNotifier.value == 4.0) {
-      speedNotifier.value = 1.0;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    } else {
-      speedNotifier.value += 0.5;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    }
   }
   
   void listenForStates() {
@@ -322,6 +305,7 @@ class BookmarksModel extends ChangeNotifier {
     listenForChangesInTotalDuration();
     listenForChangesInSequenceState();
   }
+  
   void listenForChangesInPlayerState() {
     audioPlayer.playerStateStream.listen((playerState) {
       final isPlaying = playerState.playing;

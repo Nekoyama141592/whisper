@@ -82,7 +82,7 @@ class UserShowPostScreen extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: userShowModel.speedNotifier,
-            speedControll:  () async { userShowModel.speedControll(prefs: mainModel.prefs); },
+            speedControll:  () async { await voids.setSpeed(audioPlayer: userShowModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: userShowModel.speedNotifier); },
             currentSongMapNotifier: userShowModel.currentSongMapNotifier, 
             progressNotifier: userShowModel.progressNotifier, 
             seek: userShowModel.seek, 

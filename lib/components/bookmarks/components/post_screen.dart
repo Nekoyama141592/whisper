@@ -64,7 +64,7 @@ class PostScreen extends ConsumerWidget {
             routes.toPostShowPage(
               context: context,
               speedNotifier: bookmarksModel.speedNotifier,
-              speedControll:  () async { bookmarksModel.speedControll(prefs: mainModel.prefs); },
+              speedControll:  () async { await voids.speedControll(audioPlayer: bookmarksModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: bookmarksModel.speedNotifier); },
               currentSongMapNotifier: bookmarksModel.currentSongMapNotifier, 
               progressNotifier: bookmarksModel.progressNotifier, 
               seek: bookmarksModel.seek, 

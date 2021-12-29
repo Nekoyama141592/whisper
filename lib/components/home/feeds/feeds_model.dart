@@ -71,7 +71,7 @@ class FeedsModel extends ChangeNotifier {
     await setMutesAndBlocks();
     setFollowUids();
     await getFeeds();
-    setSpeed(prefs: prefs);
+    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     listenForStates();
     endLoading();
   }
@@ -330,27 +330,10 @@ class FeedsModel extends ChangeNotifier {
     audioPlayer.seekToNext();
   }
 
-  Future<void> setSpeed({ required SharedPreferences prefs}) async {
-    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    await audioPlayer.setSpeed(speedNotifier.value);
-  }
-
   void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
     pause();
     editPostInfoModel.isEditing = true;
     notifyListeners();
-  }
-
-  Future speedControll({ required SharedPreferences prefs}) async {
-    if (speedNotifier.value == 4.0) {
-      speedNotifier.value = 1.0;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    } else {
-      speedNotifier.value += 0.5;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    }
   }
 
   void listenForStates() {

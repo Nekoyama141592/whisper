@@ -69,7 +69,7 @@ class RecommendersModel extends ChangeNotifier {
     await setMutesAndBlocks();
     await getRecommenders();
     getReadPostIds();
-    setSpeed(prefs: prefs);
+    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     listenForStates();
     endLoading();
   }
@@ -315,23 +315,6 @@ class RecommendersModel extends ChangeNotifier {
 
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
-  }
-
-  Future<void> setSpeed({ required SharedPreferences prefs}) async {
-    speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    await audioPlayer.setSpeed(speedNotifier.value);
-  }
-
-  Future speedControll({ required SharedPreferences prefs }) async {
-    if (speedNotifier.value == 4.0) {
-      speedNotifier.value = 1.0;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    } else {
-      speedNotifier.value += 0.5;
-      await audioPlayer.setSpeed(speedNotifier.value);
-      await prefs.setDouble('speed', speedNotifier.value);
-    }
   }
 
   void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
