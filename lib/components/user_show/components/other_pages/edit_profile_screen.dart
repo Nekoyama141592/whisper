@@ -12,7 +12,7 @@ class EditProfileScreen extends ConsumerWidget {
   
   const EditProfileScreen({
     Key? key,
-    required this.onEditButtonPressed,
+    required this.onCancelButtonPressed,
     required this.onSaveButtonPressed,
     required this.showImagePicker,
     required this.onUserNameChanged,
@@ -21,7 +21,7 @@ class EditProfileScreen extends ConsumerWidget {
     required this.mainModel,
   }) : super(key: key);
 
-  final void Function()? onEditButtonPressed;
+  final void Function()? onCancelButtonPressed;
   final void Function()? onSaveButtonPressed;
   final void Function()? showImagePicker;
   final void Function(String)? onUserNameChanged;
@@ -55,7 +55,7 @@ class EditProfileScreen extends ConsumerWidget {
             Row(
               children: [
                 TextButton(
-                  onPressed: onEditButtonPressed,
+                  onPressed: onCancelButtonPressed,
                   child: Text(
                     'Cancel',
                     style: TextStyle(

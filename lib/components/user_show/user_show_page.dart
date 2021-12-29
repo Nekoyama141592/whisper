@@ -54,14 +54,12 @@ class UserShowPage extends ConsumerWidget {
         child: userShowModel.isEditing ?
         SafeArea(
           child: EditProfileScreen(
-            onEditButtonPressed: () {
-              userShowModel.onEditButtonPressed(mainModel.currentUserDoc);
-            },
+            onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
               await userShowModel.onSaveButtonPressed(context,mainModel.currentUserDoc);
               await mainModel.regetCurrentUserDoc(mainModel.currentUserDoc.id);
             },
-            showImagePicker: () async { await voids.showImagePicker(xfile: userShowModel.xfile, isCropped: userShowModel.isCropped, croppedFile: userShowModel.croppedFile, mainModel: mainModel); },
+            showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
               userShowModel.userName = text;
             },

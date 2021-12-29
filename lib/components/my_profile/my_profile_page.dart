@@ -31,16 +31,13 @@ class MyProfilePage extends ConsumerWidget {
     return SafeArea(
       child: myProfileModel.isEditing ?
       EditProfileScreen(
-        onEditButtonPressed: () {
-          myProfileModel.isEditing = true;
-          myProfileModel.reload();
-        }, 
+        onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
         onSaveButtonPressed: () async {
           await myProfileModel.onSaveButtonPressed(context,mainModel.currentUserDoc);
           await mainModel.regetCurrentUserDoc(mainModel.currentUserDoc.id);
         }, 
         showImagePicker: () async {
-          await voids.showImagePicker(xfile: myProfileModel.xfile, isCropped: myProfileModel.isCropped, croppedFile: myProfileModel.croppedFile, mainModel: mainModel);
+          await myProfileModel.showImagePicker();
         }, 
         onUserNameChanged: (text) {
           myProfileModel.userName = text;

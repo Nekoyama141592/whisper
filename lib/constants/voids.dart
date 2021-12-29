@@ -408,30 +408,3 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
     }
   }
 }
-
-Future showImagePicker({ required XFile? xfile, required bool isCropped, required File? croppedFile, required MainModel mainModel }) async {
-  final ImagePicker _picker = ImagePicker();
-  xfile = await _picker.pickImage(source: ImageSource.gallery);
-  if (xfile != null) { await cropImage(isCropped: isCropped, croppedFile: croppedFile, xfile: xfile); }
-  mainModel.reload();
-}
-
-Future cropImage({ required bool isCropped, required File? croppedFile, required XFile? xfile }) async {
-  isCropped = false;
-  croppedFile = null;
-  croppedFile = await ImageCropper.cropImage(
-    sourcePath: xfile!.path,
-    aspectRatioPresets: Platform.isAndroid ?[ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
-    androidUiSettings: const AndroidUiSettings(
-      toolbarTitle: 'Cropper',
-      toolbarColor: kPrimaryColor,
-      toolbarWidgetColor: Colors.white,
-      initAspectRatio: CropAspectRatioPreset.square,
-      lockAspectRatio: false
-    ),
-    iosUiSettings: const IOSUiSettings(
-      title: 'Cropper',
-    )
-  );
-  if (croppedFile != null) { isCropped = true; }
-}
