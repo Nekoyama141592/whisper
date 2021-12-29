@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
@@ -44,35 +45,32 @@ class RecommendersPage extends ConsumerWidget {
         postDocs: recommendersModel.recommenderDocs, 
         route: () {
           routes.toPostShowPage(
-            context,
-            recommendersModel.speedNotifier,
-            () async { await recommendersModel.speedControll(); },
-            recommendersModel.currentSongMapNotifier, 
-            recommendersModel.progressNotifier, 
-            recommendersModel.seek, 
-            recommendersModel.repeatButtonNotifier, 
-            () { recommendersModel.onRepeatButtonPressed(); }, 
-            recommendersModel.isFirstSongNotifier, 
-            () { recommendersModel.onPreviousSongButtonPressed(); }, 
-            recommendersModel.playButtonNotifier, 
-            () async { 
-              recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-              await officialAdsensesModel.onPlayButtonPressed(context);
+            context: context,
+            speedNotifier: recommendersModel.speedNotifier,
+            speedControll:  () async { recommendersModel.speedControll(prefs: mainModel.prefs); },
+            currentSongMapNotifier: recommendersModel.currentSongMapNotifier, 
+            progressNotifier: recommendersModel.progressNotifier, 
+            seek: recommendersModel.seek, 
+            repeatButtonNotifier: recommendersModel.repeatButtonNotifier, 
+            onRepeatButtonPressed:  () { recommendersModel.onRepeatButtonPressed(); }, 
+            isFirstSongNotifier: recommendersModel.isFirstSongNotifier, 
+            onPreviousSongButtonPressed:  () { recommendersModel.onPreviousSongButtonPressed(); }, 
+            playButtonNotifier: recommendersModel.playButtonNotifier, 
+            play: () async { 
+              await voids.play(audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentSongMapNotifier.value['postId'] );
             }, 
-            () { recommendersModel.pause(); }, 
-            recommendersModel.isLastSongNotifier, 
-            () { recommendersModel.onNextSongButtonPressed(); },
-            () async {
+            pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
+            isLastSongNotifier: recommendersModel.isLastSongNotifier, 
+            onNextSongButtonPressed:  () { recommendersModel.onNextSongButtonPressed(); },
+            toCommentsPage:  () async {
               await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, recommendersModel.currentSongMapNotifier.value['postId']);
             },
-            () {
-              recommendersModel.pause();
-              editPostInfoModel.isEditing = true;
-              editPostInfoModel.reload();
+            toEditingMode:  () {
+              recommendersModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
             },
-            mainModel
-          );
-        },  
+            mainModel: mainModel
+          ); 
+        }, 
         progressNotifier: recommendersModel.progressNotifier, 
         seek: recommendersModel.seek, 
         currentSongMapNotifier: recommendersModel.currentSongMapNotifier ,

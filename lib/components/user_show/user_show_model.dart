@@ -24,6 +24,7 @@ import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/constants/states.dart';
 // models
 import 'package:whisper/main_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
@@ -73,7 +74,7 @@ class UserShowModel extends ChangeNotifier {
     passiveUid = givePassiveUserDoc['uid'];
     prefs = givePrefs;
     await getPosts();
-    await setSpeed();
+    await setSpeed(prefs: prefs);
     listenForStates();
     endLoading();
   }
@@ -442,7 +443,7 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer.seekToNext();
   }
 
-  Future speedControll() async {
+  Future speedControll({ required SharedPreferences prefs}) async {
     if (speedNotifier.value == 4.0) {
       speedNotifier.value = 1.0;
       await audioPlayer.setSpeed(speedNotifier.value);
@@ -454,9 +455,15 @@ class UserShowModel extends ChangeNotifier {
     }
   }
 
-  Future<void> setSpeed() async {
+  Future<void> setSpeed({ required SharedPreferences prefs }) async {
     speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
     await audioPlayer.setSpeed(speedNotifier.value);
+  }
+
+  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
+    pause();
+    editPostInfoModel.isEditing = true;
+    notifyListeners();
   }
 
   void listenForStates() {

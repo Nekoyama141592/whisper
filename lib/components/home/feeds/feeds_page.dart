@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/judge_screen.dart';
@@ -48,34 +49,31 @@ class FeedsPage extends ConsumerWidget {
         postDocs: postDocs, 
         route: () {
           routes.toPostShowPage(
-            context, 
-            feedsModel.speedNotifier,
-            () async { feedsModel.speedControll(); },
-            feedsModel.currentSongMapNotifier, 
-            feedsModel.progressNotifier, 
-            feedsModel.seek, 
-            feedsModel.repeatButtonNotifier, 
-            () { feedsModel.onRepeatButtonPressed(); }, 
-            feedsModel.isFirstSongNotifier, 
-            () { feedsModel.onPreviousSongButtonPressed(); }, 
-            feedsModel.playButtonNotifier, 
-            () async { 
-              feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
-              await officialAdsensesModel.onPlayButtonPressed(context);
+            context: context,
+            speedNotifier: feedsModel.speedNotifier,
+            speedControll:  () async { feedsModel.speedControll(prefs: mainModel.prefs); },
+            currentSongMapNotifier: feedsModel.currentSongMapNotifier, 
+            progressNotifier: feedsModel.progressNotifier, 
+            seek: feedsModel.seek, 
+            repeatButtonNotifier: feedsModel.repeatButtonNotifier, 
+            onRepeatButtonPressed:  () { feedsModel.onRepeatButtonPressed(); }, 
+            isFirstSongNotifier: feedsModel.isFirstSongNotifier, 
+            onPreviousSongButtonPressed:  () { feedsModel.onPreviousSongButtonPressed(); }, 
+            playButtonNotifier: feedsModel.playButtonNotifier, 
+            play: () async { 
+              await voids.play(audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: feedsModel.currentSongMapNotifier.value['postId'] );
             }, 
-            () { feedsModel.pause(); }, 
-            feedsModel.isLastSongNotifier, 
-            () { feedsModel.onNextSongButtonPressed(); },
-            () async {
+            pause: () { voids.pause(audioPlayer: feedsModel.audioPlayer); }, 
+            isLastSongNotifier: feedsModel.isLastSongNotifier, 
+            onNextSongButtonPressed:  () { feedsModel.onNextSongButtonPressed(); },
+            toCommentsPage:  () async {
               await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, feedsModel.currentSongMapNotifier.value['postId']);
             },
-            () {
-              feedsModel.pause();
-              editPostInfoModel.isEditing = true;
-              editPostInfoModel.reload();
+            toEditingMode:  () {
+              feedsModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
             },
-            mainModel
-          );
+            mainModel: mainModel
+          ); 
         }, 
         progressNotifier: feedsModel.progressNotifier, 
         seek: feedsModel.seek, 

@@ -74,20 +74,21 @@ void showCupertinoDialogue({required BuildContext context, required String title
   });
 }
 
-Future<void> play({ required AudioPlayer audioPlayer ,required List<dynamic> readPostIds, required List<dynamic> readPosts, required DocumentSnapshot currentUserDoc, required String postId })  async {
+Future<void> play({ required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId })  async {
     audioPlayer.play();
-    if (!readPostIds.contains(postId)) {
+    if (!mainModel.readPostIds.contains(postId)) {
       final map = {
         'createdAt': Timestamp.now(),
         'durationInt': 0,
         'postId': postId,
       };
-      readPosts.add(map);
+      
+      mainModel.readPosts.add(map);
       await FirebaseFirestore.instance
       .collection('users')
-      .doc(currentUserDoc.id)
+      .doc(mainModel.currentUserDoc.id)
       .update({
-        'readPosts': readPosts,
+        'readPosts': mainModel.readPosts,
       });
     }
   }

@@ -18,8 +18,8 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-
-
+// model
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 final feedsProvider = ChangeNotifierProvider(
   (ref) => FeedsModel()
 );
@@ -70,7 +70,7 @@ class FeedsModel extends ChangeNotifier {
     await setMutesAndBlocks();
     setFollowUids();
     await getFeeds();
-    setSpeed();
+    setSpeed(prefs: prefs);
     listenForStates();
     endLoading();
   }
@@ -330,12 +330,18 @@ class FeedsModel extends ChangeNotifier {
     audioPlayer.seekToNext();
   }
 
-  void setSpeed() {
+  Future<void> setSpeed({ required SharedPreferences prefs}) async {
     speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    audioPlayer.setSpeed(speedNotifier.value);
+    await audioPlayer.setSpeed(speedNotifier.value);
   }
 
-  Future speedControll() async {
+  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
+    pause();
+    editPostInfoModel.isEditing = true;
+    notifyListeners();
+  }
+
+  Future speedControll({ required SharedPreferences prefs}) async {
     if (speedNotifier.value == 4.0) {
       speedNotifier.value = 1.0;
       await audioPlayer.setSpeed(speedNotifier.value);

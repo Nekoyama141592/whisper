@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
@@ -16,7 +17,6 @@ import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
-
 class UserShowPostScreen extends ConsumerWidget {
   
   const UserShowPostScreen({
@@ -78,37 +78,34 @@ class UserShowPostScreen extends ConsumerWidget {
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
         postDocs: userShowModel.userShowDocs, 
-        route: (){
+        route: () {
           routes.toPostShowPage(
-          context, 
-          userShowModel.speedNotifier,
-          () async { await userShowModel.speedControll(); },
-          userShowModel.currentSongMapNotifier, 
-          userShowModel.progressNotifier, 
-          userShowModel.seek, 
-          userShowModel.repeatButtonNotifier, 
-          () { userShowModel.onRepeatButtonPressed(); }, 
-          userShowModel.isFirstSongNotifier, 
-          () { userShowModel.onPreviousSongButtonPressed(); }, 
-          userShowModel.playButtonNotifier, 
-          () async { 
-            userShowModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-            await officialAdsensesModel.onPlayButtonPressed(context);
-          }, 
-          () { userShowModel.pause(); }, 
-          userShowModel.isLastSongNotifier, 
-          () { userShowModel.onNextSongButtonPressed(); },
-          () async {
-            await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, userShowModel.currentSongMapNotifier.value['postId']);
-          },
-          () {
-            userShowModel.pause();
-            editPostInfoModel.isEditing = true;
-            editPostInfoModel.reload();
-          },
-          mainModel
-          );
-        },
+            context: context,
+            speedNotifier: userShowModel.speedNotifier,
+            speedControll:  () async { userShowModel.speedControll(prefs: mainModel.prefs); },
+            currentSongMapNotifier: userShowModel.currentSongMapNotifier, 
+            progressNotifier: userShowModel.progressNotifier, 
+            seek: userShowModel.seek, 
+            repeatButtonNotifier: userShowModel.repeatButtonNotifier, 
+            onRepeatButtonPressed:  () { userShowModel.onRepeatButtonPressed(); }, 
+            isFirstSongNotifier: userShowModel.isFirstSongNotifier, 
+            onPreviousSongButtonPressed:  () { userShowModel.onPreviousSongButtonPressed(); }, 
+            playButtonNotifier: userShowModel.playButtonNotifier, 
+            play: () async { 
+              await voids.play(audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: userShowModel.currentSongMapNotifier.value['postId'] );
+            }, 
+            pause: () { voids.pause(audioPlayer: userShowModel.audioPlayer); }, 
+            isLastSongNotifier: userShowModel.isLastSongNotifier, 
+            onNextSongButtonPressed:  () { userShowModel.onNextSongButtonPressed(); },
+            toCommentsPage:  () async {
+              await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, userShowModel.currentSongMapNotifier.value['postId']);
+            },
+            toEditingMode:  () {
+              userShowModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+            },
+            mainModel: mainModel
+          ); 
+        }, 
         progressNotifier: userShowModel.progressNotifier,
         seek: userShowModel.seek,
         currentSongMapNotifier: userShowModel.currentSongMapNotifier,

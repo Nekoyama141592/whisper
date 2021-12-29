@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/posts/components/details/post_card.dart';
@@ -89,34 +90,31 @@ class PostCards extends ConsumerWidget {
               AudioWindow(
                 route: () {
                   routes.toPostShowPage(
-                    context,
-                    postSearchModel.speedNotifier,
-                    () async { await postSearchModel.speedControll(); },
-                    postSearchModel.currentSongMapNotifier, 
-                    postSearchModel.progressNotifier, 
-                    postSearchModel.seek, 
-                    postSearchModel.repeatButtonNotifier, 
-                    () { postSearchModel.onRepeatButtonPressed(); }, 
-                    postSearchModel.isFirstSongNotifier,
-                    () { postSearchModel.onPreviousSongButtonPressed(); }, 
-                    postSearchModel.playButtonNotifier, 
-                    () async { 
-                      postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-                      await officialAdsensesModel.onPlayButtonPressed(context);
+                    context: context,
+                    speedNotifier: postSearchModel.speedNotifier,
+                    speedControll:  () async { postSearchModel.speedControll(prefs: mainModel.prefs); },
+                    currentSongMapNotifier: postSearchModel.currentSongMapNotifier, 
+                    progressNotifier: postSearchModel.progressNotifier, 
+                    seek: postSearchModel.seek, 
+                    repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
+                    onRepeatButtonPressed:  () { postSearchModel.onRepeatButtonPressed(); }, 
+                    isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
+                    onPreviousSongButtonPressed:  () { postSearchModel.onPreviousSongButtonPressed(); }, 
+                    playButtonNotifier: postSearchModel.playButtonNotifier, 
+                    play: () async { 
+                      await voids.play(audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentSongMapNotifier.value['postId'] );
                     }, 
-                    () { postSearchModel.pause(); }, 
-                    postSearchModel.isLastSongNotifier, 
-                    () { postSearchModel.onNextSongButtonPressed(); },
-                    () async {
+                    pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
+                    isLastSongNotifier: postSearchModel.isLastSongNotifier, 
+                    onNextSongButtonPressed:  () { postSearchModel.onNextSongButtonPressed(); },
+                    toCommentsPage:  () async {
                       await commentsModel.init(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel, postSearchModel.currentSongMapNotifier.value['postId']);
                     },
-                    () {
-                      postSearchModel.pause();
-                      editPostInfoModel.isEditing = true;
-                      editPostInfoModel.reload();
+                    toEditingMode:  () {
+                      postSearchModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
                     },
-                    mainModel
-                  );
+                    mainModel: mainModel
+                  ); 
                 }, 
                 progressNotifier: postSearchModel.progressNotifier, 
                 seek: postSearchModel.seek, 

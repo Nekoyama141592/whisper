@@ -50,36 +50,36 @@ class OneCommentPage extends ConsumerWidget {
               OnePostAudioWindow(
                 route: () {
                   routes.toPostShowPage(
-                    context,
-                    onePostModel.speedNotifier,
-                    () async { onePostModel.speedControll(prefs: mainModel.prefs); },
-                    onePostModel.currentSongMapNotifier, 
-                    onePostModel.progressNotifier, 
-                    onePostModel.seek, 
-                    onePostModel.repeatButtonNotifier, 
-                    () { onePostModel.onRepeatButtonPressed(); }, 
-                    onePostModel.isFirstSongNotifier, 
-                    () { onePostModel.onPreviousSongButtonPressed(); }, 
-                    onePostModel.playButtonNotifier, 
-                    () async { 
-                      await voids.play(audioPlayer: onePostModel.audioPlayer, readPostIds: mainModel.readPostIds, readPosts: mainModel.readPosts, currentUserDoc: mainModel.currentUserDoc, postId: onePostModel.currentSongMapNotifier.value['postId'] );
+                    context: context,
+                    speedNotifier: onePostModel.speedNotifier,
+                    speedControll:  () async { onePostModel.speedControll(prefs: mainModel.prefs); },
+                    currentSongMapNotifier: onePostModel.currentSongMapNotifier, 
+                    progressNotifier: onePostModel.progressNotifier, 
+                    seek: onePostModel.seek, 
+                    repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
+                    onRepeatButtonPressed:  () { onePostModel.onRepeatButtonPressed(); }, 
+                    isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
+                    onPreviousSongButtonPressed:  () { onePostModel.onPreviousSongButtonPressed(); }, 
+                    playButtonNotifier: onePostModel.playButtonNotifier, 
+                    play: () async { 
+                      await voids.play(audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentSongMapNotifier.value['postId'] );
                     }, 
-                    () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
-                    onePostModel.isLastSongNotifier, 
-                    () { onePostModel.onNextSongButtonPressed(); },
-                    () async {
+                    pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
+                    isLastSongNotifier: onePostModel.isLastSongNotifier, 
+                    onNextSongButtonPressed:  () { onePostModel.onNextSongButtonPressed(); },
+                    toCommentsPage:  () async {
                       await commentsModel.init(context, onePostModel.audioPlayer, onePostModel.currentSongMapNotifier, mainModel, onePostModel.currentSongMapNotifier.value['postId']);
                     },
-                    () {
+                    toEditingMode:  () {
                       onePostModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
                     },
-                    mainModel
-                  );
+                    mainModel: mainModel
+                  ); 
                 }, 
                 progressNotifier: onePostModel.progressNotifier, 
                 playButtonNotifier: onePostModel.playButtonNotifier, 
                 seek: onePostModel.seek, 
-                play: () async { await voids.play(audioPlayer: onePostModel.audioPlayer, readPostIds: mainModel.readPostIds, readPosts: mainModel.readPosts, currentUserDoc: mainModel.currentUserDoc, postId: onePostModel.currentSongMapNotifier.value['postId'] ); },
+                play: () async { await voids.play(audioPlayer: onePostModel.audioPlayer,mainModel: mainModel, postId: onePostModel.currentSongMapNotifier.value['postId'] ); },
                 pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                 title: Text(
                   onePostModel.currentSongMapNotifier.value['title'],

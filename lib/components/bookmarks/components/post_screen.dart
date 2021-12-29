@@ -7,6 +7,7 @@ import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/bookmarks/components/post_cards.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
@@ -61,32 +62,31 @@ class PostScreen extends ConsumerWidget {
           postDocs: postDocs, 
           route: () {
             routes.toPostShowPage(
-              context,
-              bookmarksModel.speedNotifier,
-              () async { await bookmarksModel.speedControll(); },
-              bookmarksModel.currentSongMapNotifier, 
-              bookmarksModel.progressNotifier, 
-              bookmarksModel.seek, 
-              bookmarksModel.repeatButtonNotifier, 
-              () { bookmarksModel.onRepeatButtonPressed(); }, 
-              bookmarksModel.isFirstSongNotifier, 
-              () { bookmarksModel.onPreviousSongButtonPressed(); }, 
-              bookmarksModel.playButtonNotifier, 
-              () async { 
-                bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-                await officialAdsensesModel.onPlayButtonPressed(context);
+              context: context,
+              speedNotifier: bookmarksModel.speedNotifier,
+              speedControll:  () async { bookmarksModel.speedControll(prefs: mainModel.prefs); },
+              currentSongMapNotifier: bookmarksModel.currentSongMapNotifier, 
+              progressNotifier: bookmarksModel.progressNotifier, 
+              seek: bookmarksModel.seek, 
+              repeatButtonNotifier: bookmarksModel.repeatButtonNotifier, 
+              onRepeatButtonPressed:  () { bookmarksModel.onRepeatButtonPressed(); }, 
+              isFirstSongNotifier: bookmarksModel.isFirstSongNotifier, 
+              onPreviousSongButtonPressed:  () { bookmarksModel.onPreviousSongButtonPressed(); }, 
+              playButtonNotifier: bookmarksModel.playButtonNotifier, 
+              play: () async { 
+                await voids.play(audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: bookmarksModel.currentSongMapNotifier.value['postId'] );
               }, 
-              () { bookmarksModel.pause(); }, 
-              bookmarksModel.isLastSongNotifier, 
-              () { bookmarksModel.onNextSongButtonPressed(); },
-              () async {
+              pause: () { voids.pause(audioPlayer: bookmarksModel.audioPlayer); }, 
+              isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
+              onNextSongButtonPressed:  () { bookmarksModel.onNextSongButtonPressed(); },
+              toCommentsPage:  () async {
                 await commentsModel.init(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel, bookmarksModel.currentSongMapNotifier.value['postId']);
               },
-              () {
+              toEditingMode:  () {
                 bookmarksModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
               },
-              mainModel
-            );
+              mainModel: mainModel
+            ); 
           }, 
           progressNotifier: bookmarksModel.progressNotifier, 
           seek: bookmarksModel.seek, 

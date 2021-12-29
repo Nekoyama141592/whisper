@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
@@ -77,37 +78,34 @@ class MyProfilePostScreen extends ConsumerWidget {
       padding: EdgeInsets.only(top: 20),
       child: PostCards(
         postDocs: myProfileModel.myProfileDocs, 
-        route: (){
+        route: () {
           routes.toPostShowPage(
-          context, 
-          myProfileModel.speedNotifier,
-          () async { await myProfileModel.speedControll(); },
-          myProfileModel.currentSongMapNotifier, 
-          myProfileModel.progressNotifier, 
-          myProfileModel.seek, 
-          myProfileModel.repeatButtonNotifier, 
-          () { myProfileModel.onRepeatButtonPressed(); }, 
-          myProfileModel.isFirstSongNotifier, 
-          () { myProfileModel.onPreviousSongButtonPressed(); }, 
-          myProfileModel.playButtonNotifier, 
-          () async { 
-            myProfileModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-            await officialAdsensesModel.onPlayButtonPressed(context);
-          }, 
-          () { myProfileModel.pause(); }, 
-          myProfileModel.isLastSongNotifier, 
-          () { myProfileModel.onNextSongButtonPressed(); },
-          () async {
-            await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, myProfileModel.currentSongMapNotifier.value['postId']);
-          },
-          () {
-            myProfileModel.pause();
-            editPostInfoModel.isEditing = true;
-            editPostInfoModel.reload();
-          },
-          mainModel
-          );
-        },
+            context: context,
+            speedNotifier: myProfileModel.speedNotifier,
+            speedControll:  () async { myProfileModel.speedControll(prefs: mainModel.prefs); },
+            currentSongMapNotifier: myProfileModel.currentSongMapNotifier, 
+            progressNotifier: myProfileModel.progressNotifier, 
+            seek: myProfileModel.seek, 
+            repeatButtonNotifier: myProfileModel.repeatButtonNotifier, 
+            onRepeatButtonPressed:  () { myProfileModel.onRepeatButtonPressed(); }, 
+            isFirstSongNotifier: myProfileModel.isFirstSongNotifier, 
+            onPreviousSongButtonPressed:  () { myProfileModel.onPreviousSongButtonPressed(); }, 
+            playButtonNotifier: myProfileModel.playButtonNotifier, 
+            play: () async { 
+              await voids.play(audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: myProfileModel.currentSongMapNotifier.value['postId'] );
+            }, 
+            pause: () { voids.pause(audioPlayer: myProfileModel.audioPlayer); }, 
+            isLastSongNotifier: myProfileModel.isLastSongNotifier, 
+            onNextSongButtonPressed:  () { myProfileModel.onNextSongButtonPressed(); },
+            toCommentsPage:  () async {
+              await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, myProfileModel.currentSongMapNotifier.value['postId']);
+            },
+            toEditingMode:  () {
+              myProfileModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+            },
+            mainModel: mainModel
+          ); 
+        }, 
         progressNotifier: myProfileModel.progressNotifier,
         seek: myProfileModel.seek,
         currentSongMapNotifier: myProfileModel.currentSongMapNotifier,

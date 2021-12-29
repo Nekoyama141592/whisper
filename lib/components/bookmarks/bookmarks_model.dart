@@ -307,7 +307,7 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future speedControll() async {
+  Future speedControll({ required SharedPreferences prefs}) async {
     if (speedNotifier.value == 4.0) {
       speedNotifier.value = 1.0;
       await audioPlayer.setSpeed(speedNotifier.value);

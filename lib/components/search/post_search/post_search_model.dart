@@ -15,6 +15,8 @@ import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// model
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final postSearchProvider = ChangeNotifierProvider(
   (ref) => PostSearchModel()
@@ -45,10 +47,10 @@ class PostSearchModel extends ChangeNotifier{
     init();
   }
 
-  void init() async {
+  Future<void> init() async {
     audioPlayer = AudioPlayer();
     await setPrefs();
-    setSpeed();
+    await setSpeed(prefs: prefs);
   }
 
   void startLoading() {
@@ -198,7 +200,7 @@ class PostSearchModel extends ChangeNotifier{
     audioPlayer.seekToNext();
   }
 
-  Future speedControll() async {
+  Future speedControll({ required SharedPreferences prefs }) async {
     if (speedNotifier.value == 4.0) {
       speedNotifier.value = 1.0;
       await audioPlayer.setSpeed(speedNotifier.value);
@@ -214,9 +216,15 @@ class PostSearchModel extends ChangeNotifier{
     prefs = await SharedPreferences.getInstance();
   }
 
-  void setSpeed() {
+  Future<void> setSpeed({ required SharedPreferences prefs }) async {
     speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-    audioPlayer.setSpeed(speedNotifier.value);
+    await audioPlayer.setSpeed(speedNotifier.value);
+  }
+
+  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
+    pause();
+    editPostInfoModel.isEditing = true;
+    notifyListeners();
   }
 
   void listenForStates() {
