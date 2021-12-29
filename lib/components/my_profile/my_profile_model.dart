@@ -22,7 +22,7 @@ import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // states
-import 'package:whisper/constants/states.dart';
+import 'package:whisper/constants/enums.dart';
 
 final myProfileProvider = ChangeNotifierProvider(
   (ref) => MyProfileModel()

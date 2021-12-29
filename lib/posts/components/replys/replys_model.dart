@@ -12,7 +12,7 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // states
-import 'package:whisper/constants/states.dart';
+import 'package:whisper/constants/enums.dart';
 // model
 import 'package:whisper/main_model.dart';
 
