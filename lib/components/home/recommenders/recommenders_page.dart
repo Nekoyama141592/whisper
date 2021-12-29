@@ -52,16 +52,16 @@ class RecommendersPage extends ConsumerWidget {
             progressNotifier: recommendersModel.progressNotifier, 
             seek: recommendersModel.seek, 
             repeatButtonNotifier: recommendersModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { recommendersModel.onRepeatButtonPressed(); }, 
+            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: recommendersModel.audioPlayer, repeatButtonNotifier: recommendersModel.repeatButtonNotifier); }, 
             isFirstSongNotifier: recommendersModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { recommendersModel.onPreviousSongButtonPressed(); }, 
+            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); }, 
             playButtonNotifier: recommendersModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentSongMapNotifier.value['postId'] );
+              await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { recommendersModel.onNextSongButtonPressed(); },
+            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
             toCommentsPage:  () async {
               await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, recommendersModel.currentSongMapNotifier.value['postId']);
             },
@@ -71,23 +71,24 @@ class RecommendersPage extends ConsumerWidget {
             mainModel: mainModel
           ); 
         }, 
-        progressNotifier: recommendersModel.progressNotifier, 
-        seek: recommendersModel.seek, 
-        currentSongMapNotifier: recommendersModel.currentSongMapNotifier ,
-        playButtonNotifier: recommendersModel.playButtonNotifier, 
-        play: () async { 
-          recommendersModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
-          await officialAdsensesModel.onPlayButtonPressed(context);
+        progressNotifier: recommendersModel.progressNotifier,
+        seek: recommendersModel.seek,
+        currentSongMapNotifier: recommendersModel.currentSongMapNotifier,
+        playButtonNotifier: recommendersModel.playButtonNotifier,
+        play: () async {
+          await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
+        },
+        pause: () {
+          voids.pause(audioPlayer: recommendersModel.audioPlayer);
         }, 
-        pause: () { recommendersModel.pause(); }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: recommendersModel.refreshController,
-        onRefresh: () { recommendersModel.onRefresh(); },
-        onLoading: () { recommendersModel.onLoading(); },
+        onRefresh: () async { await recommendersModel.onRefresh(); },
+        onLoading: () async { await recommendersModel.onLoading(); },
         isFirstSongNotifier: recommendersModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { recommendersModel.onPreviousSongButtonPressed(); },
+        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
         isLastSongNotifier: recommendersModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { recommendersModel.onNextSongButtonPressed(); },
+        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
         mainModel: mainModel,
         recommendersModel: recommendersModel,
       )

@@ -92,21 +92,21 @@ class PostCards extends ConsumerWidget {
                   routes.toPostShowPage(
                     context: context,
                     speedNotifier: postSearchModel.speedNotifier,
-                    speedControll:  () async { await voids.setSpeed(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },
+                    speedControll:  () async { await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },
                     currentSongMapNotifier: postSearchModel.currentSongMapNotifier, 
                     progressNotifier: postSearchModel.progressNotifier, 
                     seek: postSearchModel.seek, 
                     repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
-                    onRepeatButtonPressed:  () { postSearchModel.onRepeatButtonPressed(); }, 
+                    onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: postSearchModel.audioPlayer, repeatButtonNotifier: postSearchModel.repeatButtonNotifier); }, 
                     isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
-                    onPreviousSongButtonPressed:  () { postSearchModel.onPreviousSongButtonPressed(); }, 
+                    onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
                     play: () async { 
-                      await voids.play(audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentSongMapNotifier.value['postId'] );
+                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
                     }, 
                     pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
-                    onNextSongButtonPressed:  () { postSearchModel.onNextSongButtonPressed(); },
+                    onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                     toCommentsPage:  () async {
                       await commentsModel.init(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel, postSearchModel.currentSongMapNotifier.value['postId']);
                     },
@@ -116,20 +116,21 @@ class PostCards extends ConsumerWidget {
                     mainModel: mainModel
                   ); 
                 }, 
-                progressNotifier: postSearchModel.progressNotifier, 
-                seek: postSearchModel.seek, 
-                currentSongMapNotifier: postSearchModel.currentSongMapNotifier ,
-                playButtonNotifier: postSearchModel.playButtonNotifier, 
-                play: () async { 
-                  postSearchModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
-                  await officialAdsensesModel.onPlayButtonPressed(context);
+                progressNotifier: postSearchModel.progressNotifier,
+                seek: postSearchModel.seek,
+                currentSongMapNotifier: postSearchModel.currentSongMapNotifier,
+                playButtonNotifier: postSearchModel.playButtonNotifier,
+                play: () async {
+                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
+                },
+                pause: () {
+                  voids.pause(audioPlayer: postSearchModel.audioPlayer);
                 }, 
-                pause: () { postSearchModel.pause(); }, 
                 currentUserDoc: mainModel.currentUserDoc,
                 isFirstSongNotifier: postSearchModel.isFirstSongNotifier,
-                onPreviousSongButtonPressed: () { postSearchModel.onPreviousSongButtonPressed(); },
+                onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                 isLastSongNotifier: postSearchModel.isLastSongNotifier,
-                onNextSongButtonPressed: () { postSearchModel.onNextSongButtonPressed(); },
+                onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                 mainModel: mainModel,
               )
             ],

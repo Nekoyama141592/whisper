@@ -56,16 +56,16 @@ class FeedsPage extends ConsumerWidget {
             progressNotifier: feedsModel.progressNotifier, 
             seek: feedsModel.seek, 
             repeatButtonNotifier: feedsModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { feedsModel.onRepeatButtonPressed(); }, 
+            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: feedsModel.audioPlayer, repeatButtonNotifier: feedsModel.repeatButtonNotifier); }, 
             isFirstSongNotifier: feedsModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { feedsModel.onPreviousSongButtonPressed(); }, 
+            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: feedsModel.audioPlayer); }, 
             playButtonNotifier: feedsModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: feedsModel.currentSongMapNotifier.value['postId'] );
+              await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: feedsModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: feedsModel.audioPlayer); }, 
             isLastSongNotifier: feedsModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { feedsModel.onNextSongButtonPressed(); },
+            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
             toCommentsPage:  () async {
               await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, feedsModel.currentSongMapNotifier.value['postId']);
             },
@@ -75,23 +75,24 @@ class FeedsPage extends ConsumerWidget {
             mainModel: mainModel
           ); 
         }, 
-        progressNotifier: feedsModel.progressNotifier, 
-        seek: feedsModel.seek, 
-        currentSongMapNotifier: feedsModel.currentSongMapNotifier ,
-        playButtonNotifier: feedsModel.playButtonNotifier, 
-        play: () async { 
-          feedsModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
-          await officialAdsensesModel.onPlayButtonPressed(context);
+        progressNotifier: feedsModel.progressNotifier,
+        seek: feedsModel.seek,
+        currentSongMapNotifier: feedsModel.currentSongMapNotifier,
+        playButtonNotifier: feedsModel.playButtonNotifier,
+        play: () async {
+          await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: feedsModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
+        },
+        pause: () {
+          voids.pause(audioPlayer: feedsModel.audioPlayer);
         }, 
-        pause: () { feedsModel.pause(); }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: feedsModel.refreshController,
-        onRefresh: () { feedsModel.onRefresh(); },
-        onLoading: () { feedsModel.onLoading();},
+        onRefresh: () async { await feedsModel.onRefresh(); },
+        onLoading: () async { await feedsModel.onLoading(); },
         isFirstSongNotifier: feedsModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { feedsModel.onPreviousSongButtonPressed(); },
+        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
         isLastSongNotifier: feedsModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { feedsModel.onNextSongButtonPressed(); },
+        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
         mainModel: mainModel,
         feedsModel: feedsModel,
       )

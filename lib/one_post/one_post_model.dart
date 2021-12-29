@@ -24,7 +24,7 @@ class OnePostModel extends ChangeNotifier {
   // basic
   bool isLoading = false;
   // notifiers
-  AudioPlayer audioPlayer = AudioPlayer();
+  late AudioPlayer audioPlayer;
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -47,7 +47,9 @@ class OnePostModel extends ChangeNotifier {
       currentSongMapNotifier.value = onePostDoc.data()!;
       Uri song = Uri.parse(onePostDoc['audioURL']);
       UriAudioSource audioSource = AudioSource.uri(song,tag: onePostDoc);
+      audioPlayer = AudioPlayer();
       await audioPlayer.setAudioSource(audioSource);
+      voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     }
     endLoading();
     return onePostDoc.exists;
@@ -97,112 +99,7 @@ class OnePostModel extends ChangeNotifier {
     notifyListeners();
     await voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
-
-  // showPage
-  void onRepeatButtonPressed() {
-    repeatButtonNotifier.nextState();
-    switch (repeatButtonNotifier.value) {
-      case RepeatState.off:
-        audioPlayer.setLoopMode(LoopMode.off);
-        break;
-      case RepeatState.repeatSong:
-        audioPlayer.setLoopMode(LoopMode.one);
-        break;
-      case RepeatState.repeatPlaylist:
-        audioPlayer.setLoopMode(LoopMode.all);
-    }
-  }
-
-  void onPreviousSongButtonPressed() {
-    audioPlayer.seekToPrevious();
-  }
-
-  void onNextSongButtonPressed() {
-    audioPlayer.seekToNext();
-  }
   
-  void listenForStates() {
-    listenForChangesInPlayerState();
-    listenForChangesInPlayerPosition();
-    listenForChangesInBufferedPosition();
-    listenForChangesInTotalDuration();
-    listenForChangesInSequenceState();
-  }
-  void listenForChangesInPlayerState() {
-    audioPlayer.playerStateStream.listen((playerState) {
-      final isPlaying = playerState.playing;
-      final processingState = playerState.processingState;
-      if (processingState == ProcessingState.loading ||
-          processingState == ProcessingState.buffering) {
-        playButtonNotifier.value = ButtonState.loading;
-      } else if (!isPlaying) {
-        playButtonNotifier.value = ButtonState.paused;
-      } else if (processingState != ProcessingState.completed) {
-        playButtonNotifier.value = ButtonState.playing;
-      } else {
-        audioPlayer.seek(Duration.zero);
-        audioPlayer.pause();
-      }
-    });
-  }
-
-  void listenForChangesInPlayerPosition() {
-    audioPlayer.positionStream.listen((position) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: position,
-        buffered: oldState.buffered,
-        total: oldState.total,
-      );
-    });
-  }
-
-  void listenForChangesInBufferedPosition() {
-    audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: oldState.current,
-        buffered: bufferedPosition,
-        total: oldState.total,
-      );
-    });
-  }
-
-  void listenForChangesInTotalDuration() {
-    audioPlayer.durationStream.listen((totalDuration) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: oldState.current,
-        buffered: oldState.buffered,
-        total: totalDuration ?? Duration.zero,
-      );
-    });
-  }
-
-  void listenForChangesInSequenceState() {
-    audioPlayer.sequenceStateStream.listen((sequenceState) {
-      if (sequenceState == null) return;
-      // update current song doc
-      final currentItem = sequenceState.currentSource;
-      final DocumentSnapshot<Map<String,dynamic>>? currentSongDoc = currentItem?.tag;
-      currentSongMapNotifier.value = currentSongDoc!.data() as Map<String,dynamic>;
-      // update playlist
-      final playlist = sequenceState.effectiveSequence;
-      // update shuffle mode
-      isShuffleModeEnabledNotifier.value = 
-      sequenceState.shuffleModeEnabled;
-      // update previous and next buttons
-      if (playlist.isEmpty || currentItem == null) {
-        isFirstSongNotifier.value = true;
-        isLastSongNotifier.value = true; 
-      } else {
-        isFirstSongNotifier.value = playlist.first == currentItem;
-        isLastSongNotifier.value = playlist.last == currentItem;
-      }
-    });
-    notifyListeners();
-  }
-
   void onDeleteButtonPressed(BuildContext context,DocumentSnapshot postDoc,DocumentSnapshot currentUserDoc,int i) {
     showCupertinoDialog(
       context: context, builder: (context) {

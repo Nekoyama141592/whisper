@@ -16,6 +16,7 @@ import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
+import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 
 void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
   final String uid = map['uid'];
@@ -79,8 +80,149 @@ void showCupertinoDialogue({required BuildContext context, required String title
   });
 }
 
-Future<void> play({ required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId })  async {
+Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required Map<String,dynamic> notification, required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId}) async {
+
+  await mainModel.addNotificationIdToReadNotificationIds(notification: notification);
+  // Plaase don`t notification['commentId'].
+  // Please use commentNotification['commentId'], replyNotification['elementId']
+  bool postExists = await onePostModel.init(givePostId: givePostId);
+  if (postExists) {
+    bool commentExists = await oneCommentModel.init(giveCommentId: giveCommentId);
+    if (commentExists) {
+      routes.toOneCommentPage(context: context, mainModel: mainModel);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
+  }
+}
+
+// just_audio
+
+Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
+  speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+  await audioPlayer.setSpeed(speedNotifier.value);
+}
+
+Future<void> speedControll({ required ValueNotifier<double> speedNotifier, required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
+  if (speedNotifier.value == 4.0) {
+    speedNotifier.value = 1.0;
+    await audioPlayer.setSpeed(speedNotifier.value);
+    await prefs.setDouble('speed', speedNotifier.value);
+  } else {
+    speedNotifier.value += 0.5;
+    await audioPlayer.setSpeed(speedNotifier.value);
+    await prefs.setDouble('speed', speedNotifier.value);
+  }
+}
+
+void listenForStates({ required AudioPlayer audioPlayer, required PlayButtonNotifier playButtonNotifier, required ProgressNotifier progressNotifier, required ValueNotifier<Map<String,dynamic>> currentSongMapNotifier, required ValueNotifier<bool> isShuffleModeEnabledNotifier, required ValueNotifier<bool> isFirstSongNotifier, required ValueNotifier<bool> isLastSongNotifier}) {
+  listenForChangesInPlayerState(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier);
+  listenForChangesInPlayerPosition(audioPlayer: audioPlayer, progressNotifier: progressNotifier);
+  listenForChangesInBufferedPosition(audioPlayer: audioPlayer, progressNotifier: progressNotifier);
+  listenForChangesInTotalDuration(audioPlayer: audioPlayer, progressNotifier: progressNotifier);
+  listenForChangesInSequenceState(audioPlayer: audioPlayer, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+}
+
+void listenForChangesInPlayerState({ required AudioPlayer audioPlayer, required PlayButtonNotifier playButtonNotifier }) {
+  audioPlayer.playerStateStream.listen((playerState) {
+    final isPlaying = playerState.playing;
+    final processingState = playerState.processingState;
+    if (processingState == ProcessingState.loading ||
+        processingState == ProcessingState.buffering) {
+      playButtonNotifier.value = ButtonState.loading;
+    } else if (!isPlaying) {
+      playButtonNotifier.value = ButtonState.paused;
+    } else if (processingState != ProcessingState.completed) {
+      playButtonNotifier.value = ButtonState.playing;
+    } else {
+      audioPlayer.seek(Duration.zero);
+      audioPlayer.pause();
+    }
+  });
+}
+
+void listenForChangesInPlayerPosition({ required AudioPlayer audioPlayer, required ProgressNotifier progressNotifier}) {
+  audioPlayer.positionStream.listen((position) {
+    final oldState = progressNotifier.value;
+    progressNotifier.value = ProgressBarState(
+      current: position,
+      buffered: oldState.buffered,
+      total: oldState.total,
+    );
+  });
+}
+
+void listenForChangesInBufferedPosition({ required AudioPlayer audioPlayer, required ProgressNotifier progressNotifier }) {
+  audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
+    final oldState = progressNotifier.value;
+    progressNotifier.value = ProgressBarState(
+      current: oldState.current,
+      buffered: bufferedPosition,
+      total: oldState.total,
+    );
+  });
+}
+
+void listenForChangesInTotalDuration({ required AudioPlayer audioPlayer, required ProgressNotifier progressNotifier }) {
+  audioPlayer.durationStream.listen((totalDuration) {
+    final oldState = progressNotifier.value;
+    progressNotifier.value = ProgressBarState(
+      current: oldState.current,
+      buffered: oldState.buffered,
+      total: totalDuration ?? Duration.zero,
+    );
+  });
+}
+
+void listenForChangesInSequenceState({ required AudioPlayer audioPlayer, required ValueNotifier<Map<String,dynamic>> currentSongMapNotifier, required ValueNotifier<bool> isShuffleModeEnabledNotifier, required ValueNotifier<bool> isFirstSongNotifier, required ValueNotifier<bool> isLastSongNotifier }) {
+  audioPlayer.sequenceStateStream.listen((sequenceState) {
+    if (sequenceState == null) return;
+    // update current song doc
+    final currentItem = sequenceState.currentSource;
+    final DocumentSnapshot<Map<String,dynamic>>? currentSongDoc = currentItem?.tag;
+    currentSongMapNotifier.value = currentSongDoc!.data() as Map<String,dynamic>;
+    // update playlist
+    final playlist = sequenceState.effectiveSequence;
+    isShuffleModeEnabledNotifier.value = 
+    sequenceState.shuffleModeEnabled;
+    // update previous and next buttons
+    if (playlist.isEmpty || currentItem == null) {
+      isFirstSongNotifier.value = true;
+      isLastSongNotifier.value = true; 
+    } else {
+      isFirstSongNotifier.value = playlist.first == currentItem;
+      isLastSongNotifier.value = playlist.last == currentItem;
+    }
+  });
+}
+
+void onRepeatButtonPressed({ required AudioPlayer audioPlayer, required RepeatButtonNotifier repeatButtonNotifier}) {
+  repeatButtonNotifier.nextState();
+  switch (repeatButtonNotifier.value) {
+    case RepeatState.off:
+      audioPlayer.setLoopMode(LoopMode.off);
+      break;
+    case RepeatState.repeatSong:
+      audioPlayer.setLoopMode(LoopMode.one);
+      break;
+    case RepeatState.repeatPlaylist:
+      audioPlayer.setLoopMode(LoopMode.all);
+  }
+}
+
+void onPreviousSongButtonPressed({ required AudioPlayer audioPlayer}) {
+  audioPlayer.seekToPrevious();
+}
+
+void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
+  audioPlayer.seekToNext();
+}
+
+Future<void> play({ required BuildContext context ,required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId ,required OfficialAdsensesModel officialAdsensesModel })  async {
     audioPlayer.play();
+     await officialAdsensesModel.onPlayButtonPressed(context);
     if (!mainModel.readPostIds.contains(postId)) {
       final map = {
         'createdAt': Timestamp.now(),
@@ -102,37 +244,4 @@ void pause({ required AudioPlayer audioPlayer}) {
   audioPlayer.pause();
 }
 
-Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required Map<String,dynamic> notification, required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId}) async {
 
-  await mainModel.addNotificationIdToReadNotificationIds(notification: notification);
-  // Plaase don`t notification['commentId'].
-  // Please use commentNotification['commentId'], replyNotification['elementId']
-  bool postExists = await onePostModel.init(givePostId: givePostId);
-  if (postExists) {
-    bool commentExists = await oneCommentModel.init(giveCommentId: giveCommentId);
-    if (commentExists) {
-      routes.toOneCommentPage(context: context, mainModel: mainModel);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
-    }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
-  }
-}
-
-Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
-  speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
-  await audioPlayer.setSpeed(speedNotifier.value);
-}
-
-Future<void> speedControll({ required ValueNotifier<double> speedNotifier, required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
-  if (speedNotifier.value == 4.0) {
-    speedNotifier.value = 1.0;
-    await audioPlayer.setSpeed(speedNotifier.value);
-    await prefs.setDouble('speed', speedNotifier.value);
-  } else {
-    speedNotifier.value += 0.5;
-    await audioPlayer.setSpeed(speedNotifier.value);
-    await prefs.setDouble('speed', speedNotifier.value);
-  }
-}

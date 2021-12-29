@@ -61,50 +61,51 @@ class PostScreen extends ConsumerWidget {
         child: PostCards(
           postDocs: postDocs, 
           route: () {
-            routes.toPostShowPage(
-              context: context,
-              speedNotifier: bookmarksModel.speedNotifier,
-              speedControll:  () async { await voids.speedControll(audioPlayer: bookmarksModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: bookmarksModel.speedNotifier); },
-              currentSongMapNotifier: bookmarksModel.currentSongMapNotifier, 
-              progressNotifier: bookmarksModel.progressNotifier, 
-              seek: bookmarksModel.seek, 
-              repeatButtonNotifier: bookmarksModel.repeatButtonNotifier, 
-              onRepeatButtonPressed:  () { bookmarksModel.onRepeatButtonPressed(); }, 
-              isFirstSongNotifier: bookmarksModel.isFirstSongNotifier, 
-              onPreviousSongButtonPressed:  () { bookmarksModel.onPreviousSongButtonPressed(); }, 
-              playButtonNotifier: bookmarksModel.playButtonNotifier, 
-              play: () async { 
-                await voids.play(audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: bookmarksModel.currentSongMapNotifier.value['postId'] );
-              }, 
-              pause: () { voids.pause(audioPlayer: bookmarksModel.audioPlayer); }, 
-              isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
-              onNextSongButtonPressed:  () { bookmarksModel.onNextSongButtonPressed(); },
-              toCommentsPage:  () async {
-                await commentsModel.init(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel, bookmarksModel.currentSongMapNotifier.value['postId']);
-              },
-              toEditingMode:  () {
-                bookmarksModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
-              },
-              mainModel: mainModel
-            ); 
-          }, 
-          progressNotifier: bookmarksModel.progressNotifier, 
-          seek: bookmarksModel.seek, 
-          currentSongMapNotifier: bookmarksModel.currentSongMapNotifier ,
-          playButtonNotifier: bookmarksModel.playButtonNotifier, 
-          play: () async { 
-            bookmarksModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc); 
-            await officialAdsensesModel.onPlayButtonPressed(context);
-          }, 
-          pause: () { bookmarksModel.pause(); }, 
-          currentUserDoc: mainModel.currentUserDoc,
-          refreshController: bookmarksModel.refreshController,
-          onRefresh: () { bookmarksModel.onRefresh(); },
-          onLoading: () { bookmarksModel.onLoading(); },
-          isFirstSongNotifier: bookmarksModel.isFirstSongNotifier,
-          onPreviousSongButtonPressed: () { bookmarksModel.onPreviousSongButtonPressed(); },
-          isLastSongNotifier: bookmarksModel.isLastSongNotifier,
-          onNextSongButtonPressed: () { bookmarksModel.onNextSongButtonPressed(); },
+          routes.toPostShowPage(
+            context: context,
+            speedNotifier: bookmarksModel.speedNotifier,
+            speedControll:  () async { await voids.speedControll(audioPlayer: bookmarksModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: bookmarksModel.speedNotifier); },
+            currentSongMapNotifier: bookmarksModel.currentSongMapNotifier, 
+            progressNotifier: bookmarksModel.progressNotifier, 
+            seek: bookmarksModel.seek, 
+            repeatButtonNotifier: bookmarksModel.repeatButtonNotifier, 
+            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: bookmarksModel.audioPlayer, repeatButtonNotifier: bookmarksModel.repeatButtonNotifier); }, 
+            isFirstSongNotifier: bookmarksModel.isFirstSongNotifier, 
+            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); }, 
+            playButtonNotifier: bookmarksModel.playButtonNotifier, 
+            play: () async { 
+              await voids.play(context: context, audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: bookmarksModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
+            }, 
+            pause: () { voids.pause(audioPlayer: bookmarksModel.audioPlayer); }, 
+            isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
+            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
+            toCommentsPage:  () async {
+              await commentsModel.init(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel, bookmarksModel.currentSongMapNotifier.value['postId']);
+            },
+            toEditingMode:  () {
+              bookmarksModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+            },
+            mainModel: mainModel
+          ); 
+        }, 
+        progressNotifier: bookmarksModel.progressNotifier,
+        seek: bookmarksModel.seek,
+        currentSongMapNotifier: bookmarksModel.currentSongMapNotifier,
+        playButtonNotifier: bookmarksModel.playButtonNotifier,
+        play: () async {
+          await voids.play(context: context, audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: bookmarksModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
+        },
+        pause: () {
+          voids.pause(audioPlayer: bookmarksModel.audioPlayer);
+        }, 
+        currentUserDoc: mainModel.currentUserDoc,
+        refreshController: bookmarksModel.refreshController,
+        onRefresh: () async { await bookmarksModel.onRefresh(); },
+        onLoading: () async { await bookmarksModel.onLoading(); },
+        isFirstSongNotifier: bookmarksModel.isFirstSongNotifier,
+        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
+        isLastSongNotifier: bookmarksModel.isLastSongNotifier,
+        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
           mainModel: mainModel,
           bookmarksModel: bookmarksModel,
         ),

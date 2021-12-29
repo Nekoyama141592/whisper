@@ -139,154 +139,20 @@ class PostSearchModel extends ChangeNotifier{
   Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
     startLoading();
     await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s,);
-    listenForStates();
+    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
   }
 
-
-
-
-
-
-  void play(List<dynamic> readPostIds,List<dynamic> readPosts,DocumentSnapshot currentUserDoc)  {
-    audioPlayer.play();
-    notifyListeners();
-    final postId = currentSongMapNotifier.value['postId'];
-    if (!readPostIds.contains(postId)) {
-      final map = {
-        'createdAt': Timestamp.now(),
-        'durationInt': 0,
-        'postId': postId,
-      };
-      readPosts.add(map);
-      FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUserDoc.id)
-      .update({
-        'readPosts': readPosts,
-      });
-    }
-  }
-
-
-  void pause() {
+  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
     audioPlayer.pause();
+    editPostInfoModel.isEditing = true;
     notifyListeners();
   }
 
   void seek(Duration position) {
     audioPlayer.seek(position);
   }
-  // showPage
-  void onRepeatButtonPressed() {
-    repeatButtonNotifier.nextState();
-    switch (repeatButtonNotifier.value) {
-      case RepeatState.off:
-        audioPlayer.setLoopMode(LoopMode.off);
-        break;
-      case RepeatState.repeatSong:
-        audioPlayer.setLoopMode(LoopMode.one);
-        break;
-      case RepeatState.repeatPlaylist:
-        audioPlayer.setLoopMode(LoopMode.all);
-    }
-  }
-
-  void onPreviousSongButtonPressed() {
-    audioPlayer.seekToPrevious();
-  }
-
-  void onNextSongButtonPressed() {
-    audioPlayer.seekToNext();
-  }
-
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    pause();
-    editPostInfoModel.isEditing = true;
-    notifyListeners();
-  }
-
-  void listenForStates() {
-    listenForChangesInPlayerState();
-    listenForChangesInPlayerPosition();
-    listenForChangesInBufferedPosition();
-    listenForChangesInTotalDuration();
-    listenForChangesInSequenceState();
-  }
-  void listenForChangesInPlayerState() {
-    audioPlayer.playerStateStream.listen((playerState) {
-      final isPlaying = playerState.playing;
-      final processingState = playerState.processingState;
-      if (processingState == ProcessingState.loading ||
-          processingState == ProcessingState.buffering) {
-        playButtonNotifier.value = ButtonState.loading;
-      } else if (!isPlaying) {
-        playButtonNotifier.value = ButtonState.paused;
-      } else if (processingState != ProcessingState.completed) {
-        playButtonNotifier.value = ButtonState.playing;
-      } else {
-        audioPlayer.seek(Duration.zero);
-        audioPlayer.pause();
-      }
-    });
-  }
-
-  void listenForChangesInPlayerPosition() {
-    audioPlayer.positionStream.listen((position) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: position,
-        buffered: oldState.buffered,
-        total: oldState.total,
-      );
-    });
-  }
-
-  void listenForChangesInBufferedPosition() {
-    audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: oldState.current,
-        buffered: bufferedPosition,
-        total: oldState.total,
-      );
-    });
-  }
-
-  void listenForChangesInTotalDuration() {
-    audioPlayer.durationStream.listen((totalDuration) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: oldState.current,
-        buffered: oldState.buffered,
-        total: totalDuration ?? Duration.zero,
-      );
-    });
-  }
-
-  void listenForChangesInSequenceState() {
-    audioPlayer.sequenceStateStream.listen((sequenceState) {
-      if (sequenceState == null) return;
-      // update current song map
-      final currentItem = sequenceState.currentSource;
-      final Map<String,dynamic> currentSongMap = currentItem?.tag;
-      currentSongMapNotifier.value = currentSongMap;
-      // update playlist
-      final playlist = sequenceState.effectiveSequence;
-      // update shuffle mode
-      isShuffleModeEnabledNotifier.value = 
-      sequenceState.shuffleModeEnabled;
-      // update previous and next buttons
-      if (playlist.isEmpty || currentItem == null) {
-        isFirstSongNotifier.value = true;
-        isLastSongNotifier.value = true; 
-      } else {
-        isFirstSongNotifier.value = playlist.first == currentItem;
-        isLastSongNotifier.value = playlist.last == currentItem;
-      }
-    });
-    notifyListeners();
-  }
+  
 
   void onDeleteButtonPressed(BuildContext context,Map<String,dynamic> map,DocumentSnapshot currentUserDoc,int i) {
     showCupertinoDialog(

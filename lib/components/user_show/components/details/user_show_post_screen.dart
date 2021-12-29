@@ -82,21 +82,21 @@ class UserShowPostScreen extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: userShowModel.speedNotifier,
-            speedControll:  () async { await voids.setSpeed(audioPlayer: userShowModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: userShowModel.speedNotifier); },
+            speedControll:  () async { await voids.speedControll(audioPlayer: userShowModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: userShowModel.speedNotifier); },
             currentSongMapNotifier: userShowModel.currentSongMapNotifier, 
             progressNotifier: userShowModel.progressNotifier, 
             seek: userShowModel.seek, 
             repeatButtonNotifier: userShowModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { userShowModel.onRepeatButtonPressed(); }, 
+            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: userShowModel.audioPlayer, repeatButtonNotifier: userShowModel.repeatButtonNotifier); }, 
             isFirstSongNotifier: userShowModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { userShowModel.onPreviousSongButtonPressed(); }, 
+            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: userShowModel.audioPlayer); }, 
             playButtonNotifier: userShowModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: userShowModel.currentSongMapNotifier.value['postId'] );
+              await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: userShowModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: userShowModel.audioPlayer); }, 
             isLastSongNotifier: userShowModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { userShowModel.onNextSongButtonPressed(); },
+            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
             toCommentsPage:  () async {
               await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, userShowModel.currentSongMapNotifier.value['postId']);
             },
@@ -111,20 +111,19 @@ class UserShowPostScreen extends ConsumerWidget {
         currentSongMapNotifier: userShowModel.currentSongMapNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
         play: () async {
-          userShowModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-          await officialAdsensesModel.onPlayButtonPressed(context);
+          await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: userShowModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
-          userShowModel.pause();
+          voids.pause(audioPlayer: userShowModel.audioPlayer);
         }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: userShowModel.refreshController,
-        onRefresh: () { userShowModel.onRefresh(); },
-        onLoading: () { userShowModel.onLoading(); },
+        onRefresh: () async { await userShowModel.onRefresh(); },
+        onLoading: () async { await userShowModel.onLoading(); },
         isFirstSongNotifier: userShowModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { userShowModel.onPreviousSongButtonPressed(); },
+        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
         isLastSongNotifier: userShowModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { userShowModel.onNextSongButtonPressed(); },
+        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
         mainModel: mainModel,
         posts: posts,
       ),

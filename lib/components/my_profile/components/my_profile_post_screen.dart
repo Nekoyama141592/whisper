@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
@@ -36,6 +37,7 @@ class MyProfilePostScreen extends ConsumerWidget {
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final isLoading = myProfileModel.isLoading;
     final postDocs = myProfileModel.myProfileDocs;
+
     final Widget posts = Expanded(
       child: SmartRefresher(
         enablePullDown: true,
@@ -87,16 +89,16 @@ class MyProfilePostScreen extends ConsumerWidget {
             progressNotifier: myProfileModel.progressNotifier, 
             seek: myProfileModel.seek, 
             repeatButtonNotifier: myProfileModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { myProfileModel.onRepeatButtonPressed(); }, 
+            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: myProfileModel.audioPlayer, repeatButtonNotifier: myProfileModel.repeatButtonNotifier); }, 
             isFirstSongNotifier: myProfileModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { myProfileModel.onPreviousSongButtonPressed(); }, 
+            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); }, 
             playButtonNotifier: myProfileModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: myProfileModel.currentSongMapNotifier.value['postId'] );
+              await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: myProfileModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: myProfileModel.audioPlayer); }, 
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { myProfileModel.onNextSongButtonPressed(); },
+            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
             toCommentsPage:  () async {
               await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, myProfileModel.currentSongMapNotifier.value['postId']);
             },
@@ -111,20 +113,19 @@ class MyProfilePostScreen extends ConsumerWidget {
         currentSongMapNotifier: myProfileModel.currentSongMapNotifier,
         playButtonNotifier: myProfileModel.playButtonNotifier,
         play: () async {
-          myProfileModel.play(mainModel.readPostIds, mainModel.readPosts, mainModel.currentUserDoc);
-          await officialAdsensesModel.onPlayButtonPressed(context);
+          await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: myProfileModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
-          myProfileModel.pause();
+          voids.pause(audioPlayer: myProfileModel.audioPlayer);
         }, 
         currentUserDoc: mainModel.currentUserDoc,
         refreshController: myProfileModel.refreshController,
-        onRefresh: (){ myProfileModel.onRefresh(); },
-        onLoading: () { myProfileModel.onLoading(); },
+        onRefresh: () async { await myProfileModel.onRefresh(); },
+        onLoading: () async { await myProfileModel.onLoading(); },
         isFirstSongNotifier: myProfileModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { myProfileModel.onPreviousSongButtonPressed(); },
+        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
         isLastSongNotifier: myProfileModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { myProfileModel.onNextSongButtonPressed(); },
+        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
         mainModel: mainModel,
         posts: posts,
       ),
