@@ -15,8 +15,6 @@ import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-// model
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final postSearchProvider = ChangeNotifierProvider(
   (ref) => PostSearchModel()
@@ -141,12 +139,6 @@ class PostSearchModel extends ChangeNotifier{
     await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s,);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
-  }
-
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    audioPlayer.pause();
-    editPostInfoModel.isEditing = true;
-    notifyListeners();
   }
 
   void seek(Duration position) {

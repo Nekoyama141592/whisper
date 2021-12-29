@@ -103,7 +103,7 @@ class MyProfilePostScreen extends ConsumerWidget {
               await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, myProfileModel.currentSongMapNotifier.value['postId']);
             },
             toEditingMode:  () {
-              myProfileModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+              voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
             mainModel: mainModel
           ); 

@@ -101,7 +101,7 @@ class UserShowPostScreen extends ConsumerWidget {
               await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, userShowModel.currentSongMapNotifier.value['postId']);
             },
             toEditingMode:  () {
-              userShowModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+              voids.toEditPostInfoMode(audioPlayer: userShowModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
             mainModel: mainModel
           ); 

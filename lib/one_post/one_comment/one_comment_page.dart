@@ -71,7 +71,7 @@ class OneCommentPage extends ConsumerWidget {
                       await commentsModel.init(context, onePostModel.audioPlayer, onePostModel.currentSongMapNotifier, mainModel, onePostModel.currentSongMapNotifier.value['postId']);
                     },
                     toEditingMode:  () {
-                      onePostModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+                      voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);
                     },
                     mainModel: mainModel
                   ); 

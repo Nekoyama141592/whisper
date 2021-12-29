@@ -15,8 +15,6 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-// model
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final bookmarksProvider = ChangeNotifierProvider(
   (ref) => BookmarksModel()
@@ -243,14 +241,6 @@ class BookmarksModel extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    audioPlayer.pause();
-    editPostInfoModel.isEditing = true;
-    notifyListeners();
-  }
-  
-
 
   void onDeleteButtonPressed(BuildContext context,DocumentSnapshot postDoc,DocumentSnapshot currentUserDoc,int i) {
     showCupertinoDialog(

@@ -70,7 +70,7 @@ class FeedsPage extends ConsumerWidget {
               await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, feedsModel.currentSongMapNotifier.value['postId']);
             },
             toEditingMode:  () {
-              feedsModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+              voids.toEditPostInfoMode(audioPlayer: feedsModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
             mainModel: mainModel
           ); 

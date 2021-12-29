@@ -17,6 +17,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
   final String uid = map['uid'];
@@ -78,6 +79,12 @@ void showCupertinoDialogue({required BuildContext context, required String title
       ],
     );
   });
+}
+
+void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfoModel editPostInfoModel}) {
+  audioPlayer.pause();
+  editPostInfoModel.isEditing = true;
+  editPostInfoModel.reload();
 }
 
 Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required Map<String,dynamic> notification, required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId}) async {

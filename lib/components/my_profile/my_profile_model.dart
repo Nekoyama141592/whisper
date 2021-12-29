@@ -23,8 +23,6 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // states
 import 'package:whisper/constants/states.dart';
-// model
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final myProfileProvider = ChangeNotifierProvider(
   (ref) => MyProfileModel()
@@ -88,12 +86,6 @@ class MyProfileModel extends ChangeNotifier {
 
   void endLoading() {
     isLoading = false;
-    notifyListeners();
-  }
-
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    audioPlayer.pause();
-    editPostInfoModel.isEditing = true;
     notifyListeners();
   }
 

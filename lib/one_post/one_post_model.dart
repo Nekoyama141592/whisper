@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,8 +11,6 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-// model
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final onePostProvider = ChangeNotifierProvider(
   (ref) => OnePostModel()
@@ -69,12 +66,6 @@ class OnePostModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    audioPlayer.pause();
-    editPostInfoModel.isEditing = true;
-    notifyListeners();
-  }
-
   Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {
     // Abstractions in post_futures.dart cause Range errors.
     final postId = post['postId'];
@@ -101,29 +92,7 @@ class OnePostModel extends ChangeNotifier {
   }
   
   void onDeleteButtonPressed(BuildContext context,DocumentSnapshot postDoc,DocumentSnapshot currentUserDoc,int i) {
-    showCupertinoDialog(
-      context: context, builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text('投稿削除'),
-          content: Text('一度削除したら、復元はできません。本当に削除しますか？'),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoDialogAction(
-              child: const Text('Ok'),
-              isDestructiveAction: true,
-              onPressed: () async {
-                await delete(context, postDoc, currentUserDoc, i);
-              },
-            )
-          ],
-        );
-      }
-    );
+    voids.showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await delete(context, postDoc, currentUserDoc, i); });
   }
 
   Future delete(BuildContext context,DocumentSnapshot postDoc, DocumentSnapshot currentUserDoc,int i) async {
@@ -139,10 +108,7 @@ class OnePostModel extends ChangeNotifier {
           await audioPlayer.setAudioSource(playlist,initialIndex: i - 1);
         }
         notifyListeners();
-        await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(postDoc.id)
-        .delete();
+        await FirebaseFirestore.instance.collection('posts').doc(postDoc.id).delete();
       } catch(e) {
         print(e.toString());
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));

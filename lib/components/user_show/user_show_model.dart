@@ -25,7 +25,6 @@ import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/constants/states.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
@@ -393,12 +392,6 @@ class UserShowModel extends ChangeNotifier {
 
   void seek(Duration position) {
     audioPlayer.seek(position);
-  }
-
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    audioPlayer.pause();
-    editPostInfoModel.isEditing = true;
-    notifyListeners();
   }
 
   void onEditButtonPressed(DocumentSnapshot currentUserDoc) {

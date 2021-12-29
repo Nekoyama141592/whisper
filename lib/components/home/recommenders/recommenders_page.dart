@@ -66,7 +66,7 @@ class RecommendersPage extends ConsumerWidget {
               await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, recommendersModel.currentSongMapNotifier.value['postId']);
             },
             toEditingMode:  () {
-              recommendersModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+              voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
             mainModel: mainModel
           ); 

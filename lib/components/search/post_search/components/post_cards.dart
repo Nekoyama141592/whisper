@@ -111,7 +111,7 @@ class PostCards extends ConsumerWidget {
                       await commentsModel.init(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel, postSearchModel.currentSongMapNotifier.value['postId']);
                     },
                     toEditingMode:  () {
-                      postSearchModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel);
+                      voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);
                     },
                     mainModel: mainModel
                   ); 

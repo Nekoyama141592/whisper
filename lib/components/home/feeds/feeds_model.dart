@@ -18,8 +18,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-// model
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+
 final feedsProvider = ChangeNotifierProvider(
   (ref) => FeedsModel()
 );
@@ -90,11 +89,6 @@ class FeedsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  void toEditPostInfoMode({ required EditPostInfoModel editPostInfoModel}) {
-    audioPlayer.pause();
-    editPostInfoModel.isEditing = true;
-    notifyListeners();
-  }
   bool isValidReadPost({ required DocumentSnapshot doc}) {
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
   }

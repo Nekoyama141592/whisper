@@ -49,7 +49,7 @@ class OnePostPage extends ConsumerWidget {
         toCommentsPage: () {
           routes.toCommentsPage(context, onePostModel.audioPlayer, onePostModel.currentSongMapNotifier, mainModel);
         },
-        toEditingMode: () { onePostModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel); },
+        toEditingMode: () { voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel); },
         mainModel: mainModel
       ),
     );
