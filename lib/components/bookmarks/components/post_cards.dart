@@ -79,7 +79,7 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: bookmarksModel.afterUris, results: bookmarksModel.bookmarkedDocs, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.bookmarkedDocs, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await voids.initAudioPlayer(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, i: i);
                   },

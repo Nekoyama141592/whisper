@@ -69,7 +69,7 @@ class PostCards extends ConsumerWidget {
                     return 
                     PostCard(
                       post: post,
-                      onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i], afterUris: postSearchModel.afterUris, results: postSearchModel.results, mainModel: mainModel, i: i); },
+                      onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i], afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
                       initAudioPlayer: () async {
                         await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
                       },

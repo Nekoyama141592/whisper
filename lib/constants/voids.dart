@@ -333,7 +333,10 @@ Future removeTheUsersPost({ required List<dynamic> results,required String passi
 }
 
 Future<void> processBasicPosts({required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required DocumentSnapshot<Map<String,dynamic>> doc }) async {
-
+  posts.add(doc);
+  Uri song = Uri.parse(doc['audioURL']);
+  UriAudioSource source = AudioSource.uri(song, tag: doc);
+  afterUris.add(source);
 }
 
 Future<void> processNewPosts({required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required DocumentSnapshot<Map<String,dynamic>> doc }) async {
@@ -342,6 +345,10 @@ Future<void> processNewPosts({required List<DocumentSnapshot<Map<String,dynamic>
   UriAudioSource source = AudioSource.uri(song, tag: doc);
   afterUris.insert(0, source);
 }
-Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qshot, required bool isValidReadPost, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer }) async {
-
+Future<void> processOldPosts({required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required DocumentSnapshot<Map<String,dynamic>> doc }) async {
+  posts.add(doc);
+  Uri song = Uri.parse(doc['audioURL']);
+  UriAudioSource source = AudioSource.uri(song, tag: doc);
+  afterUris.add(source);
 }
+// ({ required QuerySnapshot<Map<String, dynamic>> qshot, required bool isValidReadPost, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer }) async {
