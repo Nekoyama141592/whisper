@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// constants
+import 'package:whisper/constants/bools.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -152,7 +154,9 @@ class MainModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     readNotificationIds = prefs.getStringList('readNotificationIds') ?? [];
     commentNotifications = currentUserDoc['commentNotifications'];
+    commentNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
     replyNotifications = currentUserDoc['replyNotifications'];
+    replyNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
   }
 
   void getLikesReplys() {

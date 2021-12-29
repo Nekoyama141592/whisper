@@ -30,7 +30,7 @@ class NotificationIcon extends StatelessWidget {
         onTap: () {
           routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel);
         },
-        child: newNotificationExists(readNotificationIds: mainModel.readNotificationIds, currentUserDoc: mainModel.currentUserDoc) ?
+        child: newNotificationExists(mainModel: mainModel) ?
         Stack(
           children: [
             Icon(Icons.notifications),
