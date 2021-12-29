@@ -35,6 +35,8 @@ class CommentsModel extends ChangeNotifier {
   // refresh
   SortState sortState = SortState.byNewestFirst;
   late RefreshController refreshController;
+  // DB index
+  String indexPostId = '';
 
   int commentScrollFlashBarCount = 0;
 
@@ -45,7 +47,10 @@ class CommentsModel extends ChangeNotifier {
   Future<void> init(BuildContext context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,MainModel mainModel,String postId) async {
     refreshController = RefreshController(initialRefresh: false);
     routes.toCommentsPage(context, audioPlayer, currentSongMapNotifier, mainModel);
-    await getCommentDocs(postId);
+    if (indexPostId != postId) {
+      indexPostId = postId;
+      await getCommentDocs(postId);
+    }
   }
 
   Future<void> getCommentDocs(String postId) async {

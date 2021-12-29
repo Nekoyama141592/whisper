@@ -15,7 +15,6 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/states.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
 
 final replysProvider = ChangeNotifierProvider(
   (ref) => ReplysModel()
@@ -34,8 +33,9 @@ class ReplysModel extends ChangeNotifier {
   String ipv6 = '';
   // refresh
   SortState sortState = SortState.byNewestFirst;
-  RefreshController refreshController = RefreshController(initialRefresh: false);
-  
+  late RefreshController refreshController;
+  // indexDB
+  String indexCommentId = '';
   void reload() {
     notifyListeners();
   }
@@ -195,15 +195,15 @@ class ReplysModel extends ChangeNotifier {
   
 
   void getReplysStream({ required BuildContext context, required Map<String,dynamic> thisComment, required ReplysModel replysModel, required Map<String,dynamic> currentSongMap, required MainModel mainModel })  {
+    refreshController = RefreshController(initialRefresh: false);
     routes.toReplysPage(context: context, replysModel: replysModel, currentSongMap: currentSongMap, thisComment: thisComment, mainModel: mainModel);
     giveComment = thisComment;
+    final String commentId = thisComment['commentId'];
     try {
-      replysStream = FirebaseFirestore.instance
-      .collection('replys')
-      .where('elementId',isEqualTo: thisComment['commentId'])
-      .orderBy('createdAt',descending: true)
-      .limit(limitIndex)
-      .snapshots();
+      if (indexCommentId != commentId) {
+        indexCommentId = commentId;
+        replysStream = FirebaseFirestore.instance.collection('replys').where('elementId',isEqualTo: thisComment['commentId']).orderBy('createdAt',descending: true).limit(limitIndex).snapshots();
+      }
     } catch(e) {
       print(e.toString());
     }
