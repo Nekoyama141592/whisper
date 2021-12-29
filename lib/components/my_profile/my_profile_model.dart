@@ -140,51 +140,14 @@ class MyProfileModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future showImagePicker() async {
-    final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) {
-      await cropImage();
-    }
-    notifyListeners();
-  }
-
-  Future cropImage() async {
-    isCropped = false;
-    croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?
-      [
-        CropAspectRatioPreset.square,
-      ]
-      : [
-        CropAspectRatioPreset.square,
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
-    if (croppedFile != null) {
-      isCropped = true;
-    }
-  }
-
   Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
     final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
     if (userName.isEmpty) {
       print('userNameを入力してください');
     }
     try {
-      await FirebaseStorage.instance.ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
-      downloadURL = await FirebaseStorage.instance.ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
+      await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
+      downloadURL = await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
     } catch(e) { print(e.toString()); }
     return downloadURL;
   }

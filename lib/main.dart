@@ -80,7 +80,7 @@ class MyHomePage extends ConsumerWidget {
             mainModel: mainModel,
             themeModel: themeModel,
           ),
-          WhichType(currentUserDoc: mainModel.currentUserDoc),
+          WhichType(mainModel: mainModel),
           BookmarksPage(mainModel: mainModel),
           MyProfilePage(mainModel: mainModel)
         ],

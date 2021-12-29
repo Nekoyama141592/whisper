@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -38,7 +40,7 @@ class MyProfilePage extends ConsumerWidget {
           await mainModel.regetCurrentUserDoc(mainModel.currentUserDoc.id);
         }, 
         showImagePicker: () async {
-          await myProfileModel.showImagePicker();
+          await voids.showImagePicker(xfile: myProfileModel.xfile, isCropped: myProfileModel.isCropped, croppedFile: myProfileModel.croppedFile, mainModel: mainModel);
         }, 
         onUserNameChanged: (text) {
           myProfileModel.userName = text;

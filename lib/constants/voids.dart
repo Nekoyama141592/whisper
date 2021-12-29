@@ -1,14 +1,19 @@
+// dart
+import 'dart:io';
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -402,4 +407,31 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
       await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
     }
   }
+}
+
+Future showImagePicker({ required XFile? xfile, required bool isCropped, required File? croppedFile, required MainModel mainModel }) async {
+  final ImagePicker _picker = ImagePicker();
+  xfile = await _picker.pickImage(source: ImageSource.gallery);
+  if (xfile != null) { await cropImage(isCropped: isCropped, croppedFile: croppedFile, xfile: xfile); }
+  mainModel.reload();
+}
+
+Future cropImage({ required bool isCropped, required File? croppedFile, required XFile? xfile }) async {
+  isCropped = false;
+  croppedFile = null;
+  croppedFile = await ImageCropper.cropImage(
+    sourcePath: xfile!.path,
+    aspectRatioPresets: Platform.isAndroid ?[ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
+    androidUiSettings: const AndroidUiSettings(
+      toolbarTitle: 'Cropper',
+      toolbarColor: kPrimaryColor,
+      toolbarWidgetColor: Colors.white,
+      initAspectRatio: CropAspectRatioPreset.square,
+      lockAspectRatio: false
+    ),
+    iosUiSettings: const IOSUiSettings(
+      title: 'Cropper',
+    )
+  );
+  if (croppedFile != null) { isCropped = true; }
 }

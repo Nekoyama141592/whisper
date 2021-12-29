@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -60,7 +61,7 @@ class UserShowPage extends ConsumerWidget {
               await userShowModel.onSaveButtonPressed(context,mainModel.currentUserDoc);
               await mainModel.regetCurrentUserDoc(mainModel.currentUserDoc.id);
             },
-            showImagePicker: () async { userShowModel.showImagePicker(); },
+            showImagePicker: () async { await voids.showImagePicker(xfile: userShowModel.xfile, isCropped: userShowModel.isCropped, croppedFile: userShowModel.croppedFile, mainModel: mainModel); },
             onUserNameChanged: (text) {
               userShowModel.userName = text;
             },

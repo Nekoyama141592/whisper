@@ -4,17 +4,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
@@ -136,45 +134,14 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future showImagePicker() async {
-    final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) {
-      await cropImage();
-    }
-    notifyListeners();
-  }
-
-  Future cropImage() async {
-    isCropped = false;
-    croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?[ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
-    if (croppedFile != null) { isCropped = true; }
-  }
-
   Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
     final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
     if (userName.isEmpty) {
       print('userNameを入力してください');
     }
     try {
-      await FirebaseStorage.instance
-      .ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
-      downloadURL = await FirebaseStorage.instance
-      .ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
+      await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
+      downloadURL = await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
     } catch(e) { print(e.toString()); }
     return downloadURL;
   }
@@ -195,7 +162,7 @@ class UserShowModel extends ChangeNotifier {
 
     final String downloadURL = croppedFile == null ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
     if (downloadURL.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生しました。もう一度待ってからお試しください')));
     } else {
       try {
         await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).update({
