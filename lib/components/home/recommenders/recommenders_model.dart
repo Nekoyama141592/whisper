@@ -40,7 +40,7 @@ class RecommendersModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<DocumentSnapshot> recommenderDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> recommenderDocs = [];
   // block and mutes
   late SharedPreferences prefs;
   List<dynamic> mutesIpv6AndUids = [];
@@ -94,7 +94,7 @@ class RecommendersModel extends ChangeNotifier {
     });
   }
 
-  bool isValidReadPost({ required DocumentSnapshot doc}) {
+  bool isValidReadPost({ required DocumentSnapshot<Map<String,dynamic>> doc}) {
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic> ) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
@@ -126,7 +126,7 @@ class RecommendersModel extends ChangeNotifier {
      // Sort by oldest first
     docs.reversed;
      // Insert at the top
-    docs.forEach((DocumentSnapshot doc) {
+    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       if (isValidReadPost(doc: doc)) {
         recommenderDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
@@ -154,7 +154,7 @@ class RecommendersModel extends ChangeNotifier {
       .orderBy('score', descending: true)
       .limit(oneTimeReadCount)
       .get();
-      snapshots.docs.forEach((DocumentSnapshot doc) {
+      snapshots.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         if (isValidReadPost(doc: doc)) {
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
@@ -181,7 +181,7 @@ class RecommendersModel extends ChangeNotifier {
       .limit(oneTimeReadCount)
       .get();
       final lastIndex = recommenderDocs.lastIndexOf(recommenderDocs.last);
-      snapshots.docs.forEach((DocumentSnapshot doc) {
+      snapshots.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         if (isValidReadPost(doc: doc)) {
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
