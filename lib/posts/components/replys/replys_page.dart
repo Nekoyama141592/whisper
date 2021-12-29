@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:whisper/details/loading.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/replys/components/reply_cards/reply_cards.dart';
@@ -16,14 +15,12 @@ class ReplysPage extends StatelessWidget {
     Key? key,
     required this.replysModel,
     required this.currentSongMap,
-    required this.currentUserDoc,
     required this.thisComment,
     required this.mainModel
   }) : super(key: key);
 
   final ReplysModel replysModel;
   final Map<String,dynamic> currentSongMap;
-  final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
   final MainModel mainModel;
 
@@ -35,7 +32,7 @@ class ReplysPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_comment),
         onPressed: () {
-          replysModel.onAddReplyButtonPressed(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
+          replysModel.onAddReplyButtonPressed(context, currentSongMap, replyEditingController, mainModel.currentUserDoc, thisComment);
         },
       ),
       body: SafeArea(
@@ -44,10 +41,6 @@ class ReplysPage extends StatelessWidget {
         : Column(
           children: [
             CommentsOrReplysHeader(
-              onBackButtonPressed: () {
-                replysModel.isReplysMode = false;
-                replysModel.reload();
-              },
               onMenuPressed: () { replysModel.showSortDialogue(context, thisComment); }
             ),
             Expanded(child: ReplyCards(thisComment: thisComment,mainModel: mainModel, replysModel: replysModel))

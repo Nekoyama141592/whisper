@@ -5,11 +5,9 @@ class CommentsOrReplysHeader extends StatelessWidget {
 
   const CommentsOrReplysHeader({
     Key? key,
-    required this.onBackButtonPressed,
     required this.onMenuPressed
   }) : super(key: key);
 
-  final void Function()? onBackButtonPressed;
   final void Function()? onMenuPressed;
 
   @override 
@@ -21,7 +19,7 @@ class CommentsOrReplysHeader extends StatelessWidget {
         children: [
           InkWell(
             child: Icon(Icons.arrow_back,size: 32.0,),
-            onTap: onBackButtonPressed,
+            onTap: () { Navigator.pop(context); },
           ),
           Expanded(child: SizedBox()),
           InkWell(

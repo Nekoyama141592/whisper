@@ -7,7 +7,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -33,9 +32,7 @@ class CommentsPage extends ConsumerWidget {
     final replysModel = watch(replysProvider);
     final commentEditingController = TextEditingController();
 
-    return replysModel.isReplysMode ?
-    ReplysPage(replysModel: replysModel, currentSongMap: currentSongMap, currentUserDoc: mainModel.currentUserDoc, thisComment: replysModel.giveComment, mainModel: mainModel)
-    : Scaffold(
+    return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.new_label,
@@ -50,9 +47,11 @@ class CommentsPage extends ConsumerWidget {
       SafeArea(
         child: Column(
           children: [
-            CommentsOrReplysHeader(onBackButtonPressed: () { Navigator.pop(context); } ,onMenuPressed: (){
-              commentsModel.showSortDialogue(context, currentSongMap);
-            },),
+            CommentsOrReplysHeader(
+              onMenuPressed: (){
+                commentsModel.showSortDialogue(context, currentSongMap);
+              },
+            ),
             Expanded(
               child: SmartRefresher(
                 enablePullUp: true,
@@ -70,9 +69,10 @@ class CommentsPage extends ConsumerWidget {
                   itemBuilder: (BuildContext context,int i) {
                     Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
                     return CommentCard(
+                      comment: comment,
+                      currentSongMap: currentSongMap,
                       commentsModel: commentsModel,
                       replysModel: replysModel,
-                      comment: comment,
                       mainModel: mainModel,
                     );
                   }

@@ -21,12 +21,14 @@ class CommentCard extends ConsumerWidget {
   const CommentCard({
     Key? key,
     required this.comment,
+    required this.currentSongMap,
     required this.commentsModel,
     required this.replysModel,
     required this.mainModel
   }): super(key: key);
   
   final Map<String,dynamic> comment;
+  final Map<String,dynamic> currentSongMap;
   final CommentsModel commentsModel;
   final ReplysModel replysModel;
   final MainModel mainModel;
@@ -107,7 +109,8 @@ class CommentCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
-                        ShowReplyButton(replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
+                        // ShowReplyButton(replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
+                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment, currentSongMap: currentSongMap)
                       ],
                     )
                   ]

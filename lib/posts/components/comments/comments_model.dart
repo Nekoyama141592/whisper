@@ -106,7 +106,7 @@ class CommentsModel extends ChangeNotifier {
               controller.dismiss();
             }
           },
-          icon: Icon(Icons.send, color: Colors.amber),
+          icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
         );
       },
       negativeActionBuilder: (context,controller,__) {
