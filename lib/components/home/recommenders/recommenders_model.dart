@@ -92,7 +92,9 @@ class RecommendersModel extends ChangeNotifier {
     });
   }
 
-  bool isValidReadPost({ required DocumentSnapshot doc, required DateTime range}) {
+  bool isValidReadPost({ required DocumentSnapshot doc}) {
+    final now = DateTime.now();
+    final DateTime range = now.subtract(Duration(days: 5));
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic> ) && !mutesPostIds.contains(doc['postId']) && doc['createdAt'].toDate().isAfter(range);
   } 
 
@@ -162,14 +164,10 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future getNewRecommenders() async {
-
-    final now = DateTime.now();
-    final range = now.subtract(Duration(days: 5));
-
     QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
     .collection('posts')
     .orderBy('score', descending: true)
-    .endBeforeDocument(recommenderDocs[0])
+    .endBeforeDocument(recommenderDocs.first)
     .limit(oneTimeReadCount)
     .get();
     
@@ -178,7 +176,7 @@ class RecommendersModel extends ChangeNotifier {
     docs.reversed;
      // Insert at the top
     docs.forEach((DocumentSnapshot doc) {
-      if (isValidReadPost(doc: doc, range: range)) {
+      if (isValidReadPost(doc: doc)) {
         recommenderDocs.insert(0, doc);
         Uri song = Uri.parse(doc['audioURL']);
         UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -214,8 +212,6 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future getRecommenders() async {
-    final now = DateTime.now();
-    final DateTime range = now.subtract(Duration(days: 5));
     
     try {
       QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
@@ -224,7 +220,7 @@ class RecommendersModel extends ChangeNotifier {
       .limit(oneTimeReadCount)
       .get();
       snapshots.docs.forEach((DocumentSnapshot doc) {
-        if (isValidReadPost(doc: doc, range: range)) {
+        if (isValidReadPost(doc: doc)) {
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);
@@ -243,8 +239,6 @@ class RecommendersModel extends ChangeNotifier {
 
   Future<void> getOldRecommenders() async {
     try {
-      final now = DateTime.now();
-      final range = now.subtract(Duration(days: 5));
       QuerySnapshot<Map<String, dynamic>> snapshots =  await FirebaseFirestore.instance
       .collection('posts')
       .orderBy('score', descending: true)
@@ -253,7 +247,7 @@ class RecommendersModel extends ChangeNotifier {
       .get();
       final lastIndex = recommenderDocs.lastIndexOf(recommenderDocs.last);
       snapshots.docs.forEach((DocumentSnapshot doc) {
-        if (isValidReadPost(doc: doc, range: range)) {
+        if (isValidReadPost(doc: doc)) {
           recommenderDocs.add(doc);
           Uri song = Uri.parse(doc['audioURL']);
           UriAudioSource source = AudioSource.uri(song, tag: doc);
