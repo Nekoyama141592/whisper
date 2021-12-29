@@ -95,75 +95,6 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showSortPostDocsDialogue(BuildContext context,String uid) {
-    showCupertinoDialog(
-      context: context, 
-      builder: (context) {
-        return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('投稿を新たに取得します',style: TextStyle(fontWeight: FontWeight.bold)),
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () async {
-                posts = [];
-                afterUris = [];
-                // getDocsFromFirestore
-                // makeQuery
-              }, 
-              child: Text(
-                'いいね順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                posts = [];
-                afterUris = [];
-                // getDocsFromFirestore
-                // makeQuery
-              }, 
-              child: Text(
-                '新しい順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                posts = [];
-                afterUris = [];
-                // getDocsFromFirestore
-                // makeQuery
-              }, 
-              child: Text(
-                '古い順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-            CupertinoActionSheetAction(
-              onPressed: () { Navigator.pop(context); }, 
-              child: Text(
-                'キャンセル',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
-            ),
-          ],
-        );
-      }
-    );
-  } 
-
   void reload() {
     notifyListeners();
   }
@@ -175,14 +106,7 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future getNewUserShowPosts() async {
-    await FirebaseFirestore.instance
-    .collection('posts')
-    .where('uid',isEqualTo: passiveUserDoc['uid'])
-    .orderBy('createdAt',descending: true)
-    .endBeforeDocument(posts.first)
-    .limit(oneTimeReadCount)
-    .get()
-    .then((qshot) {
+    await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get().then((qshot) {
       voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     });
   }
@@ -196,36 +120,19 @@ class UserShowModel extends ChangeNotifier {
   Future getPosts() async {
     try {
       posts = [];
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',isEqualTo: passiveUserDoc['uid'])
-      .orderBy('createdAt',descending: true)
-      .limit(oneTimeReadCount)
-      .get()
-      .then((qshot) {
+      await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
         voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       });
-    } catch(e) {
-      print(e.toString());
-    }
+    } catch(e) { print(e.toString()); }
     notifyListeners();
   }
 
   Future<void> getOldUserShowPosts() async {
     try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',isEqualTo: passiveUserDoc['uid'])
-      .orderBy('createdAt',descending: true)
-      .startAfterDocument(posts.last)
-      .limit(oneTimeReadCount)
-      .get()
-      .then((qshot) {
+      await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).startAfterDocument(posts.last).limit(oneTimeReadCount).get().then((qshot) {
         voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       });
-    } catch(e) {
-      print(e.toString());
-    }
+    } catch(e) { print(e.toString()); }
     notifyListeners();
   }
 
@@ -302,19 +209,14 @@ class UserShowModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
     } else {
       try {
-      await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUserDoc.id)
-        .update({
+        await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).update({
           'description': description,
           'link': link,
           'updatedAt': Timestamp.now(),
           'userName': userName,
         });
         notifyListeners();
-      } catch(e) {
-        print(e.toString());
-      }
+      } catch(e) { print(e.toString()); }
     }
   }
 
@@ -322,6 +224,75 @@ class UserShowModel extends ChangeNotifier {
     await updateUserInfo(context,currentUserDoc);
     isEditing = false;
   }
+
+    void showSortPostDocsDialogue(BuildContext context,String uid) {
+    showCupertinoDialog(
+      context: context, 
+      builder: (context) {
+        return CupertinoActionSheet(
+          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('投稿を新たに取得します',style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () async {
+                posts = [];
+                afterUris = [];
+                // getDocsFromFirestore
+                // makeQuery
+              }, 
+              child: Text(
+                'いいね順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                posts = [];
+                afterUris = [];
+                // getDocsFromFirestore
+                // makeQuery
+              }, 
+              child: Text(
+                '新しい順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                posts = [];
+                afterUris = [];
+                // getDocsFromFirestore
+                // makeQuery
+              }, 
+              child: Text(
+                '古い順',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () { Navigator.pop(context); }, 
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+          ],
+        );
+      }
+    );
+  } 
 
 
 }

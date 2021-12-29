@@ -12,7 +12,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
@@ -68,12 +67,11 @@ class FeedsModel extends ChangeNotifier {
   void init() async {
     startLoading();
     audioPlayer = AudioPlayer();
-    setCurrentUser();
     // await
-    prefs = await SharedPreferences.getInstance();
     await setCurrentUserDoc();
-    voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    prefs = await SharedPreferences.getInstance();
     setFollowUids();
+    voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getFeeds();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -90,9 +88,10 @@ class FeedsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentUser() {
-    currentUser = FirebaseAuth.instance.currentUser;
+  void seek(Duration position) {
+    audioPlayer.seek(position);
   }
+
   
   Future onRefresh() async {
     await getNewFeeds();
@@ -107,74 +106,36 @@ class FeedsModel extends ChangeNotifier {
   }
   
   Future setCurrentUserDoc() async {
-    try{
-      currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
-    } catch(e) {
-      print(e.toString());
-    }
+    currentUser = FirebaseAuth.instance.currentUser;
+    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
   }
 
   void setFollowUids() {
-    try {
-      followingUids = currentUserDoc['followingUids'];
-      followingUids.add(currentUser!.uid);
-      notifyListeners();
-    } catch(e) {
-      print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
+    followingUids = currentUserDoc['followingUids'];
+    followingUids.add(currentUser!.uid);
+    notifyListeners();
   }
   Future getNewFeeds() async {
-    await FirebaseFirestore.instance
-    .collection('posts')
-    .where('uid',whereIn: followingUids)
-    .orderBy('createdAt',descending: true)
-    .endBeforeDocument(posts.first)
-    .limit(oneTimeReadCount)
-    .get()
-    .then((qshot) {
+    await FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get().then((qshot) {
       voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
     });
   }
 
   // getFeeds
   Future getFeeds() async {
-
     try{
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',whereIn: followingUids)
-      .orderBy('createdAt',descending: true)
-      .limit(oneTimeReadCount)
-      .get()
-      .then((qshot) {
+      await FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
         voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
       });
-    } catch(e) {
-      print(e.toString());
-    }
+    } catch(e) { print(e.toString()); }
   }
 
   Future<void> getOldFeeds() async {
     try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',whereIn: followingUids)
-      .orderBy('createdAt',descending: true)
-      .startAfterDocument(posts.last)
-      .limit(oneTimeReadCount)
-      .get()
-      .then((qshot) {
+      await FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).startAfterDocument(posts.last).limit(oneTimeReadCount).get().then((qshot) {
         voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
       });
-      
-    } catch(e) {
-      print(e.toString());
-    }
+    } catch(e) { print(e.toString()); }
   }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
-  }
-
 
 }

@@ -97,7 +97,133 @@ class MyProfileModel extends ChangeNotifier {
     currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
-  void showSortPostDocsDialogue(BuildContext context,String uid) {
+  void reload() {
+    notifyListeners();
+  }
+
+  Future onRefresh() async {
+    await getNewMyProfilePosts();
+    notifyListeners();
+    refreshController.refreshCompleted();
+  }
+
+  Future getNewMyProfilePosts() async {
+    await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get().then((qshot) {
+      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+    });
+  }
+
+  Future onLoading() async {
+    await getOldMyProfilePosts();
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+
+  Future getPosts() async {
+    try {
+      posts = [];
+      await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
+        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      });
+    } catch(e) { print(e.toString()); }
+    notifyListeners();
+  }
+
+  Future<void> getOldMyProfilePosts() async {
+    try {
+      await FirebaseFirestore.instance
+      .collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).startAfterDocument(posts.last).limit(oneTimeReadCount).get().then((qshot) {
+        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      });
+    } catch(e) { print(e.toString()); }
+    notifyListeners();
+  }
+
+  Future showImagePicker() async {
+    final ImagePicker _picker = ImagePicker();
+    xfile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xfile != null) {
+      await cropImage();
+    }
+    notifyListeners();
+  }
+
+  Future cropImage() async {
+    isCropped = false;
+    croppedFile = null;
+    croppedFile = await ImageCropper.cropImage(
+      sourcePath: xfile!.path,
+      aspectRatioPresets: Platform.isAndroid ?
+      [
+        CropAspectRatioPreset.square,
+      ]
+      : [
+        // CropAspectRatioPreset.original,
+        CropAspectRatioPreset.square,
+      ],
+      androidUiSettings: const AndroidUiSettings(
+        toolbarTitle: 'Cropper',
+        toolbarColor: kPrimaryColor,
+        toolbarWidgetColor: Colors.white,
+        // initAspectRatio: CropAspectRatioPreset.original,
+        initAspectRatio: CropAspectRatioPreset.square,
+        lockAspectRatio: false
+      ),
+      iosUiSettings: const IOSUiSettings(
+        title: 'Cropper',
+      )
+    );
+    if (croppedFile != null) {
+      isCropped = true;
+    }
+    notifyListeners();
+  }
+
+  Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
+    final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+    if (userName.isEmpty) {
+      print('userNameを入力してください');
+    }
+    try {
+      await FirebaseStorage.instance.ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
+      downloadURL = await FirebaseStorage.instance.ref().child('users').child(currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
+    } catch(e) { print(e.toString()); }
+    return downloadURL;
+  }
+
+
+  void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
+    userName = currentUserDoc['userName'];
+    description = currentUserDoc['description'];
+    link = currentUserDoc['link'];
+    isEditing = true;
+    notifyListeners();
+  }
+
+  Future updateUserInfo(BuildContext context,DocumentSnapshot currentUserDoc) async {
+
+    final String downloadURL = croppedFile == null ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
+    if (downloadURL.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
+    } else {
+      try {
+      await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).update({
+          'description': description,
+          'link': link,
+          'updatedAt': Timestamp.now(),
+          'userName': userName,
+        });
+        notifyListeners();
+      } catch(e) { print(e.toString()); }
+    }
+  }
+
+  Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
+    await updateUserInfo(context,currentUserDoc);
+    isEditing = false;
+  }
+
+    void showSortPostDocsDialogue(BuildContext context,String uid) {
     showCupertinoDialog(
       context: context, 
       builder: (context) {
@@ -165,169 +291,5 @@ class MyProfileModel extends ChangeNotifier {
       }
     );
   } 
-
-  void reload() {
-    notifyListeners();
-  }
-
-  Future onRefresh() async {
-    await getNewMyProfilePosts();
-    notifyListeners();
-    refreshController.refreshCompleted();
-  }
-
-  Future getNewMyProfilePosts() async {
-    await FirebaseFirestore.instance
-    .collection('posts')
-    .where('uid',isEqualTo: currentUserDoc['uid'])
-    .orderBy('createdAt',descending: true)
-    .endBeforeDocument(posts.first)
-    .limit(oneTimeReadCount)
-    .get()
-    .then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-    });
-  }
-
-  Future onLoading() async {
-    await getOldMyProfilePosts();
-    refreshController.loadComplete();
-    notifyListeners();
-  }
-
-  Future getPosts() async {
-    try {
-      posts = [];
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',isEqualTo: currentUserDoc['uid'])
-      .orderBy('createdAt',descending: true)
-      .limit(oneTimeReadCount)
-      .get()
-      .then((qshot) {
-        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
-    } catch(e) {
-      print(e.toString());
-    }
-    notifyListeners();
-  }
-
-  Future<void> getOldMyProfilePosts() async {
-    try {
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .where('uid',isEqualTo: currentUserDoc['uid'])
-      .orderBy('createdAt',descending: true)
-      .startAfterDocument(posts.last)
-      .limit(oneTimeReadCount)
-      .get()
-      .then((qshot) {
-        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
-    } catch(e) {
-      print(e.toString());
-    }
-    notifyListeners();
-  }
-
-  Future showImagePicker() async {
-    final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) {
-      await cropImage();
-    }
-    notifyListeners();
-  }
-
-  Future cropImage() async {
-    isCropped = false;
-    croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?
-      [
-        CropAspectRatioPreset.square,
-      ]
-      : [
-        // CropAspectRatioPreset.original,
-        CropAspectRatioPreset.square,
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
-        toolbarWidgetColor: Colors.white,
-        // initAspectRatio: CropAspectRatioPreset.original,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
-    if (croppedFile != null) {
-      isCropped = true;
-    }
-    notifyListeners();
-  }
-
-  Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
-    final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
-    if (userName.isEmpty) {
-      print('userNameを入力してください');
-    }
-    try {
-      await FirebaseStorage.instance
-      .ref()
-      .child('users')
-      .child(currentUserDoc['uid'] + dateTime + '.jpg')
-      .putFile(croppedFile!);
-      downloadURL = await FirebaseStorage.instance
-      .ref()
-      .child('users')
-      .child(currentUserDoc['uid'] + dateTime + '.jpg')
-      .getDownloadURL();
-    } catch(e) {
-      print(e.toString());
-    }
-    return downloadURL;
-  }
-
-
-  void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
-    userName = currentUserDoc['userName'];
-    description = currentUserDoc['description'];
-    link = currentUserDoc['link'];
-    isEditing = true;
-    notifyListeners();
-  }
-
-  Future updateUserInfo(BuildContext context,DocumentSnapshot currentUserDoc) async {
-
-    final String downloadURL = croppedFile == null ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
-    if (downloadURL.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
-    } else {
-      try {
-      await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUserDoc.id)
-        .update({
-          'description': description,
-          'link': link,
-          'updatedAt': Timestamp.now(),
-          'userName': userName,
-        });
-        notifyListeners();
-      } catch(e) {
-        print(e.toString());
-      }
-    }
-  }
-
-  Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
-    await updateUserInfo(context,currentUserDoc);
-    isEditing = false;
-  }
 
 }
