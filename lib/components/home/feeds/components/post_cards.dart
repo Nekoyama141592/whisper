@@ -81,16 +81,16 @@ class PostCards extends StatelessWidget {
                   post: post,
                   onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: feedsModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: feedsModel.afterUris, results: feedsModel.feedDocs, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
-                    await feedsModel.initAudioPlayer(i);
+                    await voids.initAudioPlayer(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await feedsModel.muteUser(mutesUids: mainModel.mutesUids, i: i, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post);
+                    await voids.muteUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: feedsModel.feedDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await feedsModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: feedsModel.afterUris, audioPlayer: feedsModel.audioPlayer, results: feedsModel.feedDocs );
                   },
                   blockUser: () async {
-                    await feedsModel.blockUser(blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, post: post);
+                    await voids.blockUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: feedsModel.feedDocs, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

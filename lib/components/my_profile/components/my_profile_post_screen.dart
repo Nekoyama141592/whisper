@@ -59,16 +59,16 @@ class MyProfilePostScreen extends ConsumerWidget {
               post: post,
               onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, results: myProfileModel.myProfileDocs, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
-                await myProfileModel.initAudioPlayer(i);
+                await voids.initAudioPlayer(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, i: i);
               },
               muteUser: () async {
-                await myProfileModel.muteUser(mutesUids: mainModel.mutesUids, i: i, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post);
+                await voids.muteUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: myProfileModel.myProfileDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
               },
               mutePost: () async {
-                await myProfileModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
+                await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.myProfileDocs );
               },
               blockUser: () async {
-                await myProfileModel.blockUser(blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, post: post);
+                await voids.blockUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: myProfileModel.myProfileDocs, post: post, mainModel: mainModel);
               },
               mainModel: mainModel,
             );

@@ -79,16 +79,16 @@ class PostCards extends StatelessWidget {
                   post: post,
                   onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, results: recommendersModel.recommenderDocs, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
-                    await recommendersModel.initAudioPlayer(i);
+                    await voids.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await recommendersModel.muteUser(mutesUids: mainModel.mutesUids, i: i, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post);
+                    await voids.muteUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: recommendersModel.recommenderDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await recommendersModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.recommenderDocs );
                   },
                   blockUser: () async {
-                    await recommendersModel.blockUser(blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, post: post);
+                    await voids.blockUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: recommendersModel.recommenderDocs, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

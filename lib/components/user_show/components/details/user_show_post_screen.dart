@@ -57,16 +57,16 @@ class UserShowPostScreen extends ConsumerWidget {
               post: post,
               onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: userShowModel.afterUris, results: userShowModel.userShowDocs, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
-                await userShowModel.initAudioPlayer(i);
+                await voids.initAudioPlayer(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, i: i);
               },
               muteUser: () async {
-                await userShowModel.muteUser(mainModel.mutesUids,mainModel.prefs, i, mainModel.currentUserDoc,mainModel.mutesIpv6AndUids,post);
+                await voids.muteUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: userShowModel.userShowDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
               },
               mutePost: () async {
-                await userShowModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
+                await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.userShowDocs );
               },
               blockUser: () async {
-                await userShowModel.blockUser(mainModel.currentUserDoc, mainModel.blocksUids, i,mainModel.mutesIpv6AndUids,post);
+                await voids.blockUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: userShowModel.userShowDocs, post: post, mainModel: mainModel);
               },
               mainModel: mainModel,
             );

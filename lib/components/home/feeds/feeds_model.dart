@@ -92,44 +92,6 @@ class FeedsModel extends ChangeNotifier {
   bool isValidReadPost({ required DocumentSnapshot doc}) {
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data() as Map<String,dynamic>) && !mutesPostIds.contains(doc['postId']);
   }
-
-  Future initAudioPlayer(int i) async {
-    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-    await audioPlayer.setAudioSource(playlist,initialIndex: i);
-  }
-
-  Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final postId = post['postId'];
-    mutesPostIds.add(postId);
-    feedDocs.removeWhere((result) => result['postId'] == postId);
-    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-
-  Future muteUser({ required List<dynamic> mutesUids, required int i, required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post}) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final String uid = post['uid'];
-    await removeTheUsersPost(uid, i);
-    voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
-    notifyListeners();
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
-  }
-
-  Future blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids, required int i, required Map<String,dynamic> post}) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final String uid = post['uid'];
-    await removeTheUsersPost(uid, i);
-    voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
-    notifyListeners();
-    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
-  }
-
-  Future removeTheUsersPost(String uid,int i) async {
-    feedDocs.removeWhere((result) => result['uid'] == uid);
-    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  }
   
   Future onRefresh() async {
     await getNewFeeds();
@@ -142,7 +104,7 @@ class FeedsModel extends ChangeNotifier {
     .collection('posts')
     .where('uid',whereIn: followingUids)
     .orderBy('createdAt',descending: true)
-    .endBeforeDocument(feedDocs[0])
+    .endBeforeDocument(feedDocs.first)
     .limit(oneTimeReadCount)
     .get();
     // Sort by oldest first

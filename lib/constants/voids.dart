@@ -281,3 +281,38 @@ Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required A
     await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
   } 
 }
+
+Future initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
+
+  Future mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<dynamic> results}) async {
+    final postId = post['postId'];
+    mainModel.mutesPostIds.add(postId);
+    results.removeWhere((result) => result['postId'] == postId);
+    resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+    mainModel.reload();
+    await mainModel.prefs.setStringList('mutesPostIds', mainModel.mutesPostIds);
+  }
+
+  Future muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> mutesUids, required int i, required List<dynamic> results,required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post, required MainModel mainModel}) async {
+    final String passiveUid = post['uid'];
+    await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+    addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
+    mainModel.reload();
+    updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: mainModel.currentUserDoc);
+  }
+
+  Future blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> blocksUids, required List<dynamic> blocksIpv6AndUids, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
+    final String passiveUid = post['uid'];
+    await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+    addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
+    mainModel.reload();
+    await updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: mainModel.currentUserDoc);
+  }
+
+  Future removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
+    results.removeWhere((result) => result['uid'] == passiveUid);
+    await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+  }

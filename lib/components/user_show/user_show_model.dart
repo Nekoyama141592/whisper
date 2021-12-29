@@ -168,61 +168,6 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future initAudioPlayer(int i) async {
-    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-    await audioPlayer.setAudioSource(playlist,initialIndex: i);
-  }
-
-  Future mutePost(List<String> mutesPostIds,SharedPreferences prefs,int i,Map<String,dynamic> post) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final postId = post['postId'];
-    mutesPostIds.add(postId);
-    userShowDocs.removeWhere((result) => result['postId'] == postId);
-    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-    notifyListeners();
-    await prefs.setStringList('mutesPostIds', mutesPostIds);
-  }
-
-  Future muteUser(List<dynamic> mutesUids,SharedPreferences prefs,int i,DocumentSnapshot currentUserDoc,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final String uid = post['uid'];
-    await removeTheUsersPost(uid, i);
-    mutesUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': post['ipv6'],
-      'uid': uid,
-    });
-    notifyListeners();
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
-    .update({
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
-  }
-
-  Future blockUser(DocumentSnapshot currentUserDoc,List<dynamic> blockingUids,int i,List<dynamic> mutesIpv6AndUids,Map<String,dynamic> post) async {
-    // Abstractions in post_futures.dart cause Range errors.
-    final String uid = post['uid'];
-    await removeTheUsersPost(uid, i);
-    blockingUids.add(uid);
-    mutesIpv6AndUids.add({
-      'ipv6': post['ipv6'],
-      'uid': uid,
-    });
-    notifyListeners();
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .update({
-      'blockingUids': blockingUids,
-      'mutesIpv6AndUids': mutesIpv6AndUids,
-    }); 
-  }
-
-  Future removeTheUsersPost(String uid,int i) async {
-    userShowDocs.removeWhere((result) => result['uid'] == uid);
-    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  }
-
   Future onRefresh() async {
     await getNewUserShowPosts();
     notifyListeners();
@@ -234,7 +179,7 @@ class UserShowModel extends ChangeNotifier {
     .collection('posts')
     .where('uid',isEqualTo: passiveUserDoc['uid'])
     .orderBy('createdAt',descending: true)
-    .endBeforeDocument(userShowDocs[0])
+    .endBeforeDocument(userShowDocs.first)
     .limit(oneTimeReadCount)
     .get();
     // Sort by oldest first

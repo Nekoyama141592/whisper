@@ -71,16 +71,16 @@ class PostCards extends ConsumerWidget {
                       post: post,
                       onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i], afterUris: postSearchModel.afterUris, results: postSearchModel.results, mainModel: mainModel, i: i); },
                       initAudioPlayer: () async {
-                        await postSearchModel.initAudioPlayer(i);
+                        await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
                       },
                       muteUser: () async {
-                        await postSearchModel.muteUser(mutesUids: mainModel.mutesUids, i: i, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post);
+                        await voids.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: postSearchModel.results, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
                       },
                       mutePost: () async {
-                        await postSearchModel.mutePost(mainModel.mutesPostIds, mainModel.prefs, i,post);
+                        await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
                       },
                       blockUser: () async {
-                        await postSearchModel.blockUser(blocksUids: mainModel.blocksUids, currentUserDoc: mainModel.currentUserDoc, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, post: post);
+                        await voids.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
                       },
                       mainModel: mainModel,
                     );
