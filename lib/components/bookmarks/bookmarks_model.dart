@@ -58,7 +58,7 @@ class BookmarksModel extends ChangeNotifier {
     await setCurrentUserDoc();
     setBookmarkedPostIds();
     await getBookmarks(bookmarkedPostIds);
-    await setPrefs();
+    prefs = await SharedPreferences.getInstance();
     setSpeed();
     listenForStates();
     endLoading();
@@ -290,10 +290,6 @@ class BookmarksModel extends ChangeNotifier {
 
   void onNextSongButtonPressed() {
     audioPlayer.seekToNext();
-  }
-
-  Future setPrefs() async {
-    prefs = await SharedPreferences.getInstance();
   }
 
   void setSpeed() {

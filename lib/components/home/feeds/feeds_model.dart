@@ -66,6 +66,7 @@ class FeedsModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     // await
+    prefs = await SharedPreferences.getInstance();
     await setCurrentUserDoc();
     await setMutesAndBlocks();
     setFollowUids();
@@ -180,7 +181,6 @@ class FeedsModel extends ChangeNotifier {
   }
 
   Future setMutesAndBlocks() async {
-    prefs = await SharedPreferences.getInstance();
     mutesPostIds = prefs.getStringList('mutesPostIds') ?? [];
     final List<dynamic> blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
