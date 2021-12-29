@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
@@ -44,6 +45,8 @@ class BookmarksModel extends ChangeNotifier {
   // speed
   late SharedPreferences prefs;
   final speedNotifier = ValueNotifier<double>(1.0);
+  // enums
+  final PostType postType = PostType.bookmarks;
 
   BookmarksModel() {
     init();

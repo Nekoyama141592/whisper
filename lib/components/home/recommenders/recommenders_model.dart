@@ -9,6 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -55,6 +56,8 @@ class RecommendersModel extends ChangeNotifier {
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
   final speedNotifier = ValueNotifier<double>(1.0);
+  // enum
+  final PostType postType = PostType.recommenders;
   
   RecommendersModel() {
     init();

@@ -79,18 +79,18 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: feedsModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: feedsModel.afterUris, posts: feedsModel.feedDocs, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: feedsModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: feedsModel.afterUris, posts: feedsModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await voids.initAudioPlayer(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: feedsModel.feedDocs, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
+                    await voids.muteUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: feedsModel.posts, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: feedsModel.afterUris, audioPlayer: feedsModel.audioPlayer, results: feedsModel.feedDocs );
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: feedsModel.afterUris, audioPlayer: feedsModel.audioPlayer, results: feedsModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: feedsModel.feedDocs, post: post, mainModel: mainModel);
+                    await voids.blockUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: feedsModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

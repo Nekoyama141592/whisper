@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:algolia/algolia.dart';
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
@@ -40,6 +40,8 @@ class PostSearchModel extends ChangeNotifier{
   // speed
   late SharedPreferences prefs;
   final speedNotifier = ValueNotifier<double>(1.0);
+  // enum
+  final PostType postType = PostType.postSearch;
 
   PostSearchModel() {
     init();

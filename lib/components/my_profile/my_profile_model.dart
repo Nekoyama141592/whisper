@@ -14,6 +14,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -21,8 +22,6 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-// states
-import 'package:whisper/constants/enums.dart';
 
 final myProfileProvider = ChangeNotifierProvider(
   (ref) => MyProfileModel()
@@ -60,7 +59,8 @@ class MyProfileModel extends ChangeNotifier {
   // speed
   late SharedPreferences prefs;
   final speedNotifier = ValueNotifier<double>(1.0);
-  // states
+  // enums
+  final PostType postType = PostType.myProfile;
   SortState sortState = SortState.byNewestFirst;
 
   MyProfileModel() {

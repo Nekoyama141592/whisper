@@ -34,7 +34,7 @@ class FeedsPage extends ConsumerWidget {
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = feedsModel.isLoading;
-    final postDocs = feedsModel.feedDocs;
+    final postDocs = feedsModel.posts;
 
     return isLoading ?
     Loading()
