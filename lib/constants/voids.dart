@@ -266,17 +266,17 @@ void pause({ required AudioPlayer audioPlayer}) {
   audioPlayer.pause();
 }
 
-void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> results,required MainModel mainModel, required int i}) {
-  showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await delete(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, results: results, mainModel: mainModel, i: i) ;});
+void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) {
+  showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await delete(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
 }
 
-Future delete({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> results,required MainModel mainModel, required int i}) async {
+Future delete({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
   Navigator.pop(context);
   if (mainModel.currentUserDoc['uid'] != postMap['uid']) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
   } else {
     try {
-      results.remove(results[i]);
+      posts.remove(posts[i]);
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
       await FirebaseFirestore.instance.collection('posts').doc(postMap['postId']).delete();

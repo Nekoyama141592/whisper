@@ -186,7 +186,7 @@ class MyProfileModel extends ChangeNotifier {
     .get();
     // Sort by oldest first
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-    docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+    docs.reversed;
     // Insert at the top
     docs.forEach((DocumentSnapshot? doc) {
       myProfileDocs.insert(0, doc!);
