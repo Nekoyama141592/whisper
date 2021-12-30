@@ -413,14 +413,12 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
   }
 }
 
-Future<String> uploadImage({ required String userName, required MainModel mainModel, required File? croppedFile}) async {
+Future<String> uploadUserImageAndGetURL({ required String userName, required String uid, required File? croppedFile}) async {
   final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
   String getDownloadURL = '';
-  if (userName.isEmpty) {
-    print('userNameを入力してください');
-  }
+  if (userName.isEmpty) { print('userNameを入力してください'); }
   try {
-    final Reference storageRef = FirebaseStorage.instance.ref().child('users').child('userImage' + mainModel.currentUserDoc['uid'] + dateTime + '.jpg');
+    final Reference storageRef = FirebaseStorage.instance.ref().child('users').child(uid).child('userImage' + dateTime + '.jpg');
     await storageRef.putFile(croppedFile!);
     getDownloadURL = await storageRef.getDownloadURL();
   } catch(e) { print(e.toString()); }
@@ -428,7 +426,7 @@ Future<String> uploadImage({ required String userName, required MainModel mainMo
 }
 
 Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
-  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadImage(userName: userName, mainModel: mainModel, croppedFile: croppedFile);
+  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(userName: userName, uid: mainModel.currentUserDoc['uid'], croppedFile: croppedFile);
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {

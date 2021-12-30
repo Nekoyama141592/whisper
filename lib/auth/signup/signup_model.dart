@@ -9,8 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
@@ -72,25 +72,11 @@ class SignupModel extends ChangeNotifier {
   Future cropImage() async {
     isCropped = false;
     croppedFile = null;
-    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
+    croppedFile = await others.returnCroppedFile(xFile: xFile);
     if (croppedFile != null) {
       isCropped = true;
     }
     notifyListeners();
-  }
-
-  Future<String> uploadImage() async {
-    final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
-    String downloadURL = '';
-    if (userName.isEmpty) {
-      print('userNameを入力してください');
-    }
-    try {
-      final storageRef = FirebaseStorage.instance.ref().child('users').child('$userName' +'$dateTime' + '.jpg');
-      await storageRef.putFile(croppedFile!);
-      downloadURL = await storageRef.getDownloadURL();
-    } catch(e) { print(e.toString()); }
-    return downloadURL;
   }
 
   Future signup(BuildContext context) async {
@@ -121,7 +107,7 @@ class SignupModel extends ChangeNotifier {
   
   Future addUserToFireStore(uid) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
-    final String imageURL = await uploadImage();
+    final String imageURL = await voids.uploadUserImageAndGetURL(userName: userName, uid: uid, croppedFile: croppedFile);
     await FirebaseFirestore.instance
     .collection('users')
     .doc(uid)

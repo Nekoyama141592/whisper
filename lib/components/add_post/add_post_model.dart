@@ -175,8 +175,8 @@ class AddPostModel extends ChangeNotifier {
       final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       // postImage
-      final String postImageName = 'postImage' + microSecondsString + '.jpg';
-      final String imageURL = croppedFile == null ? '' : await getPostImageURL(postImageName: postImageName, mainModel: mainModel);
+      final String storagePostImageName = 'postImage' + microSecondsString + '.jpg';
+      final String imageURL = croppedFile == null ? '' : await getPostImageURL(postImageName: storagePostImageName, mainModel: mainModel);
       // post
       final String storagePostName = 'post' + microSecondsString + '.aac';
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
