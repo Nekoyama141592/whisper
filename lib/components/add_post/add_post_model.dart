@@ -182,7 +182,7 @@ class AddPostModel extends ChangeNotifier {
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
       // post firestore
       final String postId = 'post' + mainModel.currentUserDoc['uid'] + microSecondsString;
-      await addPostToFirebase(context: context, currentUserDoc: mainModel.currentUserDoc, imageURL: imageURL, audioURL: audioURL, postId: postId);
+      await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, storageImageName: storageImageName, storagePostName: storagePostName, postId: postId);
       postTitleNotifier.value = '';
       endLoading();
     }
@@ -196,7 +196,8 @@ class AddPostModel extends ChangeNotifier {
   }
 
   
-  Future addPostToFirebase({ required BuildContext context, required DocumentSnapshot currentUserDoc, required String imageURL, required String audioURL, required String postId }) async {
+  Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
+    final currentUserDoc = mainModel.currentUserDoc;
       try {
         await FirebaseFirestore.instance.collection('posts')
         .doc(postId)
@@ -229,8 +230,8 @@ class AddPostModel extends ChangeNotifier {
           'postId': postId,
           'positiveScore': 0,
           'score': 10000,
-          'storageImageName': ,
-          'storagePostName': ,
+          'storageImageName': storageImageName,
+          'storagePostName': storagePostName,
           'tagUids': [],
           'title': postTitleNotifier.value,
           'uid': currentUserDoc['uid'],
