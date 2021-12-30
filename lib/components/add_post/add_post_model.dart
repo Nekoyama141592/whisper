@@ -230,6 +230,7 @@ class AddPostModel extends ChangeNotifier {
           'positiveScore': 0,
           'score': 10000,
           'storageImageName': ,
+          'storagePostName': ,
           'tagUids': [],
           'title': postTitleNotifier.value,
           'uid': currentUserDoc['uid'],

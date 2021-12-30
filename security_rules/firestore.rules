@@ -54,7 +54,7 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 36
+    return post.size() == 37
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -84,6 +84,7 @@ service cloud.firestore {
     && 'positiveScore' in post && post.positiveScore is int
     && 'score' in post && post.score is int
     && 'storageImageName' in post && post.storageImageName is string
+    && 'storagePostName' in post && post.storagePostName is string
     && 'tagUids' in post && post.tagUids is list // un used
     && 'title' in post && post.title is string
     && 'uid' in post && post.uid is string
