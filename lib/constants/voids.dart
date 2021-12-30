@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
 // notifiers
@@ -417,7 +418,7 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
 Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile, required String storageImageName }) async {
   String getDownloadURL = '';
   try {
-    final Reference storageRef = FirebaseStorage.instance.ref().child('users').child(uid).child(storageImageName);
+    final Reference storageRef = userImageRef(uid: uid, storageImageName: storageImageName);
     await storageRef.putFile(croppedFile!);
     getDownloadURL = await storageRef.getDownloadURL();
   } catch(e) { print(e.toString()); }
