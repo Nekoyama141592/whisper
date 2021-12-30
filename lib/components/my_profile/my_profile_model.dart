@@ -52,7 +52,6 @@ class MyProfileModel extends ChangeNotifier {
   String description = '';
   String link = '';
   // post
-  String downloadURL = '';
   bool isCropped = false;
   XFile? xFile;
   File? croppedFile;
