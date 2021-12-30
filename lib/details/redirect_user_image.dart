@@ -43,7 +43,7 @@ class RedirectUserImage extends ConsumerWidget {
             await userShowModel.init(givePassiveUserDoc,mainModel.prefs);
           }
         } else {
-          userShowModel.theSameUserIcon(context, mainModel);
+          userShowModel.theSameUser(context, mainModel);
         }
       },
       onLongPress: mainModel.currentUserDoc['isAdmin'] ? () async {

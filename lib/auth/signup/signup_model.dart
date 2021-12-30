@@ -7,12 +7,11 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // constants
-import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 
@@ -39,7 +38,7 @@ class SignupModel extends ChangeNotifier {
   final isCheckedNotifier = ValueNotifier<bool>(false);
   // image
   bool isCropped = false;
-  XFile? xfile;
+  XFile? xFile;
   File? croppedFile;
   String downloadURL = '';
 
@@ -64,8 +63,8 @@ class SignupModel extends ChangeNotifier {
 
   Future showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) {
+    xFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xFile != null) {
       await cropImage();
     }
     notifyListeners();
@@ -74,28 +73,7 @@ class SignupModel extends ChangeNotifier {
   Future cropImage() async {
     isCropped = false;
     croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?
-      [
-        CropAspectRatioPreset.square,
-      ]
-      : [
-        // CropAspectRatioPreset.original,
-        CropAspectRatioPreset.square,
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kTertiaryColor,
-        toolbarWidgetColor: Colors.white,
-        // initAspectRatio: CropAspectRatioPreset.original,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
+    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
     if (croppedFile != null) {
       isCropped = true;
     }

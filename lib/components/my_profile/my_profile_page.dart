@@ -28,43 +28,46 @@ class MyProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final myProfileModel = watch(myProfileProvider);
     final followModel = watch(followProvider);
-    return SafeArea(
-      child: myProfileModel.isEditing ?
-      EditProfileScreen(
-        onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
-        onSaveButtonPressed: () async {
-          await myProfileModel.onSaveButtonPressed(context: context, mainModel: mainModel);
-        }, 
-        showImagePicker: () async {
-          await myProfileModel.showImagePicker();
-        }, 
-        onUserNameChanged: (text) {
-          myProfileModel.userName = text;
-        }, 
-        onDescriptionChanged: (text) {
-          myProfileModel.description = text;
-        }, 
-        onLinkChanged: (text) {
-          myProfileModel.link = text;
-        }, 
-        croppedFile: myProfileModel.croppedFile,
-        isCropped: myProfileModel.isCropped,
-        mainModel: mainModel
-      ) 
-      : GradientScreen(
-        top: SizedBox.shrink(), 
-        header: UserShowHeader(
-          onEditButtonPressed: () {
-            myProfileModel.onEditButtonPressed(mainModel.currentUserDoc);
-          },
-          passiveUserDoc: mainModel.currentUserDoc, 
-          backArrow: SizedBox.shrink(), 
-          mainModel: mainModel, 
-          followModel: followModel
-        ), 
-        circular: 35.0,
-        content: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
-      )
+    return InkWell(
+      onTap: () { print(myProfileModel.croppedFile == null ? 'NULLです' : 'NOT NULLです'); },
+      child: SafeArea(
+        child: myProfileModel.isEditing ?
+        EditProfileScreen(
+          onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
+          onSaveButtonPressed: () async {
+            await myProfileModel.onSaveButtonPressed(context: context, mainModel: mainModel);
+          }, 
+          showImagePicker: () async {
+            await myProfileModel.showImagePicker();
+          }, 
+          onUserNameChanged: (text) {
+            myProfileModel.userName = text;
+          }, 
+          onDescriptionChanged: (text) {
+            myProfileModel.description = text;
+          }, 
+          onLinkChanged: (text) {
+            myProfileModel.link = text;
+          }, 
+          croppedFile: myProfileModel.croppedFile,
+          isCropped: myProfileModel.isCropped,
+          mainModel: mainModel
+        ) 
+        : GradientScreen(
+          top: SizedBox.shrink(), 
+          header: UserShowHeader(
+            onEditButtonPressed: () {
+              myProfileModel.onEditButtonPressed(mainModel.currentUserDoc);
+            },
+            passiveUserDoc: mainModel.currentUserDoc, 
+            backArrow: SizedBox.shrink(), 
+            mainModel: mainModel, 
+            followModel: followModel
+          ), 
+          circular: 35.0,
+          content: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
+        )
+      ),
     );
   }
 }

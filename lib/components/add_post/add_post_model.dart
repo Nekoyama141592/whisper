@@ -15,9 +15,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 // constants
-import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/details/rounded_button.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -49,7 +48,7 @@ class AddPostModel extends ChangeNotifier {
   // timer
   final stopWatchTimer = StopWatchTimer();
   // imagePicker
-  XFile? xfile;
+  XFile? xFile;
   File? croppedFile;
   // IP
   String ipv6 = '';
@@ -181,8 +180,8 @@ class AddPostModel extends ChangeNotifier {
 
   Future showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) {
+    xFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xFile != null) {
       await cropImage();
     }
     notifyListeners();
@@ -191,26 +190,7 @@ class AddPostModel extends ChangeNotifier {
   Future cropImage() async {
     isCroppedNotifier.value = false;
     croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?
-      [
-        CropAspectRatioPreset.square,
-      ]
-      : [
-        CropAspectRatioPreset.square,
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
+    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
     if (croppedFile != null) {
       isCroppedNotifier.value = true;
       notifyListeners();

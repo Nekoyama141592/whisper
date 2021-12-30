@@ -10,13 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/constants/others.dart' as others;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -55,7 +54,7 @@ class MyProfileModel extends ChangeNotifier {
   // post
   String downloadURL = '';
   bool isCropped = false;
-  XFile? xfile;
+  XFile? xFile;
   File? croppedFile;
   // speed
   late SharedPreferences prefs;
@@ -158,28 +157,15 @@ class MyProfileModel extends ChangeNotifier {
 
   Future showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) { await cropImage(); }
+    xFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xFile != null) { await cropImage(); }
     notifyListeners();
   }
 
   Future cropImage() async {
     isCropped = false;
     croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?[ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
+    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
     if (croppedFile != null) { isCropped = true; }
   }
 
