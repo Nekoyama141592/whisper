@@ -155,7 +155,6 @@ class MyProfileModel extends ChangeNotifier {
     return getDownloadURL;
   }
 
-
   void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
     userName = currentUserDoc['userName'];
     description = currentUserDoc['description'];

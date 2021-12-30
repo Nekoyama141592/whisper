@@ -7,6 +7,7 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
+import 'package:whisper/details/circle_image.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/auth/components/already_have_an_account.dart';
@@ -80,23 +81,7 @@ class SignupPage extends ConsumerWidget {
                               children: [
                                 Container(
                                   child: signupModel.isCropped ?
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                      vertical: 25
-                                    ),
-                                    width: 160,
-                                    height: 160,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: kTertiaryColor
-                                      ),
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: FileImage(signupModel.croppedFile!),
-                                      )
-                                    ),
-                                  )
+                                  CircleImage(length: 160.0, image: FileImage(signupModel.croppedFile!))
                                   : Column(
                                     children: [
                                       InkWell(
