@@ -175,8 +175,8 @@ class AddPostModel extends ChangeNotifier {
       final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       // postImage
-      final String storagePostImageName = 'postImage' + microSecondsString + '.jpg';
-      final String imageURL = croppedFile == null ? '' : await getPostImageURL(postImageName: storagePostImageName, mainModel: mainModel);
+      final String storageImageName = 'postImage' + microSecondsString + '.jpg';
+      final String imageURL = croppedFile == null ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel);
       // post
       final String storagePostName = 'post' + microSecondsString + '.aac';
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
@@ -229,6 +229,7 @@ class AddPostModel extends ChangeNotifier {
           'postId': postId,
           'positiveScore': 0,
           'score': 10000,
+          'storageImageName': ,
           'tagUids': [],
           'title': postTitleNotifier.value,
           'uid': currentUserDoc['uid'],

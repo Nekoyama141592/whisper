@@ -68,6 +68,7 @@
         'postId': String,
         'positiveScore': 0,
         'score': int,
+        'storageImageName': String,
         'tagUids': List<String>,
         'title': String,
         'uid': String,
