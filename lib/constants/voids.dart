@@ -285,7 +285,7 @@ void onPostDeleteButtonPressed({ required BuildContext context, required AudioPl
 
 Future deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
   Navigator.pop(context);
-  if (mainModel.currentUserDoc['uid'] != postMap['uid']) {
+  if (mainModel.currentUser!.uid != postMap['uid']) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
   } else {
     try {
@@ -420,6 +420,7 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
 }
 
 Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile, required String storageImageName }) async {
+  // can`t be given mainModel because of lib/auth/signup/signup_model.dart
   String getDownloadURL = '';
   try {
     final Reference storageRef = userImageRef(uid: uid, storageImageName: storageImageName);
@@ -430,8 +431,11 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
 }
 
 Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
+  if (croppedFile != null) {
+    await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentUserDoc['storageImageName']).delete();
+  }
   final String storageImageName = (croppedFile == null) ? mainModel.currentUserDoc['storageImageName'] :  strings.storageUserImageName;
-  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUserDoc['uid'], croppedFile: croppedFile, storageImageName: storageImageName );
+  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {
