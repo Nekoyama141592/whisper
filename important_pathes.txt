@@ -8,3 +8,9 @@ lib/components/search/post_search/post_search_model.dart
 lib/components/user_show/user_show_model.dart
 lib/components/my_profile/my_profile_model.dart
 lib/one_post/one_post_model.dart
+
+// docs
+lib/components/add_post/add_post_model.dart
+lib/auth/signup/signup_model.dart
+lib/posts/components/replys/replys_model.dart
+lib/posts/components/comments/comments_model.dart
