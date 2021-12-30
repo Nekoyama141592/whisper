@@ -157,11 +157,8 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  Future<void> regetCurrentUserDoc(String currentUserDocId) async {
-    currentUserDoc =  await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDocId)
-    .get();
+  Future<void> regetCurrentUserDoc() async {
+    currentUserDoc =  await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).get();
     notifyListeners();
   }
 
@@ -173,7 +170,7 @@ class MainModel extends ChangeNotifier {
   }
 
   Future<void> regetNotifications() async {
-    await regetCurrentUserDoc(currentUser!.uid);
+    await regetCurrentUserDoc();
     getNotificationIds();
     notifyListeners();
   }

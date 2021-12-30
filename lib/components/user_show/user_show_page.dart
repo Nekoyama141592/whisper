@@ -41,23 +41,22 @@ class UserShowPage extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: isDisplayShowPage(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, passiveBlocksUids: passiveBlocksUids, currentUserDoc: mainModel.currentUserDoc) ?
-     Column(
-       children: [
-          Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),
-          SizedBox(height: 20.0,),
-          Text('あなたはこのユーザーをミュート、ブロック'),
-          SizedBox(height: 20.0,),
-          Text('もしくは相手にブロックされています')
-       ],
-     )
+      Column(
+        children: [
+            Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),
+            SizedBox(height: 20.0,),
+            Text('あなたはこのユーザーをミュート、ブロック'),
+            SizedBox(height: 20.0,),
+            Text('もしくは相手にブロックされています')
+        ],
+      )
       : Container(
         child: userShowModel.isEditing ?
         SafeArea(
           child: EditProfileScreen(
             onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context,mainModel.currentUserDoc);
-              await mainModel.regetCurrentUserDoc(mainModel.currentUserDoc.id);
+              await userShowModel.onSaveButtonPressed(context: context, mainModel: mainModel);
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
@@ -69,6 +68,8 @@ class UserShowPage extends ConsumerWidget {
             onLinkChanged: (text) {
               userShowModel.link = text;
             },
+            croppedFile: userShowModel.croppedFile,
+            isCropped: userShowModel.isCropped,
             mainModel: mainModel,
           )
         )

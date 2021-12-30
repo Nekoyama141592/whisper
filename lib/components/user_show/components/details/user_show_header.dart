@@ -20,8 +20,8 @@ class UserShowHeader extends ConsumerWidget {
     required this.passiveUserDoc,
     required this.onEditButtonPressed,
     required this.backArrow,
-   required this.mainModel,
-   required this.followModel
+    required this.mainModel,
+    required this.followModel
   }) : super(key: key);
 
   final DocumentSnapshot passiveUserDoc;

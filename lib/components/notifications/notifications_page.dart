@@ -57,7 +57,7 @@ class NotificationsPage extends StatelessWidget {
         drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: TabBarView(
           children: [
-            CommentNotifications(currentUserDoc: mainModel.currentUserDoc, mainModel: mainModel,),
+            CommentNotifications(mainModel: mainModel,),
             ReplyNotifications(replyNotifications: mainModel.replyNotifications, mainModel: mainModel,),
             OfficialNotifications(),
           ]

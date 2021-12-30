@@ -13,17 +13,15 @@ class CommentNotifications extends StatelessWidget {
 
   const CommentNotifications({
     Key? key,
-    required this.currentUserDoc,
     required this.mainModel,
   }) : super(key: key);
 
-  final DocumentSnapshot currentUserDoc;
   final MainModel mainModel;
 
   @override 
   Widget build(BuildContext context) {
     final List<dynamic> list = mainModel.commentNotifications;
-    final content = CommentNotificationList(currentUserDoc: currentUserDoc,mainModel: mainModel);
+    final content = CommentNotificationList(mainModel: mainModel);
     final reload = () async {
       await mainModel.regetNotifications();
     };

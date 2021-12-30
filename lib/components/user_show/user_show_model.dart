@@ -205,9 +205,10 @@ class UserShowModel extends ChangeNotifier {
     }
   }
 
-  Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
-    await updateUserInfo(context,currentUserDoc);
+  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel}) async {
+    await updateUserInfo(context,mainModel.currentUserDoc);
     isEditing = false;
+    await mainModel.regetCurrentUserDoc();
   }
 
   void onCancelButtonPressed() {

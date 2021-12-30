@@ -22,6 +22,8 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 final myProfileProvider = ChangeNotifierProvider(
   (ref) => MyProfileModel()
@@ -142,14 +144,15 @@ class MyProfileModel extends ChangeNotifier {
 
   Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
     final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+    String getDownloadURL = '';
     if (userName.isEmpty) {
       print('userNameを入力してください');
     }
     try {
       await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
-      downloadURL = await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
+      getDownloadURL = await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
     } catch(e) { print(e.toString()); }
-    return downloadURL;
+    return getDownloadURL;
   }
 
 
@@ -163,14 +166,15 @@ class MyProfileModel extends ChangeNotifier {
 
   Future updateUserInfo(BuildContext context,DocumentSnapshot currentUserDoc) async {
 
-    final String downloadURL = croppedFile == null ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
+    final String downloadURL = (croppedFile == null) ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
     if (downloadURL.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
     } else {
       try {
-      await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).update({
+        await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).update({
           'description': description,
           'link': link,
+          'imageURL': downloadURL,
           'updatedAt': Timestamp.now(),
           'userName': userName,
         });
@@ -179,9 +183,10 @@ class MyProfileModel extends ChangeNotifier {
     }
   }
 
-  Future onSaveButtonPressed(BuildContext context,DocumentSnapshot currentUserDoc) async {
-    await updateUserInfo(context,currentUserDoc);
+  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel}) async {
+    await updateUserInfo(context,mainModel.currentUserDoc);
     isEditing = false;
+    await mainModel.regetCurrentUserDoc();
   }
 
   Future showImagePicker() async {

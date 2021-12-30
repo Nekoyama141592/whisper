@@ -1,10 +1,13 @@
+// dart
+import 'dart:io';
 // material
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
-import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/user_image.dart';
+import 'package:whisper/details/circle_image.dart';
+import 'package:whisper/details/rounded_button.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -18,6 +21,8 @@ class EditProfileScreen extends ConsumerWidget {
     required this.onUserNameChanged,
     required this.onDescriptionChanged,
     required this.onLinkChanged,
+    required this.croppedFile,
+    required this.isCropped,
     required this.mainModel,
   }) : super(key: key);
 
@@ -27,6 +32,8 @@ class EditProfileScreen extends ConsumerWidget {
   final void Function(String)? onUserNameChanged;
   final void Function(String)? onDescriptionChanged;
   final void Function(String)? onLinkChanged;
+  final File? croppedFile;
+  final bool isCropped;
   final MainModel mainModel;
   
   @override 
@@ -77,7 +84,9 @@ class EditProfileScreen extends ConsumerWidget {
               ],
             ),
             
-            InkWell(child: UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: showImagePicker,),
+            isCropped ? 
+            CircleImage(length: 80.0, image: FileImage(croppedFile!) )
+            : InkWell(child: UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: showImagePicker,),
             Text('名前',style: textStyle,),
             TextFormField(
               keyboardType: TextInputType.text,
