@@ -416,7 +416,6 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
 Future<String> uploadUserImageAndGetURL({ required String userName, required String uid, required File? croppedFile}) async {
   final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
   String getDownloadURL = '';
-  if (userName.isEmpty) { print('userNameを入力してください'); }
   try {
     final Reference storageRef = FirebaseStorage.instance.ref().child('users').child(uid).child('userImage' + dateTime + '.jpg');
     await storageRef.putFile(croppedFile!);
