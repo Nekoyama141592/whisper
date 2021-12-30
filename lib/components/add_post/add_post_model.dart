@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whisper/constants/counts.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
@@ -229,7 +230,7 @@ class AddPostModel extends ChangeNotifier {
           'otherLinks': [],
           'postId': postId,
           'positiveScore': 0,
-          'score': 10000,
+          'score': defaultScore,
           'storageImageName': storageImageName,
           'storagePostName': storagePostName,
           'tagUids': [],

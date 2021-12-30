@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
+import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/constants/lists.dart';
@@ -149,7 +150,7 @@ class SignupModel extends ChangeNotifier {
       'readPosts': [],
       'recommendState': 'recommendable',
       'replyNotifications': [],
-      'score': 10000,
+      'score': defaultScore,
       'searchHistory': [],
       'storageImageName': storageImageName,
       'subUserName': uid,

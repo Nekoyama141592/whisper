@@ -290,7 +290,7 @@ class ReplysModel extends ChangeNotifier {
       'positiveScore': 0,
       'reply': reply,
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
-      'score': 10000,
+      'score': defaultScore,
       'uid': currentUserDoc['uid'],
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
