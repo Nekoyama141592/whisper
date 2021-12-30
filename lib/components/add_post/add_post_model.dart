@@ -236,7 +236,6 @@ class AddPostModel extends ChangeNotifier {
           'title': postTitleNotifier.value,
           'uid': currentUserDoc['uid'],
           'updatedAt': Timestamp.now(),
-          'userDocId': currentUserDoc.id,
           'userImageURL': currentUserDoc['imageURL'],
           'userName': currentUserDoc['userName'],
         });

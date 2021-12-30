@@ -292,7 +292,6 @@ class ReplysModel extends ChangeNotifier {
       'replyId': 'reply' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString() ,
       'score': 10000,
       'uid': currentUserDoc['uid'],
-      'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };
@@ -313,7 +312,7 @@ class ReplysModel extends ChangeNotifier {
   Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
     DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
-    .doc(currentSongMap['userDocId'])
+    .doc(currentSongMap['uid'])
     .get();
     return passiveUserDoc;
   }
@@ -337,7 +336,6 @@ class ReplysModel extends ChangeNotifier {
       'reply': reply,
       'replyId': newReplyMap['replyId'],
       'uid': currentUserDoc['uid'],
-      'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };

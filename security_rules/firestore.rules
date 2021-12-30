@@ -54,7 +54,7 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 37
+    return post.size() == 36
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -89,14 +89,13 @@ service cloud.firestore {
     && 'title' in post && post.title is string
     && 'uid' in post && post.uid is string
     && 'updatedAt' in post && post.updatedAt is timestamp
-    && 'userDocId' in post && post.userDocId is string
     && 'userImageURL' in post && post.userImageURL is string
     && 'userName' in post && post.userName is string;
   }
 
   function isValidComment(comment) {
     return
-    comment.size() == 20
+    comment.size() == 19
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
@@ -114,14 +113,13 @@ service cloud.firestore {
     && 'replysCount' in comment && comment.replysCount is int
     && 'score' in comment && comment.score is int
     && 'uid' in comment && comment.uid is string
-    && 'userDocId' in comment && comment.userDocId is string
     && 'userName' in comment && comment.userName is string
     && 'userImageURL' in comment && comment.userImageURL is string;
   }
 
   function isValidReply(reply) {
     return 
-    reply.size() == 21
+    reply.size() == 20
     && 'elementId' in reply && reply.elementId is string // commentId
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
@@ -140,7 +138,6 @@ service cloud.firestore {
     && 'replyId' in reply && reply.replyId is string
     && 'score' in reply && reply.score is int
     && 'uid' in reply && reply.uid is string
-    && 'userDocId' in reply && reply.userDocId is string
     && 'userName' in reply && reply.userName is string
     && 'userImageURL' in reply && reply.userImageURL is string;
   }

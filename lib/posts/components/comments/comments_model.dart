@@ -183,7 +183,6 @@ class CommentsModel extends ChangeNotifier {
       'replysCount': 0,
       'score': 10000,
       'uid': currentUserDoc['uid'],
-      'userDocId': currentUserDoc.id,
       'userName': currentUserDoc['userName'],
       'userImageURL': currentUserDoc['imageURL'],
     };
@@ -206,7 +205,6 @@ class CommentsModel extends ChangeNotifier {
         'postTitle': currentSongMap['title'],
         'postId': currentSongMap['postId'],
         'uid': currentUserDoc['uid'],
-        'userDocId': currentUserDoc.id,
         'userName': currentUserDoc['userName'],
         'userImageURL': currentUserDoc['imageURL'],
       };
