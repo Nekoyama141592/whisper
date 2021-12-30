@@ -10,7 +10,9 @@ lib/components/my_profile/my_profile_model.dart
 lib/one_post/one_post_model.dart
 
 // docs
-lib/components/add_post/add_post_model.dart
+data_structure.js
+security_rules/firestore.rules
 lib/auth/signup/signup_model.dart
+lib/components/add_post/add_post_model.dart
 lib/posts/components/replys/replys_model.dart
 lib/posts/components/comments/comments_model.dart

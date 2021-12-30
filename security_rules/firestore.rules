@@ -55,7 +55,7 @@ service cloud.firestore {
 
   
   function isValidPost(post) {
-    return post.size() == 36
+    return post.size() == 37
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
     && 'bookmarksCount' in post && post.bookmarksCount is int
@@ -86,6 +86,7 @@ service cloud.firestore {
     && 'score' in post && post.score is int
     && 'storageImageName' in post && post.storageImageName is string
     && 'storagePostName' in post && post.storagePostName is string
+    && 'subUserName' in post && post.subUserName is string
     && 'tagUids' in post && post.tagUids is list // un used
     && 'title' in post && post.title is string
     && 'uid' in post && post.uid is string
@@ -96,7 +97,7 @@ service cloud.firestore {
 
   function isValidComment(comment) {
     return
-    comment.size() == 19
+    comment.size() == 20
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
@@ -113,6 +114,7 @@ service cloud.firestore {
     && 'postId' in comment && comment.postId is string
     && 'replysCount' in comment && comment.replysCount is int
     && 'score' in comment && comment.score is int
+    && 'subUserName' in comment && comment.subUserName is string
     && 'uid' in comment && comment.uid is string
     && 'userName' in comment && comment.userName is string
     && 'userImageURL' in comment && comment.userImageURL is string;
@@ -120,7 +122,7 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 20
+    reply.size() == 21
     && 'elementId' in reply && reply.elementId is string // commentId
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
@@ -138,6 +140,7 @@ service cloud.firestore {
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string
     && 'score' in reply && reply.score is int
+    && 'subUserName' in reply && reply.subUserName is string
     && 'uid' in reply && reply.uid is string
     && 'userName' in reply && reply.userName is string
     && 'userImageURL' in reply && reply.userImageURL is string;

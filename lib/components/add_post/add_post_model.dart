@@ -233,6 +233,7 @@ class AddPostModel extends ChangeNotifier {
           'score': defaultScore,
           'storageImageName': storageImageName,
           'storagePostName': storagePostName, // use on lib/constants/voids.dart
+          'subUserName': currentUserDoc['subUserName'],
           'tagUids': [],
           'title': postTitleNotifier.value,
           'uid': currentUserDoc['uid'],
