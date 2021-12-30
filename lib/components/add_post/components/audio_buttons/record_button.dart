@@ -5,12 +5,20 @@ import 'package:whisper/components/add_post/components/audio_buttons/audio_butto
 // notifier
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 
 class RecordButton extends StatelessWidget {
 
-  RecordButton(this.addPostModel);
+  const RecordButton({
+    Key? key,
+    required this.mainModel,
+    required this.addPostModel
+  }) : super(key: key);
+
+  final MainModel mainModel;
   final AddPostModel addPostModel;
+
   @override  
   Widget build(BuildContext context) {
     return 
@@ -29,7 +37,7 @@ class RecordButton extends StatelessWidget {
             size: 100.0,
           ),
           press: () async {
-            addPostModel.onRecordButtonPressed(context);
+            addPostModel.onRecordButtonPressed(context: context, mainModel: mainModel);
           }
         );
       }

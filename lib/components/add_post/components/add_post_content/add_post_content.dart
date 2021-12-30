@@ -100,7 +100,7 @@ class AddPostContent extends StatelessWidget {
               : value != AddPostState.recorded && value != AddPostState.uploaded ?
               Column(
                 children: [
-                  RecordButton(addPostModel),
+                  RecordButton(mainModel: mainModel, addPostModel: addPostModel)
                 ],
               )
               

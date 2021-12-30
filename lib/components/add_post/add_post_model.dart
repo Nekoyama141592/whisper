@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
@@ -16,13 +15,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
-import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/main_model.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 // components
+import 'package:whisper/details/rounded_button.dart';
 
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
@@ -34,11 +35,9 @@ class AddPostModel extends ChangeNotifier {
   final postTitleNotifier = ValueNotifier<String>('');
   
   late AudioPlayer audioPlayer;
-  String recordFilePath = '';
   String filePath = "";
   late File audioFile;
   late Record audioRecorder;
-  User? currentUser;
 
   // notifiers
   final progressNotifier = ProgressNotifier();
@@ -64,7 +63,6 @@ class AddPostModel extends ChangeNotifier {
 
   void init() {
     audioPlayer = AudioPlayer();
-    setCurrentUser();
   }
 
   void startLoading() {
@@ -79,7 +77,173 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showAddLinkDialogue(BuildContext context, TextEditingController linkEditingController) {
+  Future showImagePicker() async {
+    final ImagePicker _picker = ImagePicker();
+    xFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xFile != null) {
+      await cropImage();
+    }
+    notifyListeners();
+  }
+
+  Future cropImage() async {
+    isCroppedNotifier.value = false;
+    croppedFile = null;
+    croppedFile = await others.returnCroppedFile(xFile: xFile);
+    if (croppedFile != null) {
+      isCroppedNotifier.value = true;
+      notifyListeners();
+    }
+  }
+
+  void startMeasure() {
+    stopWatchTimer.onExecute.add(StopWatchExecute.start);
+  }
+
+  void stopMeasure() {
+    stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+  }
+
+  void resetMeasure() {
+    stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+  }
+  
+  Future setAudio(String filepath) async {
+    await audioPlayer.setFilePath(filePath);
+  }
+
+  void play() {
+    audioPlayer.play();
+    notifyListeners();
+  }
+
+  void pause() {
+    audioPlayer.pause();
+    notifyListeners();
+  }
+
+  void seek(Duration position) {
+    audioPlayer.seek(position);
+  }
+
+  Future startRecording({ required BuildContext context, required MainModel mainModel }) async {
+    audioRecorder = Record();
+    bool hasRecordingPermission = await audioRecorder.hasPermission();
+    if (hasRecordingPermission == true) {
+      Directory directory = await getApplicationDocumentsDirectory();
+      filePath = directory.path + '/' + mainModel.currentUserDoc['uid'] +  DateTime.now().microsecondsSinceEpoch.toString() + '.aac';
+      await audioRecorder.start( path: filePath,);
+      startMeasure();
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Center(child: Text('マイクの許可をお願いします')))); }
+  }
+
+  Future onRecordButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
+    if (!(addPostStateNotifier.value == AddPostState.recording)) {
+      await startRecording(context: context,mainModel: mainModel);
+      addPostStateNotifier.value = AddPostState.recording;
+    } else {
+      audioRecorder.stop();
+      stopMeasure();
+      await setAudio(filePath);
+      audioFile = File(filePath);
+      addPostStateNotifier.value = AddPostState.recorded;
+      voids.listenForStatesForAddPostModel(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier);
+    }
+  }
+
+  Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel }) async {
+    final storageRef = FirebaseStorage.instance.ref().child('posts').child(mainModel.currentUserDoc['uid']).child(storagePostName);
+    await storageRef.putFile(audioFile);
+    final String postDownloadURL = await storageRef.getDownloadURL();
+    return postDownloadURL;
+  }
+
+
+  void onRecordAgainButtonPressed() {
+    postTitleNotifier.value = '';
+    addPostStateNotifier.value = AddPostState.initialValue;
+  }
+
+  Future onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
+    if (postTitleNotifier.value.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
+    } else {
+      startLoading();
+      Navigator.pop(context);
+      final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
+      if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
+      // postImage
+      final String postImageName = 'postImage' + microSecondsString + '.jpg';
+      final String imageURL = croppedFile == null ? '' : await getPostImageURL(postImageName: postImageName, mainModel: mainModel);
+      // post
+      final String storagePostName = 'post' + microSecondsString + '.aac';
+      final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
+      // post firestore
+      final String postId = 'post' + mainModel.currentUserDoc['uid'] + microSecondsString;
+      await addPostToFirebase(context: context, currentUserDoc: mainModel.currentUserDoc, imageURL: imageURL, audioURL: audioURL, postId: postId);
+      postTitleNotifier.value = '';
+      endLoading();
+    }
+  }
+
+  Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel}) async {
+    final storageRef = FirebaseStorage.instance.ref().child('postImages').child(mainModel.currentUserDoc['uid']).child(postImageName);
+    await storageRef.putFile(croppedFile!);
+    final String downloadURL = await storageRef.getDownloadURL();
+    return downloadURL;
+  }
+
+  
+  Future addPostToFirebase({ required BuildContext context, required DocumentSnapshot currentUserDoc, required String imageURL, required String audioURL, required String postId }) async {
+      try {
+        await FirebaseFirestore.instance.collection('posts')
+        .doc(postId)
+        .set({
+          'audioURL': audioURL,
+          'bookmarks':[],
+          'bookmarksCount': 0,
+          'commentsCount': 0,
+          'commentsState': commentsState,
+          'createdAt': Timestamp.now(),
+          'country': '',
+          'description': '',
+          'genre': '',
+          'hashTags': [],
+          'imageURL': imageURL,
+          'impression': 0,
+          'ipv6': ipv6,
+          'isDelete': false,
+          'isNFTicon': currentUserDoc['isNFTicon'],
+          'isOfficial': currentUserDoc['isOfficial'],
+          'isPinned': false,
+          'isPlayedCount': 0,
+          'likes':[],
+          'likesCount': 0,
+          'link': link,
+          'negativeScore': 0,
+          'noDisplayWords': currentUserDoc['noDisplayWords'],
+          'noDisplayIpv6AndUids': currentUserDoc['blocksIpv6AndUids'],
+          'otherLinks': [],
+          'postId': postId,
+          'positiveScore': 0,
+          'score': 10000,
+          'tagUids': [],
+          'title': postTitleNotifier.value,
+          'uid': currentUserDoc['uid'],
+          'updatedAt': Timestamp.now(),
+          'userDocId': currentUserDoc.id,
+          'userImageURL': currentUserDoc['imageURL'],
+          'userName': currentUserDoc['userName'],
+        });
+        addPostStateNotifier.value = AddPostState.uploaded;
+      } catch(e) {
+        print(e.toString());
+      }
+  }
+
+    void showAddLinkDialogue(BuildContext context, TextEditingController linkEditingController) {
     showDialog(
       context: context, 
       builder: (_) {
@@ -176,249 +340,5 @@ class AddPostModel extends ChangeNotifier {
         );
       }
     );
-  }
-
-  Future showImagePicker() async {
-    final ImagePicker _picker = ImagePicker();
-    xFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xFile != null) {
-      await cropImage();
-    }
-    notifyListeners();
-  }
-
-  Future cropImage() async {
-    isCroppedNotifier.value = false;
-    croppedFile = null;
-    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
-    if (croppedFile != null) {
-      isCroppedNotifier.value = true;
-      notifyListeners();
-    }
-  }
-
-  void startMeasure() {
-    stopWatchTimer.onExecute.add(StopWatchExecute.start);
-  }
-
-  void stopMeasure() {
-    stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-  }
-
-  void resetMeasure() {
-    stopWatchTimer.onExecute.add(StopWatchExecute.reset);
-  }
-  
-  Future setAudio(String filepath) async {
-    await audioPlayer.setFilePath(filePath);
-  }
-
-  void play() {
-    audioPlayer.play();
-    notifyListeners();
-  }
-
-  void pause() {
-    audioPlayer.pause();
-    notifyListeners();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
-  }
-
-  Future startRecording(BuildContext context) async {
-    audioRecorder = Record();
-    bool hasRecordingPermission = await audioRecorder.hasPermission();
-
-    if (hasRecordingPermission == true) {
-      Directory directory = await getApplicationDocumentsDirectory();
-      recordFilePath = directory.path + '/' + currentUser!.uid +  DateTime.now().microsecondsSinceEpoch.toString() + '.aac';
-      filePath = recordFilePath;
-      await audioRecorder.start(
-        path: filePath,
-      );
-      startMeasure();
-      notifyListeners();
-    } else {
-      ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Center(child: Text('マイクの許可をお願いします！！'))));
-    }
-  }
-
-  Future onRecordButtonPressed(context) async {
-    if (!(addPostStateNotifier.value == AddPostState.recording)) {
-      await startRecording(context);
-      addPostStateNotifier.value = AddPostState.recording;
-    } else {
-      audioRecorder.stop();
-      stopMeasure();
-      await setAudio(filePath);
-      audioFile = File(filePath);
-      addPostStateNotifier.value = AddPostState.recorded;
-      listenForStates();
-    }
-  }
-
-  Future<String> getPostUrl(context) async {
-    final storageRef = FirebaseStorage.instance.ref('posts').child(
-        filePath.substring(
-          filePath.lastIndexOf('/'),
-          filePath.length
-        )
-      );
-    try {
-      await storageRef.putFile(audioFile);
-    } catch(e) {
-      print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-    }
-    final String postDownloadURL = await storageRef.getDownloadURL();
-    return postDownloadURL;
-  }
-
-
-  void onRecordAgainButtonPressed() {
-    postTitleNotifier.value = '';
-    addPostStateNotifier.value = AddPostState.initialValue;
-  }
-
-  void setCurrentUser() {
-    currentUser = FirebaseAuth.instance.currentUser;
-  }
-
-  Future onUploadButtonPressed(context, DocumentSnapshot currentUserDoc) async {
-    if (postTitleNotifier.value.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
-    } else {
-      startLoading();
-      Navigator.pop(context);
-      final String imageURL = croppedFile == null ? '' : await uploadImage();
-      final audioURL = await getPostUrl(context);
-      if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-      await addPostToFirebase(context,currentUserDoc,imageURL,audioURL);
-      postTitleNotifier.value = '';
-      endLoading();
-    }
-  }
-
-  
-
-  Future<String> uploadImage() async {
-    final String imageName = currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
-    final storageRef = FirebaseStorage.instance.ref().child('postImages').child(imageName + '.jpg');
-    try {
-      await storageRef.putFile(croppedFile!);
-    } catch(e) {
-      print(e.toString());
-    }
-    final String downloadURL = await storageRef.getDownloadURL();
-    return downloadURL;
-  }
-
-  
-  Future addPostToFirebase(context,DocumentSnapshot currentUserDoc,String imageURL,String audioURL) async {
-      try {
-        final String postId = 'post' + currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
-        await FirebaseFirestore.instance.collection('posts')
-        .doc(postId)
-        .set({
-          'audioURL': audioURL,
-          'bookmarks':[],
-          'bookmarksCount': 0,
-          'commentsCount': 0,
-          'commentsState': commentsState,
-          'createdAt': Timestamp.now(),
-          'country': '',
-          'description': '',
-          'genre': '',
-          'hashTags': [],
-          'imageURL': imageURL,
-          'impression': 0,
-          'ipv6': ipv6,
-          'isDelete': false,
-          'isNFTicon': currentUserDoc['isNFTicon'],
-          'isOfficial': currentUserDoc['isOfficial'],
-          'isPinned': false,
-          'isPlayedCount': 0,
-          'likes':[],
-          'likesCount': 0,
-          'link': link,
-          'negativeScore': 0,
-          'noDisplayWords': currentUserDoc['noDisplayWords'],
-          'noDisplayIpv6AndUids': currentUserDoc['blocksIpv6AndUids'],
-          'otherLinks': [],
-          'postId': postId,
-          'positiveScore': 0,
-          'score': 10000,
-          'tagUids': [],
-          'title': postTitleNotifier.value,
-          'uid': currentUser!.uid,
-          'updatedAt': Timestamp.now(),
-          'userDocId': currentUserDoc.id,
-          'userImageURL': currentUserDoc['imageURL'],
-          'userName': currentUserDoc['userName'],
-        });
-        addPostStateNotifier.value = AddPostState.uploaded;
-      } catch(e) {
-        print(e.toString());
-      }
-  }
-
-  void listenForStates() {
-    listenForChangesInPlayerState();
-    listenForChangesInPlayerPosition();
-    listenForChangesInBufferedPosition();
-    listenForChangesInTotalDuration();
-  }
-  void listenForChangesInPlayerState() {
-    audioPlayer.playerStateStream.listen((playerState) {
-      final isPlaying = playerState.playing;
-      final processingState = playerState.processingState;
-      if (processingState == ProcessingState.loading ||
-          processingState == ProcessingState.buffering) {
-        playButtonNotifier.value = ButtonState.loading;
-      } else if (!isPlaying) {
-        playButtonNotifier.value = ButtonState.paused;
-      } else if (processingState != ProcessingState.completed) {
-        playButtonNotifier.value = ButtonState.playing;
-      } else {
-        audioPlayer.seek(Duration.zero);
-        audioPlayer.pause();
-      }
-    });
-  }
-
-  void listenForChangesInPlayerPosition() {
-    audioPlayer.positionStream.listen((position) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: position,
-        buffered: oldState.buffered,
-        total: oldState.total,
-      );
-    });
-  }
-
-  void listenForChangesInBufferedPosition() {
-    audioPlayer.bufferedPositionStream.listen((bufferedPosition) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: oldState.current,
-        buffered: bufferedPosition,
-        total: oldState.total,
-      );
-    });
-  }
-
-  void listenForChangesInTotalDuration() {
-    audioPlayer.durationStream.listen((totalDuration) {
-      final oldState = progressNotifier.value;
-      progressNotifier.value = ProgressBarState(
-        current: oldState.current,
-        buffered: oldState.buffered,
-        total: totalDuration ?? Duration.zero,
-      );
-    });
   }
 }

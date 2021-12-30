@@ -78,7 +78,7 @@ class PickPostImagePage extends StatelessWidget {
                           AddLinkButton(addPostModel: addPostModel),
                         ],
                       ),
-                      Center(child: UploadButton(addPostModel: addPostModel, currentUserDoc: mainModel.currentUserDoc)),
+                      Center(child: UploadButton(addPostModel: addPostModel, mainModel: mainModel))
                     ],
                   ),
                 ],

@@ -1,10 +1,9 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 //model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 
 class UploadButton extends StatelessWidget {
@@ -12,11 +11,11 @@ class UploadButton extends StatelessWidget {
   const UploadButton({
     Key? key,
     required this.addPostModel,
-    required this.currentUserDoc
+    required this.mainModel,
   }) : super(key: key);
 
   final AddPostModel addPostModel;
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   @override  
   Widget build(BuildContext context) {
     return 
@@ -28,7 +27,7 @@ class UploadButton extends StatelessWidget {
         size: 80.0,
       ),
       press: () async {
-        await addPostModel.onUploadButtonPressed(context,currentUserDoc);
+        await addPostModel.onUploadButtonPressed(context: context, mainModel: mainModel);
       }
     );
   }
