@@ -14,6 +14,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/strings.dart' as strings;
 
 final signupProvider = ChangeNotifierProvider(
   (ref) => SignupModel()
@@ -107,7 +108,8 @@ class SignupModel extends ChangeNotifier {
   
   Future addUserToFireStore(uid) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
-    final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile);
+    final storageImageName = strings.storageUserImageName;
+    final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
     await FirebaseFirestore.instance
     .collection('users')
     .doc(uid)
@@ -149,6 +151,7 @@ class SignupModel extends ChangeNotifier {
       'replyNotifications': [],
       'score': 10000,
       'searchHistory': [],
+      'storageImageName': storageImageName,
       'subUserName': uid,
       'uid' : uid,
       'updatedAt': Timestamp.now(),

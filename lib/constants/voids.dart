@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/strings.dart' as strings;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -413,11 +414,10 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
   }
 }
 
-Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile}) async {
-  final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile, required String storageImageName }) async {
   String getDownloadURL = '';
   try {
-    final Reference storageRef = FirebaseStorage.instance.ref().child('users').child(uid).child('userImage' + dateTime + '.jpg');
+    final Reference storageRef = FirebaseStorage.instance.ref().child('users').child(uid).child(storageImageName);
     await storageRef.putFile(croppedFile!);
     getDownloadURL = await storageRef.getDownloadURL();
   } catch(e) { print(e.toString()); }
@@ -425,15 +425,17 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
 }
 
 Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
-  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUserDoc['uid'], croppedFile: croppedFile);
+  final String storageImageName = (croppedFile == null) ? mainModel.currentUserDoc['storageImageName'] :  strings.storageUserImageName;
+  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUserDoc['uid'], croppedFile: croppedFile, storageImageName: storageImageName );
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {
     try {
       await FirebaseFirestore.instance.collection('users').doc(mainModel.currentUserDoc.id).update({
         'description': description,
-        'link': link,
         'imageURL': downloadURL,
+        'link': link,
+        'storageImageName': storageImageName,
         'updatedAt': Timestamp.now(),
         'userName': userName,
       });

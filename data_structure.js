@@ -207,6 +207,7 @@
         }],
         'score': int,
         'searchHistory': List<String>,
+        'storageImageName': String,
         'subUserName': String,
         'uid': String,
         'updatedAt': String,

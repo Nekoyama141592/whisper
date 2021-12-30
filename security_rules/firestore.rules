@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 43 // max48
+    return user.size() == 44 // max48
     && 'authNotifications' in user && user.authNotifications is list // un used
     && 'birthDay' in user && user.birthDay is timestamp
     && 'browsingHistory' in user && user.browsingHistory is list
@@ -44,6 +44,7 @@ service cloud.firestore {
     && 'replyNotifications' in user && user.replyNotifications is list
     && 'score' in user && user.score is int
     && 'searchHistory' in user && user.searchHistory is list
+    && 'storageImageName' in user && user.storageImageName is string
     && 'subUserName' in user && user.subUserName is string
     && 'uid' in user && user.uid is string
     && 'updatedAt' in user && user.updatedAt is timestamp
