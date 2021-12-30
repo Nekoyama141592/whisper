@@ -301,9 +301,7 @@ class CommentsModel extends ChangeNotifier {
   Future updateCommentsOfPostWhenDelete(DocumentSnapshot newCurrentSongDoc,Map<String,dynamic> comment,String postDocId) async {
     final List<dynamic> newComments = newCurrentSongDoc['comments'];
     newComments.remove(comment);
-    await FirebaseFirestore.instance
-    .collection('posts')
-    .doc(postDocId)
+    await FirebaseFirestore.instance.collection('posts').doc(postDocId)
     .update({
       'comments': newComments,
     });
