@@ -40,7 +40,6 @@ class SignupModel extends ChangeNotifier {
   bool isCropped = false;
   XFile? xFile;
   File? croppedFile;
-  String downloadURL = '';
 
   void startLoading() {
     isLoading = true;
@@ -82,23 +81,15 @@ class SignupModel extends ChangeNotifier {
 
   Future<String> uploadImage() async {
     final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+    String downloadURL = '';
     if (userName.isEmpty) {
       print('userNameを入力してください');
     }
     try {
-      await FirebaseStorage.instance
-      .ref()
-      .child('users')
-      .child('$userName' +'$dateTime' + '.jpg')
-      .putFile(croppedFile!);
-      downloadURL = await FirebaseStorage.instance
-      .ref()
-      .child('users')
-      .child('$userName' +'$dateTime' + '.jpg')
-      .getDownloadURL();
-    } catch(e) {
-      print(e.toString());
-    }
+      final storageRef = FirebaseStorage.instance.ref().child('users').child('$userName' +'$dateTime' + '.jpg');
+      await storageRef.putFile(croppedFile!);
+      downloadURL = await storageRef.getDownloadURL();
+    } catch(e) { print(e.toString()); }
     return downloadURL;
   }
 
@@ -188,7 +179,6 @@ class SignupModel extends ChangeNotifier {
         final now = DateTime.now();
         return Container(
           height: MediaQuery.of(context).size.height * 0.3,
-          
           child: CupertinoDatePicker(
             backgroundColor: Theme.of(context).focusColor,
             initialDateTime: DateTime(now.year - 18,12,31),

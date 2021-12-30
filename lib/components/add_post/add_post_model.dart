@@ -233,15 +233,11 @@ class AddPostModel extends ChangeNotifier {
 
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      recordFilePath = directory.path + '/'
-      + currentUser!.uid
-      +  DateTime.now().microsecondsSinceEpoch.toString() 
-      + '.aac';
+      recordFilePath = directory.path + '/' + currentUser!.uid +  DateTime.now().microsecondsSinceEpoch.toString() + '.aac';
       filePath = recordFilePath;
       await audioRecorder.start(
         path: filePath,
       );
-
       startMeasure();
       notifyListeners();
     } else {
@@ -265,36 +261,20 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<String> getPostUrl(context) async {
-    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-    try {
-      await firebaseStorage
-      .ref('posts')
-      .child(
+    final storageRef = FirebaseStorage.instance.ref('posts').child(
         filePath.substring(
           filePath.lastIndexOf('/'),
           filePath.length
         )
-      )
-      
-      .putFile(audioFile);
+      );
+    try {
+      await storageRef.putFile(audioFile);
     } catch(e) {
       print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('何らかのエラーが発生しました')
-        )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
     }
-    final String downloadURL = await firebaseStorage
-    .ref('posts')
-    .child(
-      filePath.substring(
-          filePath.lastIndexOf('/'),
-          filePath.length
-      )
-    )
-    .getDownloadURL();
-    return downloadURL;
+    final String postDownloadURL = await storageRef.getDownloadURL();
+    return postDownloadURL;
   }
 
 
@@ -326,20 +306,13 @@ class AddPostModel extends ChangeNotifier {
 
   Future<String> uploadImage() async {
     final String imageName = currentUser!.uid + DateTime.now().microsecondsSinceEpoch.toString();
+    final storageRef = FirebaseStorage.instance.ref().child('postImages').child(imageName + '.jpg');
     try {
-      await FirebaseStorage.instance
-      .ref()
-      .child('postImages')
-      .child(imageName + '.jpg')
-      .putFile(croppedFile!);
+      await storageRef.putFile(croppedFile!);
     } catch(e) {
       print(e.toString());
     }
-    final String downloadURL = await FirebaseStorage.instance
-    .ref()
-    .child('postImages')
-    .child(imageName + '.jpg')
-    .getDownloadURL();
+    final String downloadURL = await storageRef.getDownloadURL();
     return downloadURL;
   }
 
