@@ -288,10 +288,7 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentSongMap['userDocId'])
-    .get();
+    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentSongMap['uid']).get();
     return passiveUserDoc;
   }
 

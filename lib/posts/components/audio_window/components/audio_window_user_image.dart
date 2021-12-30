@@ -21,7 +21,7 @@ class AudioWindowUserImage extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
-        return RedirectUserImage(userImageURL: currentSongMap['userImageURL'], length: 40.0, padding: 5.0,passiveUserDocId: currentSongMap['userDocId'],mainModel: mainModel,);
+        return RedirectUserImage(userImageURL: currentSongMap['userImageURL'], length: 40.0, padding: 5.0,passiveUserDocId: currentSongMap['uid'],mainModel: mainModel,);
       }
     );
   }

@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/posts/components/audio_controll_buttons/audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';

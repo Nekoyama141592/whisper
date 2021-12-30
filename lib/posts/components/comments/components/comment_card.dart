@@ -88,7 +88,7 @@ class CommentCard extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['userDocId'], mainModel: mainModel),
+                      child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['uid'], mainModel: mainModel),
                     ),
                     Expanded(
                       child: Column(

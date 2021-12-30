@@ -10,7 +10,6 @@ import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
 // model
 import 'update_password_model.dart';
-import 'package:whisper/main_model.dart';
 
 class UpdatePasswordPage extends ConsumerWidget {
 

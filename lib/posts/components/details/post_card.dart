@@ -80,7 +80,7 @@ class PostCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: RedirectUserImage(userImageURL: post['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: post['userDocId'], mainModel: mainModel),
+                  leading: RedirectUserImage(userImageURL: post['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: post['uid'], mainModel: mainModel),
                   title: Text(
                     post['userName'],
                     style: TextStyle(

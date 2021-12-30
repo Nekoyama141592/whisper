@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/notifications/details/notification_judge_screen.dart';

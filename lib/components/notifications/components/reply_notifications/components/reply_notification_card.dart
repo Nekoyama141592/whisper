@@ -44,7 +44,7 @@ class ReaplyNotificationCard extends ConsumerWidget {
           ),
           ListTile(
             tileColor: mainModel.readNotificationIds.contains(notificationId) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
-            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: notification['userDocId'],mainModel: mainModel,),
+            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: notification['uid'],mainModel: mainModel,),
             title: Text(notification['userName'],overflow: TextOverflow.ellipsis,),
             subtitle: Text(notification['reply'],style: TextStyle(color: Theme.of(context).focusColor),overflow: TextOverflow.ellipsis,),
             onTap: () async {

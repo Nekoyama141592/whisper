@@ -1,8 +1,7 @@
 // material
 import 'package:flutter/material.dart';
-// package
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;

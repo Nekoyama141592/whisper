@@ -86,7 +86,7 @@ class ReplyCard extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['userDocId'], mainModel: mainModel),
+                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['uid'], mainModel: mainModel),
                     ),
                     Expanded(
                       child: SizedBox(

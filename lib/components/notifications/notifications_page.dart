@@ -1,8 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'constants/tab_bar_elements.dart';
 // components
