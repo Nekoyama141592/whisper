@@ -6,8 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/constants/routes.dart' as routes;
 // models
 import 'package:whisper/main_model.dart';
 
@@ -72,39 +73,22 @@ class AccountModel extends ChangeNotifier {
   }
 
   void showDeleteUserDialog(BuildContext context,DocumentSnapshot currentUserDoc) {
-    showCupertinoDialog(context: context, builder: (context) {
-      return CupertinoAlertDialog(
-        title: Text('ユーザー削除'),
-        content: Text('一度削除したら、復元はできません。本当に削除しますか？'),
-        actions: [
-          CupertinoDialogAction(
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          CupertinoDialogAction(
-            child: const Text('Ok'),
-            isDestructiveAction: true,
-            onPressed: () async {
-              if (currentUser!.uid == currentUserDoc['uid']) {
-                await deletePostsOfCurrentUser();
-                await deleteReplysOfCurrentUser();
-                await deleteCommentsOfCurrentUser();
-                await deleteUserFromFireStoreAndFirebaseAuth(context, currentUserDoc);
-              }
-            },
-          )
-        ],
-      );
+    voids.showCupertinoDialogue(context: context, title: 'ユーザー削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async {
+      if (currentUser!.uid == currentUserDoc['uid']) {
+        Navigator.pop(context);
+        routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
+        await userImageRef(uid: currentUser!.uid, storageImageName: currentUserDoc['storageImageName']).delete();
+        await deletePostsOfCurrentUser();
+        await deleteReplysOfCurrentUser();
+        await deleteCommentsOfCurrentUser();
+        await deleteUserFromFireStoreAndFirebaseAuth(context, currentUserDoc);
+      }
     });
   }
 
   Future deletePostsOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection('posts')
-    .where('uid',isEqualTo: currentUser!.uid)
-    .get()
+    .collection('posts').where('uid',isEqualTo: currentUser!.uid).get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       final docs = qshot.docs;
@@ -175,8 +159,6 @@ class AccountModel extends ChangeNotifier {
     .then((_) async {
       try {
         await currentUser!.delete();
-        Navigator.pop(context);
-        routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
       } catch(e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
       }

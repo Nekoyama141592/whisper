@@ -280,10 +280,10 @@ void pause({ required AudioPlayer audioPlayer}) {
 }
 
 void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) {
-  showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await delete(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
+  showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await deletePost(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
 }
 
-Future delete({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
+Future deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
   Navigator.pop(context);
   if (mainModel.currentUserDoc['uid'] != postMap['uid']) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
@@ -293,6 +293,10 @@ Future delete({ required BuildContext context, required AudioPlayer audioPlayer,
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
       await FirebaseFirestore.instance.collection('posts').doc(postMap['postId']).delete();
+      await postRef(mainModel: mainModel, storagePostName: postMap['storagePostName']).delete();
+      if (postMap['storageImageName'].isNotEmpty) {
+        await postImageRef(mainModel: mainModel, postImageName: postMap['storageImageName']).delete();
+      }
     } catch(e) {
       print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));

@@ -152,7 +152,7 @@ class SignupModel extends ChangeNotifier {
       'replyNotifications': [],
       'score': defaultScore,
       'searchHistory': [],
-      'storageImageName': storageImageName,
+      'storageImageName': storageImageName, // use on lib/auth/account/account_model.dart
       'subUserName': uid,
       'uid' : uid,
       'updatedAt': Timestamp.now(),
