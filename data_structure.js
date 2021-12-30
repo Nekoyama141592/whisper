@@ -122,7 +122,7 @@
         'commentNotifications': [{
             'comment': String,
             'commentId': String,
-            'createdAt': TimeStamp,
+            'commentScore': int,
             'followersCount': int,
             'isDelete': bool,
             'isNFTicon': bool,
@@ -200,6 +200,7 @@
             'passiveUid': String,
             'postId': String,
             'reply': String,
+            'replyScore': int,
             'replyId': String,
             'uid': String,
             'userName': String,

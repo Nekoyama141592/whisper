@@ -334,6 +334,7 @@ class ReplysModel extends ChangeNotifier {
       'passiveUid': passiveUserDoc['uid'],
       'postId': thisComment['postId'],
       'reply': reply,
+      'replyScore': newReplyMap['score'],
       'replyId': newReplyMap['replyId'],
       'uid': currentUserDoc['uid'],
       'userName': currentUserDoc['userName'],

@@ -194,6 +194,7 @@ class CommentsModel extends ChangeNotifier {
       List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': newCommentMap['comment'],
+        'commentScore': newCommentMap['score'],
         'commentId': newCommentMap['commentId'],
         'createdAt': Timestamp.now(),
         'followersCount': currentUserDoc['followersCount'],
