@@ -413,7 +413,7 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
   }
 }
 
-Future<String> uploadUserImageAndGetURL({ required String userName, required String uid, required File? croppedFile}) async {
+Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile}) async {
   final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
   String getDownloadURL = '';
   try {
@@ -425,7 +425,7 @@ Future<String> uploadUserImageAndGetURL({ required String userName, required Str
 }
 
 Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
-  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(userName: userName, uid: mainModel.currentUserDoc['uid'], croppedFile: croppedFile);
+  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUserDoc['uid'], croppedFile: croppedFile);
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {

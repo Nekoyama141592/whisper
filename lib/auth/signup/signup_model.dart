@@ -107,7 +107,7 @@ class SignupModel extends ChangeNotifier {
   
   Future addUserToFireStore(uid) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
-    final String imageURL = await voids.uploadUserImageAndGetURL(userName: userName, uid: uid, croppedFile: croppedFile);
+    final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile);
     await FirebaseFirestore.instance
     .collection('users')
     .doc(uid)
