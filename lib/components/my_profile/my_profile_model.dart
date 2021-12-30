@@ -11,7 +11,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
@@ -142,19 +141,6 @@ class MyProfileModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
-    final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
-    String getDownloadURL = '';
-    if (userName.isEmpty) {
-      print('userNameを入力してください');
-    }
-    try {
-      await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').putFile(croppedFile!);
-      getDownloadURL = await FirebaseStorage.instance.ref().child('users').child('userImage' + currentUserDoc['uid'] + dateTime + '.jpg').getDownloadURL();
-    } catch(e) { print(e.toString()); }
-    return getDownloadURL;
-  }
-
   void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
     userName = currentUserDoc['userName'];
     description = currentUserDoc['description'];
@@ -163,27 +149,9 @@ class MyProfileModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future updateUserInfo(BuildContext context,DocumentSnapshot currentUserDoc) async {
-
-    final String downloadURL = (croppedFile == null) ? currentUserDoc['imageURL'] : await uploadImage(currentUserDoc);
-    if (downloadURL.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
-    } else {
-      try {
-        await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).update({
-          'description': description,
-          'link': link,
-          'imageURL': downloadURL,
-          'updatedAt': Timestamp.now(),
-          'userName': userName,
-        });
-        notifyListeners();
-      } catch(e) { print(e.toString()); }
-    }
-  }
-
-  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel}) async {
-    await updateUserInfo(context,mainModel.currentUserDoc);
+  
+  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
+    await voids.updateUserInfo(context: context, userName: userName, description: description, link: link, mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
     await mainModel.regetCurrentUserDoc();
   }

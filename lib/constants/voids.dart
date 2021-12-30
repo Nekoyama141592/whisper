@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
@@ -406,5 +406,37 @@ Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qsho
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
     }
+  }
+}
+
+Future<String> uploadImage({ required String userName, required MainModel mainModel, required File? croppedFile}) async {
+  final String dateTime = DateTime.now().microsecondsSinceEpoch.toString();
+  String getDownloadURL = '';
+  if (userName.isEmpty) {
+    print('userNameを入力してください');
+  }
+  try {
+    final Reference storageRef = FirebaseStorage.instance.ref().child('users').child('userImage' + mainModel.currentUserDoc['uid'] + dateTime + '.jpg');
+    await storageRef.putFile(croppedFile!);
+    getDownloadURL = await storageRef.getDownloadURL();
+  } catch(e) { print(e.toString()); }
+  return getDownloadURL;
+}
+
+Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
+  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadImage(userName: userName, mainModel: mainModel, croppedFile: croppedFile);
+  if (downloadURL.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
+  } else {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(mainModel.currentUserDoc.id).update({
+        'description': description,
+        'link': link,
+        'imageURL': downloadURL,
+        'updatedAt': Timestamp.now(),
+        'userName': userName,
+      });
+      mainModel.reload();
+    } catch(e) { print(e.toString()); }
   }
 }
