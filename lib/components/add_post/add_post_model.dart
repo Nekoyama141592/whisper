@@ -170,6 +170,8 @@ class AddPostModel extends ChangeNotifier {
   Future onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
+    } else if (postTitleNotifier.value.length >= 64) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルは64文字以内にしてください')));
     } else {
       startLoading();
       Navigator.pop(context);

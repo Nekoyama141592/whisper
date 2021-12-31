@@ -34,7 +34,8 @@ class UserResult extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: RedirectUserImage(userImageURL: result['imageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['objectID'],mainModel: mainModel,),
+              // result['objectID']も可
+              leading: RedirectUserImage(userImageURL: result['imageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['uid'],mainModel: mainModel,),
               title: Text(
                 result['userName'],
                 style: TextStyle(

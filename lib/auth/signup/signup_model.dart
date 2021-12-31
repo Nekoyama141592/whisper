@@ -84,7 +84,9 @@ class SignupModel extends ChangeNotifier {
   Future signup(BuildContext context) async {
     if (commonPasswords.contains(password)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ありふれたパスワードです。変更してください')));
-    } else {
+    } else if (userName.length >= 64) {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザー名は64文字以内にしてください')));
+    }else {
       try{
         UserCredential result = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
