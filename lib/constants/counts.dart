@@ -1,3 +1,4 @@
+const int verifyMailIntervalSeconds = 5;
 const int oneTimeReadCount = 30;
 const int likeScore = 100;
 const int bookmarkScore = 150;

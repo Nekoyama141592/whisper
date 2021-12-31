@@ -118,10 +118,6 @@
             'createdAt': TimeStamp,
             'postId': String,
         }],
-        'bookmarkLabels': List<Map<String,dynamic> {
-            'label': String,
-            'bookmarkLabelId': String,
-        }>,
         'commentNotifications': [{
             'comment': String,
             'commentId': String,
@@ -169,8 +165,8 @@
             'likedReplyId': String,
         }],
         'likes': [{
-            createdAt: TimeStamp,
-            likedPostId: String,
+            'createdAt': TimeStamp,
+            'likedPostId': String,
         }],
         'link': String,
         
@@ -219,10 +215,6 @@
         'updatedAt': String,
         'userName': String,
         'walletAddress': String,
-        'watchLists': List<Map<String,dynamic> {
-            'label': String,
-            'watchListId': String,
-        }>,
     }
     'watchLists' {
         'creatorUid': String,

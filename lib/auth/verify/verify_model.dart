@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/counts.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 
@@ -29,7 +30,7 @@ class VerifyModel extends ChangeNotifier {
   }
 
   Future  setTimer(context) async {
-    timer = Timer.periodic(Duration(seconds: 2), (timer) async {
+    timer = Timer.periodic(Duration(seconds: verifyMailIntervalSeconds), (timer) async {
       await checkEmailVerified(context);
     });
   }
@@ -39,11 +40,7 @@ class VerifyModel extends ChangeNotifier {
     await currentUser!.reload();
     if (currentUser!.emailVerified) {
       timer.cancel();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証に成功しました!!')));
       routes.toMyApp(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('認証が完了していません')));
-      print(currentUser!.emailVerified);
     }
   }
 }

@@ -111,7 +111,7 @@ class SignupModel extends ChangeNotifier {
   
   Future addUserToFireStore(uid) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
-    final storageImageName = strings.storageUserImageName;
+    final String storageImageName = strings.storageUserImageName;
     final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
     await FirebaseFirestore.instance
     .collection('users')
@@ -122,7 +122,6 @@ class SignupModel extends ChangeNotifier {
       'browsingHistory': [],
       'blocksIpv6AndUids': [],
       'bookmarks': [],
-      'bookmarkLabels': [],
       'commentNotifications': [],
       'createdAt': Timestamp.now(),
       'description': '',
@@ -160,7 +159,6 @@ class SignupModel extends ChangeNotifier {
       'updatedAt': Timestamp.now(),
       'userName': userName,
       'walletAddress': '',
-      'watchLists': [],
     });
   }
 

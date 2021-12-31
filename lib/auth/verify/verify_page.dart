@@ -18,6 +18,7 @@ class VerifyPage extends ConsumerWidget {
 
     final size = MediaQuery.of(context).size;
     final verifyModel = watch(verifyProvider);
+    final textStyle = TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold);
     String userEmail = verifyModel.currentUser!.email.toString();
     return Scaffold(
       body: Padding(
@@ -33,7 +34,12 @@ class VerifyPage extends ConsumerWidget {
             SizedBox(height: size.height * 0.05),
             Text(
               userEmail + 'にメールを送信しました。ご確認下さい。',
-              style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold),
+              style: textStyle
+            ),
+            SizedBox(height: size.height * 0.05),
+            Text(
+              '送信されたメールのリンクを押したら以下のボタンを押してください',
+              style: textStyle,
             ),
             SizedBox(height: size.height * 0.05),
             RoundedButton(

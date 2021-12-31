@@ -6,13 +6,57 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 44 // max48
-    && 'authNotifications' in user && user.authNotifications is list // un used
+    // return user.size() == 44 // max48
+    // && 'authNotifications' in user && user.authNotifications is list // un used
+    // && 'birthDay' in user && user.birthDay is timestamp
+    // && 'blocksIpv6AndUids' in user && user.blockingIpv6AndUids is list
+    // && 'bookmarkLabels' in user && user.bookmarkLabels is list
+    // && 'bookmarks' in user && user.bookmarks is list
+    // && 'browsingHistory' in user && user.browsingHistory is list
+    // && 'commentNotifications' in user && user.commentNotifications is list
+    // && 'createdAt' in user && user.createdAt is timestamp
+    // && 'description' in user && user.description is string
+    // && 'dmState' in user && user.dmState is string
+    // && 'followNotifications' in user && user.followNotifications is list
+    // && 'followerUids' in user && user.followerUids is list
+    // && 'followersCount' in user && user.followersCount is int
+    // && 'followingUids' in user && user.followingUids is list
+    // && 'gender' in user && user.gender is string
+    // && 'imageURL' in user && user.imageURL is string
+    // && 'isAdmin' in user && user.isAdmin is bool
+    // && 'isDelete' in user && user.isDelete is bool
+    // && 'isKeyAccount' in user && user.isKeyAccount is bool
+    // && 'isNFTicon' in user && user.isNFTicon is bool
+    // && 'isOfficial' in user && user.isOfficial is bool
+    // && 'isSubAdmin' in user && user.isSubAdmin is bool
+    // && 'language' in user && user.language is string
+    // && 'likeNotifications' in user && user.likeNotifications is list
+    // && 'likedComments' in user && user.likedComments is list
+    // && 'likedReplys' in user && user.likedReplys is list
+    // && 'likes' in user && user.likes is list
+    // && 'link' in user && user.link is string
+    // && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
+    // && 'noDisplayWords' in user && user.noDisplayWords is list
+    // && 'otherLinks' in user && user.otherLinks is list
+    // && 'readNotificationIds' in user && user.readNotificationIds is list // un used
+    // && 'readPosts' in user && user.readPosts is list
+    // && 'recommendState' in user && user.recommendState is string
+    // && 'replyNotifications' in user && user.replyNotifications is list
+    // && 'score' in user && user.score is int
+    // && 'searchHistory' in user && user.searchHistory is list
+    // && 'storageImageName' in user && user.storageImageName is string
+    // && 'subUserName' in user && user.subUserName is string
+    // && 'uid' in user && user.uid is string
+    // && 'updatedAt' in user && user.updatedAt is timestamp
+    // && 'userName' in user && user.userName is string
+    // && 'walletAddress' in user && user.walletAddress is string
+    // && 'watchLists' in user && user.watchLists is list;
+    return user.size() == 42 // max48
+    && 'authNotifications' in user && user.authNotifications is list
     && 'birthDay' in user && user.birthDay is timestamp
     && 'browsingHistory' in user && user.browsingHistory is list
-    && 'blocksIpv6AndUids' in user && user.blockingIpv6AndUids is list
+    && 'blocksIpv6AndUids' in user && user.blocksIpv6AndUids is list
     && 'bookmarks' in user && user.bookmarks is list
-    && 'bookmarkLabels' in user && user.bookmarkLabels is list
     && 'commentNotifications' in user && user.commentNotifications is list
     && 'createdAt' in user && user.createdAt is timestamp
     && 'description' in user && user.description is string
@@ -38,7 +82,7 @@ service cloud.firestore {
     && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
     && 'noDisplayWords' in user && user.noDisplayWords is list
     && 'otherLinks' in user && user.otherLinks is list
-    && 'readNotificationIds' in user && user.readNotificationIds is list // un used
+    && 'readNotificationIds' in user && user.readNotificationIds is list
     && 'readPosts' in user && user.readPosts is list
     && 'recommendState' in user && user.recommendState is string
     && 'replyNotifications' in user && user.replyNotifications is list
@@ -46,11 +90,10 @@ service cloud.firestore {
     && 'searchHistory' in user && user.searchHistory is list
     && 'storageImageName' in user && user.storageImageName is string
     && 'subUserName' in user && user.subUserName is string
-    && 'uid' in user && user.uid is string
+    && 'uid'  in user && user.uid is string
     && 'updatedAt' in user && user.updatedAt is timestamp
     && 'userName' in user && user.userName is string
-    && 'walletAddress' in user && user.walletAddress is string
-    && 'watchLists' in user && user.watchLists is list;
+    && 'walletAddress' in user && user.walletAddress is string;
   }
 
   
@@ -182,8 +225,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     match /users/{userId} {
-      allow create: if isAuthenticated()
-      && isValidUser(request.resource.data)
+      allow create: if isValidUser(request.resource.data)
+      && isAuthenticated()
       && request.resource.data.uid == request.auth.uid;
       allow update: if isAuthenticated()
       && request.resource.data.followingUids.size() <= 500;
