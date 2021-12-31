@@ -105,6 +105,12 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> onReload() async {
+    startLoading();
+    await getPosts();
+    endLoading();
+  }
+
   Future<void> onLoading() async {
     await getOldUserShowPosts();
     refreshController.loadComplete();

@@ -136,9 +136,7 @@ class MyProfilePostScreen extends ConsumerWidget {
       list: postDocs, 
       content: content,
       reload: () async {
-        myProfileModel.startLoading();
-        await myProfileModel.getPosts();
-        myProfileModel.endLoading();
+        await myProfileModel.onReload();
       },
     );
   }

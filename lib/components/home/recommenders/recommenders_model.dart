@@ -113,8 +113,9 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future<void> onReload() async {
+    startLoading();
     await getRecommenders();
-    notifyListeners();
+    endLoading();
   }
 
   Future<void> onLoading() async {

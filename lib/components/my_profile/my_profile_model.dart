@@ -110,8 +110,9 @@ class MyProfileModel extends ChangeNotifier {
   }
 
   Future<void> onReload() async {
+    startLoading();
     await getPosts();
-    notifyListeners();
+    endLoading();
   }
 
   Future onLoading() async {

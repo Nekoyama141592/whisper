@@ -87,8 +87,9 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> onReload() async {
+    startLoading();
     await getBookmarks(bookmarkedPostIds);
-    notifyListeners();
+    endLoading();
   }
 
   Future<void> onLoading() async {
@@ -122,7 +123,6 @@ class BookmarksModel extends ChangeNotifier {
         await voids.processBasicPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       }
     } catch(e) { print(e.toString()); }
-    notifyListeners();
   }
 
   Future<void> getOldBookmarks(List<dynamic> bookmarkedPostIds) async {

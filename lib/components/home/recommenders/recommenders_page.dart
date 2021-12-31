@@ -37,9 +37,7 @@ class RecommendersPage extends ConsumerWidget {
     : JudgeScreen(
       list: recommendersModel.posts,
       reload: () async {
-        recommendersModel.startLoading();
-        await recommendersModel.getRecommenders();
-        recommendersModel.endLoading();
+        await recommendersModel.onReload();
       },
       content: PostCards(
         postDocs: recommendersModel.posts, 
