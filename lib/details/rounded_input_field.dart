@@ -12,6 +12,7 @@ class RoundedInputField extends StatelessWidget {
     required this.hintText,
     required this.icon,
     required this.controller,
+    required this.onCloseButtonPressed,
     required this.onChanged,
     required this.paste
   }) : super(key: key);
@@ -19,6 +20,7 @@ class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final TextEditingController controller;
+  final void Function()? onCloseButtonPressed;
   final ValueChanged<String> onChanged;
   final ValueChanged<String> paste;
 
@@ -47,7 +49,10 @@ class RoundedInputField extends StatelessWidget {
               icon,
               color: Colors.black,
             ),
-            suffixIcon: Icon(Icons.add,color: Colors.black,),
+            suffixIcon: InkWell(
+              child: Icon(Icons.close,color: Colors.black,),
+              onTap: onCloseButtonPressed,
+            ),
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
             border: InputBorder.none

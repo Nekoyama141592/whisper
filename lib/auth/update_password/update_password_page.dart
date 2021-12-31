@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/colors.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
+import 'package:whisper/details/rounded_password_field.dart';
 // model
 import 'update_password_model.dart';
 

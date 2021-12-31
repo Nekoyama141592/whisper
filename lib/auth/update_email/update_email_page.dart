@@ -41,6 +41,10 @@ class UpdateEmailPage extends ConsumerWidget {
               onChanged:  (text) {
                 updateEmailModel.newEmail = text;
               },
+              onCloseButtonPressed: () {
+                newEmailInputController.text = '';
+                updateEmailModel.newEmail = '';
+              },
               paste: (value) {
                 updateEmailModel.newEmail = value;
               },

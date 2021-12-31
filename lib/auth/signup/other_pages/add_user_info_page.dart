@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -45,6 +44,10 @@ class AddUserInfoPage extends StatelessWidget {
               controller: userNameController, 
               onChanged: (text) {
                 signupModel.userName = text;
+              },
+              onCloseButtonPressed: () {
+                userNameController.text = '';
+                signupModel.userName = '';
               },
               paste: (value) {
                 signupModel.userName = value;

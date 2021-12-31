@@ -27,7 +27,11 @@ class VerifyPasswordResetPage extends ConsumerWidget {
               controller: emailInputController, 
               onChanged:  (text) {
                 _verifyPasswordResetModel.email = text;
-              }, 
+              },
+              onCloseButtonPressed: () {
+                emailInputController.text = '';
+                _verifyPasswordResetModel.email = '';
+              },
               paste: (value) {
                 _verifyPasswordResetModel.email = value;
               },

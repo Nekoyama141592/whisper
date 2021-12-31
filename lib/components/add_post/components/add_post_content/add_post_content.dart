@@ -126,6 +126,10 @@ class AddPostContent extends StatelessWidget {
                     onChanged:  (text) {
                       addPostModel.postTitleNotifier.value = text;
                     },
+                    onCloseButtonPressed: () {
+                      postTitleController.text = '';
+                      addPostModel.postTitleNotifier.value = '';
+                    },
                     paste: (value) {
                       addPostModel.postTitleNotifier.value = value;
                     },

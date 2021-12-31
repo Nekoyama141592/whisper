@@ -25,12 +25,6 @@ class SearchInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child:InkWell(
-        // onLongPress: () async {
-        //   await FlutterClipboard.paste()
-        //   .then((value) {
-        //     searchModel.searchTerm = value;
-        //   });
-        // },
         onLongPress: onLongPress,
         child: TextField(
           style: TextStyle(
@@ -43,20 +37,10 @@ class SearchInputField extends StatelessWidget {
           controller: controller,
           cursorColor: kTertiaryColor,
           decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
+            prefixIcon: Icon(Icons.close,color: Colors.black,),
             suffixIcon: TextButton(
               onPressed: search, 
-              child: Text(
-                '検索',
-                style: TextStyle(
-                  color: kTertiaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold
-                ),
-              )
+              child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: 18,fontWeight: FontWeight.bold),),
             ),
             hintText: 'Search...',
             hintStyle: TextStyle(

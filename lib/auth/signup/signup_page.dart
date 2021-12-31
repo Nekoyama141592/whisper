@@ -11,7 +11,7 @@ import 'package:whisper/details/circle_image.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/auth/components/already_have_an_account.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field.dart';
+import 'package:whisper/details/rounded_password_field.dart';
 // model
 import 'signup_model.dart';
 
@@ -107,6 +107,10 @@ class SignupPage extends ConsumerWidget {
                               controller: emailInputController,
                               onChanged:  (text) {
                                 signupModel.email = text;
+                              },
+                              onCloseButtonPressed: () {
+                                emailInputController.text = '';
+                                signupModel.email = '';
                               },
                               paste: (value) {
                                 signupModel.email = value;
