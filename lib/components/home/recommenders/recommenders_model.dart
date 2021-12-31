@@ -117,7 +117,7 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future getNewRecommenders() async {
-    await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get()
+    await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount).endBeforeDocument(posts.first).get()
     .then((qshot) {
       voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
     });
@@ -135,7 +135,7 @@ class RecommendersModel extends ChangeNotifier {
 
   Future<void> getOldRecommenders() async {
     try {
-      await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).startAfterDocument(posts.last).limit(oneTimeReadCount).get()
+      await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount).startAfterDocument(posts.last).get()
       .then((qshot) {
         voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
       });
