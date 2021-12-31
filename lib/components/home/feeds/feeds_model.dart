@@ -28,6 +28,9 @@ class FeedsModel extends ChangeNotifier {
   User? currentUser;
 
   late DocumentSnapshot currentUserDoc;
+  Query<Map<String,dynamic>> getQuery({ required List<dynamic> followingUids }) {
+    return FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+  }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -116,7 +119,7 @@ class FeedsModel extends ChangeNotifier {
     notifyListeners();
   }
   Future getNewFeeds() async {
-    await FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).endBeforeDocument(posts.first).limit(oneTimeReadCount).get().then((qshot) {
+    await getQuery(followingUids: followingUids).endBeforeDocument(posts.first).get().then((qshot) {
       voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
     });
   }
@@ -124,15 +127,16 @@ class FeedsModel extends ChangeNotifier {
   // getFeeds
   Future getFeeds() async {
     try{
-      await FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
+      await getQuery(followingUids: followingUids).get().then((qshot) {
         voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
       });
     } catch(e) { print(e.toString()); }
+    notifyListeners();
   }
 
   Future<void> getOldFeeds() async {
     try {
-      await FirebaseFirestore.instance.collection('posts').where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).startAfterDocument(posts.last).limit(oneTimeReadCount).get().then((qshot) {
+      await getQuery(followingUids: followingUids).startAfterDocument(posts.last).get().then((qshot) {
         voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
       });
     } catch(e) { print(e.toString()); }

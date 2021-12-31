@@ -136,7 +136,6 @@ class MyProfileModel extends ChangeNotifier {
         voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       });
     } catch(e) { print(e.toString()); }
-    notifyListeners();
   }
 
   void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
