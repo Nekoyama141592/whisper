@@ -1,14 +1,15 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
+import 'package:whisper/details/search_input_field.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
-import 'package:whisper/components/search/post_search/components/search_input_field.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -49,9 +50,12 @@ class PostCards extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SearchInputField(
-          searchModel: postSearchModel, 
+          onLongPress: () async { await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }); },
+          onChanged: (text) {
+            postSearchModel.searchTerm = text;
+          },
           controller: searchController, 
-          press: () async {
+          search: () async {
             await postSearchModel.operation(mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s);
           }
         ),

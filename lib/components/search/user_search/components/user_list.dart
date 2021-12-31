@@ -1,10 +1,12 @@
 // material
 import 'package:flutter/material.dart';
+// package
+import 'package:clipboard/clipboard.dart';
 // constants
 import 'package:algolia/algolia.dart';
 // components
+import 'package:whisper/details/search_input_field.dart';
 import 'package:whisper/components/search/user_search/components/user_result.dart';
-import 'package:whisper/components/search/user_search/components/search_input_field.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/user_search/user_search_model.dart';
@@ -37,9 +39,12 @@ class UserList extends StatelessWidget {
     return Column(
       children: [
         SearchInputField(
-          searchModel: userSearchModel, 
+          onLongPress: () async { await FlutterClipboard.paste().then((value) { userSearchModel.searchTerm = value; }); },
+          onChanged: (text) {
+            userSearchModel.searchTerm = text;
+          },
           controller: searchController, 
-          press: () async {
+          search: () async {
             await userSearchModel.operation(mainModel.mutesUids,mainModel.blocksUids);
           }
         ),
