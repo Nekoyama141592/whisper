@@ -81,7 +81,10 @@ class SignupPage extends ConsumerWidget {
                               children: [
                                 Container(
                                   child: signupModel.isCropped ?
-                                  CircleImage(length: 160.0, image: FileImage(signupModel.croppedFile!))
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: CircleImage(length: 160.0, image: FileImage(signupModel.croppedFile!)),
+                                  )
                                   : Column(
                                     children: [
                                       InkWell(

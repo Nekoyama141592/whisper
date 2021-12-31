@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  // sample
+  function isAuthenticated(){
+    return request.auth != null;
+  }
+
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+  }
+}
