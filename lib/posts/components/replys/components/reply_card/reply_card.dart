@@ -37,9 +37,7 @@ class ReplyCard extends ConsumerWidget {
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
-      overflow: TextOverflow.ellipsis
     );
-    // 
     return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, blocksIpv6s: mainModel.blocksIpv6s, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(reply['replyId']) ?
     
     Slidable(

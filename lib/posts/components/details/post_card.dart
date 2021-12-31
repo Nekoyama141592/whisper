@@ -84,7 +84,6 @@ class PostCard extends StatelessWidget {
                   title: Text(
                     post['userName'],
                     style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
                       fontSize: 20.0
                     ),
                   ),
@@ -93,7 +92,6 @@ class PostCard extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis,
                       fontSize: 18.0
                     ),
                   ),

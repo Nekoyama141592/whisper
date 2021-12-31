@@ -23,8 +23,6 @@ final commentsProvider = ChangeNotifierProvider(
 );
 
 class CommentsModel extends ChangeNotifier {
-  
-
   // comment
   String comment = "";
   Map<String,dynamic> postComment = {};
@@ -37,8 +35,6 @@ class CommentsModel extends ChangeNotifier {
   late RefreshController refreshController;
   // DB index
   String indexPostId = '';
-
-  int commentScrollFlashBarCount = 0;
 
   void reload() {
     notifyListeners();
@@ -130,10 +126,6 @@ class CommentsModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
     await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
-    commentScrollFlashBarCount = prefs.getInt('commentScrollFlashBarCount') ?? 0;
-    if (commentScrollFlashBarCount <= commentScrollFlashBarConstantCount) {
-      showTopFlash(context);
-    }
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -156,10 +148,6 @@ class CommentsModel extends ChangeNotifier {
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: currentUserDoc['uid'], ipv6: ipv6) ) {
         await updateCommentNotificationsOfPassiveUser(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, newCommentMap: commentMap);
       }
-    }
-    if (commentScrollFlashBarCount <= commentScrollFlashBarConstantCount) {
-      commentScrollFlashBarCount += 1;
-      await prefs.setInt('commentScrollFlashBarCount', commentScrollFlashBarCount);
     }
   }
 
@@ -473,54 +461,5 @@ class CommentsModel extends ChangeNotifier {
     }
     notifyListeners();
     refreshController.loadComplete();
-  }
-
-  void showTopFlash(BuildContext context,{ bool persistent = true}) {
-    showFlash(
-      context: context, 
-      persistent: persistent,
-      duration: Duration(seconds: 5),
-      builder: (_, controller) {
-        return Flash(
-          controller: controller, 
-          margin: EdgeInsets.all(8.0),
-          backgroundColor: Theme.of(context).focusColor,
-          behavior: FlashBehavior.fixed,
-          position: FlashPosition.top,
-          borderRadius: BorderRadius.circular(8.0),
-          borderColor: Theme.of(context).highlightColor,
-          boxShadows: kElevationToShadow[8],
-          forwardAnimationCurve: Curves.easeInCirc,
-          reverseAnimationCurve: Curves.bounceIn,
-          onTap: () {
-            controller.dismiss();
-          },
-          child: DefaultTextStyle(
-            style: TextStyle(fontWeight: FontWeight.bold), 
-            child: FlashBar(
-              content: Text(
-                '新しい順で上にスクロールするとコメントが表示されます',
-                style: TextStyle(
-                  color: Theme.of(context).scaffoldBackgroundColor
-                ),
-              ),
-              indicatorColor: Theme.of(context).primaryColor,
-              icon: Icon(Icons.info,color: Theme.of(context).primaryColor,),
-              primaryAction: TextButton(
-                onPressed: () => controller.dismiss(),
-                child: Text(
-                  'DISMISS',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor
-                  ),
-                ),
-              ),
-              
-            )
-          )
-        );
-      }
-    );
   }
 }

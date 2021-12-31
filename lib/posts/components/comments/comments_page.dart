@@ -43,16 +43,22 @@ class CommentsPage extends ConsumerWidget {
           commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer,prefs: mainModel.prefs); 
         },
       ),
-      body: commentsModel.commentDocs.isNotEmpty ?
-      SafeArea(
+      body: SafeArea(
         child: Column(
+
           children: [
             CommentsOrReplysHeader(
               onMenuPressed: (){
                 commentsModel.showSortDialogue(context, currentSongMap);
               },
             ),
+            commentsModel.commentDocs.isEmpty ?
             Expanded(
+              child: Nothing(reload: () async {
+                await commentsModel.getCommentDocs(currentSongMap['postId']);
+              }),
+            )
+            : Expanded(
               child: SmartRefresher(
                 enablePullUp: true,
                 enablePullDown: true,
@@ -81,9 +87,7 @@ class CommentsPage extends ConsumerWidget {
             )
           ],
         ),
-      ) : Nothing(reload: () async {
-        await commentsModel.getCommentDocs(currentSongMap['postId']);
-      }),
+      )
     );
   }
 }

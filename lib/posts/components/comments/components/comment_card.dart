@@ -41,7 +41,7 @@ class CommentCard extends ConsumerWidget {
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
-      overflow: TextOverflow.ellipsis
+      // overflow: TextOverflow.ellipsis
     );
     return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s , map: comment ) && !mainModel.mutesCommentIds.contains(comment['commentId']) ?
 
