@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/constants/others.dart' as others;
+import 'package:whisper/constants/others.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -32,7 +32,8 @@ class MyProfileModel extends ChangeNotifier {
   bool isLoading = false;
   late DocumentSnapshot currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    return FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    final x = postColRef..where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    return x;
   }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
@@ -164,7 +165,7 @@ class MyProfileModel extends ChangeNotifier {
   Future cropImage() async {
     isCropped = false;
     croppedFile = null;
-    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
+    croppedFile = await returnCroppedFile(xFile: xFile);
     if (croppedFile != null) { isCropped = true; }
   }
 

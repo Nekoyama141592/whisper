@@ -2,6 +2,7 @@
 import 'dart:io';
 // material
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // packages
 import 'package:image_picker/image_picker.dart';
@@ -40,3 +41,5 @@ Reference postImageRef({ required MainModel mainModel, required String postImage
 Reference postRef({ required MainModel mainModel, required String storagePostName }) {
   return FirebaseStorage.instance.ref().child('posts').child(mainModel.currentUserDoc['uid']).child(storagePostName);
 }
+
+final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection('posts');

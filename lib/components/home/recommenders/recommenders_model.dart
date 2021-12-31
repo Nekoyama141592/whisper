@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -28,7 +29,8 @@ class RecommendersModel extends ChangeNotifier {
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    return FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount);
+    final x = postColRef..orderBy('score', descending: true).limit(oneTimeReadCount);
+    return x;
   }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});

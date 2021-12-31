@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
-import 'package:whisper/constants/others.dart' as others;
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // notifiers
@@ -31,7 +31,8 @@ class UserShowModel extends ChangeNotifier {
 
   late DocumentSnapshot passiveUserDoc;
   Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot passiveUserDoc }) {
-    return FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    return x;
   }
   String passiveUid = '';
   bool isLoading = false;
@@ -146,7 +147,7 @@ class UserShowModel extends ChangeNotifier {
   Future<void> cropImage() async {
     isCropped = false;
     croppedFile = null;
-    await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });
+    croppedFile = await returnCroppedFile(xFile: xFile);
     if (croppedFile != null) { isCropped = true; }
   }
 

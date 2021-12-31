@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -26,7 +27,8 @@ class BookmarksModel extends ChangeNotifier {
   bool isLoading = false;
   late DocumentSnapshot currentUserDoc;
   Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarkedPostIds}) {
-    return FirebaseFirestore.instance.collection('posts').where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
+    final x = postColRef.where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
+    return x;
   }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
