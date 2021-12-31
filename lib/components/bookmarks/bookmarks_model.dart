@@ -25,6 +25,9 @@ class BookmarksModel extends ChangeNotifier {
   
   bool isLoading = false;
   late DocumentSnapshot currentUserDoc;
+  Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarkedPostIds}) {
+    return FirebaseFirestore.instance.collection('posts').where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
+  }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -77,19 +80,24 @@ class BookmarksModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  Future onRefresh() async {
+  Future<void> onRefresh() async {
     await getNewBookmarks(bookmarkedPostIds);
     refreshController.refreshCompleted();
     notifyListeners();
   }
 
-  Future onLoading() async {
+  Future<void> onReload() async {
+    await getBookmarks(bookmarkedPostIds);
+    notifyListeners();
+  }
+
+  Future<void> onLoading() async {
     await getOldBookmarks(bookmarkedPostIds);
     refreshController.loadComplete();
     notifyListeners();
   }
 
-  Future setCurrentUserDoc() async {
+  Future<void> setCurrentUserDoc() async {
     await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
@@ -102,21 +110,16 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getNewBookmarks(List<dynamic> bookmarkedPostIds) async {
+  Future<void> getNewBookmarks(List<dynamic> bookmarkedPostIds) async {
     if (bookmarkedPostIds.isNotEmpty) {
-      await FirebaseFirestore.instance.collection('posts').where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount).endBeforeDocument(posts.first).get().then((qshot) {
-        voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
+      await voids.processNewPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     }
   }
 
-
-  Future getBookmarks (List<dynamic> bookmarkedPostIds) async {
+  Future<void> getBookmarks (List<dynamic> bookmarkedPostIds) async {
     try{
       if (bookmarkedPostIds.isNotEmpty) {
-        await FirebaseFirestore.instance.collection('posts').where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount).get().then((qshot) {
-          voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-        });
+        await voids.processBasicPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       }
     } catch(e) { print(e.toString()); }
     notifyListeners();
@@ -125,9 +128,7 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> getOldBookmarks(List<dynamic> bookmarkedPostIds) async {
     try {
       if (bookmarkedPostIds.isEmpty) {
-        await FirebaseFirestore.instance.collection('posts').where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount).startAfterDocument(posts.last).get().then((qshot) {
-          voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-        });
+        await voids.processOldPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       }
     } catch(e) { print(e.toString()); }
   }

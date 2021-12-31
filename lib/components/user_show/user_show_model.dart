@@ -30,6 +30,9 @@ final userShowProvider = ChangeNotifierProvider(
 class UserShowModel extends ChangeNotifier {
 
   late DocumentSnapshot passiveUserDoc;
+  Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot passiveUserDoc }) {
+    return FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+  }
   String passiveUid = '';
   bool isLoading = false;
   // notifiers
@@ -96,50 +99,45 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future onRefresh() async {
+  Future<void> onRefresh() async {
     await getNewUserShowPosts();
     refreshController.refreshCompleted();
     notifyListeners();
   }
 
-  Future getNewUserShowPosts() async {
-    await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).endBeforeDocument(posts.first).get().then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-    });
-  }
-
-  Future onLoading() async {
+  Future<void> onLoading() async {
     await getOldUserShowPosts();
     refreshController.loadComplete();
     notifyListeners();
   }
 
-  Future getPosts() async {
+  Future<void> getNewUserShowPosts() async {
+    await voids.processNewPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+  }
+
+  Future<void> getPosts() async {
     try {
       posts = [];
-      await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
-        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
+      await voids.processBasicPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+
     } catch(e) { print(e.toString()); }
     notifyListeners();
   }
 
   Future<void> getOldUserShowPosts() async {
     try {
-      await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).startAfterDocument(posts.last).get().then((qshot) {
-        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
+      await voids.processOldPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     } catch(e) { print(e.toString()); }
   }
 
-  Future showImagePicker() async {
+  Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     xFile = await _picker.pickImage(source: ImageSource.gallery);
     if (xFile != null) { await cropImage(); }
     notifyListeners();
   }
 
-  Future cropImage() async {
+  Future<void> cropImage() async {
     isCropped = false;
     croppedFile = null;
     await others.returnCroppedFile(xFile: xFile).then((result) { croppedFile = result; });

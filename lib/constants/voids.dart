@@ -349,74 +349,80 @@ Future removeTheUsersPost({ required List<dynamic> results,required String passi
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
 }
 
-Future<void> processBasicPosts({ required QuerySnapshot<Map<String, dynamic>> qshot, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds }) async {
+Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s, required List<dynamic> mutesPostIds }) async {
+  await query.endBeforeDocument(posts.first).get().then((qshot) async {
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+    if (docs.isNotEmpty) {
+      // Sort by oldest first
+      docs.reversed;
+      // Insert at the top
+      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+        final String uid = doc['uid'];
+        final String ipv6 = doc['ipv6'];
+        bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
+        if (x) {
+          posts.insert(0, doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc.data());
+          afterUris.insert(0, source);
+        }
+      });
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist);
+      }
+    }
+  });
+}
+
+Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds }) async {
   // lib/components/search/post_search/post_search_model.dartの一般化は不可能(DBのクエリでDocumentSnapshot<Map<String,dynamic>>を使用するゆえ)
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-  if (docs.isNotEmpty) {
-    docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final String uid = doc['uid'];
-      final String ipv6 = doc['ipv6'];
-      bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
-      if (x) {
-        posts.add(doc);
-        Uri song = Uri.parse(doc['audioURL']);
-        UriAudioSource source = AudioSource.uri(song, tag: doc.data());
-        afterUris.add(source);
+  await query.get().then((qshot) async {
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+    if (docs.isNotEmpty) {
+      docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+        final String uid = doc['uid'];
+        final String ipv6 = doc['ipv6'];
+        bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
+        if (x) {
+          posts.add(doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc.data());
+          afterUris.add(source);
+        }
+      });
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist);
       }
-    });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist);
     }
-  }
+  });
 }
 
-Future<void> processNewPosts({ required QuerySnapshot<Map<String, dynamic>> qshot, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s, required List<dynamic> mutesPostIds }) async {
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-  if (docs.isNotEmpty) {
-    // Sort by oldest first
-    docs.reversed;
-    // Insert at the top
-    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final String uid = doc['uid'];
-      final String ipv6 = doc['ipv6'];
-      bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
-      if (x) {
-        posts.insert(0, doc);
-        Uri song = Uri.parse(doc['audioURL']);
-        UriAudioSource source = AudioSource.uri(song, tag: doc.data());
-        afterUris.insert(0, source);
+Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s, required List<dynamic> mutesPostIds }) async {
+  await query.startAfterDocument(posts.last).get().then((qshot) async {
+    final int lastIndex = posts.lastIndexOf(posts.last);
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+    if (docs.isNotEmpty) {
+      docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+        final String uid = doc['uid'];
+        final String ipv6 = doc['ipv6'];
+        bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc);
+        if (x) {
+          posts.add(doc);
+          Uri song = Uri.parse(doc['audioURL']);
+          UriAudioSource source = AudioSource.uri(song, tag: doc.data());
+          afterUris.add(source);
+        }
+      });
+      if (afterUris.isNotEmpty) {
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+        await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
       }
-    });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist);
     }
-  }
-}
-
-Future<void> processOldPosts({ required QuerySnapshot<Map<String, dynamic>> qshot, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s, required List<dynamic> mutesPostIds }) async {
-  final int lastIndex = posts.lastIndexOf(posts.last);
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-  if (docs.isNotEmpty) {
-    docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
-    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final String uid = doc['uid'];
-      final String ipv6 = doc['ipv6'];
-      bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc);
-      if (x) {
-        posts.add(doc);
-        Uri song = Uri.parse(doc['audioURL']);
-        UriAudioSource source = AudioSource.uri(song, tag: doc.data());
-        afterUris.add(source);
-      }
-    });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
-    }
-  }
+  });
 }
 
 Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile, required String storageImageName }) async {

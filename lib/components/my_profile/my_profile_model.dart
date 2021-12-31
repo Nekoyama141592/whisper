@@ -31,6 +31,9 @@ class MyProfileModel extends ChangeNotifier {
 
   bool isLoading = false;
   late DocumentSnapshot currentUserDoc;
+  Query<Map<String, dynamic>> getQuery() {
+    return FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+  }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -106,6 +109,11 @@ class MyProfileModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> onReload() async {
+    await getPosts();
+    notifyListeners();
+  }
+
   Future onLoading() async {
     await getOldMyProfilePosts();
     refreshController.loadComplete();
@@ -114,27 +122,19 @@ class MyProfileModel extends ChangeNotifier {
 
 
   Future getNewMyProfilePosts() async {
-    await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).endBeforeDocument(posts.first).get().then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-    });
+    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
   }
 
   Future getPosts() async {
     try {
       posts = [];
-      await FirebaseFirestore.instance.collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
-        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
+      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     } catch(e) { print(e.toString()); }
-    notifyListeners();
   }
 
   Future<void> getOldMyProfilePosts() async {
     try {
-      await FirebaseFirestore.instance
-      .collection('posts').where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount).startAfterDocument(posts.last).get().then((qshot) {
-        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-      });
+      voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     } catch(e) { print(e.toString()); }
   }
 

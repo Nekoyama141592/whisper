@@ -116,6 +116,7 @@ class MainModel extends ChangeNotifier {
 
   void getFollowingUids() {
     followingUids = currentUserDoc['followingUids'];
+    followingUids.add(currentUser!.uid);
   }
 
   void getLikedCommentIds() {

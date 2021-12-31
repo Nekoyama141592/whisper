@@ -105,7 +105,8 @@ class UserShowHeader extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  mainModel.currentUserDoc['uid'] == passiveUserDoc['uid'] ?  mainModel.followingUids.length.toString() + 'following' : passiveUserDoc['followingUids'].length.toString() + 'following',
+                  // mainModel.followingUids contains myUid because of lib/components/home/feeds/feeds_model.dart
+                  mainModel.currentUserDoc['uid'] == passiveUserDoc['uid'] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc['followingUids'].length.toString() + 'following',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

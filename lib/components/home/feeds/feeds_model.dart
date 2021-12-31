@@ -43,7 +43,7 @@ class FeedsModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List followingUids = [];
+  List followingUidsOfModel = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // block and mutes
   late SharedPreferences prefs;
@@ -67,7 +67,7 @@ class FeedsModel extends ChangeNotifier {
     init();
   }
 
-  void init() async {
+  Future<void> init() async {
     startLoading();
     audioPlayer = AudioPlayer();
     // await
@@ -75,7 +75,7 @@ class FeedsModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     setFollowUids();
     voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
-    await getFeeds();
+    await getFeeds(followingUids: followingUidsOfModel);
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
@@ -96,49 +96,54 @@ class FeedsModel extends ChangeNotifier {
   }
 
   
-  Future onRefresh() async {
-    await getNewFeeds();
+  Future<void> onRefresh({ required List<dynamic> followingUids }) async {
+    await getNewFeeds(followingUids: followingUids);
     refreshController.refreshCompleted();
     notifyListeners();
   }
 
-  Future onLoading() async {
-    await getOldFeeds();
+  Future<void> onReload({ required List<dynamic> followingUids }) async {
+    startLoading();
+    await getFeeds(followingUids: followingUids);
+    endLoading();
+  }
+
+  Future<void> onLoading({ required List<dynamic> followingUids }) async {
+    await getOldFeeds(followingUids: followingUids);
     refreshController.loadComplete();
     notifyListeners();
   }
   
-  Future setCurrentUserDoc() async {
+  Future<void> setCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
     currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
   }
 
   void setFollowUids() {
-    followingUids = currentUserDoc['followingUids'];
-    followingUids.add(currentUser!.uid);
-    notifyListeners();
+    followingUidsOfModel = currentUserDoc['followingUids'];
+    followingUidsOfModel.add(currentUser!.uid);
   }
-  Future getNewFeeds() async {
-    await getQuery(followingUids: followingUids).endBeforeDocument(posts.first).get().then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-    });
+
+  Future<void> getNewFeeds({ required List<dynamic> followingUids }) async {
+    if (followingUids.isNotEmpty) {
+      await voids.processNewPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+    }
   }
 
   // getFeeds
-  Future getFeeds() async {
+  Future<void> getFeeds({ required List<dynamic> followingUids }) async {
     try{
-      await getQuery(followingUids: followingUids).get().then((qshot) {
-        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-      });
+      if (followingUids.isNotEmpty) {
+        await voids.processBasicPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+      }
     } catch(e) { print(e.toString()); }
-    notifyListeners();
   }
 
-  Future<void> getOldFeeds() async {
+  Future<void> getOldFeeds({ required List<dynamic> followingUids }) async {
     try {
-      await getQuery(followingUids: followingUids).startAfterDocument(posts.last).get().then((qshot) {
-        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-      });
+      if (followingUids.isNotEmpty) {
+        voids.processOldPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+      }
     } catch(e) { print(e.toString()); }
   }
 

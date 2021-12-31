@@ -27,7 +27,9 @@ class RecommendersModel extends ChangeNotifier {
   // user
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
-
+  Query<Map<String, dynamic>> getQuery() {
+    return FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount);
+  }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -100,45 +102,40 @@ class RecommendersModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  Future setCurrentUserDoc() async {
+  Future<void> setCurrentUserDoc() async {
     currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
   }
   
-  Future onRefresh() async {
+  Future<void> onRefresh() async {
     await getNewRecommenders();
     refreshController.refreshCompleted();
     notifyListeners();
   }
 
-  Future onLoading() async {
+  Future<void> onReload() async {
+    await getRecommenders();
+    notifyListeners();
+  }
+
+  Future<void> onLoading() async {
     await getOldRecommenders();
     refreshController.loadComplete();
     notifyListeners();
   }
 
-  Future getNewRecommenders() async {
-    await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount).endBeforeDocument(posts.first).get()
-    .then((qshot) {
-      voids.processNewPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-    });
+  Future<void> getNewRecommenders() async {
+    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
   }
 
-  Future getRecommenders() async {
+  Future<void> getRecommenders() async {
     try {
-      await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount).get()
-      .then((qshot) {
-        voids.processBasicPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-      });
+      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
     } catch(e) { print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!"); }
-    notifyListeners();
   }
 
   Future<void> getOldRecommenders() async {
     try {
-      await FirebaseFirestore.instance.collection('posts').orderBy('score', descending: true).limit(oneTimeReadCount).startAfterDocument(posts.last).get()
-      .then((qshot) {
-        voids.processOldPosts(qshot: qshot, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-      });
+      await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
     } catch(e) { print(e.toString()); }
   }
 
