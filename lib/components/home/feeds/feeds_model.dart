@@ -30,7 +30,7 @@ class FeedsModel extends ChangeNotifier {
 
   late DocumentSnapshot currentUserDoc;
   Query<Map<String,dynamic>> getQuery({ required List<dynamic> followingUids }) {
-    final x = postColRef..where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
