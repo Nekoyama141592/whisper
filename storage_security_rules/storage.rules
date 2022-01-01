@@ -5,12 +5,53 @@ service firebase.storage {
     return request.auth != null;
   }
 
+  function isTheSameUser(uid) {
+    return request.auth.uid == uid;
+  }
+
+  function isNotTheSameThing(resource) {
+    return resource == null;
+  }
+
   match /b/{bucket}/o {
-    match /{allPaths=**} {
+    match /postImages/{uid} {
       allow read: if isAuthenticated();
-      allow create: if isAuthenticated();
-      allow update: if isAuthenticated();
-      allow delete: if isAuthenticated();
+      allow create: if isAuthenticated() 
+      && isTheSameUser(uid) && isNotTheSameThing(resource) ;
+      allow update, delete, if isAuthenticated() && isTheSameUser(uid);
+      match /{postImageName} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated() 
+        && isTheSameUser(uid) && isNotTheSameThing(resource) ;
+        allow update, delete, if isAuthenticated() && isTheSameUser(uid);
+      }
     }
+
+    match /posts/{uid} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() 
+      && isTheSameUser(uid) && isNotTheSameThing(resource) ;
+      allow update, delete, if isAuthenticated() && isTheSameUser(uid);
+      match /{storagePostName} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated() 
+        && isTheSameUser(uid) && isNotTheSameThing(resource) ;
+        allow update, delete, if isAuthenticated() && isTheSameUser(uid);
+      }
+    }
+
+    match /userImages/{uid} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() 
+      && isTheSameUser(uid) && isNotTheSameThing(resource) ;
+      allow update, delete, if isAuthenticated() && isTheSameUser(uid);
+      match /{storageImageName} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated() 
+        && isTheSameUser(uid) && isNotTheSameThing(resource) ;
+        allow update, delete, if isAuthenticated() && isTheSameUser(uid);
+      }
+    }
+
   }
 }

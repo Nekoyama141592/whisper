@@ -17,18 +17,24 @@ class RecordingTime extends StatelessWidget {
         final value = snapshot.data!.toInt();
         if (value >= 60000) {
           addPostProvider.stopMeasure();
+          addPostProvider.audioRecorder.stop();
         }
         final displayTime = StopWatchTimer.getDisplayTime(
           value,
           hours: false,
           milliSecond: false,
         );
-        return Text(
-          displayTime,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold
-          ),
+        return Column(
+          children: [
+            Text(
+              displayTime,
+              style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text('(Max 1:00)',style: TextStyle(fontSize: fontSize!/2.5,),)
+          ],
         );
       }
     );

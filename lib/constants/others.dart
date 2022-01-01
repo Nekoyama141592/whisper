@@ -15,7 +15,7 @@ import 'package:whisper/main_model.dart';
 Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   final File? result = await ImageCropper.cropImage(
     sourcePath: xFile!.path,
-    aspectRatioPresets: Platform.isAndroid ?[ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
+    aspectRatioPresets: Platform.isAndroid ? [ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
     androidUiSettings: const AndroidUiSettings(
       toolbarTitle: 'Cropper',
       toolbarColor: kPrimaryColor,
@@ -31,7 +31,7 @@ Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
 }
 
 Reference userImageRef({ required String uid, required String storageImageName }) {
-  return FirebaseStorage.instance.ref().child('userImages').child(uid).child(storageImageName);;
+  return FirebaseStorage.instance.ref().child('userImages').child(uid).child(storageImageName);
 }
 
 Reference postImageRef({ required MainModel mainModel, required String postImageName }) {

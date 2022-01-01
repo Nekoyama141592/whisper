@@ -87,12 +87,15 @@ class AddPostContent extends StatelessWidget {
               )
               : SizedBox.shrink(),
               // SvgPicture
-              SvgPicture.asset(
-                'assets/svgs/recording-bro.svg',
-                height: 
-                value != AddPostState.recorded && value != AddPostState.uploaded ?
-                size.height * 0.4
-                : size.height * 0.2,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SvgPicture.asset(
+                  'assets/svgs/recording-bro.svg',
+                  height: 
+                  value != AddPostState.recorded && value != AddPostState.uploaded ?
+                  size.height * 0.4
+                  : size.height * 0.2,
+                ),
               ),
               
               value == AddPostState.uploading ?
@@ -114,7 +117,7 @@ class AddPostContent extends StatelessWidget {
               )
               : RetryButton(addPostModel,'次の投稿を行う'),
             
-              RecordingTime(addPostModel,value != AddPostState.recorded ? 80 : 30),
+              RecordingTime(addPostModel,value != AddPostState.recorded ? 75.0 : 40.0),
             
               value == AddPostState.recorded ?
               Column(
