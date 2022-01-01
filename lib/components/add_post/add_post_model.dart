@@ -133,8 +133,8 @@ class AddPostModel extends ChangeNotifier {
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      filePath = directory.path + '/' + mainModel.currentUserDoc['uid'] +  DateTime.now().microsecondsSinceEpoch.toString() + '.aac';
-      await audioRecorder.start( path: filePath,);
+      filePath = directory.path + '/' + mainModel.currentUserDoc['uid'] +  DateTime.now().microsecondsSinceEpoch.toString() + postDomain;
+      await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
     } else {

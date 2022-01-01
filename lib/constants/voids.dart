@@ -437,9 +437,10 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
 }
 
 Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
-  if (croppedFile != null) {
-    await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentUserDoc['storageImageName']).delete();
-  }
+  // if delete, can`t load old posts. My all post should be updated too.
+  // if (croppedFile != null) {
+  //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentUserDoc['storageImageName']).delete();
+  // }
   final String storageImageName = (croppedFile == null) ? mainModel.currentUserDoc['storageImageName'] :  strings.storageUserImageName;
   final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
   if (downloadURL.isEmpty) {
