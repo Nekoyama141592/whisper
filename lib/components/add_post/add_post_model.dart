@@ -15,6 +15,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
@@ -178,10 +179,10 @@ class AddPostModel extends ChangeNotifier {
       final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       // postImage
-      final String storageImageName = (croppedFile == null) ? '' : 'postImage' + microSecondsString + '.jpg';
+      final String storageImageName = (croppedFile == null) ? '' : 'postImage' + microSecondsString + imageDomain;
       final String imageURL = (croppedFile == null) ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel);
       // post
-      final String storagePostName = 'post' + microSecondsString + '.aac';
+      final String storagePostName = 'post' + microSecondsString + postDomain;
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
       // post firestore
       final String postId = 'post' + mainModel.currentUserDoc['uid'] + microSecondsString;
