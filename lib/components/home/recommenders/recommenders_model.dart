@@ -29,7 +29,7 @@ class RecommendersModel extends ChangeNotifier {
   User? currentUser;
   late DocumentSnapshot currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    final x = postColRef..orderBy('score', descending: true).limit(oneTimeReadCount);
+    final x = postColRef.orderBy('score', descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers

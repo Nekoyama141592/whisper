@@ -36,7 +36,7 @@ service firebase.storage {
       allow create: if canCreate(uid,resource);
       allow delete: if canDelete(uid);
       match /{storageImageName} {
-        allow read: if isAuthenticated() && isValidImage(storageImageName);
+        allow read: if isTheSameUser(uid) && isValidImage(storageImageName);
         allow create: if canCreate(uid,resource) && isValidImage(storageImageName);
         allow delete: if canDelete(uid);
       }
@@ -46,7 +46,7 @@ service firebase.storage {
       allow create: if canCreate(uid,resource);
       allow delete: if canDelete(uid);
       match /{storagePostName} {
-        allow read: if isAuthenticated() && isValidPost(storagePostName);
+        allow read: if isTheSameUser(uid) && isValidPost(storagePostName);
         allow create: if canCreate(uid,resource) && isValidPost(storagePostName);
         allow delete: if canDelete(uid);
       }
@@ -56,7 +56,7 @@ service firebase.storage {
       allow create: if canCreate(uid,resource);
       allow delete: if canDelete(uid);
       match /{storageImageName} {
-        allow read: if isAuthenticated() && isValidImage(storageImageName);
+        allow read: if isTheSameUser(uid) && isValidImage(storageImageName);
         allow create: if canCreate(uid,resource) && isValidImage(storageImageName);
         allow delete: if canDelete(uid);
       }
