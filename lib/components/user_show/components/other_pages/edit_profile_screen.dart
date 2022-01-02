@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
+import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/circle_image.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -22,6 +23,7 @@ class EditProfileScreen extends ConsumerWidget {
     required this.onDescriptionChanged,
     required this.onLinkChanged,
     required this.croppedFile,
+    required this.isLoading,
     required this.isCropped,
     required this.mainModel,
   }) : super(key: key);
@@ -33,6 +35,7 @@ class EditProfileScreen extends ConsumerWidget {
   final void Function(String)? onDescriptionChanged;
   final void Function(String)? onLinkChanged;
   final File? croppedFile;
+  final bool isLoading;
   final bool isCropped;
   final MainModel mainModel;
   
@@ -55,7 +58,9 @@ class EditProfileScreen extends ConsumerWidget {
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
+      child: isLoading ?
+      Loading()
+      : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

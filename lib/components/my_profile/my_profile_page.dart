@@ -46,6 +46,7 @@ class MyProfilePage extends ConsumerWidget {
           myProfileModel.link = text;
         }, 
         croppedFile: myProfileModel.croppedFile,
+        isLoading: myProfileModel.isLoading,
         isCropped: myProfileModel.isCropped,
         mainModel: mainModel
       ) 

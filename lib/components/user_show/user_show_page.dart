@@ -68,6 +68,7 @@ class UserShowPage extends ConsumerWidget {
               userShowModel.link = text;
             },
             croppedFile: userShowModel.croppedFile,
+            isLoading: userShowModel.isLoading,
             isCropped: userShowModel.isCropped,
             mainModel: mainModel,
           )
