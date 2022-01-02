@@ -14,13 +14,13 @@ service firebase.storage {
   }
 
   function isValidPost(storagePostName) {
-    // return storagePostName.matches('.*\\.aac') && request.resource.contentType == 'video/mp4';
-    return true;
+    // request.resource.contentType == 'video/mp4' is false;
+    return storagePostName.matches('.*\\.aac')
   }
 
   function isValidImage(imageName) {
-    // return imageName.matches('.*\\.jpeg') && request.resource.contentType == 'images/jpeg' || request.resource.contentType == 'images/png';
-    return true;
+    //  && request.resource.contentType == 'images/jpeg' || request.resource.contentType == 'images/png';
+    return imageName.matches('.*\\.jpeg');
   }
 
   function canCreate(uid, resource) {
