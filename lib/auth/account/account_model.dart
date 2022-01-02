@@ -100,7 +100,7 @@ class AccountModel extends ChangeNotifier {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       final docs = qshot.docs;
       int index = 0;
-      docs.forEach((DocumentSnapshot doc) async {
+      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) async {
         if ((index + 1) % 500 == 0) {
           // commit by 500 and initialize batch instance
           await batch.commit();
