@@ -39,7 +39,7 @@ class AccountModel extends ChangeNotifier {
   WhichState whichState = WhichState.initialValue;
   String password = '';
   
-  Future reauthenticateWithCredential ({required BuildContext context,required User? currentUser,required MainModel mainModel})  async {
+  Future <void>reauthenticateWithCredential ({required BuildContext context,required User? currentUser,required MainModel mainModel})  async {
     
     currentUser = FirebaseAuth.instance.currentUser;
     final String email = currentUser!.email!;
@@ -57,7 +57,7 @@ class AccountModel extends ChangeNotifier {
           routes.toUpdateEmailPage(context, currentUser);
         break;
         case WhichState.deleteUser:
-          showDeleteUserDialog(context, mainModel.currentUserDoc);
+          showDeleteUserDialog(context: context, mainModel: mainModel);
         break;
       }
     } on FirebaseAuthException catch(e) {
@@ -72,12 +72,13 @@ class AccountModel extends ChangeNotifier {
     }
   }
 
-  void showDeleteUserDialog(BuildContext context,DocumentSnapshot currentUserDoc) {
+  void showDeleteUserDialog({ required BuildContext context, required MainModel mainModel }) {
+    final currentUserDoc = mainModel.currentUserDoc;
     voids.showCupertinoDialogue(context: context, title: 'ユーザー削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async {
-      if (currentUser!.uid == currentUserDoc['uid']) {
+      if (currentUser!.uid == mainModel.currentUserDoc['uid']) {
         Navigator.pop(context);
         routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
-        await userImageRef(uid: currentUser!.uid, storageImageName: currentUserDoc['storageImageName']).delete();
+        await deleteStorage(mainModel: mainModel);
         await deletePostsOfCurrentUser();
         await deleteReplysOfCurrentUser();
         await deleteCommentsOfCurrentUser();
@@ -86,7 +87,13 @@ class AccountModel extends ChangeNotifier {
     });
   }
 
-  Future deletePostsOfCurrentUser() async {
+  Future<void> deleteStorage({ required MainModel mainModel }) async {
+    await postParentRef(mainModel: mainModel).delete();
+    await postImageParentRef(mainModel: mainModel).delete();
+    await userImageParentRef(uid: mainModel.currentUser!.uid).delete();
+  }
+
+  Future<void> deletePostsOfCurrentUser() async {
     await FirebaseFirestore.instance
     .collection('posts').where('uid',isEqualTo: currentUser!.uid).get()
     .then((qshot) {
@@ -107,7 +114,7 @@ class AccountModel extends ChangeNotifier {
     });
   }
   
-  Future deleteReplysOfCurrentUser() async {
+  Future<void> deleteReplysOfCurrentUser() async {
     await FirebaseFirestore.instance
     .collection('replys')
     .where('uid',isEqualTo: currentUser!.uid)
@@ -129,7 +136,7 @@ class AccountModel extends ChangeNotifier {
       return batch.commit();
     });
   }
-  Future deleteCommentsOfCurrentUser() async {
+  Future<void> deleteCommentsOfCurrentUser() async {
     await FirebaseFirestore.instance
     .collection('comments')
     .where('uid',isEqualTo: currentUser!.uid)
@@ -151,7 +158,7 @@ class AccountModel extends ChangeNotifier {
       return batch.commit();
     });
   }
-  Future deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot currentUserDoc) async {
+  Future<void> deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot currentUserDoc) async {
     await FirebaseFirestore.instance
     .collection('users')
     .doc(currentUserDoc.id)

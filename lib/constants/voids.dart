@@ -293,9 +293,9 @@ Future deletePost({ required BuildContext context, required AudioPlayer audioPla
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
       await FirebaseFirestore.instance.collection('posts').doc(postMap['postId']).delete();
-      await postRef(mainModel: mainModel, storagePostName: postMap['storagePostName']).delete();
+      await postChildRef(mainModel: mainModel, storagePostName: postMap['storagePostName']).delete();
       if (postMap['storageImageName'].isNotEmpty) {
-        await postImageRef(mainModel: mainModel, postImageName: postMap['storageImageName']).delete();
+        await postImageChildRef(mainModel: mainModel, postImageName: postMap['storageImageName']).delete();
       }
     } catch(e) {
       print(e.toString());
@@ -429,7 +429,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   // can`t be given mainModel because of lib/auth/signup/signup_model.dart
   String getDownloadURL = '';
   try {
-    final Reference storageRef = userImageRef(uid: uid, storageImageName: storageImageName);
+    final Reference storageRef = userImageChildRef(uid: uid, storageImageName: storageImageName);
     await storageRef.putFile(croppedFile!);
     getDownloadURL = await storageRef.getDownloadURL();
   } catch(e) { print(e.toString()); }

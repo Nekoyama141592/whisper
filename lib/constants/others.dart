@@ -30,16 +30,31 @@ Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   return result;
 }
 
-Reference userImageRef({ required String uid, required String storageImageName }) {
-  return FirebaseStorage.instance.ref().child('userImages').child(uid).child(storageImageName);
+Reference userImageParentRef({ required String uid }) {
+  return FirebaseStorage.instance.ref().child('userImages').child(uid);
 }
 
-Reference postImageRef({ required MainModel mainModel, required String postImageName }) {
-  return FirebaseStorage.instance.ref().child('postImages').child(mainModel.currentUserDoc['uid']).child(postImageName);
+Reference userImageChildRef({ required String uid, required String storageImageName }) {
+  final parentRef = userImageParentRef(uid: uid);
+  return parentRef.child(storageImageName);
 }
 
-Reference postRef({ required MainModel mainModel, required String storagePostName }) {
-  return FirebaseStorage.instance.ref().child('posts').child(mainModel.currentUserDoc['uid']).child(storagePostName);
+Reference postImageParentRef({ required MainModel mainModel }) {
+  return FirebaseStorage.instance.ref().child('postImages').child(mainModel.currentUser!.uid);
+}
+
+Reference postImageChildRef({ required MainModel mainModel, required String postImageName }) {
+  final parentRef = postImageParentRef(mainModel: mainModel);
+  return parentRef.child(postImageName);
+}
+
+Reference postParentRef({ required MainModel mainModel }) {
+  return FirebaseStorage.instance.ref().child('posts').child(mainModel.currentUserDoc['uid']);
+}
+
+Reference postChildRef({ required MainModel mainModel, required String storagePostName }) {
+  final parentRef = postParentRef(mainModel: mainModel);
+  return parentRef.child(storagePostName);
 }
 
 final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection('posts');
