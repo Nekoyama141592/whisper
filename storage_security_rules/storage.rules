@@ -1,6 +1,6 @@
 rules_version = '2';
 service firebase.storage {
-  // sample
+  
   function isAuthenticated(){
     return request.auth != null;
   }
@@ -19,7 +19,7 @@ service firebase.storage {
   }
 
   function isValidImage(imageName) {
-    //  && request.resource.contentType == 'images/jpeg' || request.resource.contentType == 'images/png';
+    // (request.resource.contentType == 'image/jpeg' || request.resource.contentType == 'image/png'); is false
     return imageName.matches('.*\\.jpeg');
   }
 
