@@ -1,3 +1,3 @@
-final String postDomain = '.aac';
-final String imageDomain = '.jpeg';
-final storageUserImageName = 'userImage' + DateTime.now().microsecondsSinceEpoch.toString() + imageDomain;
+final String postExtension = '.aac';
+final String imageExtension = '.jpeg';
+final storageUserImageName = 'userImage' + DateTime.now().microsecondsSinceEpoch.toString() + imageExtension;

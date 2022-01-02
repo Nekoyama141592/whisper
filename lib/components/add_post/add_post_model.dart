@@ -133,7 +133,7 @@ class AddPostModel extends ChangeNotifier {
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      filePath = directory.path + '/' + mainModel.currentUserDoc['uid'] +  DateTime.now().microsecondsSinceEpoch.toString() + postDomain;
+      filePath = directory.path + '/' + mainModel.currentUserDoc['uid'] +  DateTime.now().microsecondsSinceEpoch.toString() + postExtension;
       await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
@@ -179,10 +179,10 @@ class AddPostModel extends ChangeNotifier {
       final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       // postImage
-      final String storageImageName = (croppedFile == null) ? '' : 'postImage' + microSecondsString + imageDomain;
+      final String storageImageName = (croppedFile == null) ? '' : 'postImage' + microSecondsString + imageExtension;
       final String imageURL = (croppedFile == null) ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel);
       // post
-      final String storagePostName = 'post' + microSecondsString + postDomain;
+      final String storagePostName = 'post' + microSecondsString + postExtension;
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
       // post firestore
       final String postId = 'post' + mainModel.currentUserDoc['uid'] + microSecondsString;
