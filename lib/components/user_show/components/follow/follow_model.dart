@@ -10,19 +10,19 @@ final followProvider = ChangeNotifierProvider(
 );
 class FollowModel extends ChangeNotifier {
 
-  Future follow(BuildContext context,List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future follow(BuildContext context,List<dynamic> followingUids,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> passiveUserDoc) async {
     if (followingUids.length >= 500) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
     } else {
       followingUids.add(passiveUserDoc['uid']);
       notifyListeners();
-      final DocumentSnapshot newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
+      final DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
       await addFollowingUidToActiveUser(followingUids,currentUserDoc, passiveUserDoc);
       await addFollowerUidToPassiveUser(currentUserDoc, newPassiveUserDoc);
     }
   }
 
-  Future addFollowingUidToActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future addFollowingUidToActiveUser(List<dynamic> followingUids,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> passiveUserDoc) async {
     try{
       await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
       .update({
@@ -33,7 +33,7 @@ class FollowModel extends ChangeNotifier {
     } 
   }
 
-  Future addFollowerUidToPassiveUser(DocumentSnapshot currentUserDoc,DocumentSnapshot newPassiveUserDoc) async {
+  Future addFollowerUidToPassiveUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc) async {
     try{
       List<dynamic> followerUids = newPassiveUserDoc['followerUids'];
       final String newFollowerUid = currentUserDoc['uid'];
@@ -52,15 +52,15 @@ class FollowModel extends ChangeNotifier {
     }
   }
 
-  Future unfollow(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot passiveUserDoc) async {
+  Future unfollow(List<dynamic> followingUids,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> passiveUserDoc) async {
     followingUids.remove(passiveUserDoc['uid']);
     notifyListeners();
-    final DocumentSnapshot newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
+    final DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc = await getNewPassiveUserDoc(passiveUserDoc);
     await removeFollowingUidFromActiveUser(followingUids,currentUserDoc, newPassiveUserDoc);
     await removeFollowerUidOfPassiveUser(currentUserDoc, newPassiveUserDoc);
   }
 
-  Future removeFollowingUidFromActiveUser(List<dynamic> followingUids,DocumentSnapshot currentUserDoc,DocumentSnapshot newPassiveUserDoc) async {
+  Future removeFollowingUidFromActiveUser(List<dynamic> followingUids,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc) async {
     try{
       await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
       .update({
@@ -71,7 +71,7 @@ class FollowModel extends ChangeNotifier {
     } 
   }
 
-  Future removeFollowerUidOfPassiveUser(DocumentSnapshot currentUserDoc,DocumentSnapshot newPassiveUserDoc) async {
+  Future removeFollowerUidOfPassiveUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc) async {
     try{
       List<dynamic> followerUids = newPassiveUserDoc['followerUids'];
       followerUids.remove(currentUserDoc['uid']);
@@ -89,8 +89,8 @@ class FollowModel extends ChangeNotifier {
     }
   }
 
-  Future getNewPassiveUserDoc(DocumentSnapshot passiveUserDoc) async {
-    final DocumentSnapshot newPassiveUserDoc = await FirebaseFirestore.instance
+  Future getNewPassiveUserDoc(DocumentSnapshot<Map<String,dynamic>> passiveUserDoc) async {
+    final DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
     .doc(passiveUserDoc.id)
     .get();

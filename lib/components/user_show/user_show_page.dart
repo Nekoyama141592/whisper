@@ -23,7 +23,7 @@ class UserShowPage extends ConsumerWidget {
     required this.mainModel
   });
 
-  final DocumentSnapshot passiveUserDoc;
+  final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   final MainModel mainModel;
 
   @override

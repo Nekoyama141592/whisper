@@ -84,7 +84,7 @@ void toPostShowPage({ required BuildContext context, required ValueNotifier<doub
   Navigator.push(context, MaterialPageRoute(builder: (context) =>PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentSongMapNotifier: currentSongMapNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel) ));
 }
 
-void toUserShowPage(context,DocumentSnapshot passiveUserDoc,MainModel mainModel) {
+void toUserShowPage(context,DocumentSnapshot<Map<String,dynamic>> passiveUserDoc,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveUserDoc: passiveUserDoc, mainModel: mainModel)));
 }
 

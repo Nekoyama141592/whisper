@@ -17,8 +17,8 @@ class FollowOrEditButton extends StatelessWidget {
     required this.onEditButtonPressed
   }) : super(key: key);
 
-  final DocumentSnapshot currentUserDoc;
-  final DocumentSnapshot userDoc;
+  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
+  final DocumentSnapshot<Map<String,dynamic>> userDoc;
   final List followingUids;
   final FollowModel followModel;
   final void Function()? onEditButtonPressed;

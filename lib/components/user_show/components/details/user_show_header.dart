@@ -24,7 +24,7 @@ class UserShowHeader extends ConsumerWidget {
     required this.followModel
   }) : super(key: key);
 
-  final DocumentSnapshot passiveUserDoc;
+  final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   final void Function()? onEditButtonPressed;
   final Widget backArrow;
   final MainModel mainModel;
