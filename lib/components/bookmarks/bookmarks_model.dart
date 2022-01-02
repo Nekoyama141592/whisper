@@ -101,7 +101,7 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
   void setBookmarkedPostIds() {
