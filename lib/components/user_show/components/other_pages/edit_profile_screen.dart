@@ -84,9 +84,10 @@ class EditProfileScreen extends ConsumerWidget {
               ],
             ),
             
-            isCropped ? 
-            CircleImage(length: 80.0, image: FileImage(croppedFile!) )
-            : InkWell(child: UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),onTap: showImagePicker,),
+            InkWell(
+              child: isCropped ?  CircleImage(length: 80.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),
+              onTap: showImagePicker,
+            ),
             Text('名前',style: textStyle,),
             TextFormField(
               keyboardType: TextInputType.text,
