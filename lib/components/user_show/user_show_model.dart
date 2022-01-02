@@ -29,8 +29,8 @@ final userShowProvider = ChangeNotifierProvider(
 
 class UserShowModel extends ChangeNotifier {
 
-  late DocumentSnapshot passiveUserDoc;
-  Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot passiveUserDoc }) {
+  late DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
+  Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc }) {
     final x = postColRef.where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
     return x;
   }
@@ -67,7 +67,7 @@ class UserShowModel extends ChangeNotifier {
   final PostType postType = PostType.userShow;
   SortState sortState = SortState.byNewestFirst;
 
-  Future<void> init(DocumentSnapshot givePassiveUserDoc,SharedPreferences givePrefs) async {
+  Future<void> init(DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc,SharedPreferences givePrefs) async {
     startLoading();
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
@@ -155,7 +155,7 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
+  void onEditButtonPressed(DocumentSnapshot<Map<String,dynamic>> currentUserDoc) {
     userName = currentUserDoc['userName'];
     description = currentUserDoc['description'];
     link = currentUserDoc['link'];

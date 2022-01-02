@@ -25,7 +25,7 @@ final bookmarksProvider = ChangeNotifierProvider(
 class BookmarksModel extends ChangeNotifier {
   
   bool isLoading = false;
-  late DocumentSnapshot currentUserDoc;
+  late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarkedPostIds}) {
     final x = postColRef.where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
     return x;

@@ -6,3 +6,4 @@ const int defaultScore = 10000;// (lib/posts/components/replys/replys_model.dart
 const int topFlashDisplaySeconds = 4;
 const int commentScrollFlashBarConstantCount = 2;
 const int dialogueMilliSeconds = 500;
+const int maxLine = 2;

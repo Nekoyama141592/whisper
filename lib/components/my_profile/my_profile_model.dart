@@ -30,7 +30,7 @@ final myProfileProvider = ChangeNotifierProvider(
 class MyProfileModel extends ChangeNotifier {
 
   bool isLoading = false;
-  late DocumentSnapshot currentUserDoc;
+  late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
     final x = postColRef.where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
     return x;
@@ -140,7 +140,7 @@ class MyProfileModel extends ChangeNotifier {
     } catch(e) { print(e.toString()); }
   }
 
-  void onEditButtonPressed(DocumentSnapshot currentUserDoc) {
+  void onEditButtonPressed(DocumentSnapshot<Map<String,dynamic>> currentUserDoc) {
     userName = currentUserDoc['userName'];
     description = currentUserDoc['description'];
     link = currentUserDoc['link'];

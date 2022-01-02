@@ -10,6 +10,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // states
 import 'package:whisper/constants/enums.dart';
@@ -50,7 +51,7 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
+  void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) {
     // コメントの投稿主が自分の場合
     // このPostの投稿主が自分の場合
     // このPostの投稿主とコメントの投稿主が一致している場合
@@ -61,50 +62,27 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  void showMakeReplyInputFlashBar(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) {
-    context.showFlashBar(
-      persistent: true,
-      borderWidth: 3.0,
-      behavior: FlashBehavior.fixed,
-      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      title: Row(
-        children: [
-          Text('リプライを入力'),
-        ],
-      ),
-      content: Form(
-        child: TextFormField(
-          controller: replyEditingController,
-          autofocus: true,
-          style: TextStyle(fontWeight: FontWeight.bold),
-          onChanged: (text) {
-            reply = text;
-          },
-        )
-      ),
-      primaryActionBuilder: (context, controller, _) {
-        return IconButton(
-          onPressed: () async {
-            if (reply.isEmpty) {
-              controller.dismiss();
-            } else {
-              await makeReply(currentSongMap, currentUserDoc, thisComment);
-              reply = '';
-              controller.dismiss();
-            }
-          },
-          icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
-        );
-      },
-      negativeActionBuilder: (context,controller,__) {
-        return InkWell(
-          child: Icon(Icons.close),
-          onTap: () {
+  void showMakeReplyInputFlashBar(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) {
+    final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
+      return IconButton(
+        onPressed: () async {
+          if (reply.isEmpty) {
             controller.dismiss();
-          },
-        );
-      }
-    );
+          } else {
+            await makeReply(currentSongMap, currentUserDoc, thisComment);
+            reply = '';
+            replyEditingController.text = '';
+            controller.dismiss();
+          }
+        },
+        icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
+      );
+    };
+    final void Function()? oncloseButtonPressed = () {
+      reply = '';
+      replyEditingController.text = '';
+    };
+    voids.showCommentOrReplyDialogue(context: context, title: 'リプライを入力', textEditingController: replyEditingController, onChanged: (text) { reply = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
   void showSortDialogue(BuildContext context,Map<String,dynamic> thisComment) {
@@ -242,14 +220,14 @@ class ReplysModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment) async {
+  Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) async {
     final elementId = thisComment['commentId'];
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final newReplyMap = makeReplyMap(elementId, currentUserDoc,currentSongMap);
     await addReplyToFirestore(newReplyMap);
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
-      final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
+      final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
       // blocks
       List<dynamic> blocksIpv6s = [];
       List<dynamic> blocksUids = [];
@@ -272,7 +250,7 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap) {
+  Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap) {
     final newReplyMap = {
       'elementId': elementId,
       'elementState': elementState,
@@ -311,14 +289,14 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance
+    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance
     .collection('users')
     .doc(currentSongMap['uid'])
     .get();
     return passiveUserDoc;
   }
 
-  Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot passiveUserDoc, required DocumentSnapshot currentUserDoc, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
+  Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
 
     final String notificationId = 'replyNotification' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = thisComment['comment'];
@@ -353,7 +331,7 @@ class ReplysModel extends ChangeNotifier {
     });
   }
 
-  Future<void> like(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot currentUserDoc,List<dynamic> likedReplys) async {
+  Future<void> like(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedReplys) async {
     final replyId = thisReply['replyId'];
     likedReplyIds.add(replyId);
     notifyListeners();
@@ -362,12 +340,12 @@ class ReplysModel extends ChangeNotifier {
     await updateLikedReplysOfUser(currentUserDoc, thisReply, likedReplys);
   }
 
-  Future<DocumentSnapshot> setNewReplyDoc(Map<String,dynamic> thisReply) async {
-    DocumentSnapshot newReplyDoc = await FirebaseFirestore.instance.collection('replys').doc(thisReply['replyId']).get();
+  Future<DocumentSnapshot<Map<String,dynamic>>> setNewReplyDoc(Map<String,dynamic> thisReply) async {
+    DocumentSnapshot<Map<String,dynamic>> newReplyDoc = await FirebaseFirestore.instance.collection('replys').doc(thisReply['replyId']).get();
     return newReplyDoc;
   }
 
-  Future<void> updateLikesUidsOfReply(DocumentSnapshot currentUserDoc,DocumentSnapshot newReplyDoc) async {
+  Future<void> updateLikesUidsOfReply(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newReplyDoc) async {
     final String uid = currentUserDoc['uid'];
     List<dynamic> likesUids = newReplyDoc['likesUids'];
     int likesUidsCount = newReplyDoc['likesUidsCount'];
@@ -381,7 +359,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
 
-  Future<void> updateLikedReplysOfUser(DocumentSnapshot currentUserDoc,Map<String,dynamic> thisReply,List<dynamic> likedReplys) async {
+  Future<void> updateLikedReplysOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisReply,List<dynamic> likedReplys) async {
     try {
       final newLikedReply = {
         'likedReplyId': thisReply['replyId'],
@@ -398,7 +376,7 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  Future<void> unlike(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot currentUserDoc,List<dynamic> likedReplys) async {
+  Future<void> unlike(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedReplys) async {
     final replyId = thisReply['replyId'];
     removeReplyIdFromLikedReplyIds(likedReplyIds, replyId);
     final newReplyDoc = await setNewReplyDoc(thisReply);
@@ -411,7 +389,7 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future removeLikesUidOfReply(DocumentSnapshot currentUserDoc,DocumentSnapshot newReplyDoc) async {
+  Future removeLikesUidOfReply(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newReplyDoc) async {
     List<dynamic> likesUids = newReplyDoc['likesUids'];
     int likesUidsCount = newReplyDoc['likesUidsCount'];
     likesUids.remove(currentUserDoc['uid']);
@@ -425,7 +403,7 @@ class ReplysModel extends ChangeNotifier {
     });
   }
 
-  Future removeLikedReplyOfUser(DocumentSnapshot currentUserDoc,DocumentSnapshot newReplyDoc,List<dynamic> likedReplys) async {
+  Future removeLikedReplyOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newReplyDoc,List<dynamic> likedReplys) async {
     likedReplys.removeWhere((likedReply) => likedReply['likedReplyId'] == newReplyDoc['replyId']);
     notifyListeners();
     await FirebaseFirestore.instance

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
 // notifiers
@@ -458,4 +460,35 @@ Future updateUserInfo({ required BuildContext context ,required String userName,
       mainModel.reload();
     } catch(e) { print(e.toString()); }
   }
+}
+
+void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {
+  context.showFlashBar(
+    persistent: true,
+    borderWidth: 3.0,
+    behavior: FlashBehavior.fixed,
+    forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+    title: Text(title,style: TextStyle(fontWeight: FontWeight.bold),),
+    content: Form(
+      child: TextFormField(
+        controller: textEditingController,
+        autofocus: true,
+        style: TextStyle(fontWeight: FontWeight.bold),
+        onChanged: onChanged,
+        maxLines: maxLine,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(onPressed: oncloseButtonPressed, icon: Icon(Icons.close))
+        ),
+      )
+    ),
+    primaryActionBuilder: send,
+    negativeActionBuilder: (context,controller,__) {
+      return InkWell(
+        child: Icon(Icons.close),
+        onTap: () {
+          controller.dismiss();
+        },
+      );
+    }
+  );
 }

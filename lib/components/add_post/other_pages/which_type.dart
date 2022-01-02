@@ -25,7 +25,6 @@ class WhichType extends ConsumerWidget {
     final addPostModel = watch(addPostProvider);
     return
     GradientScreen(
-      // top: SizedBox(height: 16),
       top: SizedBox.shrink(),
       header: Padding(
         padding: const EdgeInsets.all(20.0),

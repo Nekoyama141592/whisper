@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // states
 import 'package:whisper/constants/enums.dart';
@@ -57,16 +58,16 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc,AudioPlayer audioPlayer,{ required SharedPreferences prefs}) {
+  void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,AudioPlayer audioPlayer,{ required SharedPreferences prefs}) {
     final String commentsState = currentSongMap['commentsState'];
     audioPlayer.pause();
     switch(commentsState){
       case 'open':
-      showMakeCommentInputFlashBar(context, currentSongMap, commentEditingController, currentUserDoc,prefs: prefs);
+      showMakeCommentInputFlashBar(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, currentUserDoc: currentUserDoc);
       break;
       case 'isLocked':
       if (currentSongMap['uid'] == currentUserDoc['uid']) {
-        showMakeCommentInputFlashBar(context, currentSongMap, commentEditingController, currentUserDoc,prefs: prefs);
+        showMakeCommentInputFlashBar(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, currentUserDoc: currentUserDoc);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
       }
@@ -74,55 +75,31 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  void showMakeCommentInputFlashBar(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot currentUserDoc ,{ required SharedPreferences prefs}) {
-    
-    context.showFlashBar(
-      persistent: true,
-      borderWidth: 3.0,
-      behavior: FlashBehavior.fixed,
-      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      title: Row(
-        children: [
-          Text('コメントを入力'),
-        ],
-      ),
-      content: Form(
-        child: TextFormField(
-          controller: commentEditingController,
-          autofocus: true,
-          style: TextStyle(fontWeight: FontWeight.bold),
-          onChanged: (text) {
-            comment = text;
-          },
-        )
-      ),
-      primaryActionBuilder: (context, controller, _) {
-        return IconButton(
-          onPressed: () async {
-            if (commentEditingController.text.isEmpty) {
-              controller.dismiss();
-            } else {
-              await makeComment(context, currentSongMap, currentUserDoc,prefs);
-              comment = '';
-              controller.dismiss();
-            }
-          },
-          icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
-        );
-      },
-      negativeActionBuilder: (context,controller,__) {
-        return InkWell(
-          child: Icon(Icons.close),
-          onTap: () {
+  void showMakeCommentInputFlashBar({ required BuildContext context, required Map<String,dynamic> currentSongMap, required TextEditingController commentEditingController, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc}) {
+    final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
+      return IconButton(
+        onPressed: () async {
+          if (commentEditingController.text.isEmpty) {
             controller.dismiss();
-          },
-        );
-      }
-    );
+          } else {
+            await makeComment(context, currentSongMap, currentUserDoc,);
+            comment = '';
+            commentEditingController.text = '';
+            controller.dismiss();
+          }
+        },
+        icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
+      );
+    };
+    final void Function()? oncloseButtonPressed = () {
+      comment = '';
+      commentEditingController.text = '';
+    };
+    voids.showCommentOrReplyDialogue(context: context, title: 'コメントを入力',textEditingController: commentEditingController, onChanged: (text) { comment = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
   
-  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,SharedPreferences prefs) async {
+  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
     await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
