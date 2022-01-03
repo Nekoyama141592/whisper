@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/cupertino.dart';
-
+// constants
+import 'package:whisper/constants/strings.dart';
 class CurrentSongTitle extends StatelessWidget {
   
   const CurrentSongTitle({
@@ -16,7 +17,7 @@ class CurrentSongTitle extends StatelessWidget {
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
         return Text(
-          currentSongMap['title'], 
+          currentSongMap[titleKey], 
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold

@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_slidable/flutter_slidable.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // model
@@ -45,7 +47,7 @@ class PostCard extends StatelessWidget {
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: mainModel.currentUserDoc['uid'] != post['uid'] ? 
+        actions: mainModel.currentUserDoc[uidKey] != post[uidKey] ? 
         [
           IconSlideAction(
             caption: 'mute User',
@@ -80,15 +82,15 @@ class PostCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: RedirectUserImage(userImageURL: post['userImageURL'], length: 50.0, padding: 0.0, passiveUserDocId: post['uid'], mainModel: mainModel),
+                  leading: RedirectUserImage(userImageURL: post[userImageURLKey], length: 50.0, padding: 0.0, passiveUserDocId: post[uidKey], mainModel: mainModel),
                   title: Text(
-                    post['userName'],
+                    post[userNameKey],
                     style: TextStyle(
                       fontSize: 20.0
                     ),
                   ),
                   subtitle: Text(
-                    post['title'],
+                    post[titleKey],
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontWeight: FontWeight.bold,

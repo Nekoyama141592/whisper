@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/posts/components/post_buttons/components/edit_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
@@ -37,8 +39,8 @@ class PostButtons extends StatelessWidget {
             LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
             BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, bookmarkedPostIds: mainModel.bookmarkedPostIds,bookmarks: mainModel.bookmarks),
             CommentButton(currentSongMap: currentSongMap,mainModel: mainModel,toCommentsPage: toCommentsPage),
-            if (mainModel.currentUserDoc['uid'] == currentSongMap['uid']) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),
-            if (currentSongMap['link'].isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap,)
+            if (mainModel.currentUserDoc[uidKey] == currentSongMap[uidKey]) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),
+            if (currentSongMap[linkKey].isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap,)
           ],
         );
       }

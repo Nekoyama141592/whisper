@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 final oneCommentProvider = ChangeNotifierProvider(
   (ref) => OneCommentModel()
@@ -18,7 +20,7 @@ class OneCommentModel extends ChangeNotifier {
   Future<bool> init({ required String giveCommentId}) async {
     startLoading();
     if (commentId != giveCommentId) {
-      oneCommentDoc = await FirebaseFirestore.instance.collection('comments').doc(giveCommentId).get();
+      oneCommentDoc = await FirebaseFirestore.instance.collection(commentsKey).doc(giveCommentId).get();
     } 
     oneCommentMap = oneCommentDoc.data()!;
     endLoading();

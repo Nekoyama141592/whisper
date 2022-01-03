@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/counts.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // model
 import 'package:whisper/posts/components/comments/comments_model.dart';
 
@@ -25,10 +27,8 @@ class CommentLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     
-    final commentId = comment['commentId'];
-    List<dynamic> likesUids = comment['likesUids'];
-    likesUids.remove(currentUserDoc['uid']); 
-    final likesUidsCount = likesUids.length;
+    final commentId = comment[commentIdKey];
+    final likesUidsCount = comment[likesUidsCountKey];
     final plusOneCount = likesUidsCount + plusOne;
     return likedCommentIds.contains(commentId) ?
     Padding(

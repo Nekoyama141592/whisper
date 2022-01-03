@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 class TimestampDisplay extends StatelessWidget {
 
@@ -17,7 +19,7 @@ class TimestampDisplay extends StatelessWidget {
       valueListenable: currentSongMapNotifier, 
       builder: (_,currentSongMap,__) {
         
-        final Timestamp createdAt = currentSongMap['createdAt'];
+        final Timestamp createdAt = currentSongMap[createdAtKey];
         final createdAtDate = createdAt.toDate();
         final createdAtYear = createdAtDate.year.toString();
         final createdAtMonth = createdAtDate.month.toString();

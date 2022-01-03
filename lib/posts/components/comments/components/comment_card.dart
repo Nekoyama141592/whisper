@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
@@ -43,12 +44,12 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize,
       // overflow: TextOverflow.ellipsis
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s , map: comment ) && !mainModel.mutesCommentIds.contains(comment['commentId']) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s , map: comment ) && !mainModel.mutesCommentIds.contains(comment[commentIdKey]) ?
 
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(comment['uid'] == mainModel.currentUserDoc['uid']) ?
+      actions: !(comment[uidKey] == mainModel.currentUserDoc[uidKey]) ?
       [
         IconSlideAction(
           caption: 'mute User',
@@ -69,8 +70,8 @@ class CommentCard extends ConsumerWidget {
         ),
       ]: [],
       child: InkWell(
-        onLongPress: mainModel.currentUserDoc['isAdmin'] ? () async {
-          await FlutterClipboard.copy(comment['uid']);
+        onLongPress: mainModel.currentUserDoc[isAdminKey] ? () async {
+          await FlutterClipboard.copy(comment[uidKey]);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
         child: Card(
@@ -88,18 +89,18 @@ class CommentCard extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      child: RedirectUserImage(userImageURL: comment['userImageURL'], length: 60.0, padding: 0.0, passiveUserDocId: comment['uid'], mainModel: mainModel),
+                      child: RedirectUserImage(userImageURL: comment[userImageURLKey], length: 60.0, padding: 0.0, passiveUserDocId: comment[uidKey], mainModel: mainModel),
                     ),
                     Expanded(
                       child: Column(
                         children: [
                           Text(
-                            comment['userName'],
+                            comment[userNameKey],
                             style: whisperTextStyle,
                           ),
                           SizedBox(height: 10.0,),
                           Text(
-                            comment['comment'],
+                            comment[commentKey],
                             style: whisperTextStyle,
                           )
                         ],
@@ -109,7 +110,6 @@ class CommentCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, likedCommentIds: mainModel.likedCommentIds, comment: comment, likedComments: mainModel.likedComments),
-                        // ShowReplyButton(replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment)
                         ShowReplyButton(mainModel: mainModel, replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment, currentSongMap: currentSongMap)
                       ],
                     )

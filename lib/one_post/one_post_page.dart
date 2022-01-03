@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // comopnents
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+// other_pages
 import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -41,7 +43,7 @@ class OnePostPage extends ConsumerWidget {
         onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
         playButtonNotifier: onePostModel.playButtonNotifier, 
         play: () async { 
-          await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentSongMapNotifier.value['postId'], officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
         }, 
         pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); },
         isLastSongNotifier: onePostModel.isLastSongNotifier, 

@@ -10,6 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/strings.dart';
 
 final editPostInfoProvider = ChangeNotifierProvider(
   (ref) => EditPostInfoModel()
@@ -68,49 +69,49 @@ class EditPostInfoModel extends ChangeNotifier {
     }
   }
 
-  Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
-    final String imageName = currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString();
-    try {
-      await FirebaseStorage.instance
-      .ref()
-      .child('postImages')
-      .child(imageName + '.jpg')
-      .putFile(croppedFile!);
-    } catch(e) {
-      print(e.toString());
-    }
-    final String downloadURL = await FirebaseStorage.instance
-    .ref()
-    .child('postImages')
-    .child(imageName + '.jpg')
-    .getDownloadURL();
-    return downloadURL;
-  }
+  // Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
+  //   final String imageName = currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString();
+  //   try {
+  //     await FirebaseStorage.instance
+  //     .ref()
+  //     .child('postImages')
+  //     .child(imageName + '.jpg')
+  //     .putFile(croppedFile!);
+  //   } catch(e) {
+  //     print(e.toString());
+  //   }
+  //   final String downloadURL = await FirebaseStorage.instance
+  //   .ref()
+  //   .child('postImages')
+  //   .child(imageName + '.jpg')
+  //   .getDownloadURL();
+  //   return downloadURL;
+  // }
 
-  Future updatePostInfo(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,BuildContext context) async {
-    final String currentSongDocImageURL = currentSongMap['imageURL'];
-    final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongMap['userImageURL'];
-    final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
+  // Future updatePostInfo(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,BuildContext context) async {
+  //   final String currentSongDocImageURL = currentSongMap['imageURL'];
+  //   final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongMap['userImageURL'];
+  //   final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
     
-    try{
-      await FirebaseFirestore.instance
-      .collection('posts')
-      .doc(currentSongMap['postId'])
-      .update({
-        'title': postTitle,
-        'imageURL': imageURL,
-        'updatedAt': Timestamp.now(),
-      });
-      isEditing = false;
-      notifyListeners();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('データが変更されました！'),
-        duration: Duration(seconds: 3),
-      ));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タブを切ると変更が画面に反映されます')));
-    } catch(e) {
-      print(e.toString());
-    }
-  }
+  //   try{
+  //     await FirebaseFirestore.instance
+  //     .collection('posts')
+  //     .doc(currentSongMap['postId'])
+  //     .update({
+  //       'title': postTitle,
+  //       'imageURL': imageURL,
+  //       'updatedAt': Timestamp.now(),
+  //     });
+  //     isEditing = false;
+  //     notifyListeners();
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('データが変更されました！'),
+  //       duration: Duration(seconds: 3),
+  //     ));
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タブを切ると変更が画面に反映されます')));
+  //   } catch(e) {
+  //     print(e.toString());
+  //   }
+  // }
   
 }

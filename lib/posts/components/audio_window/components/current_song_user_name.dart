@@ -1,6 +1,8 @@
 // material
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 class CurrentSongUserName extends StatelessWidget {
   
@@ -18,7 +20,7 @@ class CurrentSongUserName extends StatelessWidget {
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
         return Text(
-          currentSongMap['userName'], 
+          currentSongMap[userNameKey], 
           style: TextStyle(
             fontSize: 20
           ),

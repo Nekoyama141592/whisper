@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/colors.dart';

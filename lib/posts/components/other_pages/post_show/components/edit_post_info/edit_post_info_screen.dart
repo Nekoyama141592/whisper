@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // model
@@ -25,8 +27,8 @@ class EditPostInfoScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
     final postTitleController = TextEditingController(text: editPostInfoModel.postTitle);
-    final String imageURL = currentSongMap['imageURL'];
-    final String userImageURL = currentSongMap['userImageURL'];
+    final String imageURL = currentSongMap[imageURLKey];
+    final String userImageURL = currentSongMap[userImageURLKey];
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
 
     return Scaffold(
@@ -111,7 +113,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     editPostInfoModel.postTitle = text;
                   },
                   decoration: InputDecoration(
-                    hintText: currentSongMap['title'],
+                    hintText: currentSongMap[titleKey],
                     hintStyle: TextStyle(fontWeight: FontWeight.bold)
                   ),
                 )

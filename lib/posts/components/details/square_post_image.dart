@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 class SquarePostImage extends StatelessWidget {
 
@@ -18,8 +20,8 @@ class SquarePostImage extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
-        final String imageURL = currentSongMap['imageURL'];
-        final String resultURL = imageURL.isNotEmpty ? currentSongMap['imageURL'] : currentSongMap['userImageURL'];
+        final String imageURL = currentSongMap[imageURLKey];
+        final String resultURL = imageURL.isNotEmpty ? currentSongMap[imageURLKey] : currentSongMap[userImageURLKey];
         return Padding(
           padding: const EdgeInsets.only(
             bottom: 35.0

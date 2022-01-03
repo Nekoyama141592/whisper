@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // model
@@ -21,7 +23,7 @@ class AudioWindowUserImage extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
-        return RedirectUserImage(userImageURL: currentSongMap['userImageURL'], length: 40.0, padding: 5.0,passiveUserDocId: currentSongMap['uid'],mainModel: mainModel,);
+        return RedirectUserImage(userImageURL: currentSongMap[userImageURLKey], length: 40.0, padding: 5.0,passiveUserDocId: currentSongMap[uidKey],mainModel: mainModel,);
       }
     );
   }

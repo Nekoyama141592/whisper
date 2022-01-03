@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
-import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/details/nothing.dart';
+import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -55,7 +57,7 @@ class CommentsPage extends ConsumerWidget {
             commentsModel.commentDocs.isEmpty ?
             Expanded(
               child: Nothing(reload: () async {
-                await commentsModel.getCommentDocs(currentSongMap['postId']);
+                await commentsModel.getCommentDocs(currentSongMap[postIdKey]);
               }),
             )
             : Expanded(
