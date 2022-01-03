@@ -57,6 +57,7 @@ const String linkKey = 'link';
 const String mutesCommentIdsKey = 'mutesCommentIds';
 const String mutesIpv6AndUidsKey = 'mutesIpv6AndUids';
 const String mutesPostIdsKey = 'mutesPostIdsKey';
+const String mutesReplyIdsKey = 'mutesReplyIds';
 const String negativeScoreKey = 'negativeScore';
 const String noDisplayIpv6AndUidsKey = 'noDisplayIpv6AndUids';
 const String noDisplayWordsKey = 'noDisplayWords';

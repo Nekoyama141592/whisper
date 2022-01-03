@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 
 final mainProvider = ChangeNotifierProvider(
@@ -82,7 +83,7 @@ class MainModel extends ChangeNotifier {
   Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
     try{
-      currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
+      currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
     } catch(e) {
       print(e.toString());
     }
@@ -91,9 +92,9 @@ class MainModel extends ChangeNotifier {
 
   void getLikedPostIds() {
     try{
-      likes = currentUserDoc['likes'];
+      likes = currentUserDoc[likesKey];
       likes.forEach((like) {
-        likedPostIds.add(like['likedPostId']);
+        likedPostIds.add(like[likedPostIdKey]);
       });
       notifyListeners();
     } catch(e) {
@@ -104,9 +105,9 @@ class MainModel extends ChangeNotifier {
   void getBookmarkedPostIds() {
     
     try{
-      bookmarks = currentUserDoc['bookmarks'];
+      bookmarks = currentUserDoc[bookmarksKey];
       bookmarks.forEach((bookmark) {
-        bookmarkedPostIds.add(bookmark['postId']);
+        bookmarkedPostIds.add(bookmark[postIdKey]);
       });
       notifyListeners();
     } catch(e) {
@@ -115,60 +116,60 @@ class MainModel extends ChangeNotifier {
   }
 
   void getFollowingUids() {
-    followingUids = currentUserDoc['followingUids'];
+    followingUids = currentUserDoc[followingUidsKey];
     followingUids.add(currentUser!.uid);
   }
 
   void getLikedCommentIds() {
-    likedComments = currentUserDoc['likedComments'];
+    likedComments = currentUserDoc[likedCommentsKey];
     likedComments.forEach((likedComment) {
-      likedCommentIds.add(likedComment['commentId']);
+      likedCommentIds.add(likedComment[commentIdKey]);
     });
     notifyListeners();
   }
   
   void getReadPost() {
-    readPosts = currentUserDoc['readPosts'];
+    readPosts = currentUserDoc[readPostsKey];
     readPosts.forEach((readPost) {
-      readPostIds.add(readPost['postId']);
+      readPostIds.add(readPost[postIdKey]);
     });
   }
 
   void setMutesAndBlocks() {
     voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
-    mutesReplyIds = prefs.getStringList('mutesReplyIds') ?? [];
-    mutesCommentIds = prefs.getStringList('mutesCommentIds') ?? [];
+    mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
+    mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
   }
 
   void getReadNotificationIds() {
-    readNotificationIds = prefs.getStringList('readNotificationIds') ?? [];
+    readNotificationIds = prefs.getStringList(readNotificationIdsKey) ?? [];
   }
 
   void getNotificationIds() {
-    commentNotifications = currentUserDoc['commentNotifications'];
+    commentNotifications = currentUserDoc[commentNotificationsKey];
     commentNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
-    replyNotifications = currentUserDoc['replyNotifications'];
+    replyNotifications = currentUserDoc[replyNotificationsKey];
     replyNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
   }
 
   void getLikesReplys() {
-    likedReplys = currentUserDoc['likedReplys'];
+    likedReplys = currentUserDoc[likedReplysKey];
     likedReplys.forEach((likesReply) {
-      likedReplyIds.add(likesReply['likedReplyId']);
+      likedReplyIds.add(likesReply[likedReplyIdKey]);
     });
   }
 
   Future<void> regetCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    currentUserDoc =  await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id).get();
+    currentUserDoc =  await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).get();
     notifyListeners();
   }
 
   Future<void> addNotificationIdToReadNotificationIds({ required Map<String,dynamic> notification}) async {
-    final String notificationId = notification['notificationId'];
+    final String notificationId = notification[notificationIdKey];
     readNotificationIds.add(notificationId);
     notifyListeners();
-    await prefs.setStringList('readNotificationIds', readNotificationIds);
+    await prefs.setStringList(readNotificationIdsKey, readNotificationIds);
   }
 
   Future<void> regetNotifications() async {
