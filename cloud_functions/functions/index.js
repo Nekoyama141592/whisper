@@ -8,6 +8,8 @@ const ALGOLIA_ADMIN_API_KEY = functions.config().algolia.admin_api_key
 const ALGOLIA_POSTS_INDEX_NAME = "Posts";
 const ALGOLIA_USERS_INDEX_NAME = "Users"
 const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_API_KEY)
+// firestore
+var fireStore = admin.firestore()
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -21,7 +23,7 @@ exports.createPost = functions.firestore
 .onCreate(
     async (snap,context) => {
         const newValue = snap.data();
-        // newValue.objectID = snap.id;
+        newValue.objectID = snap.id;
         newValue.objectID = context.params.id
         var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
         index.saveObject(newValue);

@@ -199,12 +199,11 @@ class CommentsModel extends ChangeNotifier {
 
   Future updateLikesUidsOfComment(DocumentSnapshot<Map<String,dynamic>> newCommentDoc,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     List<dynamic> likesUids = newCommentDoc['likesUids'];
-    int likesUidsCount = newCommentDoc['likesUidsCount'];
     likesUids.add(currentUserDoc['uid']);
     notifyListeners();
     await FirebaseFirestore.instance.collection('comments').doc(newCommentDoc.id).update({
-      'likesUids': likesUids,
-      'likesUidsCount': likesUidsCount + 1,
+      // 'likesUids': FieldValue.arrayUnion(elements),
+      'likesUidsCount': FieldValue.increment(plusOne),
     });
   }
 
@@ -232,12 +231,11 @@ class CommentsModel extends ChangeNotifier {
 
   Future removeLikesUidFromComment(DocumentSnapshot<Map<String,dynamic>> newCommentDoc,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     List<dynamic> likesUids = newCommentDoc['likesUids'];
-    int likesUidsCount = newCommentDoc['likesUidsCount'];
     likesUids.remove(currentUserDoc['uid']);
     notifyListeners();
     await FirebaseFirestore.instance.collection('comments').doc(newCommentDoc.id).update({
-      'likesUids': likesUids,
-      'likesUidsCount': likesUidsCount - 1,
+      // 'likesUids': FieldValue.arrayUnion(elements),
+      'likesUidsCount': FieldValue.increment(minusOne),
     });
   }
 

@@ -58,3 +58,12 @@ Reference postChildRef({ required MainModel mainModel, required String storagePo
 }
 
 final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection('posts');
+
+CollectionReference<Map<String, dynamic>> followersParentRef({ required String passiveUid }) {
+  return FirebaseFirestore.instance.collection('users').doc(passiveUid).collection('followers');
+}
+
+DocumentReference<Map<String, dynamic>> followerChildRef({ required String passiveUid , required String followerUid}) {
+  final parentRef = followersParentRef(passiveUid: passiveUid);
+  return parentRef.doc(followerUid);
+}

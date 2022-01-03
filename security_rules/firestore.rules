@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 42 // max48
+    return user.size() == 41 // max48
     && 'authNotifications' in user && user.authNotifications is list
     && 'birthDay' in user && user.birthDay is timestamp
     && 'browsingHistory' in user && user.browsingHistory is list
@@ -18,7 +18,6 @@ service cloud.firestore {
     && 'dmState' in user && user.dmState is string
     && 'followNotifications' in user && user.followNotifications is list
     && 'followersCount' in user && user.followersCount is int
-    && 'followerUids' in user && user.followerUids is list
     && 'followingUids' in user && user.followingUids is list
     && 'gender' in user && user.gender is string
     && 'imageURL' in user && user.imageURL is string
@@ -177,9 +176,14 @@ service cloud.firestore {
     && 'createdAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp
     && 'updatedAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp;
   }
+
+  function basicValidation(uid) {
+    return isAuthenticated() && request.auth.uid == uid;
+  }
+
   match /databases/{database}/documents {
 
-    match /users/{userId} {
+    match /users/{uid} {
       allow create: if isValidUser(request.resource.data)
       && isAuthenticated()
       && request.resource.data.uid == request.auth.uid;
@@ -188,6 +192,11 @@ service cloud.firestore {
       allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
+      match /followers/{followerUid} {
+        allow read: if basicValidation(uid);
+        allow create: if basicValidation(followerUid);
+        allow delete: if basicValidation(uid) || basicValidation(followerUid);
+      }
     }
     match /posts/{postId} {
       allow read: if isAuthenticated();

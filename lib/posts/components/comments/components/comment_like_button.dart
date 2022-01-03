@@ -1,6 +1,7 @@
 // material
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/counts.dart';
 // model
 import 'package:whisper/posts/components/comments/comments_model.dart';
 
@@ -16,7 +17,7 @@ class CommentLikeButton extends StatelessWidget {
   }) : super(key: key);
 
   final CommentsModel commentsModel;
-  final DocumentSnapshot currentUserDoc;
+  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   final List<dynamic> likedCommentIds;
   final Map<String,dynamic> comment;
   final List<dynamic> likedComments;
@@ -28,7 +29,7 @@ class CommentLikeButton extends StatelessWidget {
     List<dynamic> likesUids = comment['likesUids'];
     likesUids.remove(currentUserDoc['uid']); 
     final likesUidsCount = likesUids.length;
-    final plusOneCount = likesUidsCount + 1;
+    final plusOneCount = likesUidsCount + plusOne;
     return likedCommentIds.contains(commentId) ?
     Padding(
       padding: const EdgeInsets.symmetric(

@@ -140,9 +140,6 @@
         'dmState': ['onlyFollowingAndFollowed','open'],
         'followNotifications': [],
         'followersCount': int,
-        'followerUids':[
-            String
-        ],
         'followingUids': [
             String
         ],

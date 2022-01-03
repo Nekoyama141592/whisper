@@ -348,13 +348,14 @@ class ReplysModel extends ChangeNotifier {
   Future<void> updateLikesUidsOfReply(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newReplyDoc) async {
     final String uid = currentUserDoc['uid'];
     List<dynamic> likesUids = newReplyDoc['likesUids'];
-    int likesUidsCount = newReplyDoc['likesUidsCount'];
     likesUids.add(uid);
     notifyListeners();
     await FirebaseFirestore.instance.collection('replys').doc(newReplyDoc.id)
     .update({
-      'likesUids': likesUids,
-      'likesUidsCount': likesUidsCount + 1,
+      // 'likesUids': likesUids,
+      // 'likesUids': FieldValue.arrayUnion(elements) ,
+      // 'likesUidsCount': likesUidsCount + 1,
+      'likesUidsCount': FieldValue.increment(plusOne),
     });
   }
 
@@ -391,15 +392,14 @@ class ReplysModel extends ChangeNotifier {
 
   Future removeLikesUidOfReply(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newReplyDoc) async {
     List<dynamic> likesUids = newReplyDoc['likesUids'];
-    int likesUidsCount = newReplyDoc['likesUidsCount'];
     likesUids.remove(currentUserDoc['uid']);
     notifyListeners();
     await FirebaseFirestore.instance
     .collection('replys')
     .doc(newReplyDoc.id)
     .update({
-      'likesUids': likesUids,
-      'likesUidsCount': likesUidsCount -1,
+      // 'likesUids': FieldValue.arrayUnion(elements),
+      'likesUidsCount': FieldValue.increment(minusOne),
     });
   }
 

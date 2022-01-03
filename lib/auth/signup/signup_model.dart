@@ -128,7 +128,6 @@ class SignupModel extends ChangeNotifier {
       'dmState': 'onlyFollowingAndFollowed',
       'followNotifications': [],
       'followersCount': 0,
-      'followerUids': [],
       'followingUids': [],
       'gender': gender,
       'imageURL': imageURL,
