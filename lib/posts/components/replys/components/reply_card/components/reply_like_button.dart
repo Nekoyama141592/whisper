@@ -19,7 +19,7 @@ class ReplyLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
 
-    final List<dynamic> likesUids = thisReply['likesUids'];
+    final List<dynamic> likesUids = thisReply['likesUidsCount'];
     final likesUidsCount = likesUids.length;
 
     return mainModel.likedReplyIds.contains(thisReply['replyId']) ?
