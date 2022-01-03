@@ -204,6 +204,16 @@ service cloud.firestore {
       && isValidPost(request.resource.data);
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
+      match /likes/{activeUid} {
+        allow read: if basicValidation(activeUid);
+        allow create: if basicValidation(activeUid);
+        allow delete: if basicValidation(activeUid);
+      }
+      match /bookmarks/{activeUid} {
+        allow read: if basicValidation(activeUid);
+        allow create: if basicValidation(activeUid);
+        allow delete: if basicValidation(activeUid);
+      }
     }
 
     match /replys/{replyId} {

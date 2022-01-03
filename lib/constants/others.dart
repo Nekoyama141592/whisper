@@ -50,7 +50,7 @@ Reference postImageChildRef({ required MainModel mainModel, required String post
 }
 
 Reference postParentRef({ required MainModel mainModel }) {
-  return FirebaseStorage.instance.ref().child('posts').child(mainModel.currentUserDoc['uid']);
+  return FirebaseStorage.instance.ref().child(postsKey).child(mainModel.currentUserDoc[uidKey]);
 }
 
 Reference postChildRef({ required MainModel mainModel, required String storagePostName }) {
@@ -58,10 +58,10 @@ Reference postChildRef({ required MainModel mainModel, required String storagePo
   return parentRef.child(storagePostName);
 }
 
-final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection('posts');
+final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection(postsKey);
 
 CollectionReference<Map<String, dynamic>> followersParentRef({ required String passiveUid }) {
-  return FirebaseFirestore.instance.collection('users').doc(passiveUid).collection('followers');
+  return FirebaseFirestore.instance.collection(usersKey).doc(passiveUid).collection('followers');
 }
 
 DocumentReference<Map<String, dynamic>> followerChildRef({ required String passiveUid , required String followerUid}) {
@@ -75,5 +75,14 @@ CollectionReference<Map<String, dynamic>> likesParentRef({ required String paren
 
 DocumentReference<Map<String, dynamic>> likeChildRef({ required String parentColKey,  required String uniqueId, required String activeUid}) {
   final parentRef =likesParentRef(parentColKey: parentColKey, uniqueId: uniqueId);
+  return parentRef.doc(activeUid);
+}
+
+CollectionReference<Map<String, dynamic>> bookmarkParentRef({required String postId }) {
+  return FirebaseFirestore.instance.collection(postsKey).doc(postId).collection(bookmarksKey);
+}
+
+DocumentReference<Map<String, dynamic>> bookmarkChildRef({required String postId, required String activeUid}) {
+  final parentRef =bookmarkParentRef(postId: postId);
   return parentRef.doc(activeUid);
 }

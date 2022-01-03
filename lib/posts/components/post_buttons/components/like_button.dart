@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // model
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
@@ -15,7 +17,7 @@ class LikeButton extends ConsumerWidget {
     required this.likes
   });
   
-  final DocumentSnapshot currentUserDoc;
+  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   final Map<String,dynamic> currentSongMap;
   final List likedPostIds;
   final List likes;
@@ -24,13 +26,13 @@ class LikeButton extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
     
-    List<dynamic> likesOfCurrentSong = currentSongMap['likes'];
-    likesOfCurrentSong.removeWhere((likeOfCurrentSong) => likeOfCurrentSong['uid'] == currentUserDoc['uid']);
+    List<dynamic> likesOfCurrentSong = currentSongMap[likesKey];
+    likesOfCurrentSong.removeWhere((likeOfCurrentSong) => likeOfCurrentSong[uidKey] == currentUserDoc[uidKey]);
     final likesCount = likesOfCurrentSong.length;
     final plusOneCount = likesOfCurrentSong.length + 1;
     return
     Container(
-      child: likedPostIds.contains(currentSongMap['postId']) ?
+      child: likedPostIds.contains(currentSongMap[postIdKey]) ?
       Row(
         children: [
           InkWell(

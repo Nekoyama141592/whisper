@@ -1,3 +1,4 @@
+import 'package:whisper/constants/strings.dart';
 'db': {
     'comments': [{
         'comment': String,
