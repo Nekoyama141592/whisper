@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/posts/components/replys/components/reply_card/components/reply_like_button.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -43,7 +44,7 @@ class ReplyCard extends ConsumerWidget {
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(reply['uid'] == mainModel.currentUserDoc['uid']) ?
+      actions: !(reply[uidKey] == mainModel.currentUserDoc[uidKey]) ?
       [
         IconSlideAction(
           caption: 'mute User',
@@ -64,8 +65,8 @@ class ReplyCard extends ConsumerWidget {
         ),
       ] : [],
       child: InkWell(
-        onLongPress: mainModel.currentUserDoc['isAdmin'] ? () async {
-          await FlutterClipboard.copy(reply['uid']);
+        onLongPress: mainModel.currentUserDoc[isAdminKey] ? () async {
+          await FlutterClipboard.copy(reply[uidKey]);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
         child: Card(
@@ -84,7 +85,7 @@ class ReplyCard extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply['uid'], mainModel: mainModel),
+                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply[uidKey], mainModel: mainModel),
                     ),
                     Expanded(
                       child: SizedBox(

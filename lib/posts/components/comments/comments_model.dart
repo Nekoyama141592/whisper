@@ -11,7 +11,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // states
@@ -52,7 +54,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
-    await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).orderBy('createdAt',descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await FirebaseFirestore.instance.collection('comments').where('postId',isEqualTo: postId).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
@@ -99,10 +101,10 @@ class CommentsModel extends ChangeNotifier {
   }
 
   
-  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,) async {
+  Future<void> makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
-    await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
+    await FirebaseFirestore.instance.collection('comments').doc(commentMap[commentIdKey]).set(commentMap);
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
       final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -132,8 +134,8 @@ class CommentsModel extends ChangeNotifier {
   Map<String,dynamic> makeCommentMap(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap) {
     final commentMap = {
       'comment': comment,
-      'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
-      'createdAt': Timestamp.now(),
+      commentIdKey: 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
+      createdAtKey: Timestamp.now(),
       'followersCount': currentUserDoc['followersCount'],
       'ipv6': ipv6,
       'isDelete': false,
@@ -155,14 +157,14 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
+  Future<void> updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
     try{
       List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
       final Map<String,dynamic> newCommentNotificationMap = {
         'comment': newCommentMap['comment'],
         'commentScore': newCommentMap['score'],
-        'commentId': newCommentMap['commentId'],
-        'createdAt': Timestamp.now(),
+        commentIdKey: newCommentMap[commentIdKey],
+        createdAtKey: Timestamp.now(),
         'followersCount': currentUserDoc['followersCount'],
         'isDelete': false,
         'isNFTicon': currentUserDoc['isNFTicon'],
@@ -178,7 +180,7 @@ class CommentsModel extends ChangeNotifier {
       };
       commentNotifications.add(newCommentNotificationMap);
       await FirebaseFirestore.instance
-      .collection('users')
+      .collection(usersKey)
       .doc(passiveUserDoc.id)
       .update({
         'commentNotifications': commentNotifications,
@@ -188,89 +190,69 @@ class CommentsModel extends ChangeNotifier {
     }
   }
   
-  Future like(List<dynamic> likedCommentIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment,List<dynamic> likedComments) async {
-    final commentId = thisComment['commentId'];
+  Future<void> like(List<dynamic> likedCommentIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment,List<dynamic> likedComments) async {
+    final commentId = thisComment[commentIdKey];
+    // processUi
     likedCommentIds.add(commentId);
     notifyListeners();
-    final newCommentDoc = await setNewCommentDoc(thisComment);
-    await updateLikesUidsOfComment(newCommentDoc, currentUserDoc);
+    await addLikeSubCol(thisComment: thisComment, currentUserDoc: currentUserDoc);
     await updateLikedCommentsOfUser(commentId, likedComments, currentUserDoc);
   }
 
-  Future updateLikesUidsOfComment(DocumentSnapshot<Map<String,dynamic>> newCommentDoc,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
-    List<dynamic> likesUids = newCommentDoc['likesUids'];
-    likesUids.add(currentUserDoc['uid']);
-    notifyListeners();
-    await FirebaseFirestore.instance.collection('comments').doc(newCommentDoc.id).update({
-      // 'likesUids': FieldValue.arrayUnion(elements),
-      'likesUidsCount': FieldValue.increment(plusOne),
+  Future<void> addLikeSubCol({ required Map<String,dynamic> thisComment,required DocumentSnapshot<Map<String,dynamic>> currentUserDoc}) async {
+    await likeChildRef(parentColKey: commentsKey, uniqueId: thisComment[commentIdKey] , activeUid: currentUserDoc.id).set({
+      uidKey: currentUserDoc.id,
+      createdAtKey: Timestamp.now(),
     });
   }
 
-  Future updateLikedCommentsOfUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
+  Future<void> updateLikedCommentsOfUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     // User側の処理
-    Map<String,dynamic> map = {
-      'commentId': commentId,
-      'createdAt': Timestamp.now(),
+    final Map<String,dynamic> map = {
+      commentIdKey: commentId,
+      createdAtKey: Timestamp.now(),
     };
     likedComments.add(map);
-    await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
+    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
     .update({
       'likedComments': likedComments,
     });
   }
 
-  Future unlike(List<dynamic> likedCommentIds,Map<String,dynamic> thisComment,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedComments) async {
-    final commentId = thisComment['commentId'];
+  Future<void> unlike(List<dynamic> likedCommentIds,Map<String,dynamic> thisComment,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedComments) async {
+    // process UI
+    final commentId = thisComment[commentIdKey];
     likedCommentIds.remove(commentId);
     notifyListeners();
-    final newCommentDoc = await setNewCommentDoc(thisComment);
-    await removeLikesUidFromComment(newCommentDoc, currentUserDoc);
+    // backend
+    await deleteLikeSubCol(thisComment: thisComment, currentUserDoc: currentUserDoc);
     await removeLikedCommentsFromCurrentUser(commentId, likedComments, currentUserDoc);
   }
 
-  Future removeLikesUidFromComment(DocumentSnapshot<Map<String,dynamic>> newCommentDoc,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
-    List<dynamic> likesUids = newCommentDoc['likesUids'];
-    likesUids.remove(currentUserDoc['uid']);
-    notifyListeners();
-    await FirebaseFirestore.instance.collection('comments').doc(newCommentDoc.id).update({
-      // 'likesUids': FieldValue.arrayUnion(elements),
-      'likesUidsCount': FieldValue.increment(minusOne),
-    });
+  Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisComment,required DocumentSnapshot<Map<String,dynamic>> currentUserDoc}) async {
+    await likeChildRef(parentColKey: commentsKey, uniqueId: thisComment[commentIdKey] , activeUid: currentUserDoc.id).delete();
   }
 
-  Future removeLikedCommentsFromCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
-    likedComments.removeWhere((likedComment) => likedComment['commentId'] == commentId);
+  Future<void> removeLikedCommentsFromCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
+    likedComments.removeWhere((likedComment) => likedComment[commentIdKey] == commentId);
     await FirebaseFirestore.instance.collection('comments').doc(commentId).update({
       'likedComments': likedComments,
     });
   }
 
-  Future setNewCommentDoc(Map<String,dynamic> thisComment) async {
-    DocumentSnapshot<Map<String,dynamic>> newCommentDoc = await FirebaseFirestore.instance.collection('comments').doc(thisComment['commentId']).get();
-    return newCommentDoc;
-  }
-
-  Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentSongMap['uid']).get();
+  Future<DocumentSnapshot<Map<String,dynamic>>> setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
+    DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentSongMap['uid']).get();
     return passiveUserDoc;
   }
 
-  Future getNewCurrentSongDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot<Map<String,dynamic>> newCurrentSongDoc = await FirebaseFirestore.instance
-    .collection('posts')
-    .doc(currentSongMap['postId'])
-    .get();
-    return newCurrentSongDoc;
-  }
-
-  Future updateCommentsOfPostWhenDelete(DocumentSnapshot<Map<String,dynamic>> newCurrentSongDoc,Map<String,dynamic> comment,String postDocId) async {
+  Future<void> updateCommentsOfPostWhenDelete(DocumentSnapshot<Map<String,dynamic>> newCurrentSongDoc,Map<String,dynamic> comment,String postDocId) async {
     final List<dynamic> newComments = newCurrentSongDoc['comments'];
     newComments.remove(comment);
     await FirebaseFirestore.instance.collection('posts').doc(postDocId)
     .update({
       'comments': newComments,
     });
+    
   }
 
   void showSortDialogue(BuildContext context,Map<String,dynamic> currentSongMap) {
@@ -313,7 +295,7 @@ class CommentsModel extends ChangeNotifier {
                 await FirebaseFirestore.instance
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
-                .orderBy('createdAt',descending: true)
+                .orderBy(createdAtKey,descending: true)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -336,7 +318,7 @@ class CommentsModel extends ChangeNotifier {
                 await FirebaseFirestore.instance
                 .collection('comments')
                 .where('postId',isEqualTo: postId)
-                .orderBy('createdAt',descending: false)
+                .orderBy(createdAtKey,descending: false)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -377,13 +359,13 @@ class CommentsModel extends ChangeNotifier {
       QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
       .collection('comments')
       .where('postId',isEqualTo: currentSongMap['postId'])
-      .orderBy('createdAt',descending: true)
+      .orderBy(createdAtKey,descending: true)
       .endBeforeDocument(commentDocs[0])
       .limit(oneTimeReadCount)
       .get();
       // Sort by oldest first
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-      docs.sort((a,b) => a['createdAt'].compareTo(b['createdAt']));
+      docs.sort((a,b) => a[createdAtKey].compareTo(b[createdAtKey]));
       // Insert at the top
       docs.forEach((doc) {
         commentDocs.insert(0, doc);
@@ -415,7 +397,7 @@ class CommentsModel extends ChangeNotifier {
       await FirebaseFirestore.instance
       .collection('comments')
       .where('postId',isEqualTo: currentSongMap['postId'])
-      .orderBy('createdAt',descending: true)
+      .orderBy(createdAtKey,descending: true)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {
@@ -426,7 +408,7 @@ class CommentsModel extends ChangeNotifier {
       await FirebaseFirestore.instance
       .collection('comments')
       .where('postId',isEqualTo: currentSongMap['postId'])
-      .orderBy('createdAt',descending: false)
+      .orderBy(createdAtKey,descending: false)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {

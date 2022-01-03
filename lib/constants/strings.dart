@@ -2,6 +2,8 @@ const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 final storageUserImageName = 'userImage' + DateTime.now().microsecondsSinceEpoch.toString() + imageExtension;
 // keys
+const String commentIdKey = 'commentId';
+const String commentsKey = 'comments';
 const String createdAtKey = 'createdAt';
 const String likedReplyIdKey = 'likedReplyId';
 const String likedReplysKey = 'likedReplys';
@@ -10,3 +12,4 @@ const String replysKey = 'replys';
 const String replyIdKey = 'replyId';
 const String uidKey = 'uid';
 const String usersKey = 'users';
+const String isAdminKey = 'isAdmin';
