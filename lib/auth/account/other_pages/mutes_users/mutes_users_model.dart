@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 
 final mutesUsersProvider = ChangeNotifierProvider(
@@ -15,7 +16,7 @@ class MutesUsersModel extends ChangeNotifier {
 
   // basic
   bool isLoading = false;
-  List<DocumentSnapshot> mutesUserDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> mutesUserDocs = [];
 
   MutesUsersModel() {
     init();
@@ -23,11 +24,11 @@ class MutesUsersModel extends ChangeNotifier {
 
   Future init() async {
     startLoading();
-    final DocumentSnapshot currentUserDoc = await setCurrentUserDoc();
-    final List<dynamic> mutesIpv6AndUids = currentUserDoc['mutesIpv6AndUids'];
+    final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await setCurrentUserDoc();
+    final List<dynamic> mutesIpv6AndUids = currentUserDoc[mutesIpv6AndUidsKey];
     List<dynamic> mutesUids = [];
     mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-      mutesUids.add(mutesIpv6AndUid['uid']);
+      mutesUids.add(mutesIpv6AndUid[uidKey]);
     });
     await getMutesUserDocs(mutesUids: mutesUids);
     endLoading();
@@ -43,16 +44,16 @@ class MutesUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DocumentSnapshot> setCurrentUserDoc() async {
+  Future<DocumentSnapshot<Map<String,dynamic>>> setCurrentUserDoc() async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
-    DocumentSnapshot currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
+    DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
     return currentUserDoc;
   }
 
   Future getMutesUserDocs({ required List<dynamic> mutesUids }) async {
     if (mutesUids.isNotEmpty) {
-      await FirebaseFirestore.instance.collection('users').where('uid',whereIn: mutesUids).get().then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot doc) {
+      await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: mutesUids).get().then((qshot) {
+        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
           mutesUserDocs.add(doc);
         });
         notifyListeners();
@@ -60,12 +61,12 @@ class MutesUsersModel extends ChangeNotifier {
     }
   }
 
-  Future unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids}) async {
+  Future unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> mutesIpv6AndUids}) async {
     // front
-    mutesUserDocs.removeWhere((mutesUserDoc) => mutesUserDoc['uid'] == passiveUid);
+    mutesUserDocs.removeWhere((mutesUserDoc) => mutesUserDoc[uidKey] == passiveUid);
     notifyListeners();
     // back
-    mutesIpv6AndUids.removeWhere((mutesIpv6AndUid) => mutesIpv6AndUid['uid'] == passiveUid);
+    mutesIpv6AndUids.removeWhere((mutesIpv6AndUid) => mutesIpv6AndUid[uidKey] == passiveUid);
     mutesUids.remove(passiveUid);
     voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
   }

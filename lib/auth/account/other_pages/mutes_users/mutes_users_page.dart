@@ -34,7 +34,7 @@ class MutesUsersPage extends ConsumerWidget {
         reload: () async {
           await mutesUsersModel.getMutesUserDocs(mutesUids: mainModel.mutesUids);
         },
-        content: UserCards(userDocs: mutesUsersModel.mutesUserDocs,mainModel: mainModel,mutesUsersModel: mutesUsersModel,)
+        content: UserCards(userDocs: mutesUsersModel.mutesUserDocs, mainModel: mainModel),
       )
     );
   }

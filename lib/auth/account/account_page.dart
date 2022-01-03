@@ -6,6 +6,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -70,40 +71,22 @@ class AccountPage extends ConsumerWidget {
             title: Text('ブロックしているユーザー'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              showCupertinoDialog(context: context, builder: (context) {
-                return CupertinoAlertDialog(
-                  title: Text('注意'),
-                  content: Text('ブロックしているユーザーが表示されます。'),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: const Text('Cancel'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: const Text('Ok'),
-                      isDestructiveAction: true,
-                      onPressed: () {
-                        Navigator.pop(context);
-                        routes.toBlocksUsersPage(context, mainModel);
-                      },
-                    )
-                  ],
-                );
+              voids.showCupertinoDialogue(context: context, title: '注意', content: 'ブロックしているユーザーが表示されます', action: () {
+                Navigator.pop(context);
+                routes.toBlocksUsersPage(context, mainModel);
               });
             },
           ),
           ListTile(
             title: Text('固有のユーザー名'),
             subtitle: Text(
-              mainModel.currentUserDoc['uid'],
+              mainModel.currentUserDoc[uidKey],
               style: TextStyle(color: Theme.of(context).focusColor),
             ),
             trailing: InkWell(
               child: Icon(Icons.copy),
               onTap: () async {
-                await FlutterClipboard.copy(mainModel.currentUserDoc['uid']).then((_) {
+                await FlutterClipboard.copy(mainModel.currentUserDoc[uidKey]).then((_) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
                 });
               },

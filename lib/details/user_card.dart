@@ -2,12 +2,14 @@
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-class UserResult extends StatelessWidget {
+class UserCard extends StatelessWidget {
 
-  const UserResult({
+  const UserCard({
     Key? key,
     required this.result,
     required this.mainModel
@@ -18,7 +20,7 @@ class UserResult extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final followersCount = result['followersCount'];
+    final followersCount = result[followersCountKey];
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -35,16 +37,16 @@ class UserResult extends StatelessWidget {
           children: [
             ListTile(
               // result['objectID']も可
-              leading: RedirectUserImage(userImageURL: result['imageURL'], length: 50.0, padding: 0.0,passiveUserDocId: result['uid'],mainModel: mainModel,),
+              leading: RedirectUserImage(userImageURL: result[imageURLKey], length: 50.0, padding: 0.0,passiveUserDocId: result[uidKey],mainModel: mainModel,),
               title: Text(
-                result['userName'],
+                result[userNameKey],
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   fontSize: 20.0
                 ),
               ),
               subtitle: Text(
-                result['description'],
+                result[descriptionKey],
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                   fontWeight: FontWeight.bold,

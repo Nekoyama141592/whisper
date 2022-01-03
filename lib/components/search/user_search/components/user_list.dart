@@ -6,7 +6,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:algolia/algolia.dart';
 // components
 import 'package:whisper/details/search_input_field.dart';
-import 'package:whisper/components/search/user_search/components/user_result.dart';
+import 'package:whisper/details/user_card.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/user_search/user_search_model.dart';
@@ -52,7 +52,7 @@ class UserList extends StatelessWidget {
           child: ListView.builder(
             itemCount: results.length,
             itemBuilder: (BuildContext context, int i) =>
-            UserResult(result: results[i].data, mainModel: mainModel)
+            UserCard(result: results[i].data, mainModel: mainModel)
           )
         ),
       ],

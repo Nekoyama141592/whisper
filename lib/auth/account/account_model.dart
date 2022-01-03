@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // models
@@ -75,7 +76,7 @@ class AccountModel extends ChangeNotifier {
   void showDeleteUserDialog({ required BuildContext context, required MainModel mainModel }) {
     final currentUserDoc = mainModel.currentUserDoc;
     voids.showCupertinoDialogue(context: context, title: 'ユーザー削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async {
-      if (currentUser!.uid == mainModel.currentUserDoc['uid']) {
+      if (currentUser!.uid == mainModel.currentUserDoc[uidKey]) {
         Navigator.pop(context);
         routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
         await deleteStorage(mainModel: mainModel);
@@ -95,7 +96,7 @@ class AccountModel extends ChangeNotifier {
 
   Future<void> deletePostsOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection('posts').where('uid',isEqualTo: currentUser!.uid).get()
+    .collection(postsKey).where(uidKey,isEqualTo: currentUser!.uid).get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       final docs = qshot.docs;
@@ -116,14 +117,14 @@ class AccountModel extends ChangeNotifier {
   
   Future<void> deleteReplysOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection('replys')
-    .where('uid',isEqualTo: currentUser!.uid)
+    .collection(replysKey)
+    .where(uidKey,isEqualTo: currentUser!.uid)
     .get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       final docs = qshot.docs;
       int index = 0;
-      docs.forEach((DocumentSnapshot doc) async {
+      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) async {
         if ((index + 1) % 500 == 0) {
           // commit by 500 and initialize batch instance
           await batch.commit();
@@ -138,14 +139,14 @@ class AccountModel extends ChangeNotifier {
   }
   Future<void> deleteCommentsOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection('comments')
-    .where('uid',isEqualTo: currentUser!.uid)
+    .collection(commentsKey)
+    .where(uidKey,isEqualTo: currentUser!.uid)
     .get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       final docs = qshot.docs;
       int index = 0;
-      docs.forEach((DocumentSnapshot doc) async {
+      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) async {
         if ((index + 1) % 500 == 0) {
           // commit by 500 and initialize batch instance
           await batch.commit();
@@ -158,12 +159,8 @@ class AccountModel extends ChangeNotifier {
       return batch.commit();
     });
   }
-  Future<void> deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot currentUserDoc) async {
-    await FirebaseFirestore.instance
-    .collection('users')
-    .doc(currentUserDoc.id)
-    .delete()
-    .then((_) async {
+  Future<void> deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
+    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).delete().then((_) async {
       try {
         await currentUser!.delete();
       } catch(e) {
@@ -173,30 +170,7 @@ class AccountModel extends ChangeNotifier {
   }
 
   void showSignOutDialog(BuildContext context) {
-    showCupertinoDialog(
-      context: context, 
-      builder: (_) {
-        return CupertinoAlertDialog(
-          title: Text('ログアウト'),
-          content: Text('ログアウトしますか？'),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoDialogAction(
-              child: const Text('Ok'),
-              isDestructiveAction: true,
-              onPressed: () async {
-                await voids.signOut(context);
-              },
-            )
-          ],
-        );
-      }
-    );
+    voids.showCupertinoDialogue(context: context, title: 'ログアウト', content: 'ログアウトしますか?', action: () async { voids.signOut(context); });
   }
 
 }
