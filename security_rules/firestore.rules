@@ -119,7 +119,7 @@ service cloud.firestore {
 
   function isValidReply(reply) {
     return 
-    reply.size() == 21
+    reply.size() == 20
     && 'elementId' in reply && reply.elementId is string // commentId
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
@@ -128,7 +128,6 @@ service cloud.firestore {
     && 'isDelete' in reply && reply.isDelete is bool
     && 'isNFTicon' in reply && reply.isNFTicon is bool
     && 'isOfficial' in reply && reply.isOfficial is bool
-    && 'likesUids' in reply && reply.likesUids is list
     && 'likesUidsCount' in reply && reply.likesUidsCount is int
     && 'negativeScore' in reply && reply.negativeScore is int
     && 'passiveUid' in reply && reply.passiveUid is string
@@ -216,6 +215,11 @@ service cloud.firestore {
       && isValidReply(request.resource.data);
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
+      match /likes/{activeUid} {
+        allow read: if basicValidation(activeUid);
+        allow create: if basicValidation(activeUid);
+        allow delete: if basicValidation(activeUid);
+      }
     }
 
     match /comments/{commentId} {

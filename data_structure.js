@@ -89,7 +89,6 @@
         'isDelete': bool,
         'isNFTicon': bool,
         'isOfficial': bool,
-        'likesUids': [],
         'likesUidsCount': int,
         'negativeScore': int,
         'passiveUid': string,

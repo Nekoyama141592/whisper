@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/strings.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -66,4 +67,13 @@ CollectionReference<Map<String, dynamic>> followersParentRef({ required String p
 DocumentReference<Map<String, dynamic>> followerChildRef({ required String passiveUid , required String followerUid}) {
   final parentRef = followersParentRef(passiveUid: passiveUid);
   return parentRef.doc(followerUid);
+}
+
+CollectionReference<Map<String, dynamic>> likesParentRef({ required String parentColKey ,required String uniqueId }) {
+  return FirebaseFirestore.instance.collection(parentColKey).doc(uniqueId).collection(likesKey);
+}
+
+DocumentReference<Map<String, dynamic>> likeChildRef({ required String parentColKey,  required String uniqueId, required String activeUid}) {
+  final parentRef =likesParentRef(parentColKey: parentColKey, uniqueId: uniqueId);
+  return parentRef.doc(activeUid);
 }
