@@ -133,7 +133,7 @@ class AddPostModel extends ChangeNotifier {
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      filePath = directory.path + '/' + mainModel.currentUserDoc['uid'] +  DateTime.now().microsecondsSinceEpoch.toString() + postExtension;
+      filePath = directory.path + '/' + mainModel.currentUserDoc[uidKey] +  DateTime.now().microsecondsSinceEpoch.toString() + postExtension;
       await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
@@ -185,7 +185,7 @@ class AddPostModel extends ChangeNotifier {
       final String storagePostName = 'post' + microSecondsString + postExtension;
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
       // post firestore
-      final String postId = 'post' + mainModel.currentUserDoc['uid'] + microSecondsString;
+      final String postId = 'post' + mainModel.currentUserDoc[uidKey] + microSecondsString;
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, storageImageName: storageImageName, storagePostName: storagePostName, postId: postId);
       postTitleNotifier.value = '';
       endLoading();
@@ -203,46 +203,46 @@ class AddPostModel extends ChangeNotifier {
   Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
     final currentUserDoc = mainModel.currentUserDoc;
       try {
-        await FirebaseFirestore.instance.collection('posts')
+        await FirebaseFirestore.instance.collection(postsKey)
         .doc(postId)
         .set({
-          'audioURL': audioURL,
-          'bookmarks':[],
-          'bookmarksCount': 0,
-          'commentsCount': 0,
-          'commentsState': commentsState,
-          'createdAt': Timestamp.now(),
-          'country': '',
-          'description': '',
-          'genre': '',
-          'hashTags': [],
-          'imageURL': imageURL,
-          'impression': 0,
-          'ipv6': ipv6,
-          'isDelete': false,
-          'isNFTicon': currentUserDoc['isNFTicon'],
-          'isOfficial': currentUserDoc['isOfficial'],
-          'isPinned': false,
-          'isPlayedCount': 0,
-          'likes':[],
-          'likesCount': 0,
-          'link': link,
-          'negativeScore': 0,
-          'noDisplayWords': currentUserDoc['noDisplayWords'],
-          'noDisplayIpv6AndUids': currentUserDoc['blocksIpv6AndUids'],
-          'otherLinks': [],
-          'postId': postId,
-          'positiveScore': 0,
-          'score': defaultScore,
-          'storageImageName': storageImageName,
-          'storagePostName': storagePostName, // use on lib/constants/voids.dart
-          'subUserName': currentUserDoc['subUserName'],
-          'tagUids': [],
-          'title': postTitleNotifier.value,
-          'uid': currentUserDoc['uid'],
-          'updatedAt': Timestamp.now(),
-          'userImageURL': currentUserDoc['imageURL'],
-          'userName': currentUserDoc['userName'],
+          audioURLKey: audioURL,
+          bookmarksKey:[],
+          bookmarksCountKey: 0,
+          commentsCountKey: 0,
+          commentsStateKey: commentsState,
+          createdAtKey: Timestamp.now(),
+          countryKey: '',
+          descriptionKey: '',
+          genreKey: '',
+          hashTagsKey: [],
+          imageURLKey: imageURL,
+          impressionKey: 0,
+          ipv6Key: ipv6,
+          isDeleteKey: false,
+          isNFTiconKey: currentUserDoc[isNFTiconKey],
+          isOfficialKey: currentUserDoc[isOfficialKey],
+          isPinnedKey: false,
+          isPlayedCountKey: 0,
+          likesKey:[],
+          likesCountKey: 0,
+          linkKey: link,
+          negativeScoreKey: 0,
+          noDisplayIpv6AndUidsKey: currentUserDoc[blocksIpv6AndUidsKey],
+          noDisplayWordsKey: currentUserDoc[noDisplayWordsKey],
+          otherLinksKey: [],
+          postIdKey: postId,
+          positiveScoreKey: 0,
+          scoreKey: defaultScore,
+          storageImageNameKey: storageImageName,
+          storagePostName: storagePostName, // use on lib/constants/voids.dart
+          subUserNameKey: currentUserDoc[subUserNameKey],
+          tagUidsKey: [],
+          titleKey: postTitleNotifier.value,
+          uidKey: currentUserDoc[uidKey],
+          updatedAtKey: Timestamp.now(),
+          userImageURLKey: currentUserDoc[imageURLKey],
+          userNameKey: currentUserDoc[userNameKey],
         });
         addPostStateNotifier.value = AddPostState.uploaded;
       } catch(e) {

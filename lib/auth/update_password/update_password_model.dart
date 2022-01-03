@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/lists.dart';
-// models
-import 'package:whisper/main_model.dart';
 
 final updatePasswordProvider = ChangeNotifierProvider(
   (ref) => UpdatePasswordModel()

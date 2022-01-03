@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
@@ -48,7 +50,7 @@ class PickPostImagePage extends StatelessWidget {
                         color: Theme.of(context).highlightColor
                       ),
                     ),
-                    child: value ? Image.file(addPostModel.croppedFile!) : Image.network(mainModel.currentUserDoc['imageURL']),
+                    child: value ? Image.file(addPostModel.croppedFile!) : Image.network(mainModel.currentUserDoc[imageURLKey]),
                   ),
                   SizedBox(
                     height: size.height * 0.05,
