@@ -8,7 +8,6 @@
         'isDelete': false,
         'isNFTicon': false,
         'isOfficial': false,
-        'likesUids': [ String ],
         'likesUidsCount': int,
         'negativeScore': int,
         'passiveUid': string,

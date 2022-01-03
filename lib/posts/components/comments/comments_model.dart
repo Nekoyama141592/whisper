@@ -141,7 +141,6 @@ class CommentsModel extends ChangeNotifier {
       'isDelete': false,
       'isNFTicon': currentUserDoc['isNFTicon'],
       'isOfficial': currentUserDoc['isOfficial'],
-      'likesUids': [],
       'likesUidsCount': 0,
       'negativeScore': 0,
       'passiveUid': currentSongMap['uid'],
