@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -19,10 +21,9 @@ class ReplyLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
 
-    final List<dynamic> likesUids = thisReply['likesUidsCount'];
-    final likesUidsCount = likesUids.length;
+    final likesUidsCount = thisReply['likesUidsCount'];
 
-    return mainModel.likedReplyIds.contains(thisReply['replyId']) ?
+    return mainModel.likedReplyIds.contains(thisReply[replyIdKey]) ?
     Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 5.0
