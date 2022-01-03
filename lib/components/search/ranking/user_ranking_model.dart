@@ -14,6 +14,7 @@ final userRankingProvider = ChangeNotifierProvider(
 
 class UserRankingModel extends ChangeNotifier {
   bool isLoading = false;
+  final Query<Map<String,dynamic>> query = FirebaseFirestore.instance.collection(usersKey).orderBy(followersCountKey,descending: true).limit(oneTimeReadCount);
   List<DocumentSnapshot<Map<String,dynamic>>> userDocs = [];
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
@@ -23,7 +24,7 @@ class UserRankingModel extends ChangeNotifier {
 
   Future<void> init () async {
     startLoading();
-    await FirebaseFirestore.instance.collection(usersKey).orderBy(followersCountKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await query.get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { userDocs.add(doc); });
     });
     endLoading();
@@ -46,12 +47,8 @@ class UserRankingModel extends ChangeNotifier {
   }
 
   Future<void> getMoreUsers() async {
-    await FirebaseFirestore.instance
-    .collection('posts')
-    .orderBy(followersCountKey,descending: true)
-    .startAfterDocument(userDocs.last)
-    .limit(oneTimeReadCount)
-    .get()
+    await query
+    .startAfterDocument(userDocs.last).get()
     .then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         userDocs.add(doc);
