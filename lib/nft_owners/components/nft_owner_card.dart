@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:url_launcher/url_launcher.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 class NFTownerCard extends StatelessWidget {
 
@@ -14,7 +16,7 @@ class NFTownerCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final int x = map['10000ethPrice'];
+    final int x = map[ethPriceKey];
     final double doubleX = x.toDouble()/10000;
     
     return Card(
@@ -32,7 +34,7 @@ class NFTownerCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    map['userName'],
+                    map[userNameKey],
                     style: TextStyle(fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -41,7 +43,7 @@ class NFTownerCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'number' + map['number'].toString(),
+                        'number' + map[numberKey].toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 5.0),
@@ -53,7 +55,7 @@ class NFTownerCard extends StatelessWidget {
                       InkWell(
                         child: Icon(Icons.link),
                         onTap: () async {
-                          final String link = map['link'];
+                          final String link = map[linkKey];
                           if ( await canLaunch(link) ) {
                             await launch(link);
                           } else {

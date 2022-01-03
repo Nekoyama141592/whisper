@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
 
 final officialAdsensesProvider = ChangeNotifierProvider(
   (ref) => OfficialAdsensesModel()
@@ -25,11 +26,11 @@ class OfficialAdsensesModel extends ChangeNotifier {
   Future<void> onPlayButtonPressed(BuildContext context) async {
     if (!isPlayed) {
       isPlayed = true;
-      await FirebaseFirestore.instance.collection('officialAdsenses').orderBy('createdAt',descending: false).limit(oneTimeReadCount).get().then((qshot) {
+      await FirebaseFirestore.instance.collection(officialAdsensesKey).orderBy(createdAtKey,descending: false).limit(oneTimeReadCount).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdsenseDocs.add(doc); } );
       });
       if (officialAdsenseDocs.isNotEmpty) {
-        Timer.periodic(Duration(seconds: officialAdsenseDocs.first['intervalSeconds']), (_) async {
+        Timer.periodic(Duration(seconds: officialAdsenseDocs.first[intervalSecondsKey]), (_) async {
           randIndex = rand.nextInt(officialAdsenseDocs.length);
           final result = officialAdsenseDocs[randIndex];
           showTopFlash(context: context, result: result, firstAdsense: officialAdsenseDocs.first,margin: EdgeInsets.all(8.0));
@@ -42,7 +43,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
     showFlash(
       context: context, 
       persistent: persistent,
-      duration: Duration(seconds: firstAdsense['displaySeconds']),
+      duration: Duration(seconds: firstAdsense[displaySecondsKey]),
       builder: (_, controller) {
         return Flash(
           controller: controller, 
@@ -56,7 +57,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
           forwardAnimationCurve: Curves.easeInCirc,
           reverseAnimationCurve: Curves.bounceIn,
           onTap: () async {
-            final String link = result['link'];
+            final String link = result[linkKey];
             await controller.dismiss();
             await FlutterClipboard.copy(link).then((_) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リンクをコピーしました')));
@@ -72,13 +73,13 @@ class OfficialAdsensesModel extends ChangeNotifier {
             style: TextStyle(fontWeight: FontWeight.bold), 
             child: FlashBar(
               title: Text(
-                result['title'],
+                result[titleKey],
                 style: TextStyle(
                   color: Theme.of(context).scaffoldBackgroundColor
                 ),
               ),
               content: Text(
-                result['subTitle'],
+                result[subTitleKey],
                 style: TextStyle(
                   color: Theme.of(context).scaffoldBackgroundColor
                 ),
