@@ -31,7 +31,7 @@ class ReplyCard extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
 
     final postFutures = watch(postsFeaturesProvider);
-    final String userImageURL = reply['userImageURL'];
+    final String userImageURL = reply[userImageURLKey];
     final length = 60.0;
     final padding = 0.0;
     final fontSize = 16.0;
@@ -39,7 +39,7 @@ class ReplyCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, blocksIpv6s: mainModel.blocksIpv6s, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(reply['replyId']) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, blocksIpv6s: mainModel.blocksIpv6s, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(reply[replyKey]) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -92,12 +92,12 @@ class ReplyCard extends ConsumerWidget {
                         child: Column(
                           children: [
                             Text(
-                              reply['userName'],
+                              reply[userNameKey],
                               style: whisperTextStyle
                             ),
                             SizedBox(height: 10.0,),
                             Text(
-                              reply['reply'],
+                              reply[replyKey],
                               style: whisperTextStyle
                             )
                           ],
