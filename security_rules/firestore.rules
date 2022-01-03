@@ -40,7 +40,7 @@ service cloud.firestore {
     && 'readPosts' in user && user.readPosts is list
     && 'recommendState' in user && user.recommendState is string
     && 'replyNotifications' in user && user.replyNotifications is list
-    && 'score' in user && user.score is int
+    && 'score' in user && user.score is float
     && 'searchHistory' in user && user.searchHistory is list
     && 'storageImageName' in user && user.storageImageName is string
     && 'subUserName' in user && user.subUserName is string
@@ -80,7 +80,7 @@ service cloud.firestore {
     && 'otherLinks' in post && post.otherLinks is list // un used
     && 'postId' in post && post.postId is string
     && 'positiveScore' in post && post.positiveScore is int
-    && 'score' in post && post.score is int
+    && 'score' in post && post.score is float
     && 'storageImageName' in post && post.storageImageName is string
     && 'storagePostName' in post && post.storagePostName is string
     && 'subUserName' in post && post.subUserName is string
@@ -109,7 +109,7 @@ service cloud.firestore {
     && 'positiveScore' in comment && comment.positiveScore is int
     && 'postId' in comment && comment.postId is string
     && 'replysCount' in comment && comment.replysCount is int
-    && 'score' in comment && comment.score is int
+    && 'score' in comment && comment.score is float
     && 'subUserName' in comment && comment.subUserName is string
     && 'uid' in comment && comment.uid is string
     && 'userName' in comment && comment.userName is string
@@ -134,7 +134,7 @@ service cloud.firestore {
     && 'positiveScore' in reply && reply.positiveScore is int
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string
-    && 'score' in reply && reply.score is int
+    && 'score' in reply && reply.score is float
     && 'subUserName' in reply && reply.subUserName is string
     && 'uid' in reply && reply.uid is string
     && 'userName' in reply && reply.userName is string

@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;

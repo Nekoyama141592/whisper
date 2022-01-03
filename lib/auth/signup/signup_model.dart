@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
-import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;

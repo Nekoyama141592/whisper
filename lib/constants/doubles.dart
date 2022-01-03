@@ -1,0 +1,1 @@
+double defaultScore = 10000.0;
