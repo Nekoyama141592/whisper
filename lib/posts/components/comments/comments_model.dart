@@ -28,7 +28,7 @@ class CommentsModel extends ChangeNotifier {
   String comment = "";
   Map<String,dynamic> postComment = {};
   // comments
-  List<DocumentSnapshot> commentDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> commentDocs = [];
   // IP
   String ipv6 = '';
   // refresh
@@ -99,13 +99,13 @@ class CommentsModel extends ChangeNotifier {
   }
 
   
-  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,) async {
+  Future makeComment(BuildContext context,Map<String,dynamic> currentSongMap,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(currentUserDoc, currentSongMap);
     await FirebaseFirestore.instance.collection('comments').doc(commentMap['commentId']).set(commentMap);
     // notification
     if (currentSongMap['uid'] != currentUserDoc['uid']) {
-      final DocumentSnapshot passiveUserDoc = await setPassiveUserDoc(currentSongMap);
+      final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
       // blocks
       List<dynamic> blocksIpv6s = [];
       List<dynamic> blocksUids = [];
@@ -129,7 +129,7 @@ class CommentsModel extends ChangeNotifier {
   }
 
 
-  Map<String,dynamic> makeCommentMap(DocumentSnapshot currentUserDoc,Map<String,dynamic> currentSongMap) {
+  Map<String,dynamic> makeCommentMap(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap) {
     final commentMap = {
       'comment': comment,
       'commentId': 'comment' + currentUserDoc['uid'] + DateTime.now().microsecondsSinceEpoch.toString(),
@@ -155,7 +155,7 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot currentUserDoc, required DocumentSnapshot passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
+  Future updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
     try{
       List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
       final Map<String,dynamic> newCommentNotificationMap = {
@@ -188,7 +188,7 @@ class CommentsModel extends ChangeNotifier {
     }
   }
   
-  Future like(List<dynamic> likedCommentIds,DocumentSnapshot currentUserDoc,Map<String,dynamic> thisComment,List<dynamic> likedComments) async {
+  Future like(List<dynamic> likedCommentIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment,List<dynamic> likedComments) async {
     final commentId = thisComment['commentId'];
     likedCommentIds.add(commentId);
     notifyListeners();
@@ -197,7 +197,7 @@ class CommentsModel extends ChangeNotifier {
     await updateLikedCommentsOfUser(commentId, likedComments, currentUserDoc);
   }
 
-  Future updateLikesUidsOfComment(DocumentSnapshot newCommentDoc,DocumentSnapshot currentUserDoc) async {
+  Future updateLikesUidsOfComment(DocumentSnapshot<Map<String,dynamic>> newCommentDoc,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     List<dynamic> likesUids = newCommentDoc['likesUids'];
     int likesUidsCount = newCommentDoc['likesUidsCount'];
     likesUids.add(currentUserDoc['uid']);
@@ -208,7 +208,7 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future updateLikedCommentsOfUser(String commentId,List<dynamic> likedComments,DocumentSnapshot currentUserDoc) async {
+  Future updateLikedCommentsOfUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     // User側の処理
     Map<String,dynamic> map = {
       'commentId': commentId,
@@ -221,7 +221,7 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future unlike(List<dynamic> likedCommentIds,Map<String,dynamic> thisComment,DocumentSnapshot currentUserDoc,List<dynamic> likedComments) async {
+  Future unlike(List<dynamic> likedCommentIds,Map<String,dynamic> thisComment,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedComments) async {
     final commentId = thisComment['commentId'];
     likedCommentIds.remove(commentId);
     notifyListeners();
@@ -230,7 +230,7 @@ class CommentsModel extends ChangeNotifier {
     await removeLikedCommentsFromCurrentUser(commentId, likedComments, currentUserDoc);
   }
 
-  Future removeLikesUidFromComment(DocumentSnapshot newCommentDoc,DocumentSnapshot currentUserDoc) async {
+  Future removeLikesUidFromComment(DocumentSnapshot<Map<String,dynamic>> newCommentDoc,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     List<dynamic> likesUids = newCommentDoc['likesUids'];
     int likesUidsCount = newCommentDoc['likesUidsCount'];
     likesUids.remove(currentUserDoc['uid']);
@@ -241,7 +241,7 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future removeLikedCommentsFromCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot currentUserDoc) async {
+  Future removeLikedCommentsFromCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     likedComments.removeWhere((likedComment) => likedComment['commentId'] == commentId);
     await FirebaseFirestore.instance.collection('comments').doc(commentId).update({
       'likedComments': likedComments,
@@ -249,24 +249,24 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future setNewCommentDoc(Map<String,dynamic> thisComment) async {
-    DocumentSnapshot newCommentDoc = await FirebaseFirestore.instance.collection('comments').doc(thisComment['commentId']).get();
+    DocumentSnapshot<Map<String,dynamic>> newCommentDoc = await FirebaseFirestore.instance.collection('comments').doc(thisComment['commentId']).get();
     return newCommentDoc;
   }
 
   Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot passiveUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentSongMap['uid']).get();
+    DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentSongMap['uid']).get();
     return passiveUserDoc;
   }
 
   Future getNewCurrentSongDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot newCurrentSongDoc = await FirebaseFirestore.instance
+    DocumentSnapshot<Map<String,dynamic>> newCurrentSongDoc = await FirebaseFirestore.instance
     .collection('posts')
     .doc(currentSongMap['postId'])
     .get();
     return newCurrentSongDoc;
   }
 
-  Future updateCommentsOfPostWhenDelete(DocumentSnapshot newCurrentSongDoc,Map<String,dynamic> comment,String postDocId) async {
+  Future updateCommentsOfPostWhenDelete(DocumentSnapshot<Map<String,dynamic>> newCurrentSongDoc,Map<String,dynamic> comment,String postDocId) async {
     final List<dynamic> newComments = newCurrentSongDoc['comments'];
     newComments.remove(comment);
     await FirebaseFirestore.instance.collection('posts').doc(postDocId)

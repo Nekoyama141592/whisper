@@ -30,7 +30,7 @@ class FollowModel extends ChangeNotifier {
       });
     } catch(e) {
       print(e.toString());
-    } 
+    }
   }
 
   Future addFollowerUidToPassiveUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,DocumentSnapshot<Map<String,dynamic>> newPassiveUserDoc) async {

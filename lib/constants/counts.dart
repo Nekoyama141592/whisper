@@ -7,3 +7,5 @@ const int topFlashDisplaySeconds = 4;
 const int commentScrollFlashBarConstantCount = 2;
 const int dialogueMilliSeconds = 500;
 const int maxLine = 2;
+const int plusOne = 1;
+const int minusOne = -1;
