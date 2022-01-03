@@ -61,7 +61,7 @@ class CommentsModel extends ChangeNotifier {
   }
 
   void onFloatingActionButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController commentEditingController,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,AudioPlayer audioPlayer,{ required SharedPreferences prefs}) {
-    final String commentsState = currentSongMap['commentsState'];
+    final String commentsState = currentSongMap[commentsStateKey];
     audioPlayer.pause();
     switch(commentsState){
       case 'open':
@@ -111,17 +111,17 @@ class CommentsModel extends ChangeNotifier {
       // blocks
       List<dynamic> blocksIpv6s = [];
       List<dynamic> blocksUids = [];
-      final List<dynamic> blocksIpv6AndUids = passiveUserDoc['blocksIpv6AndUids'];
+      final List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
       blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-        blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+        blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
         blocksUids.add(blocksIpv6AndUid[uidKey]);
       });
       // mutes
       List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
-      final List<dynamic> mutesIpv6AndUids = passiveUserDoc['mutesIpv6AndUids'];
+      final List<dynamic> mutesIpv6AndUids = passiveUserDoc[mutesIpv6AndUidsKey];
       mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-        mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+        mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: currentUserDoc[uidKey], ipv6: ipv6) ) {
@@ -133,56 +133,56 @@ class CommentsModel extends ChangeNotifier {
 
   Map<String,dynamic> makeCommentMap(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap) {
     final commentMap = {
-      'comment': comment,
-      commentIdKey: 'comment' + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString(),
+      commentKey: comment,
+      commentIdKey: commentKey + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString(),
       createdAtKey: Timestamp.now(),
-      'followersCount': currentUserDoc['followersCount'],
-      'ipv6': ipv6,
-      'isDelete': false,
-      'isNFTicon': currentUserDoc['isNFTicon'],
-      'isOfficial': currentUserDoc['isOfficial'],
-      'likesUidsCount': 0,
-      'negativeScore': 0,
-      'passiveUid': currentSongMap[uidKey],
-      'positiveScore': 0,
+      followersCountKey: currentUserDoc[followersCountKey],
+      ipv6Key: ipv6,
+      isDeleteKey: false,
+      isNFTiconKey: currentUserDoc[isNFTiconKey],
+      isOfficialKey: currentUserDoc[isOfficialKey],
+      likesUidsCountKey: 0,
+      negativeScoreKey: 0,
+      passiveUidKey: currentSongMap[uidKey],
+      positiveScoreKey: 0,
       postIdKey: currentSongMap[postIdKey],
-      'replysCount': 0,
+      replysCountKey: 0,
       scoreKey: defaultScore,
-      'subUserName': currentUserDoc['subUserName'],
+      subUserNameKey: currentUserDoc[subUserNameKey],
       uidKey: currentUserDoc[uidKey],
-      'userName': currentUserDoc['userName'],
-      'userImageURL': currentUserDoc['imageURL'],
+      userNameKey: currentUserDoc[userNameKey],
+      userImageURLKey: currentUserDoc[imageURLKey],
     };
     return commentMap;
   }
 
   Future<void> updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
     try{
-      List<dynamic> commentNotifications = passiveUserDoc['commentNotifications'];
+      List<dynamic> commentNotifications = passiveUserDoc[commentNotificationsKey];
       final Map<String,dynamic> newCommentNotificationMap = {
-        'comment': newCommentMap['comment'],
-        'commentScore': newCommentMap[scoreKey],
+        commentKey: newCommentMap[commentKey],
+        commentScoreKey: newCommentMap[scoreKey],
         commentIdKey: newCommentMap[commentIdKey],
         createdAtKey: Timestamp.now(),
-        'followersCount': currentUserDoc['followersCount'],
-        'isDelete': false,
-        'isNFTicon': currentUserDoc['isNFTicon'],
-        'isOfficial': currentUserDoc['isOfficial'],
-        'notificationId': 'commentNotification' + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString(),
-        'passiveUid': currentSongMap[uidKey],
-        'postTitle': currentSongMap['title'],
+        followersCountKey: currentUserDoc[followersCountKey],
+        isDeleteKey: false,
+        isNFTiconKey: currentUserDoc[isNFTiconKey],
+        isOfficialKey: currentUserDoc[isOfficialKey],
+        notificationIdKey: 'commentNotification' + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString(),
+        passiveUidKey: currentSongMap[uidKey],
+        postTitleKey: currentSongMap[titleKey],
         postIdKey: currentSongMap[postIdKey],
-        'subUserName': currentUserDoc['subUserName'],
+        subUserNameKey: currentUserDoc[subUserNameKey],
         uidKey: currentUserDoc[uidKey],
-        'userName': currentUserDoc['userName'],
-        'userImageURL': currentUserDoc['imageURL'],
+        userNameKey: currentUserDoc[userNameKey],
+        userImageURLKey: currentUserDoc[imageURLKey],
       };
       commentNotifications.add(newCommentNotificationMap);
       await FirebaseFirestore.instance
       .collection(usersKey)
       .doc(passiveUserDoc.id)
       .update({
-        'commentNotifications': commentNotifications,
+        commentNotificationsKey: commentNotifications,
       });
     } catch(e) {
       print(e.toString());
@@ -214,7 +214,7 @@ class CommentsModel extends ChangeNotifier {
     likedComments.add(map);
     await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
     .update({
-      'likedComments': likedComments,
+      likedCommentsKey: likedComments,
     });
   }
 
@@ -235,7 +235,7 @@ class CommentsModel extends ChangeNotifier {
   Future<void> removeLikedCommentsFromCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     likedComments.removeWhere((likedComment) => likedComment[commentIdKey] == commentId);
     await FirebaseFirestore.instance.collection(commentsKey).doc(commentId).update({
-      'likedComments': likedComments,
+      likedCommentsKey: likedComments,
     });
   }
 
@@ -271,7 +271,7 @@ class CommentsModel extends ChangeNotifier {
                 await FirebaseFirestore.instance
                 .collection(commentsKey)
                 .where(postIdKey,isEqualTo: postId)
-                .orderBy('likesUidsCount',descending: true )
+                .orderBy(likesUidsCountKey,descending: true )
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -383,7 +383,7 @@ class CommentsModel extends ChangeNotifier {
       await FirebaseFirestore.instance
       .collection(commentsKey)
       .where(postIdKey,isEqualTo: currentSongMap[postIdKey])
-      .orderBy('likesUidsCount',descending: true )
+      .orderBy(likesUidsCountKey,descending: true )
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {

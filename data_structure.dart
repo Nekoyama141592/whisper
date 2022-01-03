@@ -1,5 +1,5 @@
 import 'package:whisper/constants/strings.dart';
-'db': {
+final db = 'db': {
     'comments': [{
         'comment': String,
         'commentId': String,
