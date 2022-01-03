@@ -1,7 +1,7 @@
 // material
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // model

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 
