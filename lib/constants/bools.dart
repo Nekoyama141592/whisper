@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/strings.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -12,7 +13,7 @@ bool isDisplayUid({required List<dynamic> mutesUids, required List<dynamic> bloc
 
 bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required Map<String,dynamic> map}) {
   // use on comments or replys on display
-  final String uid = map['uid'];
+  final String uid = map[uidKey];
   final String ipv6 = map['ipv6'];
   return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) && !mutesIpv6s.contains(ipv6) && !blocksIpv6s.contains(ipv6) ) ;
 }
@@ -23,7 +24,7 @@ bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> b
 
 bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> passiveBlocksUids, required DocumentSnapshot currentUserDoc }) {
   // use on display user show page
-  final String myUid = currentUserDoc['uid'];
+  final String myUid = currentUserDoc[uidKey];
   return ( !mutesUids.contains(myUid) && blocksUids.contains(myUid) && passiveBlocksUids.contains(myUid) );
 }
 

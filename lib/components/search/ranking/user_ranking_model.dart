@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
 
 final userRankingProvider = ChangeNotifierProvider(
   (ref) => UserRankingModel()
@@ -22,7 +23,7 @@ class UserRankingModel extends ChangeNotifier {
 
   Future<void> init () async {
     startLoading();
-    await FirebaseFirestore.instance.collection('users').orderBy('followersCount',descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await FirebaseFirestore.instance.collection(usersKey).orderBy(followersCountKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { userDocs.add(doc); });
     });
     endLoading();
@@ -47,7 +48,7 @@ class UserRankingModel extends ChangeNotifier {
   Future<void> getMoreUsers() async {
     await FirebaseFirestore.instance
     .collection('posts')
-    .orderBy('followersCount',descending: true)
+    .orderBy(followersCountKey,descending: true)
     .startAfterDocument(userDocs.last)
     .limit(oneTimeReadCount)
     .get()

@@ -1,10 +1,11 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -31,10 +32,10 @@ class UserShowPage extends ConsumerWidget {
     
     final userShowModel = watch(userShowProvider);
     final followModel = watch(followProvider);
-    List<dynamic> blocksIpv6AndUids = passiveUserDoc['blocksIpv6AndUids'];
+    List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
     List<dynamic> passiveBlocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-      passiveBlocksUids.add(blocksIpv6AndUid['uid']);
+      passiveBlocksUids.add(blocksIpv6AndUid[uidKey]);
     });
 
     return Scaffold(

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // notifiers
@@ -31,7 +32,7 @@ class UserShowModel extends ChangeNotifier {
 
   late DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc }) {
-    final x = postColRef.where('uid',isEqualTo: passiveUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where(uidKey,isEqualTo: passiveUserDoc[uidKey]).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   String passiveUid = '';
@@ -72,7 +73,7 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
     passiveUserDoc = givePassiveUserDoc;
-    passiveUid = givePassiveUserDoc['uid'];
+    passiveUid = givePassiveUserDoc[uidKey];
     prefs = givePrefs;
     await getPosts();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
@@ -156,9 +157,9 @@ class UserShowModel extends ChangeNotifier {
   }
 
   void onEditButtonPressed(DocumentSnapshot<Map<String,dynamic>> currentUserDoc) {
-    userName = currentUserDoc['userName'];
-    description = currentUserDoc['description'];
-    link = currentUserDoc['link'];
+    userName = currentUserDoc[userNameKey];
+    description = currentUserDoc[descriptionKey];
+    link = currentUserDoc[linkKey];
     isEditing = true;
     notifyListeners();
   }

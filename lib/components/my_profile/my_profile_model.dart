@@ -13,9 +13,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/counts.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -97,7 +98,7 @@ class MyProfileModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
   void reload() {
@@ -141,9 +142,9 @@ class MyProfileModel extends ChangeNotifier {
   }
 
   void onEditButtonPressed(DocumentSnapshot<Map<String,dynamic>> currentUserDoc) {
-    userName = currentUserDoc['userName'];
-    description = currentUserDoc['description'];
-    link = currentUserDoc['link'];
+    userName = currentUserDoc[userNameKey];
+    description = currentUserDoc[descriptionKey];
+    link = currentUserDoc[linkKey];
     isEditing = true;
     notifyListeners();
   }

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -30,7 +31,7 @@ class FeedsModel extends ChangeNotifier {
 
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String,dynamic>> getQuery({ required List<dynamic> followingUids }) {
-    final x = postColRef.where('uid',whereIn: followingUids).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where(uidKey,whereIn: followingUids).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -118,11 +119,11 @@ class FeedsModel extends ChangeNotifier {
   
   Future<void> setCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
   }
 
   void setFollowUids() {
-    followingUidsOfModel = currentUserDoc['followingUids'];
+    followingUidsOfModel = currentUserDoc[followingUidsKey];
     followingUidsOfModel.add(currentUser!.uid);
   }
 

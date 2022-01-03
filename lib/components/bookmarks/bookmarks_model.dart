@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -27,7 +28,7 @@ class BookmarksModel extends ChangeNotifier {
   bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarkedPostIds}) {
-    final x = postColRef.where('postId', whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
+    final x = postColRef.where(postIdKey, whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -101,14 +102,14 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
   void setBookmarkedPostIds() {
-    List maps = currentUserDoc['bookmarks'];
-    maps.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+    List maps = currentUserDoc[bookmarksKey];
+    maps.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
     maps.forEach((map) {
-      bookmarkedPostIds.add(map['postId']);
+      bookmarkedPostIds.add(map[postIdKey]);
     });
     notifyListeners();
   }

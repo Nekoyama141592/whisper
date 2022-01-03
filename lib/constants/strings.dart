@@ -28,6 +28,7 @@ const String followingUidsKey = 'followingUids';
 const String followersKey = 'followers';
 const String followersCountKey = 'followersCount';
 const String followNotificationsKey = 'followNotifications';
+const String followerUidKey = 'followerUid';
 const String genderKey = 'gender';
 const String genreKey = 'genre';
 const String hashTagsKey = 'hashTags';

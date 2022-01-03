@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -36,7 +38,7 @@ class FollowOrEditButton extends StatelessWidget {
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
     )
-    : !followingUids.contains(userDoc['uid']) ?
+    : !followingUids.contains(userDoc[uidKey]) ?
     RoundedButton(
       text: 'follow', 
       widthRate: 0.35,

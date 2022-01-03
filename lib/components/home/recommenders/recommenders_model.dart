@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -29,7 +30,7 @@ class RecommendersModel extends ChangeNotifier {
   User? currentUser;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    final x = postColRef.orderBy('score', descending: true).limit(oneTimeReadCount);
+    final x = postColRef.orderBy(scoreKey, descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -94,9 +95,9 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   void getReadPostIds() {
-    List<dynamic> readPosts = currentUserDoc['readPosts'];
+    List<dynamic> readPosts = currentUserDoc[readPostsKey];
     readPosts.forEach((readPost) {
-      readPostIds.add(readPost['postId']);
+      readPostIds.add(readPost[postIdKey]);
     });
   }
 
@@ -105,7 +106,7 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
   }
   
   Future<void> onRefresh() async {

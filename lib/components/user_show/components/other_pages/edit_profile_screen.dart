@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/user_image.dart';
@@ -43,12 +45,12 @@ class EditProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
 
     final userNameController = TextEditingController(
-      text: mainModel.currentUserDoc['userName'] 
+      text: mainModel.currentUserDoc[userNameKey] 
     );
     final descriptionController = TextEditingController(
-      text: mainModel.currentUserDoc['description']
+      text: mainModel.currentUserDoc[descriptionKey]
     );
-    final linkController = TextEditingController(text: mainModel.currentUserDoc['link']);
+    final linkController = TextEditingController(text: mainModel.currentUserDoc[linkKey]);
 
     final textStyle = TextStyle(
       fontWeight: FontWeight.bold,
@@ -90,7 +92,7 @@ class EditProfileScreen extends ConsumerWidget {
             ),
             
             InkWell(
-              child: isCropped ?  CircleImage(length: 80.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentUserDoc['imageURL'], length: 80.0, padding: 10.0),
+              child: isCropped ?  CircleImage(length: 80.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentUserDoc[imageURLKey], length: 80.0, padding: 10.0),
               onTap: showImagePicker,
             ),
             Text('名前',style: textStyle,),

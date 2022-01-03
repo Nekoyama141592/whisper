@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// costants
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/follow/follow_or_edit_button.dart';
@@ -33,7 +35,7 @@ class UserShowHeader extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
 
-    final followerCount = passiveUserDoc['followersCount'];
+    final followerCount = passiveUserDoc[followersCountKey];
     final plusOneCount = followerCount + 1;
 
     return Padding(
@@ -53,31 +55,31 @@ class UserShowHeader extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  passiveUserDoc['userName'],
+                  passiveUserDoc[userNameKey],
                   style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,)
                 ),
               ),
               SizedBox(width: 5.0),
-              passiveUserDoc['isOfficial'] ? Icon(Icons.verified) : SizedBox.shrink()
+              passiveUserDoc[isOfficialKey] ? Icon(Icons.verified) : SizedBox.shrink()
             ],
           ),
           SizedBox(height: 10),
           Row(
             children: [
               UserImage(
-                userImageURL: passiveUserDoc['imageURL'],
+                userImageURL: passiveUserDoc[imageURLKey],
                 length: 60.0,
                 padding: 5.0,
               ),
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage(description: passiveUserDoc['description'],) ));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage(description: passiveUserDoc[descriptionKey],) ));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      passiveUserDoc['description'],
+                      passiveUserDoc[descriptionKey],
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -106,7 +108,7 @@ class UserShowHeader extends ConsumerWidget {
               children: [
                 Text(
                   // mainModel.followingUids contains myUid because of lib/components/home/feeds/feeds_model.dart
-                  mainModel.currentUserDoc['uid'] == passiveUserDoc['uid'] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc['followingUids'].length.toString() + 'following',
+                  mainModel.currentUserDoc[uidKey] == passiveUserDoc[uidKey] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc[followersCountKey].toString() + 'following',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -115,7 +117,7 @@ class UserShowHeader extends ConsumerWidget {
                 ),
                 SizedBox(width: 20,),
                 Text(
-                  mainModel.followingUids.contains(passiveUserDoc['uid']) ?
+                  mainModel.followingUids.contains(passiveUserDoc[uidKey]) ?
                   plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万follower' : plusOneCount.toString() + 'follower'
                   : followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
                   style: TextStyle(
@@ -125,8 +127,8 @@ class UserShowHeader extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(width: 20),
-                if (passiveUserDoc['link'].isNotEmpty) LinkButton(
-                  link: passiveUserDoc['link']
+                if (passiveUserDoc[linkKey].isNotEmpty) LinkButton(
+                  link: passiveUserDoc[linkKey]
                 )
               ],
             ),
