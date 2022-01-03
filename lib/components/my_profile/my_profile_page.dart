@@ -35,7 +35,7 @@ class MyProfilePage extends ConsumerWidget {
         }, 
         showImagePicker: () async {
           await myProfileModel.showImagePicker();
-        }, 
+        },
         onUserNameChanged: (text) {
           myProfileModel.userName = text;
         }, 

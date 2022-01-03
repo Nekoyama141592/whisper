@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/main_model.dart';
 
 final editPostInfoProvider = ChangeNotifierProvider(
   (ref) => EditPostInfoModel()
@@ -22,7 +23,7 @@ class EditPostInfoModel extends ChangeNotifier {
   String postTitle = '';
   // image
   bool isCropped = false;
-  XFile? xfile;
+  XFile? xFile;
   File? croppedFile;
 
   void reload() {
@@ -31,8 +32,8 @@ class EditPostInfoModel extends ChangeNotifier {
 
   Future showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
-    xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile != null) {
+    xFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (xFile != null) {
       await cropImage();
     }
     notifyListeners();
@@ -41,77 +42,35 @@ class EditPostInfoModel extends ChangeNotifier {
   Future cropImage() async {
     isCropped = false;
     croppedFile = null;
-    croppedFile = await ImageCropper.cropImage(
-      sourcePath: xfile!.path,
-      aspectRatioPresets: Platform.isAndroid ?
-      [
-        CropAspectRatioPreset.square,
-      ]
-      : [
-        // CropAspectRatioPreset.original,
-        CropAspectRatioPreset.square,
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Cropper',
-        toolbarColor: kPrimaryColor,
-        toolbarWidgetColor: Colors.white,
-        // initAspectRatio: CropAspectRatioPreset.original,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Cropper',
-      )
-    );
+    croppedFile = await returnCroppedFile(xFile: xFile);
     if (croppedFile != null) {
       isCropped = true;
       notifyListeners();
     }
   }
 
-  // Future<String> uploadImage(DocumentSnapshot currentUserDoc) async {
-  //   final String imageName = currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString();
-  //   try {
-  //     await FirebaseStorage.instance
-  //     .ref()
-  //     .child('postImages')
-  //     .child(imageName + '.jpg')
-  //     .putFile(croppedFile!);
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  //   final String downloadURL = await FirebaseStorage.instance
-  //   .ref()
-  //   .child('postImages')
-  //   .child(imageName + '.jpg')
-  //   .getDownloadURL();
-  //   return downloadURL;
-  // }
+  Future<String> uploadImage({ required MainModel mainModel }) async {
+    final thisPostImageName = postImageName;
+    final ref = postImageChildRef(mainModel: mainModel,postImageName: thisPostImageName);
+    await ref.putFile(croppedFile!);
+    final String downloadURL = await ref.getDownloadURL();
+    return downloadURL;
+  }
 
-  // Future updatePostInfo(Map<String,dynamic> currentSongMap,DocumentSnapshot currentUserDoc,BuildContext context) async {
-  //   final String currentSongDocImageURL = currentSongMap['imageURL'];
-  //   final String resultURL = currentSongDocImageURL.isNotEmpty ? currentSongDocImageURL : currentSongMap['userImageURL'];
-  //   final String imageURL = croppedFile == null ? resultURL : await uploadImage(currentUserDoc);
-    
-  //   try{
-  //     await FirebaseFirestore.instance
-  //     .collection('posts')
-  //     .doc(currentSongMap['postId'])
-  //     .update({
-  //       'title': postTitle,
-  //       'imageURL': imageURL,
-  //       'updatedAt': Timestamp.now(),
-  //     });
-  //     isEditing = false;
-  //     notifyListeners();
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('データが変更されました！'),
-  //       duration: Duration(seconds: 3),
-  //     ));
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タブを切ると変更が画面に反映されます')));
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  // }
+  Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context }) async {
+    final String imageURL = croppedFile == null ? currentSongMap[imageURLKey] : await uploadImage(mainModel: mainModel);
+    try{
+      await FirebaseFirestore.instance.collection(postsKey).doc(currentSongMap[postIdKey]).update({
+        'title': postTitle,
+        'imageURL': imageURL,
+        'updatedAt': Timestamp.now(),
+      });
+      isEditing = false;
+      notifyListeners();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('データが更新されました！表示に反映されなければ、タブをきってください')));
+    } catch(e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
+    }
+  }
   
 }

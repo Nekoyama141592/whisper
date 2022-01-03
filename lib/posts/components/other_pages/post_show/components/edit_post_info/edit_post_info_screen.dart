@@ -1,24 +1,23 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // model
 import 'edit_post_info_model.dart';
+import 'package:whisper/main_model.dart';
 
 class EditPostInfoScreen extends StatelessWidget {
 
   const EditPostInfoScreen({
     Key? key,
-    required this.currentUserDoc,
+    required this.mainModel,
     required this.currentSongMap,
-    required this.editPostInfoModel
+    required this.editPostInfoModel,
   }) : super(key: key);
 
-  final DocumentSnapshot currentUserDoc;
+  final MainModel mainModel;
   final Map<String,dynamic> currentSongMap;
   final EditPostInfoModel editPostInfoModel;
   @override 
@@ -62,7 +61,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       verticalPadding: 10, 
                       horizontalPadding: 5, 
                       press: () async  {
-                        await editPostInfoModel.updatePostInfo(currentSongMap,currentUserDoc,context);
+                        await editPostInfoModel.updatePostInfo(currentSongMap: currentSongMap, mainModel: mainModel, context: context);
                       },
                       textColor: Colors.white, 
                       buttonColor: Theme.of(context).highlightColor

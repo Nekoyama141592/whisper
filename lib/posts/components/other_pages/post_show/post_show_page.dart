@@ -71,7 +71,7 @@ class PostShowPage extends ConsumerWidget {
       extendBodyBehindAppBar: false,
       body: SafeArea(
         child: editPostInfoModel.isEditing ?
-        EditPostInfoScreen(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel)
+        EditPostInfoScreen(mainModel: mainModel, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel)
         : SingleChildScrollView(
           child: Column(
             children: [

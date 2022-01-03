@@ -2,7 +2,9 @@ const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 const String recommendableString = 'recommendable';
-final storageUserImageName = 'userImage' + DateTime.now().microsecondsSinceEpoch.toString() + imageExtension;
+final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
+final String storageUserImageName = 'userImage' + microSecondsString + imageExtension;
+final String postImageName = 'postImage' + microSecondsString + imageExtension;
 // keys
 const String audioURLKey = 'audioURL';
 const String authNotificationsKey = 'authNotifications';

@@ -77,7 +77,6 @@ final db = 'db': {
         'title': String,
         'uid': String,
         'updatedAt': TimeStamp,
-        'userDocId': String,
         'userImageURL': String,
         'userName': String
     }
@@ -100,7 +99,6 @@ final db = 'db': {
         'score': int,
         'subUserName': String,
         'uid': String,
-        'userDocId': String,
         'userName': String,
         'userImageURL': String,
     }
