@@ -228,7 +228,7 @@ class PostFutures extends ChangeNotifier{
   Future<void> muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
     mutesCommentIds.add(commentId);
     notifyListeners();
-    await prefs.setStringList('mutesCommentIds', mutesCommentIds);
+    await prefs.setStringList(mutesCommentIdsKey, mutesCommentIds);
   }
 
 }

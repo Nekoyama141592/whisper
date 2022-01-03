@@ -26,7 +26,7 @@ final replysProvider = ChangeNotifierProvider(
 class ReplysModel extends ChangeNotifier {
 
   String reply = "";
-  String elementState = 'comment';
+  String elementState = commentKey;
   bool isLoading = false;
   Map<String,dynamic> giveComment = {};
   // snapshots
@@ -99,9 +99,9 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
-                .collection('replys')
-                .where('elementId',isEqualTo: thisComment['commentId'])
-                .orderBy('likesUidsCount',descending: true )
+                .collection(replysKey)
+                .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+                .orderBy(likesUidsCountKey,descending: true )
                 .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
@@ -119,8 +119,8 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byNewestFirst;
                 replysStream = FirebaseFirestore.instance
-                .collection('replys')
-                .where('elementId',isEqualTo: thisComment['commentId'])
+                .collection(replysKey)
+                .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
                 .orderBy(createdAtKey,descending: true)
                 .limit(limitIndex)
                 .snapshots();
@@ -139,8 +139,8 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byOldestFirst;
                 replysStream = FirebaseFirestore.instance
-                .collection('replys')
-                .where('elementId',isEqualTo: thisComment['commentId'])
+                .collection(replysKey)
+                .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
                 .orderBy(createdAtKey,descending: false)
                 .limit(limitIndex)
                 .snapshots();
@@ -178,11 +178,11 @@ class ReplysModel extends ChangeNotifier {
     refreshController = RefreshController(initialRefresh: false);
     routes.toReplysPage(context: context, replysModel: replysModel, currentSongMap: currentSongMap, thisComment: thisComment, mainModel: mainModel);
     giveComment = thisComment;
-    final String commentId = thisComment['commentId'];
+    final String commentId = thisComment[commentIdKey];
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = FirebaseFirestore.instance.collection('replys').where('elementId',isEqualTo: thisComment['commentId']).orderBy(createdAtKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = FirebaseFirestore.instance.collection(replysKey).where(elementIdKey,isEqualTo: thisComment[commentIdKey]).orderBy(createdAtKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -195,24 +195,24 @@ class ReplysModel extends ChangeNotifier {
     switch(sortState) {
       case SortState.byLikedUidsCount:
       replysStream = FirebaseFirestore.instance
-      .collection('replys')
-      .where('elementId',isEqualTo: thisComment['commentId'])
-      .orderBy('likesUidsCount',descending: true )
+      .collection(replysKey)
+      .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+      .orderBy(likesUidsCountKey,descending: true )
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byNewestFirst:
       replysStream = FirebaseFirestore.instance
-      .collection('replys')
-      .where('elementId',isEqualTo: thisComment['commentId'])
+      .collection(replysKey)
+      .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
       .orderBy(createdAtKey,descending: true)
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byOldestFirst:
       replysStream = FirebaseFirestore.instance
-      .collection('replys')
-      .where('elementId',isEqualTo: thisComment['commentId'])
+      .collection(replysKey)
+      .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
       .orderBy(createdAtKey,descending: false)
       .limit(limitIndex)
       .snapshots();
@@ -223,7 +223,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) async {
-    final elementId = thisComment['commentId'];
+    final elementId = thisComment[commentIdKey];
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final newReplyMap = makeReplyMap(elementId, currentUserDoc,currentSongMap);
     await addReplyToFirestore(newReplyMap);
@@ -233,17 +233,17 @@ class ReplysModel extends ChangeNotifier {
       // blocks
       List<dynamic> blocksIpv6s = [];
       List<dynamic> blocksUids = [];
-      final List<dynamic> blocksIpv6AndUids = passiveUserDoc['blocksIpv6AndUids'];
+      final List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
       blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-        blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+        blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
         blocksUids.add(blocksIpv6AndUid[uidKey]);
       });
       // mutes
       List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
-      final List<dynamic> mutesIpv6AndUids = passiveUserDoc['mutesIpv6AndUids'];
+      final List<dynamic> mutesIpv6AndUids = passiveUserDoc[mutesIpv6AndUidsKey];
       mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-        mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
+        mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s ,uid: currentUserDoc[uidKey], ipv6: ipv6) ) {
@@ -254,81 +254,75 @@ class ReplysModel extends ChangeNotifier {
 
   Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap) {
     final newReplyMap = {
-      'elementId': elementId,
-      'elementState': elementState,
+      elementIdKey: elementId,
+      elementStateKey: elementState,
       createdAtKey: Timestamp.now(),
-      'followersCount': currentUserDoc['followersCount'],
-      'ipv6': ipv6,
-      'isDelete': false,
-      'isNFTicon': currentUserDoc['isNFTicon'],
-      'isOfficial': currentUserDoc['isOfficial'],
-      'likesUidsCount': 0,
-      'negativeScore': 0,
-      'passiveUid': currentSongMap[uidKey],
-      'postId': currentSongMap['postId'],
-      'positiveScore': 0,
-      'reply': reply,
-      replyIdKey: 'reply' + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString() ,
-      'score': defaultScore,
-      'subUserName': currentUserDoc['subUserName'],
+      followersCountKey: currentUserDoc[followersCountKey],
+      ipv6Key: ipv6,
+      isDeleteKey: false,
+      isNFTiconKey: currentUserDoc[isNFTiconKey],
+      isOfficialKey: currentUserDoc[isOfficialKey],
+      likesUidsCountKey: 0,
+      negativeScoreKey: 0,
+      passiveUidKey: currentSongMap[uidKey],
+      postIdKey: currentSongMap[postIdKey],
+      positiveScoreKey: 0,
+      replyKey: reply,
+      replyIdKey: replyKey + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString() ,
+      scoreKey: defaultScore,
+      subUserNameKey: currentUserDoc[subUserNameKey],
       uidKey: currentUserDoc[uidKey],
-      'userName': currentUserDoc['userName'],
-      'userImageURL': currentUserDoc['imageURL'],
+      userNameKey: currentUserDoc[userNameKey],
+      userImageURLKey: currentUserDoc[imageURLKey],
     };
     return newReplyMap;
   }
   
   Future addReplyToFirestore(Map<String,dynamic> map) async {
     try {
-      await FirebaseFirestore.instance
-      .collection('replys')
-      .doc(map[replyIdKey])
-      .set(map);
+      await FirebaseFirestore.instance.collection(replysKey).doc(map[replyIdKey]).set(map);
     } catch(e) {
       print(e.toString());
     }
   }
 
   Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance
-    .collection(usersKey)
-    .doc(currentSongMap[uidKey])
-    .get();
+    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentSongMap[uidKey]).get();
     return passiveUserDoc;
   }
 
   Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
 
     final String notificationId = 'replyNotification' + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString();
-    final comment = thisComment['comment'];
+    final comment = thisComment[commentKey];
     Map<String,dynamic> map = {
-      'comment': comment,
+      commentKey: comment,
       createdAtKey: Timestamp.now(),
-      'elementId': elementId,
-      'elementState': elementState,
-      'followersCount': currentUserDoc['followersCount'],
-      'isDelete': false,
-      'isNFTicon': currentUserDoc['isNFTicon'],
-      'isOfficial': currentUserDoc['isOfficial'],
-      'notificationId': notificationId,
-      'passiveUid': passiveUserDoc[uidKey],
-      'postId': thisComment['postId'],
-      'reply': reply,
-      'replyScore': newReplyMap['score'],
+      elementIdKey: elementId,
+      elementStateKey: elementState,
+      followersCountKey: currentUserDoc[followersCountKey],
+      isDeleteKey: false,
+      isNFTiconKey: currentUserDoc[isNFTiconKey],
+      isOfficialKey: currentUserDoc[isOfficialKey],
+      notificationIdKey: notificationId,
+      passiveUidKey: passiveUserDoc[uidKey],
+      postIdKey: thisComment[postIdKey],
+      replyKey: reply,
+      replyScoreKey: newReplyMap[scoreKey],
       replyIdKey: newReplyMap[replyIdKey],
-      'subUserName': currentUserDoc['subUserName'],
+      subUserNameKey: currentUserDoc[subUserNameKey],
       uidKey: currentUserDoc[uidKey],
-      'userName': currentUserDoc['userName'],
-      'userImageURL': currentUserDoc['imageURL'],
+      userNameKey: currentUserDoc[userNameKey],
+      userImageURLKey: currentUserDoc[imageURLKey],
     };
 
-    List<dynamic> replyNotifications = passiveUserDoc['replyNotifications'];
+    List<dynamic> replyNotifications = passiveUserDoc[replyNotificationsKey];
     replyNotifications.add(map);
     await FirebaseFirestore.instance
     .collection(usersKey)
     .doc(passiveUserDoc.id)
     .update({
-      'replyNotifications': replyNotifications,
+      replyNotificationsKey: replyNotifications,
     });
   }
 
