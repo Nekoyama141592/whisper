@@ -6,7 +6,6 @@ import 'constants/tab_bar_elements.dart';
 // components
 import 'package:whisper/details/whisper_drawer.dart';
 import 'package:whisper/components/notifications/components/reply_notifications/reply_notifications.dart';
-import 'package:whisper/components/notifications/components/official_notifications/official_notifications.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
@@ -57,7 +56,6 @@ class NotificationsPage extends StatelessWidget {
           children: [
             CommentNotifications(mainModel: mainModel,),
             ReplyNotifications(replyNotifications: mainModel.replyNotifications, mainModel: mainModel,),
-            OfficialNotifications(),
           ]
         ),
       ),
