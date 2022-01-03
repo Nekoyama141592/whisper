@@ -1,3 +1,4 @@
+// constants
 import 'package:whisper/constants/strings.dart';
 final db = 'db': {
     'comments': [{

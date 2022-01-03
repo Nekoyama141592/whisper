@@ -17,7 +17,7 @@ class UserCards extends StatelessWidget {
     required this.blocksUsersModel
   }) : super(key: key);
 
-  final List<DocumentSnapshot> userDocs;
+  final List<DocumentSnapshot<Map<String,dynamic>>> userDocs;
   final MainModel mainModel;
   final BlocksUsersModel blocksUsersModel;
 

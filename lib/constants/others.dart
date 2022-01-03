@@ -32,7 +32,7 @@ Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
 }
 
 Reference userImageParentRef({ required String uid }) {
-  return FirebaseStorage.instance.ref().child('userImages').child(uid);
+  return FirebaseStorage.instance.ref().child(userImagesKey).child(uid);
 }
 
 Reference userImageChildRef({ required String uid, required String storageImageName }) {
@@ -41,7 +41,7 @@ Reference userImageChildRef({ required String uid, required String storageImageN
 }
 
 Reference postImageParentRef({ required MainModel mainModel }) {
-  return FirebaseStorage.instance.ref().child('postImages').child(mainModel.currentUser!.uid);
+  return FirebaseStorage.instance.ref().child(postImagesKey).child(mainModel.currentUser!.uid);
 }
 
 Reference postImageChildRef({ required MainModel mainModel, required String postImageName }) {
@@ -61,7 +61,7 @@ Reference postChildRef({ required MainModel mainModel, required String storagePo
 final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection(postsKey);
 
 CollectionReference<Map<String, dynamic>> followersParentRef({ required String passiveUid }) {
-  return FirebaseFirestore.instance.collection(usersKey).doc(passiveUid).collection('followers');
+  return FirebaseFirestore.instance.collection(usersKey).doc(passiveUid).collection(followersKey);
 }
 
 DocumentReference<Map<String, dynamic>> followerChildRef({ required String passiveUid , required String followerUid}) {

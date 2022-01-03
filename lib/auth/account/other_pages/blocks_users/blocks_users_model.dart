@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+
 
 final blocksUsersProvider = ChangeNotifierProvider(
   (ref) => BlocksUsersModel()
@@ -15,7 +17,7 @@ class BlocksUsersModel extends ChangeNotifier {
 
   // basic
   bool isLoading = false;
-  List<DocumentSnapshot> blocksUserDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> blocksUserDocs = [];
 
   BlocksUsersModel() {
     init();
@@ -23,11 +25,11 @@ class BlocksUsersModel extends ChangeNotifier {
 
   Future init() async {
     startLoading();
-    final DocumentSnapshot currentUserDoc = await setCurrentUserDoc();
-    final List<dynamic> blocksIpv6AndUids = currentUserDoc['blocksIpv6AndUids'];
+    final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await setCurrentUserDoc();
+    final List<dynamic> blocksIpv6AndUids = currentUserDoc[blocksIpv6AndUidsKey];
     List<dynamic> blocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-      blocksUids.add(blocksIpv6AndUid['uid']);
+      blocksUids.add(blocksIpv6AndUid[uidKey]);
     });
     await getBlocksUserDocs(blocksUids: blocksUids);
     endLoading();
@@ -43,16 +45,16 @@ class BlocksUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DocumentSnapshot> setCurrentUserDoc() async {
+  Future<DocumentSnapshot<Map<String,dynamic>>> setCurrentUserDoc() async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
-    DocumentSnapshot currentUserDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).get();
+    DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
     return currentUserDoc;
   }
 
   Future getBlocksUserDocs({ required List<dynamic> blocksUids }) async {
     if (blocksUids.isNotEmpty) {
-      await FirebaseFirestore.instance.collection('users').where('uid',whereIn: blocksUids).get().then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot doc) {
+      await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: blocksUids).get().then((qshot) {
+        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
           blocksUserDocs.add(doc);
         });
         notifyListeners();
@@ -60,12 +62,12 @@ class BlocksUsersModel extends ChangeNotifier {
     }
   }
 
-  Future unBlockUser({ required String passiveUid, required List<dynamic> blocksUids, required DocumentSnapshot currentUserDoc, required List<dynamic> blocksIpv6AndUids}) async {
+  Future unBlockUser({ required String passiveUid, required List<dynamic> blocksUids, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> blocksIpv6AndUids}) async {
     // front
-    blocksUserDocs.removeWhere((blocksUserDoc) => blocksUserDoc['uid'] == passiveUid);
+    blocksUserDocs.removeWhere((blocksUserDoc) => blocksUserDoc[uidKey] == passiveUid);
     notifyListeners();
     // back
-    blocksIpv6AndUids.removeWhere((blocksIpv6AndUid) => blocksIpv6AndUid['uid'] == passiveUid);
+    blocksIpv6AndUids.removeWhere((blocksIpv6AndUid) => blocksIpv6AndUid[uidKey] == passiveUid);
     blocksUids.remove(passiveUid);
     voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
   }
