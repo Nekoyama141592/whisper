@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/counts.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/constants/lists.dart';
@@ -114,50 +115,50 @@ class SignupModel extends ChangeNotifier {
     final String storageImageName = strings.storageUserImageName;
     final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
     await FirebaseFirestore.instance
-    .collection('users')
+    .collection(usersKey)
     .doc(uid)
     .set({
-      'authNotifications': [],
-      'birthDay': timestampBirthDay,
-      'browsingHistory': [],
-      'blocksIpv6AndUids': [],
-      'bookmarks': [],
-      'commentNotifications': [],
-      'createdAt': Timestamp.now(),
-      'description': '',
-      'dmState': 'onlyFollowingAndFollowed',
-      'followNotifications': [],
-      'followersCount': 0,
-      'followingUids': [],
-      'gender': gender,
-      'imageURL': imageURL,
-      'isAdmin': false,
-      'isDelete': false,
-      'isKeyAccount': false,
-      'isNFTicon': false,
-      'isOfficial': false,
-      'isSubAdmin': false,
-      'language': language,
-      'likedComments': [],
-      'likeNotifications': [],
-      'likedReplys': [],
-      'likes': [],
-      'link': '',
-      'mutesIpv6AndUids': [],
-      'noDisplayWords': [],
-      'otherLinks': [],
-      'readNotificationIds': [],
-      'readPosts': [],
-      'recommendState': 'recommendable',
-      'replyNotifications': [],
-      'score': defaultScore,
-      'searchHistory': [],
-      'storageImageName': storageImageName, // use on lib/auth/account/account_model.dart
-      'subUserName': uid, // use on lib/components/add_post/add_post_model.dart, lib/posts/components/replys/replys_model.dart, lib/posts/components/comments/comments_model.dart
-      'uid' : uid,
-      'updatedAt': Timestamp.now(),
-      'userName': userName,
-      'walletAddress': '',
+      authNotificationsKey: [],
+      birthDayKey: timestampBirthDay,
+      browsingHistoryKey: [],
+      blocksIpv6AndUidsKey: [],
+      bookmarksKey: [],
+      commentNotificationsKey: [],
+      createdAtKey: Timestamp.now(),
+      descriptionKey: '',
+      dmStateKey: onlyFollowingAndFollowedString,
+      followNotificationsKey: [],
+      followersCountKey: 0,
+      followingUidsKey: [],
+      genderKey: gender,
+      imageURLKey: imageURL,
+      isAdminKey: false,
+      isDeleteKey: false,
+      isKeyAccountKey: false,
+      isNFTiconKey: false,
+      isOfficialKey: false,
+      isSubAdminKey: false,
+      languageKey: language,
+      likedCommentsKey: [],
+      likeNotificationsKey: [],
+      likedReplysKey: [],
+      likesKey: [],
+      linkKey: '',
+      mutesIpv6AndUidsKey: [],
+      noDisplayWordsKey: [],
+      otherLinksKey: [],
+      readNotificationIdsKey: [],
+      readPostsKey: [],
+      recommendStateKey: recommendableString,
+      replyNotificationsKey: [],
+      scoreKey: defaultScore,
+      searchHistoryKey: [],
+      storageImageNameKey: storageImageName, // use on lib/auth/account/account_model.dart
+      subUserNameKey: uid, // use on lib/components/add_post/add_post_model.dart, lib/posts/components/replys/replys_model.dart, lib/posts/components/comments/comments_model.dart
+      uidKey : uid,
+      updatedAtKey: Timestamp.now(),
+      userNameKey: userName,
+      walletAddressKey: '',
     });
   }
 
