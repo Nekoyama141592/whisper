@@ -27,30 +27,7 @@ class UpdateEmailModel extends ChangeNotifier {
   }
 
   void showSignOutDialog(BuildContext context) {
-    showCupertinoDialog(
-      context: context, 
-      builder: (_) {
-        return CupertinoAlertDialog(
-          title: Text('ログアウト'),
-          content: Text('ログアウトしますか？'),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            CupertinoDialogAction(
-              child: const Text('Ok'),
-              isDestructiveAction: true,
-              onPressed: () async {
-                await voids.signOut(context);
-              },
-            )
-          ],
-        );
-      }
-    );
+    voids.showCupertinoDialogue(context: context, title: 'ログアウト', content: 'ログアウトしますか?', action: () async { await voids.signOut(context); });
   }
 
   
