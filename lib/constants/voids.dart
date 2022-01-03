@@ -16,7 +16,7 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/counts.dart';
 import 'package:whisper/constants/routes.dart' as routes;
-import 'package:whisper/constants/strings.dart' as strings;
+import 'package:whisper/constants/strings.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -30,50 +30,50 @@ import 'package:whisper/posts/components/other_pages/post_show/components/edit_p
 
 void setMutesAndBlocks({ required SharedPreferences prefs ,required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
   // 代入は使えないが.addは反映される
-  currentUserDoc['mutesIpv6AndUids'].forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
+  currentUserDoc[mutesIpv6AndUidsKey].forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
   mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-    mutesIpv6s.add(mutesIpv6AndUid['ipv6']);
-    mutesUids.add(mutesIpv6AndUid['uid']);
+    mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
+    mutesUids.add(mutesIpv6AndUid[uidKey]);
   });
-  (prefs.getStringList('mutesPostIds') ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
-  currentUserDoc['blocksIpv6AndUids'].forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
+  (prefs.getStringList(mutesPostIdsKey) ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
+  currentUserDoc[blocksIpv6AndUidsKey].forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
   blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-    blocksUids.add(blocksIpv6AndUid['uid']);
-    blocksIpv6s.add(blocksIpv6AndUid['ipv6']);
+    blocksUids.add(blocksIpv6AndUid[uidKey]);
+    blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
   });
 }
 
 void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
-  final String uid = map['uid'];
-  final String ipv6 = map['ipv6'];
+  final String uid = map[uidKey];
+  final String ipv6 = map[ipv6Key];
   mutesUids.add(uid);
   mutesIpv6AndUids.add({
-    'ipv6': ipv6,
-    'uid': uid,
+    ipv6Key: ipv6,
+    uidKey: uid,
   });
 }
 
 Future<void> updateMutesIpv6AndUids({ required List<dynamic> mutesIpv6AndUids, required DocumentSnapshot currentUserDoc}) async {
-  await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
+  await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
   .update({
-    'mutesIpv6AndUids': mutesIpv6AndUids,
+    mutesIpv6AndUidsKey: mutesIpv6AndUids,
   }); 
 }
 
 void addBlocksUidsAndBlocksIpv6AndUid({ required List<dynamic> blocksUids, required List<dynamic> blocksIpv6AndUids, required Map<String,dynamic> map }) {
-  final String uid = map['uid'];
-  final String ipv6 = map['ipv6'];
+  final String uid = map[uidKey];
+  final String ipv6 = map[ipv6Key];
   blocksUids.add(uid);
   blocksIpv6AndUids.add({
-    'ipv6': ipv6,
-    'uid': uid,
+    ipv6Key: ipv6,
+    uidKey: uid,
   });
 }
 
 Future<void> updateBlocksIpv6AndUids({ required List<dynamic> blocksIpv6AndUids, required DocumentSnapshot currentUserDoc}) async {
-  await FirebaseFirestore.instance.collection('users').doc(currentUserDoc.id)
+  await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
   .update({
-    'blocksIpv6AndUids': blocksIpv6AndUids,
+    blocksIpv6AndUidsKey: blocksIpv6AndUids,
   });
 }
 
@@ -132,7 +132,7 @@ Future<void> onNotificationPressed({ required BuildContext context ,required Mai
 // just_audio
 
 Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
-  speedNotifier.value = prefs.getDouble('speed') ?? 1.0;
+  speedNotifier.value = prefs.getDouble(speedKey) ?? 1.0;
   await audioPlayer.setSpeed(speedNotifier.value);
 }
 
@@ -140,11 +140,11 @@ Future<void> speedControll({ required ValueNotifier<double> speedNotifier, requi
   if (speedNotifier.value == 4.0) {
     speedNotifier.value = 1.0;
     await audioPlayer.setSpeed(speedNotifier.value);
-    await prefs.setDouble('speed', speedNotifier.value);
+    await prefs.setDouble(speedKey, speedNotifier.value);
   } else {
     speedNotifier.value += 0.5;
     await audioPlayer.setSpeed(speedNotifier.value);
-    await prefs.setDouble('speed', speedNotifier.value);
+    await prefs.setDouble(speedKey, speedNotifier.value);
   }
 }
 
@@ -262,17 +262,17 @@ Future<void> play({ required BuildContext context ,required AudioPlayer audioPla
      await officialAdsensesModel.onPlayButtonPressed(context);
     if (!mainModel.readPostIds.contains(postId)) {
       final map = {
-        'createdAt': Timestamp.now(),
-        'durationInt': 0,
-        'postId': postId,
+        createdAtKey: Timestamp.now(),
+        durationIntKey: 0,
+        postIdKey: postId,
       };
       
       mainModel.readPosts.add(map);
       await FirebaseFirestore.instance
-      .collection('users')
+      .collection(usersKey)
       .doc(mainModel.currentUserDoc.id)
       .update({
-        'readPosts': mainModel.readPosts,
+        readPostsKey: mainModel.readPosts,
       });
     }
   }
@@ -287,17 +287,17 @@ void onPostDeleteButtonPressed({ required BuildContext context, required AudioPl
 
 Future deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
   Navigator.pop(context);
-  if (mainModel.currentUser!.uid != postMap['uid']) {
+  if (mainModel.currentUser!.uid != postMap[uidKey]) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
   } else {
     try {
       posts.remove(posts[i]);
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
-      await FirebaseFirestore.instance.collection('posts').doc(postMap['postId']).delete();
-      await postChildRef(mainModel: mainModel, storagePostName: postMap['storagePostName']).delete();
-      if (postMap['storageImageName'].isNotEmpty) {
-        await postImageChildRef(mainModel: mainModel, postImageName: postMap['storageImageName']).delete();
+      await FirebaseFirestore.instance.collection(postsKey).doc(postMap[postIdKey]).delete();
+      await postChildRef(mainModel: mainModel, storagePostName: postMap[storagePostNameKey]).delete();
+      if (postMap[storageImageNameKey].isNotEmpty) {
+        await postImageChildRef(mainModel: mainModel, postImageName: postMap[storageImageNameKey]).delete();
       }
     } catch(e) {
       print(e.toString());
@@ -322,16 +322,16 @@ Future initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSo
 }
 
 Future mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<dynamic> results}) async {
-  final postId = post['postId'];
+  final postId = post[postIdKey];
   mainModel.mutesPostIds.add(postId);
-  results.removeWhere((result) => result['postId'] == postId);
+  results.removeWhere((result) => result[postIdKey] == postId);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
-  await mainModel.prefs.setStringList('mutesPostIds', mainModel.mutesPostIds);
+  await mainModel.prefs.setStringList(mutesPostIdsKey, mainModel.mutesPostIds);
 }
 
 Future muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> mutesUids, required int i, required List<dynamic> results,required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post, required MainModel mainModel}) async {
-  final String passiveUid = post['uid'];
+  final String passiveUid = post[uidKey];
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
   mainModel.reload();
@@ -339,7 +339,7 @@ Future muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> a
 }
 
 Future blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> blocksUids, required List<dynamic> blocksIpv6AndUids, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
-  final String passiveUid = post['uid'];
+  final String passiveUid = post[uidKey];
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
   mainModel.reload();
@@ -347,7 +347,7 @@ Future blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> 
 }
 
 Future removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
-  results.removeWhere((result) => result['uid'] == passiveUid);
+  results.removeWhere((result) => result[uidKey] == passiveUid);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
 }
 
@@ -359,12 +359,12 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
       docs.reversed;
       // Insert at the top
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-        final String uid = doc['uid'];
-        final String ipv6 = doc['ipv6'];
+        final String uid = doc[uidKey];
+        final String ipv6 = doc[ipv6Key];
         bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
         if (x) {
           posts.insert(0, doc);
-          Uri song = Uri.parse(doc['audioURL']);
+          Uri song = Uri.parse(doc[audioURLKey]);
           UriAudioSource source = AudioSource.uri(song, tag: doc.data());
           afterUris.insert(0, source);
         }
@@ -382,14 +382,14 @@ Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, req
   await query.get().then((qshot) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
-      docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+      docs.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-        final String uid = doc['uid'];
-        final String ipv6 = doc['ipv6'];
+        final String uid = doc[uidKey];
+        final String ipv6 = doc[ipv6Key];
         bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
         if (x) {
           posts.add(doc);
-          Uri song = Uri.parse(doc['audioURL']);
+          Uri song = Uri.parse(doc[audioURLKey]);
           UriAudioSource source = AudioSource.uri(song, tag: doc.data());
           afterUris.add(source);
         }
@@ -407,14 +407,14 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
-      docs.sort((a,b) => b['createdAt'].compareTo(a['createdAt']));
+      docs.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-        final String uid = doc['uid'];
-        final String ipv6 = doc['ipv6'];
+        final String uid = doc[uidKey];
+        final String ipv6 = doc[ipv6Key];
         bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc);
         if (x) {
           posts.add(doc);
-          Uri song = Uri.parse(doc['audioURL']);
+          Uri song = Uri.parse(doc[audioURLKey]);
           UriAudioSource source = AudioSource.uri(song, tag: doc.data());
           afterUris.add(source);
         }
@@ -441,21 +441,21 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
 Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
-  //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentUserDoc['storageImageName']).delete();
+  //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentUserDoc[storageImageNameKey]).delete();
   // }
-  final String storageImageName = (croppedFile == null) ? mainModel.currentUserDoc['storageImageName'] :  strings.storageUserImageName;
-  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc['imageURL'] : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
+  final String storageImageName = (croppedFile == null) ? mainModel.currentUserDoc[storageImageNameKey] :  storageUserImageName;
+  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc[imageURLKey] : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(mainModel.currentUserDoc.id).update({
-        'description': description,
-        'imageURL': downloadURL,
-        'link': link,
-        'storageImageName': storageImageName,
-        'updatedAt': Timestamp.now(),
-        'userName': userName,
+      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentUserDoc.id).update({
+        descriptionKey: description,
+        imageURLKey: downloadURL,
+        linkKey: link,
+        storageImageNameKey: storageImageName,
+        updatedAtKey: Timestamp.now(),
+        userNameKey: userName,
       });
       mainModel.reload();
     } catch(e) { print(e.toString()); }
