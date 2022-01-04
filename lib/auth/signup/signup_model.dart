@@ -142,7 +142,7 @@ class SignupModel extends ChangeNotifier {
       mutesIpv6AndUidsKey: [],
       noDisplayWordsKey: [],
       otherLinksKey: [],
-      readNotificationIdsKey: [],
+      readNotificationsKey: [],
       readPostsKey: [],
       recommendStateKey: recommendableString,
       scoreKey: defaultScore,

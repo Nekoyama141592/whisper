@@ -1,4 +1,4 @@
-readNotificationIds: List<String>,
+readNotificationIds: List<Map<String,dynamic>>,
 mutesReplyIds: List<String>,
 mutesCommentIds: List<String>,
 mutesPostIds: List<String>,

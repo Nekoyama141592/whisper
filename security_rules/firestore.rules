@@ -31,7 +31,7 @@ service cloud.firestore {
     && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
     && 'noDisplayWords' in user && user.noDisplayWords is list
     && 'otherLinks' in user && user.otherLinks is list
-    && 'readNotificationIds' in user && user.readNotificationIds is list
+    && 'readNotifications' in user && user.readNotifications is list
     && 'readPosts' in user && user.readPosts is list
     && 'recommendState' in user && user.recommendState is string
     && 'score' in user && user.score is float

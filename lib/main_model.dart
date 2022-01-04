@@ -156,8 +156,12 @@ class MainModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addNotificationIdToReadNotificationIds({ required Map<String,dynamic> notification}) async {
+  Future<void> addNotificationToReadNotificationIds({ required Map<String,dynamic> notification}) async {
     final String notificationId = notification[notificationIdKey];
+    final map = {
+      notificationIdKey: notificationId,
+      createdAtKey: Timestamp.now(),
+    };
     readNotificationIds.add(notificationId);
     notifyListeners();
     await prefs.setStringList(readNotificationIdsKey, readNotificationIds);
