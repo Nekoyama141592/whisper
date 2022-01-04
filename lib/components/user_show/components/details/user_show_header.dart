@@ -13,7 +13,6 @@ import 'package:whisper/components/user_show/components/details/link_button.dart
 import 'package:whisper/components/user_show/components/other_pages/show_description_page.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 
 class UserShowHeader extends ConsumerWidget {
 
@@ -23,14 +22,12 @@ class UserShowHeader extends ConsumerWidget {
     required this.onEditButtonPressed,
     required this.backArrow,
     required this.mainModel,
-    required this.followModel
   }) : super(key: key);
 
   final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   final void Function()? onEditButtonPressed;
   final Widget backArrow;
   final MainModel mainModel;
-  final FollowModel followModel;
 
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
@@ -90,13 +87,7 @@ class UserShowHeader extends ConsumerWidget {
                   ),
                 ),
               ),
-              FollowOrEditButton(
-                currentUserDoc: mainModel.currentUserDoc, 
-                userDoc: passiveUserDoc, 
-                followingUids: mainModel.followingUids, 
-                followModel: followModel,
-                onEditButtonPressed: onEditButtonPressed,
-              ),
+              FollowOrEditButton(mainModel: mainModel, userDoc: passiveUserDoc, followingUids: mainModel.followingUids, onEditButtonPressed: onEditButtonPressed)
             ],
           ),
           SizedBox(height: 16),

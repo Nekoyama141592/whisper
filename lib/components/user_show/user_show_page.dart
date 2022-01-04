@@ -14,7 +14,6 @@ import 'package:whisper/components/user_show/components/other_pages/edit_profile
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
-import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 
 class UserShowPage extends ConsumerWidget {
   
@@ -31,7 +30,6 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     
     final userShowModel = watch(userShowProvider);
-    final followModel = watch(followProvider);
     List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
     List<dynamic> passiveBlocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
@@ -88,7 +86,6 @@ class UserShowPage extends ConsumerWidget {
               },
             ),
             mainModel: mainModel, 
-            followModel: followModel
           ),
           content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
           circular: 35.0

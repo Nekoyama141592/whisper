@@ -4,30 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // components
-import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 import 'package:whisper/details/rounded_button.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 class FollowOrEditButton extends StatelessWidget {
   
   const FollowOrEditButton({
     Key? key,
-    required this.currentUserDoc,
+    required this.mainModel,
     required this.userDoc,
     required this.followingUids,
-    required this.followModel,
     required this.onEditButtonPressed
   }) : super(key: key);
 
-  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
+  final MainModel mainModel;
   final DocumentSnapshot<Map<String,dynamic>> userDoc;
   final List followingUids;
-  final FollowModel followModel;
   final void Function()? onEditButtonPressed;
   @override 
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
-    return userDoc.id == currentUserDoc.id ?
+
+    return userDoc.id == mainModel.currentUserDoc.id ?
     // 変更
     RoundedButton(
       text: '編集', 
@@ -46,7 +47,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await followModel.follow(context,followingUids, currentUserDoc, userDoc);
+          await voids.follow(context, mainModel, userDoc);
         } catch(e) {
           print(e.toString());          
         }
@@ -61,7 +62,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await followModel.unfollow(followingUids, currentUserDoc, userDoc);
+          await voids.unfollow(mainModel, userDoc);
         } catch(e) {
           print(e.toString());          
         }

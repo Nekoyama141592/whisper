@@ -11,7 +11,6 @@ import 'package:whisper/components/user_show/components/other_pages/edit_profile
 // models
 import 'my_profile_model.dart';
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/user_show/components/follow/follow_model.dart';
 
 class MyProfilePage extends ConsumerWidget {
 
@@ -25,7 +24,6 @@ class MyProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final myProfileModel = watch(myProfileProvider);
-    final followModel = watch(followProvider);
     return SafeArea(
       child: myProfileModel.isEditing ?
       EditProfileScreen(
@@ -59,7 +57,6 @@ class MyProfilePage extends ConsumerWidget {
           passiveUserDoc: mainModel.currentUserDoc, 
           backArrow: SizedBox.shrink(), 
           mainModel: mainModel, 
-          followModel: followModel
         ), 
         circular: 35.0,
         content: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
