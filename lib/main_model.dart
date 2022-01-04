@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
-import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 
@@ -59,7 +58,6 @@ class MainModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
     getReadNotificationIds();
-    getNotificationIds();
     getLikedPostIds();
     getLikesReplys();
     getBookmarkedPostIds();
@@ -145,13 +143,6 @@ class MainModel extends ChangeNotifier {
     readNotificationIds = prefs.getStringList(readNotificationIdsKey) ?? [];
   }
 
-  void getNotificationIds() {
-    commentNotifications = currentUserDoc[commentNotificationsKey];
-    commentNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
-    replyNotifications = currentUserDoc[replyNotificationsKey];
-    replyNotifications.removeWhere((notification) => isNotiRecentNotification(notification: notification) );
-  }
-
   void getLikesReplys() {
     likedReplys = currentUserDoc[likedReplysKey];
     likedReplys.forEach((likesReply) {
@@ -170,12 +161,6 @@ class MainModel extends ChangeNotifier {
     readNotificationIds.add(notificationId);
     notifyListeners();
     await prefs.setStringList(readNotificationIdsKey, readNotificationIds);
-  }
-
-  Future<void> regetNotifications() async {
-    await regetCurrentUserDoc();
-    getNotificationIds();
-    notifyListeners();
   }
   
   void reload() {

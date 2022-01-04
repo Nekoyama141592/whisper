@@ -316,15 +316,7 @@ class ReplysModel extends ChangeNotifier {
       userNameKey: currentUserDoc[userNameKey],
       userImageURLKey: currentUserDoc[imageURLKey],
     };
-
-    List<dynamic> replyNotifications = passiveUserDoc[replyNotificationsKey];
-    replyNotifications.add(map);
-    await FirebaseFirestore.instance
-    .collection(usersKey)
-    .doc(passiveUserDoc.id)
-    .update({
-      replyNotificationsKey: replyNotifications,
-    });
+    await replyNotificationRef(passiveUid: thisComment[uidKey], notificationId: notificationId).set(map);
   }
 
   Future<void> like(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedReplys) async {

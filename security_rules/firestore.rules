@@ -190,6 +190,18 @@ service cloud.firestore {
         allow delete: if basicValidation(uid) || basicValidation(followerUid);
       }
     }
+    match /userMeta/{uid} {
+      allow read: if true;
+      allow create: if true;
+      match /commentNotifications/{notificationId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+      }
+      match /replyNotifications/{notificationId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+      }
+    }
     match /posts/{postId} {
       allow read: if isAuthenticated();
       allow create: if isAuthenticated()

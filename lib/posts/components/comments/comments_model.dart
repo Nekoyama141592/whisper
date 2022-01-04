@@ -126,7 +126,7 @@ class CommentsModel extends ChangeNotifier {
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: currentUserDoc[uidKey], ipv6: ipv6) ) {
-        await updateCommentNotificationsOfPassiveUser(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, newCommentMap: commentMap);
+        await makeCommentNotification(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc, passiveUserDoc: passiveUserDoc, newCommentMap: commentMap);
       }
     }
   }
@@ -157,10 +157,9 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future<void> updateCommentNotificationsOfPassiveUser({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
+  Future<void> makeCommentNotification({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
     try{
-      List<dynamic> commentNotifications = passiveUserDoc[commentNotificationsKey];
-      final Map<String,dynamic> newCommentNotificationMap = {
+      final Map<String,dynamic> map = {
         commentKey: newCommentMap[commentKey],
         commentScoreKey: newCommentMap[scoreKey],
         commentIdKey: newCommentMap[commentIdKey],
@@ -178,13 +177,7 @@ class CommentsModel extends ChangeNotifier {
         userNameKey: currentUserDoc[userNameKey],
         userImageURLKey: currentUserDoc[imageURLKey],
       };
-      commentNotifications.add(newCommentNotificationMap);
-      await FirebaseFirestore.instance
-      .collection(usersKey)
-      .doc(passiveUserDoc.id)
-      .update({
-        commentNotificationsKey: commentNotifications,
-      });
+      await commentNotificationRef(passiveUid: currentSongMap[uidKey], notificationId: map[notificationIdKey]).set(map);
     } catch(e) {
       print(e.toString());
     }

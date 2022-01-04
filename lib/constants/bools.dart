@@ -45,12 +45,6 @@ bool newNotificationExists({ required MainModel mainModel }) {
   return x;
 }
 
-bool isNotiRecentNotification({ required Map<String,dynamic> notification}) {
-  final now = DateTime.now();
-  final DateTime range = now.subtract(Duration(days: 5));
-  return notification[createdAtKey].toDate().isBefore(range);
-}
-
 bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   // post is DocumentSnapshot<Map<String,dynamic>> or Map<String,dynamic>
   switch(postType) {
