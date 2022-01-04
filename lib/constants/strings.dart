@@ -12,7 +12,6 @@ const String birthDayKey = 'birthDay';
 const String blocksIpv6AndUidsKey = 'blocksIpv6AndUids';
 const String bookmarksCountKey = 'bookmarksCount';
 const String bookmarksKey = 'bookmarks';
-const String browsingHistoryKey = 'browsingHistory';
 const String commentIdKey = 'commentId';
 const String commentKey = 'comment';
 const String commentsCountKey = 'commentsCount';

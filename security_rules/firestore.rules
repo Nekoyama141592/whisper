@@ -6,10 +6,9 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 38 // max48
+    return user.size() == 37 // max48
     && 'authNotifications' in user && user.authNotifications is list
     && 'birthDay' in user && user.birthDay is timestamp
-    && 'browsingHistory' in user && user.browsingHistory is list
     && 'blocksIpv6AndUids' in user && user.blocksIpv6AndUids is list
     && 'bookmarks' in user && user.bookmarks is list
     && 'commentNotifications' in user && user.commentNotifications is list

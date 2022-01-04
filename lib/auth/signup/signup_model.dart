@@ -120,7 +120,6 @@ class SignupModel extends ChangeNotifier {
     .set({
       authNotificationsKey: [],
       birthDayKey: timestampBirthDay,
-      browsingHistoryKey: [],
       blocksIpv6AndUidsKey: [],
       bookmarksKey: [],
       commentNotificationsKey: [],
