@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/user_image.dart';
-import 'package:whisper/components/user_show/components/follow/follow_or_edit_button.dart';
+import 'package:whisper/components/user_show/components/details/follow_or_edit_button.dart';
 import 'package:whisper/components/user_show/components/details/link_button.dart';
 // other_pages
 import 'package:whisper/components/user_show/components/other_pages/show_description_page.dart';

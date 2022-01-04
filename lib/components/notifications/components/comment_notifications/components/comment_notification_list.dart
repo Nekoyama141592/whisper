@@ -21,7 +21,7 @@ class CommentNotificationList extends StatelessWidget {
     return ListView.builder(
       itemCount: mainModel.commentNotifications.length,
       itemBuilder: (BuildContext context, int i) => 
-      CommentNotificationCard(notification: mainModel.commentNotifications[i],currentUserDoc: mainModel.currentUserDoc,mainModel: mainModel,)
+      CommentNotificationCard(notification: mainModel.commentNotifications[i],mainModel: mainModel,)
     );
   }
 

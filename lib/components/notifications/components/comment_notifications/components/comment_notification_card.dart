@@ -19,12 +19,10 @@ class CommentNotificationCard extends ConsumerWidget {
   const CommentNotificationCard({
     Key? key,
     required this.notification,
-    required this.currentUserDoc,
     required this.mainModel
   }) : super(key: key);
   
   final Map<String,dynamic> notification;
-  final DocumentSnapshot currentUserDoc;
   final MainModel mainModel;
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
@@ -33,6 +31,7 @@ class CommentNotificationCard extends ConsumerWidget {
     final String notificationId = notification[notificationIdKey];
     final OnePostModel onePostModel = watch(onePostProvider);
     final OneCommentModel oneCommentModel = watch(oneCommentProvider);
+    final currentUserDoc = mainModel.currentUserDoc;
     
     return Card(
       child: Column(
