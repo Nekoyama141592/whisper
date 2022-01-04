@@ -9,6 +9,8 @@ import 'package:whisper/components/notifications/components/reply_notifications/
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
+import 'package:whisper/components/notifications/components/reply_notifications/reply_notifications_model.dart';
+import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications_model.dart';
 
 class NotificationsPage extends StatelessWidget {
 
@@ -16,10 +18,14 @@ class NotificationsPage extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
+    required this.replyNotificationsModel,
+    required this.commentNotificationsModel
   });
 
   final MainModel mainModel;
   final ThemeModel themeModel;
+  final ReplyNotificationsModel replyNotificationsModel;
+  final CommentNotificationsModel commentNotificationsModel;
 
   @override  
   Widget build(BuildContext context) {
@@ -54,8 +60,8 @@ class NotificationsPage extends StatelessWidget {
         drawer: WhisperDrawer(mainModel: mainModel,themeModel: themeModel),
         body: TabBarView(
           children: [
-            CommentNotifications(mainModel: mainModel,),
-            ReplyNotifications(replyNotifications: mainModel.replyNotifications, mainModel: mainModel,),
+            CommentNotifications(mainModel: mainModel, commentNotificationsModel: commentNotificationsModel),
+            ReplyNotifications(replyNotificationsModel: replyNotificationsModel, mainModel: mainModel)
           ]
         ),
       ),

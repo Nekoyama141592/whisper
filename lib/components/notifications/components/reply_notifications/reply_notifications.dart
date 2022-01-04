@@ -1,31 +1,44 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 // component
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_list.dart';
+import 'package:whisper/components/notifications/details/notification_card.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/components/notifications/components/reply_notifications/reply_notifications_model.dart';
 
 class ReplyNotifications extends StatelessWidget {
 
   const ReplyNotifications({
     Key? key,
-    required this.replyNotifications,
+    required this.replyNotificationsModel,
     required this.mainModel
   }) : super(key: key);
 
-  final List<dynamic> replyNotifications;
   final MainModel mainModel;
+  final ReplyNotificationsModel replyNotificationsModel;
 
   @override 
   Widget build(BuildContext context) {
-    final list = replyNotifications;
-    final content = ReplyNotificationList(notifications: replyNotifications,mainModel: mainModel,);
+    final notifications = replyNotificationsModel.notificationDocs;
+    final content = ListView.builder(
+      itemCount: notifications.length,
+      itemBuilder: (BuildContext context, int i) {
+        final notification = notifications[i];
+        return NotificationCard(giveCommentId: notification[elementIdKey], firstSubTitle: notification[commentKey], secondSubTitle: notification[replyKey], notification: notification, mainModel: mainModel);
+      }
+    );
     final reload = () async {
-      // await mainModel.regetNotifications();
+      await replyNotificationsModel.onReload();
     };
-    return list.isEmpty ?
-    Nothing(reload: reload)
-    : content;
+    return replyNotificationsModel.isLoading ?
+    SizedBox.shrink()
+    : Container(
+      child: notifications.isEmpty ?
+      Nothing(reload: reload)
+      : content,
+    );
   }
 }

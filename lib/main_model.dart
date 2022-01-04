@@ -34,9 +34,6 @@ class MainModel extends ChangeNotifier {
   List<String> readNotificationIds = [];
   List<dynamic> likedReplys = [];
   List<dynamic> likedReplyIds = [];
-  // notifications
-  List<dynamic> commentNotifications = [];
-  List<dynamic> replyNotifications = [];
   // mutes 
   List<dynamic> mutesUids = [];
   List<dynamic> mutesIpv6s = [];

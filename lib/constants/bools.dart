@@ -1,4 +1,4 @@
-// packages
+// package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
@@ -28,15 +28,15 @@ bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic
   return ( !mutesUids.contains(myUid) && blocksUids.contains(myUid) && passiveBlocksUids.contains(myUid) );
 }
 
-bool newNotificationExists({ required MainModel mainModel }) {
+bool newNotificationExists({ required MainModel mainModel,required List<dynamic> commentNotifications,required List<dynamic> replyNotifications }) {
   bool x = false;
-  mainModel.replyNotifications.forEach((replyNotification) {
+  replyNotifications.forEach((replyNotification) {
     final notificationId = replyNotification[notificationIdKey];
     if (!mainModel.readNotificationIds.contains(notificationId)) {
       x = true;
     }
   });
-  mainModel.commentNotifications.forEach((commentNotification) {
+  commentNotifications.forEach((commentNotification) {
     final notificationId = commentNotification[notificationIdKey];
     if (!mainModel.readNotificationIds.contains(notificationId)) {
       x = true;

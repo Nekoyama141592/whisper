@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // package
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/user_image.dart';
@@ -27,7 +28,7 @@ class NotificationCard extends ConsumerWidget {
   final String giveCommentId;
   final String firstSubTitle;
   final String secondSubTitle;
-  final Map<String,dynamic> notification;
+  final DocumentSnapshot<Map<String,dynamic>> notification;
   final MainModel mainModel;
 
   @override
@@ -56,7 +57,7 @@ class NotificationCard extends ConsumerWidget {
             subtitle: Text(secondSubTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
             onTap: () async {
               final String givePostId = notification[postIdKey];
-              await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification, oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: giveCommentId, givePostId: givePostId);
+              await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification.data()!, oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: giveCommentId, givePostId: givePostId);
             },
           )
         ],
