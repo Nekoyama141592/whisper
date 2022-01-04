@@ -122,7 +122,6 @@ class SignupModel extends ChangeNotifier {
       birthDayKey: timestampBirthDay,
       blocksIpv6AndUidsKey: [],
       bookmarksKey: [],
-      commentNotificationsKey: [],
       createdAtKey: Timestamp.now(),
       descriptionKey: '',
       dmStateKey: onlyFollowingAndFollowedString,
@@ -146,7 +145,6 @@ class SignupModel extends ChangeNotifier {
       readNotificationIdsKey: [],
       readPostsKey: [],
       recommendStateKey: recommendableString,
-      replyNotificationsKey: [],
       scoreKey: defaultScore,
       searchHistoryKey: [],
       storageImageNameKey: storageImageName, // use on lib/auth/account/account_model.dart
