@@ -136,7 +136,6 @@ class SignupModel extends ChangeNotifier {
       isKeyAccountKey: false,
       isNFTiconKey: false,
       isOfficialKey: false,
-      isSubAdminKey: false,
       languageKey: language,
       likedCommentsKey: [],
       likedReplysKey: [],

@@ -6,7 +6,7 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 39 // max48
+    return user.size() == 38 // max48
     && 'authNotifications' in user && user.authNotifications is list
     && 'birthDay' in user && user.birthDay is timestamp
     && 'browsingHistory' in user && user.browsingHistory is list
@@ -25,7 +25,6 @@ service cloud.firestore {
     && 'isKeyAccount' in user && user.isKeyAccount is bool
     && 'isNFTicon' in user && user.isNFTicon is bool
     && 'isOfficial' in user && user.isOfficial is bool
-    && 'isSubAdmin' in user && user.isSubAdmin is bool
     && 'language' in user && user.language is string
     && 'likedComments' in user && user.likedComments is list
     && 'likedReplys' in user && user.likedReplys is list

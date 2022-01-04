@@ -47,7 +47,6 @@ const String isNFTiconKey = 'isNFTicon';
 const String isOfficialKey = 'isOfficial';
 const String isPinnedKey = 'isPinned';
 const String isPlayedCountKey = 'isPlayedCount';
-const String isSubAdminKey = 'isSubAdmin'; // delete
 const String languageKey = 'language';
 const String likedCommentsKey = 'likedComments';
 const String likedPostIdKey = 'likedPostId';
