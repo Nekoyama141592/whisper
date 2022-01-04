@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // component
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/components/notifications/details/notification_judge_screen.dart';
 import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_list.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -27,6 +26,6 @@ class ReplyNotifications extends StatelessWidget {
     };
     return list.isEmpty ?
     Nothing(reload: reload)
-    : NotificationJudgeScreen(list: list, content: content,reload: reload);
+    : content;
   }
 }

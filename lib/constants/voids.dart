@@ -427,6 +427,26 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
   });
 }
 
+Future<void> processNewDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+  await query.limit(oneTimeReadCount).endBeforeDocument(docs.first).get().then((qshot) {
+    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
+  });
+}
+
+Future<void> processBasicDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+  await query.limit(oneTimeReadCount).get().then((qshot) {
+    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
+  });
+}
+
+Future<void> processOldDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+  await query.limit(oneTimeReadCount).startAfterDocument(docs.last).get().then((qshot) {
+    final queryDocs = qshot.docs;
+    queryDocs.reversed;
+    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
+  });
+}
+
 Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile, required String storageImageName }) async {
   // can`t be given mainModel because of lib/auth/signup/signup_model.dart
   String getDownloadURL = '';

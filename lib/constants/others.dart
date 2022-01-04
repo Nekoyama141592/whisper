@@ -94,3 +94,11 @@ DocumentReference<Map<String, dynamic>> commentNotificationRef({ required String
 DocumentReference<Map<String, dynamic>> replyNotificationRef({ required String passiveUid , required String notificationId}) {
   return FirebaseFirestore.instance.collection(userMetaKey).doc(passiveUid).collection(replyNotificationsKey).doc(notificationId);
 }
+
+CollectionReference<Map<String, dynamic>>  commentNotificationsParentRef({ required String uid }) {
+  return FirebaseFirestore.instance.collection(usersKey).doc(uid).collection(commentNotificationsKey);
+}
+
+CollectionReference<Map<String, dynamic>>  replyNotificationsParentRef({ required String uid }) {
+  return FirebaseFirestore.instance.collection(usersKey).doc(uid).collection(replyNotificationsKey);
+}
