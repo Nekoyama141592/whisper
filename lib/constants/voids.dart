@@ -17,6 +17,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
+// domain
+import 'package:whisper/domain/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -559,4 +561,8 @@ Future follow(
       .update({
       followingUidsKey: followingUids,
     });
+  }
+
+  Future<WhisperUser> fromMaprToWhisperUser({ required Map<String,dynamic> userMap }) async {
+    return WhisperUser.fromJson(userMap);
   }
