@@ -8,8 +8,8 @@ class ManyUpdatePost {
   ManyUpdatePost({
     required this.audioURL,
     required this.bookmarks,
-    required this.bookmarksCount,
-    required this.commentsCount,
+    required this.bookmarkCount,
+    required this.commentCount,
     required this.commentsState,
     required this.country,
     required this.description,
@@ -24,7 +24,7 @@ class ManyUpdatePost {
     required this.isOfficial,
     required this.isPinned,
     required this.likes,
-    required this.likesCount,
+    required this.likeCount,
     required this.link,
     required this.noDisplayWords,
     required this.noDisplayIpv6AndUids,
@@ -43,8 +43,8 @@ class ManyUpdatePost {
   });
   final String audioURL;
   final List<dynamic> bookmarks;
-  final int bookmarksCount;
-  final int commentsCount;
+  final int bookmarkCount;
+  final int commentCount;
   final String commentsState;
   final String country;
   final String description;
@@ -58,7 +58,7 @@ class ManyUpdatePost {
   final bool isOfficial;
   final bool isPinned;
   final List<dynamic> likes;
-  final int likesCount;
+  final int likeCount;
   final String link;
   final List<dynamic> noDisplayWords;
   final List<dynamic> noDisplayIpv6AndUids;

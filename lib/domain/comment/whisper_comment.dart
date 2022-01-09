@@ -18,7 +18,7 @@ class WhisperComment {
     required this.passiveUid,
     required this.positiveScore,
     required this.postId,
-    required this.replysCount,
+    required this.replyCount,
     required this.score,
     required this.subUserName,
     required this.uid,
@@ -37,7 +37,7 @@ class WhisperComment {
   final String passiveUid;
   final double positiveScore;
   final String postId;
-  final int replysCount;
+  final int replyCount;
   final double score;
   final String subUserName;
   final String uid;

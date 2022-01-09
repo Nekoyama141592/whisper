@@ -194,7 +194,7 @@ class ReplysModel extends ChangeNotifier {
   Future onLoading(Map<String,dynamic> thisComment) async {
     limitIndex += oneTimeReadCount;
     switch(sortState) {
-      case SortState.byLikedUidsCount:
+      case SortState.byLikedUidCount:
       replysStream = FirebaseFirestore.instance
       .collection(replysKey)
       .where(elementIdKey,isEqualTo: thisComment[commentIdKey])

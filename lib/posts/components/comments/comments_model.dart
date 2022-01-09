@@ -147,7 +147,7 @@ class CommentsModel extends ChangeNotifier {
       passiveUidKey: currentSongMap[uidKey],
       positiveScoreKey: 0,
       postIdKey: currentSongMap[postIdKey],
-      replysCountKey: 0,
+      replyCountKey: 0,
       scoreKey: defaultScore,
       subUserNameKey: currentUserDoc[subUserNameKey],
       uidKey: currentUserDoc[uidKey],
@@ -261,7 +261,7 @@ class CommentsModel extends ChangeNotifier {
               onPressed: () async {
                 Navigator.pop(context);
                 commentDocs = [];
-                sortState = SortState.byLikedUidsCount;
+                sortState = SortState.byLikedUidCount;
                 await FirebaseFirestore.instance
                 .collection(commentsKey)
                 .where(postIdKey,isEqualTo: postId)
@@ -346,7 +346,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> onRefresh(BuildContext context,Map<String,dynamic> currentSongMap) async {
     switch(sortState) {
-      case SortState.byLikedUidsCount:
+      case SortState.byLikedUidCount:
       break;
       case SortState.byNewestFirst:
       QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
@@ -373,7 +373,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> onLoading(Map<String,dynamic> currentSongMap) async {
     switch(sortState) {
-      case SortState.byLikedUidsCount:
+      case SortState.byLikedUidCount:
       await FirebaseFirestore.instance
       .collection(commentsKey)
       .where(postIdKey,isEqualTo: currentSongMap[postIdKey])

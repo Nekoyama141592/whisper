@@ -55,7 +55,7 @@ final db = ['db': {
             createdAt: TimeStamp,
             uid: String,
         }],
-        'likesCount': int,
+        'likeCount': int,
         'link': String,
         'noDisplayWords': list,
         'noDisplayIpv6AndUids': list,

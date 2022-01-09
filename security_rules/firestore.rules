@@ -14,7 +14,7 @@ service cloud.firestore {
     && 'createdAt' in user && user.createdAt is timestamp
     && 'description' in user && user.description is string
     && 'dmState' in user && user.dmState is string
-    && 'followersCount' in user && user.followersCount is int
+    && 'followerCount' in user && user.followerCount is int
     && 'followingUids' in user && user.followingUids is list
     && 'gender' in user && user.gender is string
     && 'imageURL' in user && user.imageURL is string
@@ -65,7 +65,7 @@ service cloud.firestore {
     && 'isOfficial' in post && post.isOfficial is bool
     && 'isPinned' in post && post.isPinned is bool // un used
     && 'likes' in post && post.likes is list
-    && 'likesCount' in post && post.likesCount is int
+    && 'likeCount' in post && post.likeCount is int
     && 'link' in post && post.link is string
     && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayIpv6AndUids' in post && post.noDisplayIpv6AndUids is list
@@ -92,7 +92,7 @@ service cloud.firestore {
     && 'comment' in comment && comment.comment is string
     && 'commentId' in comment && comment.commentId is string
     && 'createdAt' in comment && comment.createdAt is timestamp
-    && 'followersCount' in comment && comment.followersCount is int
+    && 'followerCount' in comment && comment.followerCount is int
     && 'ipv6' in comment && comment.ipv6 is string
     && 'isDelete' in comment && comment.isDelete is bool
     && 'isNFTicon' in comment && comment.isNFTicon is bool
@@ -116,7 +116,7 @@ service cloud.firestore {
     && 'elementId' in reply && reply.elementId is string // commentId
     && 'elementState' in reply && reply.elementState is string
     && 'createdAt' in reply && reply.createdAt is timestamp
-    && 'followersCount' in reply && reply.followersCount is int
+    && 'followerCount' in reply && reply.followerCount is int
     && 'ipv6' in reply && reply.ipv6 is string
     && 'isDelete' in reply && reply.isDelete is bool
     && 'isNFTicon' in reply && reply.isNFTicon is bool

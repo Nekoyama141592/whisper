@@ -1,2 +1,2 @@
-enum SortState { byLikedUidsCount, byNewestFirst,byOldestFirst }
+enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
 enum PostType { bookmarks, feeds, myProfile, postSearch, recommenders, userShow } 
