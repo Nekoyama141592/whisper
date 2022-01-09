@@ -21,7 +21,7 @@ class ReplyLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
 
-    final likesUidsCount = thisReply[likesUidsCountKey];
+    final likesUidsCount = thisReply[likesUidCountKey];
 
     return mainModel.likedReplyIds.contains(thisReply[replyIdKey]) ?
     Padding(

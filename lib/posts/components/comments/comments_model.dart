@@ -142,7 +142,7 @@ class CommentsModel extends ChangeNotifier {
       isDeleteKey: false,
       isNFTiconKey: currentUserDoc[isNFTiconKey],
       isOfficialKey: currentUserDoc[isOfficialKey],
-      likesUidsCountKey: 0,
+      likesUidCountKey: 0,
       negativeScoreKey: 0,
       passiveUidKey: currentSongMap[uidKey],
       positiveScoreKey: 0,
@@ -265,7 +265,7 @@ class CommentsModel extends ChangeNotifier {
                 await FirebaseFirestore.instance
                 .collection(commentsKey)
                 .where(postIdKey,isEqualTo: postId)
-                .orderBy(likesUidsCountKey,descending: true )
+                .orderBy(likesUidCountKey,descending: true )
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -377,7 +377,7 @@ class CommentsModel extends ChangeNotifier {
       await FirebaseFirestore.instance
       .collection(commentsKey)
       .where(postIdKey,isEqualTo: currentSongMap[postIdKey])
-      .orderBy(likesUidsCountKey,descending: true )
+      .orderBy(likesUidCountKey,descending: true )
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {

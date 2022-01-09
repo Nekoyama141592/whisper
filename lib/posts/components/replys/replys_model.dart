@@ -102,7 +102,7 @@ class ReplysModel extends ChangeNotifier {
                 replysStream = FirebaseFirestore.instance
                 .collection(replysKey)
                 .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
-                .orderBy(likesUidsCountKey,descending: true )
+                .orderBy(likesUidCountKey,descending: true )
                 .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
@@ -198,7 +198,7 @@ class ReplysModel extends ChangeNotifier {
       replysStream = FirebaseFirestore.instance
       .collection(replysKey)
       .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
-      .orderBy(likesUidsCountKey,descending: true )
+      .orderBy(likesUidCountKey,descending: true )
       .limit(limitIndex)
       .snapshots();
       break;
@@ -263,7 +263,7 @@ class ReplysModel extends ChangeNotifier {
       isDeleteKey: false,
       isNFTiconKey: currentUserDoc[isNFTiconKey],
       isOfficialKey: currentUserDoc[isOfficialKey],
-      likesUidsCountKey: 0,
+      likesUidCountKey: 0,
       negativeScoreKey: 0,
       passiveUidKey: currentSongMap[uidKey],
       postIdKey: currentSongMap[postIdKey],
