@@ -18,6 +18,12 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 // domain
+import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/reply/whipser_reply.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/many_update_post/many_update_post.dart';
+import 'package:whisper/domain/whisper_user_meta/whisper_user_meta.dart';
+import 'package:whisper/domain/whisper_many_update_user/whisper_many_update_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -563,8 +569,26 @@ Future follow(
     });
   }
 
-  Future<WhisperUser> fromMaprToWhisperUser({ required Map<String,dynamic> userMap }) async {
+  WhisperUser fromMaprToWhisperUser({ required Map<String,dynamic> userMap }) {
     return WhisperUser.fromJson(userMap);
+  }
+  WhisperComment fromMaprToWhisperComment({ required Map<String,dynamic> userMap }) {
+    return WhisperComment.fromJson(userMap);
+  }
+  ManyUpdatePost fromMaprToManyUpdatePost({ required Map<String,dynamic> userMap }) {
+    return ManyUpdatePost.fromJson(userMap);
+  }
+  Post fromMaprToPost({ required Map<String,dynamic> userMap }) {
+    return Post.fromJson(userMap);
+  }
+  WhisperReply fromMaprToWhisperReply({ required Map<String,dynamic> userMap }) {
+    return WhisperReply.fromJson(userMap);
+  }
+  WhisperManyUpdateUser fromMaprToManyUpdateUser({ required Map<String,dynamic> userMap }) {
+    return WhisperManyUpdateUser.fromJson(userMap);
+  }
+  WhisperUserMeta fromMaprToWhisperUserMeta({ required Map<String,dynamic> userMap }) {
+    return WhisperUserMeta.fromJson(userMap);
   }
 
   DateTime toDateTimeCreatedAt({ required Map<String,dynamic> json }) {
