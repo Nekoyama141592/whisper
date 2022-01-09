@@ -23,10 +23,10 @@ class MainModel extends ChangeNotifier {
   late SharedPreferences prefs;
 
   List<String> likedPostIds = [];
-  List<String> bookmarkedPostIds = [];
+  List<String> bookmarksPostIds = [];
   List<dynamic> followingUids = [];
-  List<dynamic> likedCommentIds = [];
-  List<dynamic> likedComments = [];
+  List<dynamic> likeCommentIds = [];
+  List<dynamic> likeComments = [];
   List<dynamic> bookmarks = [];
   List<dynamic> likes = [];
   List<dynamic> readPosts = [];
@@ -57,7 +57,7 @@ class MainModel extends ChangeNotifier {
     getReadNotificationIds();
     getLikedPostIds();
     getLikesReplys();
-    getBookmarkedPostIds();
+    getBookmarksPostIds();
     getFollowingUids();
     getLikedCommentIds();
     getReadPost();
@@ -97,12 +97,12 @@ class MainModel extends ChangeNotifier {
     }
   }
 
-  void getBookmarkedPostIds() {
+  void getBookmarksPostIds() {
     
     try{
       bookmarks = currentUserDoc[bookmarksKey];
       bookmarks.forEach((bookmark) {
-        bookmarkedPostIds.add(bookmark[postIdKey]);
+        bookmarksPostIds.add(bookmark[postIdKey]);
       });
       notifyListeners();
     } catch(e) {
@@ -116,9 +116,9 @@ class MainModel extends ChangeNotifier {
   }
 
   void getLikedCommentIds() {
-    likedComments = currentUserDoc[likedCommentsKey];
-    likedComments.forEach((likedComment) {
-      likedCommentIds.add(likedComment[commentIdKey]);
+    likeComments = currentUserDoc[likeCommentsKey];
+    likeComments.forEach((likedComment) {
+      likeCommentIds.add(likedComment[commentIdKey]);
     });
     notifyListeners();
   }

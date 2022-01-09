@@ -208,7 +208,7 @@ class CommentsModel extends ChangeNotifier {
     likedComments.add(map);
     await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
     .update({
-      likedCommentsKey: likedComments,
+      likeCommentsKey: likedComments,
     });
   }
 
@@ -229,7 +229,7 @@ class CommentsModel extends ChangeNotifier {
   Future<void> removeLikedCommentsFromCurrentUser(String commentId,List<dynamic> likedComments,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
     likedComments.removeWhere((likedComment) => likedComment[commentIdKey] == commentId);
     await FirebaseFirestore.instance.collection(commentsKey).doc(commentId).update({
-      likedCommentsKey: likedComments,
+      likeCommentsKey: likedComments,
     });
   }
 

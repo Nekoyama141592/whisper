@@ -109,7 +109,7 @@ class PostShowPage extends ConsumerWidget {
                       AudioStateDesign(
                         speedNotifier: speedNotifier,
                         speedControll: speedControll,
-                        bookmarkedPostIds: mainModel.bookmarkedPostIds,
+                        bookmarkedPostIds: mainModel.bookmarksPostIds,
                         likedPostIds: mainModel.likedPostIds,
                         currentSongMapNotifier: currentSongMapNotifier,
                         progressNotifier: progressNotifier,
