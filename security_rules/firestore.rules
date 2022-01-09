@@ -64,16 +64,16 @@ service cloud.firestore {
     && 'isNFTicon' in post && post.isNFTicon is bool
     && 'isOfficial' in post && post.isOfficial is bool
     && 'isPinned' in post && post.isPinned is bool // un used
-    && 'isPlayedCount' in post && post.isPlayedCount is int
     && 'likes' in post && post.likes is list
     && 'likesCount' in post && post.likesCount is int
     && 'link' in post && post.link is string
     && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayIpv6AndUids' in post && post.noDisplayIpv6AndUids is list
-    && 'negativeScore' in post && post.negativeScore is int // un used
+    && 'negativeScore' in post && post.negativeScore is float // un used
     && 'otherLinks' in post && post.otherLinks is list // un used
+    && 'playCount' in post && post.playCount is int
     && 'postId' in post && post.postId is string
-    && 'positiveScore' in post && post.positiveScore is int
+    && 'positiveScore' in post && post.positiveScore is float
     && 'score' in post && post.score is float
     && 'storageImageName' in post && post.storageImageName is string
     && 'storagePostName' in post && post.storagePostName is string
@@ -98,9 +98,9 @@ service cloud.firestore {
     && 'isNFTicon' in comment && comment.isNFTicon is bool
     && 'isOfficial' in comment && comment.isOfficial is bool
     && 'likesUidsCount' in comment && comment.likesUidsCount is int
-    && 'negativeScore' in comment && comment.negativeScore is int
+    && 'negativeScore' in comment && comment.negativeScore is float
     && 'passiveUid' in comment && comment.passiveUid is string
-    && 'positiveScore' in comment && comment.positiveScore is int
+    && 'positiveScore' in comment && comment.positiveScore is float
     && 'postId' in comment && comment.postId is string
     && 'replysCount' in comment && comment.replysCount is int
     && 'score' in comment && comment.score is float
@@ -122,10 +122,10 @@ service cloud.firestore {
     && 'isNFTicon' in reply && reply.isNFTicon is bool
     && 'isOfficial' in reply && reply.isOfficial is bool
     && 'likesUidsCount' in reply && reply.likesUidsCount is int
-    && 'negativeScore' in reply && reply.negativeScore is int
+    && 'negativeScore' in reply && reply.negativeScore is float
     && 'passiveUid' in reply && reply.passiveUid is string
     && 'postId' in reply && reply.postId is string
-    && 'positiveScore' in reply && reply.positiveScore is int
+    && 'positiveScore' in reply && reply.positiveScore is float
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string
     && 'score' in reply && reply.score is float
