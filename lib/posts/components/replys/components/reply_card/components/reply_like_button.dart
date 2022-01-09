@@ -21,7 +21,7 @@ class ReplyLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
 
-    final likesUidsCount = thisReply[likesUidCountKey];
+    final likeCount = thisReply[likeCountKey];
 
     return mainModel.likedReplyIds.contains(thisReply[replyIdKey]) ?
     Padding(
@@ -41,7 +41,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: 5.0),
           Text(
-            likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
+            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
             style: TextStyle(color: Colors.red)
           )
         ],
@@ -60,7 +60,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: 5.0),
           Text(
-            likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
+            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
           )
         ],
       ),

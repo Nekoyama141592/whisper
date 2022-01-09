@@ -52,7 +52,6 @@ const String likedReplyIdKey = 'likedReplyId';
 const String likedReplysKey = 'likedReplys';
 const String likesKey = 'likes';
 const String likeCountKey = 'likeCount';
-const String likesUidCountKey = 'likesUidCount';
 const String linkKey = 'link';
 const String mutesCommentIdsKey = 'mutesCommentIds';
 const String mutesIpv6AndUidsKey = 'mutesIpv6AndUids';

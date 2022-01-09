@@ -49,8 +49,8 @@ service cloud.firestore {
     return post.size() == 37
     && 'audioURL' in post && post.audioURL is string
     && 'bookmarks' in post && post.bookmarks is list
-    && 'bookmarksCount' in post && post.bookmarksCount is int
-    && 'commentsCount' in post && post.commentsCount is int // un used
+    && 'bookmarkCount' in post && post.bookmarkCount is int
+    && 'commentCount' in post && post.commentCount is int // un used
     && 'commentsState' in post && post.commentsState is string
     && 'createdAt' in post && post.createdAt is timestamp
     && 'country' in post && post.country is string
@@ -97,12 +97,12 @@ service cloud.firestore {
     && 'isDelete' in comment && comment.isDelete is bool
     && 'isNFTicon' in comment && comment.isNFTicon is bool
     && 'isOfficial' in comment && comment.isOfficial is bool
-    && 'likesUidsCount' in comment && comment.likesUidsCount is int
+    && 'likeCount' in comment && comment.likeCount is int
     && 'negativeScore' in comment && comment.negativeScore is float
     && 'passiveUid' in comment && comment.passiveUid is string
     && 'positiveScore' in comment && comment.positiveScore is float
     && 'postId' in comment && comment.postId is string
-    && 'replysCount' in comment && comment.replysCount is int
+    && 'replyCount' in comment && comment.replyCount is int
     && 'score' in comment && comment.score is float
     && 'subUserName' in comment && comment.subUserName is string
     && 'uid' in comment && comment.uid is string
@@ -121,7 +121,7 @@ service cloud.firestore {
     && 'isDelete' in reply && reply.isDelete is bool
     && 'isNFTicon' in reply && reply.isNFTicon is bool
     && 'isOfficial' in reply && reply.isOfficial is bool
-    && 'likesUidsCount' in reply && reply.likesUidsCount is int
+    && 'likeCount' in reply && reply.likeCount is int
     && 'negativeScore' in reply && reply.negativeScore is float
     && 'passiveUid' in reply && reply.passiveUid is string
     && 'postId' in reply && reply.postId is string

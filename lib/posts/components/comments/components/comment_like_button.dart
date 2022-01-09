@@ -28,8 +28,8 @@ class CommentLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final commentId = comment[commentIdKey];
-    final likesUidsCount = comment[likesUidCountKey];
-    final plusOneCount = likesUidsCount + plusOne;
+    final likeCount = comment[likeCountKey];
+    final plusOneCount = likeCount + plusOne;
     return likedCommentIds.contains(commentId) ?
     Padding(
       padding: const EdgeInsets.symmetric(
@@ -64,7 +64,7 @@ class CommentLikeButton extends StatelessWidget {
           ),
           SizedBox(width: 5.0),
           Text(
-            likesUidsCount >= 10000 ? (likesUidsCount/1000.floor()/10).toString() + '万' :  likesUidsCount.toString(),
+            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
           )
         ],
       ),
