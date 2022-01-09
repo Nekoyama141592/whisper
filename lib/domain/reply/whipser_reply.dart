@@ -13,7 +13,7 @@ class WhisperReply {
     required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
-    required this.likesUidCount,
+    required this.likeCount,
     required this.negativeScore,
     required this.passiveUid,
     required this.postId,
@@ -33,7 +33,7 @@ class WhisperReply {
   final bool isDelete;
   final bool isNFTicon;
   final bool isOfficial;
-  final int likesUidCount;
+  final int likeCount;
   final double negativeScore;
   final String passiveUid;
   final String postId;

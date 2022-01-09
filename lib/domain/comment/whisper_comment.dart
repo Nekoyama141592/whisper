@@ -13,7 +13,7 @@ class WhisperComment {
     required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
-    required this.likesUidCount,
+    required this.likeCount,
     required this.negativeScore,
     required this.passiveUid,
     required this.positiveScore,
@@ -32,7 +32,7 @@ class WhisperComment {
   final bool isDelete;
   final bool isNFTicon;
   final bool isOfficial;
-  final int likesUidCount;
+  final int likeCount;
   final double negativeScore;
   final String passiveUid;
   final double positiveScore;
