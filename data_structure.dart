@@ -1,11 +1,9 @@
-// constants
-import 'package:whisper/constants/strings.dart';
-final db = 'db': {
+final db = ['db': {
     'comments': [{
         'comment': String,
         'commentId': String,
         'createdAt': TimeStamp,
-        'followersCount': int,
+        'followerCount': int,
         'ipv6': String,
         'isDelete': false,
         'isNFTicon': false,
@@ -84,7 +82,7 @@ final db = 'db': {
         'elementId': String,
         'elementState': String [ comment ],
         'createdAt': TimeStamp,
-        'followersCount': int,
+        'followerCount': int,
         'ipv6': String,
         'isDelete': bool,
         'isNFTicon': bool,
@@ -120,7 +118,7 @@ final db = 'db': {
             'comment': String,
             'commentId': String,
             'commentScore': int,
-            'followersCount': int,
+            'followerCount': int,
             'isDelete': bool,
             'isNFTicon': bool,
             'isOfficial': bool,
@@ -137,7 +135,7 @@ final db = 'db': {
         'description': String,
         'dmState': ['onlyFollowingAndFollowed','open'],
         'followNotifications': [],
-        'followersCount': int,
+        'followerCount': int,
         'followingUids': [
             String
         ],
@@ -187,7 +185,7 @@ final db = 'db': {
             'createdAt': TimeStamp,
             'elementId': String,
             'elementState': String,
-            'followersCount': int,
+            'followerCount': int,
             'isDelete': bool,
             'isNFTicon': bool,
             'isOfficial': bool,
@@ -203,7 +201,7 @@ final db = 'db': {
             'userImageURL': String,
         }],
         'score': int,
-        'searchHistory': List<String>,
+        'searchHistory': List<dynamic>,
         'storageImageName': String,
         'subUserName': String,
         'uid': String,
@@ -234,4 +232,4 @@ final db = 'db': {
         'intervalSeconds': int,
         'createdAt': TimeStamp,
     }
-}
+}];

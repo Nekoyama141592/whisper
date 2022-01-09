@@ -8,7 +8,7 @@ class WhisperComment {
   WhisperComment({
     required this.comment,
     required this.commentId,
-    required this.followersCount,
+    required this.followerCount,
     required this.ipv6,
     required this.isDelete,
     required this.isNFTicon,
@@ -27,7 +27,7 @@ class WhisperComment {
   });
   final String comment;
   final String commentId;
-  final int followersCount;
+  final int followerCount;
   final String ipv6;
   final bool isDelete;
   final bool isNFTicon;

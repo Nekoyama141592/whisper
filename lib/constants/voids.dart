@@ -514,60 +514,49 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
 }
 
 Future follow(
-      BuildContext context,
-      MainModel mainModel,
-      DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
-    final followingUids = mainModel.followingUids;
-    final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = mainModel.currentUserDoc;
-    if (followingUids.length >= 500) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
-    } else {
-      followingUids.add(passiveUserDoc[uidKey]);
-      mainModel.reload();
-      await updateFollowingUidsOfCurrentUser(
-          followingUids, currentUserDoc, passiveUserDoc);
-      await followerChildRef(
-              passiveUid: passiveUserDoc.id, followerUid: currentUserDoc.id)
-          .set({
-        createdAtKey: Timestamp.now(),
-        followerUidKey: currentUserDoc.id,
-      });
-    }
-  }
-
-  Future unfollow(
-      MainModel mainModel,
-      DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
-    final followingUids = mainModel.followingUids;
-    final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = mainModel.currentUserDoc;
-    followingUids.remove(passiveUserDoc[uidKey]);
+    BuildContext context,
+    MainModel mainModel,
+    DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
+  final followingUids = mainModel.followingUids;
+  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = mainModel.currentUserDoc;
+  if (followingUids.length >= 500) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
+  } else {
+    followingUids.add(passiveUserDoc[uidKey]);
     mainModel.reload();
-    await updateFollowingUidsOfCurrentUser(followingUids, currentUserDoc, passiveUserDoc);
+    await updateFollowingUidsOfCurrentUser(
+        followingUids, currentUserDoc, passiveUserDoc);
     await followerChildRef(
-      passiveUid: passiveUserDoc.id, followerUid: currentUserDoc.id)
-    .delete();
-  }
-
-  Future updateFollowingUidsOfCurrentUser(
-      List<dynamic> followingUids,
-      DocumentSnapshot<Map<String, dynamic>> currentUserDoc,
-      DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
-    await FirebaseFirestore.instance
-      .collection(usersKey)
-      .doc(currentUserDoc.id)
-      .update({
-      followingUidsKey: followingUids,
+            passiveUid: passiveUserDoc.id, followerUid: currentUserDoc.id)
+        .set({
+      createdAtKey: Timestamp.now(),
+      followerUidKey: currentUserDoc.id,
     });
   }
+}
 
-  DateTime toDateTimeCreatedAt({ required Map<String,dynamic> json }) {
-    final Timestamp createdAt = json[createdAtKey];
-    return createdAt.toDate();
-  }
+Future unfollow(
+    MainModel mainModel,
+    DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
+  final followingUids = mainModel.followingUids;
+  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = mainModel.currentUserDoc;
+  followingUids.remove(passiveUserDoc[uidKey]);
+  mainModel.reload();
+  await updateFollowingUidsOfCurrentUser(followingUids, currentUserDoc, passiveUserDoc);
+  await followerChildRef(
+    passiveUid: passiveUserDoc.id, followerUid: currentUserDoc.id)
+  .delete();
+}
 
-  DateTime toDateTimeUpdatedAt({ required Map<String,dynamic> json }) {
-    final Timestamp updatedAt = json[updatedAtKey];
-    return updatedAt.toDate();
-  }
-
+Future updateFollowingUidsOfCurrentUser(
+    List<dynamic> followingUids,
+    DocumentSnapshot<Map<String, dynamic>> currentUserDoc,
+    DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
+  await FirebaseFirestore.instance
+    .collection(usersKey)
+    .doc(currentUserDoc.id)
+    .update({
+    followingUidsKey: followingUids,
+  });
+}

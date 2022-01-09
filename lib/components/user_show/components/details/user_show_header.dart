@@ -32,7 +32,7 @@ class UserShowHeader extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
 
-    final followerCount = passiveUserDoc[followersCountKey];
+    final followerCount = passiveUserDoc[followerCountKey];
     final plusOneCount = followerCount + 1;
 
     return Padding(
@@ -99,7 +99,7 @@ class UserShowHeader extends ConsumerWidget {
               children: [
                 Text(
                   // mainModel.followingUids contains myUid because of lib/components/home/feeds/feeds_model.dart
-                  mainModel.currentUserDoc[uidKey] == passiveUserDoc[uidKey] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc[followersCountKey].toString() + 'following',
+                  mainModel.currentUserDoc[uidKey] == passiveUserDoc[uidKey] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc[followerCountKey].toString() + 'following',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

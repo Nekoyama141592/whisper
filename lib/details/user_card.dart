@@ -20,7 +20,7 @@ class UserCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final followersCount = result[followersCountKey];
+    final followersCount = result[followerCountKey];
     return Container(
       decoration: BoxDecoration(
         boxShadow: [

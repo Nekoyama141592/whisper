@@ -8,7 +8,7 @@ class WhisperReply {
   WhisperReply({
     required this.elementId,
     required this.elementState,
-    required this.followersCount,
+    required this.followerCount,
     required this.ipv6,
     required this.isDelete,
     required this.isNFTicon,
@@ -28,7 +28,7 @@ class WhisperReply {
   });
   final String elementId;
   final String elementState;
-  final int followersCount;
+  final int followerCount;
   final String ipv6;
   final bool isDelete;
   final bool isNFTicon;

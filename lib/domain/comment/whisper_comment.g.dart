@@ -10,7 +10,7 @@ WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
     WhisperComment(
       comment: json['comment'] as String,
       commentId: json['commentId'] as String,
-      followersCount: json['followersCount'] as int,
+      followerCount: json['followerCount'] as int,
       ipv6: json['ipv6'] as String,
       isDelete: json['isDelete'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
@@ -32,7 +32,7 @@ Map<String, dynamic> _$WhisperCommentToJson(WhisperComment instance) =>
     <String, dynamic>{
       'comment': instance.comment,
       'commentId': instance.commentId,
-      'followersCount': instance.followersCount,
+      'followerCount': instance.followerCount,
       'ipv6': instance.ipv6,
       'isDelete': instance.isDelete,
       'isNFTicon': instance.isNFTicon,

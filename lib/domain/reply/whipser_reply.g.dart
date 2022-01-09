@@ -9,7 +9,7 @@ part of 'whipser_reply.dart';
 WhisperReply _$WhisperReplyFromJson(Map<String, dynamic> json) => WhisperReply(
       elementId: json['elementId'] as String,
       elementState: json['elementState'] as String,
-      followersCount: json['followersCount'] as int,
+      followerCount: json['followerCount'] as int,
       ipv6: json['ipv6'] as String,
       isDelete: json['isDelete'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
@@ -32,7 +32,7 @@ Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>
     <String, dynamic>{
       'elementId': instance.elementId,
       'elementState': instance.elementState,
-      'followersCount': instance.followersCount,
+      'followerCount': instance.followerCount,
       'ipv6': instance.ipv6,
       'isDelete': instance.isDelete,
       'isNFTicon': instance.isNFTicon,

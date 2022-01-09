@@ -125,7 +125,7 @@ class SignupModel extends ChangeNotifier {
       createdAtKey: Timestamp.now(),
       descriptionKey: '',
       dmStateKey: onlyFollowingAndFollowedString,
-      followersCountKey: 0,
+      followerCountKey: 0,
       followingUidsKey: [],
       genderKey: gender,
       imageURLKey: imageURL,
