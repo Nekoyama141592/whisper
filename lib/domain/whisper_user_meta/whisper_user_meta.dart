@@ -11,7 +11,7 @@ class WhisperUserMeta {
     required this.isAdmin,
     required this.isDelete,
     required this.likeComments,
-    required this.likedReplys,
+    required this.likeReplys,
     required this.likes,
     required this.language,
     required this.readNotifications,
@@ -23,7 +23,7 @@ class WhisperUserMeta {
   final bool isAdmin;
   final bool isDelete;
   final List<dynamic> likeComments;
-  final List<dynamic> likedReplys;
+  final List<dynamic> likeReplys;
   final List<dynamic> likes;
   final String language;
   final List<dynamic> readNotifications;

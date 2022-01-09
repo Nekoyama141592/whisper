@@ -153,7 +153,7 @@ final db = ['db': {
             createdAt: TimeStamp,
         }],
         'likeNotifications': [],
-        'likedReplys': [{
+        'likeReplys': [{
             'createdAt': TimeStamp,
             'likedReplyId': String,
         }],

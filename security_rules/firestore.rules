@@ -24,8 +24,8 @@ service cloud.firestore {
     && 'isNFTicon' in user && user.isNFTicon is bool
     && 'isOfficial' in user && user.isOfficial is bool
     && 'language' in user && user.language is string
-    && 'likedComments' in user && user.likedComments is list
-    && 'likedReplys' in user && user.likedReplys is list
+    && 'likeComments' in user && user.likeComments is list
+    && 'likeReplys' in user && user.likeReplys is list
     && 'likes' in user && user.likes is list
     && 'link' in user && user.link is string
     && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list

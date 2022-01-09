@@ -110,7 +110,7 @@ class PostShowPage extends ConsumerWidget {
                         speedNotifier: speedNotifier,
                         speedControll: speedControll,
                         bookmarkedPostIds: mainModel.bookmarksPostIds,
-                        likedPostIds: mainModel.likedPostIds,
+                        likePostIds: mainModel.likePostIds,
                         currentSongMapNotifier: currentSongMapNotifier,
                         progressNotifier: progressNotifier,
                         seek: seek,

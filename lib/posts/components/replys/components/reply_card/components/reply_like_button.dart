@@ -23,7 +23,7 @@ class ReplyLikeButton extends StatelessWidget {
 
     final likeCount = thisReply[likeCountKey];
 
-    return mainModel.likedReplyIds.contains(thisReply[replyIdKey]) ?
+    return mainModel.likeReplyIds.contains(thisReply[replyIdKey]) ?
     Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 5.0
@@ -36,7 +36,7 @@ class ReplyLikeButton extends StatelessWidget {
               color: Colors.red
             ),
             onTap: () async {
-              replysModel.unlike(mainModel.likedReplyIds, thisReply, mainModel.currentUserDoc, mainModel.likedReplys);
+              replysModel.unlike(mainModel.likeReplyIds, thisReply, mainModel.currentUserDoc, mainModel.likeReplys);
             },
           ),
           SizedBox(width: 5.0),
@@ -55,7 +55,7 @@ class ReplyLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await replysModel.like(mainModel.likedReplyIds, thisReply, mainModel.currentUserDoc,mainModel.likedReplys);
+              await replysModel.like(mainModel.likeReplyIds, thisReply, mainModel.currentUserDoc,mainModel.likeReplys);
             }
           ),
           SizedBox(width: 5.0),

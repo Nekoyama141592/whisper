@@ -17,7 +17,7 @@ class AudioStateDesign extends StatelessWidget {
     required this.speedNotifier,
     required this.speedControll,
     required this.bookmarkedPostIds,
-    required this.likedPostIds,
+    required this.likePostIds,
     required this.currentSongMapNotifier,
     required this.progressNotifier,
     required this.seek,
@@ -35,7 +35,7 @@ class AudioStateDesign extends StatelessWidget {
   final ValueNotifier<double> speedNotifier;
   final void Function()? speedControll;
   final List bookmarkedPostIds;
-  final List likedPostIds;
+  final List likePostIds;
   final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;

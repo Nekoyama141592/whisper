@@ -136,7 +136,7 @@ class SignupModel extends ChangeNotifier {
       isOfficialKey: false,
       languageKey: language,
       likeCommentsKey: [],
-      likedReplysKey: [],
+      likeReplysKey: [],
       likesKey: [],
       linkKey: '',
       mutesIpv6AndUidsKey: [],

@@ -22,7 +22,7 @@ class MainModel extends ChangeNotifier {
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   late SharedPreferences prefs;
 
-  List<String> likedPostIds = [];
+  List<String> likePostIds = [];
   List<String> bookmarksPostIds = [];
   List<dynamic> followingUids = [];
   List<dynamic> likeCommentIds = [];
@@ -32,8 +32,8 @@ class MainModel extends ChangeNotifier {
   List<dynamic> readPosts = [];
   List<dynamic> readPostIds = [];
   List<String> readNotificationIds = [];
-  List<dynamic> likedReplys = [];
-  List<dynamic> likedReplyIds = [];
+  List<dynamic> likeReplys = [];
+  List<dynamic> likeReplyIds = [];
   // mutes 
   List<dynamic> mutesUids = [];
   List<dynamic> mutesIpv6s = [];
@@ -55,7 +55,7 @@ class MainModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
     getReadNotificationIds();
-    getLikedPostIds();
+    getLikePostIds();
     getLikesReplys();
     getBookmarksPostIds();
     getFollowingUids();
@@ -85,11 +85,11 @@ class MainModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getLikedPostIds() {
+  void getLikePostIds() {
     try{
       likes = currentUserDoc[likesKey];
       likes.forEach((like) {
-        likedPostIds.add(like[likedPostIdKey]);
+        likePostIds.add(like[likePostIdKey]);
       });
       notifyListeners();
     } catch(e) {
@@ -141,9 +141,9 @@ class MainModel extends ChangeNotifier {
   }
 
   void getLikesReplys() {
-    likedReplys = currentUserDoc[likedReplysKey];
-    likedReplys.forEach((likesReply) {
-      likedReplyIds.add(likesReply[likedReplyIdKey]);
+    likeReplys = currentUserDoc[likeReplysKey];
+    likeReplys.forEach((likesReply) {
+      likeReplyIds.add(likesReply[likeReplyIdKey]);
     });
   }
 

@@ -36,7 +36,7 @@ class PostButtons extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedPostIds: mainModel.likedPostIds,likes: mainModel.likes),
+            LikeButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, likedPostIds: mainModel.likePostIds,likes: mainModel.likes),
             BookmarkButton(currentUserDoc: mainModel.currentUserDoc, currentSongMap: currentSongMap, bookmarkedPostIds: mainModel.bookmarksPostIds,bookmarks: mainModel.bookmarks),
             CommentButton(currentSongMap: currentSongMap,mainModel: mainModel,toCommentsPage: toCommentsPage),
             if (mainModel.currentUserDoc[uidKey] == currentSongMap[uidKey]) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),

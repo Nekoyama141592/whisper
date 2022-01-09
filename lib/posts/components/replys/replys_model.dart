@@ -340,13 +340,13 @@ class ReplysModel extends ChangeNotifier {
   Future<void> updateLikedReplysOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisReply,List<dynamic> likedReplys) async {
     try {
       final newLikedReply = {
-        likedReplyIdKey: thisReply[replyIdKey],
+        likeReplyIdKey: thisReply[replyIdKey],
         createdAtKey: Timestamp.now(),
       };
       likedReplys.add(newLikedReply);
       await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
       .update({
-        likedReplysKey: likedReplys,
+        likeReplysKey: likedReplys,
       });
     } catch(e) {
       print(e.toString());
@@ -368,10 +368,10 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future removeLikedReplyOfUser({ required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> likedReplys, required Map<String,dynamic> thisReply }) async {
-    likedReplys.removeWhere((likedReply) => likedReply[likedReplyIdKey] == thisReply[replyIdKey]);
+    likedReplys.removeWhere((likedReply) => likedReply[likeReplyIdKey] == thisReply[replyIdKey]);
     await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
     .update({
-      likedReplysKey: likedReplys,
+      likeReplysKey: likedReplys,
     });
   }
   

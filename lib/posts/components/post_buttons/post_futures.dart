@@ -60,7 +60,7 @@ class PostFutures extends ChangeNotifier{
   
   Future<void> addLikesToCurrentUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
     final Map<String, dynamic> map = {
-      likedPostIdKey: currentSongMap[postIdKey],
+      likePostIdKey: currentSongMap[postIdKey],
       createdAtKey: Timestamp.now(),
     };
     likes.add(map);
@@ -203,7 +203,7 @@ class PostFutures extends ChangeNotifier{
   }
   
   Future<void> removeLikeOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
-    likes.removeWhere((like) => like[likedPostIdKey] == currentSongMap[postIdKey]);
+    likes.removeWhere((like) => like[likePostIdKey] == currentSongMap[postIdKey]);
     await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).update({
       likesKey: likes,
     });
