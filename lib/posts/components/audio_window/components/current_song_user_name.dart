@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 
 class CurrentSongUserName extends StatelessWidget {
   
@@ -19,8 +19,9 @@ class CurrentSongUserName extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
+        final result = fromMapToPost(postMap: currentSongMap);
         return Text(
-          currentSongMap[userNameKey], 
+          result.userName,
           style: TextStyle(
             fontSize: 20
           ),

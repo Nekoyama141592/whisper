@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -20,7 +20,7 @@ class UserCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final followersCount = result[followerCountKey];
+    final passiveWhisperUser = fromMapToWhisperUser(userMap: result);
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -37,28 +37,20 @@ class UserCard extends StatelessWidget {
           children: [
             ListTile(
               // result['objectID']も可
-              leading: RedirectUserImage(userImageURL: result[imageURLKey], length: 50.0, padding: 0.0,passiveUserDocId: result[uidKey],mainModel: mainModel,),
+              leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: 50.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
               title: Text(
-                result[userNameKey],
+                passiveWhisperUser.userName,
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   fontSize: 20.0
                 ),
               ),
               subtitle: Text(
-                result[descriptionKey],
+                passiveWhisperUser.description,
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              trailing: Text(
-                followersCount >= 10000 ? (followersCount/1000.floor()/10).toString() + '万' :  followersCount.toString(),
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
-                  fontWeight: FontWeight.bold,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

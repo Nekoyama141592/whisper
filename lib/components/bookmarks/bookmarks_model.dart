@@ -14,6 +14,9 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
+// domain
+import 'package:whisper/domain/whisper_user_meta/whisper_user_meta.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -26,7 +29,8 @@ final bookmarksProvider = ChangeNotifierProvider(
 class BookmarksModel extends ChangeNotifier {
   
   bool isLoading = false;
-  late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
+  late UserMeta userMeta;
+  // late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarkedPostIds}) {
     final x = postColRef.where(postIdKey, whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
     return x;
@@ -102,11 +106,12 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
+    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
+    userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
   }
 
   void setBookmarkedPostIds() {
-    List maps = currentUserDoc[bookmarksKey];
+    List maps = userMeta.bookmarks;
     maps.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
     maps.forEach((map) {
       bookmarkedPostIds.add(map[postIdKey]);

@@ -61,14 +61,15 @@ class CommentsModel extends ChangeNotifier {
   }
 
   void onFloatingActionButtonPressed({ required BuildContext context, required Map<String,dynamic> currentSongMap, required TextEditingController commentEditingController, required AudioPlayer audioPlayer, required MainModel mainModel }) {
-    final String commentsState = currentSongMap[commentsStateKey];
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final String commentsState = whisperPost.commentsState;
     audioPlayer.pause();
     switch(commentsState){
       case 'open':
       showMakeCommentInputFlashBar(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, mainModel: mainModel);
       break;
       case 'isLocked':
-      if (currentSongMap[uidKey] == mainModel.currentWhisperUser.uid ) {
+      if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
         showMakeCommentInputFlashBar(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, mainModel: mainModel);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
@@ -104,7 +105,8 @@ class CommentsModel extends ChangeNotifier {
   Future<void> makeComment({ required BuildContext context, required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(mainModel: mainModel, currentSongMap: currentSongMap);
-    await FirebaseFirestore.instance.collection(commentsKey).doc(commentMap[commentIdKey]).set(commentMap);
+    final whisperComment = fromMapToWhisperComment(commentMap: commentMap);
+    await FirebaseFirestore.instance.collection(commentsKey).doc(whisperComment.commentId).set(commentMap);
     // notification
     if (currentSongMap[uidKey] != mainModel.currentWhisperUser.uid ) {
       final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
@@ -133,6 +135,7 @@ class CommentsModel extends ChangeNotifier {
 
   Map<String,dynamic> makeCommentMap({ required MainModel mainModel, required Map<String,dynamic> currentSongMap}) {
     final currentWhisperUser = mainModel.currentWhisperUser;
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
     final commentMap = {
       commentKey: comment,
       commentIdKey: commentKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
@@ -144,9 +147,9 @@ class CommentsModel extends ChangeNotifier {
       isOfficialKey: currentWhisperUser.isOfficial,
       likeCountKey: 0,
       negativeScoreKey: 0,
-      passiveUidKey: currentSongMap[uidKey],
+      passiveUidKey: whisperPost.uid,
       positiveScoreKey: 0,
-      postIdKey: currentSongMap[postIdKey],
+      postIdKey: whisperPost.postId,
       replyCountKey: 0,
       scoreKey: defaultScore,
       subUserNameKey: currentWhisperUser.subUserName,

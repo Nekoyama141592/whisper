@@ -7,7 +7,7 @@ import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/bookmarks/components/post_cards.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -35,6 +35,7 @@ class PostScreen extends ConsumerWidget {
     final commentsModel = watch(commentsProvider);
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final postDocs = bookmarksModel.posts;
+    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: bookmarksModel.currentSongMapNotifier.value);
     
     return GradientScreen(
       top: SizedBox.shrink(), 
@@ -73,13 +74,13 @@ class PostScreen extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); }, 
             playButtonNotifier: bookmarksModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: bookmarksModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: bookmarksModel.audioPlayer); }, 
             isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel, bookmarksModel.currentSongMapNotifier.value[postIdKey]);
+              await commentsModel.init(context, bookmarksModel.audioPlayer, bookmarksModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId,);
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: bookmarksModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -92,7 +93,7 @@ class PostScreen extends ConsumerWidget {
         currentSongMapNotifier: bookmarksModel.currentSongMapNotifier,
         playButtonNotifier: bookmarksModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: bookmarksModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: bookmarksModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: bookmarksModel.audioPlayer);

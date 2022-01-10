@@ -129,6 +129,6 @@ WhisperReply fromMapToWhisperReply({ required Map<String,dynamic> replyMap }) {
 WhisperManyUpdateUser fromMapToManyUpdateUser({ required Map<String,dynamic> manyUpdateUserMap }) {
   return WhisperManyUpdateUser.fromJson(manyUpdateUserMap);
 }
-WhisperUserMeta fromMapToWhisperUserMeta({ required Map<String,dynamic> userMetaMap }) {
-  return WhisperUserMeta.fromJson(userMetaMap);
+UserMeta fromMapToUserMeta({ required Map<String,dynamic> userMetaMap }) {
+  return UserMeta.fromJson(userMetaMap);
 }

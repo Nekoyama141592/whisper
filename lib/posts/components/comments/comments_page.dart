@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
@@ -33,6 +33,7 @@ class CommentsPage extends ConsumerWidget {
     final commentsModel = watch(commentsProvider);
     final replysModel = watch(replysProvider);
     final commentEditingController = TextEditingController();
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -57,7 +58,7 @@ class CommentsPage extends ConsumerWidget {
             commentsModel.commentDocs.isEmpty ?
             Expanded(
               child: Nothing(reload: () async {
-                await commentsModel.getCommentDocs(currentSongMap[postIdKey]);
+                await commentsModel.getCommentDocs(whisperPost.postId);
               }),
             )
             : Expanded(

@@ -59,7 +59,9 @@ class ReplysModel extends ChangeNotifier {
     // このPostの投稿主が自分の場合
     // このPostの投稿主とコメントの投稿主が一致している場合
     final currentWhisperUser = mainModel.currentWhisperUser;
-    if (thisComment[uidKey] == currentWhisperUser.uid || currentSongMap[uidKey] == currentWhisperUser.uid || thisComment[uidKey] == currentSongMap[uidKey]) {
+    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
       showMakeReplyInputFlashBar(context: context, currentSongMap: currentSongMap, replyEditingController: replyEditingController, mainModel: mainModel, thisComment: thisComment);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたはこのコメントに返信できません')));
@@ -90,6 +92,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   void showSortDialogue(BuildContext context,Map<String,dynamic> thisComment) {
+    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
     showCupertinoDialog(
       context: context, 
       builder: (context) {
@@ -102,7 +105,7 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
                 .collection(replysKey)
-                .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+                .where(elementIdKey,isEqualTo: whisperComment.commentId )
                 .orderBy(likeCountKey,descending: true )
                 .limit(limitIndex)
                 .snapshots();
@@ -122,7 +125,7 @@ class ReplysModel extends ChangeNotifier {
                 sortState = SortState.byNewestFirst;
                 replysStream = FirebaseFirestore.instance
                 .collection(replysKey)
-                .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+                .where(elementIdKey,isEqualTo: whisperComment.commentId )
                 .orderBy(createdAtKey,descending: true)
                 .limit(limitIndex)
                 .snapshots();
@@ -142,7 +145,7 @@ class ReplysModel extends ChangeNotifier {
                 sortState = SortState.byOldestFirst;
                 replysStream = FirebaseFirestore.instance
                 .collection(replysKey)
-                .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+                .where(elementIdKey,isEqualTo: whisperComment.commentId )
                 .orderBy(createdAtKey,descending: false)
                 .limit(limitIndex)
                 .snapshots();
@@ -179,12 +182,12 @@ class ReplysModel extends ChangeNotifier {
   void getReplysStream({ required BuildContext context, required Map<String,dynamic> thisComment, required ReplysModel replysModel, required Map<String,dynamic> currentSongMap, required MainModel mainModel })  {
     refreshController = RefreshController(initialRefresh: false);
     routes.toReplysPage(context: context, replysModel: replysModel, currentSongMap: currentSongMap, thisComment: thisComment, mainModel: mainModel);
-    giveComment = thisComment;
-    final String commentId = thisComment[commentIdKey];
+    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final String commentId = whisperComment.commentId ;
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = FirebaseFirestore.instance.collection(replysKey).where(elementIdKey,isEqualTo: thisComment[commentIdKey]).orderBy(createdAtKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = FirebaseFirestore.instance.collection(replysKey).where(elementIdKey,isEqualTo: whisperComment.commentId ).orderBy(createdAtKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -194,11 +197,12 @@ class ReplysModel extends ChangeNotifier {
 
   Future onLoading(Map<String,dynamic> thisComment) async {
     limitIndex += oneTimeReadCount;
+    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
     switch(sortState) {
       case SortState.byLikedUidCount:
       replysStream = FirebaseFirestore.instance
       .collection(replysKey)
-      .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+      .where(elementIdKey,isEqualTo: whisperComment.commentId )
       .orderBy(likeCountKey,descending: true )
       .limit(limitIndex)
       .snapshots();
@@ -206,7 +210,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byNewestFirst:
       replysStream = FirebaseFirestore.instance
       .collection(replysKey)
-      .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+      .where(elementIdKey,isEqualTo: whisperComment.commentId )
       .orderBy(createdAtKey,descending: true)
       .limit(limitIndex)
       .snapshots();
@@ -214,7 +218,7 @@ class ReplysModel extends ChangeNotifier {
       case SortState.byOldestFirst:
       replysStream = FirebaseFirestore.instance
       .collection(replysKey)
-      .where(elementIdKey,isEqualTo: thisComment[commentIdKey])
+      .where(elementIdKey,isEqualTo: whisperComment.commentId )
       .orderBy(createdAtKey,descending: false)
       .limit(limitIndex)
       .snapshots();
@@ -225,13 +229,15 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future makeReply({ required Map<String,dynamic> currentSongMap,required MainModel mainModel, required Map<String,dynamic> thisComment}) async {
-    final elementId = thisComment[commentIdKey];
+    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final elementId = whisperComment.commentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final newReplyMap = makeReplyMap(elementId: elementId, mainModel: mainModel, currentSongMap: currentSongMap);
     await addReplyToFirestore(newReplyMap);
     // notification
-    if (currentSongMap[uidKey] != currentWhisperUser.uid) {
+    if (whisperPost.uid != currentWhisperUser.uid) {
       final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
       // blocks
       List<dynamic> blocksIpv6s = [];
@@ -257,6 +263,7 @@ class ReplysModel extends ChangeNotifier {
 
   Map<String,dynamic> makeReplyMap({ required String elementId,required  MainModel mainModel, required Map<String,dynamic> currentSongMap}) {
     final currentWhisperUser = mainModel.currentWhisperUser;
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
     final manyUpdateUser = mainModel.manyUpdateUser;
     final newReplyMap = {
       elementIdKey: elementId,
@@ -269,7 +276,7 @@ class ReplysModel extends ChangeNotifier {
       isOfficialKey: currentWhisperUser.isOfficial,
       likeCountKey: 0,
       negativeScoreKey: 0,
-      passiveUidKey: currentSongMap[uidKey],
+      passiveUidKey: whisperPost.uid,
       postIdKey: currentSongMap[postIdKey],
       positiveScoreKey: 0,
       replyKey: reply,
@@ -292,7 +299,8 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentSongMap[uidKey]).get();
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(whisperPost.uid).get();
     return passiveUserDoc;
   }
 
@@ -300,8 +308,11 @@ class ReplysModel extends ChangeNotifier {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
     final manyUpdateUser = mainModel.manyUpdateUser;
+    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final newWhisperReply = fromMapToWhisperReply(replyMap: newReplyMap);
+    final passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
-    final comment = thisComment[commentKey];
+    final comment = whisperComment.comment;
     Map<String,dynamic> map = {
       commentKey: comment,
       createdAtKey: Timestamp.now(),
@@ -312,22 +323,23 @@ class ReplysModel extends ChangeNotifier {
       isNFTiconKey: currentWhisperUser.isNFTicon,
       isOfficialKey: currentWhisperUser.isOfficial,
       notificationIdKey: notificationId,
-      passiveUidKey: passiveUserDoc[uidKey],
-      postIdKey: thisComment[postIdKey],
+      passiveUidKey: passiveWhisperUser.uid,
+      postIdKey: whisperComment.postId,
       replyKey: reply,
-      replyScoreKey: newReplyMap[scoreKey],
-      replyIdKey: newReplyMap[replyIdKey],
+      replyScoreKey: newWhisperReply.score,
+      replyIdKey: newWhisperReply.replyId,
       subUserNameKey: currentWhisperUser.subUserName,
       uidKey: currentWhisperUser.uid,
       userNameKey: currentWhisperUser.userName,
       userImageURLKey: currentWhisperUser.imageURL
     };
-    await replyNotificationRef(passiveUid: thisComment[uidKey], notificationId: notificationId).set(map);
+    await replyNotificationRef(passiveUid: whisperComment.uid, notificationId: notificationId).set(map);
   }
 
   Future<void> like({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {
     // process UI
-    final replyId = thisReply[replyIdKey];
+    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    final replyId = whisperReply.replyId;
     final List<dynamic> likeReplyIds = mainModel.likeReplyIds;
     likeReplyIds.add(replyId);
     notifyListeners();
@@ -338,7 +350,8 @@ class ReplysModel extends ChangeNotifier {
 
   Future<void> addLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    await likeChildRef(parentColKey: replysKey, uniqueId: thisReply[replyIdKey], activeUid: currentWhisperUser.uid).set({
+    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    await likeChildRef(parentColKey: replysKey, uniqueId: whisperReply.replyId, activeUid: currentWhisperUser.uid).set({
       uidKey: currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
@@ -347,8 +360,9 @@ class ReplysModel extends ChangeNotifier {
 
   Future<void> updateLikeReplysOfUser({ required Map<String,dynamic> thisReply, required MainModel mainModel}) async {
     try {
+      final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
       final newLikedReply = {
-        likeReplyIdKey: thisReply[replyIdKey],
+        likeReplyIdKey: whisperReply.replyId,
         createdAtKey: Timestamp.now(),
       };
       final List<dynamic> likeReplys = mainModel.likeReplys;
@@ -363,7 +377,8 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future<void> unlike({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {
-    final replyId = thisReply[replyIdKey];
+    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    final replyId = whisperReply.replyId;
     final likeReplyIds = mainModel.likeReplyIds;
     // processUI
     likeReplyIds.remove(replyId);
@@ -374,7 +389,8 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: replysKey, uniqueId: thisReply[replyIdKey], activeUid: mainModel.currentWhisperUser.uid).delete();
+    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    await likeChildRef(parentColKey: replysKey, uniqueId: whisperReply.replyId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
   Future removeLikedReplyOfUser({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {

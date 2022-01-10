@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:whisper/constants/others.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
-// domain
-import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 

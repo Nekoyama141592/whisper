@@ -6,7 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
@@ -39,17 +39,18 @@ class CommentCard extends ConsumerWidget {
     
     final postFutures = watch(postsFeaturesProvider);
     final fontSize = 16.0;
+    final whisperComment = fromMapToWhisperComment(commentMap: comment);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
       // overflow: TextOverflow.ellipsis
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s , map: comment ) && !mainModel.mutesCommentIds.contains(comment[commentIdKey]) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s , map: comment ) && !mainModel.mutesCommentIds.contains(whisperComment.commentId) ?
 
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(comment[uidKey] == mainModel.currentWhisperUser.uid) ?
+      actions: !(whisperComment.uid == mainModel.currentWhisperUser.uid) ?
       [
         IconSlideAction(
           caption: 'mute User',
@@ -71,7 +72,7 @@ class CommentCard extends ConsumerWidget {
       ]: [],
       child: InkWell(
         onLongPress: mainModel.userMeta.isAdmin? () async {
-          await FlutterClipboard.copy(comment[uidKey]);
+          await FlutterClipboard.copy(whisperComment.uid);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
         child: Card(
@@ -89,18 +90,18 @@ class CommentCard extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      child: RedirectUserImage(userImageURL: comment[userImageURLKey], length: 60.0, padding: 0.0, passiveUserDocId: comment[uidKey], mainModel: mainModel),
+                      child: RedirectUserImage(userImageURL: whisperComment.userImageURL, length: 60.0, padding: 0.0, passiveUserDocId: whisperComment.uid, mainModel: mainModel),
                     ),
                     Expanded(
                       child: Column(
                         children: [
                           Text(
-                            comment[userNameKey],
+                            whisperComment.userName,
                             style: whisperTextStyle,
                           ),
                           SizedBox(height: 10.0,),
                           Text(
-                            comment[commentKey],
+                            whisperComment.comment,
                             style: whisperTextStyle,
                           )
                         ],

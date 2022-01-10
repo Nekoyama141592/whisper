@@ -6,8 +6,8 @@ part of 'whisper_user_meta.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WhisperUserMeta _$WhisperUserMetaFromJson(Map<String, dynamic> json) =>
-    WhisperUserMeta(
+UserMeta _$WhisperUserMetaFromJson(Map<String, dynamic> json) =>
+    UserMeta(
       authNotifications: json['authNotifications'] as List<dynamic>,
       bookmarks: json['bookmarks'] as List<dynamic>,
       followingUids: json['followingUids'] as List<dynamic>,
@@ -23,7 +23,7 @@ WhisperUserMeta _$WhisperUserMetaFromJson(Map<String, dynamic> json) =>
       searchHistory: json['searchHistory'] as List<dynamic>,
     );
 
-Map<String, dynamic> _$WhisperUserMetaToJson(WhisperUserMeta instance) =>
+Map<String, dynamic> _$WhisperUserMetaToJson(UserMeta instance) =>
     <String, dynamic>{
       'authNotifications': instance.authNotifications,
       'bookmarks': instance.bookmarks,

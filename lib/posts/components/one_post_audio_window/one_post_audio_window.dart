@@ -1,9 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';

@@ -16,6 +16,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/whisper_many_update_user/whisper_many_update_user.dart';
+import 'package:whisper/domain/whisper_user_meta/whisper_user_meta.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -31,7 +32,7 @@ class RecommendersModel extends ChangeNotifier {
   // user
   User? currentUser;
   late WhisperManyUpdateUser manyUpdateUser;
-  late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
+  late UserMeta userMeta;
   Query<Map<String, dynamic>> getQuery() {
     final x = postColRef.orderBy(scoreKey, descending: true).limit(oneTimeReadCount);
     return x;
@@ -98,7 +99,7 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   void getReadPostIds() {
-    List<dynamic> readPosts = currentUserDoc[readPostsKey];
+    List<dynamic> readPosts = userMeta.readPosts;
     readPosts.forEach((readPost) {
       readPostIds.add(readPost[postIdKey]);
     });
@@ -109,7 +110,8 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
+    userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
     final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
     manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: manyUpdateUserDoc.data()!);
   }

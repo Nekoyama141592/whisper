@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/rounded_button.dart';
@@ -27,6 +27,7 @@ class FollowOrEditButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
+    final manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: userDoc.data()!);
 
     return userDoc.id == mainModel.currentWhisperUser.uid ?
     // 変更
@@ -39,7 +40,7 @@ class FollowOrEditButton extends StatelessWidget {
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
     )
-    : !followingUids.contains(userDoc[uidKey]) ?
+    : !followingUids.contains(manyUpdateUser.uid) ?
     RoundedButton(
       text: 'follow', 
       widthRate: 0.35,

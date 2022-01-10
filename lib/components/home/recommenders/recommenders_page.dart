@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/strings.dart';
 // constants
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -32,6 +32,7 @@ class RecommendersPage extends ConsumerWidget {
     final commentsModel = watch(commentsProvider);
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final editPostInfoModel = watch(editPostInfoProvider);
+    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: recommendersModel.currentSongMapNotifier.value);
 
     return recommendersModel.isLoading ?
     Loading()
@@ -56,13 +57,13 @@ class RecommendersPage extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); }, 
             playButtonNotifier: recommendersModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, recommendersModel.currentSongMapNotifier.value[postIdKey]);
+              await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId);
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -75,7 +76,7 @@ class RecommendersPage extends ConsumerWidget {
         currentSongMapNotifier: recommendersModel.currentSongMapNotifier,
         playButtonNotifier: recommendersModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: recommendersModel.audioPlayer);

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/ints.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -23,8 +23,9 @@ class CommentLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     
-    final commentId = comment[commentIdKey];
-    final likeCount = comment[likeCountKey];
+    final whisperComment = fromMapToWhisperComment(commentMap: comment);
+    final commentId = whisperComment.commentId;
+    final likeCount = whisperComment.likeCount;
     final plusOneCount = likeCount + plusOne;
     return mainModel.likeCommentIds.contains(commentId) ?
     Padding(

@@ -7,9 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:algolia/algolia.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 // notifiers
@@ -65,7 +65,8 @@ class PostSearchModel extends ChangeNotifier{
   }
 
   bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds}) {
-    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: map) && !mutesPostIds.contains(map[postIdKey]);
+    final whisperPost = fromMapToPost(postMap: map);
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: map) && !mutesPostIds.contains(whisperPost.postId);
   }
 
   Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required blocksIpv6s}) async {
@@ -73,12 +74,12 @@ class PostSearchModel extends ChangeNotifier{
     AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
     List<AlgoliaObjectSnapshot> hits = querySnap.hits;
-    hits.sort((a,b) => b.data[likesKey].length.compareTo(a.data[likesKey].length));
     hits.forEach((hit) {
       final Map<String,dynamic> map = hit.data;
       if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds) ) {
         results.add(map);
-        Uri song = Uri.parse(map[audioURLKey]);
+        final whisperPost = fromMapToPost(postMap: map);
+        Uri song = Uri.parse(whisperPost.audioURL);
         UriAudioSource source = AudioSource.uri(song, tag: map);
         afterUris.add(source);
       }

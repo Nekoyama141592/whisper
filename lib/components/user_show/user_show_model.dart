@@ -32,7 +32,8 @@ class UserShowModel extends ChangeNotifier {
 
   late DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc }) {
-    final x = postColRef.where(uidKey,isEqualTo: passiveUserDoc[uidKey]).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
+    final whisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
+    final x = postColRef.where(uidKey,isEqualTo: whisperUser.uid ).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   String passiveUid = '';
@@ -73,7 +74,8 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
     passiveUserDoc = givePassiveUserDoc;
-    passiveUid = givePassiveUserDoc[uidKey];
+    final manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!);
+    passiveUid = manyUpdateUser.uid;
     prefs = givePrefs;
     await getPosts();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);

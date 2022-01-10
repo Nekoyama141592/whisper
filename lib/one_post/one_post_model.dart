@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // notifiers
@@ -44,7 +45,8 @@ class OnePostModel extends ChangeNotifier {
       onePostDoc = await FirebaseFirestore.instance.collection(postsKey).doc(postId).get();
       onePostDocList.add(onePostDoc);
       currentSongMapNotifier.value = onePostDoc.data()!;
-      Uri song = Uri.parse(onePostDoc[audioURLKey]);
+      final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: currentSongMapNotifier.value);
+      Uri song = Uri.parse(manyUpdatePost.audioURL);
       UriAudioSource audioSource = AudioSource.uri(song,tag: onePostDoc);
       audioPlayer = AudioPlayer();
       await audioPlayer.setAudioSource(audioSource);

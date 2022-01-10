@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
@@ -30,7 +31,8 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     
     final userShowModel = watch(userShowProvider);
-    List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
+    final passiveManyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!);
+    List<dynamic> blocksIpv6AndUids = passiveManyUpdateUser.blocksIpv6AndUids;
     List<dynamic> passiveBlocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
       passiveBlocksUids.add(blocksIpv6AndUid[uidKey]);

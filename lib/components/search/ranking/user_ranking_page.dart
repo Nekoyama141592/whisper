@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/details/user_card.dart';
@@ -55,7 +55,8 @@ class UserRankingPage extends ConsumerWidget {
             itemCount: userRankingModel.userDocs.length,
             itemBuilder: (BuildContext context, int i) {
               final DocumentSnapshot<Map<String,dynamic>> userDoc = userRankingModel.userDocs[i];
-              return mainModel.mutesUids.contains(userDoc[uidKey]) || mainModel.blocksUids.contains(userDoc[uidKey]) ?
+              final manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: userDoc.data()!);
+              return mainModel.mutesUids.contains(manyUpdateUser.uid) || mainModel.blocksUids.contains(manyUpdateUser.uid) ?
               ListTile(
                 title: Text('非表示'),
                 leading: Icon(Icons.block),

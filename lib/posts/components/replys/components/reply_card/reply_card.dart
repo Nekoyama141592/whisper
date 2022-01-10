@@ -6,7 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/posts/components/replys/components/reply_card/components/reply_like_button.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -31,7 +31,8 @@ class ReplyCard extends ConsumerWidget {
   Widget build(BuildContext context,ScopedReader watch) {
 
     final postFutures = watch(postsFeaturesProvider);
-    final String userImageURL = reply[userImageURLKey];
+    final whisperReply = fromMapToWhisperReply(replyMap: reply);
+    final String userImageURL = whisperReply.userImageURL;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final length = 60.0;
     final padding = 0.0;
@@ -40,12 +41,12 @@ class ReplyCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, blocksIpv6s: mainModel.blocksIpv6s, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(reply[replyKey]) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, blocksIpv6s: mainModel.blocksIpv6s, mutesIpv6s: mainModel.mutesIpv6s, map: reply) && !mainModel.mutesReplyIds.contains(whisperReply.replyId) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(reply[uidKey] == currentWhisperUser.uid) ?
+      actions: !(whisperReply.uid == currentWhisperUser.uid) ?
       [
         IconSlideAction(
           caption: 'mute User',
@@ -67,7 +68,7 @@ class ReplyCard extends ConsumerWidget {
       ] : [],
       child: InkWell(
         onLongPress: mainModel.userMeta.isAdmin ? () async {
-          await FlutterClipboard.copy(reply[uidKey]);
+          await FlutterClipboard.copy(whisperReply.uid);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
         child: Card(
@@ -86,19 +87,19 @@ class ReplyCard extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0
                       ),
-                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: reply[uidKey], mainModel: mainModel),
+                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: whisperReply.uid, mainModel: mainModel),
                     ),
                     Expanded(
                       child: SizedBox(
                         child: Column(
                           children: [
                             Text(
-                              reply[userNameKey],
+                              whisperReply.userName,
                               style: whisperTextStyle
                             ),
                             SizedBox(height: 10.0,),
                             Text(
-                              reply[replyKey],
+                              whisperReply.reply,
                               style: whisperTextStyle
                             )
                           ],

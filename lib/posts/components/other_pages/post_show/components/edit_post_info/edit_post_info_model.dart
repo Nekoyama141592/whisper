@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 // constants
-import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/main_model.dart';
@@ -58,9 +56,10 @@ class EditPostInfoModel extends ChangeNotifier {
   }
 
   Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context }) async {
-    final String imageURL = croppedFile == null ? currentSongMap[imageURLKey] : await uploadImage(mainModel: mainModel);
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final String imageURL = croppedFile == null ? whisperPost.imageURL : await uploadImage(mainModel: mainModel);
     try{
-      await FirebaseFirestore.instance.collection(postsKey).doc(currentSongMap[postIdKey]).update({
+      await FirebaseFirestore.instance.collection(postsKey).doc(whisperPost.postId).update({
         'title': postTitle,
         'imageURL': imageURL,
         'updatedAt': Timestamp.now(),

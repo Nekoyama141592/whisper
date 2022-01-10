@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'components/audio_progress_bar.dart';
 import 'components/current_song_user_name.dart';

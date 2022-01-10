@@ -1,7 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -21,9 +21,10 @@ class ReplyLikeButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
 
-    final likeCount = thisReply[likeCountKey];
+    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    final likeCount = whisperReply.likeCount;
 
-    return mainModel.likeReplyIds.contains(thisReply[replyIdKey]) ?
+    return mainModel.likeReplyIds.contains(whisperReply.replyId) ?
     Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 5.0

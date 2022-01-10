@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -36,6 +36,7 @@ class FeedsPage extends ConsumerWidget {
     final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.posts;
+    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: feedsModel.currentSongMapNotifier.value);
 
     return isLoading ?
     Loading()
@@ -60,13 +61,13 @@ class FeedsPage extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: feedsModel.audioPlayer); }, 
             playButtonNotifier: feedsModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: feedsModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: feedsModel.audioPlayer); }, 
             isLastSongNotifier: feedsModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, feedsModel.currentSongMapNotifier.value[postIdKey]);
+              await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId,);
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: feedsModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -79,7 +80,7 @@ class FeedsPage extends ConsumerWidget {
         currentSongMapNotifier: feedsModel.currentSongMapNotifier,
         playButtonNotifier: feedsModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: feedsModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: feedsModel.audioPlayer);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:algolia/algolia.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // algolia
 import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 
@@ -33,9 +33,9 @@ class UserSearchModel extends ChangeNotifier {
     AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);
     AlgoliaQuerySnapshot querySnap = await query.getObjects();
     List<AlgoliaObjectSnapshot> hits = querySnap.hits;
-    hits.sort((a,b) => b.data[followerCountKey].compareTo(a.data[followerCountKey]));
     hits.forEach((hit) {
-      if (!mutesUids.contains(hit.data[uidKey]) && !blockingUids.contains(hit.data[uidKey])) {
+      final whisperUser = fromMapToWhisperUser(userMap: hit.data);
+      if (!mutesUids.contains(whisperUser.uid) && !blockingUids.contains(whisperUser.uid)) {
         results.add(hit);
       }
     });

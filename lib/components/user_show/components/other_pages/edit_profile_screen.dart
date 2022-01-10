@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/user_image.dart';

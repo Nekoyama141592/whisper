@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -37,6 +37,7 @@ class PostCards extends ConsumerWidget {
     final editPostInfoModel = watch(editPostInfoProvider);
     final commentsModel = watch(commentsProvider);
     final officialAdsensesModel = watch(officialAdsensesProvider); 
+    final whisperPost = fromMapToPost(postMap: postSearchModel.currentSongMapNotifier.value);
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
         text: postSearchModel.searchTerm,
@@ -107,13 +108,13 @@ class PostCards extends ConsumerWidget {
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
                     play: () async { 
-                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: whisperPost.postId, officialAdsensesModel: officialAdsensesModel);
                     }, 
                     pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                     toCommentsPage:  () async {
-                      await commentsModel.init(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel, postSearchModel.currentSongMapNotifier.value[postIdKey]);
+                      await commentsModel.init(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel, whisperPost.postId);
                     },
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -126,7 +127,7 @@ class PostCards extends ConsumerWidget {
                 currentSongMapNotifier: postSearchModel.currentSongMapNotifier,
                 playButtonNotifier: postSearchModel.playButtonNotifier,
                 play: () async {
-                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentSongMapNotifier.value[postIdKey], officialAdsensesModel: officialAdsensesModel);
+                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: whisperPost.postId, officialAdsensesModel: officialAdsensesModel);
                 },
                 pause: () {
                   voids.pause(audioPlayer: postSearchModel.audioPlayer);
