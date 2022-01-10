@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
-import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/main_model.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -16,195 +16,108 @@ final postsFeaturesProvider = ChangeNotifierProvider(
 
 class PostFutures extends ChangeNotifier{
 
-  Future<void> like(List<dynamic> likedPostIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
+  Future<void> like({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     final String postId = currentSongMap[postIdKey];
+    final List<dynamic> likePostIds = mainModel.likePostIds;
     // process UI
-    likedPostIds.add(postId);
+    likePostIds.add(postId);
     notifyListeners();
     // backend
-    await addLikeSubCol(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc);
-    await addLikesToCurrentUser(currentUserDoc, currentSongMap,likes);
+    await addLikeSubCol(currentSongMap: currentSongMap, mainModel: mainModel);
+    await addLikesToCurrentUser(currentSongMap: currentSongMap, mainModel: mainModel);
   }
- 
-  // Future<void> addLikesToPost(DocumentSnapshot<Map<String,dynamic>> currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
-  //   try {
-  //     final List likes = newCurrentSongDoc[likesKey];
-  //     final Map<String, dynamic> map = {
-  //       createdAtKey: Timestamp.now(),
-  //       uidKey: currentUserDoc[uidKey],
-  //     };
-  //     int score = newCurrentSongDoc[scoreKey];
-  //     score += likeScore;
-  //     int likesCount = newCurrentSongDoc['likesCount'];
-  //     likesCount += 1;
-  //     likes.add(map);
-  //     await FirebaseFirestore.instance
-  //     .collection('posts')
-  //     .doc(newCurrentSongDoc.id)
-  //     .update({
-  //       likesKey: likes,
-  //       scoreKey: score,
-  //       'likesCount': likesCount,
-  //     });
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  // }
 
-  Future<void> addLikeSubCol({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc }) async {
-    await likeChildRef(parentColKey: postsKey, uniqueId: currentSongMap[postIdKey], activeUid: currentUserDoc.id).set({
-      uidKey: currentUserDoc.id,
+  Future<void> addLikeSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+    await likeChildRef(parentColKey: postsKey, uniqueId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).set({
+      uidKey: mainModel.currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
   }
   
-  Future<void> addLikesToCurrentUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
+  Future<void> addLikesToCurrentUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     final Map<String, dynamic> map = {
       likePostIdKey: currentSongMap[postIdKey],
       createdAtKey: Timestamp.now(),
     };
+    final List<dynamic> likes = mainModel.likes;
     likes.add(map);
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).update({
+    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
       likesKey: likes,
     });
   }
 
-  Future<void> bookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
+  Future<void> bookmark({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     final postId = currentSongMap[postIdKey];
+    final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
     // process UI
-    bookmarkedPostIds.add(postId);
+    bookmarksPostIds.add(postId);
     notifyListeners();
     // backend
-    await addBookmarkSubCol(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc);
-    await addBookmarksToUser(currentUserDoc, currentSongMap,bookmarks);
+    await addBookmarkSubCol(currentSongMap: currentSongMap, mainModel: mainModel);
+    await addBookmarksToUser(currentSongMap: currentSongMap, mainModel: mainModel);
   }
 
-  // Future<void> addBookmarksToPost(DocumentSnapshot<Map<String,dynamic>> currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
-  //   try {
-  //     final List bookmarks = newCurrentSongDoc[bookmarksKey];
-  //     final Map<String, dynamic> map = {
-  //       createdAtKey: Timestamp.now(),
-  //       uidKey: currentUserDoc[uidKey],
-  //     };
-  //     bookmarks.add(map);
-  //     int score = newCurrentSongDoc[scoreKey];
-  //     score += bookmarkScore;
-  //     int bookmarksCount = newCurrentSongDoc['bookmarksCount'];
-  //     bookmarksCount += 1;
-  //     await FirebaseFirestore.instance
-  //     .collection('posts')
-  //     .doc(newCurrentSongDoc.id)
-  //     .update({
-  //       bookmarksKey: bookmarks,
-  //       scoreKey: score,
-  //       'bookmarksCount': bookmarksCount,
-  //     });
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  Future<void> addBookmarkSubCol({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc }) async {
-    await bookmarkChildRef(postId: currentSongMap[postIdKey], activeUid: currentUserDoc.id).set({
-      uidKey: currentUserDoc.id,
+  Future<void> addBookmarkSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+    await bookmarkChildRef(postId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).set({
+      uidKey: mainModel.currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
   }
 
 
-  Future<void> addBookmarksToUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
+  Future<void> addBookmarksToUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     final Map<String, dynamic> map = {
       postIdKey: currentSongMap[postIdKey],
       createdAtKey: Timestamp.now(),
     };
+    final bookmarks = mainModel.bookmarks;
     bookmarks.add(map);
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).update({
+    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
       bookmarksKey: bookmarks,
     });
   }
 
-  Future<void> unbookmark(List<dynamic> bookmarkedPostIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
+  Future<void> unbookmark({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     final postId = currentSongMap[postIdKey];
+    final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
     // process UI
-    bookmarkedPostIds.remove(postId);
+    bookmarksPostIds.remove(postId);
     notifyListeners();
     // backend
-    await deleteBookmarkSubCol(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc);
-    await removeBookmarksOfUser(currentUserDoc, currentSongMap, bookmarks);
+    await deleteBookmarkSubCol(currentSongMap: currentSongMap, mainModel: mainModel);
+    await removeBookmarksOfUser(currentSongMap: currentSongMap, mainModel: mainModel);
   }
 
-  Future<void> deleteBookmarkSubCol({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc }) async {
-    await bookmarkChildRef(postId: currentSongMap[postIdKey], activeUid: currentUserDoc.id).delete();
+  Future<void> deleteBookmarkSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+    await bookmarkChildRef(postId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
-
-  // Future<void> removeBookmarksOfPost(DocumentSnapshot<Map<String,dynamic>> currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
-  //   try {
-  //     final List<dynamic> bookmarks = newCurrentSongDoc[bookmarksKey];
-  //     bookmarks.removeWhere((bookmark) => bookmark[uidKey] == currentUserDoc[uidKey]);
-  //     int score = newCurrentSongDoc[scoreKey];
-  //     score -= bookmarkScore;
-  //     int bookmarksCount = newCurrentSongDoc['bookmarksCount'];
-  //     bookmarksCount -= 1;
-  //     await FirebaseFirestore.instance
-  //     .collection('posts')
-  //     .doc(newCurrentSongDoc.id)
-  //     .update({
-  //       bookmarksKey: bookmarks,
-  //       scoreKey: score,
-  //       'bookmarksCount': bookmarksCount,
-  //     });
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  Future<void> removeBookmarksOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> bookmarks) async {
+  Future<void> removeBookmarksOfUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+    final List<dynamic> bookmarks = mainModel.bookmarks;
     bookmarks.removeWhere((bookmark) => bookmark[postIdKey] == currentSongMap[postIdKey]);
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).update({
+    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
       bookmarksKey: bookmarks,
     });
   }
 
-   Future<void> unlike(List<dynamic> likedPostIds,DocumentSnapshot<Map<String,dynamic>> currentUserDoc, Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
+   Future<void> unlike({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     final postId = currentSongMap[postIdKey]; 
     // process UI
-    likedPostIds.remove(postId);
+    mainModel.likePostIds.remove(postId);
     notifyListeners();
     // backend
-    await deleteLikeSubCol(currentSongMap: currentSongMap, currentUserDoc: currentUserDoc);
-    await removeLikeOfUser(currentUserDoc, currentSongMap,likes);
+    await deleteLikeSubCol(currentSongMap: currentSongMap,mainModel: mainModel);
+    await removeLikeOfUser(currentSongMap: currentSongMap, mainModel: mainModel);
   }
 
-  // Future<void> removeLikeOfPost(DocumentSnapshot<Map<String,dynamic>> currentUserDoc, DocumentSnapshot newCurrentSongDoc) async {
-    
-  //   int score = newCurrentSongDoc[scoreKey];
-  //   score -= likeScore;
-  //   int likesCount = newCurrentSongDoc['likesCount'];
-  //   likesCount -= 1;
-  //   try {
-  //     final List likes = newCurrentSongDoc[likesKey];
-  //     likes.removeWhere((like) => like[uidKey] == currentUserDoc[uidKey]);
-  //     await FirebaseFirestore.instance
-  //     .collection('posts')
-  //     .doc(newCurrentSongDoc.id)
-  //     .update({
-  //       likesKey: likes,
-  //       scoreKey: score,
-  //       'likesCount': likesCount,
-  //     });
-  //   } catch(e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  Future<void> deleteLikeSubCol({ required Map<String,dynamic> currentSongMap, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc }) async {
-    await likeChildRef(parentColKey: postsKey, uniqueId: currentSongMap[postIdKey], activeUid: currentUserDoc.id).delete();
+  Future<void> deleteLikeSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+    await likeChildRef(parentColKey: postsKey, uniqueId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).delete();
   }
   
-  Future<void> removeLikeOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap,List<dynamic> likes) async {
+  Future<void> removeLikeOfUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel}) async {
+    final List<dynamic> likes = mainModel.likes;
     likes.removeWhere((like) => like[likePostIdKey] == currentSongMap[postIdKey]);
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).update({
+    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
       likesKey: likes,
     });
   }
@@ -213,16 +126,20 @@ class PostFutures extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> muteUser({ required List<dynamic> mutesUids,required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) async {
+  Future<void> muteUser({ required MainModel mainModel, required Map<String,dynamic> map}) async {
+    final List<dynamic> mutesUids = mainModel.mutesUids;
+    final List<dynamic> mutesIpv6AndUids = mainModel.mutesIpv6AndUids;
     voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: map);
     notifyListeners();
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
   }
 
-  Future<void> blockUser({ required List<dynamic> blocksUids, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> blocksIpv6AndUids, required Map<String,dynamic> map}) async {
+  Future<void> blockUser({ required MainModel mainModel, required Map<String,dynamic> map}) async {
+    final List<dynamic> blocksIpv6AndUids = mainModel.blocksIpv6AndUids;
+    final List<dynamic> blocksUids = mainModel.blocksUids;
     voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: map);
     notifyListeners();
-    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: currentUserDoc);
+    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
   }
 
   Future<void> muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {

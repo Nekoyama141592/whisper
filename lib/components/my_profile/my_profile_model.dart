@@ -33,7 +33,7 @@ class MyProfileModel extends ChangeNotifier {
   bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    final x = postColRef.where('uid',isEqualTo: currentUserDoc['uid']).orderBy('createdAt',descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where(uidKey,isEqualTo: currentUserDoc['uid']).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -141,14 +141,14 @@ class MyProfileModel extends ChangeNotifier {
     } catch(e) { print(e.toString()); }
   }
 
-  void onEditButtonPressed(DocumentSnapshot<Map<String,dynamic>> currentUserDoc) {
-    userName = currentUserDoc[userNameKey];
-    description = currentUserDoc[descriptionKey];
-    link = currentUserDoc[linkKey];
+  void onEditButtonPressed({ required MainModel mainModel}) {
+    final currentWhisperUser = mainModel.currentWhisperUser;
+    userName = currentWhisperUser.userName;
+    description = currentWhisperUser.description;
+    link = currentWhisperUser.link;
     isEditing = true;
     notifyListeners();
   }
-
   
   Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     startLoading();

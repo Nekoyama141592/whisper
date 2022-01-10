@@ -49,14 +49,14 @@ class CommentCard extends ConsumerWidget {
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(comment[uidKey] == mainModel.currentUserDoc[uidKey]) ?
+      actions: !(comment[uidKey] == mainModel.currentWhisperUser.uid) ?
       [
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, map: comment);
+            await postFutures.muteUser(mainModel: mainModel, map: comment);
           } ,
         ),
 
@@ -65,12 +65,12 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(blocksUids: mainModel.blocksUids,currentUserDoc: mainModel.currentUserDoc,blocksIpv6AndUids: mainModel.blocksIpv6AndUids,map: comment);
+            await postFutures.blockUser(mainModel: mainModel, map: comment);
           },
         ),
       ]: [],
       child: InkWell(
-        onLongPress: mainModel.currentUserDoc[isAdminKey] ? () async {
+        onLongPress: mainModel.userMeta.isAdmin? () async {
           await FlutterClipboard.copy(comment[uidKey]);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
@@ -109,8 +109,8 @@ class CommentCard extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CommentLikeButton(commentsModel: commentsModel, currentUserDoc: mainModel.currentUserDoc, likedCommentIds: mainModel.likeCommentIds, comment: comment, likedComments: mainModel.likeComments),
-                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel, currentUserDoc: mainModel.currentUserDoc, thisComment: comment, currentSongMap: currentSongMap)
+                        CommentLikeButton(commentsModel: commentsModel, comment: comment, mainModel: mainModel),
+                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,thisComment: comment, currentSongMap: currentSongMap)
                       ],
                     )
                   ]

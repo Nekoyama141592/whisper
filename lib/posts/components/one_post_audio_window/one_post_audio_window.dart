@@ -8,6 +8,8 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -22,7 +24,7 @@ class OnePostAudioWindow extends StatelessWidget {
     required this.play,
     required this.pause,
     required this.title,
-    required this.currentUserDoc,
+    required this.currentWhisperUser,
     required this.route
   }) : super(key: key);
   
@@ -32,7 +34,7 @@ class OnePostAudioWindow extends StatelessWidget {
   final void Function()? play;
   final void Function()? pause;
   final Widget title;
-  final DocumentSnapshot currentUserDoc;
+  final WhisperUser currentWhisperUser;
   final void Function()? route;
 
   Widget build(BuildContext context) {
@@ -54,14 +56,14 @@ class OnePostAudioWindow extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: size.width * 0.03,
                   ),
-                  child: UserImage(userImageURL: currentUserDoc[imageURLKey],length: 60.0,padding: 5.0,)
+                  child: UserImage(userImageURL: currentWhisperUser.imageURL,length: 60.0,padding: 5.0,)
                 ),
                 Container(
                   width: size.width * 0.55,
                   child: Column(
                     children: [
                       Text(
-                        currentUserDoc[userNameKey],
+                        currentWhisperUser.userName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontSize

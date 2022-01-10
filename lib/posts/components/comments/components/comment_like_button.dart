@@ -1,10 +1,10 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 
 class CommentLikeButton extends StatelessWidget {
@@ -12,17 +12,13 @@ class CommentLikeButton extends StatelessWidget {
   const CommentLikeButton({
     Key? key,
     required this.commentsModel,
-    required this.currentUserDoc,
-    required this.likedCommentIds,
     required this.comment,
-    required this.likedComments
+    required this.mainModel
   }) : super(key: key);
 
   final CommentsModel commentsModel;
-  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
-  final List<dynamic> likedCommentIds;
   final Map<String,dynamic> comment;
-  final List<dynamic> likedComments;
+  final MainModel mainModel;
   
   @override 
   Widget build(BuildContext context) {
@@ -30,7 +26,7 @@ class CommentLikeButton extends StatelessWidget {
     final commentId = comment[commentIdKey];
     final likeCount = comment[likeCountKey];
     final plusOneCount = likeCount + plusOne;
-    return likedCommentIds.contains(commentId) ?
+    return mainModel.likeCommentIds.contains(commentId) ?
     Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 5.0
@@ -40,7 +36,7 @@ class CommentLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite,color: Colors.red),
             onTap: () async {
-              await commentsModel.unlike(likedCommentIds, comment, currentUserDoc, likedComments);
+              await commentsModel.unlike(thisComment: comment, mainModel: mainModel);
             },
           ),
           SizedBox(width: 5.0),
@@ -59,7 +55,7 @@ class CommentLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await commentsModel.like(likedCommentIds, currentUserDoc, comment, likedComments);
+              await commentsModel.like(thisComment: comment, mainModel: mainModel);
             },
           ),
           SizedBox(width: 5.0),

@@ -6,7 +6,9 @@ part 'whisper_user_meta.g.dart';
 @JsonSerializable()
 class WhisperUserMeta {
   WhisperUserMeta({
+    required this.authNotifications,
     required this.bookmarks,
+    required this.followingUids,
     required this.gender,
     required this.isAdmin,
     required this.isDelete,
@@ -18,7 +20,9 @@ class WhisperUserMeta {
     required this.readPosts,
     required this.searchHistory,
   });
+  final List<dynamic> authNotifications;
   final List<dynamic> bookmarks;
+  final List<dynamic> followingUids;
   final String gender;
   final bool isAdmin;
   final bool isDelete;

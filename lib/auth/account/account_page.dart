@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // packages
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,13 +79,13 @@ class AccountPage extends ConsumerWidget {
           ListTile(
             title: Text('固有のユーザー名'),
             subtitle: Text(
-              mainModel.currentUserDoc[uidKey],
+              mainModel.currentWhisperUser.uid,
               style: TextStyle(color: Theme.of(context).focusColor),
             ),
             trailing: InkWell(
               child: Icon(Icons.copy),
               onTap: () async {
-                await FlutterClipboard.copy(mainModel.currentUserDoc[uidKey]).then((_) {
+                await FlutterClipboard.copy(mainModel.currentWhisperUser.uid).then((_) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
                 });
               },

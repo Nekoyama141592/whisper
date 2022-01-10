@@ -23,7 +23,6 @@ class PostCards extends StatelessWidget {
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
-    required this.currentUserDoc,
     required this.refreshController,
     required this.onRefresh,
     required this.onLoading,
@@ -44,7 +43,6 @@ class PostCards extends StatelessWidget {
   final PlayButtonNotifier playButtonNotifier;
   final void Function()? play;
   final void Function()? pause;
-  final DocumentSnapshot currentUserDoc;
   // refresh
   final RefreshController refreshController;
   final void Function()? onRefresh;
@@ -69,7 +67,6 @@ class PostCards extends StatelessWidget {
           playButtonNotifier: playButtonNotifier, 
           play: play, 
           pause: pause, 
-          currentUserDoc: currentUserDoc,
            isFirstSongNotifier: isFirstSongNotifier,
           onPreviousSongButtonPressed: onPreviousSongButtonPressed,
           isLastSongNotifier: isLastSongNotifier,

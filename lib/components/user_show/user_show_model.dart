@@ -156,10 +156,11 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  void onEditButtonPressed(DocumentSnapshot<Map<String,dynamic>> currentUserDoc) {
-    userName = currentUserDoc[userNameKey];
-    description = currentUserDoc[descriptionKey];
-    link = currentUserDoc[linkKey];
+  void onEditButtonPressed({ required MainModel mainModel}) {
+    final currentWhisperUser = mainModel.currentWhisperUser;
+    userName = currentWhisperUser.userName;
+    description = currentWhisperUser.description;
+    link = currentWhisperUser.link;
     isEditing = true;
     notifyListeners();
   }

@@ -17,6 +17,9 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/whisper_many_update_user/whisper_many_update_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -28,15 +31,15 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-void setMutesAndBlocks({ required SharedPreferences prefs ,required DocumentSnapshot currentUserDoc, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
+void setMutesAndBlocks({ required SharedPreferences prefs ,required WhisperManyUpdateUser manyUpdateUser, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
   // 代入は使えないが.addは反映される
-  currentUserDoc[mutesIpv6AndUidsKey].forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
+  manyUpdateUser.mutesIpv6AndUids.forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
   mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
     mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
     mutesUids.add(mutesIpv6AndUid[uidKey]);
   });
   (prefs.getStringList(mutesPostIdsKey) ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
-  currentUserDoc[blocksIpv6AndUidsKey].forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
+  manyUpdateUser.blocksIpv6AndUids.forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
   blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
     blocksUids.add(blocksIpv6AndUid[uidKey]);
     blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
@@ -53,8 +56,8 @@ void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required 
   });
 }
 
-Future<void> updateMutesIpv6AndUids({ required List<dynamic> mutesIpv6AndUids, required DocumentSnapshot currentUserDoc}) async {
-  await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
+Future<void> updateMutesIpv6AndUids({ required List<dynamic> mutesIpv6AndUids, required WhisperUser currentWhisperUser }) async {
+  await FirebaseFirestore.instance.collection(usersKey).doc(currentWhisperUser.uid)
   .update({
     mutesIpv6AndUidsKey: mutesIpv6AndUids,
   }); 
@@ -70,8 +73,8 @@ void addBlocksUidsAndBlocksIpv6AndUid({ required List<dynamic> blocksUids, requi
   });
 }
 
-Future<void> updateBlocksIpv6AndUids({ required List<dynamic> blocksIpv6AndUids, required DocumentSnapshot currentUserDoc}) async {
-  await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
+Future<void> updateBlocksIpv6AndUids({ required List<dynamic> blocksIpv6AndUids, required WhisperUser currentWhisperUser }) async {
+  await FirebaseFirestore.instance.collection(usersKey).doc(currentWhisperUser.uid)
   .update({
     blocksIpv6AndUidsKey: blocksIpv6AndUids,
   });
@@ -270,7 +273,7 @@ Future<void> play({ required BuildContext context ,required AudioPlayer audioPla
       mainModel.readPosts.add(map);
       await FirebaseFirestore.instance
       .collection(usersKey)
-      .doc(mainModel.currentUserDoc.id)
+      .doc(mainModel.currentWhisperUser.uid)
       .update({
         readPostsKey: mainModel.readPosts,
       });
@@ -335,7 +338,7 @@ Future muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> a
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
   mainModel.reload();
-  updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: mainModel.currentUserDoc);
+  await updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
 }
 
 Future blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> blocksUids, required List<dynamic> blocksIpv6AndUids, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -343,7 +346,7 @@ Future blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> 
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
   mainModel.reload();
-  await updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentUserDoc: mainModel.currentUserDoc);
+  await updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
 }
 
 Future removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
@@ -463,13 +466,13 @@ Future updateUserInfo({ required BuildContext context ,required String userName,
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentUserDoc[storageImageNameKey]).delete();
   // }
-  final String storageImageName = (croppedFile == null) ? mainModel.currentUserDoc[storageImageNameKey] :  storageUserImageName;
-  final String downloadURL = (croppedFile == null) ? mainModel.currentUserDoc[imageURLKey] : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
+  final String storageImageName = (croppedFile == null) ? mainModel.currentWhisperUser.storageImageName :  storageUserImageName;
+  final String downloadURL = (croppedFile == null) ? mainModel.currentWhisperUser.imageURL : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {
     try {
-      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentUserDoc.id).update({
+      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
         descriptionKey: description,
         imageURLKey: downloadURL,
         linkKey: link,
@@ -518,7 +521,6 @@ Future follow(
     MainModel mainModel,
     DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
   final followingUids = mainModel.followingUids;
-  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = mainModel.currentUserDoc;
   if (followingUids.length >= 500) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
@@ -526,12 +528,12 @@ Future follow(
     followingUids.add(passiveUserDoc[uidKey]);
     mainModel.reload();
     await updateFollowingUidsOfCurrentUser(
-        followingUids, currentUserDoc, passiveUserDoc);
+        followingUids, mainModel.currentWhisperUser, passiveUserDoc);
     await followerChildRef(
-            passiveUid: passiveUserDoc.id, followerUid: currentUserDoc.id)
+            passiveUid: passiveUserDoc.id, followerUid: mainModel.currentWhisperUser.uid)
         .set({
       createdAtKey: Timestamp.now(),
-      followerUidKey: currentUserDoc.id,
+      followerUidKey: mainModel.currentWhisperUser.uid,
     });
   }
 }
@@ -540,22 +542,21 @@ Future unfollow(
     MainModel mainModel,
     DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
   final followingUids = mainModel.followingUids;
-  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = mainModel.currentUserDoc;
   followingUids.remove(passiveUserDoc[uidKey]);
   mainModel.reload();
-  await updateFollowingUidsOfCurrentUser(followingUids, currentUserDoc, passiveUserDoc);
+  await updateFollowingUidsOfCurrentUser(followingUids, mainModel.currentWhisperUser, passiveUserDoc);
   await followerChildRef(
-    passiveUid: passiveUserDoc.id, followerUid: currentUserDoc.id)
+    passiveUid: passiveUserDoc.id, followerUid: mainModel.currentWhisperUser.uid)
   .delete();
 }
 
 Future updateFollowingUidsOfCurrentUser(
     List<dynamic> followingUids,
-    DocumentSnapshot<Map<String, dynamic>> currentUserDoc,
+    WhisperUser currentWhisperUser,
     DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
   await FirebaseFirestore.instance
     .collection(usersKey)
-    .doc(currentUserDoc.id)
+    .doc(currentWhisperUser.uid)
     .update({
     followingUidsKey: followingUids,
   });

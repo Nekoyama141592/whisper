@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 
 final mutesUsersProvider = ChangeNotifierProvider(
   (ref) => MutesUsersModel()
@@ -61,14 +63,14 @@ class MutesUsersModel extends ChangeNotifier {
     }
   }
 
-  Future unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> mutesIpv6AndUids}) async {
+  Future unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required WhisperUser currentWhisperUser, required List<dynamic> mutesIpv6AndUids}) async {
     // front
     mutesUserDocs.removeWhere((mutesUserDoc) => mutesUserDoc[uidKey] == passiveUid);
     notifyListeners();
     // back
     mutesIpv6AndUids.removeWhere((mutesIpv6AndUid) => mutesIpv6AndUid[uidKey] == passiveUid);
     mutesUids.remove(passiveUid);
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentUserDoc: currentUserDoc);
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: currentWhisperUser);
   }
 
 }

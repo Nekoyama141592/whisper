@@ -14,6 +14,8 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+// domain
+import 'package:whisper/domain/whisper_many_update_user/whisper_many_update_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -28,6 +30,7 @@ class RecommendersModel extends ChangeNotifier {
   bool isLoading = false;
   // user
   User? currentUser;
+  late WhisperManyUpdateUser manyUpdateUser;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
     final x = postColRef.orderBy(scoreKey, descending: true).limit(oneTimeReadCount);
@@ -73,7 +76,7 @@ class RecommendersModel extends ChangeNotifier {
     setCurrentUser();
     await setCurrentUserDoc();
     prefs = await SharedPreferences.getInstance();
-    voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs, manyUpdateUser: manyUpdateUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getRecommenders();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -107,6 +110,8 @@ class RecommendersModel extends ChangeNotifier {
 
   Future<void> setCurrentUserDoc() async {
     currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
+    manyUpdateUser = fromMaprToManyUpdateUser(userMap: manyUpdateUserDoc.data()!);
   }
   
   Future<void> onRefresh() async {

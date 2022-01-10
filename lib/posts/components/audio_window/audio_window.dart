@@ -27,7 +27,6 @@ class AudioWindow extends StatelessWidget {
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
-    required this.currentUserDoc,
     required this.isFirstSongNotifier,
     required this.onPreviousSongButtonPressed,
     required this.isLastSongNotifier,
@@ -42,7 +41,6 @@ class AudioWindow extends StatelessWidget {
   final PlayButtonNotifier playButtonNotifier;
   final void Function()? play;
   final void Function()? pause;
-  final DocumentSnapshot currentUserDoc;
   final ValueNotifier<bool> isFirstSongNotifier;
   final void Function()? onPreviousSongButtonPressed;
   final ValueNotifier<bool> isLastSongNotifier;

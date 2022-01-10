@@ -42,7 +42,7 @@ class CommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  {
-          commentsModel.onFloatingActionButtonPressed(context, currentSongMap,commentEditingController, mainModel.currentUserDoc,audioPlayer,prefs: mainModel.prefs); 
+          commentsModel.onFloatingActionButtonPressed(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel);
         },
       ),
       body: SafeArea(

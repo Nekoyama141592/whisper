@@ -36,7 +36,7 @@ class RedirectUserImage extends ConsumerWidget {
     return InkWell(
       onTap: () async {
         if (userShowModel.passiveUid != passiveUserDocId) {
-          final DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc = passiveUserDocId == mainModel.currentUserDoc.id ? mainModel.currentUserDoc : await FirebaseFirestore.instance.collection(usersKey).doc(passiveUserDocId).get();
+          final DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc = passiveUserDocId == mainModel.currentWhisperUser.uid ? mainModel.currentUserDoc : await FirebaseFirestore.instance.collection(usersKey).doc(passiveUserDocId).get();
           if (!givePassiveUserDoc.exists) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));
           } else {
@@ -47,7 +47,7 @@ class RedirectUserImage extends ConsumerWidget {
           userShowModel.theSameUser(context, mainModel);
         }
       },
-      onLongPress: mainModel.currentUserDoc[isAdminKey] ? () async {
+      onLongPress: mainModel.userMeta.isAdmin? () async {
         await FlutterClipboard.copy(passiveUserDocId);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
       } : null,

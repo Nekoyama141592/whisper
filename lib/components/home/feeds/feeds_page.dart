@@ -84,7 +84,6 @@ class FeedsPage extends ConsumerWidget {
         pause: () {
           voids.pause(audioPlayer: feedsModel.audioPlayer);
         }, 
-        currentUserDoc: mainModel.currentUserDoc,
         refreshController: feedsModel.refreshController,
         onRefresh: () async { await feedsModel.onRefresh(followingUids: mainModel.followingUids); },
         onLoading: () async { await feedsModel.onLoading(followingUids: mainModel.followingUids ); },

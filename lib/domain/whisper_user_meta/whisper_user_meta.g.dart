@@ -8,7 +8,9 @@ part of 'whisper_user_meta.dart';
 
 WhisperUserMeta _$WhisperUserMetaFromJson(Map<String, dynamic> json) =>
     WhisperUserMeta(
+      authNotifications: json['authNotifications'] as List<dynamic>,
       bookmarks: json['bookmarks'] as List<dynamic>,
+      followingUids: json['followingUids'] as List<dynamic>,
       gender: json['gender'] as String,
       isAdmin: json['isAdmin'] as bool,
       isDelete: json['isDelete'] as bool,
@@ -23,7 +25,9 @@ WhisperUserMeta _$WhisperUserMetaFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$WhisperUserMetaToJson(WhisperUserMeta instance) =>
     <String, dynamic>{
+      'authNotifications': instance.authNotifications,
       'bookmarks': instance.bookmarks,
+      'followingUids': instance.followingUids,
       'gender': instance.gender,
       'isAdmin': instance.isAdmin,
       'isDelete': instance.isDelete,

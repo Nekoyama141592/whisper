@@ -80,7 +80,6 @@ class RecommendersPage extends ConsumerWidget {
         pause: () {
           voids.pause(audioPlayer: recommendersModel.audioPlayer);
         }, 
-        currentUserDoc: mainModel.currentUserDoc,
         refreshController: recommendersModel.refreshController,
         onRefresh: () async { await recommendersModel.onRefresh(); },
         onLoading: () async { await recommendersModel.onLoading(); },

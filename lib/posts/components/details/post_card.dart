@@ -47,7 +47,7 @@ class PostCard extends StatelessWidget {
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: mainModel.currentUserDoc[uidKey] != post[uidKey] ? 
+        actions: mainModel.currentWhisperUser.uid!= post[uidKey] ? 
         [
           IconSlideAction(
             caption: 'mute User',

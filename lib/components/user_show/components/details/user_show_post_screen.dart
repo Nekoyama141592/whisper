@@ -117,7 +117,6 @@ class UserShowPostScreen extends ConsumerWidget {
         pause: () {
           voids.pause(audioPlayer: userShowModel.audioPlayer);
         }, 
-        currentUserDoc: mainModel.currentUserDoc,
         refreshController: userShowModel.refreshController,
         onRefresh: () async { await userShowModel.onRefresh(); },
         onLoading: () async { await userShowModel.onLoading(); },

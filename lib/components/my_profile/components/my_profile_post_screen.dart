@@ -118,7 +118,6 @@ class MyProfilePostScreen extends ConsumerWidget {
         pause: () {
           voids.pause(audioPlayer: myProfileModel.audioPlayer);
         }, 
-        currentUserDoc: mainModel.currentUserDoc,
         refreshController: myProfileModel.refreshController,
         onRefresh: () async { await myProfileModel.onRefresh(); },
         onLoading: () async { await myProfileModel.onLoading(); },

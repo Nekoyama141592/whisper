@@ -99,7 +99,7 @@ class UserShowHeader extends ConsumerWidget {
               children: [
                 Text(
                   // mainModel.followingUids contains myUid because of lib/components/home/feeds/feeds_model.dart
-                  mainModel.currentUserDoc[uidKey] == passiveUserDoc[uidKey] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc[followerCountKey].toString() + 'following',
+                  mainModel.currentWhisperUser.uid == passiveUserDoc[uidKey] ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveUserDoc[followerCountKey].toString() + 'following',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

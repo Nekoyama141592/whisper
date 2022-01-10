@@ -25,35 +25,37 @@ class NotificationIcon extends ConsumerWidget {
 
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
-    final replyNotificationsModel = watch(replyNotificationsProvider);
-    final commentNotificationsModel = watch(commentNotificationsProvider);
-    return 
-    Padding(
-      padding: EdgeInsets.all(20.0),
-      child: InkWell(
-        onTap: () {
-          routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, commentNotificationsModel: commentNotificationsModel, replyNotificationsModel: replyNotificationsModel);
-        },
-        child: newNotificationExists(mainModel: mainModel,replyNotifications: replyNotificationsModel.notificationDocs, commentNotifications: commentNotificationsModel.notificationDocs ) ?
-        Stack(
-          children: [
-            Icon(Icons.notifications),
-            Positioned(
-              right: 0,
-              top: 0,
-              child: Container(
-                height: 12,
-                width: 12,
-                decoration: BoxDecoration(
-                  color: kErrorColor,
-                  shape: BoxShape.circle
-                ),
-              )
-            )
-          ],
-        )
-        : Icon(Icons.notifications),
-      ),
-    );
+  //   final replyNotificationsModel = watch(replyNotificationsProvider);
+  //   final commentNotificationsModel = watch(commentNotificationsProvider);
+  //   return 
+  //   Padding(
+  //     padding: EdgeInsets.all(20.0),
+  //     child: InkWell(
+  //       onTap: () {
+  //         routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, commentNotificationsModel: commentNotificationsModel, replyNotificationsModel: replyNotificationsModel);
+  //       },
+  //       child: newNotificationExists(mainModel: mainModel,replyNotifications: replyNotificationsModel.notificationDocs, commentNotifications: commentNotificationsModel.notificationDocs ) ?
+  //       Stack(
+  //         children: [
+  //           Icon(Icons.notifications),
+  //           Positioned(
+  //             right: 0,
+  //             top: 0,
+  //             child: Container(
+  //               height: 12,
+  //               width: 12,
+  //               decoration: BoxDecoration(
+  //                 color: kErrorColor,
+  //                 shape: BoxShape.circle
+  //               ),
+  //             )
+  //           )
+  //         ],
+  //       )
+  //       : Icon(Icons.notifications),
+  //     ),
+  //   );
+  // }
+  return SizedBox();
   }
 }

@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +9,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // models
 import 'package:whisper/main_model.dart';
 
@@ -74,16 +75,16 @@ class AccountModel extends ChangeNotifier {
   }
 
   void showDeleteUserDialog({ required BuildContext context, required MainModel mainModel }) {
-    final currentUserDoc = mainModel.currentUserDoc;
+    final currentWhisperUser = mainModel.currentWhisperUser;
     voids.showCupertinoDialogue(context: context, title: 'ユーザー削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async {
-      if (currentUser!.uid == mainModel.currentUserDoc[uidKey]) {
+      if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
         Navigator.pop(context);
         routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
         await deleteStorage(mainModel: mainModel);
         await deletePostsOfCurrentUser();
         await deleteReplysOfCurrentUser();
         await deleteCommentsOfCurrentUser();
-        await deleteUserFromFireStoreAndFirebaseAuth(context, currentUserDoc);
+        await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
       }
     });
   }
@@ -159,8 +160,8 @@ class AccountModel extends ChangeNotifier {
       return batch.commit();
     });
   }
-  Future<void> deleteUserFromFireStoreAndFirebaseAuth(BuildContext context,DocumentSnapshot<Map<String,dynamic>> currentUserDoc) async {
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).delete().then((_) async {
+  Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {
+    await FirebaseFirestore.instance.collection(usersKey).doc(currentWhisperUser.uid).delete().then((_) async {
       try {
         await currentUser!.delete();
       } catch(e) {

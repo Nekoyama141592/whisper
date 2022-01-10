@@ -86,7 +86,7 @@ class OneCommentPage extends ConsumerWidget {
                   onePostModel.currentSongMapNotifier.value[titleKey],
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0 ),
                 ), 
-                currentUserDoc: mainModel.currentUserDoc
+                currentWhisperUser: mainModel.currentWhisperUser,
               )
             ],
           ),

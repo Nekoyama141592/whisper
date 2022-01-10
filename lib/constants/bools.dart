@@ -22,9 +22,9 @@ bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> b
   return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data()! ) && !mutesPostIds.contains(doc[postIdKey]);
 }
 
-bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> passiveBlocksUids, required DocumentSnapshot currentUserDoc }) {
+bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> passiveBlocksUids, required MainModel mainModel }) {
   // use on display user show page
-  final String myUid = currentUserDoc[uidKey];
+  final String myUid = mainModel.currentWhisperUser.uid;
   return ( !mutesUids.contains(myUid) && blocksUids.contains(myUid) && passiveBlocksUids.contains(myUid) );
 }
 

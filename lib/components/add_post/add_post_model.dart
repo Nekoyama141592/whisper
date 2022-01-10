@@ -133,7 +133,7 @@ class AddPostModel extends ChangeNotifier {
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      filePath = directory.path + '/' + mainModel.currentUserDoc[uidKey] +  DateTime.now().microsecondsSinceEpoch.toString() + postExtension;
+      filePath = directory.path + '/' + mainModel.currentWhisperUser.uid +  DateTime.now().microsecondsSinceEpoch.toString() + postExtension;
       await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
@@ -185,7 +185,7 @@ class AddPostModel extends ChangeNotifier {
       final String storagePostName = 'post' + microSecondsString + postExtension;
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
       // post firestore
-      final String postId = 'post' + mainModel.currentUserDoc[uidKey] + microSecondsString;
+      final String postId = 'post' + mainModel.currentWhisperUser.uid + microSecondsString;
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, storageImageName: storageImageName, storagePostName: storagePostName, postId: postId);
       postTitleNotifier.value = '';
       endLoading();
@@ -201,7 +201,8 @@ class AddPostModel extends ChangeNotifier {
 
   
   Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
-    final currentUserDoc = mainModel.currentUserDoc;
+    final currentWhiseprUser = mainModel.currentWhisperUser;
+    final manyUpdateUser = mainModel.manyUpdateUser;
       try {
         await FirebaseFirestore.instance.collection(postsKey)
         .doc(postId)
@@ -220,15 +221,15 @@ class AddPostModel extends ChangeNotifier {
           impressionKey: 0,
           ipv6Key: ipv6,
           isDeleteKey: false,
-          isNFTiconKey: currentUserDoc[isNFTiconKey],
-          isOfficialKey: currentUserDoc[isOfficialKey],
+          isNFTiconKey: currentWhiseprUser.isNFTicon,
+          isOfficialKey: currentWhiseprUser.isOfficial,
           isPinnedKey: false,
           likesKey:[],
           likeCountKey: 0,
           linkKey: link,
           negativeScoreKey: 0,
-          noDisplayIpv6AndUidsKey: currentUserDoc[blocksIpv6AndUidsKey],
-          noDisplayWordsKey: currentUserDoc[noDisplayWordsKey],
+          noDisplayIpv6AndUidsKey: manyUpdateUser.blocksIpv6AndUids,
+          noDisplayWordsKey: manyUpdateUser.noDisplayWords,
           otherLinksKey: [],
           playCountKey: 0,
           postIdKey: postId,
@@ -236,13 +237,13 @@ class AddPostModel extends ChangeNotifier {
           scoreKey: defaultScore,
           storageImageNameKey: storageImageName,
           storagePostName: storagePostName, // use on lib/constants/voids.dart
-          subUserNameKey: currentUserDoc[subUserNameKey],
+          subUserNameKey: currentWhiseprUser.subUserName,
           tagUidsKey: [],
           titleKey: postTitleNotifier.value,
-          uidKey: currentUserDoc[uidKey],
+          uidKey: currentWhiseprUser.uid,
           updatedAtKey: Timestamp.now(),
-          userImageURLKey: currentUserDoc[imageURLKey],
-          userNameKey: currentUserDoc[userNameKey],
+          userImageURLKey: currentWhiseprUser.imageURL,
+          userNameKey: currentWhiseprUser.userName
         });
         addPostStateNotifier.value = AddPostState.uploaded;
       } catch(e) {

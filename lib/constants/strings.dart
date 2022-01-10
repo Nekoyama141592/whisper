@@ -53,6 +53,7 @@ const String likeReplysKey = 'likeReplys';
 const String likesKey = 'likes';
 const String likeCountKey = 'likeCount';
 const String linkKey = 'link';
+const String manyUpdateUsersKey = 'manyUpdateUsers';
 const String mutesCommentIdsKey = 'mutesCommentIds';
 const String mutesIpv6AndUidsKey = 'mutesIpv6AndUids';
 const String mutesPostIdsKey = 'mutesPostIdsKey';

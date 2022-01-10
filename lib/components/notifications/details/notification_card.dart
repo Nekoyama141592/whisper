@@ -36,7 +36,7 @@ class NotificationCard extends ConsumerWidget {
 
     final length = 60.0;
     final padding = 0.0;
-    final currentUserDoc = mainModel.currentUserDoc;
+    final currentWhisperUser = mainModel.currentWhisperUser;
     final userImageURL = notification[userImageURLKey];
     final String notificationId = notification[notificationIdKey];
     final OnePostModel onePostModel = watch(onePostProvider);
@@ -47,8 +47,8 @@ class NotificationCard extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading:  UserImage(padding: padding, length: length ,userImageURL: currentUserDoc[imageURLKey]),
-            title: Text(currentUserDoc[userNameKey],style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,),),
+            leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.imageURL ),
+            title: Text(currentWhisperUser.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,),),
             subtitle: Text(firstSubTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
           ),
           ListTile(

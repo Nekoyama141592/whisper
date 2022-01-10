@@ -32,7 +32,7 @@ class ReplysPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_comment),
         onPressed: () {
-          replysModel.onAddReplyButtonPressed(context, currentSongMap, replyEditingController, mainModel.currentUserDoc, thisComment);
+          replysModel.onAddReplyButtonPressed(context: context, currentSongMap: currentSongMap, replyEditingController: replyEditingController, thisComment: thisComment, mainModel: mainModel);
         },
       ),
       body: SafeArea(

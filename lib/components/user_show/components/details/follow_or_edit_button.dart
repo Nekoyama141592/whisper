@@ -28,7 +28,7 @@ class FollowOrEditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
 
-    return userDoc.id == mainModel.currentUserDoc.id ?
+    return userDoc.id == mainModel.currentWhisperUser.uid ?
     // 変更
     RoundedButton(
       text: '編集', 

@@ -1,5 +1,4 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -11,14 +10,12 @@ class ShowReplyButton extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.replysModel,
-    required this.currentUserDoc,
     required this.thisComment,
     required this.currentSongMap
   }) : super(key: key);
 
   final MainModel mainModel;
   final ReplysModel replysModel;
-  final DocumentSnapshot currentUserDoc;
   final Map<String,dynamic> thisComment;
   final Map<String,dynamic> currentSongMap;
 

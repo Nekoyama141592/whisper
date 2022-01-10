@@ -32,6 +32,7 @@ class ReplyCard extends ConsumerWidget {
 
     final postFutures = watch(postsFeaturesProvider);
     final String userImageURL = reply[userImageURLKey];
+    final currentWhisperUser = mainModel.currentWhisperUser;
     final length = 60.0;
     final padding = 0.0;
     final fontSize = 16.0;
@@ -44,14 +45,14 @@ class ReplyCard extends ConsumerWidget {
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(reply[uidKey] == mainModel.currentUserDoc[uidKey]) ?
+      actions: !(reply[uidKey] == currentWhisperUser.uid) ?
       [
         IconSlideAction(
           caption: 'mute User',
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mutesUids: mainModel.mutesUids, currentUserDoc: mainModel.currentUserDoc, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, map: reply);
+            await postFutures.muteUser(mainModel: mainModel, map: reply);
           } ,
         ),
 
@@ -60,12 +61,12 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(blocksUids: mainModel.blocksUids,currentUserDoc: mainModel.currentUserDoc,blocksIpv6AndUids: mainModel.blocksIpv6AndUids,map: reply);
+            await postFutures.blockUser(mainModel: mainModel, map: reply);
           },
         ),
       ] : [],
       child: InkWell(
-        onLongPress: mainModel.currentUserDoc[isAdminKey] ? () async {
+        onLongPress: mainModel.userMeta.isAdmin ? () async {
           await FlutterClipboard.copy(reply[uidKey]);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,

@@ -38,7 +38,7 @@ class UserShowPage extends ConsumerWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: false,
-      body: isDisplayShowPage(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, passiveBlocksUids: passiveBlocksUids, currentUserDoc: mainModel.currentUserDoc) ?
+      body: isDisplayShowPage(mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids, passiveBlocksUids: passiveBlocksUids, mainModel: mainModel ) ?
       Column(
         children: [
             Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),
@@ -76,7 +76,7 @@ class UserShowPage extends ConsumerWidget {
           top: SizedBox.shrink(), 
           header: UserShowHeader(
             onEditButtonPressed: () {
-              userShowModel.onEditButtonPressed(mainModel.currentUserDoc);
+              userShowModel.onEditButtonPressed(mainModel: mainModel);
             },
             passiveUserDoc: passiveUserDoc, 
             backArrow: InkWell(

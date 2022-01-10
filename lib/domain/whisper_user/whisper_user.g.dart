@@ -9,6 +9,7 @@ part of 'whisper_user.dart';
 WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       description: json['description'] as String,
       dmState: json['dmState'] as String,
+      imageURL: json['imageURL'] as String,
       isDelete: json['isDelete'] as bool,
       isKeyAccount: json['isKeyAccount'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
@@ -27,6 +28,7 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
     <String, dynamic>{
       'description': instance.description,
       'dmState': instance.dmState,
+      'imageURL': instance.imageURL,
       'isDelete': instance.isDelete,
       'isKeyAccount': instance.isKeyAccount,
       'isNFTicon': instance.isNFTicon,

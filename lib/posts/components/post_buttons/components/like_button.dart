@@ -1,38 +1,34 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
+// package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // model
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class LikeButton extends ConsumerWidget {
   
   const LikeButton({
-    required this.currentUserDoc,
     required this.currentSongMap,
-    required this.likedPostIds,
-    required this.likes
+    required this.mainModel
   });
   
-  final DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   final Map<String,dynamic> currentSongMap;
-  final List likedPostIds;
-  final List likes;
+  final MainModel mainModel;
   
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final postFuturesModel = watch(postsFeaturesProvider);
     
     List<dynamic> likesOfCurrentSong = currentSongMap[likesKey];
-    likesOfCurrentSong.removeWhere((likeOfCurrentSong) => likeOfCurrentSong[uidKey] == currentUserDoc[uidKey]);
+    likesOfCurrentSong.removeWhere((likeOfCurrentSong) => likeOfCurrentSong[uidKey] == mainModel.currentWhisperUser.uid );
     final likesCount = likesOfCurrentSong.length;
     final plusOneCount = likesOfCurrentSong.length + 1;
     return
     Container(
-      child: likedPostIds.contains(currentSongMap[postIdKey]) ?
+      child: mainModel.likePostIds.contains(currentSongMap[postIdKey]) ?
       Row(
         children: [
           InkWell(
@@ -41,7 +37,7 @@ class LikeButton extends ConsumerWidget {
               color: Colors.red
             ),
             onTap: () async {
-              await postFuturesModel.unlike(likedPostIds, currentUserDoc, currentSongMap, likes);
+              await postFuturesModel.unlike(currentSongMap: currentSongMap, mainModel: mainModel);
             },
           ),
           SizedBox(width: 5.0),
@@ -56,7 +52,7 @@ class LikeButton extends ConsumerWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await postFuturesModel.like(likedPostIds, currentUserDoc, currentSongMap, likes);
+              await postFuturesModel.like(currentSongMap: currentSongMap, mainModel: mainModel);
             },
           ),
           SizedBox(width: 5.0),

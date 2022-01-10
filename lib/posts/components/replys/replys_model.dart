@@ -54,25 +54,26 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onAddReplyButtonPressed(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) {
+  void onAddReplyButtonPressed({ required BuildContext context, required  Map<String,dynamic> currentSongMap, required TextEditingController replyEditingController, required  Map<String,dynamic> thisComment, required MainModel mainModel }) {
     // コメントの投稿主が自分の場合
     // このPostの投稿主が自分の場合
     // このPostの投稿主とコメントの投稿主が一致している場合
-    if (thisComment[uidKey] == currentUserDoc[uidKey] || currentSongMap[uidKey] == currentUserDoc[uidKey] || thisComment[uidKey] == currentSongMap[uidKey]) {
-      showMakeReplyInputFlashBar(context, currentSongMap, replyEditingController, currentUserDoc, thisComment);
+    final currentWhisperUser = mainModel.currentWhisperUser;
+    if (thisComment[uidKey] == currentWhisperUser.uid || currentSongMap[uidKey] == currentWhisperUser.uid || thisComment[uidKey] == currentSongMap[uidKey]) {
+      showMakeReplyInputFlashBar(context: context, currentSongMap: currentSongMap, replyEditingController: replyEditingController, mainModel: mainModel, thisComment: thisComment);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたはこのコメントに返信できません')));
     }
   }
 
-  void showMakeReplyInputFlashBar(BuildContext context,Map<String,dynamic> currentSongMap,TextEditingController replyEditingController,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) {
+  void showMakeReplyInputFlashBar({ required BuildContext context, required Map<String,dynamic> currentSongMap, required TextEditingController replyEditingController,required MainModel mainModel , required Map<String,dynamic> thisComment}) {
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
           if (reply.isEmpty) {
             controller.dismiss();
           } else {
-            await makeReply(currentSongMap, currentUserDoc, thisComment);
+            await makeReply(currentSongMap: currentSongMap, mainModel: mainModel, thisComment: thisComment);
             reply = '';
             replyEditingController.text = '';
             controller.dismiss();
@@ -223,13 +224,14 @@ class ReplysModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future makeReply(Map<String,dynamic> currentSongMap,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisComment) async {
+  Future makeReply({ required Map<String,dynamic> currentSongMap,required MainModel mainModel, required Map<String,dynamic> thisComment}) async {
     final elementId = thisComment[commentIdKey];
+    final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final newReplyMap = makeReplyMap(elementId, currentUserDoc,currentSongMap);
+    final newReplyMap = makeReplyMap(elementId: elementId, mainModel: mainModel, currentSongMap: currentSongMap);
     await addReplyToFirestore(newReplyMap);
     // notification
-    if (currentSongMap[uidKey] != currentUserDoc[uidKey]) {
+    if (currentSongMap[uidKey] != currentWhisperUser.uid) {
       final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
       // blocks
       List<dynamic> blocksIpv6s = [];
@@ -247,34 +249,36 @@ class ReplysModel extends ChangeNotifier {
         mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
-      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s ,uid: currentUserDoc[uidKey], ipv6: ipv6) ) {
-        await updateReplyNotificationsOfPassiveUser(elementId: elementId, passiveUserDoc: passiveUserDoc, currentUserDoc: currentUserDoc, thisComment: thisComment, newReplyMap: newReplyMap);
+      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s ,uid: currentWhisperUser.uid, ipv6: ipv6) ) {
+        await updateReplyNotificationsOfPassiveUser(elementId: elementId, passiveUserDoc: passiveUserDoc, mainModel: mainModel, thisComment: thisComment, newReplyMap: newReplyMap);
       }
     }
   }
 
-  Map<String,dynamic> makeReplyMap(String elementId,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> currentSongMap) {
+  Map<String,dynamic> makeReplyMap({ required String elementId,required  MainModel mainModel, required Map<String,dynamic> currentSongMap}) {
+    final currentWhisperUser = mainModel.currentWhisperUser;
+    final manyUpdateUser = mainModel.manyUpdateUser;
     final newReplyMap = {
       elementIdKey: elementId,
       elementStateKey: elementState,
       createdAtKey: Timestamp.now(),
-      followerCountKey: currentUserDoc[followerCountKey],
+      followerCountKey: manyUpdateUser.followerCount,
       ipv6Key: ipv6,
       isDeleteKey: false,
-      isNFTiconKey: currentUserDoc[isNFTiconKey],
-      isOfficialKey: currentUserDoc[isOfficialKey],
+      isNFTiconKey: currentWhisperUser.isNFTicon,
+      isOfficialKey: currentWhisperUser.isOfficial,
       likeCountKey: 0,
       negativeScoreKey: 0,
       passiveUidKey: currentSongMap[uidKey],
       postIdKey: currentSongMap[postIdKey],
       positiveScoreKey: 0,
       replyKey: reply,
-      replyIdKey: replyKey + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString() ,
+      replyIdKey: replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
       scoreKey: defaultScore,
-      subUserNameKey: currentUserDoc[subUserNameKey],
-      uidKey: currentUserDoc[uidKey],
-      userNameKey: currentUserDoc[userNameKey],
-      userImageURLKey: currentUserDoc[imageURLKey],
+      subUserNameKey: currentWhisperUser.subUserName,
+      uidKey: currentWhisperUser.uid,
+      userNameKey: currentWhisperUser.userName,
+      userImageURLKey: currentWhisperUser.imageURL
     };
     return newReplyMap;
   }
@@ -292,86 +296,93 @@ class ReplysModel extends ChangeNotifier {
     return passiveUserDoc;
   }
 
-  Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
+  Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required MainModel mainModel, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
 
-    final String notificationId = 'replyNotification' + currentUserDoc[uidKey] + DateTime.now().microsecondsSinceEpoch.toString();
+    final currentWhisperUser = mainModel.currentWhisperUser;
+    final manyUpdateUser = mainModel.manyUpdateUser;
+    final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = thisComment[commentKey];
     Map<String,dynamic> map = {
       commentKey: comment,
       createdAtKey: Timestamp.now(),
       elementIdKey: elementId,
       elementStateKey: elementState,
-      followerCountKey: currentUserDoc[followerCountKey],
+      followerCountKey: manyUpdateUser.followerCount,
       isDeleteKey: false,
-      isNFTiconKey: currentUserDoc[isNFTiconKey],
-      isOfficialKey: currentUserDoc[isOfficialKey],
+      isNFTiconKey: currentWhisperUser.isNFTicon,
+      isOfficialKey: currentWhisperUser.isOfficial,
       notificationIdKey: notificationId,
       passiveUidKey: passiveUserDoc[uidKey],
       postIdKey: thisComment[postIdKey],
       replyKey: reply,
       replyScoreKey: newReplyMap[scoreKey],
       replyIdKey: newReplyMap[replyIdKey],
-      subUserNameKey: currentUserDoc[subUserNameKey],
-      uidKey: currentUserDoc[uidKey],
-      userNameKey: currentUserDoc[userNameKey],
-      userImageURLKey: currentUserDoc[imageURLKey],
+      subUserNameKey: currentWhisperUser.subUserName,
+      uidKey: currentWhisperUser.uid,
+      userNameKey: currentWhisperUser.userName,
+      userImageURLKey: currentWhisperUser.imageURL
     };
     await replyNotificationRef(passiveUid: thisComment[uidKey], notificationId: notificationId).set(map);
   }
 
-  Future<void> like(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedReplys) async {
+  Future<void> like({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {
     // process UI
     final replyId = thisReply[replyIdKey];
-    likedReplyIds.add(replyId);
+    final List<dynamic> likeReplyIds = mainModel.likeReplyIds;
+    likeReplyIds.add(replyId);
     notifyListeners();
     // backend
-    await addLikeSubCol(thisReply: thisReply, currentUserDoc: currentUserDoc);
-    await updateLikedReplysOfUser(currentUserDoc, thisReply, likedReplys);
+    await addLikeSubCol(thisReply: thisReply, mainModel: mainModel);
+    await updateLikeReplysOfUser(thisReply: thisReply, mainModel: mainModel);
   }
 
-  Future<void> addLikeSubCol({ required Map<String,dynamic> thisReply,required DocumentSnapshot<Map<String,dynamic>> currentUserDoc}) async {
-    await likeChildRef(parentColKey: replysKey, uniqueId: thisReply[replyIdKey], activeUid: currentUserDoc.id).set({
-      uidKey: currentUserDoc.id,
+  Future<void> addLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
+    final currentWhisperUser = mainModel.currentWhisperUser;
+    await likeChildRef(parentColKey: replysKey, uniqueId: thisReply[replyIdKey], activeUid: currentWhisperUser.uid).set({
+      uidKey: currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
   }
 
 
-  Future<void> updateLikedReplysOfUser(DocumentSnapshot<Map<String,dynamic>> currentUserDoc,Map<String,dynamic> thisReply,List<dynamic> likedReplys) async {
+  Future<void> updateLikeReplysOfUser({ required Map<String,dynamic> thisReply, required MainModel mainModel}) async {
     try {
       final newLikedReply = {
         likeReplyIdKey: thisReply[replyIdKey],
         createdAtKey: Timestamp.now(),
       };
-      likedReplys.add(newLikedReply);
-      await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
+      final List<dynamic> likeReplys = mainModel.likeReplys;
+      likeReplys.add(newLikedReply);
+      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid)
       .update({
-        likeReplysKey: likedReplys,
+        likeReplysKey: likeReplys,
       });
     } catch(e) {
       print(e.toString());
     }
   }
 
-  Future<void> unlike(List<dynamic> likedReplyIds,Map<String,dynamic> thisReply,DocumentSnapshot<Map<String,dynamic>> currentUserDoc,List<dynamic> likedReplys) async {
+  Future<void> unlike({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {
     final replyId = thisReply[replyIdKey];
+    final likeReplyIds = mainModel.likeReplyIds;
     // processUI
-    likedReplyIds.remove(replyId);
+    likeReplyIds.remove(replyId);
     notifyListeners();
     // backend
-    await deleteLikeSubCol(thisReply: thisReply, currentUserDoc: currentUserDoc);
-    await removeLikedReplyOfUser(currentUserDoc: currentUserDoc, likedReplys: likedReplys, thisReply: thisReply);
+    await deleteLikeSubCol(thisReply: thisReply, mainModel: mainModel);
+    await removeLikedReplyOfUser(mainModel: mainModel, thisReply: thisReply);
   }
 
-  Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisReply,required DocumentSnapshot<Map<String,dynamic>> currentUserDoc}) async {
-    await likeChildRef(parentColKey: replysKey, uniqueId: thisReply[replyIdKey], activeUid: currentUserDoc.id).delete();
+  Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
+    await likeChildRef(parentColKey: replysKey, uniqueId: thisReply[replyIdKey], activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
-  Future removeLikedReplyOfUser({ required DocumentSnapshot<Map<String,dynamic>> currentUserDoc, required List<dynamic> likedReplys, required Map<String,dynamic> thisReply }) async {
-    likedReplys.removeWhere((likedReply) => likedReply[likeReplyIdKey] == thisReply[replyIdKey]);
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id)
+  Future removeLikedReplyOfUser({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {
+    final List<dynamic> likeReplys = mainModel.likeReplys;
+    likeReplys.removeWhere((likedReply) => likedReply[likeReplyIdKey] == thisReply[replyIdKey]);
+    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid)
     .update({
-      likeReplysKey: likedReplys,
+      likeReplysKey: likeReplys,
     });
   }
   

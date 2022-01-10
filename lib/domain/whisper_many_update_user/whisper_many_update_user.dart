@@ -10,7 +10,6 @@ class WhisperManyUpdateUser {
     required this.blocksIpv6AndUids,
     required this.description,
     required this.followerCount,
-    required this.followingUids,
     required this.imageURL,
     required this.isDelete,
     required this.isNFTicon,
@@ -30,7 +29,6 @@ class WhisperManyUpdateUser {
   final List<dynamic> blocksIpv6AndUids;
   final String description;
   final int followerCount;
-  final List<dynamic> followingUids;
   final String imageURL;
   final bool isDelete;
   final bool isNFTicon;

@@ -52,7 +52,7 @@ class MyProfilePage extends ConsumerWidget {
         top: SizedBox.shrink(), 
         header: UserShowHeader(
           onEditButtonPressed: () {
-            myProfileModel.onEditButtonPressed(mainModel.currentUserDoc);
+            myProfileModel.onEditButtonPressed(mainModel: mainModel);
           },
           passiveUserDoc: mainModel.currentUserDoc, 
           backArrow: SizedBox.shrink(), 

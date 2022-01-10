@@ -63,7 +63,7 @@ class SignupModel extends ChangeNotifier {
     isCheckedNotifier.value = !isCheckedNotifier.value;
   }
 
-  Future showImagePicker() async {
+  Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     xFile = await _picker.pickImage(source: ImageSource.gallery);
     if (xFile != null) {
@@ -72,7 +72,7 @@ class SignupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future cropImage() async {
+  Future<void> cropImage() async {
     isCropped = false;
     croppedFile = null;
     croppedFile = await others.returnCroppedFile(xFile: xFile);
@@ -82,20 +82,21 @@ class SignupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future signup(BuildContext context) async {
+  Future<void> signup(BuildContext context) async {
     if (commonPasswords.contains(password)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ありふれたパスワードです。変更してください')));
     } else if (userName.length >= 64) {
        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザー名は64文字以内にしてください')));
     }else {
       try{
-        UserCredential result = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-          email: email, 
-          password: password,
-        );
+        UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,);
         User? user = result.user;
-        await addUserToFireStore(user!.uid);
+        final String uid = user!.uid;
+        final String storageImageName = strings.storageUserImageName;
+        final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
+        await addUserToFireStore(uid: uid, imageURL: imageURL, storageImageName: storageImageName);
+        await createUserMeta(uid: uid);
+        await createManyUpdateUser(uid: uid, imageURL: imageURL);
         routes.toVerifyPage(context);
       } on FirebaseAuthException catch(e) {
         print(e.code);
@@ -110,49 +111,71 @@ class SignupModel extends ChangeNotifier {
     }
   }
   
-  Future addUserToFireStore(uid) async {
-    final timestampBirthDay = Timestamp.fromDate(birthDay);
-    final String storageImageName = strings.storageUserImageName;
-    final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
-    await FirebaseFirestore.instance
-    .collection(usersKey)
-    .doc(uid)
+  Future<void> addUserToFireStore({ required String uid, required String imageURL,required String storageImageName }) async {
+    await FirebaseFirestore.instance.collection(usersKey).doc(uid)
     .set({
-      authNotificationsKey: [],
-      birthDayKey: timestampBirthDay,
-      blocksIpv6AndUidsKey: [],
-      bookmarksKey: [],
       createdAtKey: Timestamp.now(),
       descriptionKey: '',
       dmStateKey: onlyFollowingAndFollowedString,
-      followerCountKey: 0,
-      followingUidsKey: [],
-      genderKey: gender,
       imageURLKey: imageURL,
-      isAdminKey: false,
       isDeleteKey: false,
       isKeyAccountKey: false,
       isNFTiconKey: false,
       isOfficialKey: false,
-      languageKey: language,
-      likeCommentsKey: [],
-      likeReplysKey: [],
-      likesKey: [],
       linkKey: '',
-      mutesIpv6AndUidsKey: [],
-      noDisplayWordsKey: [],
       otherLinksKey: [],
-      readNotificationsKey: [],
-      readPostsKey: [],
       recommendStateKey: recommendableString,
-      scoreKey: defaultScore,
-      searchHistoryKey: [],
-      storageImageNameKey: storageImageName, // use on lib/auth/account/account_model.dart
-      subUserNameKey: uid, // use on lib/components/add_post/add_post_model.dart, lib/posts/components/replys/replys_model.dart, lib/posts/components/comments/comments_model.dart
+      storageImageNameKey: storageImageName,
+      subUserNameKey: uid, 
       uidKey : uid,
       updatedAtKey: Timestamp.now(),
       userNameKey: userName,
       walletAddressKey: '',
+    });
+  }
+
+  Future<void> createUserMeta({ required String uid }) async {
+    final timestampBirthDay = Timestamp.fromDate(birthDay);
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set({
+      authNotificationsKey: [],
+      birthDayKey: timestampBirthDay,
+      bookmarksKey: [],
+      createdAtKey: Timestamp.now(),
+      followingUidsKey: [],
+      genderKey: gender,
+      isAdminKey: false,
+      isDeleteKey: false,
+      likeCommentsKey: [],
+      likeReplysKey: [],
+      likesKey: [],
+      languageKey: language,
+      readNotificationsKey: [],
+      readPostsKey: [],
+      searchHistoryKey: [],
+      updatedAtKey: Timestamp.now(),
+    });
+  }
+
+  Future<void> createManyUpdateUser({ required String uid, required String imageURL }) async {
+    await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(uid).set({
+      blocksIpv6AndUidsKey: [],
+      createdAtKey: Timestamp.now(),
+      descriptionKey: '',
+      followerCountKey: 0,
+      imageURLKey: imageURLKey,
+      isDeleteKey: false,
+      isNFTiconKey: false,
+      isOfficialKey: false,
+      linkKey: '',
+      mutesIpv6AndUidsKey: [],
+      noDisplayWordsKey: [],
+      otherLinksKey: [],
+      recommendStateKey: recommendableString,
+      scoreKey: defaultScore,
+      userNameKey: userName,
+      uidKey: uid,
+      walletAddressKey: '',
+      updatedAtKey: Timestamp.now(),
     });
   }
 

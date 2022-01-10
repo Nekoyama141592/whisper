@@ -8,6 +8,7 @@ class WhisperUser {
   WhisperUser({
     required this.description,
     required this.dmState,
+    required this.imageURL,
     required this.isDelete,
     required this.isKeyAccount,
     required this.isNFTicon,
@@ -23,6 +24,7 @@ class WhisperUser {
   });
   final String description;
   final String dmState;
+  final String imageURL;
   final bool isDelete;
   final bool isKeyAccount;
   final bool isNFTicon;

@@ -45,12 +45,12 @@ class EditProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
 
     final userNameController = TextEditingController(
-      text: mainModel.currentUserDoc[userNameKey] 
+      text: mainModel.currentWhisperUser.userName
     );
     final descriptionController = TextEditingController(
-      text: mainModel.currentUserDoc[descriptionKey]
+      text: mainModel.currentWhisperUser.description
     );
-    final linkController = TextEditingController(text: mainModel.currentUserDoc[linkKey]);
+    final linkController = TextEditingController(text: mainModel.currentWhisperUser.link);
 
     final textStyle = TextStyle(
       fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class EditProfileScreen extends ConsumerWidget {
             ),
             
             InkWell(
-              child: isCropped ?  CircleImage(length: 80.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentUserDoc[imageURLKey], length: 80.0, padding: 10.0),
+              child: isCropped ?  CircleImage(length: 80.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.imageURL, length: 80.0, padding: 10.0),
               onTap: showImagePicker,
             ),
             Text('名前',style: textStyle,),

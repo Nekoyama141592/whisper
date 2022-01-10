@@ -131,7 +131,6 @@ class PostCards extends ConsumerWidget {
                 pause: () {
                   voids.pause(audioPlayer: postSearchModel.audioPlayer);
                 }, 
-                currentUserDoc: mainModel.currentUserDoc,
                 isFirstSongNotifier: postSearchModel.isFirstSongNotifier,
                 onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                 isLastSongNotifier: postSearchModel.isLastSongNotifier,

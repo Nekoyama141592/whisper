@@ -36,7 +36,7 @@ class ReplyLikeButton extends StatelessWidget {
               color: Colors.red
             ),
             onTap: () async {
-              replysModel.unlike(mainModel.likeReplyIds, thisReply, mainModel.currentUserDoc, mainModel.likeReplys);
+              replysModel.unlike(thisReply: thisReply, mainModel: mainModel);
             },
           ),
           SizedBox(width: 5.0),
@@ -55,7 +55,7 @@ class ReplyLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await replysModel.like(mainModel.likeReplyIds, thisReply, mainModel.currentUserDoc,mainModel.likeReplys);
+              await replysModel.like(thisReply: thisReply, mainModel: mainModel);
             }
           ),
           SizedBox(width: 5.0),

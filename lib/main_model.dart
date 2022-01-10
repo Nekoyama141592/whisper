@@ -7,7 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/whisper_user_meta/whisper_user_meta.dart';
+import 'package:whisper/domain/whisper_many_update_user/whisper_many_update_user.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -20,6 +25,9 @@ class MainModel extends ChangeNotifier {
   // user
   User? currentUser;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
+  late WhisperUserMeta userMeta;
+  late WhisperUser currentWhisperUser;
+  late WhisperManyUpdateUser manyUpdateUser;
   late SharedPreferences prefs;
 
   List<String> likePostIds = [];
@@ -77,17 +85,18 @@ class MainModel extends ChangeNotifier {
 
   Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    try{
-      currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    } catch(e) {
-      print(e.toString());
-    }
+    final currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    currentWhisperUser = fromMaprToWhisperUser(userMap: currentUserDoc.data()!);
+    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
+    userMeta = fromMaprToWhisperUserMeta(userMap: userMetaDoc.data()!);
+    final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
+    manyUpdateUser = fromMaprToManyUpdateUser(userMap: manyUpdateUserDoc.data()!);
     notifyListeners();
   }
 
   void getLikePostIds() {
     try{
-      likes = currentUserDoc[likesKey];
+      likes = userMeta.likes;
       likes.forEach((like) {
         likePostIds.add(like[likePostIdKey]);
       });
@@ -100,7 +109,7 @@ class MainModel extends ChangeNotifier {
   void getBookmarksPostIds() {
     
     try{
-      bookmarks = currentUserDoc[bookmarksKey];
+      bookmarks = userMeta.bookmarks;
       bookmarks.forEach((bookmark) {
         bookmarksPostIds.add(bookmark[postIdKey]);
       });
@@ -111,12 +120,12 @@ class MainModel extends ChangeNotifier {
   }
 
   void getFollowingUids() {
-    followingUids = currentUserDoc[followingUidsKey];
+    followingUids = userMeta.followingUids;
     followingUids.add(currentUser!.uid);
   }
 
   void getLikedCommentIds() {
-    likeComments = currentUserDoc[likeCommentsKey];
+    likeComments = userMeta.likeComments;
     likeComments.forEach((likedComment) {
       likeCommentIds.add(likedComment[commentIdKey]);
     });
@@ -124,14 +133,14 @@ class MainModel extends ChangeNotifier {
   }
   
   void getReadPost() {
-    readPosts = currentUserDoc[readPostsKey];
+    readPosts = userMeta.readPosts;
     readPosts.forEach((readPost) {
       readPostIds.add(readPost[postIdKey]);
     });
   }
 
   void setMutesAndBlocks() {
-    voids.setMutesAndBlocks(prefs: prefs, currentUserDoc: currentUserDoc, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs, manyUpdateUser: manyUpdateUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
     mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
   }
@@ -141,7 +150,7 @@ class MainModel extends ChangeNotifier {
   }
 
   void getLikesReplys() {
-    likeReplys = currentUserDoc[likeReplysKey];
+    likeReplys = userMeta.likeReplys;
     likeReplys.forEach((likesReply) {
       likeReplyIds.add(likesReply[likeReplyIdKey]);
     });
@@ -149,7 +158,8 @@ class MainModel extends ChangeNotifier {
 
   Future<void> regetCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    currentUserDoc =  await FirebaseFirestore.instance.collection(usersKey).doc(currentUserDoc.id).get();
+    final currentUserDoc =  await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    userMeta = fromMaprToWhisperUserMeta(userMap: currentUserDoc.data()!);
     notifyListeners();
   }
 

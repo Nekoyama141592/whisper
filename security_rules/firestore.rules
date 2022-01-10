@@ -6,10 +6,11 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 16 // max48
+    return user.size() == 17 // max48
     && 'createdAt' in user && user.createdAt is timestamp
     && 'description' in  user && user.description is string
     && 'dmState' in user && user.dmState is string
+    && 'imageURL' in user && user.imageURL is string
     && 'isDelete' in user && user.isDelete is bool
     && 'isKeyAccount' in user && user.isKeyAccount is bool
     && 'isNFTicon' in user && user.isNFTicon is bool
@@ -19,14 +20,15 @@ service cloud.firestore {
     && 'recommendState' in user && user.recommendState is string
     && 'storageImageName' in user && user.storageImageName is string
     && 'subUserName' in user && user.subUserName is string
-    && 'userName' in user && user.userName is string
     && 'uid' in user && user.uid is string
-    && 'walletAddress' in user && user.walletAddress is string
-    && 'updatedAt' in user && user.updatedAt is timestamp;
+    && 'updatedAt' in user && user.updatedAt is timestamp
+    && 'userName' in user && user.userName is string
+    && 'walletAddress' in user && user.walletAddress is string;
   }
 
   function isValidUserMeta(userMeta) {
-    return userMeta.size() == 14
+    return userMeta.size() == 15
+    && 'authNotifications' in userMeta && userMeta.authNotifications is list
     && 'birthDay' in userMeta && userMeta.birthDay is timestamp
     && 'bookmarks' in userMeta && userMeta.bookmarks is list
     && 'createdAt' in userMeta && userMeta.createdAt is timestamp
@@ -45,8 +47,7 @@ service cloud.firestore {
   }
 
   function isValidManyUpdateUser(manyUpdateUser) {
-    return manyUpdateUser.size() == 20
-    && 'authNotifications' in manyUpdateUser && manyUpdateUser.authNotifications is list
+    return manyUpdateUser.size() == 19
     && 'blocksIpv6AndUids' in manyUpdateUser && manyUpdateUser.blocksIpv6AndUids is list
     && 'createdAt' in manyUpdateUser && manyUpdateUser.createdAt is timestamp
     && 'description' in manyUpdateUser && manyUpdateUser.description is string
@@ -203,28 +204,6 @@ service cloud.firestore {
     && 'userImageURL' in nftOwner && nftOwner.userImageURL is string;
   }
 
-  function isValidWatchList(watchList) {
-    return
-    watchList.size() == 6
-    && 'creatorUid' in watchList && watchList.creatorUid is string
-    && 'uids' in watchList && watchList.uids is list
-    && 'label' in watchList && watchList.label is string
-    && 'watchListId' in watchList && watchList.watchListId is string
-    && 'createdAt' in watchList && watchList.createdAt is timestamp
-    && 'updatedAt' in watchList && watchList.updatedAt is timestamp;
-  }
-
-  function isValidBookmarkLabel(bookmarkLabel) {
-    return
-    bookmarkLabel.size() == 6
-    && 'creatorUid' in bookmarkLabel && bookmarkLabel.creatorUid is string
-    && 'postIds' in bookmarkLabel && bookmarkLabel.postIds is list
-    && 'label' in bookmarkLabel && bookmarkLabel.label is string
-    && 'bookmarkLableId' in bookmarkLabel && bookmarkLabel.postIds is string
-    && 'createdAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp
-    && 'updatedAt' in bookmarkLabel && bookmarkLabel.postIds is timestamp;
-  }
-
   function basicValidation(uid) {
     return isAuthenticated() && request.auth.uid == uid;
   }
@@ -232,9 +211,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     match /users/{uid} {
-      allow create: if isValidUser(request.resource.data)
-      && isAuthenticated()
-      && request.resource.data.uid == request.auth.uid;
+      // allow create: if isValidUser(request.resource.data)
+      // && isAuthenticated()
+      // && request.resource.data.uid == request.auth.uid;
+      allow create: if true;
       allow update: if isAuthenticated()
       && request.resource.data.followingUids.size() <= 500;
       allow read: if isAuthenticated();
@@ -246,8 +226,17 @@ service cloud.firestore {
         allow delete: if basicValidation(uid) || basicValidation(followerUid);
       }
     }
-    match /userMeta/{uid} {
+
+    match /manyUpdateUsers/{uid} {
+      // allow read: if isAuthenticated() && isValidManyUpdateUser(request.resource.data);
       allow read: if true;
+      // allow write: if isAuthenticated() && isValidManyUpdateUser(request.resource.data);
+      allow create: if true;
+    }
+
+    match /userMeta/{uid} {
+      allow read: if request.auth.uid == uid;
+      // allow create: if isValidUserMeta(request.resource.data);
       allow create: if true;
       match /commentNotifications/{notificationId} {
         allow read: if isAuthenticated();
@@ -276,6 +265,10 @@ service cloud.firestore {
         allow create: if basicValidation(activeUid);
         allow delete: if basicValidation(activeUid);
       }
+    }
+    match /manyUpdatePosts/{postId} {
+      allow read: if isValidManyUpdatePost(request.resource.data);
+      allow write: if isValidManyUpdatePost(request.resource.data);
     }
 
     match /replys/{replyId} {
@@ -313,26 +306,6 @@ service cloud.firestore {
       allow create: if isAuthenticated() && isValidNFTowners(request.resource.data);
       allow update: if isAuthenticated() && isValidNFTowners(request.resource.data);
       allow delete: if false;
-    }
-
-    match /watchLists/{watchList} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated()
-      && isValidWatchList(request.resource.data);
-      allow update: if isAuthenticated()
-      && isValidWatchList(request.resource.data);
-      allow delete: if isAuthenticated()
-      && request.auth.uid == resource.data.uid;
-    }
-
-    match /bookmarkLabels/{bookmarkLabel} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated()
-      && isValidBookmarkLabel(request.resource.data);
-      allow update: if isAuthenticated()
-      && isValidBookmarkLabel(request.resource.data);
-      allow delete: if isAuthenticated()
-      && request.auth.uid == resource.data.uid;
     }
 
     match /officialAdsenses/{officialAdsense} {
