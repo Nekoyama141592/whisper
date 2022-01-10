@@ -86,11 +86,11 @@ class MainModel extends ChangeNotifier {
   Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
     final currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    currentWhisperUser = fromMaprToWhisperUser(userMap: currentUserDoc.data()!);
+    currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
-    userMeta = fromMaprToWhisperUserMeta(userMap: userMetaDoc.data()!);
+    userMeta = fromMapToWhisperUserMeta(userMetaMap: userMetaDoc.data()!);
     final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
-    manyUpdateUser = fromMaprToManyUpdateUser(userMap: manyUpdateUserDoc.data()!);
+    manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: manyUpdateUserDoc.data()!);
     notifyListeners();
   }
 
@@ -159,7 +159,7 @@ class MainModel extends ChangeNotifier {
   Future<void> regetCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
     final currentUserDoc =  await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    userMeta = fromMaprToWhisperUserMeta(userMap: currentUserDoc.data()!);
+    userMeta = fromMapToWhisperUserMeta(userMetaMap: currentUserDoc.data()!);
     notifyListeners();
   }
 

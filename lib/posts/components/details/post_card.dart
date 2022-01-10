@@ -2,10 +2,13 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -42,12 +45,13 @@ class PostCard extends StatelessWidget {
         onTap: onDeleteButtonPressed
       ),
     ];
+    final whisperPost = fromMapToPost(postMap: post);
     return InkWell(
       onTap: initAudioPlayer,
       child: Slidable(
         actionPane: SlidableDrawerActionPane(),
         actionExtentRatio: 0.25,
-        actions: mainModel.currentWhisperUser.uid!= post[uidKey] ? 
+        actions: mainModel.currentWhisperUser.uid!= whisperPost.uid ? 
         [
           IconSlideAction(
             caption: 'mute User',
@@ -82,15 +86,15 @@ class PostCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: RedirectUserImage(userImageURL: post[userImageURLKey], length: 50.0, padding: 0.0, passiveUserDocId: post[uidKey], mainModel: mainModel),
+                  leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: 50.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
                   title: Text(
-                    post[userNameKey],
+                    whisperPost.userName,
                     style: TextStyle(
                       fontSize: 20.0
                     ),
                   ),
                   subtitle: Text(
-                    post[titleKey],
+                    whisperPost.title,
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontWeight: FontWeight.bold,

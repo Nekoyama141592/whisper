@@ -111,24 +111,24 @@ CollectionReference<Map<String, dynamic>>  replyNotificationsParentRef({ require
   return FirebaseFirestore.instance.collection(usersKey).doc(uid).collection(replyNotificationsKey);
 }
 
-WhisperUser fromMaprToWhisperUser({ required Map<String,dynamic> userMap }) {
+WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
   return WhisperUser.fromJson(userMap);
 }
-WhisperComment fromMaprToWhisperComment({ required Map<String,dynamic> userMap }) {
-  return WhisperComment.fromJson(userMap);
+WhisperComment fromMapToWhisperComment({ required Map<String,dynamic> commentMap }) {
+  return WhisperComment.fromJson(commentMap);
 }
-ManyUpdatePost fromMaprToManyUpdatePost({ required Map<String,dynamic> userMap }) {
-  return ManyUpdatePost.fromJson(userMap);
+ManyUpdatePost fromMapToManyUpdatePost({ required Map<String,dynamic> manyUpdatePostMap }) {
+  return ManyUpdatePost.fromJson(manyUpdatePostMap);
 }
-Post fromMaprToPost({ required Map<String,dynamic> userMap }) {
-  return Post.fromJson(userMap);
+Post fromMapToPost({ required Map<String,dynamic> postMap }) {
+  return Post.fromJson(postMap);
 }
-WhisperReply fromMaprToWhisperReply({ required Map<String,dynamic> userMap }) {
-  return WhisperReply.fromJson(userMap);
+WhisperReply fromMapToWhisperReply({ required Map<String,dynamic> replyMap }) {
+  return WhisperReply.fromJson(replyMap);
 }
-WhisperManyUpdateUser fromMaprToManyUpdateUser({ required Map<String,dynamic> userMap }) {
-  return WhisperManyUpdateUser.fromJson(userMap);
+WhisperManyUpdateUser fromMapToManyUpdateUser({ required Map<String,dynamic> manyUpdateUserMap }) {
+  return WhisperManyUpdateUser.fromJson(manyUpdateUserMap);
 }
-WhisperUserMeta fromMaprToWhisperUserMeta({ required Map<String,dynamic> userMap }) {
-  return WhisperUserMeta.fromJson(userMap);
+WhisperUserMeta fromMapToWhisperUserMeta({ required Map<String,dynamic> userMetaMap }) {
+  return WhisperUserMeta.fromJson(userMetaMap);
 }
