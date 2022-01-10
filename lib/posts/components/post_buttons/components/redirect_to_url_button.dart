@@ -6,7 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 
 class RedirectToUrlButton extends StatelessWidget {
 
@@ -20,7 +20,8 @@ class RedirectToUrlButton extends StatelessWidget {
 
   Widget build(BuildContext context) {
     
-    final link = currentSongMap[linkKey];
+    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final link = whisperPost.link;
 
     return InkWell(
         onTap: () async {
