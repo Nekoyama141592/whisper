@@ -18,7 +18,6 @@ class ManyUpdatePost {
     required this.imageURL,
     required this.impression,
     required this.ipv6,
-    required this.playCount,
     required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
@@ -30,6 +29,7 @@ class ManyUpdatePost {
     required this.noDisplayIpv6AndUids,
     required this.negativeScore,
     required this.otherLinks,
+    required this.playCount,
     required this.postId,
     required this.positiveScore,
     required this.score,
@@ -40,6 +40,7 @@ class ManyUpdatePost {
     required this.title,
     required this.uid,
     required this.userImageURL,
+    required this.userName
   });
   final String audioURL;
   final List<dynamic> bookmarks;
@@ -75,6 +76,7 @@ class ManyUpdatePost {
   final String title;
   final String uid;
   final String userImageURL;
+  final String userName;
   
   factory ManyUpdatePost.fromJson(Map<String,dynamic> json) => _$ManyUpdatePostFromJson(json);
 

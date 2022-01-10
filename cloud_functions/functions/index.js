@@ -23,7 +23,6 @@ exports.createPost = functions.firestore
 .onCreate(
     async (snap,context) => {
         const newValue = snap.data();
-        newValue.objectID = snap.id;
         newValue.objectID = context.params.id
         var index = client.initIndex(ALGOLIA_POSTS_INDEX_NAME);
         index.saveObject(newValue);

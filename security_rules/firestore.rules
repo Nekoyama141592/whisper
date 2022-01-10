@@ -6,84 +6,140 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 35 // max48
-    && 'authNotifications' in user && user.authNotifications is list
-    && 'birthDay' in user && user.birthDay is timestamp
-    && 'blocksIpv6AndUids' in user && user.blocksIpv6AndUids is list
-    && 'bookmarks' in user && user.bookmarks is list
+    return user.size() == 16 // max48
     && 'createdAt' in user && user.createdAt is timestamp
-    && 'description' in user && user.description is string
+    && 'description' in  user && user.description is string
     && 'dmState' in user && user.dmState is string
-    && 'followerCount' in user && user.followerCount is int
-    && 'followingUids' in user && user.followingUids is list
-    && 'gender' in user && user.gender is string
-    && 'imageURL' in user && user.imageURL is string
-    && 'isAdmin' in user && user.isAdmin is bool
     && 'isDelete' in user && user.isDelete is bool
     && 'isKeyAccount' in user && user.isKeyAccount is bool
     && 'isNFTicon' in user && user.isNFTicon is bool
     && 'isOfficial' in user && user.isOfficial is bool
-    && 'language' in user && user.language is string
-    && 'likeComments' in user && user.likeComments is list
-    && 'likeReplys' in user && user.likeReplys is list
-    && 'likes' in user && user.likes is list
     && 'link' in user && user.link is string
-    && 'mutesIpv6AndUids' in user && user.mutesIpv6AndUids is list
-    && 'noDisplayWords' in user && user.noDisplayWords is list
     && 'otherLinks' in user && user.otherLinks is list
-    && 'readNotifications' in user && user.readNotifications is list
-    && 'readPosts' in user && user.readPosts is list
     && 'recommendState' in user && user.recommendState is string
-    && 'score' in user && user.score is float
-    && 'searchHistory' in user && user.searchHistory is list
     && 'storageImageName' in user && user.storageImageName is string
     && 'subUserName' in user && user.subUserName is string
-    && 'uid'  in user && user.uid is string
-    && 'updatedAt' in user && user.updatedAt is timestamp
     && 'userName' in user && user.userName is string
-    && 'walletAddress' in user && user.walletAddress is string;
+    && 'uid' in user && user.uid is string
+    && 'walletAddress' in user && user.walletAddress is string
+    && 'updatedAt' in user && user.updatedAt is timestamp;
+  }
+
+  function isValidUserMeta(userMeta) {
+    return userMeta.size() == 14
+    && 'birthDay' in userMeta && userMeta.birthDay is timestamp
+    && 'bookmarks' in userMeta && userMeta.bookmarks is list
+    && 'createdAt' in userMeta && userMeta.createdAt is timestamp
+    && 'gender' in userMeta && userMeta.gender is string
+    && 'isAdmin' in userMeta && userMeta.isAdmin is bool
+    && 'isDelete' in userMeta && userMeta.isDelete is bool
+    && 'likeComments' in userMeta && userMeta.likeComments is list
+    && 'likeReplys' in userMeta && userMeta.likeReplys is list
+    && 'likes' in userMeta && userMeta.likes is list
+    && 'language' in userMeta && userMeta.language is string
+    && 'readNotifications' in userMeta && userMeta.readNotifications is list
+    && 'readPosts' in userMeta && userMeta.readPosts is list
+    && 'searchHistory' in userMeta && userMeta.searchHistory is list
+    && 'updatedAt' in userMeta && userMeta.updatedAt is timestamp
+    ;
+  }
+
+  function isValidManyUpdateUser(manyUpdateUser) {
+    return manyUpdateUser.size() == 20
+    && 'authNotifications' in manyUpdateUser && manyUpdateUser.authNotifications is list
+    && 'blocksIpv6AndUids' in manyUpdateUser && manyUpdateUser.blocksIpv6AndUids is list
+    && 'createdAt' in manyUpdateUser && manyUpdateUser.createdAt is timestamp
+    && 'description' in manyUpdateUser && manyUpdateUser.description is string
+    && 'followerCount' in manyUpdateUser && manyUpdateUser.followerCount is int
+    && 'followingUids' in manyUpdateUser && manyUpdateUser.followingUids is list
+    && 'imageURL' in manyUpdateUser && manyUpdateUser.imageURL is string
+    && 'isDelete' in manyUpdateUser && manyUpdateUser.isDelete is bool
+    && 'isNFTicon' in manyUpdateUser && manyUpdateUser.isNFTicon is bool
+    && 'isOfficial' in manyUpdateUser && manyUpdateUser.isOfficial is bool
+    && 'link' in manyUpdateUser && manyUpdateUser.link is string
+    && 'mutesIpv6AndUids' in manyUpdateUser && manyUpdateUser.mutesIpv6AndUids is list
+    && 'noDisplayWords' in manyUpdateUser && manyUpdateUser.noDisplayWords is list
+    && 'otherLinks' in manyUpdateUser && manyUpdateUser.otherLinks is list
+    && 'recommendState' in manyUpdateUser && manyUpdateUser.recommendState is string
+    && 'score' in manyUpdateUser && manyUpdateUser.score is number
+    && 'userName' in manyUpdateUser && manyUpdateUser.userName is string
+    && 'uid' in manyUpdateUser && manyUpdateUser.uid is string
+    && 'walletAddress' in manyUpdateUser && manyUpdateUser.walletAddress is string
+    && 'updatedAt' in manyUpdateUser && manyUpdateUser.updatedAt is timestamp
+    ;
   }
 
   
   function isValidPost(post) {
-    return post.size() == 37
+    return post.size() == 26
     && 'audioURL' in post && post.audioURL is string
-    && 'bookmarks' in post && post.bookmarks is list
-    && 'bookmarkCount' in post && post.bookmarkCount is int
-    && 'commentCount' in post && post.commentCount is int // un used
     && 'commentsState' in post && post.commentsState is string
-    && 'createdAt' in post && post.createdAt is timestamp
     && 'country' in post && post.country is string
-    && 'description' in post && post.description is string // un used
-    && 'genre' in post && post.genre is string // un used
-    && 'hashTags' in post && post.hashTags is list // un used
+    && 'description' in post && post.description is string
+    && 'genre' in post && post.genre is string
+    && 'hashTags' in post && post.hashTags is list
     && 'imageURL' in post && post.imageURL is string
-    && 'impression' in post && post.impression is int // un used
     && 'ipv6' in post && post.ipv6 is string
     && 'isDelete' in post && post.isDelete is bool
     && 'isNFTicon' in post && post.isNFTicon is bool
     && 'isOfficial' in post && post.isOfficial is bool
-    && 'isPinned' in post && post.isPinned is bool // un used
-    && 'likes' in post && post.likes is list
-    && 'likeCount' in post && post.likeCount is int
+    && 'isPinned' in post && post.isPinned is bool
     && 'link' in post && post.link is string
     && 'noDisplayWords' in post && post.noDisplayWords is list
     && 'noDisplayIpv6AndUids' in post && post.noDisplayIpv6AndUids is list
-    && 'negativeScore' in post && post.negativeScore is float // un used
-    && 'otherLinks' in post && post.otherLinks is list // un used
-    && 'playCount' in post && post.playCount is int
+    && 'otherLinks' in post && post.otherLinks is list
     && 'postId' in post && post.postId is string
-    && 'positiveScore' in post && post.positiveScore is float
-    && 'score' in post && post.score is float
+    && 'positiveScore' in post && post.positiveScore is number
+    && 'score' in post && post.score is number
     && 'storageImageName' in post && post.storageImageName is string
     && 'storagePostName' in post && post.storagePostName is string
-    && 'subUserName' in post && post.subUserName is string
-    && 'tagUids' in post && post.tagUids is list // un used
+    && 'tagUids' in post && post.tagUids is list
     && 'title' in post && post.title is string
     && 'uid' in post && post.uid is string
-    && 'updatedAt' in post && post.updatedAt is timestamp
     && 'userImageURL' in post && post.userImageURL is string
-    && 'userName' in post && post.userName is string;
+    && 'userName' in post && post.userName is string
+    ;
+  }
+
+  function isValidManyUpdatePost(manyUpdatePost) {
+    return manyUpdatePost.size() == 37
+    && 'audioURL' in manyUpdatePost && manyUpdatePost.audioURL is string
+    && 'bookmarks' in manyUpdatePost && manyUpdatePost.bookmarks is list
+    && 'bookmarkCount' in manyUpdatePost && manyUpdatePost.bookmarkCount is int
+    && 'commentCount' in manyUpdatePost && manyUpdatePost.commentCount is int // un used
+    && 'commentsState' in manyUpdatePost && manyUpdatePost.commentsState is string
+    && 'createdAt' in manyUpdatePost && manyUpdatePost.createdAt is timestamp
+    && 'country' in manyUpdatePost && manyUpdatePost.country is string
+    && 'description' in manyUpdatePost && manyUpdatePost.description is string // un used
+    && 'genre' in manyUpdatePost && manyUpdatePost.genre is string // un used
+    && 'hashTags' in manyUpdatePost && manyUpdatePost.hashTags is list // un used
+    && 'imageURL' in manyUpdatePost && manyUpdatePost.imageURL is string
+    && 'impression' in manyUpdatePost && manyUpdatePost.impression is int // un used
+    && 'ipv6' in manyUpdatePost && manyUpdatePost.ipv6 is string
+    && 'isDelete' in manyUpdatePost && manyUpdatePost.isDelete is bool
+    && 'isNFTicon' in manyUpdatePost && manyUpdatePost.isNFTicon is bool
+    && 'isOfficial' in manyUpdatePost && manyUpdatePost.isOfficial is bool
+    && 'isPinned' in manyUpdatePost && manyUpdatePost.isPinned is bool // un used
+    && 'likes' in manyUpdatePost && manyUpdatePost.likes is list
+    && 'likeCount' in manyUpdatePost && manyUpdatePost.likeCount is int
+    && 'link' in manyUpdatePost && manyUpdatePost.link is string
+    && 'noDisplayWords' in manyUpdatePost && manyUpdatePost.noDisplayWords is list
+    && 'noDisplayIpv6AndUids' in manyUpdatePost && manyUpdatePost.noDisplayIpv6AndUids is list
+    && 'negativeScore' in manyUpdatePost && manyUpdatePost.negativeScore is number // un used
+    && 'otherLinks' in manyUpdatePost && manyUpdatePost.otherLinks is list // un used
+    && 'playCount' in manyUpdatePost && manyUpdatePost.playCount is int
+    && 'postId' in manyUpdatePost && manyUpdatePost.postId is string
+    && 'positiveScore' in manyUpdatePost && manyUpdatePost.positiveScore is number
+    && 'score' in manyUpdatePost && manyUpdatePost.score is number
+    && 'storageImageName' in manyUpdatePost && manyUpdatePost.storageImageName is string
+    && 'storagePostName' in manyUpdatePost && manyUpdatePost.storagePostName is string
+    && 'subUserName' in manyUpdatePost && manyUpdatePost.subUserName is string
+    && 'tagUids' in manyUpdatePost && manyUpdatePost.tagUids is list // un used
+    && 'title' in manyUpdatePost && manyUpdatePost.title is string
+    && 'uid' in manyUpdatePost && manyUpdatePost.uid is string
+    && 'updatedAt' in manyUpdatePost && manyUpdatePost.updatedAt is timestamp
+    && 'userImageURL' in manyUpdatePost && manyUpdatePost.userImageURL is string
+    && 'userName' in manyUpdatePost && manyUpdatePost.userName is string;
   }
 
   function isValidComment(comment) {
@@ -98,12 +154,12 @@ service cloud.firestore {
     && 'isNFTicon' in comment && comment.isNFTicon is bool
     && 'isOfficial' in comment && comment.isOfficial is bool
     && 'likeCount' in comment && comment.likeCount is int
-    && 'negativeScore' in comment && comment.negativeScore is float
+    && 'negativeScore' in comment && comment.negativeScore is number
     && 'passiveUid' in comment && comment.passiveUid is string
-    && 'positiveScore' in comment && comment.positiveScore is float
+    && 'positiveScore' in comment && comment.positiveScore is number
     && 'postId' in comment && comment.postId is string
     && 'replyCount' in comment && comment.replyCount is int
-    && 'score' in comment && comment.score is float
+    && 'score' in comment && comment.score is number
     && 'subUserName' in comment && comment.subUserName is string
     && 'uid' in comment && comment.uid is string
     && 'userName' in comment && comment.userName is string
@@ -122,13 +178,13 @@ service cloud.firestore {
     && 'isNFTicon' in reply && reply.isNFTicon is bool
     && 'isOfficial' in reply && reply.isOfficial is bool
     && 'likeCount' in reply && reply.likeCount is int
-    && 'negativeScore' in reply && reply.negativeScore is float
+    && 'negativeScore' in reply && reply.negativeScore is number
     && 'passiveUid' in reply && reply.passiveUid is string
     && 'postId' in reply && reply.postId is string
-    && 'positiveScore' in reply && reply.positiveScore is float
+    && 'positiveScore' in reply && reply.positiveScore is number
     && 'reply' in reply && reply.reply is string
     && 'replyId' in reply && reply.replyId is string
-    && 'score' in reply && reply.score is float
+    && 'score' in reply && reply.score is number
     && 'subUserName' in reply && reply.subUserName is string
     && 'uid' in reply && reply.uid is string
     && 'userName' in reply && reply.userName is string

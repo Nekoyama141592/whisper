@@ -42,6 +42,7 @@ ManyUpdatePost _$ManyUpdatePostFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       uid: json['uid'] as String,
       userImageURL: json['userImageURL'] as String,
+      userName: json['userName'] as String
     );
 
 Map<String, dynamic> _$ManyUpdatePostToJson(ManyUpdatePost instance) =>
@@ -80,4 +81,5 @@ Map<String, dynamic> _$ManyUpdatePostToJson(ManyUpdatePost instance) =>
       'title': instance.title,
       'uid': instance.uid,
       'userImageURL': instance.userImageURL,
+      'userName': instance.userName,
     };
