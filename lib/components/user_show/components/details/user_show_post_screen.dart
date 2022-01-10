@@ -105,6 +105,7 @@ class UserShowPostScreen extends ConsumerWidget {
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: userShowModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
+            postType: userShowModel.postType,
             mainModel: mainModel
           ); 
         }, 

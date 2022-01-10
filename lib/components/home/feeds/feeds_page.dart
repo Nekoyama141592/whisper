@@ -72,6 +72,7 @@ class FeedsPage extends ConsumerWidget {
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: feedsModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
+            postType: feedsModel.postType,
             mainModel: mainModel
           ); 
         }, 

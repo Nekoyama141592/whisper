@@ -1,7 +1,8 @@
 // material
 import 'package:flutter/material.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/posts/components/post_buttons/components/edit_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
@@ -16,6 +17,7 @@ class PostButtons extends StatelessWidget {
 
   const PostButtons({
     required this.currentSongMapNotifier,
+    required this.postType,
     required this.toCommentsPage,
     required this.toEditingMode,
     required this.mainModel,
@@ -23,6 +25,7 @@ class PostButtons extends StatelessWidget {
   });
 
   final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
+  final PostType postType;
   final void Function()? toCommentsPage;
   final void Function()? toEditingMode;
   final MainModel mainModel;
@@ -33,14 +36,15 @@ class PostButtons extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier,
       builder: (_,currentSongMap,__) {
+        final whisperPost = fromMapToPost(postMap: currentSongMapNotifier.value);
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            LikeButton(currentSongMap: currentSongMap, mainModel: mainModel),
-            BookmarkButton(currentSongMap: currentSongMap, mainModel: mainModel),
+            LikeButton(postType: postType, currentSongMap: currentSongMap, mainModel: mainModel),
+            BookmarkButton(postType: postType, currentSongMap: currentSongMap, mainModel: mainModel),
             CommentButton(currentSongMap: currentSongMap,mainModel: mainModel,toCommentsPage: toCommentsPage),
-            if (mainModel.currentWhisperUser.uid == currentSongMap[uidKey]) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),
-            if (currentSongMap[linkKey].isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap,)
+            if (mainModel.currentWhisperUser.uid == whisperPost.uid) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),
+            if (whisperPost.link.isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap,)
           ],
         );
       }

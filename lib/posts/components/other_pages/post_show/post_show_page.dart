@@ -10,7 +10,8 @@ import 'package:whisper/posts/components/audio_window/components/current_song_ti
 import 'package:whisper/posts/components/audio_window/components/current_song_user_name.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/timestamp_display.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_screen.dart';
-
+// constants
+import 'package:whisper/constants/enums.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -39,6 +40,7 @@ class PostShowPage extends ConsumerWidget {
     required this.onNextSongButtonPressed,
     required this.toCommentsPage,
     required this.toEditingMode,
+    required this.postType,
     required this.mainModel,
   }) : super(key: key);
 
@@ -58,6 +60,7 @@ class PostShowPage extends ConsumerWidget {
   final void Function()? onNextSongButtonPressed;
   final void Function()? toCommentsPage;
   final void Function()? toEditingMode;
+  final PostType postType;
   final MainModel mainModel;
 
   @override 
@@ -104,7 +107,7 @@ class PostShowPage extends ConsumerWidget {
                       SizedBox(height: 10.0),
                       CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier),
                       SizedBox(height: 10.0),
-                      PostButtons(currentSongMapNotifier: currentSongMapNotifier, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                      PostButtons(currentSongMapNotifier: currentSongMapNotifier, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
                       SizedBox(height: 10.0),
                       AudioStateDesign(
                         speedNotifier: speedNotifier,

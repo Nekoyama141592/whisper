@@ -68,6 +68,7 @@ class RecommendersPage extends ConsumerWidget {
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
+            postType: recommendersModel.postType,
             mainModel: mainModel
           ); 
         }, 

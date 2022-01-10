@@ -67,6 +67,9 @@ bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesU
 
     case PostType.userShow:
     return true;
+
+    case PostType.onePost:
+    return true;
   }
 }
 

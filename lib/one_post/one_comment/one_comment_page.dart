@@ -75,6 +75,7 @@ class OneCommentPage extends ConsumerWidget {
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);
                     },
+                    postType: onePostModel.postType,
                     mainModel: mainModel
                   ); 
                 }, 

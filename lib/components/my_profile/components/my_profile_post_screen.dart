@@ -106,6 +106,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
+            postType: myProfileModel.postType,
             mainModel: mainModel
           ); 
         }, 

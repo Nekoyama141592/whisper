@@ -85,6 +85,7 @@ class PostScreen extends ConsumerWidget {
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: bookmarksModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
+            postType: bookmarksModel.postType,
             mainModel: mainModel
           ); 
         }, 

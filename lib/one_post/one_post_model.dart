@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -21,6 +22,7 @@ class OnePostModel extends ChangeNotifier {
   
   // basic
   bool isLoading = false;
+  final PostType postType = PostType.onePost;
   // notifiers
   late AudioPlayer audioPlayer;
   final progressNotifier = ProgressNotifier();
