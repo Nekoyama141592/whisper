@@ -35,6 +35,8 @@ import 'package:whisper/posts/components/replys/replys_model.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+// domain
+import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -88,8 +90,8 @@ void toPostShowPage({ required BuildContext context, required ValueNotifier<doub
   Navigator.push(context, MaterialPageRoute(builder: (context) =>PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentSongMapNotifier: currentSongMapNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, postType: postType,mainModel: mainModel) ));
 }
 
-void toUserShowPage(context,DocumentSnapshot<Map<String,dynamic>> passiveUserDoc,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveUserDoc: passiveUserDoc, mainModel: mainModel)));
+void toUserShowPage({ required context, required WhisperManyUpdateUser passiveManyUpdateUser, required MainModel mainModel}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveManyUpdateUser: passiveManyUpdateUser, mainModel: mainModel) ));
 }
 
 void toAccountPage(context,MainModel mainModel) {

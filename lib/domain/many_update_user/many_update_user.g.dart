@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'whisper_many_update_user.dart';
+part of 'many_update_user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

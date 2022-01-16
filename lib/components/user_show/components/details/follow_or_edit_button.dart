@@ -1,12 +1,12 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/rounded_button.dart';
+// domain
+import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -15,21 +15,20 @@ class FollowOrEditButton extends StatelessWidget {
   const FollowOrEditButton({
     Key? key,
     required this.mainModel,
-    required this.userDoc,
+    required this.manyUpdateUser,
     required this.followingUids,
     required this.onEditButtonPressed
   }) : super(key: key);
 
   final MainModel mainModel;
-  final DocumentSnapshot<Map<String,dynamic>> userDoc;
+  final WhisperManyUpdateUser manyUpdateUser;
   final List followingUids;
   final void Function()? onEditButtonPressed;
   @override 
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
-    final manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: userDoc.data()!);
 
-    return userDoc.id == mainModel.currentWhisperUser.uid ?
+    return manyUpdateUser.uid == mainModel.currentWhisperUser.uid ?
     // 変更
     RoundedButton(
       text: '編集', 
@@ -48,7 +47,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await voids.follow(context, mainModel, userDoc);
+          await voids.follow(context, mainModel, manyUpdateUser);
         } catch(e) {
           print(e.toString());          
         }
@@ -63,9 +62,9 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await voids.unfollow(mainModel, userDoc);
+          await voids.unfollow(mainModel, manyUpdateUser);
         } catch(e) {
-          print(e.toString());          
+          print(e.toString());
         }
       },  
       textColor: Colors.white, 

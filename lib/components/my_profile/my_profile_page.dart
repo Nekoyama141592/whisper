@@ -54,7 +54,7 @@ class MyProfilePage extends ConsumerWidget {
           onEditButtonPressed: () {
             myProfileModel.onEditButtonPressed(mainModel: mainModel);
           },
-          passiveUserDoc: mainModel.currentUserDoc, 
+          passiveManyUpdateUser: mainModel.manyUpdateUser,
           backArrow: SizedBox.shrink(), 
           mainModel: mainModel, 
         ), 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/enums.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -96,6 +97,7 @@ class PostCards extends ConsumerWidget {
               AudioWindow(
                 route: () {
                   routes.toPostShowPage(
+                    postType: postSearchModel.postType,
                     context: context,
                     speedNotifier: postSearchModel.speedNotifier,
                     speedControll:  () async { await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },

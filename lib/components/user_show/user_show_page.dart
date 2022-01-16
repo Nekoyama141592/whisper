@@ -12,6 +12,8 @@ import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
 import 'package:whisper/components/user_show/components/other_pages/edit_profile_screen.dart';
+// domain
+import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
@@ -20,18 +22,17 @@ class UserShowPage extends ConsumerWidget {
   
   const UserShowPage({
     Key? key,
-    required this.passiveUserDoc,
+    required this.passiveManyUpdateUser,
     required this.mainModel
   });
 
-  final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
+  final WhisperManyUpdateUser passiveManyUpdateUser;
   final MainModel mainModel;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     
     final userShowModel = watch(userShowProvider);
-    final passiveManyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!);
     List<dynamic> blocksIpv6AndUids = passiveManyUpdateUser.blocksIpv6AndUids;
     List<dynamic> passiveBlocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
@@ -80,7 +81,7 @@ class UserShowPage extends ConsumerWidget {
             onEditButtonPressed: () {
               userShowModel.onEditButtonPressed(mainModel: mainModel);
             },
-            passiveUserDoc: passiveUserDoc, 
+            passiveManyUpdateUser: passiveManyUpdateUser,
             backArrow: InkWell(
               child: Icon(Icons.arrow_back),
               onTap: () {

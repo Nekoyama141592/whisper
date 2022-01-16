@@ -19,7 +19,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-import 'package:whisper/domain/whisper_many_update_user/whisper_many_update_user.dart';
+import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -526,18 +526,18 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
 Future follow(
     BuildContext context,
     MainModel mainModel,
-    DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
+    WhisperManyUpdateUser manyUpdateUser) async {
   final followingUids = mainModel.followingUids;
   if (followingUids.length >= 500) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
   } else {
-    followingUids.add(passiveUserDoc.id);
+    followingUids.add(manyUpdateUser.uid);
     mainModel.reload();
     await updateFollowingUidsOfCurrentUser(
-        followingUids, mainModel.currentWhisperUser, passiveUserDoc);
+        followingUids, mainModel.currentWhisperUser, manyUpdateUser);
     await followerChildRef(
-            passiveUid: passiveUserDoc.id, followerUid: mainModel.currentWhisperUser.uid)
+            passiveUid: manyUpdateUser.uid, followerUid: mainModel.currentWhisperUser.uid)
         .set({
       createdAtKey: Timestamp.now(),
       followerUidKey: mainModel.currentWhisperUser.uid,
@@ -547,20 +547,20 @@ Future follow(
 
 Future unfollow(
     MainModel mainModel,
-    DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
+    WhisperManyUpdateUser manyUpdateUser) async {
   final followingUids = mainModel.followingUids;
-  followingUids.remove(passiveUserDoc.id);
+  followingUids.remove(manyUpdateUser.uid);
   mainModel.reload();
-  await updateFollowingUidsOfCurrentUser(followingUids, mainModel.currentWhisperUser, passiveUserDoc);
+  await updateFollowingUidsOfCurrentUser(followingUids, mainModel.currentWhisperUser, manyUpdateUser);
   await followerChildRef(
-    passiveUid: passiveUserDoc.id, followerUid: mainModel.currentWhisperUser.uid)
+    passiveUid: manyUpdateUser.uid, followerUid: mainModel.currentWhisperUser.uid)
   .delete();
 }
 
 Future updateFollowingUidsOfCurrentUser(
     List<dynamic> followingUids,
     WhisperUser currentWhisperUser,
-    DocumentSnapshot<Map<String, dynamic>> passiveUserDoc) async {
+    WhisperManyUpdateUser manyUpdateUser) async {
   await FirebaseFirestore.instance
     .collection(usersKey)
     .doc(currentWhisperUser.uid)

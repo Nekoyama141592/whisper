@@ -17,6 +17,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+// domain
+import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -74,8 +76,8 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
     passiveUserDoc = givePassiveUserDoc;
-    final manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!);
-    passiveUid = manyUpdateUser.uid;
+    final passiveManyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!);
+    passiveUid = passiveManyUpdateUser.uid;
     prefs = givePrefs;
     await getPosts();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
@@ -83,10 +85,10 @@ class UserShowModel extends ChangeNotifier {
     endLoading();
   }
 
-  void theSameUser(BuildContext context,MainModel mainModel) {
+  void theSameUser({ required BuildContext context, required MainModel mainModel }) {
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
-    routes.toUserShowPage(context, passiveUserDoc, mainModel);
+    routes.toUserShowPage(context: context, passiveManyUpdateUser: fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!), mainModel: mainModel);
   }
 
   void startLoading() {

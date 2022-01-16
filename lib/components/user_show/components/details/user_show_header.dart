@@ -1,14 +1,13 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// costants
-import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/follow_or_edit_button.dart';
 import 'package:whisper/components/user_show/components/details/link_button.dart';
+// domain
+import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // other_pages
 import 'package:whisper/components/user_show/components/other_pages/show_description_page.dart';
 // models
@@ -18,13 +17,13 @@ class UserShowHeader extends ConsumerWidget {
 
   const UserShowHeader({
     Key? key,
-    required this.passiveUserDoc,
+    required this.passiveManyUpdateUser,
     required this.onEditButtonPressed,
     required this.backArrow,
     required this.mainModel,
   }) : super(key: key);
 
-  final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
+  final WhisperManyUpdateUser passiveManyUpdateUser;
   final void Function()? onEditButtonPressed;
   final Widget backArrow;
   final MainModel mainModel;
@@ -32,7 +31,6 @@ class UserShowHeader extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,ScopedReader watch) {
 
-    final passiveManyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: passiveUserDoc.data()!);
     final followerCount = passiveManyUpdateUser.followerCount;
     final plusOneCount = followerCount + 1;
 
@@ -88,7 +86,7 @@ class UserShowHeader extends ConsumerWidget {
                   ),
                 ),
               ),
-              FollowOrEditButton(mainModel: mainModel, userDoc: passiveUserDoc, followingUids: mainModel.followingUids, onEditButtonPressed: onEditButtonPressed)
+              FollowOrEditButton(mainModel: mainModel, manyUpdateUser: passiveManyUpdateUser, followingUids: mainModel.followingUids, onEditButtonPressed: onEditButtonPressed)
             ],
           ),
           SizedBox(height: 16),

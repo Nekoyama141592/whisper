@@ -1,7 +1,7 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'whisper_many_update_user.g.dart';
+part 'many_update_user.g.dart';
 
 @JsonSerializable()
 class WhisperManyUpdateUser {

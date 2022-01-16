@@ -36,7 +36,6 @@ class FeedsPage extends ConsumerWidget {
     final editPostInfoModel = watch(editPostInfoProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.posts;
-    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: feedsModel.currentSongMapNotifier.value);
 
     return isLoading ?
     Loading()
@@ -61,13 +60,13 @@ class FeedsPage extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: feedsModel.audioPlayer); }, 
             playButtonNotifier: feedsModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: fromMapToManyUpdatePost(manyUpdatePostMap: feedsModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: feedsModel.audioPlayer); }, 
             isLastSongNotifier: feedsModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId,);
+              await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, fromMapToManyUpdatePost(manyUpdatePostMap: feedsModel.currentSongMapNotifier.value).postId,);
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: feedsModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -81,7 +80,7 @@ class FeedsPage extends ConsumerWidget {
         currentSongMapNotifier: feedsModel.currentSongMapNotifier,
         playButtonNotifier: feedsModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: fromMapToManyUpdatePost(manyUpdatePostMap: feedsModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: feedsModel.audioPlayer);
