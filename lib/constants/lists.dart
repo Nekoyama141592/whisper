@@ -1,3 +1,6 @@
+// constants
+import 'package:whisper/constants/ints.dart';
+
 const List<String> commonPasswords = [
   '12345',
   '123456',
@@ -29,3 +32,19 @@ const List<String> commonPasswords = [
   'zaq12wsx',
   'qwertyui'
 ];
+
+List<String> returnSearchWords({ required String searchTerm }) {
+  final int length = searchTerm.length;
+  List<String> searchWords = [];
+  if (length < nGramIndex) {
+    searchWords.add(searchTerm);
+  } else {
+    int termIndex = 0;
+    for (int i = 0; i < length - nGramIndex + 1; i++) {
+      final String word = searchTerm.substring(termIndex,termIndex + nGramIndex);
+      searchWords.add(word);
+      termIndex++;
+    }
+  }
+  return searchWords;
+}

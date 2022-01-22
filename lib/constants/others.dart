@@ -8,6 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 // constants
+import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
@@ -123,4 +125,12 @@ WhisperReply fromMapToWhisperReply({ required Map<String,dynamic> replyMap }) {
 }
 UserMeta fromMapToUserMeta({ required Map<String,dynamic> userMetaMap }) {
   return UserMeta.fromJson(userMetaMap);
+}
+
+Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,required List<String> searchWords }) {
+  Query<Map<String,dynamic>> query = FirebaseFirestore.instance.collection(collectionKey).limit(oneTimeReadCount);
+  searchWords.forEach((word) {
+    query = query.where(tokenToSearchKey + '.' + word,isEqualTo: true);
+  });
+  return query;
 }

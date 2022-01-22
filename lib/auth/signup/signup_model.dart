@@ -115,6 +115,7 @@ class SignupModel extends ChangeNotifier {
   }
   
   Future<void> addUserToFireStore({ required String uid, required String imageURL,required String storageImageName }) async {
+    final List<String> searchWords = returnSearchWords(searchTerm: userName);
     Map<String,dynamic> whisperUserMap = WhisperUser(
       accountName: uid,
       blocksIpv6AndUids: [],
@@ -133,7 +134,7 @@ class SignupModel extends ChangeNotifier {
       recommendState: recommendableString,
       score: defaultScore,
       storageImageName: storageImageName,
-      tokenToSearch: tokenToSearch(searchTerm: userName),
+      tokenToSearch: returnTokenToSearch(searchWords: searchWords),
       uid : uid,
       userName: userName,
       walletAddress: '',

@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // package
 import 'package:just_audio/just_audio.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
-import 'package:algolia/algolia.dart';
+// import 'package:algolia/algolia.dart';
+import 'package:whisper/constants/lists.dart';
+import 'package:whisper/constants/voids.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
+// import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -29,7 +33,7 @@ class PostSearchModel extends ChangeNotifier{
    // just_audio
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
-  List<Map<String,dynamic>> results = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> results = [];
    // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
   final progressNotifier = ProgressNotifier();
@@ -69,11 +73,23 @@ class PostSearchModel extends ChangeNotifier{
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: map) && !mutesPostIds.contains(whisperPost.postId);
   }
 
-  Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
+  Future operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
     startLoading();
-    await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s,);
+    await search(context: context, mutesUids: mutesUids, blocksUids: blocksUids);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
+  }
+
+  Future<void> search({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
+    if (searchTerm.length < 64) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('64文字未満で検索してください')));
+    } else {
+      startLoading();
+      final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
+      final Query<Map<String,dynamic>> query = returnSearchQuery(collectionKey: usersKey, searchWords: searchWords);
+      await processBasicDocs(query: query, docs: results);
+      endLoading();
+    }
   }
 
   void seek(Duration position) {

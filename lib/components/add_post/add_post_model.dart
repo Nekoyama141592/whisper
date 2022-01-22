@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 // constants
+import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
@@ -208,6 +209,7 @@ class AddPostModel extends ChangeNotifier {
     final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
+    final List<String> searchWords = returnSearchWords(searchTerm: title);
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
@@ -240,7 +242,7 @@ class AddPostModel extends ChangeNotifier {
       storageImageName: storageImageName, 
       storagePostName: storagePostName, 
       tagUids: [],
-      tokenToSearch: tokenToSearch(searchTerm: title),
+      tokenToSearch: returnTokenToSearch(searchWords: searchWords),
       title: title,
       uid: currentWhiseprUser.uid,
       userImageURL: currentWhiseprUser.imageURL,

@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:clipboard/clipboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/enums.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -28,7 +28,7 @@ class PostCards extends ConsumerWidget {
     required this.postSearchModel,
   }) : super(key: key);
 
-  final List<Map<String,dynamic>> results;
+  final List<DocumentSnapshot<Map<String,dynamic>>> results;
   final MainModel mainModel;
   final PostSearchModel postSearchModel;
   
@@ -59,7 +59,7 @@ class PostCards extends ConsumerWidget {
           },
           controller: searchController, 
           search: () async {
-            await postSearchModel.operation(mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s);
+            await postSearchModel.operation(context: context ,mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s);
           }
         ),
         results.isNotEmpty ?
@@ -72,11 +72,11 @@ class PostCards extends ConsumerWidget {
                 child: ListView.builder(
                   itemCount: results.length,
                   itemBuilder: (BuildContext context, int i) {
-                    final Map<String,dynamic> post = results[i];
+                    final Map<String,dynamic> post = results[i].data()!;
                     return 
                     PostCard(
                       post: post,
-                      onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i], afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
+                      onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
                       initAudioPlayer: () async {
                         await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
                       },

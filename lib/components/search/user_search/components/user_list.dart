@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
-// constants
-import 'package:algolia/algolia.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/search_input_field.dart';
 import 'package:whisper/details/user_card.dart';
@@ -20,7 +19,7 @@ class UserList extends StatelessWidget {
     required this.userSearchModel
   }) : super(key: key);
 
-  final List<AlgoliaObjectSnapshot> results;
+  final List<DocumentSnapshot<Map<String,dynamic>>> results;
   final MainModel mainModel;
   final UserSearchModel userSearchModel;
   
@@ -45,14 +44,14 @@ class UserList extends StatelessWidget {
           },
           controller: searchController, 
           search: () async {
-            await userSearchModel.operation(mainModel.mutesUids,mainModel.blocksUids);
+            await userSearchModel.operation(context: context, mutesUids: mainModel.mutesUids, blocksUids: mainModel.blocksUids);
           }
         ),
         Expanded(
           child: ListView.builder(
             itemCount: results.length,
             itemBuilder: (BuildContext context, int i) =>
-            UserCard(result: results[i].data, mainModel: mainModel)
+            UserCard(result: results[i].data()!, mainModel: mainModel)
           )
         ),
       ],
