@@ -45,31 +45,6 @@ service cloud.firestore {
     && 'updatedAt' in userMeta && userMeta.updatedAt is timestamp
     ;
   }
-
-  function isValidManyUpdateUser(manyUpdateUser) {
-    return manyUpdateUser.size() == 19
-    && 'blocksIpv6AndUids' in manyUpdateUser && manyUpdateUser.blocksIpv6AndUids is list
-    && 'createdAt' in manyUpdateUser && manyUpdateUser.createdAt is timestamp
-    && 'description' in manyUpdateUser && manyUpdateUser.description is string
-    && 'followerCount' in manyUpdateUser && manyUpdateUser.followerCount is int
-    && 'followingUids' in manyUpdateUser && manyUpdateUser.followingUids is list
-    && 'imageURL' in manyUpdateUser && manyUpdateUser.imageURL is string
-    && 'isDelete' in manyUpdateUser && manyUpdateUser.isDelete is bool
-    && 'isNFTicon' in manyUpdateUser && manyUpdateUser.isNFTicon is bool
-    && 'isOfficial' in manyUpdateUser && manyUpdateUser.isOfficial is bool
-    && 'link' in manyUpdateUser && manyUpdateUser.link is string
-    && 'mutesIpv6AndUids' in manyUpdateUser && manyUpdateUser.mutesIpv6AndUids is list
-    && 'noDisplayWords' in manyUpdateUser && manyUpdateUser.noDisplayWords is list
-    && 'otherLinks' in manyUpdateUser && manyUpdateUser.otherLinks is list
-    && 'recommendState' in manyUpdateUser && manyUpdateUser.recommendState is string
-    && 'score' in manyUpdateUser && manyUpdateUser.score is number
-    && 'userName' in manyUpdateUser && manyUpdateUser.userName is string
-    && 'uid' in manyUpdateUser && manyUpdateUser.uid is string
-    && 'walletAddress' in manyUpdateUser && manyUpdateUser.walletAddress is string
-    && 'updatedAt' in manyUpdateUser && manyUpdateUser.updatedAt is timestamp
-    ;
-  }
-
   
   function isValidPost(post) {
     return post.size() == 26
@@ -100,47 +75,6 @@ service cloud.firestore {
     && 'userImageURL' in post && post.userImageURL is string
     && 'userName' in post && post.userName is string
     ;
-  }
-
-  function isValidManyUpdatePost(manyUpdatePost) {
-    return manyUpdatePost.size() == 37
-    && 'audioURL' in manyUpdatePost && manyUpdatePost.audioURL is string
-    && 'bookmarks' in manyUpdatePost && manyUpdatePost.bookmarks is list
-    && 'bookmarkCount' in manyUpdatePost && manyUpdatePost.bookmarkCount is int
-    && 'commentCount' in manyUpdatePost && manyUpdatePost.commentCount is int // un used
-    && 'commentsState' in manyUpdatePost && manyUpdatePost.commentsState is string
-    && 'createdAt' in manyUpdatePost && manyUpdatePost.createdAt is timestamp
-    && 'country' in manyUpdatePost && manyUpdatePost.country is string
-    && 'description' in manyUpdatePost && manyUpdatePost.description is string // un used
-    && 'genre' in manyUpdatePost && manyUpdatePost.genre is string // un used
-    && 'hashTags' in manyUpdatePost && manyUpdatePost.hashTags is list // un used
-    && 'imageURL' in manyUpdatePost && manyUpdatePost.imageURL is string
-    && 'impression' in manyUpdatePost && manyUpdatePost.impression is int // un used
-    && 'ipv6' in manyUpdatePost && manyUpdatePost.ipv6 is string
-    && 'isDelete' in manyUpdatePost && manyUpdatePost.isDelete is bool
-    && 'isNFTicon' in manyUpdatePost && manyUpdatePost.isNFTicon is bool
-    && 'isOfficial' in manyUpdatePost && manyUpdatePost.isOfficial is bool
-    && 'isPinned' in manyUpdatePost && manyUpdatePost.isPinned is bool // un used
-    && 'likes' in manyUpdatePost && manyUpdatePost.likes is list
-    && 'likeCount' in manyUpdatePost && manyUpdatePost.likeCount is int
-    && 'link' in manyUpdatePost && manyUpdatePost.link is string
-    && 'noDisplayWords' in manyUpdatePost && manyUpdatePost.noDisplayWords is list
-    && 'noDisplayIpv6AndUids' in manyUpdatePost && manyUpdatePost.noDisplayIpv6AndUids is list
-    && 'negativeScore' in manyUpdatePost && manyUpdatePost.negativeScore is number // un used
-    && 'otherLinks' in manyUpdatePost && manyUpdatePost.otherLinks is list // un used
-    && 'playCount' in manyUpdatePost && manyUpdatePost.playCount is int
-    && 'postId' in manyUpdatePost && manyUpdatePost.postId is string
-    && 'positiveScore' in manyUpdatePost && manyUpdatePost.positiveScore is number
-    && 'score' in manyUpdatePost && manyUpdatePost.score is number
-    && 'storageImageName' in manyUpdatePost && manyUpdatePost.storageImageName is string
-    && 'storagePostName' in manyUpdatePost && manyUpdatePost.storagePostName is string
-    && 'subUserName' in manyUpdatePost && manyUpdatePost.subUserName is string
-    && 'tagUids' in manyUpdatePost && manyUpdatePost.tagUids is list // un used
-    && 'title' in manyUpdatePost && manyUpdatePost.title is string
-    && 'uid' in manyUpdatePost && manyUpdatePost.uid is string
-    && 'updatedAt' in manyUpdatePost && manyUpdatePost.updatedAt is timestamp
-    && 'userImageURL' in manyUpdatePost && manyUpdatePost.userImageURL is string
-    && 'userName' in manyUpdatePost && manyUpdatePost.userName is string;
   }
 
   function isValidComment(comment) {
@@ -227,13 +161,6 @@ service cloud.firestore {
       }
     }
 
-    match /manyUpdateUsers/{uid} {
-      // allow read: if isAuthenticated() && isValidManyUpdateUser(request.resource.data);
-      allow read: if true;
-      // allow write: if isAuthenticated() && isValidManyUpdateUser(request.resource.data);
-      allow create: if true;
-    }
-
     match /userMeta/{uid} {
       allow read: if request.auth.uid == uid;
       // allow create: if isValidUserMeta(request.resource.data);
@@ -265,10 +192,6 @@ service cloud.firestore {
         allow create: if basicValidation(activeUid);
         allow delete: if basicValidation(activeUid);
       }
-    }
-    match /manyUpdatePosts/{postId} {
-      allow read: if isValidManyUpdatePost(request.resource.data);
-      allow write: if isValidManyUpdatePost(request.resource.data);
     }
 
     match /replys/{replyId} {
