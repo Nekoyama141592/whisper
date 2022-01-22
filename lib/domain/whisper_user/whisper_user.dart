@@ -23,8 +23,8 @@ class WhisperUser {
     required this.recommendState,
     required this.score,
     required this.storageImageName,
+    required this.tokenToSearch,
     required this.userName,
-    required this.userNameTokenToSearch,
     required this.uid,
     required this.walletAddress
   });
@@ -45,8 +45,8 @@ class WhisperUser {
   final String recommendState;
   final double score;
   final String storageImageName;
+  final Map<String,dynamic> tokenToSearch;
   final String userName;
-  final Map<String,dynamic> userNameTokenToSearch;
   final String uid;
   final String walletAddress;
 

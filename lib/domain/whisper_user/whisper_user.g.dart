@@ -24,9 +24,8 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       recommendState: json['recommendState'] as String,
       score: (json['score'] as num).toDouble(),
       storageImageName: json['storageImageName'] as String,
+      tokenToSearch: json['tokenToSearch'] as Map<String, dynamic>,
       userName: json['userName'] as String,
-      userNameTokenToSearch:
-          json['userNameTokenToSearch'] as Map<String, dynamic>,
       uid: json['uid'] as String,
       walletAddress: json['walletAddress'] as String,
     );
@@ -50,8 +49,8 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'recommendState': instance.recommendState,
       'score': instance.score,
       'storageImageName': instance.storageImageName,
+      'tokenToSearch': instance.tokenToSearch,
       'userName': instance.userName,
-      'userNameTokenToSearch': instance.userNameTokenToSearch,
       'uid': instance.uid,
       'walletAddress': instance.walletAddress,
     };

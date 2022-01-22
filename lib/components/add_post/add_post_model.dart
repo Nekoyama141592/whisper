@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 // constants
+import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/main_model.dart';
@@ -206,6 +207,7 @@ class AddPostModel extends ChangeNotifier {
   Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
     final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
+    final String title = postTitleNotifier.value;
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
@@ -238,8 +240,8 @@ class AddPostModel extends ChangeNotifier {
       storageImageName: storageImageName, 
       storagePostName: storagePostName, 
       tagUids: [],
-      title: postTitleNotifier.value,
-      
+      tokenToSearch: tokenToSearch(searchTerm: title),
+      title: title,
       uid: currentWhiseprUser.uid,
       userImageURL: currentWhiseprUser.imageURL,
       userName: currentWhiseprUser.userName

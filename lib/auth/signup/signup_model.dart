@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
+import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
@@ -132,6 +133,7 @@ class SignupModel extends ChangeNotifier {
       recommendState: recommendableString,
       score: defaultScore,
       storageImageName: storageImageName,
+      tokenToSearch: tokenToSearch(searchTerm: userName),
       uid : uid,
       userName: userName,
       walletAddress: '',
