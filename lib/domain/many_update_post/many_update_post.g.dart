@@ -20,7 +20,6 @@ ManyUpdatePost _$ManyUpdatePostFromJson(Map<String, dynamic> json) =>
       imageURL: json['imageURL'] as String,
       impression: json['impression'] as int,
       ipv6: json['ipv6'] as String,
-      playCount: json['playCount'] as int,
       isDelete: json['isDelete'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
       isOfficial: json['isOfficial'] as bool,
@@ -32,6 +31,7 @@ ManyUpdatePost _$ManyUpdatePostFromJson(Map<String, dynamic> json) =>
       noDisplayIpv6AndUids: json['noDisplayIpv6AndUids'] as List<dynamic>,
       negativeScore: json['negativeScore'] as int,
       otherLinks: json['otherLinks'] as List<dynamic>,
+      playCount: json['playCount'] as int,
       postId: json['postId'] as String,
       positiveScore: (json['positiveScore'] as num).toDouble(),
       score: (json['score'] as num).toDouble(),
@@ -42,7 +42,7 @@ ManyUpdatePost _$ManyUpdatePostFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       uid: json['uid'] as String,
       userImageURL: json['userImageURL'] as String,
-      userName: json['userName'] as String
+      userName: json['userName'] as String,
     );
 
 Map<String, dynamic> _$ManyUpdatePostToJson(ManyUpdatePost instance) =>

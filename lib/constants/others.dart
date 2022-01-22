@@ -15,7 +15,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/many_update_post/many_update_post.dart';
-import 'package:whisper/domain/whisper_user_meta/whisper_user_meta.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/many_update_user/many_update_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model

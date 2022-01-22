@@ -1,7 +1,7 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'whisper_user_meta.g.dart';
+part 'user_meta.g.dart';
 
 @JsonSerializable()
 class UserMeta {
@@ -33,7 +33,8 @@ class UserMeta {
   final List<dynamic> readNotifications;
   final List<dynamic> readPosts;
   final List<dynamic> searchHistory;
-  factory UserMeta.fromJson(Map<String,dynamic> json) => _$WhisperUserMetaFromJson(json);
 
-  Map<String,dynamic> toJson() => _$WhisperUserMetaToJson(this);
+  factory UserMeta.fromJson(Map<String,dynamic> json) => _$UserMetaFromJson(json);
+
+  Map<String,dynamic> toJson() => _$UserMetaToJson(this);
 }
