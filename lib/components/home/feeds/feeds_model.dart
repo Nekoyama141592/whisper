@@ -18,7 +18,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -32,7 +32,7 @@ class FeedsModel extends ChangeNotifier {
   bool isLoading = false;
   User? currentUser;
   late UserMeta userMeta;
-  late WhisperManyUpdateUser manyUpdateUser;
+  late WhisperUser currentWhisperUser;
   Query<Map<String,dynamic>> getQuery({ required List<dynamic> followingUids }) {
     final x = postColRef.where(uidKey,whereIn: followingUids).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
     return x;
@@ -80,7 +80,7 @@ class FeedsModel extends ChangeNotifier {
     await setCurrentUserDoc();
     prefs = await SharedPreferences.getInstance();
     setFollowUids();
-    voids.setMutesAndBlocks(prefs: prefs, manyUpdateUser: manyUpdateUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs, currentWhisperUser: currentWhisperUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getFeeds(followingUids: followingUidsOfModel);
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -124,8 +124,8 @@ class FeedsModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
-    final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
-    manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: manyUpdateUserDoc.data()!);
+    final DocumentSnapshot<Map<String,dynamic>> currentWhisperDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    currentWhisperUser = fromMapToWhisperUser(userMap: currentWhisperDoc.data()! );
   }
 
   void setFollowUids() {

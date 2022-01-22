@@ -1,12 +1,11 @@
 // material
 import 'package:flutter/material.dart';
 // constants
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/rounded_button.dart';
 // domain
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -15,20 +14,20 @@ class FollowOrEditButton extends StatelessWidget {
   const FollowOrEditButton({
     Key? key,
     required this.mainModel,
-    required this.manyUpdateUser,
+    required this.passiveWhisperUser,
     required this.followingUids,
     required this.onEditButtonPressed
   }) : super(key: key);
 
   final MainModel mainModel;
-  final WhisperManyUpdateUser manyUpdateUser;
+  final WhisperUser passiveWhisperUser;
   final List followingUids;
   final void Function()? onEditButtonPressed;
   @override 
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
 
-    return manyUpdateUser.uid == mainModel.currentWhisperUser.uid ?
+    return passiveWhisperUser.uid == mainModel.currentWhisperUser.uid ?
     // 変更
     RoundedButton(
       text: '編集', 
@@ -39,7 +38,7 @@ class FollowOrEditButton extends StatelessWidget {
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
     )
-    : !followingUids.contains(manyUpdateUser.uid) ?
+    : !followingUids.contains(passiveWhisperUser.uid) ?
     RoundedButton(
       text: 'follow', 
       widthRate: 0.35,
@@ -47,7 +46,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await voids.follow(context, mainModel, manyUpdateUser);
+          await voids.follow(context, mainModel, passiveWhisperUser);
         } catch(e) {
           print(e.toString());          
         }
@@ -62,7 +61,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await voids.unfollow(mainModel, manyUpdateUser);
+          await voids.unfollow(mainModel, passiveWhisperUser);
         } catch(e) {
           print(e.toString());
         }

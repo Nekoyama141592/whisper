@@ -9,6 +9,8 @@ import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/details/user_card.dart';
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/ranking/user_ranking_model.dart';
@@ -55,8 +57,8 @@ class UserRankingPage extends ConsumerWidget {
             itemCount: userRankingModel.userDocs.length,
             itemBuilder: (BuildContext context, int i) {
               final DocumentSnapshot<Map<String,dynamic>> userDoc = userRankingModel.userDocs[i];
-              final manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: userDoc.data()!);
-              return mainModel.mutesUids.contains(manyUpdateUser.uid) || mainModel.blocksUids.contains(manyUpdateUser.uid) ?
+              final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
+              return mainModel.mutesUids.contains(whisperUser.uid) || mainModel.blocksUids.contains(whisperUser.uid) ?
               ListTile(
                 title: Text('非表示'),
                 leading: Icon(Icons.block),

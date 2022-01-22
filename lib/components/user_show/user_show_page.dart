@@ -1,11 +1,9 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
@@ -13,7 +11,7 @@ import 'package:whisper/components/user_show/components/details/user_show_header
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
 import 'package:whisper/components/user_show/components/other_pages/edit_profile_screen.dart';
 // domain
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
@@ -22,18 +20,18 @@ class UserShowPage extends ConsumerWidget {
   
   const UserShowPage({
     Key? key,
-    required this.passiveManyUpdateUser,
+    required this.passiveWhisperUser,
     required this.mainModel
   });
 
-  final WhisperManyUpdateUser passiveManyUpdateUser;
+  final WhisperUser passiveWhisperUser;
   final MainModel mainModel;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     
     final userShowModel = watch(userShowProvider);
-    List<dynamic> blocksIpv6AndUids = passiveManyUpdateUser.blocksIpv6AndUids;
+    List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
     List<dynamic> passiveBlocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
       passiveBlocksUids.add(blocksIpv6AndUid[uidKey]);
@@ -81,7 +79,7 @@ class UserShowPage extends ConsumerWidget {
             onEditButtonPressed: () {
               userShowModel.onEditButtonPressed(mainModel: mainModel);
             },
-            passiveManyUpdateUser: passiveManyUpdateUser,
+            passiveManyUpdateUser: passiveWhisperUser,
             backArrow: InkWell(
               child: Icon(Icons.arrow_back),
               onTap: () {

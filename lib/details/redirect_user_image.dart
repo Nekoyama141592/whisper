@@ -5,6 +5,8 @@ import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
+// domain
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // components
 import 'user_image.dart';
 // constants
@@ -38,11 +40,11 @@ class RedirectUserImage extends ConsumerWidget {
       onTap: () async {
         if (userShowModel.passiveUid != passiveUserDocId) {
           final DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc = passiveUserDocId == mainModel.currentWhisperUser.uid ? mainModel.currentUserDoc : await FirebaseFirestore.instance.collection(usersKey).doc(passiveUserDocId).get();
-          final passiveManyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: givePassiveUserDoc.data()!);
+          final WhisperUser passiveManyUpdateUser = fromMapToWhisperUser(userMap: givePassiveUserDoc.data()!);
           if (!givePassiveUserDoc.exists) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));
           } else {
-            routes.toUserShowPage(context: context, mainModel: mainModel, passiveManyUpdateUser: passiveManyUpdateUser );
+            routes.toUserShowPage(context: context, mainModel: mainModel, passiveWhisperUser: passiveManyUpdateUser );
             await userShowModel.init(givePassiveUserDoc,mainModel.prefs);
           }
         } else {

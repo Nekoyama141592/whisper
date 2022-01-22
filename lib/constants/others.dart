@@ -16,7 +16,6 @@ import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/many_update_post/many_update_post.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -125,9 +124,6 @@ Post fromMapToPost({ required Map<String,dynamic> postMap }) {
 }
 WhisperReply fromMapToWhisperReply({ required Map<String,dynamic> replyMap }) {
   return WhisperReply.fromJson(replyMap);
-}
-WhisperManyUpdateUser fromMapToManyUpdateUser({ required Map<String,dynamic> manyUpdateUserMap }) {
-  return WhisperManyUpdateUser.fromJson(manyUpdateUserMap);
 }
 UserMeta fromMapToUserMeta({ required Map<String,dynamic> userMetaMap }) {
   return UserMeta.fromJson(userMetaMap);

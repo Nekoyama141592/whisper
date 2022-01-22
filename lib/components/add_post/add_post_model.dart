@@ -202,7 +202,6 @@ class AddPostModel extends ChangeNotifier {
   
   Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
     final currentWhiseprUser = mainModel.currentWhisperUser;
-    final manyUpdateUser = mainModel.manyUpdateUser;
       try {
         await FirebaseFirestore.instance.collection(postsKey)
         .doc(postId)
@@ -228,8 +227,8 @@ class AddPostModel extends ChangeNotifier {
           likeCountKey: 0,
           linkKey: link,
           negativeScoreKey: 0,
-          noDisplayIpv6AndUidsKey: manyUpdateUser.blocksIpv6AndUids,
-          noDisplayWordsKey: manyUpdateUser.noDisplayWords,
+          noDisplayIpv6AndUidsKey: currentWhiseprUser.blocksIpv6AndUids,
+          noDisplayWordsKey: currentWhiseprUser.noDisplayWords,
           otherLinksKey: [],
           playCountKey: 0,
           postIdKey: postId,

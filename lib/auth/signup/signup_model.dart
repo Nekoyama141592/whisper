@@ -96,7 +96,6 @@ class SignupModel extends ChangeNotifier {
         final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
         await addUserToFireStore(uid: uid, imageURL: imageURL, storageImageName: storageImageName);
         await createUserMeta(uid: uid);
-        await createManyUpdateUser(uid: uid, imageURL: imageURL);
         routes.toVerifyPage(context);
       } on FirebaseAuthException catch(e) {
         print(e.code);
@@ -152,29 +151,6 @@ class SignupModel extends ChangeNotifier {
       readNotificationsKey: [],
       readPostsKey: [],
       searchHistoryKey: [],
-      updatedAtKey: Timestamp.now(),
-    });
-  }
-
-  Future<void> createManyUpdateUser({ required String uid, required String imageURL }) async {
-    await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(uid).set({
-      blocksIpv6AndUidsKey: [],
-      createdAtKey: Timestamp.now(),
-      descriptionKey: '',
-      followerCountKey: 0,
-      imageURLKey: imageURLKey,
-      isDeleteKey: false,
-      isNFTiconKey: false,
-      isOfficialKey: false,
-      linkKey: '',
-      mutesIpv6AndUidsKey: [],
-      noDisplayWordsKey: [],
-      otherLinksKey: [],
-      recommendStateKey: recommendableString,
-      scoreKey: defaultScore,
-      userNameKey: userName,
-      uidKey: uid,
-      walletAddressKey: '',
       updatedAtKey: Timestamp.now(),
     });
   }

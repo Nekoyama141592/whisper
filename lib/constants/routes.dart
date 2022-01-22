@@ -1,7 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 // pages
@@ -36,7 +35,7 @@ import 'package:whisper/posts/components/replys/replys_page.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 // domain
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -90,7 +89,7 @@ void toPostShowPage({ required BuildContext context, required ValueNotifier<doub
   Navigator.push(context, MaterialPageRoute(builder: (context) =>PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentSongMapNotifier: currentSongMapNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, postType: postType,mainModel: mainModel) ));
 }
 
-void toUserShowPage({ required context, required WhisperManyUpdateUser passiveManyUpdateUser, required MainModel mainModel}) {
+void toUserShowPage({ required BuildContext context, required WhisperUser passiveWhisperUser, required MainModel mainModel}) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveManyUpdateUser: passiveManyUpdateUser, mainModel: mainModel) ));
 }
 

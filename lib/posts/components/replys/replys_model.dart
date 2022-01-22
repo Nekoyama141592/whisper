@@ -264,12 +264,11 @@ class ReplysModel extends ChangeNotifier {
   Map<String,dynamic> makeReplyMap({ required String elementId,required  MainModel mainModel, required Map<String,dynamic> currentSongMap}) {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final manyUpdateUser = mainModel.manyUpdateUser;
     final newReplyMap = {
       elementIdKey: elementId,
       elementStateKey: elementState,
       createdAtKey: Timestamp.now(),
-      followerCountKey: manyUpdateUser.followerCount,
+      followerCountKey: currentWhisperUser.followerCount,
       ipv6Key: ipv6,
       isDeleteKey: false,
       isNFTiconKey: currentWhisperUser.isNFTicon,
@@ -307,7 +306,6 @@ class ReplysModel extends ChangeNotifier {
   Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required MainModel mainModel, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final manyUpdateUser = mainModel.manyUpdateUser;
     final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
     final newWhisperReply = fromMapToWhisperReply(replyMap: newReplyMap);
     final passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
@@ -318,7 +316,7 @@ class ReplysModel extends ChangeNotifier {
       createdAtKey: Timestamp.now(),
       elementIdKey: elementId,
       elementStateKey: elementState,
-      followerCountKey: manyUpdateUser.followerCount,
+      followerCountKey: currentWhisperUser.followerCount,
       isDeleteKey: false,
       isNFTiconKey: currentWhisperUser.isNFTicon,
       isOfficialKey: currentWhisperUser.isOfficial,

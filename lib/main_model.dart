@@ -12,7 +12,6 @@ import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -27,7 +26,6 @@ class MainModel extends ChangeNotifier {
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   late UserMeta userMeta;
   late WhisperUser currentWhisperUser;
-  late WhisperManyUpdateUser manyUpdateUser;
   late SharedPreferences prefs;
 
   List<String> likePostIds = [];
@@ -89,8 +87,6 @@ class MainModel extends ChangeNotifier {
     currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
-    final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
-    manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: manyUpdateUserDoc.data()!);
     notifyListeners();
   }
 
@@ -140,7 +136,7 @@ class MainModel extends ChangeNotifier {
   }
 
   void setMutesAndBlocks() {
-    voids.setMutesAndBlocks(prefs: prefs, manyUpdateUser: manyUpdateUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs,currentWhisperUser: currentWhisperUser,mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
     mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
   }

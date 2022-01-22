@@ -15,8 +15,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -31,8 +31,8 @@ class RecommendersModel extends ChangeNotifier {
   bool isLoading = false;
   // user
   User? currentUser;
-  late WhisperManyUpdateUser manyUpdateUser;
   late UserMeta userMeta;
+  late WhisperUser currentWhisperUser;
   Query<Map<String, dynamic>> getQuery() {
     final x = postColRef.orderBy(scoreKey, descending: true).limit(oneTimeReadCount);
     return x;
@@ -77,7 +77,7 @@ class RecommendersModel extends ChangeNotifier {
     setCurrentUser();
     await setCurrentUserDoc();
     prefs = await SharedPreferences.getInstance();
-    voids.setMutesAndBlocks(prefs: prefs, manyUpdateUser: manyUpdateUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs, currentWhisperUser: currentWhisperUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getRecommenders();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -112,8 +112,8 @@ class RecommendersModel extends ChangeNotifier {
   Future<void> setCurrentUserDoc() async {
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
-    final manyUpdateUserDoc = await FirebaseFirestore.instance.collection(manyUpdateUsersKey).doc(currentUser!.uid).get();
-    manyUpdateUser = fromMapToManyUpdateUser(manyUpdateUserMap: manyUpdateUserDoc.data()!);
+    final DocumentSnapshot<Map<String,dynamic>> currentWhisperDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    currentWhisperUser = fromMapToWhisperUser(userMap: currentWhisperDoc.data()! );
   }
   
   Future<void> onRefresh() async {

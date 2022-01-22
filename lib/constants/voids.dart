@@ -19,7 +19,6 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-import 'package:whisper/domain/many_update_user/many_update_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -31,15 +30,15 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-void setMutesAndBlocks({ required SharedPreferences prefs ,required WhisperManyUpdateUser manyUpdateUser, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
+void setMutesAndBlocks({ required SharedPreferences prefs ,required WhisperUser currentWhisperUser, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
   // 代入は使えないが.addは反映される
-  manyUpdateUser.mutesIpv6AndUids.forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
+  currentWhisperUser.mutesIpv6AndUids.forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
   mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
     mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
     mutesUids.add(mutesIpv6AndUid[uidKey]);
   });
   (prefs.getStringList(mutesPostIdsKey) ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
-  manyUpdateUser.blocksIpv6AndUids.forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
+  currentWhisperUser.blocksIpv6AndUids.forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
   blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
     blocksUids.add(blocksIpv6AndUid[uidKey]);
     blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
@@ -526,18 +525,18 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
 Future follow(
     BuildContext context,
     MainModel mainModel,
-    WhisperManyUpdateUser manyUpdateUser) async {
+    WhisperUser currentWhisperUser) async {
   final followingUids = mainModel.followingUids;
   if (followingUids.length >= 500) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
   } else {
-    followingUids.add(manyUpdateUser.uid);
+    followingUids.add(currentWhisperUser.uid);
     mainModel.reload();
     await updateFollowingUidsOfCurrentUser(
-        followingUids, mainModel.currentWhisperUser, manyUpdateUser);
+        followingUids, mainModel.currentWhisperUser);
     await followerChildRef(
-            passiveUid: manyUpdateUser.uid, followerUid: mainModel.currentWhisperUser.uid)
+            passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
         .set({
       createdAtKey: Timestamp.now(),
       followerUidKey: mainModel.currentWhisperUser.uid,
@@ -547,20 +546,19 @@ Future follow(
 
 Future unfollow(
     MainModel mainModel,
-    WhisperManyUpdateUser manyUpdateUser) async {
+    WhisperUser currentWhisperUser) async {
   final followingUids = mainModel.followingUids;
-  followingUids.remove(manyUpdateUser.uid);
+  followingUids.remove(currentWhisperUser.uid);
   mainModel.reload();
-  await updateFollowingUidsOfCurrentUser(followingUids, mainModel.currentWhisperUser, manyUpdateUser);
+  await updateFollowingUidsOfCurrentUser(followingUids, mainModel.currentWhisperUser);
   await followerChildRef(
-    passiveUid: manyUpdateUser.uid, followerUid: mainModel.currentWhisperUser.uid)
+    passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
   .delete();
 }
 
 Future updateFollowingUidsOfCurrentUser(
     List<dynamic> followingUids,
-    WhisperUser currentWhisperUser,
-    WhisperManyUpdateUser manyUpdateUser) async {
+    WhisperUser currentWhisperUser,) async {
   await FirebaseFirestore.instance
     .collection(usersKey)
     .doc(currentWhisperUser.uid)
