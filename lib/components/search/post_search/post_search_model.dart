@@ -23,7 +23,7 @@ final postSearchProvider = ChangeNotifierProvider(
 
 class PostSearchModel extends ChangeNotifier{
 
-  final Algolia algoliaApp = AlgoliaApplication.algolia;
+  // final Algolia algoliaApp = AlgoliaApplication.algolia;
   String searchTerm = '';
   bool isLoading = false;
    // just_audio
@@ -69,27 +69,6 @@ class PostSearchModel extends ChangeNotifier{
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: map) && !mutesPostIds.contains(whisperPost.postId);
   }
 
-  Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required blocksIpv6s}) async {
-    results = [];
-    AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
-    AlgoliaQuerySnapshot querySnap = await query.getObjects();
-    List<AlgoliaObjectSnapshot> hits = querySnap.hits;
-    hits.forEach((hit) {
-      final Map<String,dynamic> map = hit.data;
-      if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds) ) {
-        results.add(map);
-        final whisperPost = fromMapToPost(postMap: map);
-        Uri song = Uri.parse(whisperPost.audioURL);
-        UriAudioSource source = AudioSource.uri(song, tag: map);
-        afterUris.add(source);
-      }
-    });
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist);
-    }
-  }
-
   Future operation({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
     startLoading();
     await search(mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s,);
@@ -101,4 +80,24 @@ class PostSearchModel extends ChangeNotifier{
     audioPlayer.seek(position);
   }
 
+  // Future search({required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required blocksIpv6s}) async {
+  //   results = [];
+  //   AlgoliaQuery query = algoliaApp.instance.index('Posts').query(searchTerm);
+  //   AlgoliaQuerySnapshot querySnap = await query.getObjects();
+  //   List<AlgoliaObjectSnapshot> hits = querySnap.hits;
+  //   hits.forEach((hit) {
+  //     final Map<String,dynamic> map = hit.data;
+  //     if ( isValidReadPost(map: map, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds) ) {
+  //       results.add(map);
+  //       final whisperPost = fromMapToPost(postMap: map);
+  //       Uri song = Uri.parse(whisperPost.audioURL);
+  //       UriAudioSource source = AudioSource.uri(song, tag: map);
+  //       afterUris.add(source);
+  //     }
+  //   });
+  //   if (afterUris.isNotEmpty) {
+  //     ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+  //     await audioPlayer.setAudioSource(playlist);
+  //   }
+  // }
 }

@@ -13,7 +13,7 @@ final searchProvider = ChangeNotifierProvider(
 );
 class UserSearchModel extends ChangeNotifier {
 
-  final Algolia algoliaApp = AlgoliaApplication.algolia;
+  // final Algolia algoliaApp = AlgoliaApplication.algolia;
   String searchTerm = '';
   bool isLoading = false;
   
@@ -27,18 +27,18 @@ class UserSearchModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-  Future operation(List<dynamic> mutesUids,List<dynamic> blockingUids) async {
-    startLoading();
-    results = [];
-    AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);
-    AlgoliaQuerySnapshot querySnap = await query.getObjects();
-    List<AlgoliaObjectSnapshot> hits = querySnap.hits;
-    hits.forEach((hit) {
-      final whisperUser = fromMapToWhisperUser(userMap: hit.data);
-      if (!mutesUids.contains(whisperUser.uid) && !blockingUids.contains(whisperUser.uid)) {
-        results.add(hit);
-      }
-    });
-    endLoading();
-  }
+  // Future operation(List<dynamic> mutesUids,List<dynamic> blockingUids) async {
+  //   startLoading();
+  //   results = [];
+  //   AlgoliaQuery query = algoliaApp.instance.index('Users').query(searchTerm);
+  //   AlgoliaQuerySnapshot querySnap = await query.getObjects();
+  //   List<AlgoliaObjectSnapshot> hits = querySnap.hits;
+  //   hits.forEach((hit) {
+  //     final whisperUser = fromMapToWhisperUser(userMap: hit.data);
+  //     if (!mutesUids.contains(whisperUser.uid) && !blockingUids.contains(whisperUser.uid)) {
+  //       results.add(hit);
+  //     }
+  //   });
+  //   endLoading();
+  // }
 }
