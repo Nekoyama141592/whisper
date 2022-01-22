@@ -6,6 +6,7 @@ final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString
 final String storageUserImageName = 'userImage' + microSecondsString + imageExtension;
 final String postImageName = 'postImage' + microSecondsString + imageExtension;
 // keys
+const String accountNameKey = 'accountName';
 const String audioURLKey = 'audioURL';
 const String authNotificationsKey = 'authNotifications';
 const String birthDayKey = 'birthDay';
@@ -88,7 +89,6 @@ const String storageImageNameKey = 'storageImageName';
 const String storagePostNameKey = 'storagePostName';
 const String speedKey = 'speed';
 const String subTitleKey = 'subTitle';
-const String subUserNameKey = 'subUserName';
 const String tagUidsKey = 'tagUids';
 const String titleKey = 'title';
 const String uidKey = 'uid';

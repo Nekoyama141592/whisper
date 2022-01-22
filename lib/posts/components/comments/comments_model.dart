@@ -137,6 +137,7 @@ class CommentsModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperPost = fromMapToPost(postMap: currentSongMap);
     final commentMap = {
+      accountNameKey: currentWhisperUser.accountName,
       commentKey: comment,
       commentIdKey: commentKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
       createdAtKey: Timestamp.now(),
@@ -152,7 +153,6 @@ class CommentsModel extends ChangeNotifier {
       postIdKey: whisperPost.postId,
       replyCountKey: 0,
       scoreKey: defaultScore,
-      subUserNameKey: currentWhisperUser.subUserName,
       uidKey: currentWhisperUser.uid,
       userNameKey: currentWhisperUser.userName,
       userImageURLKey: currentWhisperUser.imageURL
@@ -164,6 +164,7 @@ class CommentsModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     try{
       final Map<String,dynamic> map = {
+        accountNameKey: currentWhisperUser.accountName,
         commentKey: newCommentMap[commentKey],
         commentScoreKey: newCommentMap[scoreKey],
         commentIdKey: newCommentMap[commentIdKey],
@@ -176,7 +177,6 @@ class CommentsModel extends ChangeNotifier {
         passiveUidKey: currentSongMap[uidKey],
         postTitleKey: currentSongMap[titleKey],
         postIdKey: currentSongMap[postIdKey],
-        subUserNameKey: currentWhisperUser.subUserName,
         uidKey: currentWhisperUser.uid,
         userNameKey: currentWhisperUser.userName,
         userImageURLKey: currentWhisperUser.imageURL

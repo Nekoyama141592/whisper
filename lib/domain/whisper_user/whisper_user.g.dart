@@ -7,6 +7,7 @@ part of 'whisper_user.dart';
 // **************************************************************************
 
 WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
+      accountName: json['accountName'] as String,
       blocksIpv6AndUids: json['blocksIpv6AndUids'] as List<dynamic>,
       description: json['description'] as String,
       dmState: json['dmState'] as String,
@@ -23,7 +24,6 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       recommendState: json['recommendState'] as String,
       score: (json['score'] as num).toDouble(),
       storageImageName: json['storageImageName'] as String,
-      subUserName: json['subUserName'] as String,
       userName: json['userName'] as String,
       uid: json['uid'] as String,
       walletAddress: json['walletAddress'] as String,
@@ -31,6 +31,7 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
 
 Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
     <String, dynamic>{
+      'accountName': instance.accountName,
       'blocksIpv6AndUids': instance.blocksIpv6AndUids,
       'description': instance.description,
       'dmState': instance.dmState,
@@ -47,7 +48,6 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'recommendState': instance.recommendState,
       'score': instance.score,
       'storageImageName': instance.storageImageName,
-      'subUserName': instance.subUserName,
       'userName': instance.userName,
       'uid': instance.uid,
       'walletAddress': instance.walletAddress,

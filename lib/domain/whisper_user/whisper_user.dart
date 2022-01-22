@@ -6,6 +6,7 @@ part 'whisper_user.g.dart';
 @JsonSerializable()
 class WhisperUser {
   WhisperUser({
+    required this.accountName,
     required this.blocksIpv6AndUids,
     required this.description,
     required this.dmState,
@@ -22,11 +23,11 @@ class WhisperUser {
     required this.recommendState,
     required this.score,
     required this.storageImageName,
-    required this.subUserName,
     required this.userName,
     required this.uid,
     required this.walletAddress
   });
+  final String accountName;
   final List<dynamic> blocksIpv6AndUids;
   final String description;
   final String dmState;
@@ -43,7 +44,6 @@ class WhisperUser {
   final String recommendState;
   final double score;
   final String storageImageName;
-  final String subUserName;
   final String userName;
   final String uid;
   final String walletAddress;

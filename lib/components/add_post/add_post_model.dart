@@ -206,6 +206,7 @@ class AddPostModel extends ChangeNotifier {
         await FirebaseFirestore.instance.collection(postsKey)
         .doc(postId)
         .set({
+          accountNameKey: currentWhiseprUser.accountName,
           audioURLKey: audioURL,
           bookmarksKey:[],
           bookmarkCountKey: 0,
@@ -236,7 +237,6 @@ class AddPostModel extends ChangeNotifier {
           scoreKey: defaultScore,
           storageImageNameKey: storageImageName,
           storagePostName: storagePostName, // use on lib/constants/voids.dart
-          subUserNameKey: currentWhiseprUser.subUserName,
           tagUidsKey: [],
           titleKey: postTitleNotifier.value,
           uidKey: currentWhiseprUser.uid,

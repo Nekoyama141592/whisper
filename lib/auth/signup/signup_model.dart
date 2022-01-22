@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
-import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
@@ -113,6 +112,7 @@ class SignupModel extends ChangeNotifier {
   Future<void> addUserToFireStore({ required String uid, required String imageURL,required String storageImageName }) async {
     await FirebaseFirestore.instance.collection(usersKey).doc(uid)
     .set({
+      accountNameKey: uid,
       createdAtKey: Timestamp.now(),
       descriptionKey: '',
       dmStateKey: onlyFollowingAndFollowedString,
@@ -125,7 +125,6 @@ class SignupModel extends ChangeNotifier {
       otherLinksKey: [],
       recommendStateKey: recommendableString,
       storageImageNameKey: storageImageName,
-      subUserNameKey: uid, 
       uidKey : uid,
       updatedAtKey: Timestamp.now(),
       userNameKey: userName,

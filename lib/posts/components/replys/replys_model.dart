@@ -265,6 +265,7 @@ class ReplysModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperPost = fromMapToPost(postMap: currentSongMap);
     final newReplyMap = {
+      accountNameKey: currentWhisperUser.accountName,
       elementIdKey: elementId,
       elementStateKey: elementState,
       createdAtKey: Timestamp.now(),
@@ -281,7 +282,6 @@ class ReplysModel extends ChangeNotifier {
       replyKey: reply,
       replyIdKey: replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
       scoreKey: defaultScore,
-      subUserNameKey: currentWhisperUser.subUserName,
       uidKey: currentWhisperUser.uid,
       userNameKey: currentWhisperUser.userName,
       userImageURLKey: currentWhisperUser.imageURL
@@ -312,6 +312,7 @@ class ReplysModel extends ChangeNotifier {
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = whisperComment.comment;
     Map<String,dynamic> map = {
+      accountNameKey: currentWhisperUser.accountName,
       commentKey: comment,
       createdAtKey: Timestamp.now(),
       elementIdKey: elementId,
@@ -326,7 +327,6 @@ class ReplysModel extends ChangeNotifier {
       replyKey: reply,
       replyScoreKey: newWhisperReply.score,
       replyIdKey: newWhisperReply.replyId,
-      subUserNameKey: currentWhisperUser.subUserName,
       uidKey: currentWhisperUser.uid,
       userNameKey: currentWhisperUser.userName,
       userImageURLKey: currentWhisperUser.imageURL
