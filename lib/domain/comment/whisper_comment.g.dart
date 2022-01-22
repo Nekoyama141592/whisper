@@ -8,6 +8,7 @@ part of 'whisper_comment.dart';
 
 WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
     WhisperComment(
+      accountName: json['accountName'] as String,
       comment: json['comment'] as String,
       commentId: json['commentId'] as String,
       followerCount: json['followerCount'] as int,
@@ -22,7 +23,6 @@ WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
       postId: json['postId'] as String,
       replyCount: json['replyCount'] as int,
       score: (json['score'] as num).toDouble(),
-      subUserName: json['subUserName'] as String,
       uid: json['uid'] as String,
       userName: json['userName'] as String,
       userImageURL: json['userImageURL'] as String,
@@ -30,6 +30,7 @@ WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$WhisperCommentToJson(WhisperComment instance) =>
     <String, dynamic>{
+      'accountName': instance.accountName,
       'comment': instance.comment,
       'commentId': instance.commentId,
       'followerCount': instance.followerCount,
@@ -44,7 +45,6 @@ Map<String, dynamic> _$WhisperCommentToJson(WhisperComment instance) =>
       'postId': instance.postId,
       'replyCount': instance.replyCount,
       'score': instance.score,
-      'subUserName': instance.subUserName,
       'uid': instance.uid,
       'userName': instance.userName,
       'userImageURL': instance.userImageURL,

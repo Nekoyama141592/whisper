@@ -7,6 +7,7 @@ part of 'post.dart';
 // **************************************************************************
 
 Post _$PostFromJson(Map<String, dynamic> json) => Post(
+      accountName: json['accountName'] as String,
       audioURL: json['audioURL'] as String,
       bookmarks: json['bookmarks'] as List<dynamic>,
       bookmarkCount: json['bookmarkCount'] as int,
@@ -36,7 +37,6 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       score: (json['score'] as num).toDouble(),
       storageImageName: json['storageImageName'] as String,
       storagePostName: json['storagePostName'] as String,
-      subUserName: json['subUserName'] as String,
       tagUids: json['tagUids'] as List<dynamic>,
       title: json['title'] as String,
       uid: json['uid'] as String,
@@ -45,6 +45,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
+      'accountName': instance.accountName,
       'audioURL': instance.audioURL,
       'bookmarks': instance.bookmarks,
       'bookmarkCount': instance.bookmarkCount,
@@ -74,7 +75,6 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'score': instance.score,
       'storageImageName': instance.storageImageName,
       'storagePostName': instance.storagePostName,
-      'subUserName': instance.subUserName,
       'tagUids': instance.tagUids,
       'title': instance.title,
       'uid': instance.uid,

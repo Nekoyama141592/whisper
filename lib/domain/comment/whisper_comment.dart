@@ -6,6 +6,7 @@ part 'whisper_comment.g.dart';
 @JsonSerializable()
 class WhisperComment {
   WhisperComment({
+    required this.accountName,
     required this.comment,
     required this.commentId,
     required this.followerCount,
@@ -20,11 +21,11 @@ class WhisperComment {
     required this.postId,
     required this.replyCount,
     required this.score,
-    required this.subUserName,
     required this.uid,
     required this.userName,
     required this.userImageURL
   });
+  final String accountName;
   final String comment;
   final String commentId;
   final int followerCount;
@@ -39,7 +40,6 @@ class WhisperComment {
   final String postId;
   final int replyCount;
   final double score;
-  final String subUserName;
   final String uid;
   final String userName;
   final String userImageURL;

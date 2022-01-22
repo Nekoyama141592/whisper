@@ -20,6 +20,9 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/main_model.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -201,49 +204,49 @@ class AddPostModel extends ChangeNotifier {
 
   
   Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
-    final currentWhiseprUser = mainModel.currentWhisperUser;
+    final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
+    final Timestamp now = Timestamp.now();
+    Map<String,dynamic> postMap = Post(
+      accountName: currentWhiseprUser.accountName,
+      audioURL: audioURL, 
+      bookmarks: [],
+      bookmarkCount: 0,
+      commentCount: 0,
+      commentsState: commentsState, 
+      country: '', 
+      description: '', 
+      genre: '', 
+      hashTags: [],
+      imageURL: imageURL, 
+      impression: 0,
+      ipv6: ipv6, 
+      isDelete: false,
+      isNFTicon: currentWhiseprUser.isNFTicon,
+      isOfficial: currentWhiseprUser.isOfficial,
+      isPinned: false,
+      likes: [],
+      likeCount: 0,
+      link: link, 
+      noDisplayWords: currentWhiseprUser.noDisplayWords,
+      noDisplayIpv6AndUids: currentWhiseprUser.blocksIpv6AndUids,
+      negativeScore: 0,
+      otherLinks: [],
+      playCount: 0,
+      postId: postId, 
+      positiveScore: 0,
+      score: defaultScore,
+      storageImageName: storageImageName, 
+      storagePostName: storagePostName, 
+      tagUids: [],
+      title: postTitleNotifier.value,
+      uid: currentWhiseprUser.uid,
+      userImageURL: currentWhiseprUser.imageURL,
+      userName: currentWhiseprUser.userName
+      ).toJson();
+      postMap[createdAtKey] = now;
+      postMap[updatedAtKey] = now;
       try {
-        await FirebaseFirestore.instance.collection(postsKey)
-        .doc(postId)
-        .set({
-          accountNameKey: currentWhiseprUser.accountName,
-          audioURLKey: audioURL,
-          bookmarksKey:[],
-          bookmarkCountKey: 0,
-          commentCountKey: 0,
-          commentsStateKey: commentsState,
-          createdAtKey: Timestamp.now(),
-          countryKey: '',
-          descriptionKey: '',
-          genreKey: '',
-          hashTagsKey: [],
-          imageURLKey: imageURL,
-          impressionKey: 0,
-          ipv6Key: ipv6,
-          isDeleteKey: false,
-          isNFTiconKey: currentWhiseprUser.isNFTicon,
-          isOfficialKey: currentWhiseprUser.isOfficial,
-          isPinnedKey: false,
-          likesKey:[],
-          likeCountKey: 0,
-          linkKey: link,
-          negativeScoreKey: 0,
-          noDisplayIpv6AndUidsKey: currentWhiseprUser.blocksIpv6AndUids,
-          noDisplayWordsKey: currentWhiseprUser.noDisplayWords,
-          otherLinksKey: [],
-          playCountKey: 0,
-          postIdKey: postId,
-          positiveScoreKey: 0,
-          scoreKey: defaultScore,
-          storageImageNameKey: storageImageName,
-          storagePostName: storagePostName, // use on lib/constants/voids.dart
-          tagUidsKey: [],
-          titleKey: postTitleNotifier.value,
-          uidKey: currentWhiseprUser.uid,
-          updatedAtKey: Timestamp.now(),
-          userImageURLKey: currentWhiseprUser.imageURL,
-          userNameKey: currentWhiseprUser.userName
-        });
+        await FirebaseFirestore.instance.collection(postsKey).doc(postId).set(postMap);
         addPostStateNotifier.value = AddPostState.uploaded;
       } catch(e) {
         print(e.toString());

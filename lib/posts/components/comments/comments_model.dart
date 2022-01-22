@@ -16,6 +16,11 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+// domain
+import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // states
 import 'package:whisper/constants/enums.dart';
 // models
@@ -104,7 +109,8 @@ class CommentsModel extends ChangeNotifier {
   
   Future<void> makeComment({ required BuildContext context, required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final commentMap = makeCommentMap(mainModel: mainModel, currentSongMap: currentSongMap);
+    final Post whisperPost = fromMapToPost(postMap: currentSongMap);
+    final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final whisperComment = fromMapToWhisperComment(commentMap: commentMap);
     await FirebaseFirestore.instance.collection(commentsKey).doc(whisperComment.commentId).set(commentMap);
     // notification
@@ -126,62 +132,67 @@ class CommentsModel extends ChangeNotifier {
         mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
+      final Timestamp now = Timestamp.now();
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: mainModel.currentWhisperUser.uid, ipv6: ipv6) ) {
-        await makeCommentNotification(currentSongMap: currentSongMap, mainModel: mainModel, passiveUserDoc: passiveUserDoc, newCommentMap: commentMap);
+        await makeCommentNotification( mainModel: mainModel, passiveUserDoc: passiveUserDoc, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
       }
     }
   }
 
 
-  Map<String,dynamic> makeCommentMap({ required MainModel mainModel, required Map<String,dynamic> currentSongMap}) {
-    final currentWhisperUser = mainModel.currentWhisperUser;
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final commentMap = {
-      accountNameKey: currentWhisperUser.accountName,
-      commentKey: comment,
-      commentIdKey: commentKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
-      createdAtKey: Timestamp.now(),
-      followerCountKey: mainModel.currentWhisperUser.followerCount,
-      ipv6Key: ipv6,
-      isDeleteKey: false,
-      isNFTiconKey: currentWhisperUser.isNFTicon,
-      isOfficialKey: currentWhisperUser.isOfficial,
-      likeCountKey: 0,
-      negativeScoreKey: 0,
-      passiveUidKey: whisperPost.uid,
-      positiveScoreKey: 0,
-      postIdKey: whisperPost.postId,
-      replyCountKey: 0,
-      scoreKey: defaultScore,
-      uidKey: currentWhisperUser.uid,
-      userNameKey: currentWhisperUser.userName,
-      userImageURLKey: currentWhisperUser.imageURL
-    };
+  Map<String,dynamic> makeCommentMap({ required MainModel mainModel, required Post whisperPost }) {
+    final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
+    final WhisperComment whisperComment = WhisperComment(
+      accountName: currentWhisperUser.accountName,
+      comment: comment, 
+      commentId: commentKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+      followerCount: currentWhisperUser.followerCount,
+      ipv6: ipv6, 
+      isDelete: false,
+      isNFTicon: currentWhisperUser.isNFTicon,
+      isOfficial: currentWhisperUser.isOfficial,
+      likeCount: 0,
+      negativeScore: 0,
+      passiveUid: whisperPost.uid,
+      positiveScore: 0, 
+      postId: whisperPost.postId, 
+      replyCount: 0,
+      score: defaultScore,
+      uid: currentWhisperUser.uid,
+      userName: currentWhisperUser.userName,
+      userImageURL: currentWhisperUser.imageURL
+    );
+    Map<String,dynamic> commentMap = whisperComment.toJson();
+    final Timestamp now = Timestamp.now();
+    commentMap[createdAtKey] = now;
+    commentMap[updatedAtKey] = now;
     return commentMap;
   }
 
-  Future<void> makeCommentNotification({ required Map<String,dynamic> currentSongMap, required MainModel mainModel, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required Map<String,dynamic> newCommentMap}) async {
-    final currentWhisperUser = mainModel.currentWhisperUser;
+  Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required WhisperComment whisperComment, required Timestamp now }) async {
+    final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     try{
-      final Map<String,dynamic> map = {
-        accountNameKey: currentWhisperUser.accountName,
-        commentKey: newCommentMap[commentKey],
-        commentScoreKey: newCommentMap[scoreKey],
-        commentIdKey: newCommentMap[commentIdKey],
-        createdAtKey: Timestamp.now(),
-        followerCountKey: mainModel.currentWhisperUser.followerCount,
-        isDeleteKey: false,
-        isNFTiconKey: currentWhisperUser.isNFTicon,
-        isOfficialKey: currentWhisperUser.isOfficial,
-        notificationIdKey: 'commentNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
-        passiveUidKey: currentSongMap[uidKey],
-        postTitleKey: currentSongMap[titleKey],
-        postIdKey: currentSongMap[postIdKey],
-        uidKey: currentWhisperUser.uid,
-        userNameKey: currentWhisperUser.userName,
-        userImageURLKey: currentWhisperUser.imageURL
-      };
-      await commentNotificationRef(passiveUid: currentSongMap[uidKey], notificationId: map[notificationIdKey]).set(map);
+      final CommentNotification commentNotification = CommentNotification(
+        accountName: currentWhisperUser.accountName,
+        comment: comment, 
+        commentId: whisperComment.comment,
+        commentScore: whisperComment.score,
+        followerCount: mainModel.currentWhisperUser.followerCount,
+        isDelete: false,
+        isNFTicon: currentWhisperUser.isNFTicon,
+        isOfficial: currentWhisperUser.isOfficial,
+        notificationId: 'commentNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+        passiveUid: whisperPost.uid,
+        postTitle: whisperPost.title,
+        postId: whisperPost.postId,
+        uid: currentWhisperUser.uid,
+        userImageURL: currentWhisperUser.imageURL,
+        userName: currentWhisperUser.userName
+      );
+      Map<String,dynamic> map = commentNotification.toJson();
+      map[createdAtKey] = now;
+      map[updatedAtKey] = now;
+      await commentNotificationRef(passiveUid: whisperPost.uid, notificationId: commentNotification.notificationId ).set(map);
     } catch(e) {
       print(e.toString());
     }

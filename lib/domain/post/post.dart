@@ -6,6 +6,7 @@ part 'post.g.dart';
 @JsonSerializable()
 class Post{
   Post({
+    required this.accountName,
     required this.audioURL,
     required this.bookmarks,
     required this.bookmarkCount,
@@ -35,13 +36,13 @@ class Post{
     required this.score,
     required this.storageImageName,
     required this.storagePostName,
-    required this.subUserName,
     required this.tagUids,
     required this.title,
     required this.uid,
     required this.userImageURL,
     required this.userName
   });
+  final String accountName;
   final String audioURL;
   final List<dynamic> bookmarks;
   final int bookmarkCount;
@@ -71,7 +72,6 @@ class Post{
   final double score;
   final String storageImageName;
   final String storagePostName;
-  final String subUserName;
   final List<dynamic> tagUids;
   final String title;
   final String uid;

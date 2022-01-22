@@ -6,6 +6,7 @@ part 'whipser_reply.g.dart';
 @JsonSerializable()
 class WhisperReply {
   WhisperReply({
+    required this.accountName,
     required this.elementId,
     required this.elementState,
     required this.followerCount,
@@ -21,11 +22,11 @@ class WhisperReply {
     required this.reply,
     required this.replyId,
     required this.score,
-    required this.subUserName,
     required this.uid,
     required this.userName,
     required this.userImageURL
   });
+  final String accountName;
   final String elementId;
   final String elementState;
   final int followerCount;
@@ -41,7 +42,6 @@ class WhisperReply {
   final String reply;
   final String replyId;
   final double score;
-  final String subUserName;
   final String uid;
   final String userName;
   final String userImageURL;

@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -16,6 +17,9 @@ import 'package:whisper/constants/others.dart' as others;
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
+// domain
+import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 
 final signupProvider = ChangeNotifierProvider(
   (ref) => SignupModel()
@@ -110,48 +114,56 @@ class SignupModel extends ChangeNotifier {
   }
   
   Future<void> addUserToFireStore({ required String uid, required String imageURL,required String storageImageName }) async {
-    await FirebaseFirestore.instance.collection(usersKey).doc(uid)
-    .set({
-      accountNameKey: uid,
-      createdAtKey: Timestamp.now(),
-      descriptionKey: '',
-      dmStateKey: onlyFollowingAndFollowedString,
-      imageURLKey: imageURL,
-      isDeleteKey: false,
-      isKeyAccountKey: false,
-      isNFTiconKey: false,
-      isOfficialKey: false,
-      linkKey: '',
-      otherLinksKey: [],
-      recommendStateKey: recommendableString,
-      storageImageNameKey: storageImageName,
-      uidKey : uid,
-      updatedAtKey: Timestamp.now(),
-      userNameKey: userName,
-      walletAddressKey: '',
-    });
+    Map<String,dynamic> whisperUserMap = WhisperUser(
+      accountName: uid,
+      blocksIpv6AndUids: [],
+      description: '',
+      dmState: onlyFollowingAndFollowedString,
+      followerCount: 0,
+      imageURL: imageURL,
+      isDelete: false,
+      isKeyAccount: false,
+      isNFTicon: false,
+      isOfficial: false,
+      link: '',
+      mutesIpv6AndUids: [],
+      noDisplayWords: [],
+      otherLinks: [],
+      recommendState: recommendableString,
+      score: defaultScore,
+      storageImageName: storageImageName,
+      uid : uid,
+      userName: userName,
+      walletAddress: '',
+    ).toJson();
+    final Timestamp now = Timestamp.now();
+    whisperUserMap[createdAtKey] = now;
+    whisperUserMap[updatedAtKey] = now;
+    await FirebaseFirestore.instance.collection(usersKey).doc(uid).set(whisperUserMap);
   }
 
   Future<void> createUserMeta({ required String uid }) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
-    await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set({
-      authNotificationsKey: [],
-      birthDayKey: timestampBirthDay,
-      bookmarksKey: [],
-      createdAtKey: Timestamp.now(),
-      followingUidsKey: [],
-      genderKey: gender,
-      isAdminKey: false,
-      isDeleteKey: false,
-      likeCommentsKey: [],
-      likeReplysKey: [],
-      likesKey: [],
-      languageKey: language,
-      readNotificationsKey: [],
-      readPostsKey: [],
-      searchHistoryKey: [],
-      updatedAtKey: Timestamp.now(),
-    });
+    final Map<String,dynamic> userMetaMap = UserMeta(
+      authNotifications: [],
+      bookmarks: [],
+      followingUids: [],
+      gender: gender, 
+      isAdmin: false,
+      isDelete: false,
+      likeComments: [],
+      likeReplys: [],
+      likes: [],
+      language: language, 
+      readNotifications: [],
+      readPosts: [],
+      searchHistory: []
+    ).toJson();
+    final Timestamp now = Timestamp.now();
+    userMetaMap[birthDayKey] = timestampBirthDay;
+    userMetaMap[createdAtKey] = now;
+    userMetaMap[updatedAtKey] = now;
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set(userMetaMap);
   }
 
   void showCupertinoDatePicker(BuildContext context) {

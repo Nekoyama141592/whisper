@@ -15,6 +15,11 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+// domain
+import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/reply/whipser_reply.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // states
 import 'package:whisper/constants/enums.dart';
 // model
@@ -234,7 +239,8 @@ class ReplysModel extends ChangeNotifier {
     final elementId = whisperComment.commentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final newReplyMap = makeReplyMap(elementId: elementId, mainModel: mainModel, currentSongMap: currentSongMap);
+    final Timestamp now = Timestamp.now();
+    final newReplyMap = makeReplyMap(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now);
     await addReplyToFirestore(newReplyMap);
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
@@ -261,31 +267,30 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  Map<String,dynamic> makeReplyMap({ required String elementId,required  MainModel mainModel, required Map<String,dynamic> currentSongMap}) {
-    final currentWhisperUser = mainModel.currentWhisperUser;
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final newReplyMap = {
-      accountNameKey: currentWhisperUser.accountName,
-      elementIdKey: elementId,
-      elementStateKey: elementState,
-      createdAtKey: Timestamp.now(),
-      followerCountKey: currentWhisperUser.followerCount,
-      ipv6Key: ipv6,
-      isDeleteKey: false,
-      isNFTiconKey: currentWhisperUser.isNFTicon,
-      isOfficialKey: currentWhisperUser.isOfficial,
-      likeCountKey: 0,
-      negativeScoreKey: 0,
-      passiveUidKey: whisperPost.uid,
-      postIdKey: currentSongMap[postIdKey],
-      positiveScoreKey: 0,
-      replyKey: reply,
-      replyIdKey: replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
-      scoreKey: defaultScore,
-      uidKey: currentWhisperUser.uid,
-      userNameKey: currentWhisperUser.userName,
-      userImageURLKey: currentWhisperUser.imageURL
-    };
+  Map<String,dynamic> makeReplyMap({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now}) {
+    final WhisperReply whisperReply = WhisperReply(
+      accountName: currentWhisperUser.accountName,
+      elementId: elementId, elementState: elementState, 
+      followerCount: currentWhisperUser.followerCount,
+      ipv6: ipv6, 
+      isDelete: false,
+      isNFTicon: currentWhisperUser.isNFTicon,
+      isOfficial: currentWhisperUser.isOfficial,
+      likeCount: 0,
+      negativeScore: 0,
+      passiveUid: whisperPost.uid,
+      postId: whisperPost.postId,
+      positiveScore: 0,
+      reply: reply, 
+      replyId: replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
+      score: defaultScore,
+      uid: currentWhisperUser.uid,
+      userName: currentWhisperUser.userName,
+      userImageURL: currentWhisperUser.imageURL
+    );
+    Map<String,dynamic> newReplyMap = whisperReply.toJson();
+    newReplyMap[createdAtKey] = now;
+    newReplyMap[updatedAtKey] = now;
     return newReplyMap;
   }
   
@@ -311,26 +316,26 @@ class ReplysModel extends ChangeNotifier {
     final passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = whisperComment.comment;
-    Map<String,dynamic> map = {
-      accountNameKey: currentWhisperUser.accountName,
-      commentKey: comment,
-      createdAtKey: Timestamp.now(),
-      elementIdKey: elementId,
-      elementStateKey: elementState,
-      followerCountKey: currentWhisperUser.followerCount,
-      isDeleteKey: false,
-      isNFTiconKey: currentWhisperUser.isNFTicon,
-      isOfficialKey: currentWhisperUser.isOfficial,
-      notificationIdKey: notificationId,
-      passiveUidKey: passiveWhisperUser.uid,
-      postIdKey: whisperComment.postId,
-      replyKey: reply,
-      replyScoreKey: newWhisperReply.score,
-      replyIdKey: newWhisperReply.replyId,
-      uidKey: currentWhisperUser.uid,
-      userNameKey: currentWhisperUser.userName,
-      userImageURLKey: currentWhisperUser.imageURL
-    };
+    final ReplyNotification replyNotification = ReplyNotification(
+      accountName: currentWhisperUser.accountName,
+      comment: comment, 
+      elementId: elementId, 
+      elementState: elementState, 
+      followerCount: currentWhisperUser.followerCount,
+      isDelete: false,
+      isNFTicon: currentWhisperUser.isNFTicon,
+      isOfficial: currentWhisperUser.isOfficial,
+      notificationId: notificationId, 
+      passiveUid: passiveWhisperUser.uid,
+      postId: whisperComment.postId,
+      reply: reply, 
+      replyScore: newWhisperReply.score,
+      replyId: newWhisperReply.replyId,
+      uid: currentWhisperUser.uid,
+      userImageURL: currentWhisperUser.imageURL,
+      userName: currentWhisperUser.userName
+    );
+    final Map<String,dynamic> map = replyNotification.toJson();
     await replyNotificationRef(passiveUid: whisperComment.uid, notificationId: notificationId).set(map);
   }
 
