@@ -90,7 +90,7 @@ void toPostShowPage({ required BuildContext context, required ValueNotifier<doub
 }
 
 void toUserShowPage({ required BuildContext context, required WhisperUser passiveWhisperUser, required MainModel mainModel}) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveManyUpdateUser: passiveManyUpdateUser, mainModel: mainModel) ));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveWhisperUser: passiveWhisperUser, mainModel: mainModel) ));
 }
 
 void toAccountPage(context,MainModel mainModel) {

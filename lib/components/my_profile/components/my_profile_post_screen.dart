@@ -37,7 +37,6 @@ class MyProfilePostScreen extends ConsumerWidget {
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final isLoading = myProfileModel.isLoading;
     final postDocs = myProfileModel.posts;
-    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: myProfileModel.currentSongMapNotifier.value);
 
     final Widget posts = Expanded(
       child: SmartRefresher(
@@ -95,13 +94,13 @@ class MyProfilePostScreen extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); }, 
             playButtonNotifier: myProfileModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: myProfileModel.audioPlayer); }, 
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId);
+              await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value).postId);
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -115,7 +114,7 @@ class MyProfilePostScreen extends ConsumerWidget {
         currentSongMapNotifier: myProfileModel.currentSongMapNotifier,
         playButtonNotifier: myProfileModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: myProfileModel.audioPlayer);

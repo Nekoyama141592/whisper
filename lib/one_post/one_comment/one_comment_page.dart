@@ -10,6 +10,8 @@ import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_wi
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+// domain
+import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
@@ -37,7 +39,7 @@ class OneCommentPage extends ConsumerWidget {
     final ReplysModel replysModel = watch(replysProvider);
     final OnePostModel onePostModel = watch(onePostProvider);
     final officialAdsensesModel = watch(officialAdsensesProvider); 
-    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: onePostModel.currentSongMapNotifier.value);
+    final Post post = fromMapToPost(postMap: onePostModel.currentSongMapNotifier.value);
 
     return Scaffold(
       body: oneCommentModel.isLoading ?
@@ -65,12 +67,12 @@ class OneCommentPage extends ConsumerWidget {
                     isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
                     playButtonNotifier: onePostModel.playButtonNotifier, 
-                    play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel); }, 
+                    play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: post.postId, officialAdsensesModel: officialAdsensesModel); }, 
                     pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                     isLastSongNotifier: onePostModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
                     toCommentsPage:  () async {
-                      await commentsModel.init(context, onePostModel.audioPlayer, onePostModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId);
+                      await commentsModel.init(context, onePostModel.audioPlayer, onePostModel.currentSongMapNotifier, mainModel, post.postId);
                     },
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -82,10 +84,10 @@ class OneCommentPage extends ConsumerWidget {
                 progressNotifier: onePostModel.progressNotifier, 
                 playButtonNotifier: onePostModel.playButtonNotifier, 
                 seek: onePostModel.seek, 
-                play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel); }, 
+                play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: post.postId, officialAdsensesModel: officialAdsensesModel); }, 
                 pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                 title: Text(
-                  manyUpdatePost.title,
+                  post.title,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0 ),
                 ), 
                 currentWhisperUser: mainModel.currentWhisperUser,

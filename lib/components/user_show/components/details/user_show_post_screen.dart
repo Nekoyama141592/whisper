@@ -37,7 +37,6 @@ class UserShowPostScreen extends ConsumerWidget {
     final officialAdsensesModel = watch(officialAdsensesProvider); 
     final isLoading = userShowModel.isLoading;
     final postDocs = userShowModel.posts;
-    final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: userShowModel.currentSongMapNotifier.value);
     final Widget posts = Expanded(
       child: SmartRefresher(
         enablePullDown: true,
@@ -94,13 +93,13 @@ class UserShowPostScreen extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: userShowModel.audioPlayer); }, 
             playButtonNotifier: userShowModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: userShowModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: userShowModel.audioPlayer); }, 
             isLastSongNotifier: userShowModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, manyUpdatePost.postId);
+              await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: userShowModel.currentSongMapNotifier.value).postId);
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: userShowModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -114,7 +113,7 @@ class UserShowPostScreen extends ConsumerWidget {
         currentSongMapNotifier: userShowModel.currentSongMapNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: manyUpdatePost.postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: userShowModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: userShowModel.audioPlayer);

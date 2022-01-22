@@ -9,6 +9,8 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+// domain
+import 'package:whisper/domain/post/post.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -47,8 +49,9 @@ class OnePostModel extends ChangeNotifier {
       onePostDoc = await FirebaseFirestore.instance.collection(postsKey).doc(postId).get();
       onePostDocList.add(onePostDoc);
       currentSongMapNotifier.value = onePostDoc.data()!;
-      final manyUpdatePost = fromMapToManyUpdatePost(manyUpdatePostMap: currentSongMapNotifier.value);
-      Uri song = Uri.parse(manyUpdatePost.audioURL);
+      // final post = fromMapToManyUpdatePost(manyUpdatePostMap: currentSongMapNotifier.value);
+      final Post post = fromMapToPost(postMap: currentSongMapNotifier.value);
+      Uri song = Uri.parse(post.audioURL);
       UriAudioSource audioSource = AudioSource.uri(song,tag: onePostDoc);
       audioPlayer = AudioPlayer();
       await audioPlayer.setAudioSource(audioSource);

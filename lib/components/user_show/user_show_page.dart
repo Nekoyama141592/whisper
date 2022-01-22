@@ -79,7 +79,7 @@ class UserShowPage extends ConsumerWidget {
             onEditButtonPressed: () {
               userShowModel.onEditButtonPressed(mainModel: mainModel);
             },
-            passiveManyUpdateUser: passiveWhisperUser,
+            passiveWhisperUser: passiveWhisperUser,
             backArrow: InkWell(
               child: Icon(Icons.arrow_back),
               onTap: () {
