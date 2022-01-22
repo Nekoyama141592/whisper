@@ -38,6 +38,7 @@ class Post{
     required this.storagePostName,
     required this.tagUids,
     required this.title,
+    required this.titleTokenToSearch,
     required this.uid,
     required this.userImageURL,
     required this.userName
@@ -74,6 +75,7 @@ class Post{
   final String storagePostName;
   final List<dynamic> tagUids;
   final String title;
+  final Map<String,dynamic> titleTokenToSearch;
   final String uid;
   final String userImageURL;
   final String userName;

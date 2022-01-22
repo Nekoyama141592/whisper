@@ -239,6 +239,7 @@ class AddPostModel extends ChangeNotifier {
       storagePostName: storagePostName, 
       tagUids: [],
       title: postTitleNotifier.value,
+      
       uid: currentWhiseprUser.uid,
       userImageURL: currentWhiseprUser.imageURL,
       userName: currentWhiseprUser.userName
