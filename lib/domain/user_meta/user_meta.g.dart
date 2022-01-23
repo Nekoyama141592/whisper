@@ -8,6 +8,7 @@ part of 'user_meta.dart';
 
 UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
       authNotifications: json['authNotifications'] as List<dynamic>,
+      bookmarkLabels: json['bookmarkLabels'] as List<dynamic>,
       bookmarks: json['bookmarks'] as List<dynamic>,
       followingUids: json['followingUids'] as List<dynamic>,
       gender: json['gender'] as String,
@@ -20,10 +21,12 @@ UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
       readNotifications: json['readNotifications'] as List<dynamic>,
       readPosts: json['readPosts'] as List<dynamic>,
       searchHistory: json['searchHistory'] as List<dynamic>,
+      watchlists: json['watchlists'] as List<dynamic>,
     );
 
 Map<String, dynamic> _$UserMetaToJson(UserMeta instance) => <String, dynamic>{
       'authNotifications': instance.authNotifications,
+      'bookmarkLabels': instance.bookmarkLabels,
       'bookmarks': instance.bookmarks,
       'followingUids': instance.followingUids,
       'gender': instance.gender,
@@ -36,4 +39,5 @@ Map<String, dynamic> _$UserMetaToJson(UserMeta instance) => <String, dynamic>{
       'readNotifications': instance.readNotifications,
       'readPosts': instance.readPosts,
       'searchHistory': instance.searchHistory,
+      'watchlists': instance.watchlists,
     };

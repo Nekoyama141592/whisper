@@ -87,7 +87,6 @@ class MainModel extends ChangeNotifier {
     currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
-    notifyListeners();
   }
 
   void getLikePostIds() {
@@ -96,7 +95,6 @@ class MainModel extends ChangeNotifier {
       likes.forEach((like) {
         likePostIds.add(like[likePostIdKey]);
       });
-      notifyListeners();
     } catch(e) {
       print(e.toString());
     }
@@ -109,7 +107,6 @@ class MainModel extends ChangeNotifier {
       bookmarks.forEach((bookmark) {
         bookmarksPostIds.add(bookmark[postIdKey]);
       });
-      notifyListeners();
     } catch(e) {
       print(e.toString());
     }
@@ -125,7 +122,6 @@ class MainModel extends ChangeNotifier {
     likeComments.forEach((likedComment) {
       likeCommentIds.add(likedComment[commentIdKey]);
     });
-    notifyListeners();
   }
   
   void getReadPost() {

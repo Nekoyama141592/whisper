@@ -7,6 +7,7 @@ part 'user_meta.g.dart';
 class UserMeta {
   UserMeta({
     required this.authNotifications,
+    required this.bookmarkLabels,
     required this.bookmarks,
     required this.followingUids,
     required this.gender,
@@ -19,8 +20,10 @@ class UserMeta {
     required this.readNotifications,
     required this.readPosts,
     required this.searchHistory,
+    required this.watchlists
   });
   final List<dynamic> authNotifications;
+  final List<dynamic> bookmarkLabels;
   final List<dynamic> bookmarks;
   final List<dynamic> followingUids;
   final String gender;
@@ -33,6 +36,7 @@ class UserMeta {
   final List<dynamic> readNotifications;
   final List<dynamic> readPosts;
   final List<dynamic> searchHistory;
+  final List<dynamic> watchlists;
 
   factory UserMeta.fromJson(Map<String,dynamic> json) => _$UserMetaFromJson(json);
 

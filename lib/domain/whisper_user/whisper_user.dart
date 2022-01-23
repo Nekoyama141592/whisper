@@ -12,6 +12,7 @@ class WhisperUser {
     required this.dmState,
     required this.followerCount,
     required this.imageURL,
+    required this.isBanned,
     required this.isDelete,
     required this.isKeyAccount,
     required this.isNFTicon,
@@ -34,6 +35,7 @@ class WhisperUser {
   final String dmState;
   final int followerCount;
   final String imageURL;
+  final bool isBanned;
   final bool isDelete;
   final bool isKeyAccount;
   final bool isNFTicon;

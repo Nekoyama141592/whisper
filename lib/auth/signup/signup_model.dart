@@ -123,6 +123,7 @@ class SignupModel extends ChangeNotifier {
       dmState: onlyFollowingAndFollowedString,
       followerCount: 0,
       imageURL: imageURL,
+      isBanned: false,
       isDelete: false,
       isKeyAccount: false,
       isNFTicon: false,
@@ -149,6 +150,7 @@ class SignupModel extends ChangeNotifier {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
     final Map<String,dynamic> userMetaMap = UserMeta(
       authNotifications: [],
+      bookmarkLabels: [],
       bookmarks: [],
       followingUids: [],
       gender: gender, 
@@ -160,7 +162,8 @@ class SignupModel extends ChangeNotifier {
       language: language, 
       readNotifications: [],
       readPosts: [],
-      searchHistory: []
+      searchHistory: [],
+      watchlists: []
     ).toJson();
     final Timestamp now = Timestamp.now();
     userMetaMap[birthDayKey] = timestampBirthDay;
