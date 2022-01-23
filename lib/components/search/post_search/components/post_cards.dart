@@ -53,6 +53,10 @@ class PostCards extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SearchInputField(
+          onCloseButtonPressed: () {
+            searchController.text = '';
+            postSearchModel.searchTerm = '';
+          },
           onLongPress: () async { await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }); },
           onChanged: (text) {
             postSearchModel.searchTerm = text;

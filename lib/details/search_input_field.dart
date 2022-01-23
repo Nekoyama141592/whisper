@@ -11,12 +11,14 @@ class SearchInputField extends StatelessWidget {
     Key? key,
     required this.search,
     required this.onChanged,
+    required this.onCloseButtonPressed,
     required this.onLongPress,
     required this.controller,
   }) : super(key: key);
   
   final void Function()? search;
   final void Function(String)? onChanged;
+  final void Function()? onCloseButtonPressed;
   final void Function()? onLongPress;
   final TextEditingController controller;
   
@@ -37,7 +39,10 @@ class SearchInputField extends StatelessWidget {
           controller: controller,
           cursorColor: kTertiaryColor,
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.close,color: Colors.black,),
+            prefixIcon: InkWell(
+              child: Icon(Icons.close,color: Colors.black,),
+              onTap: onCloseButtonPressed,
+            ),
             suffixIcon: TextButton(
               onPressed: search, 
               child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: 18,fontWeight: FontWeight.bold),),

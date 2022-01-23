@@ -38,6 +38,10 @@ class UserList extends StatelessWidget {
     return Column(
       children: [
         SearchInputField(
+          onCloseButtonPressed: () {
+            userSearchModel.searchTerm = '';
+            searchController.text = '';
+          },
           onLongPress: () async { await FlutterClipboard.paste().then((value) { userSearchModel.searchTerm = value; }); },
           onChanged: (text) {
             userSearchModel.searchTerm = text;
