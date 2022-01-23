@@ -23,78 +23,88 @@ var fireStore = admin.firestore()
 // });
 
 exports.likePost = functions.firestore.document('posts/{id}/likes/{uid}').onCreate(
-    async (_,__) => {
-        fireStore.collection('posts').doc(id).update({
+    async (snap,__) => {
+        const newValue = snap.data();
+        fireStore.collection('posts').doc(newValue.postId).update({
             'likeCount': admin.firestore.FieldValue.increment(plusOne),
             'score': admin.firestore.FieldValue.increment(likeScore),
         });
     }
 );
 exports.unlikePost = functions.firestore.document('posts/{id}/likes/{uid}').onDelete(
-    async (_,__) => {
-        fireStore.collection('posts').doc(id).update({
+    async (snap,__) => {
+        const oldValue = snap.data();
+        fireStore.collection('posts').doc(oldValue.postId).update({
             'likeCount': admin.firestore.FieldValue.increment(minusOne),
             'score': admin.firestore.FieldValue.increment(unlikeScore),
         });
     }
 );
 exports.bookmarkPost = functions.firestore.document('posts/{id}/bookmarks/{uid}').onCreate(
-    async (_,__) => {
-        fireStore.collection('posts').doc(id).update({
+    async (snap,__) => {
+        const newValue = snap.data();
+        fireStore.collection('posts').doc(newValue.postId).update({
             'bookmarkCount': admin.firestore.FieldValue.increment(plusOne),
             'score': admin.firestore.FieldValue.increment(bookmarkScore),
         });
     }
 );
 exports.unbookmarkPost = functions.firestore.document('posts/{id}/bookmarks/{uid}').onDelete(
-    async (_,__) => {
-        fireStore.collection('posts').doc(id).update({
+    async (snap,__) => {
+        const oldValue = snap.data();
+        fireStore.collection('posts').doc(oldValue.postId).update({
             'bookmarkCount': admin.firestore.FieldValue.increment(minusOne),
             'score': admin.firestore.FieldValue.increment(unbookmarkScore),
         });
     }
 );
 exports.likeComment = functions.firestore.document('comments/{id}/likes/{uid}').onCreate(
-    async (_,__) => {
-        fireStore.collection('comments').doc(id).update({
+    async (snap,__) => {
+        const newValue = snap.data();
+        fireStore.collection('posts').doc(newValue.postId).update({
             'likeCount': admin.firestore.FieldValue.increment(plusOne),
         });
     }
 );
 exports.unlikeComment = functions.firestore.document('comments/{id}/likes/{uid}').onDelete(
-    async (_,__) => {
-        fireStore.collection('comments').doc(id).update({
+    async (snap,__) => {
+        const oldValue = snap.data();
+        fireStore.collection('posts').doc(oldValue.postId).update({
             'likeCount': admin.firestore.FieldValue.increment(minusOne),
         });
     }
 );
 exports.likeReply = functions.firestore.document('posts/{id}/likes/{uid}').onCreate(
-    async (_,__) => {
-        fireStore.collection('replys').doc(id).update({
+    async (snap,__) => {
+        const newValue = snap.data();
+        fireStore.collection('posts').doc(newValue.postId).update({
             'likeCount': admin.firestore.FieldValue.increment(plusOne),
         });
     }
 );
 exports.unlikeReply = functions.firestore.document('replys/{id}/likes/{uid}').onDelete(
-    async (_,__) => {
-        fireStore.collection('replys').doc(id).update({
+    async (snap,__) => {
+        const oldValue = snap.data();
+        fireStore.collection('posts').doc(oldValue.postId).update({
             'likeCount': admin.firestore.FieldValue.increment(minusOne),
         });
     }
 );
 
 exports.followUser = functions.firestore.document('users/{uid}/followers/{followerUid}').onCreate(
-    async (_,__) => {
-        fireStore.collection('users').doc(uid).update({
-            'followerCount': FieldValue.increment(plusOne),
+    async (snap,__) => {
+        const newValue = snap.data();
+        fireStore.collection('users').doc(newValue.passiveUid).update({
+            'followerCount': admin.firestore.FieldValue.increment(plusOne),
         });
     }
 );
 
 exports.unfollowUser = functions.firestore.document('users/{uid}/followers/{followerUid}').onDelete(
-    async (_,__) => {
-        fireStore.collection('users').doc(uid).update({
-            'followerCount': FieldValue.increment(minusOne),
+    async (snap,__) => {
+        const oldValue = snap.data();
+        fireStore.collection('users').doc(oldValue.passiveUid).update({
+            'followerCount': admin.firestore.FieldValue.increment(minusOne),
         });
     }
 );
