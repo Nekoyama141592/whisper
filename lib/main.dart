@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 // constants
 import 'themes/themes.dart';
 //components
@@ -24,10 +25,15 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 
 
-void main() async {
+Future<void> main() async {
   await dotenv.load(fileName: '.env',);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
   runApp(ProviderScope(child: MyApp()));
 }
 
