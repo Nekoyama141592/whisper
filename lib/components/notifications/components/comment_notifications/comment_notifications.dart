@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/notifications/details/notification_card.dart';
+// domain
+import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications_model.dart';
@@ -28,8 +30,8 @@ class CommentNotifications extends StatelessWidget {
     final content = ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
-        final notification = notifications[i];
-        return NotificationCard(giveCommentId: notification[commentIdKey], firstSubTitle: notification[postTitleKey], secondSubTitle: notification[commentKey], notification: notification, mainModel: mainModel);
+        final CommentNotification notification = fromMapToCommentNotification(notificationmap: notifications[i].data()!);
+        return NotificationCard(giveCommentId: notification.commentId, firstSubTitle: notification.postTitle, secondSubTitle: notification.comment, notification: notification, mainModel: mainModel);
       }
     );
     final void Function()? reload = () async {

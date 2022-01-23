@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
@@ -18,6 +17,8 @@ import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/reply_notification/reply_notification.dart';
+import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -125,6 +126,14 @@ WhisperReply fromMapToWhisperReply({ required Map<String,dynamic> replyMap }) {
 }
 UserMeta fromMapToUserMeta({ required Map<String,dynamic> userMetaMap }) {
   return UserMeta.fromJson(userMetaMap);
+}
+
+ReplyNotification fromMapToReplyNotification({ required Map<String,dynamic> notificationMap }) {
+  return ReplyNotification.fromJson(notificationMap);
+}
+
+CommentNotification fromMapToCommentNotification({ required Map<String,dynamic> notificationmap }) {
+  return CommentNotification.fromJson(notificationmap);
 }
 
 Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,required List<String> searchWords }) {

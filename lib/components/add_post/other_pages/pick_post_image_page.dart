@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';

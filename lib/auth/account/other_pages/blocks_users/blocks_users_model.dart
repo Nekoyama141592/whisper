@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -66,7 +67,10 @@ class BlocksUsersModel extends ChangeNotifier {
 
   Future unBlockUser({ required String passiveUid, required List<dynamic> blocksUids, required WhisperUser currentWhisperUser, required List<dynamic> blocksIpv6AndUids}) async {
     // front
-    blocksUserDocs.removeWhere((blocksUserDoc) => blocksUserDoc[uidKey] == passiveUid);
+    blocksUserDocs.removeWhere((userDoc) {
+      final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
+      return whisperUser.uid == passiveUid;
+    });
     notifyListeners();
     // back
     blocksIpv6AndUids.removeWhere((blocksIpv6AndUid) => blocksIpv6AndUid[uidKey] == passiveUid);
