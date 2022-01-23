@@ -140,10 +140,12 @@ class CommentsModel extends ChangeNotifier {
 
   Map<String,dynamic> makeCommentMap({ required MainModel mainModel, required Post whisperPost }) {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
+    final Timestamp now = Timestamp.now();
     final WhisperComment whisperComment = WhisperComment(
       accountName: currentWhisperUser.accountName,
       comment: comment, 
       commentId: commentKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+      createdAt: now,
       followerCount: currentWhisperUser.followerCount,
       ipv6: ipv6, 
       isDelete: false,
@@ -157,13 +159,11 @@ class CommentsModel extends ChangeNotifier {
       replyCount: 0,
       score: defaultScore,
       uid: currentWhisperUser.uid,
+      updatedAt: now,
       userName: currentWhisperUser.userName,
       userImageURL: currentWhisperUser.imageURL
     );
     Map<String,dynamic> commentMap = whisperComment.toJson();
-    final Timestamp now = Timestamp.now();
-    commentMap[createdAtKey] = now;
-    commentMap[updatedAtKey] = now;
     return commentMap;
   }
 
@@ -175,6 +175,7 @@ class CommentsModel extends ChangeNotifier {
         comment: comment, 
         commentId: whisperComment.comment,
         commentScore: whisperComment.score,
+        createdAt: now,
         followerCount: mainModel.currentWhisperUser.followerCount,
         isDelete: false,
         isNFTicon: currentWhisperUser.isNFTicon,
@@ -184,12 +185,11 @@ class CommentsModel extends ChangeNotifier {
         postTitle: whisperPost.title,
         postId: whisperPost.postId,
         uid: currentWhisperUser.uid,
+        updatedAt: now,
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName
       );
       Map<String,dynamic> map = commentNotification.toJson();
-      map[createdAtKey] = now;
-      map[updatedAtKey] = now;
       await commentNotificationRef(passiveUid: whisperPost.uid, notificationId: commentNotification.notificationId ).set(map);
     } catch(e) {
       print(e.toString());

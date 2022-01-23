@@ -10,6 +10,7 @@ class CommentNotification {
     required this.comment,
     required this.commentId,
     required this.commentScore,
+    required this.createdAt,
     required this.followerCount,
     required this.isDelete,
     required this.isNFTicon,
@@ -19,6 +20,7 @@ class CommentNotification {
     required this.postTitle,
     required this.postId,
     required this.uid,
+    required this.updatedAt,
     required this.userImageURL,
     required this.userName
   });
@@ -26,6 +28,7 @@ class CommentNotification {
   final String comment;
   final String commentId;
   final double commentScore;
+  final dynamic createdAt;
   final int followerCount;
   final bool isDelete;
   final bool isNFTicon;
@@ -35,6 +38,7 @@ class CommentNotification {
   final String postTitle;
   final String postId;
   final String uid;
+  final dynamic updatedAt;
   final String userImageURL;
   final String userName;
 

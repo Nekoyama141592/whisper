@@ -9,6 +9,7 @@ part of 'whisper_user.dart';
 WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       accountName: json['accountName'] as String,
       blocksIpv6AndUids: json['blocksIpv6AndUids'] as List<dynamic>,
+      createdAt: json['createdAt'],
       description: json['description'] as String,
       dmState: json['dmState'] as String,
       followerCount: json['followerCount'] as int,
@@ -28,6 +29,7 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       tokenToSearch: json['tokenToSearch'] as Map<String, dynamic>,
       userName: json['userName'] as String,
       uid: json['uid'] as String,
+      updatedAt: json['updatedAt'],
       walletAddress: json['walletAddress'] as String,
     );
 
@@ -35,6 +37,7 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
       'blocksIpv6AndUids': instance.blocksIpv6AndUids,
+      'createdAt': instance.createdAt,
       'description': instance.description,
       'dmState': instance.dmState,
       'followerCount': instance.followerCount,
@@ -54,5 +57,6 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'tokenToSearch': instance.tokenToSearch,
       'userName': instance.userName,
       'uid': instance.uid,
+      'updatedAt': instance.updatedAt,
       'walletAddress': instance.walletAddress,
     };

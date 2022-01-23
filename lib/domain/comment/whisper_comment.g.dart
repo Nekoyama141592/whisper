@@ -11,6 +11,7 @@ WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
       accountName: json['accountName'] as String,
       comment: json['comment'] as String,
       commentId: json['commentId'] as String,
+      createdAt: json['createdAt'],
       followerCount: json['followerCount'] as int,
       ipv6: json['ipv6'] as String,
       isDelete: json['isDelete'] as bool,
@@ -24,6 +25,7 @@ WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
       replyCount: json['replyCount'] as int,
       score: (json['score'] as num).toDouble(),
       uid: json['uid'] as String,
+      updatedAt: json['updatedAt'],
       userName: json['userName'] as String,
       userImageURL: json['userImageURL'] as String,
     );
@@ -33,6 +35,7 @@ Map<String, dynamic> _$WhisperCommentToJson(WhisperComment instance) =>
       'accountName': instance.accountName,
       'comment': instance.comment,
       'commentId': instance.commentId,
+      'createdAt': instance.createdAt,
       'followerCount': instance.followerCount,
       'ipv6': instance.ipv6,
       'isDelete': instance.isDelete,
@@ -46,6 +49,7 @@ Map<String, dynamic> _$WhisperCommentToJson(WhisperComment instance) =>
       'replyCount': instance.replyCount,
       'score': instance.score,
       'uid': instance.uid,
+      'updatedAt': instance.updatedAt,
       'userName': instance.userName,
       'userImageURL': instance.userImageURL,
     };

@@ -14,6 +14,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       commentCount: json['commentCount'] as int,
       commentsState: json['commentsState'] as String,
       country: json['country'] as String,
+      createdAt: json['createdAt'],
       description: json['description'] as String,
       genre: json['genre'] as String,
       hashTags: json['hashTags'] as List<dynamic>,
@@ -41,6 +42,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       title: json['title'] as String,
       tokenToSearch: json['tokenToSearch'] as Map<String, dynamic>,
       uid: json['uid'] as String,
+      updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
     );
@@ -53,6 +55,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'commentCount': instance.commentCount,
       'commentsState': instance.commentsState,
       'country': instance.country,
+      'createdAt': instance.createdAt,
       'description': instance.description,
       'genre': instance.genre,
       'hashTags': instance.hashTags,
@@ -80,6 +83,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'tokenToSearch': instance.tokenToSearch,
       'title': instance.title,
       'uid': instance.uid,
+      'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,
     };

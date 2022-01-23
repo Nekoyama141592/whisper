@@ -218,6 +218,7 @@ class AddPostModel extends ChangeNotifier {
       commentCount: 0,
       commentsState: commentsState, 
       country: '', 
+      createdAt: now,
       description: '', 
       genre: '', 
       hashTags: [],
@@ -245,11 +246,10 @@ class AddPostModel extends ChangeNotifier {
       tokenToSearch: returnTokenToSearch(searchWords: searchWords),
       title: title,
       uid: currentWhiseprUser.uid,
+      updatedAt: now,
       userImageURL: currentWhiseprUser.imageURL,
       userName: currentWhiseprUser.userName
       ).toJson();
-      postMap[createdAtKey] = now;
-      postMap[updatedAtKey] = now;
       try {
         await FirebaseFirestore.instance.collection(postsKey).doc(postId).set(postMap);
         addPostStateNotifier.value = AddPostState.uploaded;

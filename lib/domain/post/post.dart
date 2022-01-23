@@ -13,6 +13,7 @@ class Post{
     required this.commentCount,
     required this.commentsState,
     required this.country,
+    required this.createdAt,
     required this.description,
     required this.genre,
     required this.hashTags,
@@ -40,6 +41,7 @@ class Post{
     required this.title,
     required this.tokenToSearch,
     required this.uid,
+    required this.updatedAt,
     required this.userImageURL,
     required this.userName
   });
@@ -50,6 +52,7 @@ class Post{
   final int commentCount;
   final String commentsState;
   final String country;
+  final dynamic createdAt;
   final String description;
   final String genre;
   final List<dynamic> hashTags;
@@ -77,6 +80,7 @@ class Post{
   final Map<String,dynamic> tokenToSearch;
   final String title;
   final String uid;
+  final dynamic updatedAt;
   final String userImageURL;
   final String userName;
   

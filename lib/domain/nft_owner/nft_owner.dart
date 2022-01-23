@@ -6,18 +6,21 @@ part 'nft_owner.g.dart';
 @JsonSerializable()
 class NFTOwner {
   NFTOwner({
+    required this.createdAt,
     required this.ethPrice,
     required this.link,
     required this.number,
     required this.uid,
+    required this.updatedAt,
     required this.userName,
     required this.userImageURL
   });
-  
+  final dynamic createdAt;
   final double ethPrice;
   final String link;
   final int number;
   final String uid;
+  final dynamic updatedAt;
   final String userName;
   final String userImageURL;
 

@@ -9,6 +9,7 @@ class WhisperComment {
     required this.accountName,
     required this.comment,
     required this.commentId,
+    required this.createdAt,
     required this.followerCount,
     required this.ipv6,
     required this.isDelete,
@@ -22,12 +23,14 @@ class WhisperComment {
     required this.replyCount,
     required this.score,
     required this.uid,
+    required this.updatedAt,
     required this.userName,
     required this.userImageURL
   });
   final String accountName;
   final String comment;
   final String commentId;
+  final dynamic createdAt;
   final int followerCount;
   final String ipv6;
   final bool isDelete;
@@ -41,6 +44,7 @@ class WhisperComment {
   final int replyCount;
   final double score;
   final String uid;
+  final dynamic updatedAt;
   final String userName;
   final String userImageURL;
   factory WhisperComment.fromJson(Map<String,dynamic> json) => _$WhisperCommentFromJson(json);

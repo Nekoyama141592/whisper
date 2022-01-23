@@ -7,6 +7,7 @@ part 'whipser_reply.g.dart';
 class WhisperReply {
   WhisperReply({
     required this.accountName,
+    required this.createdAt,
     required this.elementId,
     required this.elementState,
     required this.followerCount,
@@ -23,10 +24,12 @@ class WhisperReply {
     required this.replyId,
     required this.score,
     required this.uid,
+    required this.updatedAt,
     required this.userName,
     required this.userImageURL
   });
   final String accountName;
+  final dynamic createdAt;
   final String elementId;
   final String elementState;
   final int followerCount;
@@ -43,6 +46,7 @@ class WhisperReply {
   final String replyId;
   final double score;
   final String uid;
+  final dynamic updatedAt;
   final String userName;
   final String userImageURL;
 

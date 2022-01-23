@@ -8,6 +8,7 @@ class ReplyNotification {
   ReplyNotification({
     required this.accountName,
     required this.comment,
+    required this.createdAt,
     required this.elementId,
     required this.elementState,
     required this.followerCount,
@@ -21,11 +22,13 @@ class ReplyNotification {
     required this.replyScore,
     required this.replyId,
     required this.uid,
+    required this.updatedAt,
     required this.userImageURL,
     required this.userName
   });
   final String accountName;
   final String comment;
+  final dynamic createdAt;
   final String elementId;
   final String elementState;
   final int followerCount;
@@ -39,6 +42,7 @@ class ReplyNotification {
   final double replyScore;
   final String replyId;
   final String uid;
+  final dynamic updatedAt;
   final String userImageURL;
   final String userName;
 

@@ -12,6 +12,7 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
       comment: json['comment'] as String,
       commentId: json['commentId'] as String,
       commentScore: (json['commentScore'] as num).toDouble(),
+      createdAt: json['createdAt'],
       followerCount: json['followerCount'] as int,
       isDelete: json['isDelete'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
@@ -21,6 +22,7 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
       postTitle: json['postTitle'] as String,
       postId: json['postId'] as String,
       uid: json['uid'] as String,
+      updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
     );
@@ -32,6 +34,7 @@ Map<String, dynamic> _$CommentNotificationToJson(
       'comment': instance.comment,
       'commentId': instance.commentId,
       'commentScore': instance.commentScore,
+      'createdAt': instance.createdAt,
       'followerCount': instance.followerCount,
       'isDelete': instance.isDelete,
       'isNFTicon': instance.isNFTicon,
@@ -41,6 +44,7 @@ Map<String, dynamic> _$CommentNotificationToJson(
       'postTitle': instance.postTitle,
       'postId': instance.postId,
       'uid': instance.uid,
+      'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,
     };

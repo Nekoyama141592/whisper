@@ -6,124 +6,130 @@ service cloud.firestore {
   }
 
   function isValidUser(user) {
-    return user.size() == 17 // max48
-    && 'createdAt' in user && user.createdAt is timestamp
-    && 'description' in  user && user.description is string
-    && 'dmState' in user && user.dmState is string
-    && 'imageURL' in user && user.imageURL is string
-    && 'isDelete' in user && user.isDelete is bool
-    && 'isKeyAccount' in user && user.isKeyAccount is bool
-    && 'isNFTicon' in user && user.isNFTicon is bool
-    && 'isOfficial' in user && user.isOfficial is bool
-    && 'link' in user && user.link is string
-    && 'otherLinks' in user && user.otherLinks is list
-    && 'recommendState' in user && user.recommendState is string
-    && 'storageImageName' in user && user.storageImageName is string
-    && 'subUserName' in user && user.subUserName is string
-    && 'uid' in user && user.uid is string
-    && 'updatedAt' in user && user.updatedAt is timestamp
-    && 'userName' in user && user.userName is string
-    && 'walletAddress' in user && user.walletAddress is string;
+    // return user.size() == 17 // max48
+    // && 'createdAt' in user && user.createdAt is timestamp
+    // && 'description' in  user && user.description is string
+    // && 'dmState' in user && user.dmState is string
+    // && 'imageURL' in user && user.imageURL is string
+    // && 'isDelete' in user && user.isDelete is bool
+    // && 'isKeyAccount' in user && user.isKeyAccount is bool
+    // && 'isNFTicon' in user && user.isNFTicon is bool
+    // && 'isOfficial' in user && user.isOfficial is bool
+    // && 'link' in user && user.link is string
+    // && 'otherLinks' in user && user.otherLinks is list
+    // && 'recommendState' in user && user.recommendState is string
+    // && 'storageImageName' in user && user.storageImageName is string
+    // && 'subUserName' in user && user.subUserName is string
+    // && 'uid' in user && user.uid is string
+    // && 'updatedAt' in user && user.updatedAt is timestamp
+    // && 'userName' in user && user.userName is string
+    // && 'walletAddress' in user && user.walletAddress is string;
+    return 
+    'createdAt' in user && user.createdAt is timestamp
+    && 'updatedAt' in user && user.updatedAt is timestamp;
   }
 
   function isValidUserMeta(userMeta) {
-    return userMeta.size() == 15
-    && 'authNotifications' in userMeta && userMeta.authNotifications is list
-    && 'birthDay' in userMeta && userMeta.birthDay is timestamp
-    && 'bookmarks' in userMeta && userMeta.bookmarks is list
-    && 'createdAt' in userMeta && userMeta.createdAt is timestamp
-    && 'gender' in userMeta && userMeta.gender is string
-    && 'isAdmin' in userMeta && userMeta.isAdmin is bool
-    && 'isDelete' in userMeta && userMeta.isDelete is bool
-    && 'likeComments' in userMeta && userMeta.likeComments is list
-    && 'likeReplys' in userMeta && userMeta.likeReplys is list
-    && 'likes' in userMeta && userMeta.likes is list
-    && 'language' in userMeta && userMeta.language is string
-    && 'readNotifications' in userMeta && userMeta.readNotifications is list
-    && 'readPosts' in userMeta && userMeta.readPosts is list
-    && 'searchHistory' in userMeta && userMeta.searchHistory is list
-    && 'updatedAt' in userMeta && userMeta.updatedAt is timestamp
-    ;
+    // return userMeta.size() == 15
+    // && 'authNotifications' in userMeta && userMeta.authNotifications is list
+    // && 'birthDay' in userMeta && userMeta.birthDay is timestamp
+    // && 'bookmarks' in userMeta && userMeta.bookmarks is list
+    // && 'createdAt' in userMeta && userMeta.createdAt is timestamp
+    // && 'gender' in userMeta && userMeta.gender is string
+    // && 'isAdmin' in userMeta && userMeta.isAdmin is bool
+    // && 'isDelete' in userMeta && userMeta.isDelete is bool
+    // && 'likeComments' in userMeta && userMeta.likeComments is list
+    // && 'likeReplys' in userMeta && userMeta.likeReplys is list
+    // && 'likes' in userMeta && userMeta.likes is list
+    // && 'language' in userMeta && userMeta.language is string
+    // && 'readNotifications' in userMeta && userMeta.readNotifications is list
+    // && 'readPosts' in userMeta && userMeta.readPosts is list
+    // && 'searchHistory' in userMeta && userMeta.searchHistory is list
+    // && 'updatedAt' in userMeta && userMeta.updatedAt is timestamp
+    // ;
+    return 'createdAt' in user && user.createdAt is timestamp
+    && 'updatedAt' in user && user.updatedAt is timestamp;
   }
   
   function isValidPost(post) {
-    return post.size() == 26
-    && 'audioURL' in post && post.audioURL is string
-    && 'commentsState' in post && post.commentsState is string
-    && 'country' in post && post.country is string
-    && 'description' in post && post.description is string
-    && 'genre' in post && post.genre is string
-    && 'hashTags' in post && post.hashTags is list
-    && 'imageURL' in post && post.imageURL is string
-    && 'ipv6' in post && post.ipv6 is string
-    && 'isDelete' in post && post.isDelete is bool
-    && 'isNFTicon' in post && post.isNFTicon is bool
-    && 'isOfficial' in post && post.isOfficial is bool
-    && 'isPinned' in post && post.isPinned is bool
-    && 'link' in post && post.link is string
-    && 'noDisplayWords' in post && post.noDisplayWords is list
-    && 'noDisplayIpv6AndUids' in post && post.noDisplayIpv6AndUids is list
-    && 'otherLinks' in post && post.otherLinks is list
-    && 'postId' in post && post.postId is string
-    && 'positiveScore' in post && post.positiveScore is number
-    && 'score' in post && post.score is number
-    && 'storageImageName' in post && post.storageImageName is string
-    && 'storagePostName' in post && post.storagePostName is string
-    && 'tagUids' in post && post.tagUids is list
-    && 'title' in post && post.title is string
-    && 'uid' in post && post.uid is string
-    && 'userImageURL' in post && post.userImageURL is string
-    && 'userName' in post && post.userName is string
-    ;
+    return true;
+    // return post.size() == 26
+    // && 'audioURL' in post && post.audioURL is string
+    // && 'commentsState' in post && post.commentsState is string
+    // && 'country' in post && post.country is string
+    // && 'description' in post && post.description is string
+    // && 'genre' in post && post.genre is string
+    // && 'hashTags' in post && post.hashTags is list
+    // && 'imageURL' in post && post.imageURL is string
+    // && 'ipv6' in post && post.ipv6 is string
+    // && 'isDelete' in post && post.isDelete is bool
+    // && 'isNFTicon' in post && post.isNFTicon is bool
+    // && 'isOfficial' in post && post.isOfficial is bool
+    // && 'isPinned' in post && post.isPinned is bool
+    // && 'link' in post && post.link is string
+    // && 'noDisplayWords' in post && post.noDisplayWords is list
+    // && 'noDisplayIpv6AndUids' in post && post.noDisplayIpv6AndUids is list
+    // && 'otherLinks' in post && post.otherLinks is list
+    // && 'postId' in post && post.postId is string
+    // && 'positiveScore' in post && post.positiveScore is number
+    // && 'score' in post && post.score is number
+    // && 'storageImageName' in post && post.storageImageName is string
+    // && 'storagePostName' in post && post.storagePostName is string
+    // && 'tagUids' in post && post.tagUids is list
+    // && 'title' in post && post.title is string
+    // && 'uid' in post && post.uid is string
+    // && 'userImageURL' in post && post.userImageURL is string
+    // && 'userName' in post && post.userName is string
+    
   }
 
   function isValidComment(comment) {
-    return
-    comment.size() == 19
-    && 'comment' in comment && comment.comment is string
-    && 'commentId' in comment && comment.commentId is string
-    && 'createdAt' in comment && comment.createdAt is timestamp
-    && 'followerCount' in comment && comment.followerCount is int
-    && 'ipv6' in comment && comment.ipv6 is string
-    && 'isDelete' in comment && comment.isDelete is bool
-    && 'isNFTicon' in comment && comment.isNFTicon is bool
-    && 'isOfficial' in comment && comment.isOfficial is bool
-    && 'likeCount' in comment && comment.likeCount is int
-    && 'negativeScore' in comment && comment.negativeScore is number
-    && 'passiveUid' in comment && comment.passiveUid is string
-    && 'positiveScore' in comment && comment.positiveScore is number
-    && 'postId' in comment && comment.postId is string
-    && 'replyCount' in comment && comment.replyCount is int
-    && 'score' in comment && comment.score is number
-    && 'subUserName' in comment && comment.subUserName is string
-    && 'uid' in comment && comment.uid is string
-    && 'userName' in comment && comment.userName is string
-    && 'userImageURL' in comment && comment.userImageURL is string;
+    return 'createdAt' in comment && comment.createdAt is timestamp;
+    // comment.size() == 19
+    // && 'comment' in comment && comment.comment is string
+    // && 'commentId' in comment && comment.commentId is string
+    // && 'createdAt' in comment && comment.createdAt is timestamp
+    // && 'followerCount' in comment && comment.followerCount is int
+    // && 'ipv6' in comment && comment.ipv6 is string
+    // && 'isDelete' in comment && comment.isDelete is bool
+    // && 'isNFTicon' in comment && comment.isNFTicon is bool
+    // && 'isOfficial' in comment && comment.isOfficial is bool
+    // && 'likeCount' in comment && comment.likeCount is int
+    // && 'negativeScore' in comment && comment.negativeScore is number
+    // && 'passiveUid' in comment && comment.passiveUid is string
+    // && 'positiveScore' in comment && comment.positiveScore is number
+    // && 'postId' in comment && comment.postId is string
+    // && 'replyCount' in comment && comment.replyCount is int
+    // && 'score' in comment && comment.score is number
+    // && 'subUserName' in comment && comment.subUserName is string
+    // && 'uid' in comment && comment.uid is string
+    // && 'userName' in comment && comment.userName is string
+    // && 'userImageURL' in comment && comment.userImageURL is string;
   }
 
   function isValidReply(reply) {
-    return 
-    reply.size() == 20
-    && 'elementId' in reply && reply.elementId is string // commentId
-    && 'elementState' in reply && reply.elementState is string
-    && 'createdAt' in reply && reply.createdAt is timestamp
-    && 'followerCount' in reply && reply.followerCount is int
-    && 'ipv6' in reply && reply.ipv6 is string
-    && 'isDelete' in reply && reply.isDelete is bool
-    && 'isNFTicon' in reply && reply.isNFTicon is bool
-    && 'isOfficial' in reply && reply.isOfficial is bool
-    && 'likeCount' in reply && reply.likeCount is int
-    && 'negativeScore' in reply && reply.negativeScore is number
-    && 'passiveUid' in reply && reply.passiveUid is string
-    && 'postId' in reply && reply.postId is string
-    && 'positiveScore' in reply && reply.positiveScore is number
-    && 'reply' in reply && reply.reply is string
-    && 'replyId' in reply && reply.replyId is string
-    && 'score' in reply && reply.score is number
-    && 'subUserName' in reply && reply.subUserName is string
-    && 'uid' in reply && reply.uid is string
-    && 'userName' in reply && reply.userName is string
-    && 'userImageURL' in reply && reply.userImageURL is string;
+    return true;
+    // reply.size() == 20
+    // && 'elementId' in reply && reply.elementId is string // commentId
+    // && 'elementState' in reply && reply.elementState is string
+    // && 'createdAt' in reply && reply.createdAt is timestamp
+    // && 'followerCount' in reply && reply.followerCount is int
+    // && 'ipv6' in reply && reply.ipv6 is string
+    // && 'isDelete' in reply && reply.isDelete is bool
+    // && 'isNFTicon' in reply && reply.isNFTicon is bool
+    // && 'isOfficial' in reply && reply.isOfficial is bool
+    // && 'likeCount' in reply && reply.likeCount is int
+    // && 'negativeScore' in reply && reply.negativeScore is number
+    // && 'passiveUid' in reply && reply.passiveUid is string
+    // && 'postId' in reply && reply.postId is string
+    // && 'positiveScore' in reply && reply.positiveScore is number
+    // && 'reply' in reply && reply.reply is string
+    // && 'replyId' in reply && reply.replyId is string
+    // && 'score' in reply && reply.score is number
+    // && 'subUserName' in reply && reply.subUserName is string
+    // && 'uid' in reply && reply.uid is string
+    // && 'userName' in reply && reply.userName is string
+    // && 'userImageURL' in reply && reply.userImageURL is string;
   }
 
   function isValidNFTowners(nftOwner) {

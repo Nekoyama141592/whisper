@@ -269,6 +269,7 @@ class ReplysModel extends ChangeNotifier {
   Map<String,dynamic> makeReplyMap({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
     final WhisperReply whisperReply = WhisperReply(
       accountName: currentWhisperUser.accountName,
+      createdAt: now,
       elementId: elementId, elementState: elementState, 
       followerCount: currentWhisperUser.followerCount,
       ipv6: ipv6, 
@@ -284,12 +285,11 @@ class ReplysModel extends ChangeNotifier {
       replyId: replyId,
       score: defaultScore,
       uid: currentWhisperUser.uid,
+      updatedAt: now,
       userName: currentWhisperUser.userName,
       userImageURL: currentWhisperUser.imageURL
     );
     Map<String,dynamic> newReplyMap = whisperReply.toJson();
-    newReplyMap[createdAtKey] = now;
-    newReplyMap[updatedAtKey] = now;
     return newReplyMap;
   }
 
@@ -306,9 +306,11 @@ class ReplysModel extends ChangeNotifier {
     final newWhisperReply = fromMapToWhisperReply(replyMap: newReplyMap);
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = whisperComment.comment;
+    final Timestamp now = Timestamp.now();
     final ReplyNotification replyNotification = ReplyNotification(
       accountName: currentWhisperUser.accountName,
       comment: comment, 
+      createdAt: now,
       elementId: elementId, 
       elementState: elementState, 
       followerCount: currentWhisperUser.followerCount,
@@ -322,6 +324,7 @@ class ReplysModel extends ChangeNotifier {
       replyScore: newWhisperReply.score,
       replyId: newWhisperReply.replyId,
       uid: currentWhisperUser.uid,
+      updatedAt: now,
       userImageURL: currentWhisperUser.imageURL,
       userName: currentWhisperUser.userName
     );

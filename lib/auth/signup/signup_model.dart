@@ -116,9 +116,11 @@ class SignupModel extends ChangeNotifier {
   
   Future<void> addUserToFireStore({ required String uid, required String imageURL,required String storageImageName }) async {
     final List<String> searchWords = returnSearchWords(searchTerm: userName);
+    final Timestamp now = Timestamp.now();
     Map<String,dynamic> whisperUserMap = WhisperUser(
       accountName: uid,
       blocksIpv6AndUids: [],
+      createdAt: now,
       description: '',
       dmState: onlyFollowingAndFollowedString,
       followerCount: 0,
@@ -137,21 +139,22 @@ class SignupModel extends ChangeNotifier {
       storageImageName: storageImageName,
       tokenToSearch: returnTokenToSearch(searchWords: searchWords),
       uid : uid,
+      updatedAt: now,
       userName: userName,
       walletAddress: '',
     ).toJson();
-    final Timestamp now = Timestamp.now();
-    whisperUserMap[createdAtKey] = now;
-    whisperUserMap[updatedAtKey] = now;
     await FirebaseFirestore.instance.collection(usersKey).doc(uid).set(whisperUserMap);
   }
 
   Future<void> createUserMeta({ required String uid }) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
+    final Timestamp now = Timestamp.now();
     final Map<String,dynamic> userMetaMap = UserMeta(
       authNotifications: [],
+      birthDay: timestampBirthDay,
       bookmarkLabels: [],
       bookmarks: [],
+      createdAt: now,
       followingUids: [],
       gender: gender, 
       isAdmin: false,
@@ -163,12 +166,10 @@ class SignupModel extends ChangeNotifier {
       readNotifications: [],
       readPosts: [],
       searchHistory: [],
+      uid: uid,
+      updatedAt: now,
       watchlists: []
     ).toJson();
-    final Timestamp now = Timestamp.now();
-    userMetaMap[birthDayKey] = timestampBirthDay;
-    userMetaMap[createdAtKey] = now;
-    userMetaMap[updatedAtKey] = now;
     await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set(userMetaMap);
   }
 

@@ -8,6 +8,7 @@ class WhisperUser {
   WhisperUser({
     required this.accountName,
     required this.blocksIpv6AndUids,
+    required this.createdAt,
     required this.description,
     required this.dmState,
     required this.followerCount,
@@ -27,10 +28,12 @@ class WhisperUser {
     required this.tokenToSearch,
     required this.userName,
     required this.uid,
+    required this.updatedAt,
     required this.walletAddress
   });
   final String accountName;
   final List<dynamic> blocksIpv6AndUids;
+  final dynamic createdAt;
   final String description;
   final String dmState;
   final int followerCount;
@@ -50,6 +53,7 @@ class WhisperUser {
   final Map<String,dynamic> tokenToSearch;
   final String userName;
   final String uid;
+  final dynamic updatedAt;
   final String walletAddress;
 
   factory WhisperUser.fromJson(Map<String,dynamic> json) => _$WhisperUserFromJson(json);
