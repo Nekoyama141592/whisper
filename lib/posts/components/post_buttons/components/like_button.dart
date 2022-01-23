@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
@@ -14,12 +16,12 @@ class LikeButton extends ConsumerWidget {
   
   const LikeButton({
     required this.postType,
-    required this.currentSongMap,
+    required this.whisperPost,
     required this.mainModel
   });
   
   final PostType postType;
-  final Map<String,dynamic> currentSongMap;
+  final Post whisperPost;
   final MainModel mainModel;
   
   @override  
@@ -27,11 +29,11 @@ class LikeButton extends ConsumerWidget {
     final postFuturesModel = watch(postsFeaturesProvider);
     if (postType != PostType.postSearch) {
 
-      final likeCount = currentSongMap[likeCountKey];
+      final likeCount = whisperPost.likeCount;
       final plusOneCount = likeCount + plusOne;
       return
       Container(
-        child: mainModel.likePostIds.contains(currentSongMap[postIdKey]) ?
+        child: mainModel.likePostIds.contains(whisperPost.postId) ?
         Row(
           children: [
             InkWell(
@@ -40,7 +42,7 @@ class LikeButton extends ConsumerWidget {
                 color: Colors.red
               ),
               onTap: () async {
-                await postFuturesModel.unlike(currentSongMap: currentSongMap, mainModel: mainModel);
+                await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel);
               },
             ),
             SizedBox(width: 5.0),
@@ -55,7 +57,7 @@ class LikeButton extends ConsumerWidget {
             InkWell(
               child: Icon(Icons.favorite),
               onTap: () async {
-                await postFuturesModel.like(currentSongMap: currentSongMap, mainModel: mainModel);
+                await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel);
               },
             ),
             SizedBox(width: 5.0),
@@ -68,20 +70,20 @@ class LikeButton extends ConsumerWidget {
       );
     } else {
       return Container(
-        child: mainModel.likePostIds.contains(currentSongMap[postIdKey]) ?
+        child: mainModel.likePostIds.contains(whisperPost.postId) ?
         InkWell(
           child: Icon(
             Icons.favorite,
             color: Colors.red
           ),
           onTap: () async {
-            await postFuturesModel.unlike(currentSongMap: currentSongMap, mainModel: mainModel);
+            await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel);
           },
         ) 
         : InkWell(
           child: Icon(Icons.favorite),
           onTap: () async {
-            await postFuturesModel.like(currentSongMap: currentSongMap, mainModel: mainModel);
+            await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel);
           },
         ),
         

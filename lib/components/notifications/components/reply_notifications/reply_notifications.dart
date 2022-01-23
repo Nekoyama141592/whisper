@@ -1,10 +1,13 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // component
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/notifications/details/notification_card.dart';
+// domain
+import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/notifications/components/reply_notifications/reply_notifications_model.dart';
@@ -26,8 +29,8 @@ class ReplyNotifications extends StatelessWidget {
     final content = ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
-        final notification = notifications[i];
-        return NotificationCard(giveCommentId: notification[elementIdKey], firstSubTitle: notification[commentKey], secondSubTitle: notification[replyKey], notification: notification, mainModel: mainModel);
+        final ReplyNotification notification = fromMapToReplyNotification(notificationMap: notifications[i].data()!);
+        return NotificationCard(giveCommentId: notification.elementId, firstSubTitle: notification.comment, secondSubTitle: notification.reply, notification: notification, mainModel: mainModel);
       }
     );
     final reload = () async {

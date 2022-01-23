@@ -36,6 +36,7 @@ import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/constants/enums.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/post/post.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
@@ -113,8 +114,8 @@ void toCommentsPage(context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dyn
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, currentSongMap: currentSongMapNotifier.value, mainModel: mainModel) ));
 }
 
-void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Map<String,dynamic> currentSongMap,required Map<String,dynamic> thisComment, required MainModel mainModel  }) {
- Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, currentSongMap: currentSongMap, thisComment: thisComment, mainModel: mainModel) )); 
+void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required Map<String,dynamic> thisComment, required MainModel mainModel  }) {
+ Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, thisComment: thisComment, mainModel: mainModel) )); 
 }
 
 void toBlocksUsersPage(context, MainModel mainModel) {

@@ -2,7 +2,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/reply_notification/reply_notification.dart';
+import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -19,7 +24,8 @@ bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynami
 }
 
 bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
-  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data()! ) && !mutesPostIds.contains(doc[postIdKey]);
+  final Post post = fromMapToPost(postMap: doc.data()!);
+  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data()! ) && !mutesPostIds.contains(post.postId);
 }
 
 bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> passiveBlocksUids, required MainModel mainModel }) {
@@ -30,14 +36,16 @@ bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic
 
 bool newNotificationExists({ required MainModel mainModel,required List<dynamic> commentNotifications,required List<dynamic> replyNotifications }) {
   bool x = false;
-  replyNotifications.forEach((replyNotification) {
-    final notificationId = replyNotification[notificationIdKey];
+  replyNotifications.forEach((replyNotificationMap) {
+    final ReplyNotification replyNotification = fromMapToReplyNotification(notificationMap: replyNotificationMap);
+    final String notificationId = replyNotification.notificationId;
     if (!mainModel.readNotificationIds.contains(notificationId)) {
       x = true;
     }
   });
-  commentNotifications.forEach((commentNotification) {
-    final notificationId = commentNotification[notificationIdKey];
+  commentNotifications.forEach((commentNotificationMap) {
+    final CommentNotification commentNotification = fromMapToCommentNotification(notificationmap: commentNotificationMap);
+    final String notificationId = commentNotification.notificationId;
     if (!mainModel.readNotificationIds.contains(notificationId)) {
       x = true;
     }
@@ -63,7 +71,8 @@ bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesU
     case PostType.recommenders:
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(doc[postIdKey]) && doc[createdAtKey].toDate().isAfter(range);
+    final Post post = fromMapToPost(postMap: doc.data()!);
+    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(post.postId) && (doc[createdAtKey] as Timestamp).toDate().isAfter(range);
 
     case PostType.userShow:
     return true;

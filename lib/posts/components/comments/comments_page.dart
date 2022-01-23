@@ -43,7 +43,7 @@ class CommentsPage extends ConsumerWidget {
         ),
         backgroundColor: Theme.of(context).highlightColor,
         onPressed: ()  {
-          commentsModel.onFloatingActionButtonPressed(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel);
+          commentsModel.onFloatingActionButtonPressed(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel);
         },
       ),
       body: SafeArea(
@@ -52,7 +52,7 @@ class CommentsPage extends ConsumerWidget {
           children: [
             CommentsOrReplysHeader(
               onMenuPressed: (){
-                commentsModel.showSortDialogue(context, currentSongMap);
+                commentsModel.showSortDialogue(context, whisperPost);
               },
             ),
             commentsModel.commentDocs.isEmpty ?
@@ -66,10 +66,10 @@ class CommentsPage extends ConsumerWidget {
                 enablePullUp: true,
                 enablePullDown: true,
                 onLoading: () async {
-                  await commentsModel.onLoading(currentSongMap);
+                  await commentsModel.onLoading(whisperPost);
                 },
                 onRefresh: () {
-                  commentsModel.onRefresh(context, currentSongMap);
+                  commentsModel.onRefresh(context, whisperPost);
                 },
                 header: WaterDropHeader(),
                 controller: commentsModel.refreshController,

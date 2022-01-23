@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/strings.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
@@ -14,12 +15,12 @@ class BookmarkButton extends ConsumerWidget {
   const BookmarkButton({
     Key? key,
     required this.postType,
-    required this.currentSongMap,
+    required this.whisperPost,
     required this.mainModel
   }) : super(key: key);
 
   final PostType postType;
-  final Map<String,dynamic> currentSongMap;
+  final Post whisperPost;
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
@@ -27,10 +28,10 @@ class BookmarkButton extends ConsumerWidget {
     final postFuturesModel = watch(postsFeaturesProvider);
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (postType != PostType.postSearch ) {
-      final bookmarksCount = currentSongMap[bookmarkCountKey];
+      final bookmarksCount = whisperPost.bookmarkCount;
       final plusOneCount = bookmarksCount + 1;
       return 
-      mainModel.bookmarksPostIds.contains(currentSongMap[postIdKey]) ?
+      mainModel.bookmarksPostIds.contains(whisperPost.postId) ?
       Row(
         children: [
           InkWell(
@@ -39,10 +40,10 @@ class BookmarkButton extends ConsumerWidget {
               color: Theme.of(context).highlightColor,
             ),
             onTap: () async {
-              await postFuturesModel.unbookmark(currentSongMap: currentSongMap, mainModel: mainModel);
+              await postFuturesModel.unbookmark(whisperPost: whisperPost, mainModel: mainModel);
             }),
           SizedBox(width: 5.0),
-          if(currentWhisperUser.uid == currentSongMap[uidKey]) Text(
+          if(currentWhisperUser.uid == whisperPost.uid) Text(
             plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
             style: TextStyle(color: Theme.of(context).highlightColor)
           )
@@ -53,30 +54,30 @@ class BookmarkButton extends ConsumerWidget {
           InkWell(
             child: Icon(Icons.bookmark_border),
             onTap: () async {
-              await postFuturesModel.bookmark(currentSongMap: currentSongMap, mainModel: mainModel);
+              await postFuturesModel.bookmark(whisperPost: whisperPost, mainModel: mainModel);
             }, 
           ),
           SizedBox(width: 5.0),
-          if(currentWhisperUser.uid == currentSongMap[uidKey]) Text(
+          if(currentWhisperUser.uid == whisperPost.uid) Text(
             bookmarksCount >= 10000 ? (bookmarksCount/1000.floor()/10).toString() + '万' :  bookmarksCount.toString(),
           )
         ],
       );
     } else {
       return 
-      mainModel.bookmarksPostIds.contains(currentSongMap[postIdKey]) ?
+      mainModel.bookmarksPostIds.contains(whisperPost.postId) ?
       InkWell(
         child: Icon(
           Icons.bookmark,
           color: Theme.of(context).highlightColor,
         ),
         onTap: () async {
-          await postFuturesModel.unbookmark(currentSongMap: currentSongMap, mainModel: mainModel);
+          await postFuturesModel.unbookmark(whisperPost: whisperPost, mainModel: mainModel);
         })
       : InkWell(
         child: Icon(Icons.bookmark_border),
         onTap: () async {
-          await postFuturesModel.bookmark(currentSongMap: currentSongMap, mainModel: mainModel);
+          await postFuturesModel.bookmark(whisperPost: whisperPost, mainModel: mainModel);
         }, 
       );
     }

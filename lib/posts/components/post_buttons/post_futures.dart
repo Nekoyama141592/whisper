@@ -9,6 +9,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/main_model.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -16,27 +18,27 @@ final postsFeaturesProvider = ChangeNotifierProvider(
 
 class PostFutures extends ChangeNotifier{
 
-  Future<void> like({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    final String postId = currentSongMap[postIdKey];
+  Future<void> like({ required Post whisperPost, required MainModel mainModel }) async {
+    final String postId = whisperPost.postId;
     final List<dynamic> likePostIds = mainModel.likePostIds;
     // process UI
     likePostIds.add(postId);
     notifyListeners();
     // backend
-    await addLikeSubCol(currentSongMap: currentSongMap, mainModel: mainModel);
-    await addLikesToCurrentUser(currentSongMap: currentSongMap, mainModel: mainModel);
+    await addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    await addLikesToCurrentUser(whisperPost: whisperPost, mainModel: mainModel);
   }
 
-  Future<void> addLikeSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: postsKey, uniqueId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).set({
+  Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+    await likeChildRef(parentColKey: postsKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set({
       uidKey: mainModel.currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
   }
   
-  Future<void> addLikesToCurrentUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+  Future<void> addLikesToCurrentUser({ required Post whisperPost, required MainModel mainModel }) async {
     final Map<String, dynamic> map = {
-      likePostIdKey: currentSongMap[postIdKey],
+      likePostIdKey: whisperPost.postId,
       createdAtKey: Timestamp.now(),
     };
     final List<dynamic> likes = mainModel.likes;
@@ -46,28 +48,28 @@ class PostFutures extends ChangeNotifier{
     });
   }
 
-  Future<void> bookmark({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    final postId = currentSongMap[postIdKey];
+  Future<void> bookmark({ required Post whisperPost, required MainModel mainModel }) async {
+    final postId = whisperPost.postId;
     final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
     // process UI
     bookmarksPostIds.add(postId);
     notifyListeners();
     // backend
-    await addBookmarkSubCol(currentSongMap: currentSongMap, mainModel: mainModel);
-    await addBookmarksToUser(currentSongMap: currentSongMap, mainModel: mainModel);
+    await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel);
   }
 
-  Future<void> addBookmarkSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    await bookmarkChildRef(postId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).set({
+  Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+    await bookmarkChildRef(postId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set({
       uidKey: mainModel.currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
   }
 
 
-  Future<void> addBookmarksToUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+  Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel }) async {
     final Map<String, dynamic> map = {
-      postIdKey: currentSongMap[postIdKey],
+      postIdKey: whisperPost.postId,
       createdAtKey: Timestamp.now(),
     };
     final bookmarks = mainModel.bookmarks;
@@ -77,46 +79,46 @@ class PostFutures extends ChangeNotifier{
     });
   }
 
-  Future<void> unbookmark({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    final postId = currentSongMap[postIdKey];
+  Future<void> unbookmark({ required Post whisperPost, required MainModel mainModel }) async {
+    final postId = whisperPost.postId;
     final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
     // process UI
     bookmarksPostIds.remove(postId);
     notifyListeners();
     // backend
-    await deleteBookmarkSubCol(currentSongMap: currentSongMap, mainModel: mainModel);
-    await removeBookmarksOfUser(currentSongMap: currentSongMap, mainModel: mainModel);
+    await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    await removeBookmarksOfUser(whisperPost: whisperPost, mainModel: mainModel);
   }
 
-  Future<void> deleteBookmarkSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    await bookmarkChildRef(postId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).delete();
+  Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+    await bookmarkChildRef(postId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
-  Future<void> removeBookmarksOfUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+  Future<void> removeBookmarksOfUser({ required Post whisperPost, required MainModel mainModel }) async {
     final List<dynamic> bookmarks = mainModel.bookmarks;
-    bookmarks.removeWhere((bookmark) => bookmark[postIdKey] == currentSongMap[postIdKey]);
+    bookmarks.removeWhere((bookmark) => bookmark[postIdKey] == whisperPost.postId);
     await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
       bookmarksKey: bookmarks,
     });
   }
 
-   Future<void> unlike({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    final postId = currentSongMap[postIdKey]; 
+   Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
+    final postId = whisperPost.postId; 
     // process UI
     mainModel.likePostIds.remove(postId);
     notifyListeners();
     // backend
-    await deleteLikeSubCol(currentSongMap: currentSongMap,mainModel: mainModel);
-    await removeLikeOfUser(currentSongMap: currentSongMap, mainModel: mainModel);
+    await deleteLikeSubCol(whisperPost: whisperPost,mainModel: mainModel);
+    await removeLikeOfUser(whisperPost: whisperPost, mainModel: mainModel);
   }
 
-  Future<void> deleteLikeSubCol({ required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: postsKey, uniqueId: currentSongMap[postIdKey], activeUid: mainModel.currentWhisperUser.uid).delete();
+  Future<void> deleteLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+    await likeChildRef(parentColKey: postsKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
   
-  Future<void> removeLikeOfUser({ required Map<String,dynamic> currentSongMap, required MainModel mainModel}) async {
+  Future<void> removeLikeOfUser({ required Post whisperPost, required MainModel mainModel}) async {
     final List<dynamic> likes = mainModel.likes;
-    likes.removeWhere((like) => like[likePostIdKey] == currentSongMap[postIdKey]);
+    likes.removeWhere((like) => like[likePostIdKey] == whisperPost.postId);
     await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
       likesKey: likes,
     });

@@ -18,6 +18,7 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 // domain
+import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -325,8 +326,8 @@ Future initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSo
 }
 
 Future mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<dynamic> results}) async {
-  final whisperPost = fromMapToPost(postMap: post);
-  final postId = whisperPost.postId;
+  final Post whisperPost = fromMapToPost(postMap: post);
+  final String postId = whisperPost.postId;
   mainModel.mutesPostIds.add(postId);
   results.removeWhere((result) => result[postIdKey] == postId);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
@@ -389,7 +390,7 @@ Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, req
   await query.get().then((qshot) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
-      docs.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
+      docs.sort((a,b) => (b[createdAtKey] as Timestamp).compareTo(a[createdAtKey]));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()! );
         final String uid = whisperPost.uid;
@@ -415,7 +416,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
-      docs.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
+      docs.sort((a,b) => (b[createdAtKey] as Timestamp ).compareTo(a[createdAtKey]));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()! );
         final String uid = whisperPost.uid;

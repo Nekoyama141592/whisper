@@ -48,9 +48,9 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> init(BuildContext context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dynamic>> currentSongMapNotifier,MainModel mainModel,String postId) async {
+  Future<void> init(BuildContext context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dynamic>> whisperPostNotifier,MainModel mainModel,String postId) async {
     refreshController = RefreshController(initialRefresh: false);
-    routes.toCommentsPage(context, audioPlayer, currentSongMapNotifier, mainModel);
+    routes.toCommentsPage(context, audioPlayer, whisperPostNotifier, mainModel);
     if (indexPostId != postId) {
       indexPostId = postId;
       await getCommentDocs(postId);
@@ -65,17 +65,16 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onFloatingActionButtonPressed({ required BuildContext context, required Map<String,dynamic> currentSongMap, required TextEditingController commentEditingController, required AudioPlayer audioPlayer, required MainModel mainModel }) {
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
+  void onFloatingActionButtonPressed({ required BuildContext context, required Post whisperPost, required TextEditingController commentEditingController, required AudioPlayer audioPlayer, required MainModel mainModel }) {
     final String commentsState = whisperPost.commentsState;
     audioPlayer.pause();
     switch(commentsState){
       case 'open':
-      showMakeCommentInputFlashBar(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, mainModel: mainModel);
+      showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
       break;
       case 'isLocked':
       if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
-        showMakeCommentInputFlashBar(context: context, currentSongMap: currentSongMap, commentEditingController: commentEditingController, mainModel: mainModel);
+        showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
       }
@@ -83,14 +82,14 @@ class CommentsModel extends ChangeNotifier {
     }
   }
 
-  void showMakeCommentInputFlashBar({ required BuildContext context, required Map<String,dynamic> currentSongMap, required TextEditingController commentEditingController, required MainModel mainModel }) {
+  void showMakeCommentInputFlashBar({ required BuildContext context, required Post whisperPost, required TextEditingController commentEditingController, required MainModel mainModel }) {
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
           if (commentEditingController.text.isEmpty) {
             controller.dismiss();
           } else {
-            await makeComment(context: context, currentSongMap: currentSongMap, mainModel: mainModel);
+            await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
             comment = '';
             commentEditingController.text = '';
             controller.dismiss();
@@ -107,19 +106,18 @@ class CommentsModel extends ChangeNotifier {
   }
 
   
-  Future<void> makeComment({ required BuildContext context, required Map<String,dynamic> currentSongMap, required MainModel mainModel }) async {
+  Future<void> makeComment({ required BuildContext context, required Post whisperPost, required MainModel mainModel }) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-    final Post whisperPost = fromMapToPost(postMap: currentSongMap);
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final whisperComment = fromMapToWhisperComment(commentMap: commentMap);
     await FirebaseFirestore.instance.collection(commentsKey).doc(whisperComment.commentId).set(commentMap);
     // notification
-    if (currentSongMap[uidKey] != mainModel.currentWhisperUser.uid ) {
-      final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
+    if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
+      final WhisperUser passiveWhisperUser = await setPassiveWhisperUser(whisperPost);
       // blocks
       List<dynamic> blocksIpv6s = [];
       List<dynamic> blocksUids = [];
-      final List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
+      final List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
       blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
         blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
         blocksUids.add(blocksIpv6AndUid[uidKey]);
@@ -127,14 +125,14 @@ class CommentsModel extends ChangeNotifier {
       // mutes
       List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
-      final List<dynamic> mutesIpv6AndUids = passiveUserDoc[mutesIpv6AndUidsKey];
+      final List<dynamic> mutesIpv6AndUids = passiveWhisperUser.mutesIpv6AndUids;
       mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
         mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
       final Timestamp now = Timestamp.now();
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: mainModel.currentWhisperUser.uid, ipv6: ipv6) ) {
-        await makeCommentNotification( mainModel: mainModel, passiveUserDoc: passiveUserDoc, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
+        await makeCommentNotification( mainModel: mainModel, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
       }
     }
   }
@@ -169,7 +167,7 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required WhisperComment whisperComment, required Timestamp now }) async {
+  Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperComment whisperComment, required Timestamp now }) async {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     try{
       final CommentNotification commentNotification = CommentNotification(
@@ -198,19 +196,19 @@ class CommentsModel extends ChangeNotifier {
     }
   }
   
-  Future<void> like({ required Map<String,dynamic> thisComment, required MainModel mainModel}) async {
-    final commentId = thisComment[commentIdKey];
+  Future<void> like({ required WhisperComment whisperComment, required MainModel mainModel}) async {
+    final commentId = whisperComment.commentId;
     // processUi
     final likeCommentIds = mainModel.likeCommentIds;
     likeCommentIds.add(commentId);
     notifyListeners();
-    await addLikeSubCol(thisComment: thisComment, mainModel: mainModel);
+    await addLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
     await updateLikedCommentsOfUser(commentId: commentId, mainModel: mainModel);
   }
 
-  Future<void> addLikeSubCol({ required Map<String,dynamic> thisComment,required MainModel mainModel }) async {
+  Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    await likeChildRef(parentColKey: commentsKey, uniqueId: thisComment[commentIdKey] , activeUid: currentWhisperUser.uid ).set({
+    await likeChildRef(parentColKey: commentsKey, uniqueId: whisperComment.commentId , activeUid: currentWhisperUser.uid ).set({
       uidKey: currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
@@ -230,20 +228,20 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future<void> unlike({ required Map<String,dynamic> thisComment, required MainModel mainModel}) async {
+  Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
     // process UI
-    final commentId = thisComment[commentIdKey];
+    final commentId = whisperComment.commentId;
     final likeCommentIds = mainModel.likeCommentIds;
     final likeComments = mainModel.likeComments;
     likeCommentIds.remove(commentId);
     notifyListeners();
     // backend
-    await deleteLikeSubCol(thisComment: thisComment, mainModel: mainModel);
+    await deleteLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
     await removeLikedCommentsFromCurrentUser(commentId: commentId, likeComments: likeComments);
   }
 
-  Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisComment,required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: commentsKey, uniqueId: thisComment[commentIdKey] , activeUid: mainModel.currentWhisperUser.uid ).delete();
+  Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
+    await likeChildRef(parentColKey: commentsKey, uniqueId: whisperComment.commentId , activeUid: mainModel.currentWhisperUser.uid ).delete();
   }
 
   Future<void> removeLikedCommentsFromCurrentUser({ required String commentId, required List<dynamic> likeComments}) async {
@@ -253,26 +251,17 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future<DocumentSnapshot<Map<String,dynamic>>> setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentSongMap[uidKey]).get();
-    return passiveUserDoc;
+  Future<WhisperUser> setPassiveWhisperUser(Post whisperPost) async {
+    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(whisperPost.uid).get();
+    final WhisperUser passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
+    return passiveWhisperUser;
   }
 
-  Future<void> updateCommentsOfPostWhenDelete(DocumentSnapshot<Map<String,dynamic>> newCurrentSongDoc,Map<String,dynamic> comment,String postDocId) async {
-    final List<dynamic> newComments = newCurrentSongDoc[commentsKey];
-    newComments.remove(comment);
-    await FirebaseFirestore.instance.collection(postsKey).doc(postDocId)
-    .update({
-      commentsKey: newComments,
-    });
-    
-  }
-
-  void showSortDialogue(BuildContext context,Map<String,dynamic> currentSongMap) {
+  void showSortDialogue(BuildContext context,Post whisperPost) {
     showCupertinoDialog(
       context: context, 
       builder: (context) {
-        final postId = currentSongMap[postIdKey];
+        final postId = whisperPost.postId;
         return CupertinoActionSheet(
           title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
           message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
@@ -364,21 +353,21 @@ class CommentsModel extends ChangeNotifier {
     );
   }
 
-  Future<void> onRefresh(BuildContext context,Map<String,dynamic> currentSongMap) async {
+  Future<void> onRefresh(BuildContext context,Post whisperPost) async {
     switch(sortState) {
       case SortState.byLikedUidCount:
       break;
       case SortState.byNewestFirst:
       QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
       .collection(commentsKey)
-      .where(postIdKey,isEqualTo: currentSongMap[postIdKey])
+      .where(postIdKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtKey,descending: true)
       .endBeforeDocument(commentDocs[0])
       .limit(oneTimeReadCount)
       .get();
       // Sort by oldest first
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-      docs.sort((a,b) => a[createdAtKey].compareTo(b[createdAtKey]));
+      docs.sort((a,b) => (a[createdAtKey] as Timestamp ).compareTo(b[createdAtKey]));
       // Insert at the top
       docs.forEach((doc) {
         commentDocs.insert(0, doc);
@@ -391,12 +380,12 @@ class CommentsModel extends ChangeNotifier {
     refreshController.refreshCompleted();
   }
 
-  Future<void> onLoading(Map<String,dynamic> currentSongMap) async {
+  Future<void> onLoading(Post whisperPost) async {
     switch(sortState) {
       case SortState.byLikedUidCount:
       await FirebaseFirestore.instance
       .collection(commentsKey)
-      .where(postIdKey,isEqualTo: currentSongMap[postIdKey])
+      .where(postIdKey,isEqualTo: whisperPost.postId)
       .orderBy(likeCountKey,descending: true )
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
@@ -409,7 +398,7 @@ class CommentsModel extends ChangeNotifier {
       case SortState.byNewestFirst:
       await FirebaseFirestore.instance
       .collection(commentsKey)
-      .where(postIdKey,isEqualTo: currentSongMap[postIdKey])
+      .where(postIdKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtKey,descending: true)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
@@ -420,7 +409,7 @@ class CommentsModel extends ChangeNotifier {
       case SortState.byOldestFirst:
       await FirebaseFirestore.instance
       .collection(commentsKey)
-      .where(postIdKey,isEqualTo: currentSongMap[postIdKey])
+      .where(postIdKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtKey,descending: false)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)

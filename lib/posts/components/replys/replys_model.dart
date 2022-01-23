@@ -59,28 +59,27 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onAddReplyButtonPressed({ required BuildContext context, required  Map<String,dynamic> currentSongMap, required TextEditingController replyEditingController, required  Map<String,dynamic> thisComment, required MainModel mainModel }) {
+  void onAddReplyButtonPressed({ required BuildContext context, required  Post whisperPost, required TextEditingController replyEditingController, required  Map<String,dynamic> thisComment, required MainModel mainModel }) {
     // コメントの投稿主が自分の場合
     // このPostの投稿主が自分の場合
     // このPostの投稿主とコメントの投稿主が一致している場合
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
     if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
-      showMakeReplyInputFlashBar(context: context, currentSongMap: currentSongMap, replyEditingController: replyEditingController, mainModel: mainModel, thisComment: thisComment);
+      showMakeReplyInputFlashBar(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, mainModel: mainModel, thisComment: thisComment);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたはこのコメントに返信できません')));
     }
   }
 
-  void showMakeReplyInputFlashBar({ required BuildContext context, required Map<String,dynamic> currentSongMap, required TextEditingController replyEditingController,required MainModel mainModel , required Map<String,dynamic> thisComment}) {
+  void showMakeReplyInputFlashBar({ required BuildContext context, required Post whisperPost, required TextEditingController replyEditingController,required MainModel mainModel , required Map<String,dynamic> thisComment}) {
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
           if (reply.isEmpty) {
             controller.dismiss();
           } else {
-            await makeReply(currentSongMap: currentSongMap, mainModel: mainModel, thisComment: thisComment);
+            await makeReply(whisperPost: whisperPost, mainModel: mainModel, thisComment: thisComment);
             reply = '';
             replyEditingController.text = '';
             controller.dismiss();
@@ -184,9 +183,9 @@ class ReplysModel extends ChangeNotifier {
 
   
 
-  void getReplysStream({ required BuildContext context, required Map<String,dynamic> thisComment, required ReplysModel replysModel, required Map<String,dynamic> currentSongMap, required MainModel mainModel })  {
+  void getReplysStream({ required BuildContext context, required Map<String,dynamic> thisComment, required ReplysModel replysModel, required Post whisperPost, required MainModel mainModel })  {
     refreshController = RefreshController(initialRefresh: false);
-    routes.toReplysPage(context: context, replysModel: replysModel, currentSongMap: currentSongMap, thisComment: thisComment, mainModel: mainModel);
+    routes.toReplysPage(context: context, replysModel: replysModel, whisperPost: whisperPost, thisComment: thisComment, mainModel: mainModel);
     final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
     final String commentId = whisperComment.commentId ;
     try {
@@ -233,22 +232,22 @@ class ReplysModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future makeReply({ required Map<String,dynamic> currentSongMap,required MainModel mainModel, required Map<String,dynamic> thisComment}) async {
+  Future makeReply({ required Post whisperPost,required MainModel mainModel, required Map<String,dynamic> thisComment}) async {
     final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
     final elementId = whisperComment.commentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
-    final newReplyMap = makeReplyMap(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now);
-    await addReplyToFirestore(newReplyMap);
+    final String replyId = replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
+    final newReplyMap = makeReplyMap(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
+    await FirebaseFirestore.instance.collection(replysKey).doc(replyId).set(newReplyMap);
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
-      final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await setPassiveUserDoc(currentSongMap);
+      final WhisperUser passiveWhisperUser = await setPassiveUserDoc(whisperPost);
       // blocks
       List<dynamic> blocksIpv6s = [];
       List<dynamic> blocksUids = [];
-      final List<dynamic> blocksIpv6AndUids = passiveUserDoc[blocksIpv6AndUidsKey];
+      final List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
       blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
         blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
         blocksUids.add(blocksIpv6AndUid[uidKey]);
@@ -256,7 +255,7 @@ class ReplysModel extends ChangeNotifier {
       // mutes
       List<dynamic> mutesUids = [];
       List<dynamic> mutesIpv6s = [];
-      final List<dynamic> mutesIpv6AndUids = passiveUserDoc[mutesIpv6AndUidsKey];
+      final List<dynamic> mutesIpv6AndUids = passiveWhisperUser.mutesIpv6AndUids;
       mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
         mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
         mutesUids.add(mutesIpv6AndUid[uidKey]);
@@ -267,7 +266,7 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  Map<String,dynamic> makeReplyMap({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now}) {
+  Map<String,dynamic> makeReplyMap({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
     final WhisperReply whisperReply = WhisperReply(
       accountName: currentWhisperUser.accountName,
       elementId: elementId, elementState: elementState, 
@@ -282,7 +281,7 @@ class ReplysModel extends ChangeNotifier {
       postId: whisperPost.postId,
       positiveScore: 0,
       reply: reply, 
-      replyId: replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString() ,
+      replyId: replyId,
       score: defaultScore,
       uid: currentWhisperUser.uid,
       userName: currentWhisperUser.userName,
@@ -293,19 +292,11 @@ class ReplysModel extends ChangeNotifier {
     newReplyMap[updatedAtKey] = now;
     return newReplyMap;
   }
-  
-  Future addReplyToFirestore(Map<String,dynamic> map) async {
-    try {
-      await FirebaseFirestore.instance.collection(replysKey).doc(map[replyIdKey]).set(map);
-    } catch(e) {
-      print(e.toString());
-    }
-  }
 
-  Future setPassiveUserDoc(Map<String,dynamic> currentSongMap) async {
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
+  Future<WhisperUser> setPassiveUserDoc(Post whisperPost) async {
     final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(whisperPost.uid).get();
-    return passiveUserDoc;
+    final WhisperUser passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
+    return passiveWhisperUser;
   }
 
   Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required MainModel mainModel, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {

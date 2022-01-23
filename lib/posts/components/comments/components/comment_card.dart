@@ -11,6 +11,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
 import 'package:whisper/posts/components/comments/components/show_replys_button.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -40,6 +42,7 @@ class CommentCard extends ConsumerWidget {
     final postFutures = watch(postsFeaturesProvider);
     final fontSize = 16.0;
     final whisperComment = fromMapToWhisperComment(commentMap: comment);
+    final Post whisperPost = fromMapToPost(postMap: currentSongMap);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
@@ -111,7 +114,7 @@ class CommentCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CommentLikeButton(commentsModel: commentsModel, comment: comment, mainModel: mainModel),
-                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,thisComment: comment, currentSongMap: currentSongMap)
+                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,thisComment: comment, whisperPost: whisperPost)
                       ],
                     )
                   ]

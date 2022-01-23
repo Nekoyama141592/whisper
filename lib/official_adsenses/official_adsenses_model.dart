@@ -12,6 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
+// domain
+import 'package:whisper/domain/official_adsense/official_adsense.dart';
 
 final officialAdsensesProvider = ChangeNotifierProvider(
   (ref) => OfficialAdsensesModel()
@@ -30,20 +33,21 @@ class OfficialAdsensesModel extends ChangeNotifier {
         qshot.docs.forEach((doc) { officialAdsenseDocs.add(doc); } );
       });
       if (officialAdsenseDocs.isNotEmpty) {
-        Timer.periodic(Duration(seconds: officialAdsenseDocs.first[intervalSecondsKey]), (_) async {
+        final OfficialAdsense first = fromMapToOfficialAdsense(officialAdsenseMap: officialAdsenseDocs.first.data()!);
+        Timer.periodic(Duration(seconds: first.intervalSeconds), (_) async {
           randIndex = rand.nextInt(officialAdsenseDocs.length);
-          final result = officialAdsenseDocs[randIndex];
-          showTopFlash(context: context, result: result, firstAdsense: officialAdsenseDocs.first,margin: EdgeInsets.all(8.0));
+          final OfficialAdsense result = fromMapToOfficialAdsense(officialAdsenseMap: officialAdsenseDocs[randIndex].data()!);
+          showTopFlash(context: context, result: result, firstAdsense: first,margin: EdgeInsets.all(8.0));
         });
       }
     }
   }
 
-  void showTopFlash({ required BuildContext context, required DocumentSnapshot<Map<String,dynamic>> result, required DocumentSnapshot<Map<String,dynamic>> firstAdsense,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
+  void showTopFlash({ required BuildContext context, required OfficialAdsense result, required OfficialAdsense firstAdsense,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
     showFlash(
       context: context, 
       persistent: persistent,
-      duration: Duration(seconds: firstAdsense[displaySecondsKey]),
+      duration: Duration(seconds: firstAdsense.displaySeconds),
       builder: (_, controller) {
         return Flash(
           controller: controller, 
@@ -57,7 +61,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
           forwardAnimationCurve: Curves.easeInCirc,
           reverseAnimationCurve: Curves.bounceIn,
           onTap: () async {
-            final String link = result[linkKey];
+            final String link = result.link;
             await controller.dismiss();
             await FlutterClipboard.copy(link).then((_) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リンクをコピーしました')));
@@ -73,13 +77,13 @@ class OfficialAdsensesModel extends ChangeNotifier {
             style: TextStyle(fontWeight: FontWeight.bold), 
             child: FlashBar(
               title: Text(
-                result[titleKey],
+                result.title,
                 style: TextStyle(
                   color: Theme.of(context).scaffoldBackgroundColor
                 ),
               ),
               content: Text(
-                result[subTitleKey],
+                result.subTitle,
                 style: TextStyle(
                   color: Theme.of(context).scaffoldBackgroundColor
                 ),

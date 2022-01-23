@@ -13,10 +13,12 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/nft_owner/nft_owner.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/official_adsense/official_adsense.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
@@ -134,6 +136,14 @@ ReplyNotification fromMapToReplyNotification({ required Map<String,dynamic> noti
 
 CommentNotification fromMapToCommentNotification({ required Map<String,dynamic> notificationmap }) {
   return CommentNotification.fromJson(notificationmap);
+}
+
+NFTOwner fromMapToNFTOwner({ required Map<String,dynamic> nftOwner }) {
+  return NFTOwner.fromJson(nftOwner);
+}
+
+OfficialAdsense fromMapToOfficialAdsense({ required Map<String,dynamic> officialAdsenseMap }) {
+  return OfficialAdsense.fromJson(officialAdsenseMap);
 }
 
 Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,required List<String> searchWords }) {

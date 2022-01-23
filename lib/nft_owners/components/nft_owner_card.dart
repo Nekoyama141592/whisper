@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:url_launcher/url_launcher.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
+// domain
+import 'package:whisper/domain/nft_owner/nft_owner.dart';
 
 class NFTownerCard extends StatelessWidget {
 
@@ -16,8 +18,7 @@ class NFTownerCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final int x = map[ethPriceKey];
-    final double doubleX = x.toDouble()/10000;
+    final NFTOwner nftOwner = fromMapToNFTOwner(nftOwner: map);
     
     return Card(
       child: Column(
@@ -34,7 +35,7 @@ class NFTownerCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    map[userNameKey],
+                    nftOwner.userName,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -43,19 +44,19 @@ class NFTownerCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'number' + map[numberKey].toString(),
+                        'number' + nftOwner.number.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 5.0),
                       Text(
-                        doubleX.toString() + "ETH",
+                        nftOwner.ethPrice.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 5.0),
                       InkWell(
                         child: Icon(Icons.link),
                         onTap: () async {
-                          final String link = map[linkKey];
+                          final String link = nftOwner.link;
                           if ( await canLaunch(link) ) {
                             await launch(link);
                           } else {
