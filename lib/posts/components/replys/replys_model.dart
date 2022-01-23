@@ -261,7 +261,7 @@ class ReplysModel extends ChangeNotifier {
         mutesUids.add(mutesIpv6AndUid[uidKey]);
       });
       if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s ,uid: currentWhisperUser.uid, ipv6: ipv6) ) {
-        await updateReplyNotificationsOfPassiveUser(elementId: elementId, passiveUserDoc: passiveUserDoc, mainModel: mainModel, thisComment: thisComment, newReplyMap: newReplyMap);
+        await makeReplyNotification(elementId: elementId, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, thisComment: thisComment, newReplyMap: newReplyMap);
       }
     }
   }
@@ -299,12 +299,11 @@ class ReplysModel extends ChangeNotifier {
     return passiveWhisperUser;
   }
 
-  Future updateReplyNotificationsOfPassiveUser({ required String elementId, required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required MainModel mainModel, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
+  Future makeReplyNotification({ required String elementId, required WhisperUser passiveWhisperUser, required MainModel mainModel, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
     final newWhisperReply = fromMapToWhisperReply(replyMap: newReplyMap);
-    final passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = whisperComment.comment;
     final ReplyNotification replyNotification = ReplyNotification(
