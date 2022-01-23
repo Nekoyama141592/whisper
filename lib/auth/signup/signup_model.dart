@@ -152,7 +152,6 @@ class SignupModel extends ChangeNotifier {
     final Map<String,dynamic> userMetaMap = UserMeta(
       authNotifications: [],
       birthDay: timestampBirthDay,
-      bookmarkLabels: [],
       bookmarks: [],
       createdAt: now,
       followingUids: [],
@@ -168,7 +167,6 @@ class SignupModel extends ChangeNotifier {
       searchHistory: [],
       uid: uid,
       updatedAt: now,
-      watchlists: []
     ).toJson();
     await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set(userMetaMap);
   }

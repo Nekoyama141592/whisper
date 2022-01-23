@@ -8,7 +8,6 @@ class UserMeta {
   UserMeta({
     required this.authNotifications,
     required this.birthDay,
-    required this.bookmarkLabels,
     required this.bookmarks,
     required this.createdAt,
     required this.followingUids,
@@ -24,11 +23,9 @@ class UserMeta {
     required this.searchHistory,
     required this.uid,
     required this.updatedAt,
-    required this.watchlists
   });
   final List<dynamic> authNotifications;
   final dynamic birthDay;
-  final List<dynamic> bookmarkLabels;
   final List<dynamic> bookmarks;
   final dynamic createdAt;
   final List<dynamic> followingUids;
@@ -44,7 +41,6 @@ class UserMeta {
   final List<dynamic> searchHistory;
   final String uid;
   final dynamic updatedAt;
-  final List<dynamic> watchlists;
 
   factory UserMeta.fromJson(Map<String,dynamic> json) => _$UserMetaFromJson(json);
 

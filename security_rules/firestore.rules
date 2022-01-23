@@ -179,6 +179,12 @@ service cloud.firestore {
         allow read: if isAuthenticated();
         allow create: if isAuthenticated();
       }
+      match /bookmarkLabels/{bookmarkLabelId} {
+        allow read, write: if isAuthenticated();
+      }
+      match /watchlists/{watchlistId} {
+        allow read, write: if isAuthenticated();
+      }
     }
     match /posts/{postId} {
       allow read: if isAuthenticated();

@@ -263,21 +263,21 @@ void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
 Future<void> play({ required BuildContext context ,required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId ,required OfficialAdsensesModel officialAdsensesModel })  async {
     audioPlayer.play();
      await officialAdsensesModel.onPlayButtonPressed(context);
-    if (!mainModel.readPostIds.contains(postId)) {
-      final map = {
-        createdAtKey: Timestamp.now(),
-        durationIntKey: 0,
-        postIdKey: postId,
-      };
+    // if (!mainModel.readPostIds.contains(postId)) {
+    //   final map = {
+    //     createdAtKey: Timestamp.now(),
+    //     durationIntKey: 0,
+    //     postIdKey: postId,
+    //   };
       
-      mainModel.readPosts.add(map);
-      await FirebaseFirestore.instance
-      .collection(usersKey)
-      .doc(mainModel.currentWhisperUser.uid)
-      .update({
-        readPostsKey: mainModel.readPosts,
-      });
-    }
+    //   mainModel.readPosts.add(map);
+    //   await FirebaseFirestore.instance
+    //   .collection(usersKey)
+    //   .doc(mainModel.currentWhisperUser.uid)
+    //   .update({
+    //     readPostsKey: mainModel.readPosts,
+    //   });
+    // }
   }
 
 void pause({ required AudioPlayer audioPlayer}) {
