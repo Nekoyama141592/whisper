@@ -27,7 +27,7 @@ class EditPostInfoScreen extends StatelessWidget {
     final length = size.width * 0.8;
     final postTitleController = TextEditingController(text: editPostInfoModel.postTitle);
     final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final String imageURL = whisperPost.imageURL;
+    final String imageURL = whisperPost.imageURLs.first;
     final String userImageURL = whisperPost.userImageURL;
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
 

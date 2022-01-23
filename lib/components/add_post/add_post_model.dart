@@ -221,7 +221,7 @@ class AddPostModel extends ChangeNotifier {
       description: '', 
       genre: '', 
       hashTags: [],
-      imageURL: imageURL, 
+      imageURLs: [imageURL], 
       impression: 0,
       ipv6: ipv6, 
       isDelete: false,

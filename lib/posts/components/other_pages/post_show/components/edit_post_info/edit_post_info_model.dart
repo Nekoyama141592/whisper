@@ -57,7 +57,7 @@ class EditPostInfoModel extends ChangeNotifier {
 
   Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context }) async {
     final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final String imageURL = croppedFile == null ? whisperPost.imageURL : await uploadImage(mainModel: mainModel);
+    final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel);
     try{
       await FirebaseFirestore.instance.collection(postsKey).doc(whisperPost.postId).update({
         'title': postTitle,

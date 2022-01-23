@@ -16,7 +16,7 @@ class Post{
     required this.description,
     required this.genre,
     required this.hashTags,
-    required this.imageURL,
+    required this.imageURLs,
     required this.impression,
     required this.ipv6,
     required this.isDelete,
@@ -53,7 +53,7 @@ class Post{
   final String description;
   final String genre;
   final List<dynamic> hashTags;
-  final String imageURL;
+  final List<dynamic> imageURLs;
   final int impression;
   final String ipv6;
   final bool isDelete;

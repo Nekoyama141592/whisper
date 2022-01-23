@@ -22,8 +22,8 @@ class SquarePostImage extends StatelessWidget {
       valueListenable: currentSongMapNotifier, 
       builder: (_, currentSongMap, __) {
         final whisperPost = fromMapToPost(postMap: currentSongMap);
-        final String imageURL = whisperPost.imageURL;
-        final String resultURL = imageURL.isNotEmpty ? whisperPost.imageURL : whisperPost.userImageURL;
+        final String imageURL = whisperPost.imageURLs.first;
+        final String resultURL = imageURL.isNotEmpty ? whisperPost.imageURLs.first : whisperPost.userImageURL;
         return Padding(
           padding: const EdgeInsets.only(
             bottom: 35.0
