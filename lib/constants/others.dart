@@ -161,7 +161,7 @@ WhisperLink fromMapToWhisperLink({ required Map<String,dynamic> whisperLink }) {
   return WhisperLink.fromJson(whisperLink);
 }
 
-BookmarkLabel fromMapToBookmarkLable({ required Map<String,dynamic> map }) {
+BookmarkLabel fromMapToBookmarkLabel({ required Map<String,dynamic> map }) {
   return BookmarkLabel.fromJson(map);
 }
 Bookmark fromMapToBookmark({ required Map<String,dynamic> map }) {

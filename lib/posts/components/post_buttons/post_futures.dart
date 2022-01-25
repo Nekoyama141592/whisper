@@ -53,7 +53,6 @@ class PostFutures extends ChangeNotifier{
   }
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
-    String bookmarkLabelId = '';
     final Widget content = SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
       width: 300.0,
@@ -62,9 +61,10 @@ class PostFutures extends ChangeNotifier{
         itemBuilder: (BuildContext context, int i) {
           final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
           return ListTile(
+            leading: mainModel.bookmarkLabelId == bookmarkLabel.bookmarkLabelId ? Icon(Icons.check) : SizedBox.shrink(),
             title: Text(bookmarkLabel.label),
             onTap: () {
-              bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
+              mainModel.bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
             },
           );
         }
@@ -82,7 +82,7 @@ class PostFutures extends ChangeNotifier{
         // backend
         final Timestamp now = Timestamp.now();
         await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: bookmarkLabelId);
+        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: mainModel.bookmarkLabelId);
       }, 
       child: Text('OK', style: textStyle(context: context), )
     );
@@ -99,7 +99,7 @@ class PostFutures extends ChangeNotifier{
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
-    final Map<String, dynamic> bookmarkMap = Bookmark(createdAt: now, postId: whisperPost.postId).toJson();
+    final Bookmark bookmarkMap = Bookmark(createdAt: now, postId: whisperPost.postId);
     final bookmarks = mainModel.bookmarks;
     bookmarks.add(bookmarkMap);
     mainModel.userMeta.bookmarks = bookmarks;
@@ -111,7 +111,6 @@ class PostFutures extends ChangeNotifier{
   }
 
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
-    String bookmarkLabelId = '';
     final Widget content = 
     SingleChildScrollView(
       child: ListView.builder(
@@ -119,9 +118,10 @@ class PostFutures extends ChangeNotifier{
         itemBuilder: (BuildContext context, int i) {
           final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
           return ListTile(
+            leading: mainModel.bookmarkLabelId == bookmarkLabel.bookmarkLabelId ? Icon(Icons.check) : SizedBox.shrink(),
             title: Text(bookmarkLabel.label),
             onTap: () {
-              bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
+              mainModel.bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
             },
           );
         }
@@ -138,7 +138,7 @@ class PostFutures extends ChangeNotifier{
           notifyListeners();
           // backend
           await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-          await removeBookmarksOfUser(whisperPost: whisperPost, mainModel: mainModel, bookmarkLabelId: bookmarkLabelId);
+          await removeBookmarksOfUser(whisperPost: whisperPost, mainModel: mainModel, bookmarkLabelId: mainModel.bookmarkLabelId);
         }, 
         child: Text('OK')
       );

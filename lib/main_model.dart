@@ -12,6 +12,8 @@ import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/bookmark/bookmark.dart';
+import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -33,7 +35,9 @@ class MainModel extends ChangeNotifier {
   List<dynamic> followingUids = [];
   List<dynamic> likeCommentIds = [];
   List<dynamic> likeComments = [];
-  List<dynamic> bookmarks = [];
+  // bookmark
+  List<Bookmark> bookmarks = [];
+  List<BookmarkLabel> bookmarkLabels = [];
   List<dynamic> likes = [];
   List<dynamic> readPosts = [];
   List<dynamic> readPostIds = [];
@@ -51,6 +55,8 @@ class MainModel extends ChangeNotifier {
   List<dynamic> blocksUids = [];
   List<dynamic> blocksIpv6s = [];
   List<dynamic> blocksIpv6AndUids = [];
+  // bookmarkLabel
+  String bookmarkLabelId = '';
 
   MainModel() {
     init();
@@ -60,6 +66,7 @@ class MainModel extends ChangeNotifier {
     startLoading();
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
+    await setBookmarkLabels();
     getReadNotificationIds();
     getLikePostIds();
     getLikesReplys();
@@ -89,27 +96,20 @@ class MainModel extends ChangeNotifier {
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
   }
 
+  Future<void> setBookmarkLabels() async {
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).collection(bookmarkLabelsString).get().then((qshot) {
+      bookmarkLabels = qshot.docs.map((doc) => fromMapToBookmarkLabel(map: doc.data()) ).toList();
+    });
+  }
+
   void getLikePostIds() {
-    try{
-      likes = userMeta.likes;
-      likes.forEach((like) {
-        likePostIds.add(like[likePostIdKey]);
-      });
-    } catch(e) {
-      print(e.toString());
-    }
+    likes = userMeta.likes;
+    likePostIds = likes.map((e) => e[likePostIdKey] as String).toList();
   }
 
   void getBookmarksPostIds() {
-    
-    try{
-      bookmarks = userMeta.bookmarks;
-      bookmarks.forEach((bookmark) {
-        bookmarksPostIds.add(bookmark[postIdKey]);
-      });
-    } catch(e) {
-      print(e.toString());
-    }
+    bookmarks = (userMeta.bookmarks).map((bookmark) => fromMapToBookmark(map: bookmark)).toList();
+    bookmarksPostIds = bookmarks.map((e) => e.postId ).toList();
   }
 
   void getFollowingUids() {
@@ -119,9 +119,7 @@ class MainModel extends ChangeNotifier {
 
   void getLikedCommentIds() {
     likeComments = userMeta.likeComments;
-    likeComments.forEach((likedComment) {
-      likeCommentIds.add(likedComment[commentIdKey]);
-    });
+    likeCommentIds = likeComments.map((e) => e[elementIdKey]).toList();
   }
   
   void getReadPost() {
@@ -143,9 +141,7 @@ class MainModel extends ChangeNotifier {
 
   void getLikesReplys() {
     likeReplys = userMeta.likeReplys;
-    likeReplys.forEach((likesReply) {
-      likeReplyIds.add(likesReply[likeReplyIdKey]);
-    });
+    likeReplyIds = likeReplys.map((likeReply) => likeReply[likeReplyIdKey]).toList();
   }
 
   Future<void> regetCurrentUserDoc() async {

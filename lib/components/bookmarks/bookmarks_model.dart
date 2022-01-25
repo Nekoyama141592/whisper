@@ -119,7 +119,7 @@ class BookmarksModel extends ChangeNotifier {
     // });
     await bookmarkLabelParentRef(uid: userMeta.uid).get().then((qshot) {
       final DocumentSnapshot<Map<String,dynamic>> first = qshot.docs.first;
-      final BookmarkLabel bookmarkLabel = fromMapToBookmarkLable(map: first.data()!);
+      final BookmarkLabel bookmarkLabel = fromMapToBookmarkLabel(map: first.data()!);
       final List<Bookmark> bookmarks = bookmarkLabel.bookmarks.map((bookmark) => fromMapToBookmark(map: bookmark as Map<String,dynamic> ) ).toList();
       bookmarks.sort((a,b) => (b.createdAt as Timestamp ).compareTo(a.createdAt as Timestamp ));
       bookmarksPostIds = bookmarks.map((bookmark) => bookmark.postId ).toList();
