@@ -235,7 +235,6 @@ class AddPostModel extends ChangeNotifier {
       noDisplayWords: currentWhiseprUser.noDisplayWords,
       noDisplayIpv6AndUids: currentWhiseprUser.blocksIpv6AndUids,
       negativeScore: 0,
-      otherLinks: [],
       playCount: 0,
       postId: postId, 
       positiveScore: 0,

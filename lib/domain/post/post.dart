@@ -30,7 +30,6 @@ class Post{
     required this.noDisplayWords,
     required this.noDisplayIpv6AndUids,
     required this.negativeScore,
-    required this.otherLinks,
     required this.playCount,
     required this.postId,
     required this.positiveScore,
@@ -69,7 +68,6 @@ class Post{
   List<dynamic> noDisplayWords;
   List<dynamic> noDisplayIpv6AndUids;
   int negativeScore;
-  List<dynamic> otherLinks;
   int playCount;
   String postId;
   double positiveScore;
