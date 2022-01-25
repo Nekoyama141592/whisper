@@ -99,13 +99,13 @@ class PostFutures extends ChangeNotifier{
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
-    final Bookmark bookmarkMap = Bookmark(createdAt: now, postId: whisperPost.postId);
+    final Bookmark bookmark = Bookmark(createdAt: now, postId: whisperPost.postId);
     final bookmarks = mainModel.bookmarks;
-    bookmarks.add(bookmarkMap);
+    bookmarks.add(bookmark);
     mainModel.userMeta.bookmarks = bookmarks;
     await FirebaseFirestore.instance.collection(userMetaKey).doc(mainModel.userMeta.uid).update(mainModel.userMeta.toJson());
     await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId ).update({
-      bookmarksKey: FieldValue.arrayUnion([bookmarkMap]),
+      bookmarksKey: FieldValue.arrayUnion([bookmark]),
       updatedAtKey: now,
     });
   }
