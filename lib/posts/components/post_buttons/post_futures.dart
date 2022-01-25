@@ -1,9 +1,11 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
@@ -12,6 +14,7 @@ import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/bookmark/bookmark.dart';
+import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -49,16 +52,42 @@ class PostFutures extends ChangeNotifier{
     });
   }
 
-  Future<void> bookmark({ required Post whisperPost, required MainModel mainModel }) async {
-    final postId = whisperPost.postId;
-    final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
-    // process UI
-    bookmarksPostIds.add(postId);
-    notifyListeners();
-    // backend
-    final Timestamp now = Timestamp.now();
-    await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-    await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now);
+  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
+    String bookmarkLabelId = '';
+    final Widget content = SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      width: 300.0,
+      child: ListView.builder(
+        itemCount: bookmarkLabels.length,
+        itemBuilder: (BuildContext context, int i) {
+          final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
+          return ListTile(
+            title: Text(bookmarkLabel.label),
+            onTap: () {
+              bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
+            },
+          );
+        }
+      ),
+    );
+  final positiveActionBuilder = (_, controller, __) {
+    return TextButton(
+      onPressed: () async {
+        final postId = whisperPost.postId;
+        final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
+        // process UI
+        bookmarksPostIds.add(postId);
+        notifyListeners();
+        (controller as FlashController ).dismiss();
+        // backend
+        final Timestamp now = Timestamp.now();
+        await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: bookmarkLabelId);
+      }, 
+      child: Text('OK', style: textStyle(context: context), )
+    );
+  };
+  voids.showFlashDialogue(context: context, content: content, positiveActionBuilder: positiveActionBuilder);
   }
 
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
@@ -70,26 +99,51 @@ class PostFutures extends ChangeNotifier{
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
-    final Map<String, dynamic> map = Bookmark(createdAt: now, postId: whisperPost.postId).toJson();
+    final Map<String, dynamic> bookmarkMap = Bookmark(createdAt: now, postId: whisperPost.postId).toJson();
     final bookmarks = mainModel.bookmarks;
-    bookmarks.add(map);
+    bookmarks.add(bookmarkMap);
     mainModel.userMeta.bookmarks = bookmarks;
     await FirebaseFirestore.instance.collection(userMetaKey).doc(mainModel.userMeta.uid).update(mainModel.userMeta.toJson());
     await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId ).update({
-      bookmarksKey: bookmarks,
+      bookmarksKey: FieldValue.arrayUnion([bookmarkMap]),
       updatedAtKey: now,
     });
   }
 
-  Future<void> unbookmark({ required Post whisperPost, required MainModel mainModel }) async {
-    final postId = whisperPost.postId;
-    final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
-    // process UI
-    bookmarksPostIds.remove(postId);
-    notifyListeners();
-    // backend
-    await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-    await removeBookmarksOfUser(whisperPost: whisperPost, mainModel: mainModel);
+  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
+    String bookmarkLabelId = '';
+    final Widget content = 
+    SingleChildScrollView(
+      child: ListView.builder(
+        itemCount: bookmarkLabels.length,
+        itemBuilder: (BuildContext context, int i) {
+          final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
+          return ListTile(
+            title: Text(bookmarkLabel.label),
+            onTap: () {
+              bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
+            },
+          );
+        }
+      )
+    );
+    final positiveActionBuilder = (context, controller, _) {
+      return TextButton(
+        onPressed: () async {
+          (controller as FlashController ).dismiss();
+          final postId = whisperPost.postId;
+          final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
+          // process UI
+          bookmarksPostIds.remove(postId);
+          notifyListeners();
+          // backend
+          await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+          await removeBookmarksOfUser(whisperPost: whisperPost, mainModel: mainModel, bookmarkLabelId: bookmarkLabelId);
+        }, 
+        child: Text('OK')
+      );
+    };
+    voids.showFlashDialogue(context: context, content: content, positiveActionBuilder: positiveActionBuilder);
   }
 
   Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
@@ -157,5 +211,4 @@ class PostFutures extends ChangeNotifier{
     notifyListeners();
     await prefs.setStringList(mutesCommentIdsKey, mutesCommentIds);
   }
-
 }

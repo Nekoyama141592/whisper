@@ -17,7 +17,7 @@ class BookmarkLabel {
   final dynamic createdAt;
   final String label;
   final String bookmarkLabelId;
-  final List<dynamic> bookmarks;
+  final dynamic bookmarks;
   final String uid;
   final dynamic updatedAt;
 

@@ -544,7 +544,7 @@ Future unfollow(
   .delete();
 }
 
-Future updateFollowingUidsOfCurrentUser(
+Future<void> updateFollowingUidsOfCurrentUser(
     List<dynamic> followingUids,
     WhisperUser currentWhisperUser,) async {
   await FirebaseFirestore.instance
@@ -554,3 +554,19 @@ Future updateFollowingUidsOfCurrentUser(
     followingUidsKey: followingUids,
   });
 }
+void showFlashDialogue({ required BuildContext context,required Widget content, required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder }) {
+    context.showFlashDialog(
+      persistent: true,
+      title: Text('Flash Dialog'),
+      content: content,
+      negativeActionBuilder: (context, controller, _) {
+        return TextButton(
+          onPressed: () {
+            controller.dismiss();
+          },
+          child: Text('NO',style: textStyle(context: context),),
+        );
+      },
+      positiveActionBuilder: positiveActionBuilder,
+    );
+  }

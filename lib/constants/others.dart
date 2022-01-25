@@ -181,3 +181,7 @@ Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,re
   });
   return query;
 }
+
+TextStyle textStyle({ required BuildContext context }) {
+  return TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: 16.0 );
+}

@@ -39,8 +39,8 @@ class PostButtons extends StatelessWidget {
       valueListenable: currentSongMapNotifier,
       builder: (_,currentSongMap,__) {
         final whisperPost = fromMapToPost(postMap: currentSongMapNotifier.value);
-        final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: whisperPost.links.first as Map<String,dynamic> );
-        final link = whisperLink.url;
+        final String link = whisperPost.links.isEmpty ? '' 
+        : fromMapToWhisperLink(whisperLink: whisperPost.links.first as Map<String,dynamic> ).url;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
