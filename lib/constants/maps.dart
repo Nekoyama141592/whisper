@@ -18,7 +18,7 @@ Map<String,dynamic> returnFirstBookmarkLabel({ required Timestamp now , required
     createdAt: now,
     label: unNamedString, 
     bookmarkLabelId: bookmarkLabelId,
-    postIds: [], 
+    bookmarks: [],
     uid: uid, 
     updatedAt: now,
   ).toJson();

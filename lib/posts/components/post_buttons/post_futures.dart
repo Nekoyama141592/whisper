@@ -11,6 +11,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/bookmark/bookmark.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -43,7 +44,7 @@ class PostFutures extends ChangeNotifier{
     };
     final List<dynamic> likes = mainModel.likes;
     likes.add(map);
-    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(mainModel.currentWhisperUser.uid).update({
       likesKey: likes,
     });
   }
@@ -55,8 +56,9 @@ class PostFutures extends ChangeNotifier{
     bookmarksPostIds.add(postId);
     notifyListeners();
     // backend
+    final Timestamp now = Timestamp.now();
     await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-    await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel);
+    await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now);
   }
 
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
@@ -67,15 +69,15 @@ class PostFutures extends ChangeNotifier{
   }
 
 
-  Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel }) async {
-    final Map<String, dynamic> map = {
-      postIdKey: whisperPost.postId,
-      createdAtKey: Timestamp.now(),
-    };
+  Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
+    final Map<String, dynamic> map = Bookmark(createdAt: now, postId: whisperPost.postId).toJson();
     final bookmarks = mainModel.bookmarks;
     bookmarks.add(map);
-    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
+    mainModel.userMeta.bookmarks = bookmarks;
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(mainModel.userMeta.uid).update(mainModel.userMeta.toJson());
+    await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId ).update({
       bookmarksKey: bookmarks,
+      updatedAtKey: now,
     });
   }
 
@@ -94,11 +96,17 @@ class PostFutures extends ChangeNotifier{
     await bookmarkChildRef(postId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
-  Future<void> removeBookmarksOfUser({ required Post whisperPost, required MainModel mainModel }) async {
+  Future<void> removeBookmarksOfUser({ required Post whisperPost, required MainModel mainModel , required String bookmarkLabelId }) async {
     final List<dynamic> bookmarks = mainModel.bookmarks;
     bookmarks.removeWhere((bookmark) => bookmark[postIdKey] == whisperPost.postId);
-    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(mainModel.userMeta.uid).update({
       bookmarksKey: bookmarks,
+    });
+    await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId).update({
+      bookmarksKey: FieldValue.arrayRemove(bookmarks.where((element) {
+        final Bookmark bookmark = fromMapToBookmark(map: element as Map<String,dynamic>);
+        return bookmark.postId == whisperPost.postId;
+      }).toList())
     });
   }
 
@@ -119,7 +127,7 @@ class PostFutures extends ChangeNotifier{
   Future<void> removeLikeOfUser({ required Post whisperPost, required MainModel mainModel}) async {
     final List<dynamic> likes = mainModel.likes;
     likes.removeWhere((like) => like[likePostIdKey] == whisperPost.postId);
-    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
+    await FirebaseFirestore.instance.collection(userMetaKey).doc(mainModel.currentWhisperUser.uid).update({
       likesKey: likes,
     });
   }

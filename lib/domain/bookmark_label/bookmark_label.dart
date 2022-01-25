@@ -9,7 +9,7 @@ class BookmarkLabel {
     required this.createdAt,
     required this.label,
     required this.bookmarkLabelId,
-    required this.postIds,
+    required this.bookmarks,
     required this.uid,
     required this.updatedAt
   });
@@ -17,7 +17,7 @@ class BookmarkLabel {
   final dynamic createdAt;
   final String label;
   final String bookmarkLabelId;
-  final List<dynamic> postIds;
+  final List<dynamic> bookmarks;
   final String uid;
   final dynamic updatedAt;
 

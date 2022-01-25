@@ -14,9 +14,10 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // domain
+import 'package:whisper/domain/bookmark/bookmark.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -31,8 +32,8 @@ class BookmarksModel extends ChangeNotifier {
   bool isLoading = false;
   late UserMeta userMeta;
   // late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
-  Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarkedPostIds}) {
-    final x = postColRef.where(postIdKey, whereIn: bookmarkedPostIds).limit(oneTimeReadCount);
+  Query<Map<String, dynamic>> getQuery({ required List<dynamic> bookmarksPostIds}) {
+    final x = postColRef.where(postIdKey, whereIn: bookmarksPostIds).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -47,7 +48,7 @@ class BookmarksModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<String> bookmarkedPostIds = [];
+  List<String> bookmarksPostIds = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -65,8 +66,8 @@ class BookmarksModel extends ChangeNotifier {
     startLoading();
     audioPlayer = AudioPlayer();
     await setCurrentUserDoc();
-    setBookmarkedPostIds();
-    await getBookmarks(bookmarkedPostIds);
+    await setBookmarksPostIds();
+    await getBookmarks(bookmarksPostIds);
     prefs = await SharedPreferences.getInstance();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -88,19 +89,19 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> onRefresh() async {
-    await getNewBookmarks(bookmarkedPostIds);
+    await getNewBookmarks(bookmarksPostIds);
     refreshController.refreshCompleted();
     notifyListeners();
   }
 
   Future<void> onReload() async {
     startLoading();
-    await getBookmarks(bookmarkedPostIds);
+    await getBookmarks(bookmarksPostIds);
     endLoading();
   }
 
   Future<void> onLoading() async {
-    await getOldBookmarks(bookmarkedPostIds);
+    await getOldBookmarks(bookmarksPostIds);
     refreshController.loadComplete();
     notifyListeners();
   }
@@ -110,33 +111,40 @@ class BookmarksModel extends ChangeNotifier {
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
   }
 
-  void setBookmarkedPostIds() {
-    List maps = userMeta.bookmarks;
-    maps.sort((a,b) => b[createdAtKey].compareTo(a[createdAtKey]));
-    maps.forEach((map) {
-      bookmarkedPostIds.add(map[postIdKey]);
+  Future<void> setBookmarksPostIds() async {
+    // List<Bookmark> maps = userMeta.bookmarks.map((bookmark) => fromMapToBookmark(map: bookmark) ).toList();
+    // maps.sort((a,b) => (b.createdAt as Timestamp ).compareTo(a.createdAt));
+    // maps.forEach((map) {
+    //   bookmarksPostIds.add(map.postId);
+    // });
+    await bookmarkLabelParentRef(uid: userMeta.uid).get().then((qshot) {
+      final DocumentSnapshot<Map<String,dynamic>> first = qshot.docs.first;
+      final BookmarkLabel bookmarkLabel = fromMapToBookmarkLable(map: first.data()!);
+      final List<Bookmark> bookmarks = bookmarkLabel.bookmarks.map((bookmark) => fromMapToBookmark(map: bookmark as Map<String,dynamic> ) ).toList();
+      bookmarks.sort((a,b) => (b.createdAt as Timestamp ).compareTo(a.createdAt as Timestamp ));
+      bookmarksPostIds = bookmarks.map((bookmark) => bookmark.postId ).toList();
     });
     notifyListeners();
   }
 
-  Future<void> getNewBookmarks(List<dynamic> bookmarkedPostIds) async {
-    if (bookmarkedPostIds.isNotEmpty) {
-      await voids.processNewPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+  Future<void> getNewBookmarks(List<dynamic> bookmarksPostIds) async {
+    if (bookmarksPostIds.isNotEmpty) {
+      await voids.processNewPosts(query: getQuery(bookmarksPostIds: bookmarksPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     }
   }
 
-  Future<void> getBookmarks (List<dynamic> bookmarkedPostIds) async {
+  Future<void> getBookmarks (List<dynamic> bookmarksPostIds) async {
     try{
-      if (bookmarkedPostIds.isNotEmpty) {
-        await voids.processBasicPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      if (bookmarksPostIds.isNotEmpty) {
+        await voids.processBasicPosts(query: getQuery(bookmarksPostIds: bookmarksPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       }
     } catch(e) { print(e.toString()); }
   }
 
-  Future<void> getOldBookmarks(List<dynamic> bookmarkedPostIds) async {
+  Future<void> getOldBookmarks(List<dynamic> bookmarksPostIds) async {
     try {
-      if (bookmarkedPostIds.isEmpty) {
-        await voids.processOldPosts(query: getQuery(bookmarkedPostIds: bookmarkedPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      if (bookmarksPostIds.isEmpty) {
+        await voids.processOldPosts(query: getQuery(bookmarksPostIds: bookmarksPostIds), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
       }
     } catch(e) { print(e.toString()); }
   }

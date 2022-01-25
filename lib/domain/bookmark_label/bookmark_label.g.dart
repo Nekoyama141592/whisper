@@ -11,7 +11,7 @@ BookmarkLabel _$BookmarkLabelFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'],
       label: json['label'] as String,
       bookmarkLabelId: json['bookmarkLabelId'] as String,
-      postIds: json['postIds'] as List<dynamic>,
+      bookmarks: json['bookmarks'] as List<dynamic>,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
     );
@@ -21,7 +21,7 @@ Map<String, dynamic> _$BookmarkLabelToJson(BookmarkLabel instance) =>
       'createdAt': instance.createdAt,
       'label': instance.label,
       'bookmarkLabelId': instance.bookmarkLabelId,
-      'postIds': instance.postIds,
+      'bookmarks': instance.bookmarks,
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
     };

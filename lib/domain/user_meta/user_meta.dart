@@ -24,23 +24,23 @@ class UserMeta {
     required this.uid,
     required this.updatedAt,
   });
-  final List<dynamic> authNotifications;
-  final dynamic birthDay;
-  final List<dynamic> bookmarks;
-  final dynamic createdAt;
-  final List<dynamic> followingUids;
-  final String gender;
-  final bool isAdmin;
-  final bool isDelete;
-  final List<dynamic> likeComments;
-  final List<dynamic> likeReplys;
-  final List<dynamic> likes;
-  final String language;
-  final List<dynamic> readNotifications;
-  final List<dynamic> readPosts;
-  final List<dynamic> searchHistory;
-  final String uid;
-  final dynamic updatedAt;
+  List<dynamic> authNotifications;
+  dynamic birthDay;
+  List<dynamic> bookmarks;
+  dynamic createdAt;
+  List<dynamic> followingUids;
+  String gender;
+  bool isAdmin;
+  bool isDelete;
+  List<dynamic> likeComments;
+  List<dynamic> likeReplys;
+  List<dynamic> likes;
+  String language;
+  List<dynamic> readNotifications;
+  List<dynamic> readPosts;
+  List<dynamic> searchHistory;
+  String uid;
+  dynamic updatedAt;
 
   factory UserMeta.fromJson(Map<String,dynamic> json) => _$UserMetaFromJson(json);
 
