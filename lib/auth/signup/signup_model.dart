@@ -149,6 +149,7 @@ class SignupModel extends ChangeNotifier {
   Future<void> createUserMeta({ required String uid }) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
     final Timestamp now = Timestamp.now();
+    final String bookmarkLabelId = returnBookmarkLabelId(now: now.toDate());
     final Map<String,dynamic> userMetaMap = UserMeta(
       authNotifications: [],
       birthDay: timestampBirthDay,
@@ -169,6 +170,9 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
     ).toJson();
     await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set(userMetaMap);
+    await others.bookmarkLabelRef(uid: uid, bookmarkLabelId: bookmarkLabelId).set(
+      returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId)
+    );
   }
 
   void showCupertinoDatePicker(BuildContext context) {

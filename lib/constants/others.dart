@@ -106,6 +106,10 @@ DocumentReference<Map<String, dynamic>> replyNotificationRef({ required String p
   return FirebaseFirestore.instance.collection(userMetaKey).doc(passiveUid).collection(replyNotificationsKey).doc(notificationId);
 }
 
+DocumentReference<Map<String, dynamic>> bookmarkLabelRef({ required String uid, required String bookmarkLabelId }) {
+  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(bookmarkLabelsString).doc(bookmarkLabelId);
+}
+
 CollectionReference<Map<String, dynamic>>  commentNotificationsParentRef({ required String uid }) {
   return FirebaseFirestore.instance.collection(usersKey).doc(uid).collection(commentNotificationsKey);
 }

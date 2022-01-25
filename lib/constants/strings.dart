@@ -5,6 +5,9 @@ const String recommendableString = 'recommendable';
 final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
 final String storageUserImageName = 'userImage' + microSecondsString + imageExtension;
 final String postImageName = 'postImage' + microSecondsString + imageExtension;
+String returnBookmarkLabelId({ required DateTime now }) {
+  return  bookmarkLabelString + now.microsecondsSinceEpoch.toString();
+}
 // keys
 const String accountNameKey = 'accountName';
 const String audioURLKey = 'audioURL';
@@ -96,3 +99,7 @@ const String userMetaKey = 'userMeta';
 const String userNameKey = 'userName';
 const String usersKey = 'users';
 const String walletAddressKey = 'walletAddress';
+// strings
+const String bookmarkLabelString = 'bookmarkLabel';
+const String bookmarkLabelsString = 'bookmarkLabels';
+const String unNamedString = 'unNamed';

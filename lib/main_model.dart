@@ -151,7 +151,7 @@ class MainModel extends ChangeNotifier {
   Future<void> regetCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
     final currentUserDoc =  await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    userMeta = fromMapToUserMeta(userMetaMap: currentUserDoc.data()!);
+    currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
     notifyListeners();
   }
 
