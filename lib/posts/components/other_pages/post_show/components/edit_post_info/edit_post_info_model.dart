@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/main_model.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 final editPostInfoProvider = ChangeNotifierProvider(
   (ref) => EditPostInfoModel()
@@ -56,14 +58,13 @@ class EditPostInfoModel extends ChangeNotifier {
   }
 
   Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context }) async {
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final Post whisperPost = fromMapToPost(postMap: currentSongMap);
     final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel);
     try{
-      await FirebaseFirestore.instance.collection(postsKey).doc(whisperPost.postId).update({
-        'title': postTitle,
-        'imageURL': imageURL,
-        'updatedAt': Timestamp.now(),
-      });
+      whisperPost.title = postTitle;
+      whisperPost.imageURLs = [imageURL];
+      whisperPost.updatedAt = Timestamp.now();
+      await FirebaseFirestore.instance.collection(postsKey).doc(whisperPost.postId).update(whisperPost.toJson());
       isEditing = false;
       notifyListeners();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('データが更新されました！表示に反映されなければ、タブをきってください')));

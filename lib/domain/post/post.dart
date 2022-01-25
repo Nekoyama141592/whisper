@@ -26,7 +26,7 @@ class Post{
     required this.isPinned,
     required this.likes,
     required this.likeCount,
-    required this.link,
+    required this.links,
     required this.noDisplayWords,
     required this.noDisplayIpv6AndUids,
     required this.negativeScore,
@@ -45,44 +45,44 @@ class Post{
     required this.userImageURL,
     required this.userName
   });
-  final String accountName;
-  final String audioURL;
-  final List<dynamic> bookmarks;
-  final int bookmarkCount;
-  final int commentCount;
-  final String commentsState;
-  final String country;
-  final dynamic createdAt;
-  final String description;
-  final String genre;
-  final List<dynamic> hashTags;
-  final List<dynamic> imageURLs;
-  final int impression;
-  final String ipv6;
-  final bool isDelete;
-  final bool isNFTicon;
-  final bool isOfficial;
-  final bool isPinned;
-  final List<dynamic> likes;
-  final int likeCount;
-  final String link;
-  final List<dynamic> noDisplayWords;
-  final List<dynamic> noDisplayIpv6AndUids;
-  final int negativeScore;
-  final List<dynamic> otherLinks;
-  final int playCount;
-  final String postId;
-  final double positiveScore;
-  final double score;
-  final String storageImageName;
-  final String storagePostName;
-  final List<dynamic> tagUids;
-  final Map<String,dynamic> tokenToSearch;
-  final String title;
-  final String uid;
-  final dynamic updatedAt;
-  final String userImageURL;
-  final String userName;
+  String accountName;
+  String audioURL;
+  List<dynamic> bookmarks;
+  int bookmarkCount;
+  int commentCount;
+  String commentsState;
+  String country;
+  dynamic createdAt;
+  String description;
+  String genre;
+  List<dynamic> hashTags;
+  List<dynamic> imageURLs;
+  int impression;
+  String ipv6;
+  bool isDelete;
+  bool isNFTicon;
+  bool isOfficial;
+  bool isPinned;
+  List<dynamic> likes;
+  int likeCount;
+  List<dynamic> links;
+  List<dynamic> noDisplayWords;
+  List<dynamic> noDisplayIpv6AndUids;
+  int negativeScore;
+  List<dynamic> otherLinks;
+  int playCount;
+  String postId;
+  double positiveScore;
+  double score;
+  String storageImageName;
+  String storagePostName;
+  List<dynamic> tagUids;
+  Map<String,dynamic> tokenToSearch;
+  String title;
+  String uid;
+  dynamic updatedAt;
+  String userImageURL;
+  String userName;
   
   factory Post.fromJson(Map<String,dynamic> json) => _$PostFromJson(json);
 
