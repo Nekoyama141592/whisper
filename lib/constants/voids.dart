@@ -262,22 +262,7 @@ void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
 
 Future<void> play({ required BuildContext context ,required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId ,required OfficialAdsensesModel officialAdsensesModel })  async {
     audioPlayer.play();
-     await officialAdsensesModel.onPlayButtonPressed(context);
-    // if (!mainModel.readPostIds.contains(postId)) {
-    //   final map = {
-    //     createdAtKey: Timestamp.now(),
-    //     durationIntKey: 0,
-    //     postIdKey: postId,
-    //   };
-      
-    //   mainModel.readPosts.add(map);
-    //   await FirebaseFirestore.instance
-    //   .collection(usersKey)
-    //   .doc(mainModel.currentWhisperUser.uid)
-    //   .update({
-    //     readPostsKey: mainModel.readPosts,
-    //   });
-    // }
+    await officialAdsensesModel.onPlayButtonPressed(context);
   }
 
 void pause({ required AudioPlayer audioPlayer}) {
@@ -468,7 +453,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   return getDownloadURL;
 }
 
-Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required String link, required MainModel mainModel, required File? croppedFile}) async {
+Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required List<dynamic> links, required MainModel mainModel, required File? croppedFile}) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
@@ -479,14 +464,16 @@ Future updateUserInfo({ required BuildContext context ,required String userName,
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
   } else {
     try {
-      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update({
-        descriptionKey: description,
-        imageURLKey: downloadURL,
-        linkKey: link,
-        storageImageNameKey: storageImageName,
-        updatedAtKey: Timestamp.now(),
-        userNameKey: userName,
-      });
+      WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
+      currentWhisperUser.description = description;
+      currentWhisperUser.imageURL = downloadURL;
+      currentWhisperUser.links = links;
+      currentWhisperUser.storageImageName = storageImageName;
+      currentWhisperUser.updatedAt = Timestamp.now();
+      currentWhisperUser.userName = userName;
+      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update(
+        currentWhisperUser.toJson()
+      );
       mainModel.reload();
     } catch(e) { print(e.toString()); }
   }

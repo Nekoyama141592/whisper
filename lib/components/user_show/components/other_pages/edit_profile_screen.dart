@@ -21,7 +21,6 @@ class EditProfileScreen extends ConsumerWidget {
     required this.showImagePicker,
     required this.onUserNameChanged,
     required this.onDescriptionChanged,
-    required this.onLinkChanged,
     required this.croppedFile,
     required this.isLoading,
     required this.isCropped,
@@ -33,7 +32,6 @@ class EditProfileScreen extends ConsumerWidget {
   final void Function()? showImagePicker;
   final void Function(String)? onUserNameChanged;
   final void Function(String)? onDescriptionChanged;
-  final void Function(String)? onLinkChanged;
   final File? croppedFile;
   final bool isLoading;
   final bool isCropped;
@@ -48,7 +46,6 @@ class EditProfileScreen extends ConsumerWidget {
     final descriptionController = TextEditingController(
       text: mainModel.currentWhisperUser.description
     );
-    final linkController = TextEditingController(text: mainModel.currentWhisperUser.link);
 
     final textStyle = TextStyle(
       fontWeight: FontWeight.bold,
@@ -106,16 +103,6 @@ class EditProfileScreen extends ConsumerWidget {
               maxLines: 10,
               controller: descriptionController,
               onChanged: onDescriptionChanged,
-              style: textStyle
-            ),
-            Text('リンク',style: textStyle,),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                hintText: 'https://'
-              ),
-              controller: linkController,
-              onChanged: onLinkChanged,
               style: textStyle
             ),
           ],

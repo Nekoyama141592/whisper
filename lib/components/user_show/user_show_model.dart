@@ -59,7 +59,6 @@ class UserShowModel extends ChangeNotifier {
   bool isEditing = false;
   String userName = '';
   String description = '';
-  String link = '';
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -160,17 +159,16 @@ class UserShowModel extends ChangeNotifier {
   }
 
   void onEditButtonPressed({ required MainModel mainModel}) {
-    final currentWhisperUser = mainModel.currentWhisperUser;
+    final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     userName = currentWhisperUser.userName;
     description = currentWhisperUser.description;
-    link = currentWhisperUser.link;
     isEditing = true;
     notifyListeners();
   }
 
   Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel}) async {
     startLoading();
-    await voids.updateUserInfo(context: context, userName: userName, description: description, link: link, mainModel: mainModel, croppedFile: croppedFile);
+    await voids.updateUserInfo(context: context, userName: userName, description: description, links: mainModel.currentWhisperUser.links, mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
     await mainModel.regetCurrentUserDoc();
     endLoading();

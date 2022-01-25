@@ -18,6 +18,7 @@ import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/official_adsense/official_adsense.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
@@ -148,6 +149,10 @@ NFTOwner fromMapToNFTOwner({ required Map<String,dynamic> nftOwner }) {
 
 OfficialAdsense fromMapToOfficialAdsense({ required Map<String,dynamic> officialAdsenseMap }) {
   return OfficialAdsense.fromJson(officialAdsenseMap);
+}
+
+WhisperLink fromMapToWhisperLink({ required Map<String,dynamic> whisperLink }) {
+  return WhisperLink.fromJson(whisperLink);
 }
 
 Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,required List<String> searchWords }) {

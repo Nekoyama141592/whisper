@@ -18,10 +18,9 @@ class WhisperUser {
     required this.isKeyAccount,
     required this.isNFTicon,
     required this.isOfficial,
-    required this.link,
     required this.mutesIpv6AndUids,
     required this.noDisplayWords,
-    required this.otherLinks,
+    required this.links,
     required this.recommendState,
     required this.score,
     required this.storageImageName,
@@ -31,30 +30,29 @@ class WhisperUser {
     required this.updatedAt,
     required this.walletAddress
   });
-  final String accountName;
-  final List<dynamic> blocksIpv6AndUids;
-  final dynamic createdAt;
-  final String description;
-  final String dmState;
-  final int followerCount;
-  final String imageURL;
-  final bool isBanned;
-  final bool isDelete;
-  final bool isKeyAccount;
-  final bool isNFTicon;
-  final bool isOfficial;
-  final String link;
-  final List<dynamic> mutesIpv6AndUids;
-  final List<dynamic> noDisplayWords;
-  final List<dynamic> otherLinks;
-  final String recommendState;
-  final double score;
-  final String storageImageName;
-  final Map<String,dynamic> tokenToSearch;
-  final String userName;
-  final String uid;
-  final dynamic updatedAt;
-  final String walletAddress;
+  String accountName;
+  List<dynamic> blocksIpv6AndUids;
+  dynamic createdAt;
+  String description;
+  String dmState;
+  int followerCount;
+  String imageURL;
+  bool isBanned;
+  bool isDelete;
+  bool isKeyAccount;
+  bool isNFTicon;
+  bool isOfficial;
+  List<dynamic> mutesIpv6AndUids;
+  List<dynamic> noDisplayWords;
+  List<dynamic> links;
+  String recommendState;
+  double score;
+  String storageImageName;
+  Map<String,dynamic> tokenToSearch;
+  String userName;
+  String uid;
+  dynamic updatedAt;
+  String walletAddress;
 
   factory WhisperUser.fromJson(Map<String,dynamic> json) => _$WhisperUserFromJson(json);
 

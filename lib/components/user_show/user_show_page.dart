@@ -64,9 +64,6 @@ class UserShowPage extends ConsumerWidget {
             onDescriptionChanged: (text) {
               userShowModel.description = text;
             },
-            onLinkChanged: (text) {
-              userShowModel.link = text;
-            },
             croppedFile: userShowModel.croppedFile,
             isLoading: userShowModel.isLoading,
             isCropped: userShowModel.isCropped,

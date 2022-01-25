@@ -40,9 +40,6 @@ class MyProfilePage extends ConsumerWidget {
         onDescriptionChanged: (text) {
           myProfileModel.description = text;
         }, 
-        onLinkChanged: (text) {
-          myProfileModel.link = text;
-        }, 
         croppedFile: myProfileModel.croppedFile,
         isLoading: myProfileModel.isLoading,
         isCropped: myProfileModel.isCropped,
