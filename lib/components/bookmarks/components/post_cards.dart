@@ -28,7 +28,6 @@ class PostCards extends StatelessWidget {
     required this.play,
     required this.pause,
     required this.refreshController,
-    required this.onRefresh,
     required this.onLoading,
     required this.isFirstSongNotifier,
     required this.onPreviousSongButtonPressed,
@@ -49,7 +48,6 @@ class PostCards extends StatelessWidget {
   final void Function()? pause;
   // refresh
   final RefreshController refreshController;
-  final void Function()? onRefresh;
   final void Function()? onLoading;
   final ValueNotifier<bool> isFirstSongNotifier;
   final void Function()? onPreviousSongButtonPressed;
@@ -65,10 +63,10 @@ class PostCards extends StatelessWidget {
         Expanded(
           child: SmartRefresher(
             enablePullDown: true,
-            enablePullUp: true,
+            // enablePullUp: true,
             header: WaterDropHeader(),
             controller: refreshController,
-            onRefresh: onRefresh,
+            // onRefresh: onRefresh,
             onLoading: onLoading,
             child: ListView.builder(
               itemCount: postDocs.length,

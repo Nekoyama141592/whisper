@@ -70,8 +70,8 @@ class Post{
   int negativeScore;
   int playCount;
   String postId;
-  double positiveScore;
-  double score;
+  num positiveScore;
+  num score;
   String storageImageName;
   String storagePostName;
   List<dynamic> tagUids;

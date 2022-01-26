@@ -39,7 +39,7 @@ class ReplyNotification {
   final String passiveUid;
   final String postId;
   final String reply;
-  final double replyScore;
+  final num replyScore;
   final String replyId;
   final String uid;
   final dynamic updatedAt;

@@ -17,6 +17,10 @@ class LinksPage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final LinksModel linksModel = watch(linksProvider);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
@@ -26,12 +30,14 @@ class LinksPage extends ConsumerWidget {
             final TextEditingController textEditingController = linksModel.controllers[i];
             return TextFormField(
               decoration: InputDecoration(
-                hintText: whisperLink.label
+                hintText: whisperLink.label,
+                suffixIcon: Icon(Icons.delete)
               ),
               onChanged: (text) {
                 linksModel.whisperLinks[i].label = text;
                 print(linksModel.whisperLinks[i].label);
               },
+              
               controller: textEditingController,
             );
           }

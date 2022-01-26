@@ -46,7 +46,7 @@ class WhisperUser {
   List<dynamic> noDisplayWords;
   List<dynamic> links;
   String recommendState;
-  double score;
+  num score;
   String storageImageName;
   Map<String,dynamic> tokenToSearch;
   String userName;

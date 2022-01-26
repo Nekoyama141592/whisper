@@ -102,7 +102,6 @@ class PostScreen extends ConsumerWidget {
           voids.pause(audioPlayer: bookmarksModel.audioPlayer);
         }, 
         refreshController: bookmarksModel.refreshController,
-        onRefresh: () async { await bookmarksModel.onRefresh(); },
         onLoading: () async { await bookmarksModel.onLoading(); },
         isFirstSongNotifier: bookmarksModel.isFirstSongNotifier,
         onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },

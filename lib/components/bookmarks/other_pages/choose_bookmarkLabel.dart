@@ -1,7 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// components
-import 'package:whisper/details/loading.dart';
 // domain
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // model
@@ -12,13 +10,12 @@ class ChooseBookmarkLabelPage extends StatelessWidget {
   const ChooseBookmarkLabelPage({
     Key? key,
     required this.mainModel,
-    required this.bookmarkLabels
   }) : super(key: key);
   
   final MainModel mainModel;
-  final List<BookmarkLabel> bookmarkLabels;
   @override 
   Widget build(BuildContext context) {
+    final bookmarkLabels = mainModel.bookmarkLabels;
     return Scaffold(
       body: ListView.builder(
         itemCount: bookmarkLabels.length,

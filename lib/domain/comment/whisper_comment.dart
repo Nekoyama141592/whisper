@@ -37,12 +37,12 @@ class WhisperComment {
   final bool isNFTicon;
   final bool isOfficial;
   final int likeCount;
-  final double negativeScore;
+  final num negativeScore;
   final String passiveUid;
-  final double positiveScore;
+  final num positiveScore;
   final String postId;
   final int replyCount;
-  final double score;
+  final num score;
   final String uid;
   final dynamic updatedAt;
   final String userName;

@@ -27,7 +27,7 @@ class CommentNotification {
   final String accountName;
   final String comment;
   final String commentId;
-  final double commentScore;
+  final num commentScore;
   final dynamic createdAt;
   final int followerCount;
   final bool isDelete;

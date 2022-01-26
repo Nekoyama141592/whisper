@@ -38,13 +38,13 @@ class WhisperReply {
   final bool isNFTicon;
   final bool isOfficial;
   final int likeCount;
-  final double negativeScore;
+  final num negativeScore;
   final String passiveUid;
   final String postId;
-  final double positiveScore;
+  final num positiveScore;
   final String reply;
   final String replyId;
-  final double score;
+  final num score;
   final String uid;
   final dynamic updatedAt;
   final String userName;
