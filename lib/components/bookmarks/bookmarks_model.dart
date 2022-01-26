@@ -43,7 +43,7 @@ class BookmarksModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  int lastIndex = 0;
+  int startIndex = 0;
   List<String> bookmarksPostIds = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
@@ -58,7 +58,7 @@ class BookmarksModel extends ChangeNotifier {
     startLoading();
     audioPlayer = AudioPlayer();
     await setBookmarksPostIds(userMeta: mainModel.userMeta);
-    await getBookmarks(bookmarksPostIds: mainModel.bookmarksPostIds);
+    await getBookmarks();
     prefs = mainModel.prefs;
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -87,7 +87,7 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> onReload() async {
     startLoading();
-    await getBookmarks(bookmarksPostIds: bookmarksPostIds);
+    await getBookmarks();
     endLoading();
   }
 
@@ -113,30 +113,18 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getBookmarks({ required List<String> bookmarksPostIds}) async {
+  Future<void> getBookmarks() async {
     if (bookmarksPostIds.isNotEmpty) { await processBookmark(); }
   }
 
   Future<void> processBookmark() async {
-    List<String> max30 = bookmarksPostIds.length > (lastIndex + oneTimeReadCount) ? bookmarksPostIds.sublist(0,(oneTimeReadCount - 1)) : bookmarksPostIds.sublist( 0,bookmarksPostIds.indexOf(bookmarksPostIds.last) );
-    List<String> max10 = [];
+    List<String> max10 = bookmarksPostIds.length > (startIndex + tenCount) ? bookmarksPostIds.sublist(0,tenCount) : bookmarksPostIds.sublist( 0,bookmarksPostIds.length );
     List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
-    max30.forEach((element) async {
-      max10.add(element);
-      if (max10.length == 10) {
-        await FirebaseFirestore.instance.collection(postsKey).where(postIdKey,whereIn: max10).get().then((qshot) {
-          qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
-        });
-        max10 = [];
-      }
-      if (max10.isNotEmpty) {
-        await FirebaseFirestore.instance.collection(postsKey).where(postIdKey,whereIn: max10).get().then((qshot) {
-          qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
-        });
-      }
+    await FirebaseFirestore.instance.collection(postsKey).where(postIdKey,whereIn: max10).get().then((qshot) {
+      qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
     });
     voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-    lastIndex += max30.indexOf(bookmarksPostIds.last);
+    startIndex = posts.length;
   }
 
   // Future<void> getNewBookmarks({ required List<String> bookmarksPostIds}) async {
@@ -145,7 +133,7 @@ class BookmarksModel extends ChangeNotifier {
 
 
   Future<void> getOldBookmarks({ required List<String> bookmarksPostIds}) async {
-    if (bookmarksPostIds.length > (lastIndex + oneTimeReadCount)) {
+    if (bookmarksPostIds.length > (startIndex + oneTimeReadCount)) {
       await processBookmark();
     }
   }
