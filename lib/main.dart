@@ -22,6 +22,7 @@ import 'package:whisper/components/add_post/other_pages/which_type.dart';
 import 'package:whisper/components/my_profile/my_profile_page.dart';
 // models
 import 'package:whisper/main_model.dart';
+import 'package:whisper/links/links_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 
 
@@ -67,6 +68,7 @@ class MyHomePage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, ScopedReader watch) {
     final mainModel = watch(mainProvider);
+    final linksModel = watch(linksProvider);
     final whisperBottomNavigationbarModel = watch(whisperBottomNavigationbarProvider);
 
     return Scaffold(
@@ -80,10 +82,12 @@ class MyHomePage extends ConsumerWidget {
         children: [
           Home(
             mainModel: mainModel, 
-            themeModel: themeModel, 
+            linksModel: linksModel,
+            themeModel: themeModel,
           ),
           SearchPage(
             mainModel: mainModel,
+            linksModel: linksModel,
             themeModel: themeModel,
           ),
           WhichType(mainModel: mainModel),

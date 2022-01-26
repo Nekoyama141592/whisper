@@ -11,10 +11,10 @@ class WhisperLink {
     required this.label,
     required this.url
   });
-  final String description;
-  final String imageURL;
-  final String label;
-  final String url;
+  String description;
+  String imageURL;
+  String label;
+  String url;
 
   factory WhisperLink.fromJson(Map<String,dynamic> json) => _$WhisperLinkFromJson(json);
 

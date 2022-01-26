@@ -1,26 +1,26 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-// packages
-import 'package:firebase_auth/firebase_auth.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
+import 'package:whisper/links/links_model.dart';
 
 class WhisperDrawer extends StatelessWidget {
-  
-  final currentUser = FirebaseAuth.instance.currentUser;
   
   WhisperDrawer({
     Key? key,
     required this.mainModel,
-    required this.themeModel
+    required this.themeModel,
+    required this.linksModel
   }) : super(key: key);
 
   final MainModel mainModel;
   final ThemeModel themeModel;
+  final LinksModel linksModel;
+  
   @override  
   Widget build(BuildContext context) {
     return Drawer(
@@ -53,7 +53,12 @@ class WhisperDrawer extends StatelessWidget {
               routes.toImportantMattersPage(context);
             },
           ),
-          
+          ListTile(
+            title: Text('Links'),
+            onTap: () {
+              linksModel.init(context: context, linkMaps: mainModel.currentWhisperUser.links);
+            },
+          )
         ],
       ),
     );

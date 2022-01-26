@@ -371,7 +371,6 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
 }
 
 Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds }) async {
-  // lib/components/search/post_search/post_search_model.dartの一般化は不可能(DBのクエリでDocumentSnapshot<Map<String,dynamic>>を使用するゆえ)
   await query.get().then((qshot) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
