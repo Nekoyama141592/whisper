@@ -67,14 +67,7 @@ class MainModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
     await setBookmarkLabels();
-    getReadNotificationIds();
-    getLikePostIds();
-    getLikesReplys();
-    getBookmarksPostIds();
-    getFollowingUids();
-    getLikedCommentIds();
-    getReadPost();
-    setMutesAndBlocks();
+    setList();
     endLoading();
   }
 
@@ -102,46 +95,31 @@ class MainModel extends ChangeNotifier {
     });
   }
 
-  void getLikePostIds() {
+  void setList() {
+    // likes
     likes = userMeta.likes;
     likePostIds = likes.map((e) => e[likePostIdKey] as String).toList();
-  }
-
-  void getBookmarksPostIds() {
+    // bookmarks
     bookmarks = (userMeta.bookmarks).map((bookmark) => fromMapToBookmark(map: bookmark)).toList();
     bookmarksPostIds = bookmarks.map((e) => e.postId ).toList();
-  }
-
-  void getFollowingUids() {
+    // followingUids
     followingUids = userMeta.followingUids;
     followingUids.add(currentUser!.uid);
-  }
-
-  void getLikedCommentIds() {
+    // likeComments
     likeComments = userMeta.likeComments;
     likeCommentIds = likeComments.map((e) => e[elementIdKey]).toList();
-  }
-  
-  void getReadPost() {
+    // readPosts
     readPosts = userMeta.readPosts;
-    readPosts.forEach((readPost) {
-      readPostIds.add(readPost[postIdKey]);
-    });
-  }
-
-  void setMutesAndBlocks() {
+    readPostIds = readPosts.map((e) => e[postIdKey]).toList();
+    // readNotificationIds
+    readNotificationIds = prefs.getStringList(readNotificationIdsKey) ?? [];
+    // likeReplys
+    likeReplys = userMeta.likeReplys;
+    likeReplyIds = likeReplys.map((likeReply) => likeReply[likeReplyIdKey]).toList();
+    // mutesAndBlocks
     voids.setMutesAndBlocks(prefs: prefs,currentWhisperUser: currentWhisperUser,mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
     mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
-  }
-
-  void getReadNotificationIds() {
-    readNotificationIds = prefs.getStringList(readNotificationIdsKey) ?? [];
-  }
-
-  void getLikesReplys() {
-    likeReplys = userMeta.likeReplys;
-    likeReplyIds = likeReplys.map((likeReply) => likeReply[likeReplyIdKey]).toList();
   }
 
   Future<void> regetCurrentUserDoc() async {
