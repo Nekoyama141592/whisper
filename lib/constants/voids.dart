@@ -116,7 +116,7 @@ void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfo
 
 Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required Map<String,dynamic> notification, required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId}) async {
 
-  await mainModel.addNotificationToReadNotificationIds(notification: notification);
+  isRead = true;
   // Plaase don`t notification['commentId'].
   // Please use commentNotification['commentId'], replyNotification['elementId']
   bool postExists = await onePostModel.init(givePostId: givePostId);

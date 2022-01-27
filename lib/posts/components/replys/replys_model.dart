@@ -19,6 +19,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/likeReply/like_reply.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // states
 import 'package:whisper/constants/enums.dart';
@@ -358,16 +359,12 @@ class ReplysModel extends ChangeNotifier {
   Future<void> updateLikeReplysOfUser({ required Map<String,dynamic> thisReply, required MainModel mainModel}) async {
     try {
       final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
-      final newLikedReply = {
-        likeReplyIdKey: whisperReply.replyId,
-        createdAtKey: Timestamp.now(),
-      };
-      final List<dynamic> likeReplys = mainModel.likeReplys;
-      likeReplys.add(newLikedReply);
-      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid)
-      .update({
-        likeReplysKey: likeReplys,
-      });
+      mainModel.likeReplyIds.add(whisperReply.replyId);
+      notifyListeners();
+      final String activeUid = mainModel.userMeta.uid;
+      final DateTime now = DateTime.now();
+      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: Timestamp.fromDate(now),replyId: whisperReply.replyId);
+      await newTokenChildRef(uid: activeUid, now: now).set(likeReply.toJson());
     } catch(e) {
       print(e.toString());
     }
@@ -390,13 +387,13 @@ class ReplysModel extends ChangeNotifier {
     await likeChildRef(parentColKey: replysKey, uniqueId: whisperReply.replyId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
-  Future removeLikedReplyOfUser({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {
-    final List<dynamic> likeReplys = mainModel.likeReplys;
-    likeReplys.removeWhere((likedReply) => likedReply[likeReplyIdKey] == thisReply[replyIdKey]);
-    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid)
-    .update({
-      likeReplysKey: likeReplys,
-    });
+  Future<void> removeLikedReplyOfUser({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {
+    final WhisperReply whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    mainModel.likeReplyIds.remove(whisperReply.postId);
+    notifyListeners();
+    final String uid = mainModel.userMeta.uid;
+    final qshot = await tokensParentRef(uid: uid).where(replyIdKey,isEqualTo: whisperReply.replyId).get();
+    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id ).delete();
   }
   
 }

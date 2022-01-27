@@ -133,6 +133,10 @@ DocumentReference<Map<String, dynamic>>  newTokenChildRef({ required String uid 
   return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(tokensString).doc(returnTokenId(now: now));
 }
 
+DocumentReference<Map<String,dynamic>> alreadyTokenRef({ required UserMeta userMeta,required String alreadyTokenDocId }) {
+  return FirebaseFirestore.instance.collection(userMetaKey).doc(userMeta.uid).collection(tokensString).doc(alreadyTokenDocId);
+}
+
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
   return WhisperUser.fromJson(userMap);
 }

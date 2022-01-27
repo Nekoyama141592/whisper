@@ -35,7 +35,6 @@ class MainModel extends ChangeNotifier {
   List<dynamic> followingUids = [];
   List<dynamic> likeCommentIds = [];
   // bookmark
-  List<Bookmark> bookmarks = [];
   List<BookmarkLabel> bookmarkLabels = [];
   List<dynamic> readPostIds = [];
   List<dynamic> likeReplyIds = [];
@@ -93,15 +92,12 @@ class MainModel extends ChangeNotifier {
   void setList() {
     // likes
     likePostIds = prefs.getStringList(likePostIdsPrefsKey) ?? [];
-    // bookmarks
-    // bookmarks = (userMeta.bookmarks).map((bookmark) => fromMapToBookmark(map: bookmark)).toList();
     bookmarkLabels.forEach((bookmarkLabel) {
       (bookmarkLabel.bookmarks as List<dynamic> ).forEach((bookmark) {
         final x = fromMapToBookmark(map: bookmark as Map<String,dynamic>);
-        bookmarks.add(x);
+        bookmarksPostIds.add(x.postId);
       });
     });
-    bookmarksPostIds = bookmarks.map((e) => e.postId ).toList();
     // followingUids
     followingUids = userMeta.followingUids;
     followingUids.add(currentUser!.uid);
