@@ -6,10 +6,12 @@ part 'bookmark.g.dart';
 @JsonSerializable()
 class Bookmark {
   Bookmark({
+    required this.activeUid,
     required this.createdAt,
     required this.postId,
   });
   
+  final String activeUid;
   final dynamic createdAt;
   final String postId;
 

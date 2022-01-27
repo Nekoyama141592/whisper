@@ -461,7 +461,8 @@ Future updateUserInfo({ required BuildContext context ,required String userName,
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
   // }
-  final String storageImageName = (croppedFile == null) ? mainModel.currentWhisperUser.storageImageName :  storageUserImageName;
+  final DateTime now = DateTime.now();
+  final String storageImageName = (croppedFile == null) ? mainModel.currentWhisperUser.storageImageName :  storageUserImageName(now: now);
   final String downloadURL = (croppedFile == null) ? mainModel.currentWhisperUser.imageURL : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
   if (downloadURL.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
@@ -472,7 +473,7 @@ Future updateUserInfo({ required BuildContext context ,required String userName,
       currentWhisperUser.imageURL = downloadURL;
       currentWhisperUser.links = links;
       currentWhisperUser.storageImageName = storageImageName;
-      currentWhisperUser.updatedAt = Timestamp.now();
+      currentWhisperUser.updatedAt = Timestamp.fromDate(now);
       currentWhisperUser.userName = userName;
       await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update(
         currentWhisperUser.toJson()

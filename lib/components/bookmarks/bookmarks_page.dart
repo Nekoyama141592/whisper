@@ -19,8 +19,8 @@ class BookmarksPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
-    final bookmarksModel = watch(bookmarksProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bookmarksModel = ref.watch(bookmarksProvider);
     return Scaffold(
       body: bookmarksModel.isLoading ? Loading() : PostScreen(bookmarksModel: bookmarksModel, mainModel: mainModel),
     );

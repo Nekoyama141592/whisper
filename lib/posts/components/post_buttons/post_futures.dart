@@ -99,7 +99,7 @@ class PostFutures extends ChangeNotifier{
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
-    final Bookmark bookmark = Bookmark(createdAt: now, postId: whisperPost.postId);
+    final Bookmark bookmark = Bookmark(activeUid: mainModel.userMeta.uid,createdAt: Timestamp.now(),postId: whisperPost.postId,);
     final bookmarks = mainModel.bookmarks;
     bookmarks.add(bookmark);
     mainModel.userMeta.bookmarks = bookmarks;

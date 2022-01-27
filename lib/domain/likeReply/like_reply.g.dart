@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bookmark.dart';
+part of 'like_reply.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Bookmark _$BookmarkFromJson(Map<String, dynamic> json) => Bookmark(
+LikeReply _$LikeReplyFromJson(Map<String, dynamic> json) => LikeReply(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      postId: json['postId'] as String,
+      replyId: json['replyId'] as String,
     );
 
-Map<String, dynamic> _$BookmarkToJson(Bookmark instance) => <String, dynamic>{
+Map<String, dynamic> _$LikeReplyToJson(LikeReply instance) => <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'postId': instance.postId,
+      'replyId': instance.replyId,
     };

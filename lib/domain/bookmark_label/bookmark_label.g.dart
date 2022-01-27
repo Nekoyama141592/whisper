@@ -11,7 +11,7 @@ BookmarkLabel _$BookmarkLabelFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'],
       label: json['label'] as String,
       bookmarkLabelId: json['bookmarkLabelId'] as String,
-      bookmarks: json['bookmarks'] as dynamic,
+      bookmarks: json['bookmarks'],
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
     );

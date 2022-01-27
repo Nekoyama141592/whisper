@@ -96,7 +96,7 @@ class SignupModel extends ChangeNotifier {
         UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,);
         User? user = result.user;
         final String uid = user!.uid;
-        final String storageImageName = strings.storageUserImageName;
+        final String storageImageName = strings.storageUserImageName(now: DateTime.now());
         final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
         await addUserToFireStore(uid: uid, imageURL: imageURL, storageImageName: storageImageName);
         await createUserMeta(uid: uid);

@@ -118,11 +118,19 @@ DocumentReference<Map<String, dynamic>> bookmarkLabelRef({ required String uid, 
 }
 
 CollectionReference<Map<String, dynamic>>  commentNotificationsParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(usersKey).doc(uid).collection(commentNotificationsKey);
+  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(commentNotificationsKey);
 }
 
 CollectionReference<Map<String, dynamic>>  replyNotificationsParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(usersKey).doc(uid).collection(replyNotificationsKey);
+  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(replyNotificationsKey);
+}
+
+CollectionReference<Map<String, dynamic>>  tokensParentRef({ required String uid }) {
+  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(tokensString);
+}
+
+DocumentReference<Map<String, dynamic>>  newTokenChildRef({ required String uid , required DateTime now}) {
+  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(tokensString).doc(returnTokenId(now: now));
 }
 
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {

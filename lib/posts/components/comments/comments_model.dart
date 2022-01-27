@@ -20,6 +20,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/likeComment/like_comment.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // states
 import 'package:whisper/constants/enums.dart';
@@ -204,7 +205,7 @@ class CommentsModel extends ChangeNotifier {
     likeCommentIds.add(commentId);
     notifyListeners();
     await addLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await updateLikedCommentsOfUser(commentId: commentId, mainModel: mainModel);
+    await createLikeCommentDoc(commentId: commentId, mainModel: mainModel);
   }
 
   Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
@@ -215,41 +216,36 @@ class CommentsModel extends ChangeNotifier {
     });
   }
 
-  Future<void> updateLikedCommentsOfUser({ required String commentId, required MainModel mainModel }) async {
-    // User側の処理
-    final likeComments = mainModel.userMeta.likeComments;
-    final Map<String,dynamic> map = {
-      commentIdKey: commentId,
-      createdAtKey: Timestamp.now(),
-    };
-    likeComments.add(map);
-    await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid)
-    .update({
-      likeCommentsKey: likeComments,
-    });
+  Future<void> createLikeCommentDoc({ required String commentId, required MainModel mainModel }) async {
+    final activeUid = mainModel.userMeta.uid;
+    final now = DateTime.now();
+    final LikeComment likeComment = LikeComment(
+      activeUid: activeUid,
+      commentId: commentId,
+      createdAt: Timestamp.fromDate(now),
+    );
+    await newTokenChildRef(uid: activeUid, now: now).set(likeComment.toJson());
   }
 
   Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
     // process UI
     final commentId = whisperComment.commentId;
     final likeCommentIds = mainModel.likeCommentIds;
-    final likeComments = mainModel.likeComments;
     likeCommentIds.remove(commentId);
     notifyListeners();
     // backend
     await deleteLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await removeLikedCommentsFromCurrentUser(commentId: commentId, likeComments: likeComments);
+    await removeLikedCommentsFromCurrentUser(commentId: commentId, mainModel: mainModel);
   }
 
   Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
     await likeChildRef(parentColKey: commentsKey, uniqueId: whisperComment.commentId , activeUid: mainModel.currentWhisperUser.uid ).delete();
   }
 
-  Future<void> removeLikedCommentsFromCurrentUser({ required String commentId, required List<dynamic> likeComments}) async {
-    likeComments.removeWhere((likeComment) => likeComment[commentIdKey] == commentId);
-    await FirebaseFirestore.instance.collection(commentsKey).doc(commentId).update({
-      likeCommentsKey: likeComments,
-    });
+  Future<void> removeLikedCommentsFromCurrentUser({ required String commentId,required MainModel mainModel}) async {
+    final String uid = mainModel.userMeta.uid;
+    final qshot = await tokensParentRef(uid: uid).where(commentId,isEqualTo: commentId).limit(plusOne).get();
+    await tokensParentRef(uid: uid).doc(qshot.docs.first.id).delete();
   }
 
   Future<WhisperUser> setPassiveWhisperUser(Post whisperPost) async {

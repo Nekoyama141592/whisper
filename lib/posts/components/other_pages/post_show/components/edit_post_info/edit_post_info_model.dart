@@ -50,7 +50,7 @@ class EditPostInfoModel extends ChangeNotifier {
   }
 
   Future<String> uploadImage({ required MainModel mainModel }) async {
-    final thisPostImageName = postImageName;
+    final thisPostImageName = postImageName(now: DateTime.now());
     final ref = postImageChildRef(mainModel: mainModel,postImageName: thisPostImageName);
     await ref.putFile(croppedFile!);
     final String downloadURL = await ref.getDownloadURL();

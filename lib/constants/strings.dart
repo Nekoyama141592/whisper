@@ -2,11 +2,20 @@ const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 const String recommendableString = 'recommendable';
-final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
-final String storageUserImageName = 'userImage' + microSecondsString + imageExtension;
-final String postImageName = 'postImage' + microSecondsString + imageExtension;
+String microSecondsString({ required DateTime now }) {
+  return DateTime.now().microsecondsSinceEpoch.toString();
+}
+String storageUserImageName({ required DateTime now }) {
+  return 'userImage' + microSecondsString(now: now) + imageExtension;
+}
+String postImageName({ required DateTime now }) {
+  return 'postImage' + microSecondsString(now: now) + imageExtension;
+}
 String returnBookmarkLabelId({ required DateTime now }) {
   return  bookmarkLabelString + now.microsecondsSinceEpoch.toString();
+}
+String returnTokenId({ required DateTime now }) {
+  return tokenString + microSecondsString(now: now);
 }
 // keys
 const String accountNameKey = 'accountName';
@@ -96,8 +105,9 @@ const String userImageURLKey = 'userImageURL';
 const String userMetaKey = 'userMeta';
 const String userNameKey = 'userName';
 const String usersKey = 'users';
-const String walletAddressKey = 'walletAddress';
 // strings
 const String bookmarkLabelString = 'bookmarkLabel';
 const String bookmarkLabelsString = 'bookmarkLabels';
+const String tokenString = 'token';
+const String tokensString = 'tokens';
 const String unNamedString = 'unNamed';
