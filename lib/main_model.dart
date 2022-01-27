@@ -100,7 +100,13 @@ class MainModel extends ChangeNotifier {
     likes = userMeta.likes;
     likePostIds = likes.map((e) => e[likePostIdKey] as String).toList();
     // bookmarks
-    bookmarks = (userMeta.bookmarks).map((bookmark) => fromMapToBookmark(map: bookmark)).toList();
+    // bookmarks = (userMeta.bookmarks).map((bookmark) => fromMapToBookmark(map: bookmark)).toList();
+    bookmarkLabels.forEach((bookmarkLabel) {
+      (bookmarkLabel.bookmarks as List<dynamic> ).forEach((bookmark) {
+        final x = fromMapToBookmark(map: bookmark as Map<String,dynamic>);
+        bookmarks.add(x);
+      });
+    });
     bookmarksPostIds = bookmarks.map((e) => e.postId ).toList();
     // followingUids
     followingUids = userMeta.followingUids;

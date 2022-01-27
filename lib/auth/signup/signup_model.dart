@@ -152,7 +152,6 @@ class SignupModel extends ChangeNotifier {
     final Map<String,dynamic> userMetaMap = UserMeta(
       authNotifications: [],
       birthDay: timestampBirthDay,
-      bookmarks: [],
       createdAt: now,
       followingUids: [],
       gender: gender, 

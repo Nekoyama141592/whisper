@@ -8,7 +8,6 @@ class UserMeta {
   UserMeta({
     required this.authNotifications,
     required this.birthDay,
-    required this.bookmarks,
     required this.createdAt,
     required this.followingUids,
     required this.gender,
@@ -26,7 +25,6 @@ class UserMeta {
   });
   List<dynamic> authNotifications;
   dynamic birthDay;
-  List<dynamic> bookmarks;
   dynamic createdAt;
   List<dynamic> followingUids;
   String gender;
