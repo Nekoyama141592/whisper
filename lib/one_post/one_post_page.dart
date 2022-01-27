@@ -26,12 +26,12 @@ class OnePostPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final OnePostModel onePostModel = watch(onePostProvider);
-    final EditPostInfoModel editPostInfoModel = watch(editPostInfoProvider);
+    final OnePostModel onePostModel = ref.watch(onePostProvider);
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
     final Post post = fromMapToPost(postMap: onePostModel.currentSongMapNotifier.value);
-    final officialAdsensesModel = watch(officialAdsensesProvider); 
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
 
     return Scaffold(
       body: PostShowPage(

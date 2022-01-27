@@ -37,9 +37,9 @@ class CommentCard extends ConsumerWidget {
   final MainModel mainModel;
 
   @override  
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context,WidgetRef ref) {
     
-    final postFutures = watch(postsFeaturesProvider);
+    final postFutures = ref.watch(postsFeaturesProvider);
     final fontSize = 16.0;
     final whisperComment = fromMapToWhisperComment(commentMap: comment);
     final Post whisperPost = fromMapToPost(postMap: currentSongMap);

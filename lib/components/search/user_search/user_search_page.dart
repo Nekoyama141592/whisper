@@ -18,8 +18,8 @@ class UserSearchPage extends ConsumerWidget {
 
   final MainModel mainModel;
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
-    final userSearchModel = watch(searchProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userSearchModel = ref.watch(searchProvider);
     final results = userSearchModel.results;
     
     return userSearchModel.isLoading ?

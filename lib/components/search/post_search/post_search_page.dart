@@ -21,8 +21,8 @@ class PostSearchPage extends ConsumerWidget {
   final PostSearchModel postSearchModel;
   
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
-    final searchModel = watch(postSearchProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final searchModel = ref.watch(postSearchProvider);
     
     return searchModel.isLoading ?
     Loading() 

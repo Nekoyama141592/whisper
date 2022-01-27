@@ -20,9 +20,9 @@ class NFTownersPage extends ConsumerWidget {
   }) : super(key: key);
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final nftOwnersModel = watch(nftownersProvider);
+    final nftOwnersModel = ref.watch(nftownersProvider);
 
     return Scaffold(
       appBar: AppBar(

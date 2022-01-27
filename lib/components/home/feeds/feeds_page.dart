@@ -28,12 +28,12 @@ class FeedsPage extends ConsumerWidget {
 
   @override
   
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     
-    final feedsModel = watch(feedsProvider);
-    final commentsModel = watch(commentsProvider);
-    final officialAdsensesModel = watch(officialAdsensesProvider); 
-    final editPostInfoModel = watch(editPostInfoProvider);
+    final feedsModel = ref.watch(feedsProvider);
+    final commentsModel = ref.watch(commentsProvider);
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final editPostInfoModel = ref.watch(editPostInfoProvider);
     final isLoading = feedsModel.isLoading;
     final postDocs = feedsModel.posts;
 

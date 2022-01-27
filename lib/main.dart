@@ -41,8 +41,8 @@ Future<void> main() async {
 class MyApp extends ConsumerWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final themeModel = watch(themeProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeModel = ref.watch(themeProvider);
     return MaterialApp(
       title: 'Whisper',
       debugShowCheckedModeBanner: false,
@@ -66,10 +66,10 @@ class MyHomePage extends ConsumerWidget {
 
   final ThemeModel themeModel;
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
-    final mainModel = watch(mainProvider);
-    final linksModel = watch(linksProvider);
-    final whisperBottomNavigationbarModel = watch(whisperBottomNavigationbarProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mainModel = ref.watch(mainProvider);
+    final linksModel = ref.watch(linksProvider);
+    final whisperBottomNavigationbarModel = ref.watch(whisperBottomNavigationbarProvider);
 
     return Scaffold(
       body: mainModel.isLoading ?

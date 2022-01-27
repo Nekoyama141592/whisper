@@ -21,8 +21,8 @@ class WhichType extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
-    final addPostModel = watch(addPostProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final addPostModel = ref.watch(addPostProvider);
     return
     GradientScreen(
       top: SizedBox.shrink(),

@@ -21,9 +21,9 @@ class UpdatePasswordPage extends ConsumerWidget {
   final User? currentUser;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final _updatePasswordModel = watch(updatePasswordProvider);
+    final _updatePasswordModel = ref.watch(updatePasswordProvider);
     final newPasswordInputController = TextEditingController(text: _updatePasswordModel.newPassword);
     final confirmPasswordInputController = TextEditingController(text: _updatePasswordModel.confirmPassword);
     

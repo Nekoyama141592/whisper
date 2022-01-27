@@ -22,8 +22,8 @@ class MyProfilePage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final myProfileModel = watch(myProfileProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final myProfileModel = ref.watch(myProfileProvider);
     return SafeArea(
       child: myProfileModel.isEditing ?
       EditProfileScreen(

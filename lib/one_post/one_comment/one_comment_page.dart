@@ -31,14 +31,14 @@ class OneCommentPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     
-    final editPostInfoModel = watch(editPostInfoProvider); 
-    final OneCommentModel oneCommentModel = watch(oneCommentProvider);
-    final CommentsModel commentsModel = watch(commentsProvider);
-    final ReplysModel replysModel = watch(replysProvider);
-    final OnePostModel onePostModel = watch(onePostProvider);
-    final officialAdsensesModel = watch(officialAdsensesProvider); 
+    final editPostInfoModel = ref.watch(editPostInfoProvider); 
+    final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
+    final CommentsModel commentsModel = ref.watch(commentsProvider);
+    final ReplysModel replysModel = ref.watch(replysProvider);
+    final OnePostModel onePostModel = ref.watch(onePostProvider);
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final Post post = fromMapToPost(postMap: onePostModel.currentSongMapNotifier.value);
 
     return Scaffold(

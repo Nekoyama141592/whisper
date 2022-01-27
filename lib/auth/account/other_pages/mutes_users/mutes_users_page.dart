@@ -20,9 +20,9 @@ class MutesUsersPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context,WidgetRef ref) {
 
-    final mutesUsersModel = watch(mutesUsersProvider);
+    final mutesUsersModel = ref.watch(mutesUsersProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('ミュートしているユーザー'),

@@ -27,11 +27,11 @@ class RecommendersPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final recommendersModel = watch(recommendersProvider);
-    final commentsModel = watch(commentsProvider);
-    final officialAdsensesModel = watch(officialAdsensesProvider); 
-    final editPostInfoModel = watch(editPostInfoProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final recommendersModel = ref.watch(recommendersProvider);
+    final commentsModel = ref.watch(commentsProvider);
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final editPostInfoModel = ref.watch(editPostInfoProvider);
 
     return recommendersModel.isLoading ?
     Loading()

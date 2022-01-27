@@ -14,10 +14,10 @@ class VerifyPage extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final size = MediaQuery.of(context).size;
-    final verifyModel = watch(verifyProvider);
+    final verifyModel = ref.watch(verifyProvider);
     final textStyle = TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold);
     String userEmail = verifyModel.currentUser!.email.toString();
     return Scaffold(

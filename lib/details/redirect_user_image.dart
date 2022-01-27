@@ -34,8 +34,8 @@ class RedirectUserImage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context,ScopedReader watch) {
-    final userShowModel = watch(userShowProvider);
+  Widget build(BuildContext context,WidgetRef ref) {
+    final userShowModel = ref.watch(userShowProvider);
     return InkWell(
       onTap: () async {
         if (userShowModel.passiveUid != passiveUserDocId) {

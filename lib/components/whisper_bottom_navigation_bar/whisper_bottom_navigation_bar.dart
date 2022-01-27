@@ -1,13 +1,11 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/components/whisper_bottom_navigation_bar/constants/bottom_navigation_bar_elements.dart';
 // model
 import 'whisper_bottom_navigation_bar_model.dart';
 
-class WhisperBottomNavigationbar extends ConsumerWidget {
+class WhisperBottomNavigationbar extends StatelessWidget {
   
   const WhisperBottomNavigationbar({
     Key? key,
@@ -17,7 +15,7 @@ class WhisperBottomNavigationbar extends ConsumerWidget {
   final WhisperBottomNavigationbarModel model;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context) {
     
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,

@@ -21,8 +21,8 @@ class LoginPage extends ConsumerWidget {
   }) : super(key: key);
 
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
-    final loginModel = watch(loginProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginModel = ref.watch(loginProvider);
     final emailInputController = TextEditingController(text: loginModel.email);
     final passwordInputController = TextEditingController(text: loginModel.password,);
     final size = MediaQuery.of(context).size;

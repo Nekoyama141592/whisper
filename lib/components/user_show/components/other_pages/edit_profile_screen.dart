@@ -2,8 +2,6 @@
 import 'dart:io';
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/user_image.dart';
@@ -12,7 +10,7 @@ import 'package:whisper/details/rounded_button.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-class EditProfileScreen extends ConsumerWidget {
+class EditProfileScreen extends StatelessWidget {
   
   const EditProfileScreen({
     Key? key,
@@ -38,7 +36,7 @@ class EditProfileScreen extends ConsumerWidget {
   final MainModel mainModel;
   
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context) {
 
     final userNameController = TextEditingController(
       text: mainModel.currentWhisperUser.userName

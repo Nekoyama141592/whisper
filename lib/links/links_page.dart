@@ -14,8 +14,8 @@ class LinksPage extends ConsumerWidget {
 
   
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final LinksModel linksModel = watch(linksProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final LinksModel linksModel = ref.watch(linksProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},

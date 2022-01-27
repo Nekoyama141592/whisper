@@ -31,10 +31,10 @@ class MyProfilePostScreen extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context,ScopedReader watch) {
-    final editPostInfoModel = watch(editPostInfoProvider);
-    final commentsModel = watch(commentsProvider);
-    final officialAdsensesModel = watch(officialAdsensesProvider); 
+  Widget build(BuildContext context,WidgetRef ref) {
+    final editPostInfoModel = ref.watch(editPostInfoProvider);
+    final commentsModel = ref.watch(commentsProvider);
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final isLoading = myProfileModel.isLoading;
     final postDocs = myProfileModel.posts;
 

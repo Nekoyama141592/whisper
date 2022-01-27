@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // model
@@ -25,8 +24,8 @@ class LikeButton extends ConsumerWidget {
   final MainModel mainModel;
   
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
-    final postFuturesModel = watch(postsFeaturesProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postFuturesModel = ref.watch(postsFeaturesProvider);
     if (postType != PostType.postSearch) {
 
       final likeCount = whisperPost.likeCount;

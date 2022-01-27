@@ -25,8 +25,8 @@ class RoundedPasswordField extends ConsumerWidget {
   final ValueChanged<String> paste;
 
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
-    final model = watch(roundedPasswordFieldProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final model = ref.watch(roundedPasswordFieldProvider);
     return TextFieldContainer(
       child: InkWell(
         onLongPress: () {

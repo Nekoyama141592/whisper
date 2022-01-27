@@ -9,9 +9,9 @@ import 'package:whisper/details/rounded_button.dart';
 import 'verify_password_reset_model.dart';
 class VerifyPasswordResetPage extends ConsumerWidget {
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     
-    final _verifyPasswordResetModel = watch(verifyPasswordResetProvider);
+    final _verifyPasswordResetModel = ref.watch(verifyPasswordResetProvider);
     final emailInputController = TextEditingController(text: _verifyPasswordResetModel.email);
     return Scaffold(
       appBar: AppBar(

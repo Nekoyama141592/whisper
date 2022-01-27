@@ -25,8 +25,8 @@ class UserRankingPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
-    final userRankingModel = watch(userRankingProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userRankingModel = ref.watch(userRankingProvider);
     return GradientScreen(
         top: SizedBox.shrink(), 
         header: Padding(

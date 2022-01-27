@@ -29,9 +29,9 @@ class CommentsPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
-    final commentsModel = watch(commentsProvider);
-    final replysModel = watch(replysProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final commentsModel = ref.watch(commentsProvider);
+    final replysModel = ref.watch(replysProvider);
     final commentEditingController = TextEditingController();
     final whisperPost = fromMapToPost(postMap: currentSongMap);
 

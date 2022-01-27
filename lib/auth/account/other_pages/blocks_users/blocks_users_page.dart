@@ -20,9 +20,9 @@ class BlocksUsersPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context,WidgetRef ref) {
 
-    final blocksUsersModel = watch(blocksUsersProvider);
+    final blocksUsersModel = ref.watch(blocksUsersProvider);
     return Scaffold(
       appBar: AppBar(title: Text('ブロックしているユーザー'),),
       body: blocksUsersModel.isLoading ?

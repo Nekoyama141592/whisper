@@ -30,11 +30,11 @@ class UserShowPostScreen extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context,WidgetRef ref) {
 
-    final editPostInfoModel = watch(editPostInfoProvider);
-    final commentsModel = watch(commentsProvider);
-    final officialAdsensesModel = watch(officialAdsensesProvider); 
+    final editPostInfoModel = ref.watch(editPostInfoProvider);
+    final commentsModel = ref.watch(commentsProvider);
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final isLoading = userShowModel.isLoading;
     final postDocs = userShowModel.posts;
     final Widget posts = Expanded(

@@ -32,13 +32,13 @@ class ReplyNotificationCard extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final length = 60.0;
     final padding = 0.0;
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final OnePostModel onePostModel = watch(onePostProvider);
-    final OneCommentModel oneCommentModel = watch(oneCommentProvider);
+    final OnePostModel onePostModel = ref.watch(onePostProvider);
+    final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
     
     final userImageURL = replyNotification.userImageURL;
     final String notificationId = replyNotification.notificationId;

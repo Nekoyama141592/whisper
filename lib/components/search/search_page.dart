@@ -29,9 +29,9 @@ class SearchPage extends ConsumerWidget {
   final ThemeModel themeModel;
 
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final postSearchModel = watch(postSearchProvider);
+    final postSearchModel = ref.watch(postSearchProvider);
     return DefaultTabController(
       length: tabBarElements.length,
       child: Scaffold(

@@ -1,7 +1,6 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/user_image.dart';
@@ -15,7 +14,7 @@ import 'package:whisper/components/user_show/components/other_pages/show_descrip
 // models
 import 'package:whisper/main_model.dart';
 
-class UserShowHeader extends ConsumerWidget {
+class UserShowHeader extends StatelessWidget {
 
   const UserShowHeader({
     Key? key,
@@ -31,7 +30,7 @@ class UserShowHeader extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context) {
 
     final followerCount = passiveWhisperUser.followerCount;
     final plusOneCount = followerCount + 1;

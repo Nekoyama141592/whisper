@@ -24,9 +24,9 @@ class NotificationIcon extends ConsumerWidget {
   final ThemeModel themeModel;
 
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
-  //   final replyNotificationsModel = watch(replyNotificationsProvider);
-  //   final commentNotificationsModel = watch(commentNotificationsProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+  //   final replyNotificationsModel = ref.watch(replyNotificationsProvider);
+  //   final commentNotificationsModel = ref.watch(commentNotificationsProvider);
   //   return 
   //   Padding(
   //     padding: EdgeInsets.all(20.0),

@@ -20,9 +20,9 @@ class UpdateEmailPage extends ConsumerWidget {
   final User? currentUser;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     
-    final updateEmailModel = watch(updateEmailProvider);
+    final updateEmailModel = ref.watch(updateEmailProvider);
     final newEmailInputController = TextEditingController(text: updateEmailModel.newEmail);
     final textStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0);
     

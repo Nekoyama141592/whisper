@@ -22,8 +22,8 @@ class SignupPage extends ConsumerWidget {
   }) : super(key: key);
   
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final signupModel = watch(signupProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final signupModel = ref.watch(signupProvider);
     final emailInputController = TextEditingController(text: signupModel.email);
     final passwordInputController = TextEditingController(text: signupModel.password);
 

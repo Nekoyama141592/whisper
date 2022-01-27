@@ -28,9 +28,9 @@ class UserShowPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     
-    final userShowModel = watch(userShowProvider);
+    final userShowModel = ref.watch(userShowProvider);
     List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
     List<dynamic> passiveBlocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {

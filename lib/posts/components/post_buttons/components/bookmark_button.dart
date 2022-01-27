@@ -23,9 +23,9 @@ class BookmarkButton extends ConsumerWidget {
   final Post whisperPost;
   final MainModel mainModel;
   @override  
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     
-    final postFuturesModel = watch(postsFeaturesProvider);
+    final postFuturesModel = ref.watch(postsFeaturesProvider);
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (postType != PostType.postSearch ) {
       final bookmarksCount = whisperPost.bookmarkCount;

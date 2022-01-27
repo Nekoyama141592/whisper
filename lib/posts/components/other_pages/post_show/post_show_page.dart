@@ -64,8 +64,8 @@ class PostShowPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
-    final editPostInfoModel = watch(editPostInfoProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final editPostInfoModel = ref.watch(editPostInfoProvider);
     final currentSongMap = currentSongMapNotifier.value;
     final size = MediaQuery.of(context).size;
 

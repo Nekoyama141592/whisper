@@ -5,7 +5,6 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -22,9 +21,9 @@ class AccountPage extends ConsumerWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final accountModel = watch(accountProvider);
+    final accountModel = ref.watch(accountProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Account'),

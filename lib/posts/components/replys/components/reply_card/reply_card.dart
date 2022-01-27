@@ -28,9 +28,9 @@ class ReplyCard extends ConsumerWidget {
   final ReplysModel replysModel;
   final MainModel mainModel;
 
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context,WidgetRef ref) {
 
-    final postFutures = watch(postsFeaturesProvider);
+    final postFutures = ref.watch(postsFeaturesProvider);
     final whisperReply = fromMapToWhisperReply(replyMap: reply);
     final String userImageURL = whisperReply.userImageURL;
     final currentWhisperUser = mainModel.currentWhisperUser;
