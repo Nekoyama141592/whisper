@@ -21,7 +21,7 @@ ReplyNotification _$ReplyNotificationFromJson(Map<String, dynamic> json) =>
       passiveUid: json['passiveUid'] as String,
       postId: json['postId'] as String,
       reply: json['reply'] as String,
-      replyScore: (json['replyScore'] as num).toDouble(),
+      replyScore: json['replyScore'] as num,
       replyId: json['replyId'] as String,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],

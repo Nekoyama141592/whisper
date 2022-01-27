@@ -11,7 +11,7 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
       accountName: json['accountName'] as String,
       comment: json['comment'] as String,
       commentId: json['commentId'] as String,
-      commentScore: (json['commentScore'] as num).toDouble(),
+      commentScore: json['commentScore'] as num,
       createdAt: json['createdAt'],
       followerCount: json['followerCount'] as int,
       isDelete: json['isDelete'] as bool,

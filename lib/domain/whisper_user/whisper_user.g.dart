@@ -23,7 +23,7 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       noDisplayWords: json['noDisplayWords'] as List<dynamic>,
       links: json['links'] as List<dynamic>,
       recommendState: json['recommendState'] as String,
-      score: (json['score'] as num).toDouble(),
+      score: json['score'] as num,
       storageImageName: json['storageImageName'] as String,
       tokenToSearch: json['tokenToSearch'] as Map<String, dynamic>,
       userName: json['userName'] as String,
