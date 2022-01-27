@@ -152,7 +152,7 @@ class PostFutures extends ChangeNotifier {
     final DocumentSnapshot<Map<String,dynamic>> alreadyBookmark = qshot.docs.first;
     await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: alreadyBookmark.id ).delete();
     await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId).update({
-      bookmarksKey: FieldValue.arrayRemove(bookmarks.where((element) {
+      bookmarksKey: FieldValue.arrayRemove(mainModel.bookmarks.where((element) {
         final Bookmark bookmark = fromMapToBookmark(map: element as Map<String,dynamic>);
         return bookmark.postId == whisperPost.postId;
       }).toList())
@@ -187,14 +187,14 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> muteUser({ required MainModel mainModel, required Map<String,dynamic> map}) async {
     final List<dynamic> mutesUids = mainModel.mutesUids;
-    final List<dynamic> mutesIpv6AndUids = mainModel.mutesIpv6AndUids;
+    final List<dynamic> mutesIpv6AndUids = mainModel.muteUsers;
     voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: map);
     notifyListeners();
     voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
   }
 
   Future<void> blockUser({ required MainModel mainModel, required Map<String,dynamic> map}) async {
-    final List<dynamic> blocksIpv6AndUids = mainModel.blocksIpv6AndUids;
+    final List<dynamic> blocksIpv6AndUids = mainModel.blockUsers;
     final List<dynamic> blocksUids = mainModel.blocksUids;
     voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: map);
     notifyListeners();

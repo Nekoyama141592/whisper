@@ -61,13 +61,13 @@ class UserShowPostScreen extends ConsumerWidget {
                 await voids.initAudioPlayer(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, i: i);
               },
               muteUser: () async {
-                await voids.muteUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: userShowModel.posts, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
+                await voids.muteUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: userShowModel.posts, mutesIpv6AndUids: mainModel.muteUsers, post: post, mainModel: mainModel);
               },
               mutePost: () async {
                 await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts );
               },
               blockUser: () async {
-                await voids.blockUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: userShowModel.posts, post: post, mainModel: mainModel);
+                await voids.blockUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blockUsers, i: i, results: userShowModel.posts, post: post, mainModel: mainModel);
               },
               mainModel: mainModel,
             );

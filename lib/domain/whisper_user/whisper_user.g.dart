@@ -8,7 +8,6 @@ part of 'whisper_user.dart';
 
 WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       accountName: json['accountName'] as String,
-      blocksIpv6AndUids: json['blocksIpv6AndUids'] as List<dynamic>,
       createdAt: json['createdAt'],
       description: json['description'] as String,
       dmState: json['dmState'] as String,
@@ -19,8 +18,6 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       isKeyAccount: json['isKeyAccount'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
       isOfficial: json['isOfficial'] as bool,
-      mutesIpv6AndUids: json['mutesIpv6AndUids'] as List<dynamic>,
-      noDisplayWords: json['noDisplayWords'] as List<dynamic>,
       links: json['links'] as List<dynamic>,
       recommendState: json['recommendState'] as String,
       score: json['score'] as num,
@@ -35,7 +32,6 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
 Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
-      'blocksIpv6AndUids': instance.blocksIpv6AndUids,
       'createdAt': instance.createdAt,
       'description': instance.description,
       'dmState': instance.dmState,
@@ -46,8 +42,6 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'isKeyAccount': instance.isKeyAccount,
       'isNFTicon': instance.isNFTicon,
       'isOfficial': instance.isOfficial,
-      'mutesIpv6AndUids': instance.mutesIpv6AndUids,
-      'noDisplayWords': instance.noDisplayWords,
       'links': instance.links,
       'recommendState': instance.recommendState,
       'score': instance.score,

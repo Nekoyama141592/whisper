@@ -76,7 +76,7 @@ class RecommendersModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     prefs = await SharedPreferences.getInstance();
-    voids.setMutesAndBlocks(prefs: prefs, currentWhisperUser: currentWhisperUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs, currentWhisperUser: currentWhisperUser, muteUsers: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockUsers: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getRecommenders();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);

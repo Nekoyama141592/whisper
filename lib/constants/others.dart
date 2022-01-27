@@ -99,7 +99,7 @@ CollectionReference<Map<String, dynamic>> bookmarkParentRef({required String pos
 }
 
 DocumentReference<Map<String, dynamic>> bookmarkChildRef({required String postId, required String activeUid}) {
-  final parentRef =bookmarkParentRef(postId: postId);
+  final parentRef = bookmarkParentRef(postId: postId);
   return parentRef.doc(activeUid);
 }
 

@@ -230,8 +230,6 @@ class AddPostModel extends ChangeNotifier {
       isPinned: false,
       likeCount: 0,
       links: [link], 
-      noDisplayWords: currentWhiseprUser.noDisplayWords,
-      noDisplayIpv6AndUids: currentWhiseprUser.blocksIpv6AndUids,
       negativeScore: 0,
       playCount: 0,
       postId: postId, 

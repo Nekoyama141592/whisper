@@ -119,7 +119,6 @@ class SignupModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     Map<String,dynamic> whisperUserMap = WhisperUser(
       accountName: uid,
-      blocksIpv6AndUids: [],
       createdAt: now,
       description: '',
       dmState: onlyFollowingAndFollowedString,
@@ -130,8 +129,6 @@ class SignupModel extends ChangeNotifier {
       isKeyAccount: false,
       isNFTicon: false,
       isOfficial: false,
-      mutesIpv6AndUids: [],
-      noDisplayWords: [],
       links: [],
       recommendState: recommendableString,
       score: defaultScore,

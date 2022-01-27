@@ -31,11 +31,6 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final userShowModel = ref.watch(userShowProvider);
-    List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
-    List<dynamic> passiveBlocksUids = [];
-    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-      passiveBlocksUids.add(blocksIpv6AndUid[uidKey]);
-    });
 
     return Scaffold(
       extendBodyBehindAppBar: false,

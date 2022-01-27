@@ -7,7 +7,6 @@ part 'whisper_user.g.dart';
 class WhisperUser {
   WhisperUser({
     required this.accountName,
-    required this.blocksIpv6AndUids,
     required this.createdAt,
     required this.description,
     required this.dmState,
@@ -18,8 +17,6 @@ class WhisperUser {
     required this.isKeyAccount,
     required this.isNFTicon,
     required this.isOfficial,
-    required this.mutesIpv6AndUids,
-    required this.noDisplayWords,
     required this.links,
     required this.recommendState,
     required this.score,
@@ -31,7 +28,6 @@ class WhisperUser {
     required this.walletAddress
   });
   String accountName;
-  List<dynamic> blocksIpv6AndUids;
   dynamic createdAt;
   String description;
   String dmState;
@@ -42,8 +38,6 @@ class WhisperUser {
   bool isKeyAccount;
   bool isNFTicon;
   bool isOfficial;
-  List<dynamic> mutesIpv6AndUids;
-  List<dynamic> noDisplayWords;
   List<dynamic> links;
   String recommendState;
   num score;

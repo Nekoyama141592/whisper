@@ -25,8 +25,6 @@ class Post{
     required this.isPinned,
     required this.likeCount,
     required this.links,
-    required this.noDisplayWords,
-    required this.noDisplayIpv6AndUids,
     required this.negativeScore,
     required this.playCount,
     required this.postId,
@@ -61,8 +59,6 @@ class Post{
   bool isPinned;
   int likeCount;
   List<dynamic> links;
-  List<dynamic> noDisplayWords;
-  List<dynamic> noDisplayIpv6AndUids;
   num negativeScore;
   int playCount;
   String postId;

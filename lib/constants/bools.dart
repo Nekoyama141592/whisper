@@ -11,11 +11,6 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-bool isDisplayUid({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6,}) {
-  // use on makeReplyNotification or makeCommentNotification
-  return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) && !mutesIpv6s.contains(ipv6) && !blocksIpv6s.contains(ipv6) ) ;
-}
-
 bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required Map<String,dynamic> map}) {
   // use on comments or replys on display
   final String uid = map[uidKey];

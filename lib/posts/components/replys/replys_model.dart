@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
-import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/nums.dart';
@@ -18,6 +17,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/likeReply/like_reply.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -240,34 +240,15 @@ class ReplysModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
     final String replyId = replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
-    final newReplyMap = makeReplyMap(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
-    await FirebaseFirestore.instance.collection(replysKey).doc(replyId).set(newReplyMap);
+    final WhisperReply newWhisperReply = makeWhisperReply(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
+    await FirebaseFirestore.instance.collection(replysKey).doc(replyId).set(newWhisperReply.toJson());
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
-      final WhisperUser passiveWhisperUser = await setPassiveUserDoc(whisperPost);
-      // blocks
-      List<dynamic> blocksIpv6s = [];
-      List<dynamic> blocksUids = [];
-      final List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
-      blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-        blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
-        blocksUids.add(blocksIpv6AndUid[uidKey]);
-      });
-      // mutes
-      List<dynamic> mutesUids = [];
-      List<dynamic> mutesIpv6s = [];
-      final List<dynamic> mutesIpv6AndUids = passiveWhisperUser.mutesIpv6AndUids;
-      mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-        mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
-        mutesUids.add(mutesIpv6AndUid[uidKey]);
-      });
-      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s ,uid: currentWhisperUser.uid, ipv6: ipv6) ) {
-        await makeReplyNotification(elementId: elementId, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, thisComment: thisComment, newReplyMap: newReplyMap);
-      }
+      await makeReplyNotification(elementId: elementId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
     }
   }
 
-  Map<String,dynamic> makeReplyMap({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
+  WhisperReply makeWhisperReply({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
     final WhisperReply whisperReply = WhisperReply(
       accountName: currentWhisperUser.accountName,
       createdAt: now,
@@ -290,21 +271,12 @@ class ReplysModel extends ChangeNotifier {
       userName: currentWhisperUser.userName,
       userImageURL: currentWhisperUser.imageURL
     );
-    Map<String,dynamic> newReplyMap = whisperReply.toJson();
-    return newReplyMap;
+    return whisperReply;
   }
 
-  Future<WhisperUser> setPassiveUserDoc(Post whisperPost) async {
-    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(whisperPost.uid).get();
-    final WhisperUser passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
-    return passiveWhisperUser;
-  }
-
-  Future makeReplyNotification({ required String elementId, required WhisperUser passiveWhisperUser, required MainModel mainModel, required Map<String,dynamic> thisComment, required Map<String,dynamic> newReplyMap }) async {
+  Future<void> makeReplyNotification({ required String elementId, required , required MainModel mainModel, required WhisperComment whisperComment, required WhisperReply newWhisperReply }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
-    final newWhisperReply = fromMapToWhisperReply(replyMap: newReplyMap);
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final comment = whisperComment.comment;
     final Timestamp now = Timestamp.now();
@@ -320,7 +292,7 @@ class ReplysModel extends ChangeNotifier {
       isOfficial: currentWhisperUser.isOfficial,
       isRead: false,
       notificationId: notificationId, 
-      passiveUid: passiveWhisperUser.uid,
+      passiveUid: whisperComment.uid,
       postId: whisperComment.postId,
       reply: reply, 
       replyScore: newWhisperReply.score,

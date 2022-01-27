@@ -31,16 +31,16 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-void setMutesAndBlocks({ required SharedPreferences prefs ,required WhisperUser currentWhisperUser, required List<dynamic> mutesIpv6AndUids, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blocksIpv6AndUids, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
+void setMutesAndBlocks({ required SharedPreferences prefs ,required WhisperUser currentWhisperUser, required List<dynamic> muteUsers, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blockUsers, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
   // 代入は使えないが.addは反映される
-  currentWhisperUser.mutesIpv6AndUids.forEach((mutesIpv6AndUid) { mutesIpv6AndUids.add(mutesIpv6AndUid); });
-  mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
+  currentWhisperUser.mutesIpv6AndUids.forEach((mutesIpv6AndUid) { muteUsers.add(mutesIpv6AndUid); });
+  muteUsers.forEach((mutesIpv6AndUid) {
     mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
     mutesUids.add(mutesIpv6AndUid[uidKey]);
   });
   (prefs.getStringList(mutesPostIdsKey) ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
-  currentWhisperUser.blocksIpv6AndUids.forEach((blocksIpv6AndUid) { blocksIpv6AndUids.add(blocksIpv6AndUid); });
-  blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
+  currentWhisperUser.blocksIpv6AndUids.forEach((blocksIpv6AndUid) { blockUsers.add(blocksIpv6AndUid); });
+  blockUsers.forEach((blocksIpv6AndUid) {
     blocksUids.add(blocksIpv6AndUid[uidKey]);
     blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
   });

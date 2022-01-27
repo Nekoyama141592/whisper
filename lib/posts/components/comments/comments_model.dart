@@ -114,27 +114,8 @@ class CommentsModel extends ChangeNotifier {
     await FirebaseFirestore.instance.collection(commentsKey).doc(whisperComment.commentId).set(commentMap);
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
-      final WhisperUser passiveWhisperUser = await setPassiveWhisperUser(whisperPost);
-      // blocks
-      List<dynamic> blocksIpv6s = [];
-      List<dynamic> blocksUids = [];
-      final List<dynamic> blocksIpv6AndUids = passiveWhisperUser.blocksIpv6AndUids;
-      blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-        blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
-        blocksUids.add(blocksIpv6AndUid[uidKey]);
-      });
-      // mutes
-      List<dynamic> mutesUids = [];
-      List<dynamic> mutesIpv6s = [];
-      final List<dynamic> mutesIpv6AndUids = passiveWhisperUser.mutesIpv6AndUids;
-      mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
-        mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
-        mutesUids.add(mutesIpv6AndUid[uidKey]);
-      });
       final Timestamp now = Timestamp.now();
-      if ( isDisplayUid(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: mainModel.currentWhisperUser.uid, ipv6: ipv6) ) {
-        await makeCommentNotification( mainModel: mainModel, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
-      }
+      await makeCommentNotification( mainModel: mainModel, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
     }
   }
 
@@ -246,12 +227,6 @@ class CommentsModel extends ChangeNotifier {
     final String uid = mainModel.userMeta.uid;
     final qshot = await tokensParentRef(uid: uid).where(commentId,isEqualTo: commentId).limit(plusOne).get();
     await tokensParentRef(uid: uid).doc(qshot.docs.first.id).delete();
-  }
-
-  Future<WhisperUser> setPassiveWhisperUser(Post whisperPost) async {
-    final DocumentSnapshot<Map<String,dynamic>> passiveUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(whisperPost.uid).get();
-    final WhisperUser passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
-    return passiveWhisperUser;
   }
 
   void showSortDialogue(BuildContext context,Post whisperPost) {

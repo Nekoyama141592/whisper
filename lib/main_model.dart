@@ -35,20 +35,21 @@ class MainModel extends ChangeNotifier {
   List<dynamic> followingUids = [];
   List<dynamic> likeCommentIds = [];
   // bookmark
+  List<Bookmark> bookmarks = [];
   List<BookmarkLabel> bookmarkLabels = [];
   List<dynamic> readPostIds = [];
   List<dynamic> likeReplyIds = [];
   // mutes 
   List<dynamic> mutesUids = [];
   List<dynamic> mutesIpv6s = [];
-  List<dynamic> mutesIpv6AndUids = [];
+  List<dynamic> muteUsers = [];
   List<String> mutesReplyIds = [];
   List<String> mutesCommentIds = [];
   List<String> mutesPostIds = [];
   // block
   List<dynamic> blocksUids = [];
   List<dynamic> blocksIpv6s = [];
-  List<dynamic> blocksIpv6AndUids = [];
+  List<dynamic> blockUsers = [];
   // bookmarkLabel
   String bookmarkLabelId = '';
 
@@ -94,7 +95,8 @@ class MainModel extends ChangeNotifier {
     likePostIds = prefs.getStringList(likePostIdsPrefsKey) ?? [];
     bookmarkLabels.forEach((bookmarkLabel) {
       (bookmarkLabel.bookmarks as List<dynamic> ).forEach((bookmark) {
-        final x = fromMapToBookmark(map: bookmark as Map<String,dynamic>);
+        final Bookmark x = fromMapToBookmark(map: bookmark as Map<String,dynamic>);
+        bookmarks.add(x);
         bookmarksPostIds.add(x.postId);
       });
     });
@@ -108,7 +110,7 @@ class MainModel extends ChangeNotifier {
     // likeReplys
     likeReplyIds = prefs.getStringList(likeReplyIdsPrefsKey) ?? [];
     // mutesAndBlocks
-    voids.setMutesAndBlocks(prefs: prefs,currentWhisperUser: currentWhisperUser,mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs,currentWhisperUser: currentWhisperUser,muteUsers: muteUsers, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockUsers: blockUsers, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
     mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
   }

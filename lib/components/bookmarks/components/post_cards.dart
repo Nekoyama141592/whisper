@@ -80,13 +80,13 @@ class PostCards extends StatelessWidget {
                     await voids.initAudioPlayer(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: bookmarksModel.posts, mutesIpv6AndUids: mainModel.mutesIpv6AndUids, post: post, mainModel: mainModel);
+                    await voids.muteUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: bookmarksModel.posts, mutesIpv6AndUids: mainModel.muteUsers, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
                     await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blocksIpv6AndUids, i: i, results: bookmarksModel.posts, post: post, mainModel: mainModel);
+                    await voids.blockUser(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blockUsers, i: i, results: bookmarksModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );
