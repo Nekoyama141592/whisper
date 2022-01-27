@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/components/notifications/details/notification_card.dart';
+import 'package:whisper/components/notifications/components/comment_notifications/components/comment_notification_card.dart';
 // domain
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
@@ -31,7 +31,7 @@ class CommentNotifications extends StatelessWidget {
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
         final CommentNotification notification = fromMapToCommentNotification(notificationmap: notifications[i].data()!);
-        return NotificationCard(giveCommentId: notification.commentId, firstSubTitle: notification.postTitle, secondSubTitle: notification.comment, notification: notification, mainModel: mainModel);
+        return CommentNotificationCard(giveCommentId: notification.commentId, firstSubTitle: notification.comment, secondSubTitle: notification.comment, commentNotification: notification, mainModel: mainModel);
       }
     );
     final void Function()? reload = () async {

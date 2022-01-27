@@ -5,7 +5,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // component
 import 'package:whisper/details/nothing.dart';
-import 'package:whisper/components/notifications/details/notification_card.dart';
+import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_card.dart';
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // model
@@ -30,7 +30,7 @@ class ReplyNotifications extends StatelessWidget {
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
         final ReplyNotification notification = fromMapToReplyNotification(notificationMap: notifications[i].data()!);
-        return NotificationCard(giveCommentId: notification.elementId, firstSubTitle: notification.comment, secondSubTitle: notification.reply, notification: notification, mainModel: mainModel);
+        return ReplyNotificationCard(giveCommentId: notification.elementId, firstSubTitle: notification.comment, secondSubTitle: notification.reply, replyNotification: notification, mainModel: mainModel);
       }
     );
     final reload = () async {

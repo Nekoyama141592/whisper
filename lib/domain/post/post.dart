@@ -63,7 +63,7 @@ class Post{
   List<dynamic> links;
   List<dynamic> noDisplayWords;
   List<dynamic> noDisplayIpv6AndUids;
-  int negativeScore;
+  num negativeScore;
   int playCount;
   String postId;
   num positiveScore;

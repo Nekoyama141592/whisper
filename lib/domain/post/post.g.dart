@@ -28,7 +28,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       links: json['links'] as List<dynamic>,
       noDisplayWords: json['noDisplayWords'] as List<dynamic>,
       noDisplayIpv6AndUids: json['noDisplayIpv6AndUids'] as List<dynamic>,
-      negativeScore: json['negativeScore'] as int,
+      negativeScore: json['negativeScore'] as num,
       playCount: json['playCount'] as int,
       postId: json['postId'] as String,
       positiveScore: json['positiveScore'] as num,
