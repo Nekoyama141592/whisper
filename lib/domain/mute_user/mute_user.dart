@@ -15,7 +15,7 @@ class MuteUser {
   final String ipv6;
   final String uid;
 
-  factory MuteUser.fromJson(Map<String,dynamic> json) => _$MutesIpv6AndUidFromJson(json);
+  factory MuteUser.fromJson(Map<String,dynamic> json) => _$MuteUserFromJson(json);
 
-  Map<String,dynamic> toJson() => _$MutesIpv6AndUidToJson(this);
+  Map<String,dynamic> toJson() => _$MuteUserToJson(this);
 }

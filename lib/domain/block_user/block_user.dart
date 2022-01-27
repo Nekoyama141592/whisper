@@ -15,7 +15,7 @@ class BlockUser {
   final String ipv6;
   final String uid;
 
-  factory BlockUser.fromJson(Map<String,dynamic> json) => _$BlocksIpv6AndUidFromJson(json);
+  factory BlockUser.fromJson(Map<String,dynamic> json) => _$BlockUserFromJson(json);
 
-  Map<String,dynamic> toJson() => _$BlocksIpv6AndUidToJson(this);
+  Map<String,dynamic> toJson() => _$BlockUserToJson(this);
 }
