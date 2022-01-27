@@ -152,7 +152,6 @@ class MyProfileModel extends ChangeNotifier {
     startLoading();
     await voids.updateUserInfo(context: context, userName: userName, description: description, links: mainModel.currentWhisperUser.links, mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
-    await mainModel.regetCurrentUserDoc();
     endLoading();
   }
 

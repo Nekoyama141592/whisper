@@ -34,22 +34,10 @@ bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic
   return ( !mutesUids.contains(myUid) && blocksUids.contains(myUid) && passiveBlocksUids.contains(myUid) );
 }
 
-bool newNotificationExists({ required MainModel mainModel,required List<dynamic> commentNotifications,required List<dynamic> replyNotifications }) {
+bool newNotificationExists({ required List<CommentNotification> commentNotifications,required List<ReplyNotification> replyNotifications }) {
   bool x = false;
-  replyNotifications.forEach((replyNotificationMap) {
-    final ReplyNotification replyNotification = fromMapToReplyNotification(notificationMap: replyNotificationMap);
-    final String notificationId = replyNotification.notificationId;
-    if (!mainModel.readNotificationIds.contains(notificationId)) {
-      x = true;
-    }
-  });
-  commentNotifications.forEach((commentNotificationMap) {
-    final CommentNotification commentNotification = fromMapToCommentNotification(notificationmap: commentNotificationMap);
-    final String notificationId = commentNotification.notificationId;
-    if (!mainModel.readNotificationIds.contains(notificationId)) {
-      x = true;
-    }
-  });
+  replyNotifications.forEach((replyNotification) { if (replyNotification.isRead == false) { x = true; } });
+  commentNotifications.forEach((commentNotification) { if (commentNotification.isRead == false) { x = true; } });
   return x;
 }
 

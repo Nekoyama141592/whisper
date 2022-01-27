@@ -39,9 +39,8 @@ class CommentNotificationCard extends ConsumerWidget {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
-    
     final userImageURL = commentNotification.userImageURL;
-    final String notificationId = commentNotification.notificationId;
+    
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -52,7 +51,7 @@ class CommentNotificationCard extends ConsumerWidget {
             subtitle: Text(firstSubTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
           ),
           ListTile(
-            tileColor: mainModel.readNotificationIds.contains(notificationId) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
+            tileColor: commentNotification.isRead == true ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
             leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: commentNotification.uid,mainModel: mainModel,),
             subtitle: Text(secondSubTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
             onTap: () async {

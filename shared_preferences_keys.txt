@@ -1,5 +1,0 @@
-readNotificationIds: List<Map<String,dynamic>>,
-mutesReplyIds: List<String>,
-mutesCommentIds: List<String>,
-mutesPostIds: List<String>,
-speed: double,

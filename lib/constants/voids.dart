@@ -135,7 +135,7 @@ Future<void> onNotificationPressed({ required BuildContext context ,required Mai
 // just_audio
 
 Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
-  speedNotifier.value = prefs.getDouble(speedKey) ?? 1.0;
+  speedNotifier.value = prefs.getDouble(speedPrefsKey) ?? 1.0;
   await audioPlayer.setSpeed(speedNotifier.value);
 }
 
@@ -143,11 +143,11 @@ Future<void> speedControll({ required ValueNotifier<double> speedNotifier, requi
   if (speedNotifier.value == 4.0) {
     speedNotifier.value = 1.0;
     await audioPlayer.setSpeed(speedNotifier.value);
-    await prefs.setDouble(speedKey, speedNotifier.value);
+    await prefs.setDouble(speedPrefsKey, speedNotifier.value);
   } else {
     speedNotifier.value += 0.5;
     await audioPlayer.setSpeed(speedNotifier.value);
-    await prefs.setDouble(speedKey, speedNotifier.value);
+    await prefs.setDouble(speedPrefsKey, speedNotifier.value);
   }
 }
 

@@ -34,15 +34,10 @@ class MainModel extends ChangeNotifier {
   List<String> bookmarksPostIds = [];
   List<dynamic> followingUids = [];
   List<dynamic> likeCommentIds = [];
-  List<dynamic> likeComments = [];
   // bookmark
   List<Bookmark> bookmarks = [];
   List<BookmarkLabel> bookmarkLabels = [];
-  List<dynamic> likes = [];
-  List<dynamic> readPosts = [];
   List<dynamic> readPostIds = [];
-  List<String> readNotificationIds = [];
-  List<dynamic> likeReplys = [];
   List<dynamic> likeReplyIds = [];
   // mutes 
   List<dynamic> mutesUids = [];
@@ -97,8 +92,7 @@ class MainModel extends ChangeNotifier {
 
   void setList() {
     // likes
-    likes = userMeta.likes;
-    likePostIds = likes.map((e) => e[likePostIdKey] as String).toList();
+    likePostIds = prefs.getStringList(likePostIdsPrefsKey) ?? [];
     // bookmarks
     // bookmarks = (userMeta.bookmarks).map((bookmark) => fromMapToBookmark(map: bookmark)).toList();
     bookmarkLabels.forEach((bookmarkLabel) {
@@ -112,34 +106,15 @@ class MainModel extends ChangeNotifier {
     followingUids = userMeta.followingUids;
     followingUids.add(currentUser!.uid);
     // likeComments
-    likeComments = userMeta.likeComments;
-    likeCommentIds = likeComments.map((e) => e[elementIdKey]).toList();
+    likeCommentIds = prefs.getStringList(likeCommentIdsPrefsKey) ?? [];
     // readPosts
-    readPosts = userMeta.readPosts;
-    readPostIds = readPosts.map((e) => e[postIdKey]).toList();
-    // readNotificationIds
-    readNotificationIds = prefs.getStringList(readNotificationIdsKey) ?? [];
+    readPostIds = prefs.getStringList(readPostIdsPrefsKey) ?? [];
     // likeReplys
-    likeReplys = userMeta.likeReplys;
-    likeReplyIds = likeReplys.map((likeReply) => likeReply[likeReplyIdKey]).toList();
+    likeReplyIds = prefs.getStringList(likeReplyIdsPrefsKey) ?? [];
     // mutesAndBlocks
     voids.setMutesAndBlocks(prefs: prefs,currentWhisperUser: currentWhisperUser,mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
     mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
-  }
-
-  Future<void> regetCurrentUserDoc() async {
-    currentUser = FirebaseAuth.instance.currentUser;
-    final currentUserDoc =  await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
-    notifyListeners();
-  }
-
-  Future<void> addNotificationToReadNotificationIds({ required Map<String,dynamic> notification}) async {
-    final String notificationId = notification[notificationIdKey];
-    readNotificationIds.add(notificationId);
-    notifyListeners();
-    await prefs.setStringList(readNotificationIdsKey, readNotificationIds);
   }
   
   void reload() {

@@ -34,7 +34,7 @@ class CommentNotification {
   final bool isDelete;
   final bool isNFTicon;
   final bool isOfficial;
-  final bool isRead;
+  bool isRead;
   final String notificationId;
   final String passiveUid;
   final String postTitle;

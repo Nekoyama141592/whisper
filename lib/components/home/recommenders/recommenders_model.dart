@@ -31,8 +31,8 @@ class RecommendersModel extends ChangeNotifier {
   bool isLoading = false;
   // user
   User? currentUser;
-  late UserMeta userMeta;
-  late WhisperUser currentWhisperUser;
+  // late UserMeta userMeta;
+  // late WhisperUser currentWhisperUser;
   Query<Map<String, dynamic>> getQuery() {
     final x = postColRef.orderBy(scoreKey, descending: true).limit(oneTimeReadCount);
     return x;
@@ -75,7 +75,6 @@ class RecommendersModel extends ChangeNotifier {
     startLoading();
     audioPlayer = AudioPlayer();
     setCurrentUser();
-    await setCurrentUserDoc();
     prefs = await SharedPreferences.getInstance();
     voids.setMutesAndBlocks(prefs: prefs, currentWhisperUser: currentWhisperUser, mutesIpv6AndUids: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blocksIpv6AndUids: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getRecommenders();
@@ -98,22 +97,8 @@ class RecommendersModel extends ChangeNotifier {
     currentUser = FirebaseAuth.instance.currentUser;
   }
 
-  void getReadPostIds() {
-    List<dynamic> readPosts = userMeta.readPosts;
-    readPosts.forEach((readPost) {
-      readPostIds.add(readPost[postIdKey]);
-    });
-  }
-
   void seek(Duration position) {
     audioPlayer.seek(position);
-  }
-
-  Future<void> setCurrentUserDoc() async {
-    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
-    userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
-    final DocumentSnapshot<Map<String,dynamic>> currentWhisperDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    currentWhisperUser = fromMapToWhisperUser(userMap: currentWhisperDoc.data()! );
   }
   
   Future<void> onRefresh() async {
