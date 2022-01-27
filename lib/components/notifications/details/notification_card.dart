@@ -8,7 +8,6 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -63,7 +62,7 @@ class NotificationCard extends ConsumerWidget {
               subtitle: Text(secondSubTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
               onTap: () async {
                 final String givePostId = replyNotification.postId;
-                await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification.data()!, oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: giveCommentId, givePostId: givePostId);
+                await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification.toJson(), oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: giveCommentId, givePostId: givePostId);
               },
             )
           ],

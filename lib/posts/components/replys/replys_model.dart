@@ -317,6 +317,7 @@ class ReplysModel extends ChangeNotifier {
       isDelete: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,
+      isRead: false,
       notificationId: notificationId, 
       passiveUid: passiveWhisperUser.uid,
       postId: whisperComment.postId,

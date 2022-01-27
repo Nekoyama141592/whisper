@@ -161,7 +161,6 @@ class SignupModel extends ChangeNotifier {
       likeReplys: [],
       likes: [],
       language: language, 
-      readNotifications: [],
       readPosts: [],
       searchHistory: [],
       uid: uid,

@@ -65,7 +65,6 @@ const String notificationIdKey = 'notificationId';
 const String numberKey = 'number';
 const String officialAdsensesKey = 'officialAdsenses';
 const String otherLinksKey = 'otherLinks';
-const String readNotificationsKey = 'readNotiications'; // db
 const String readNotificationIdsKey = 'readNotificationIds'; // sharedPrefs
 const String readPostsKey = 'readPosts';
 const String passiveUidKey = 'passiveUid';

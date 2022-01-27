@@ -180,6 +180,7 @@ class CommentsModel extends ChangeNotifier {
         isDelete: false,
         isNFTicon: currentWhisperUser.isNFTicon,
         isOfficial: currentWhisperUser.isOfficial,
+        isRead: false,
         notificationId: 'commentNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
         passiveUid: whisperPost.uid,
         postTitle: whisperPost.title,

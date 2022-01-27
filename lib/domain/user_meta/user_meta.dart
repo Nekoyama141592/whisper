@@ -17,7 +17,6 @@ class UserMeta {
     required this.likeReplys,
     required this.likes,
     required this.language,
-    required this.readNotifications,
     required this.readPosts,
     required this.searchHistory,
     required this.uid,
@@ -34,7 +33,6 @@ class UserMeta {
   List<dynamic> likeReplys;
   List<dynamic> likes;
   String language;
-  List<dynamic> readNotifications;
   List<dynamic> readPosts;
   List<dynamic> searchHistory;
   String uid;
