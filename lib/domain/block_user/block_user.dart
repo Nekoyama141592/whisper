@@ -1,11 +1,11 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'mutesIpv6AndUid.g.dart';
+part 'block_user.g.dart';
 
 @JsonSerializable()
-class MutesIpv6AndUid {
-  MutesIpv6AndUid({
+class BlockUser {
+  BlockUser({
     required this.createdAt,
     required this.ipv6,
     required this.uid
@@ -15,7 +15,7 @@ class MutesIpv6AndUid {
   final String ipv6;
   final String uid;
 
-  factory MutesIpv6AndUid.fromJson(Map<String,dynamic> json) => _$MutesIpv6AndUidFromJson(json);
+  factory BlockUser.fromJson(Map<String,dynamic> json) => _$BlocksIpv6AndUidFromJson(json);
 
-  Map<String,dynamic> toJson() => _$MutesIpv6AndUidToJson(this);
+  Map<String,dynamic> toJson() => _$BlocksIpv6AndUidToJson(this);
 }
