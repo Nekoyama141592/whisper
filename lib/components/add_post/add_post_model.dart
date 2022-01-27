@@ -213,7 +213,6 @@ class AddPostModel extends ChangeNotifier {
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
-      bookmarks: [],
       bookmarkCount: 0,
       commentCount: 0,
       commentsState: commentsState, 
@@ -229,7 +228,6 @@ class AddPostModel extends ChangeNotifier {
       isNFTicon: currentWhiseprUser.isNFTicon,
       isOfficial: currentWhiseprUser.isOfficial,
       isPinned: false,
-      likes: [],
       likeCount: 0,
       links: [link], 
       noDisplayWords: currentWhiseprUser.noDisplayWords,

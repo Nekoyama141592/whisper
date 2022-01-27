@@ -8,7 +8,6 @@ class Post{
   Post({
     required this.accountName,
     required this.audioURL,
-    required this.bookmarks,
     required this.bookmarkCount,
     required this.commentCount,
     required this.commentsState,
@@ -24,7 +23,6 @@ class Post{
     required this.isNFTicon,
     required this.isOfficial,
     required this.isPinned,
-    required this.likes,
     required this.likeCount,
     required this.links,
     required this.noDisplayWords,
@@ -46,7 +44,6 @@ class Post{
   });
   String accountName;
   String audioURL;
-  List<dynamic> bookmarks;
   int bookmarkCount;
   int commentCount;
   String commentsState;
@@ -62,7 +59,6 @@ class Post{
   bool isNFTicon;
   bool isOfficial;
   bool isPinned;
-  List<dynamic> likes;
   int likeCount;
   List<dynamic> links;
   List<dynamic> noDisplayWords;

@@ -9,7 +9,6 @@ part of 'post.dart';
 Post _$PostFromJson(Map<String, dynamic> json) => Post(
       accountName: json['accountName'] as String,
       audioURL: json['audioURL'] as String,
-      bookmarks: json['bookmarks'] as List<dynamic>,
       bookmarkCount: json['bookmarkCount'] as int,
       commentCount: json['commentCount'] as int,
       commentsState: json['commentsState'] as String,
@@ -25,7 +24,6 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       isNFTicon: json['isNFTicon'] as bool,
       isOfficial: json['isOfficial'] as bool,
       isPinned: json['isPinned'] as bool,
-      likes: json['likes'] as List<dynamic>,
       likeCount: json['likeCount'] as int,
       links: json['links'] as List<dynamic>,
       noDisplayWords: json['noDisplayWords'] as List<dynamic>,
@@ -49,7 +47,6 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'accountName': instance.accountName,
       'audioURL': instance.audioURL,
-      'bookmarks': instance.bookmarks,
       'bookmarkCount': instance.bookmarkCount,
       'commentCount': instance.commentCount,
       'commentsState': instance.commentsState,
@@ -65,7 +62,6 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'isNFTicon': instance.isNFTicon,
       'isOfficial': instance.isOfficial,
       'isPinned': instance.isPinned,
-      'likes': instance.likes,
       'likeCount': instance.likeCount,
       'links': instance.links,
       'noDisplayWords': instance.noDisplayWords,

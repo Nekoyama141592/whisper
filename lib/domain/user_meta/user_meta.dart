@@ -13,12 +13,7 @@ class UserMeta {
     required this.gender,
     required this.isAdmin,
     required this.isDelete,
-    required this.likeComments,
-    required this.likeReplys,
-    required this.likes,
     required this.language,
-    required this.readPosts,
-    required this.searchHistory,
     required this.uid,
     required this.updatedAt,
   });
@@ -29,12 +24,7 @@ class UserMeta {
   String gender;
   bool isAdmin;
   bool isDelete;
-  List<dynamic> likeComments;
-  List<dynamic> likeReplys;
-  List<dynamic> likes;
   String language;
-  List<dynamic> readPosts;
-  List<dynamic> searchHistory;
   String uid;
   dynamic updatedAt;
 

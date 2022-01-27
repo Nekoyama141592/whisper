@@ -157,12 +157,7 @@ class SignupModel extends ChangeNotifier {
       gender: gender, 
       isAdmin: false,
       isDelete: false,
-      likeComments: [],
-      likeReplys: [],
-      likes: [],
       language: language, 
-      readPosts: [],
-      searchHistory: [],
       uid: uid,
       updatedAt: now,
     ).toJson();
