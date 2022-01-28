@@ -9,6 +9,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
+import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 
 
@@ -28,11 +29,8 @@ class BlocksUsersModel extends ChangeNotifier {
 
   Future<void> init() async {
     startLoading();
-    final List<dynamic> blocksIpv6AndUids = currentUserDoc[blocksIpv6AndUidsKey];
-    List<dynamic> blocksUids = [];
-    blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
-      blocksUids.add(blocksIpv6AndUid[uidKey]);
-    });
+    final List<BlockUser> blockUsers = currentUserDoc[blocksIpv6AndUidsKey];
+    List<String> blocksUids = blockUsers.map((e) => e.uid).toList();
     await getBlocksUserDocs(blocksUids: blocksUids);
     endLoading();
   }
@@ -50,10 +48,7 @@ class BlocksUsersModel extends ChangeNotifier {
   Future<void> getBlocksUserDocs({ required List<dynamic> blocksUids }) async {
     if (blocksUids.isNotEmpty) {
       await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: blocksUids).get().then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-          blocksUserDocs.add(doc);
-        });
-        notifyListeners();
+        blocksUserDocs = qshot.docs.map((doc)=> doc).toList();
       });
     }
   }
