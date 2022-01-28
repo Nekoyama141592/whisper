@@ -37,10 +37,9 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: postsFieldKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set({
-      uidKey: mainModel.currentWhisperUser.uid,
-      createdAtKey: Timestamp.now(),
-    });
+    final Timestamp now = Timestamp.now();
+    final LikePost likePost = LikePost(activeUid: mainModel.userMeta.uid,createdAt: now, postId: whisperPost.postId);
+    await likeChildRef(parentColKey: postsFieldKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set(likePost.toJson());
   }
   
   Future<void> addLikesToCurrentUser({ required Post whisperPost, required MainModel mainModel }) async {
@@ -91,20 +90,18 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await bookmarkChildRef(postId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set({
-      uidKey: mainModel.currentWhisperUser.uid,
-      createdAtKey: Timestamp.now(),
-    });
+    final Bookmark bookmark = Bookmark(activeUid: mainModel.userMeta.uid,createdAt: Timestamp.now(),postId: whisperPost.postId);
+    await bookmarkChildRef(postId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set(bookmark.toJson());
   }
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
-    final Bookmark bookmark = Bookmark(activeUid: mainModel.userMeta.uid,createdAt: Timestamp.now(),postId: whisperPost.postId,);
+    final Bookmark bookmark = Bookmark(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,);
     final String uid = mainModel.userMeta.uid;
     await newTokenChildRef(uid: uid, now: now.toDate()).set(bookmark.toJson());
     await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId ).update({
-      bookmarksKey: FieldValue.arrayUnion([bookmark]),
-      updatedAtKey: now,
+      bookmarksFieldKey: FieldValue.arrayUnion([bookmark]),
+      updatedAtFieldKey: now,
     });
   }
 

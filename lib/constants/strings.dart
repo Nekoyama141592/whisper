@@ -83,6 +83,7 @@ const String tokenTypeFieldKey = 'tokenType';
 const String tokenToSearchFieldKey = 'tokenToSearch';
 const String numberFieldKey = 'number';
 const String nftOwnersFieldKey = 'nftOwners';
+const String updatedAtFieldKey = 'updatedAt';
 // path
 const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';

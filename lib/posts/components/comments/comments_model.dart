@@ -60,7 +60,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
-    await FirebaseFirestore.instance.collection(commentsKey).where(postIdKey,isEqualTo: postId).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await FirebaseFirestore.instance.collection(commentsFieldKey).where(postIdFieldKey,isEqualTo: postId).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
@@ -111,7 +111,7 @@ class CommentsModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final whisperComment = fromMapToWhisperComment(commentMap: commentMap);
-    await FirebaseFirestore.instance.collection(commentsKey).doc(whisperComment.commentId).set(commentMap);
+    await FirebaseFirestore.instance.collection(commentsFieldKey).doc(whisperComment.commentId).set(commentMap);
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
       final Timestamp now = Timestamp.now();
@@ -126,7 +126,7 @@ class CommentsModel extends ChangeNotifier {
     final WhisperComment whisperComment = WhisperComment(
       accountName: currentWhisperUser.accountName,
       comment: comment, 
-      commentId: commentKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+      commentId: 'comment' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
       createdAt: now,
       followerCount: currentWhisperUser.followerCount,
       ipv6: ipv6, 
@@ -191,10 +191,8 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    await likeChildRef(parentColKey: commentsKey, uniqueId: whisperComment.commentId , activeUid: currentWhisperUser.uid ).set({
-      uidKey: currentWhisperUser.uid,
-      createdAtKey: Timestamp.now(),
-    });
+    final LikeComment likeComment = LikeComment(activeUid: currentWhisperUser.uid,createdAt: Timestamp.now(),commentId: whisperComment.commentId);
+    await likeChildRef(parentColKey: commentsFieldKey, uniqueId: whisperComment.commentId , activeUid: currentWhisperUser.uid ).set(likeComment.toJson());
   }
 
   Future<void> createLikeCommentDoc({ required String commentId, required MainModel mainModel }) async {
@@ -220,7 +218,7 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: commentsKey, uniqueId: whisperComment.commentId , activeUid: mainModel.currentWhisperUser.uid ).delete();
+    await likeChildRef(parentColKey: commentsFieldKey, uniqueId: whisperComment.commentId , activeUid: mainModel.currentWhisperUser.uid ).delete();
   }
 
   Future<void> removeLikedCommentsFromCurrentUser({ required String commentId,required MainModel mainModel}) async {
@@ -244,9 +242,9 @@ class CommentsModel extends ChangeNotifier {
                 commentDocs = [];
                 sortState = SortState.byLikedUidCount;
                 await FirebaseFirestore.instance
-                .collection(commentsKey)
-                .where(postIdKey,isEqualTo: postId)
-                .orderBy(likeCountKey,descending: true )
+                .collection(commentsFieldKey)
+                .where(postIdFieldKey,isEqualTo: postId)
+                .orderBy(likeCountFieldKey,descending: true )
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -267,9 +265,9 @@ class CommentsModel extends ChangeNotifier {
                 commentDocs = [];
                 sortState = SortState.byNewestFirst;
                 await FirebaseFirestore.instance
-                .collection(commentsKey)
-                .where(postIdKey,isEqualTo: postId)
-                .orderBy(createdAtKey,descending: true)
+                .collection(commentsFieldKey)
+                .where(postIdFieldKey,isEqualTo: postId)
+                .orderBy(createdAtFieldKey,descending: true)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -290,9 +288,9 @@ class CommentsModel extends ChangeNotifier {
                 commentDocs = [];
                 sortState = SortState.byOldestFirst;
                 await FirebaseFirestore.instance
-                .collection(commentsKey)
-                .where(postIdKey,isEqualTo: postId)
-                .orderBy(createdAtKey,descending: false)
+                .collection(commentsFieldKey)
+                .where(postIdFieldKey,isEqualTo: postId)
+                .orderBy(createdAtFieldKey,descending: false)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
                   qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
@@ -331,15 +329,15 @@ class CommentsModel extends ChangeNotifier {
       break;
       case SortState.byNewestFirst:
       QuerySnapshot<Map<String, dynamic>> newSnapshots = await FirebaseFirestore.instance
-      .collection(commentsKey)
-      .where(postIdKey,isEqualTo: whisperPost.postId)
-      .orderBy(createdAtKey,descending: true)
+      .collection(commentsFieldKey)
+      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
+      .orderBy(createdAtFieldKey,descending: true)
       .endBeforeDocument(commentDocs[0])
       .limit(oneTimeReadCount)
       .get();
       // Sort by oldest first
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-      docs.sort((a,b) => (a[createdAtKey] as Timestamp ).compareTo(b[createdAtKey]));
+      docs.sort((a,b) => (a[createdAtFieldKey] as Timestamp ).compareTo(b[createdAtFieldKey]));
       // Insert at the top
       docs.forEach((doc) {
         commentDocs.insert(0, doc);
@@ -356,9 +354,9 @@ class CommentsModel extends ChangeNotifier {
     switch(sortState) {
       case SortState.byLikedUidCount:
       await FirebaseFirestore.instance
-      .collection(commentsKey)
-      .where(postIdKey,isEqualTo: whisperPost.postId)
-      .orderBy(likeCountKey,descending: true )
+      .collection(commentsFieldKey)
+      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
+      .orderBy(likeCountFieldKey,descending: true )
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {
@@ -369,9 +367,9 @@ class CommentsModel extends ChangeNotifier {
       break;
       case SortState.byNewestFirst:
       await FirebaseFirestore.instance
-      .collection(commentsKey)
-      .where(postIdKey,isEqualTo: whisperPost.postId)
-      .orderBy(createdAtKey,descending: true)
+      .collection(commentsFieldKey)
+      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
+      .orderBy(createdAtFieldKey,descending: true)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {
@@ -380,9 +378,9 @@ class CommentsModel extends ChangeNotifier {
       break;
       case SortState.byOldestFirst:
       await FirebaseFirestore.instance
-      .collection(commentsKey)
-      .where(postIdKey,isEqualTo: whisperPost.postId)
-      .orderBy(createdAtKey,descending: false)
+      .collection(commentsFieldKey)
+      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
+      .orderBy(createdAtFieldKey,descending: false)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
       .get().then((qshot) {
