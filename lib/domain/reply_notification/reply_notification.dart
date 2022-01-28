@@ -46,7 +46,7 @@ class ReplyNotification {
   final String reply;
   final num replyScore;
   final String replyId;
-  final String tokenType = replyNotificationTokenType;
+  final String notificationType = replyNotificationType;
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;

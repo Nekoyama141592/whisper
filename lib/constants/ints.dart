@@ -10,3 +10,4 @@ const int plusOne = 1;
 const int minusOne = -1;
 const int tenCount = 10;
 const int tokenTypeStartIndex = 10;
+const int notificationTypeStartIndex = 22;

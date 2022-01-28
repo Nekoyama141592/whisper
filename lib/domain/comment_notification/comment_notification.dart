@@ -42,7 +42,7 @@ class CommentNotification {
   final String passiveUid;
   final String postTitle;
   final String postId;
-  final String tokenType = commentNotificationTokenType;
+  final String notificationType = commentNotificationType;
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;

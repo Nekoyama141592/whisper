@@ -24,7 +24,9 @@ String returnTokenId({ required DateTime now }) {
 String returnTokenTypeString({ required TokenType tokenType } ) {
   return tokenType.toString().substring(tokenTypeStartIndex);
 }
-
+String returnNotificationTypeString({ required NotificationType notifcationType }) {
+  return notifcationType.toString().substring(notificationTypeStartIndex);
+}
 // strings
 const String bookmarkLabelString = 'bookmarkLabel';
 const String bookmarkLabelsString = 'bookmarkLabels';
@@ -57,8 +59,10 @@ final String likeReplyTokenType = returnTokenTypeString(tokenType: TokenType.lik
 final String searchHistoryTokenType = returnTokenTypeString(tokenType: TokenType.searchHistory);
 final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.readPost);
 // tokenType(notification)
-const String commentNotificationTokenType = 'commentNotification';
-const String replyNotificationTokenType = 'replyNotification';
+final String authNotificationType = returnNotificationTypeString(notifcationType: NotificationType.authNotification);
+final String officialNotificationType = returnNotificationTypeString(notifcationType: NotificationType.officialNotification);
+final String commentNotificationType = returnNotificationTypeString(notifcationType: NotificationType.commentNotification);
+final String replyNotificationType = returnNotificationTypeString(notifcationType: NotificationType.replyNotification );
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String createdAtFieldKey = 'createdAt';
@@ -92,4 +96,5 @@ const String userImagesPathKey = 'userImages';
 // mapKey
 const String ipv6MapKey = 'ipv6';
 const String tokenTypeMapKey = 'tokenType';
+const String notificationTypeMapKey = 'notificationType';
 const String uidMapKey = 'uid';

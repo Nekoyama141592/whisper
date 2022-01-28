@@ -2,6 +2,19 @@ import 'package:whisper/constants/strings.dart';
 
 enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
 enum PostType { bookmarks, feeds, myProfile, postSearch, recommenders, userShow ,onePost} 
+enum NotificationType { authNotification, commentNotification, replyNotification,officialNotification, }
+dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
+  final String notificationTypeString = json[notificationTypeMapKey];
+  if (notificationTypeString == authNotificationType) {
+    return NotificationType.authNotification;
+  } else if (notificationTypeString == officialNotificationType) {
+    return NotificationType.officialNotification;
+  } else if (notificationTypeString == commentNotificationType) {
+    return NotificationType.commentNotification;
+  } else if (notificationTypeString == replyNotificationType) {
+    return NotificationType.replyNotification;
+  }
+}
 enum TokenType { bookmarkLabel,following,likePost,likeComment,likeReply,searchHistory,readPost,watchlist,blockUser,muteComment,mutePost,muteReply,muteUser }
 dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
