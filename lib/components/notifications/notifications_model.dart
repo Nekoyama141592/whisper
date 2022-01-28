@@ -6,6 +6,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/enums.dart';
 // domain
 import 'package:whisper/domain/auth_notification/auth_notification.dart';
@@ -32,7 +33,7 @@ class NotificationsModel extends ChangeNotifier {
 
   Future<void> init() async {
     startLoading();
-    final qshot = await notificationParentRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).get();
+    final qshot = await notificationParentRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).get();
     qshot.docs.forEach((DocumentSnapshot<Map<String, dynamic>> notificationDoc ) {
       final Map<String,dynamic> json = notificationDoc.data()!;
       final NotificationType notificationType = jsonToNotificationType(json: json);
