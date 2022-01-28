@@ -53,7 +53,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel: mainModel, map: reply);
+            await postFutures.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid, ipv6: whisperReply.ipv6);
           } ,
         ),
 
@@ -62,7 +62,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel: mainModel, map: reply);
+            await postFutures.blockUser(mainModel: mainModel,passiveUid: whisperReply.uid, ipv6: whisperReply.ipv6);
           },
         ),
       ] : [],

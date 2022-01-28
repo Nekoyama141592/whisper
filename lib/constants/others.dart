@@ -1,6 +1,7 @@
 // dart
 import 'dart:io';
 // material
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -86,7 +87,7 @@ DocumentReference<Map<String, dynamic>> followerChildRef({ required String passi
 }
 
 CollectionReference<Map<String, dynamic>> likesParentRef({ required String parentColKey ,required String uniqueId }) {
-  return FirebaseFirestore.instance.collection(parentColKey).doc(uniqueId).collection(likesKey);
+  return FirebaseFirestore.instance.collection(parentColKey).doc(uniqueId).collection(likesFieldKey);
 }
 
 DocumentReference<Map<String, dynamic>> likeChildRef({ required String parentColKey,  required String uniqueId, required String activeUid}) {
@@ -197,3 +198,5 @@ Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,re
 TextStyle textStyle({ required BuildContext context }) {
   return TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: 16.0 );
 }
+
+final User? firebaseAuthCurrentUser = FirebaseAuth.instance.currentUser;

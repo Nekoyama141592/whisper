@@ -128,3 +128,6 @@ const String muteUserTokenType = 'muteUser';
 // tokenType(notification)
 const String commentNotificationTokenType = 'commentNotification';
 const String replyNotificationTokenType = 'replyNotification';
+// fieldKey
+const String likesFieldKey = 'likes';
+const String tokenTypeFieldKey = 'tokenType';

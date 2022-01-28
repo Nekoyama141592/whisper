@@ -49,7 +49,7 @@ void setMutesAndBlocks({ required SharedPreferences prefs, required List<MuteUse
 
 void addMuteUser({ required List<String> mutesUids, required List<MuteUser> muteUsers, required String uid, required String ipv6  }) {
   mutesUids.add(uid);
-  final MuteUser muteUser = MuteUser(createdAt: Timestamp.now(),ipv6: ipv6,uid: uid);
+  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: Timestamp.now(),ipv6: ipv6,uid: uid);
   muteUsers.add(muteUser);
 }
 
