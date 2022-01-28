@@ -33,7 +33,7 @@ final replysProvider = ChangeNotifierProvider(
 class ReplysModel extends ChangeNotifier {
 
   String reply = "";
-  String elementState = commentKey;
+  String elementState = 'comment';
   bool isLoading = false;
   Map<String,dynamic> giveComment = {};
   // snapshots
@@ -109,9 +109,9 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 replysStream = FirebaseFirestore.instance
-                .collection(replysKey)
-                .where(elementIdKey,isEqualTo: whisperComment.commentId )
-                .orderBy(likeCountKey,descending: true )
+                .collection(replysFieldKey)
+                .where(elementIdFieldKey,isEqualTo: whisperComment.commentId )
+                .orderBy(likeCountFieldKey,descending: true )
                 .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
@@ -129,9 +129,9 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byNewestFirst;
                 replysStream = FirebaseFirestore.instance
-                .collection(replysKey)
-                .where(elementIdKey,isEqualTo: whisperComment.commentId )
-                .orderBy(createdAtKey,descending: true)
+                .collection(replysFieldKey)
+                .where(elementIdFieldKey,isEqualTo: whisperComment.commentId )
+                .orderBy(createdAtFieldKey,descending: true)
                 .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
@@ -149,9 +149,9 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byOldestFirst;
                 replysStream = FirebaseFirestore.instance
-                .collection(replysKey)
-                .where(elementIdKey,isEqualTo: whisperComment.commentId )
-                .orderBy(createdAtKey,descending: false)
+                .collection(replysFieldKey)
+                .where(elementIdFieldKey,isEqualTo: whisperComment.commentId )
+                .orderBy(createdAtFieldKey,descending: false)
                 .limit(limitIndex)
                 .snapshots();
                 notifyListeners();
@@ -192,7 +192,7 @@ class ReplysModel extends ChangeNotifier {
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = FirebaseFirestore.instance.collection(replysKey).where(elementIdKey,isEqualTo: whisperComment.commentId ).orderBy(createdAtKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = FirebaseFirestore.instance.collection(replysFieldKey).where(elementIdFieldKey,isEqualTo: whisperComment.commentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -206,25 +206,25 @@ class ReplysModel extends ChangeNotifier {
     switch(sortState) {
       case SortState.byLikedUidCount:
       replysStream = FirebaseFirestore.instance
-      .collection(replysKey)
-      .where(elementIdKey,isEqualTo: whisperComment.commentId )
-      .orderBy(likeCountKey,descending: true )
+      .collection(replysFieldKey)
+      .where(elementIdFieldKey,isEqualTo: whisperComment.commentId )
+      .orderBy(likeCountFieldKey,descending: true )
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byNewestFirst:
       replysStream = FirebaseFirestore.instance
-      .collection(replysKey)
-      .where(elementIdKey,isEqualTo: whisperComment.commentId )
-      .orderBy(createdAtKey,descending: true)
+      .collection(replysFieldKey)
+      .where(elementIdFieldKey,isEqualTo: whisperComment.commentId )
+      .orderBy(createdAtFieldKey,descending: true)
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byOldestFirst:
       replysStream = FirebaseFirestore.instance
-      .collection(replysKey)
-      .where(elementIdKey,isEqualTo: whisperComment.commentId )
-      .orderBy(createdAtKey,descending: false)
+      .collection(replysFieldKey)
+      .where(elementIdFieldKey,isEqualTo: whisperComment.commentId )
+      .orderBy(createdAtFieldKey,descending: false)
       .limit(limitIndex)
       .snapshots();
       break;
@@ -239,9 +239,9 @@ class ReplysModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
-    final String replyId = replyKey + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
+    final String replyId = 'reply' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final WhisperReply newWhisperReply = makeWhisperReply(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
-    await FirebaseFirestore.instance.collection(replysKey).doc(replyId).set(newWhisperReply.toJson());
+    await FirebaseFirestore.instance.collection(replysFieldKey).doc(replyId).set(newWhisperReply.toJson());
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
       await makeReplyNotification(elementId: elementId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
@@ -321,9 +321,9 @@ class ReplysModel extends ChangeNotifier {
   Future<void> addLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
-    await likeChildRef(parentColKey: replysKey, uniqueId: whisperReply.replyId, activeUid: currentWhisperUser.uid).set({
-      uidKey: currentWhisperUser.uid,
-      createdAtKey: Timestamp.now(),
+    await likeChildRef(parentColKey: replysFieldKey, uniqueId: whisperReply.replyId, activeUid: currentWhisperUser.uid).set({
+      uidFieldKey: currentWhisperUser.uid,
+      createdAtFieldKey: Timestamp.now(),
     });
   }
 
@@ -356,7 +356,7 @@ class ReplysModel extends ChangeNotifier {
 
   Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
     final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
-    await likeChildRef(parentColKey: replysKey, uniqueId: whisperReply.replyId, activeUid: mainModel.currentWhisperUser.uid).delete();
+    await likeChildRef(parentColKey: replysFieldKey, uniqueId: whisperReply.replyId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
 
   Future<void> removeLikedReplyOfUser({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {
@@ -364,7 +364,7 @@ class ReplysModel extends ChangeNotifier {
     mainModel.likeReplyIds.remove(whisperReply.postId);
     notifyListeners();
     final String uid = mainModel.userMeta.uid;
-    final qshot = await tokensParentRef(uid: uid).where(replyIdKey,isEqualTo: whisperReply.replyId).get();
+    final qshot = await tokensParentRef(uid: uid).where(replyIdFieldKey,isEqualTo: whisperReply.replyId).get();
     await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id ).delete();
   }
   

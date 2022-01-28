@@ -45,8 +45,8 @@ class BlocksUsersModel extends ChangeNotifier {
 
   Future<void> getBlocksUserDocs({ required List<dynamic> blocksUids }) async {
     if (blocksUids.isNotEmpty) {
-      await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: blocksUids).get().then((qshot) {
-        blocksUserDocs = qshot.docs.map((doc)=> doc).toList();
+      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: blocksUids).get().then((qshot) {
+        blocksUserDocs = qshot.docs;
       });
     }
   }
@@ -60,7 +60,7 @@ class BlocksUsersModel extends ChangeNotifier {
     blocksUids.remove(passiveUid);
     notifyListeners();
     // back
-    deleteToken;
+    getAnddeleteToken;
   }
 
 

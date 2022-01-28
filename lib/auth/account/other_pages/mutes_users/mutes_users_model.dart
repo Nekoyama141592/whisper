@@ -44,8 +44,8 @@ class MutesUsersModel extends ChangeNotifier {
 
   Future<void> getMutesUserDocs({ required List<dynamic> mutesUids }) async {
     if (mutesUids.isNotEmpty) {
-      await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: mutesUids).get().then((qshot) {
-        mutesUserDocs = qshot.docs.map((doc)=> doc).toList();
+      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: mutesUids).get().then((qshot) {
+        mutesUserDocs = qshot.docs;
       });
     }
   }
@@ -59,7 +59,7 @@ class MutesUsersModel extends ChangeNotifier {
     mutesUids.remove(passiveUid);
     notifyListeners();
     // back
-    deleteToken;
+    getAnddeleteToken;
   }
 
 }

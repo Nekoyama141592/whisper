@@ -20,7 +20,7 @@ class OneCommentModel extends ChangeNotifier {
   Future<bool> init({ required String giveCommentId}) async {
     startLoading();
     if (commentId != giveCommentId) {
-      oneCommentDoc = await FirebaseFirestore.instance.collection(commentsKey).doc(giveCommentId).get();
+      oneCommentDoc = await FirebaseFirestore.instance.collection(commentsFieldKey).doc(giveCommentId).get();
     } 
     oneCommentMap = oneCommentDoc.data()!;
     endLoading();

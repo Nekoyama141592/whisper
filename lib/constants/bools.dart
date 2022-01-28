@@ -13,8 +13,8 @@ import 'package:whisper/main_model.dart';
 
 bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required Map<String,dynamic> map}) {
   // use on comments or replys on display
-  final String uid = map[uidKey];
-  final String ipv6 = map[ipv6Key];
+  final String uid = map[uidMapKey];
+  final String ipv6 = map[ipv6MapKey];
   return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) && !mutesIpv6s.contains(ipv6) && !blocksIpv6s.contains(ipv6) ) ;
 }
 
@@ -55,7 +55,7 @@ bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesU
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
     final Post post = fromMapToPost(postMap: doc.data()!);
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(post.postId) && (doc[createdAtKey] as Timestamp).toDate().isAfter(range);
+    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
 
     case PostType.userShow:
     return true;

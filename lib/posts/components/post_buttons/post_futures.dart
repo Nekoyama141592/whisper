@@ -37,7 +37,7 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: postsKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set({
+    await likeChildRef(parentColKey: postsFieldKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set({
       uidKey: mainModel.currentWhisperUser.uid,
       createdAtKey: Timestamp.now(),
     });
@@ -151,11 +151,11 @@ class PostFutures extends ChangeNotifier {
   Future<void> removeBookmarksOfUser({ required Post whisperPost, required MainModel mainModel , required String bookmarkLabelId }) async {
     mainModel.bookmarksPostIds.remove(whisperPost.postId);
     notifyListeners();
-    final qshot = await tokensParentRef(uid: mainModel.userMeta.uid).where(postIdKey,isEqualTo: whisperPost.postId).get();
+    final qshot = await tokensParentRef(uid: mainModel.userMeta.uid).where(postIdFieldKey,isEqualTo: whisperPost.postId).get();
     final DocumentSnapshot<Map<String,dynamic>> alreadyBookmark = qshot.docs.first;
     await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: alreadyBookmark.id ).delete();
     await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId).update({
-      bookmarksKey: FieldValue.arrayRemove(mainModel.bookmarks.where((element) {
+      bookmarksFieldKey: FieldValue.arrayRemove(mainModel.bookmarks.where((element) {
         final Bookmark bookmark = fromMapToBookmark(map: element as Map<String,dynamic>);
         return bookmark.postId == whisperPost.postId;
       }).toList())
@@ -173,7 +173,7 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: postsKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).delete();
+    await likeChildRef(parentColKey: postsFieldKey, uniqueId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).delete();
   }
   
   Future<void> removeLikeOfUser({ required Post whisperPost, required MainModel mainModel}) async {

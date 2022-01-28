@@ -275,7 +275,7 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
       posts.remove(posts[i]);
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
-      await FirebaseFirestore.instance.collection(postsKey).doc(whisperPost.postId).delete();
+      await FirebaseFirestore.instance.collection(postsFieldKey).doc(whisperPost.postId).delete();
       await postChildRef(mainModel: mainModel, storagePostName: whisperPost.storagePostName).delete();
       if (whisperPost.storageImageName.isNotEmpty) {
         await postImageChildRef(mainModel: mainModel, postImageName: whisperPost.storageImageName ).delete();
@@ -306,7 +306,7 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   final Post whisperPost = fromMapToPost(postMap: post);
   final String postId = whisperPost.postId;
   mainModel.mutePostIds.add(postId);
-  results.removeWhere((result) => result[postIdKey] == postId);
+  results.removeWhere((result) => fromMapToPost(postMap: result).postId == whisperPost.postId );
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
   final Timestamp now = Timestamp.now();
@@ -338,7 +338,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
 }
 
 Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
-  results.removeWhere((result) => result[uidKey] == passiveUid);
+  results.removeWhere((result) => fromMapToPost(postMap: result).uid == passiveUid);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
 }
 
@@ -378,7 +378,7 @@ Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, req
 Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dynamic>>> docs ,required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s,required List<String> mutesPostIds }) async {
   
   if (docs.isNotEmpty) {
-    docs.sort((a,b) => (b[createdAtKey] as Timestamp).compareTo(a[createdAtKey]));
+    docs.sort((a,b) => (fromMapToPost(postMap: b.data()!).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()!).createdAt ));
     docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final whisperPost = fromMapToPost(postMap: doc.data()! );
       final String uid = whisperPost.uid;
@@ -403,7 +403,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
-      docs.sort((a,b) => (b[createdAtKey] as Timestamp ).compareTo(a[createdAtKey]));
+      docs.sort((a,b) => (fromMapToPost(postMap: b.data()!).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()).createdAt ));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()! );
         final String uid = whisperPost.uid;
@@ -474,7 +474,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required String use
       currentWhisperUser.storageImageName = storageImageName;
       currentWhisperUser.updatedAt = Timestamp.fromDate(now);
       currentWhisperUser.userName = userName;
-      await FirebaseFirestore.instance.collection(usersKey).doc(mainModel.currentWhisperUser.uid).update(
+      await FirebaseFirestore.instance.collection(usersFieldKey).doc(mainModel.currentWhisperUser.uid).update(
         currentWhisperUser.toJson()
       );
       mainModel.reload();
@@ -529,7 +529,7 @@ Future<void> follow(
     await followerChildRef(
             passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
         .set({
-      createdAtKey: Timestamp.now(),
+      createdAtFieldKey: Timestamp.now(),
       followerUidKey: mainModel.currentWhisperUser.uid,
     });
   }
@@ -551,7 +551,7 @@ Future<void> updateFollowingUidsOfCurrentUser(
     List<dynamic> followingUids,
     WhisperUser currentWhisperUser,) async {
   await FirebaseFirestore.instance
-    .collection(usersKey)
+    .collection(usersFieldKey)
     .doc(currentWhisperUser.uid)
     .update({
     followingUidsKey: followingUids,

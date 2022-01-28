@@ -97,7 +97,7 @@ class AccountModel extends ChangeNotifier {
 
   Future<void> deletePostsOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection(postsKey).where(uidKey,isEqualTo: currentUser!.uid).get()
+    .collection(postsFieldKey).where(uidFieldKey,isEqualTo: currentUser!.uid).get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       final docs = qshot.docs;
@@ -118,8 +118,8 @@ class AccountModel extends ChangeNotifier {
   
   Future<void> deleteReplysOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection(replysKey)
-    .where(uidKey,isEqualTo: currentUser!.uid)
+    .collection(replysFieldKey)
+    .where(uidFieldKey,isEqualTo: currentUser!.uid)
     .get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -140,8 +140,8 @@ class AccountModel extends ChangeNotifier {
   }
   Future<void> deleteCommentsOfCurrentUser() async {
     await FirebaseFirestore.instance
-    .collection(commentsKey)
-    .where(uidKey,isEqualTo: currentUser!.uid)
+    .collection(commentsFieldKey)
+    .where(uidFieldKey,isEqualTo: currentUser!.uid)
     .get()
     .then((qshot) {
       WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -161,7 +161,7 @@ class AccountModel extends ChangeNotifier {
     });
   }
   Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {
-    await FirebaseFirestore.instance.collection(usersKey).doc(currentWhisperUser.uid).delete().then((_) async {
+    await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentWhisperUser.uid).delete().then((_) async {
       try {
         await currentUser!.delete();
       } catch(e) {

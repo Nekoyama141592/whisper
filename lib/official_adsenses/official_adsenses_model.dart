@@ -29,7 +29,7 @@ class OfficialAdsensesModel extends ChangeNotifier {
   Future<void> onPlayButtonPressed(BuildContext context) async {
     if (!isPlayed) {
       isPlayed = true;
-      await FirebaseFirestore.instance.collection(officialAdsensesKey).orderBy(createdAtKey,descending: false).limit(oneTimeReadCount).get().then((qshot) {
+      await FirebaseFirestore.instance.collection(officialAdsensesFieldKey).orderBy(createdAtFieldKey,descending: false).limit(oneTimeReadCount).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdsenseDocs.add(doc); } );
       });
       if (officialAdsenseDocs.isNotEmpty) {

@@ -103,14 +103,14 @@ class MainModel extends ChangeNotifier {
 
   Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    final currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
+    final currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentUser!.uid).get();
     currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
-    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
+    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
   }
 
   Future<void> setBookmarkLabels() async {
-    await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).collection(bookmarkLabelsString).get().then((qshot) {
+    await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(currentUser!.uid).collection(bookmarkLabelsString).get().then((qshot) {
       bookmarkLabels = qshot.docs.map((doc) => fromMapToBookmarkLabel(map: doc.data()) ).toList();
     });
   }

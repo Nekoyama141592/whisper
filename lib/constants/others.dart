@@ -49,7 +49,7 @@ Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
 }
 
 Reference userImageParentRef({ required String uid }) {
-  return FirebaseStorage.instance.ref().child(userImagesKey).child(uid);
+  return FirebaseStorage.instance.ref().child(userImagesPathKey).child(uid);
 }
 
 Reference userImageChildRef({ required String uid, required String storageImageName }) {
@@ -58,7 +58,7 @@ Reference userImageChildRef({ required String uid, required String storageImageN
 }
 
 Reference postImageParentRef({ required MainModel mainModel }) {
-  return FirebaseStorage.instance.ref().child(postImagesKey).child(mainModel.currentUser!.uid);
+  return FirebaseStorage.instance.ref().child(postImagesPathKey).child(mainModel.currentUser!.uid);
 }
 
 Reference postImageChildRef({ required MainModel mainModel, required String postImageName }) {
@@ -67,7 +67,7 @@ Reference postImageChildRef({ required MainModel mainModel, required String post
 }
 
 Reference postParentRef({ required MainModel mainModel }) {
-  return FirebaseStorage.instance.ref().child(postsKey).child(mainModel.currentWhisperUser.uid);
+  return FirebaseStorage.instance.ref().child(postsFieldKey).child(mainModel.currentWhisperUser.uid);
 }
 
 Reference postChildRef({ required MainModel mainModel, required String storagePostName }) {
@@ -75,10 +75,10 @@ Reference postChildRef({ required MainModel mainModel, required String storagePo
   return parentRef.child(storagePostName);
 }
 
-final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection(postsKey);
+final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection(postsFieldKey);
 
 CollectionReference<Map<String, dynamic>> followersParentRef({ required String passiveUid }) {
-  return FirebaseFirestore.instance.collection(usersKey).doc(passiveUid).collection(followersKey);
+  return FirebaseFirestore.instance.collection(usersFieldKey).doc(passiveUid).collection(followersFieldKey);
 }
 
 DocumentReference<Map<String, dynamic>> followerChildRef({ required String passiveUid , required String followerUid}) {
@@ -96,7 +96,7 @@ DocumentReference<Map<String, dynamic>> likeChildRef({ required String parentCol
 }
 
 CollectionReference<Map<String, dynamic>> bookmarkParentRef({required String postId }) {
-  return FirebaseFirestore.instance.collection(postsKey).doc(postId).collection(bookmarksKey);
+  return FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).collection(bookmarksFieldKey);
 }
 
 DocumentReference<Map<String, dynamic>> bookmarkChildRef({required String postId, required String activeUid}) {
@@ -105,37 +105,37 @@ DocumentReference<Map<String, dynamic>> bookmarkChildRef({required String postId
 }
 
 DocumentReference<Map<String, dynamic>> commentNotificationRef({ required String passiveUid , required String notificationId}) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(passiveUid).collection(commentNotificationsKey).doc(notificationId);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(passiveUid).collection(commentNotificationsFieldKey).doc(notificationId);
 }
 
 DocumentReference<Map<String, dynamic>> replyNotificationRef({ required String passiveUid , required String notificationId}) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(passiveUid).collection(replyNotificationsKey).doc(notificationId);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(passiveUid).collection(replyNotificationsFieldKey).doc(notificationId);
 }
 CollectionReference<Map<String,dynamic>> bookmarkLabelParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(bookmarkLabelsString);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(bookmarkLabelsString);
 }
 DocumentReference<Map<String, dynamic>> bookmarkLabelRef({ required String uid, required String bookmarkLabelId }) {
   return bookmarkLabelParentRef(uid: uid).doc(bookmarkLabelId);
 }
 
 CollectionReference<Map<String, dynamic>>  commentNotificationsParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(commentNotificationsKey);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(commentNotificationsFieldKey);
 }
 
 CollectionReference<Map<String, dynamic>>  replyNotificationsParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(replyNotificationsKey);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(replyNotificationsFieldKey);
 }
 
 CollectionReference<Map<String, dynamic>>  tokensParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(tokensString);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(tokensString);
 }
 
 DocumentReference<Map<String, dynamic>>  newTokenChildRef({ required String uid , required DateTime now}) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(uid).collection(tokensString).doc(returnTokenId(now: now));
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(tokensString).doc(returnTokenId(now: now));
 }
 
 DocumentReference<Map<String,dynamic>> alreadyTokenRef({ required UserMeta userMeta,required String alreadyTokenDocId }) {
-  return FirebaseFirestore.instance.collection(userMetaKey).doc(userMeta.uid).collection(tokensString).doc(alreadyTokenDocId);
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(userMeta.uid).collection(tokensString).doc(alreadyTokenDocId);
 }
 
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
@@ -190,7 +190,7 @@ BlockUser fromMapToBlocksIpv6AndUid({ required Map<String,dynamic> map }) {
 Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,required List<String> searchWords }) {
   Query<Map<String,dynamic>> query = FirebaseFirestore.instance.collection(collectionKey).limit(oneTimeReadCount);
   searchWords.forEach((word) {
-    query = query.where(tokenToSearchKey + '.' + word,isEqualTo: true);
+    query = query.where(tokenToSearchFieldKey + '.' + word,isEqualTo: true);
   });
   return query;
 }

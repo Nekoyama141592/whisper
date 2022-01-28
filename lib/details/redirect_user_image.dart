@@ -39,7 +39,7 @@ class RedirectUserImage extends ConsumerWidget {
     return InkWell(
       onTap: () async {
         if (userShowModel.passiveUid != passiveUserDocId) {
-          final DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc = passiveUserDocId == mainModel.currentWhisperUser.uid ? mainModel.currentUserDoc : await FirebaseFirestore.instance.collection(usersKey).doc(passiveUserDocId).get();
+          final DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc = passiveUserDocId == mainModel.currentWhisperUser.uid ? mainModel.currentUserDoc : await FirebaseFirestore.instance.collection(usersFieldKey).doc(passiveUserDocId).get();
           final WhisperUser passiveManyUpdateUser = fromMapToWhisperUser(userMap: givePassiveUserDoc.data()!);
           if (!givePassiveUserDoc.exists) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));

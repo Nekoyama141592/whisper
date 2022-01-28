@@ -139,7 +139,7 @@ class SignupModel extends ChangeNotifier {
       userName: userName,
       walletAddress: '',
     ).toJson();
-    await FirebaseFirestore.instance.collection(usersKey).doc(uid).set(whisperUserMap);
+    await FirebaseFirestore.instance.collection(usersFieldKey).doc(uid).set(whisperUserMap);
   }
 
   Future<void> createUserMeta({ required String uid }) async {
@@ -158,7 +158,7 @@ class SignupModel extends ChangeNotifier {
       uid: uid,
       updatedAt: now,
     ).toJson();
-    await FirebaseFirestore.instance.collection(userMetaKey).doc(uid).set(userMetaMap);
+    await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMetaMap);
     await others.bookmarkLabelRef(uid: uid, bookmarkLabelId: bookmarkLabelId).set(
       returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId)
     );

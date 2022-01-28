@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/domain/post/post.dart';
 
 class TimestampDisplay extends StatelessWidget {
 
@@ -18,8 +18,8 @@ class TimestampDisplay extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier, 
       builder: (_,currentSongMap,__) {
-        
-        final Timestamp createdAt = currentSongMap[createdAtKey];
+        final Post whisperPost = fromMapToPost(postMap: currentSongMap);
+        final Timestamp createdAt = whisperPost.createdAt as Timestamp;
         final createdAtDate = createdAt.toDate();
         final createdAtYear = createdAtDate.year.toString();
         final createdAtMonth = createdAtDate.month.toString();

@@ -11,5 +11,5 @@ final nftownersProvider = ChangeNotifierProvider(
 );
 
 class NFTownersModel extends ChangeNotifier {
-  Stream<QuerySnapshot> nftOwnersStream = FirebaseFirestore.instance.collection(nftOwnersKey).orderBy(numberKey,descending: false).snapshots();
+  Stream<QuerySnapshot> nftOwnersStream = FirebaseFirestore.instance.collection(nftOwnersFieldKey).orderBy(numberFieldKey,descending: false).snapshots();
 }
