@@ -17,11 +17,13 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/domain/following/following.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -403,7 +405,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
-      docs.sort((a,b) => (fromMapToPost(postMap: b.data()!).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()).createdAt ));
+      docs.sort((a,b) => (fromMapToPost(postMap: b.data()).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()).createdAt ));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()! );
         final String uid = whisperPost.uid;
@@ -513,50 +515,46 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
   );
 }
 
-Future<void> follow(
-    BuildContext context,
-    MainModel mainModel,
-    WhisperUser currentWhisperUser) async {
-  final followingUids = mainModel.followingUids;
-  if (followingUids.length >= 500) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('フォローできるのは500人までです')));
+Future<void> follow({ required BuildContext context,required MainModel mainModel, required String passiveUid }) async {
+  
+  if (mainModel.followingUids.length >= maxFollowCount) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Limit' + maxFollowCount.toString() + 'Following' )));
   } else {
-    followingUids.add(currentWhisperUser.uid);
+    mainModel.followingUids.add(passiveUid);
     mainModel.reload();
-    await updateFollowingUidsOfCurrentUser(
-        followingUids, mainModel.currentWhisperUser);
-    await followerChildRef(
-            passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
-        .set({
-      createdAtFieldKey: Timestamp.now(),
-      followerUidFKey: mainModel.currentWhisperUser.uid,
-    });
+    await createFollowingToken(userMeta: mainModel.userMeta, passiveUid: passiveUid);
   }
 }
 
-Future<void> unfollow(
-    MainModel mainModel,
-    WhisperUser currentWhisperUser) async {
-  final followingUids = mainModel.followingUids;
-  followingUids.remove(currentWhisperUser.uid);
+// Future<void> unfollow(
+//     MainModel mainModel,
+//     WhisperUser currentWhisperUser) async {
+//   final followingUids = mainModel.followingUids;
+//   followingUids.remove(currentWhisperUser.uid);
+//   mainModel.reload();
+//   await createFollowingToken(followingUids, mainModel.currentWhisperUser);
+//   await followerChildRef(
+//     passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
+//   .delete();
+// }
+Future<void> unfollow({ required MainModel mainModel,required String passiveUid }) async {
+  mainModel.followingUids.remove(passiveUid);
   mainModel.reload();
-  await updateFollowingUidsOfCurrentUser(followingUids, mainModel.currentWhisperUser);
-  await followerChildRef(
-    passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
-  .delete();
+  await deleteFollowingToken(userMeta: mainModel.userMeta, passiveUid: passiveUid);
 }
 
-Future<void> updateFollowingUidsOfCurrentUser(
-    List<dynamic> followingUids,
-    WhisperUser currentWhisperUser,) async {
-  await FirebaseFirestore.instance
-    .collection(usersFieldKey)
-    .doc(currentWhisperUser.uid)
-    .update({
-    followingUidsKey: followingUids,
-  });
+Future<void> createFollowingToken({ required UserMeta userMeta,required String passiveUid }) async {
+  final Timestamp now = Timestamp.now();
+  final Following following = Following(myUid: userMeta.uid, createdAt: now, passiveUid: passiveUid);
+  await newTokenChildRef(uid: userMeta.uid, now: now.toDate()).set(following.toJson());
 }
+
+Future<void> deleteFollowingToken({ required UserMeta userMeta, required String passiveUid }) async {
+  final parentRef = tokensParentRef(uid: userMeta.uid);
+  final qshot = await parentRef.where(passiveUidFieldKey,isEqualTo: passiveUid).get();
+  await parentRef.doc(qshot.docs.first.id).delete();
+}
+
 void showFlashDialogue({ required BuildContext context,required Widget content, required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder }) {
   context.showFlashDialog(
     persistent: true,

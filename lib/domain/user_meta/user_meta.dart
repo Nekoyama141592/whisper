@@ -9,7 +9,6 @@ class UserMeta {
     required this.authNotifications,
     required this.birthDay,
     required this.createdAt,
-    required this.followingUids,
     required this.gender,
     required this.isAdmin,
     required this.isDelete,
@@ -20,7 +19,6 @@ class UserMeta {
   List<dynamic> authNotifications;
   dynamic birthDay;
   dynamic createdAt;
-  List<dynamic> followingUids;
   String gender;
   bool isAdmin;
   bool isDelete;

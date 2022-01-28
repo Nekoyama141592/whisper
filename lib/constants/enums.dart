@@ -2,11 +2,13 @@ import 'package:whisper/constants/strings.dart';
 
 enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
 enum PostType { bookmarks, feeds, myProfile, postSearch, recommenders, userShow ,onePost} 
-enum TokenType { bookmarkLabel,likePost,likeComment,likeReply,searchHistory,readPost,watchlist,blockUser,muteComment,mutePost,muteReply,muteUser }
+enum TokenType { bookmarkLabel,following,likePost,likeComment,likeReply,searchHistory,readPost,watchlist,blockUser,muteComment,mutePost,muteReply,muteUser }
 dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
   if (tokenTypeString == bookmarkLabelTokenType) {
     return TokenType.bookmarkLabel;
+  } else if(tokenTypeString == followingTokenType) {
+    return TokenType.following;
   } else if (tokenTypeString == likePostTokenType) {
     return TokenType.likePost;
   } else if (tokenTypeString == likeCommentTokenType) {

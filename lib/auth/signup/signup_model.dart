@@ -150,7 +150,6 @@ class SignupModel extends ChangeNotifier {
       authNotifications: [],
       birthDay: timestampBirthDay,
       createdAt: now,
-      followingUids: [],
       gender: gender, 
       isAdmin: false,
       isDelete: false,

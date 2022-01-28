@@ -45,6 +45,7 @@ const String speedPrefsKey = 'speed';
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
 final String bookmarkLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkLabel);
 // const String bookmarkPostTokenType = 'bookmarkPost';
+final String followingTokenType = returnTokenTypeString(tokenType: TokenType.following);
 final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);
 final String likeCommentTokenType = returnTokenTypeString(tokenType: TokenType.likeComment);
 final String watchlistTokenType = returnTokenTypeString(tokenType: TokenType.watchlist);
@@ -84,6 +85,7 @@ const String tokenToSearchFieldKey = 'tokenToSearch';
 const String numberFieldKey = 'number';
 const String nftOwnersFieldKey = 'nftOwners';
 const String updatedAtFieldKey = 'updatedAt';
+const String passiveUidFieldKey = 'passiveUid';
 // path
 const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';

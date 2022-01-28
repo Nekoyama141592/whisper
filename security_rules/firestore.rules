@@ -155,8 +155,7 @@ service cloud.firestore {
       // && isAuthenticated()
       // && request.resource.data.uid == request.auth.uid;
       allow create: if true;
-      allow update: if isAuthenticated()
-      && request.resource.data.followingUids.size() <= 500;
+      allow update: if isAuthenticated();
       allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;

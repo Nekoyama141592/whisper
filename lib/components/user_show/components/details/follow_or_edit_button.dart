@@ -26,7 +26,7 @@ class FollowOrEditButton extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final verticalPadding = 12.0;
-
+    final String passiveUid = passiveWhisperUser.uid;
     return passiveWhisperUser.uid == mainModel.currentWhisperUser.uid ?
     // 変更
     RoundedButton(
@@ -46,7 +46,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await voids.follow(context, mainModel, passiveWhisperUser);
+          await voids.follow(context: context, mainModel: mainModel, passiveUid: passiveUid);
         } catch(e) {
           print(e.toString());          
         }
@@ -61,7 +61,7 @@ class FollowOrEditButton extends StatelessWidget {
       horizontalPadding: 10.0,
       press: () async {
         try {
-          await voids.unfollow(mainModel, passiveWhisperUser);
+          await voids.unfollow(mainModel: mainModel, passiveUid: passiveUid);
         } catch(e) {
           print(e.toString());
         }
