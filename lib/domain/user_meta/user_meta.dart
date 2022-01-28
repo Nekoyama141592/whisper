@@ -6,7 +6,6 @@ part 'user_meta.g.dart';
 @JsonSerializable()
 class UserMeta {
   UserMeta({
-    required this.authNotifications,
     required this.birthDay,
     required this.createdAt,
     required this.gender,
@@ -16,7 +15,7 @@ class UserMeta {
     required this.uid,
     required this.updatedAt,
   });
-  List<dynamic> authNotifications;
+
   dynamic birthDay;
   dynamic createdAt;
   String gender;

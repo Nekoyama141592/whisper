@@ -89,7 +89,6 @@ class MainModel extends ChangeNotifier {
     final tokensQshot = await tokensParentRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
     await setBookmarkLabels();
-    setList();
     endLoading();
   }
 
@@ -123,84 +122,59 @@ class MainModel extends ChangeNotifier {
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap);
       switch(tokenType) {
         case TokenType.blockUser:
-        final BlockUser blockUser = BlockUser.fromJson(tokenMap);
-        blockUsers.add(blockUser);
+          final BlockUser blockUser = BlockUser.fromJson(tokenMap);
+          blockUsers.add(blockUser);
         break;
         case TokenType.bookmarkLabel:
-        final BookmarkLabel bookmarkLabel = BookmarkLabel.fromJson(tokenMap);
-        bookmarkLabels.add(bookmarkLabel);
+          final BookmarkLabel bookmarkLabel = BookmarkLabel.fromJson(tokenMap);
+          bookmarkLabels.add(bookmarkLabel);
         break;
         case TokenType.following:
-        final Following followingInstantce = Following.fromJson(tokenMap);
-        following.add(followingInstantce);
+          final Following followingInstantce = Following.fromJson(tokenMap);
+          following.add(followingInstantce);
         break;
         case TokenType.likeComment:
-        final LikeComment likeComment = LikeComment.fromJson(tokenMap);
-        likeComments.add(likeComment);
+          final LikeComment likeComment = LikeComment.fromJson(tokenMap);
+          likeComments.add(likeComment);
         break;
         case TokenType.likePost:
-        final LikePost likePost = LikePost.fromJson(tokenMap);
-        likePosts.add(likePost);
+          final LikePost likePost = LikePost.fromJson(tokenMap);
+          likePosts.add(likePost);
         break;
         case TokenType.likeReply:
-        final LikeReply likeReply = LikeReply.fromJson(tokenMap);
-        likeReplys.add(likeReply);
+          final LikeReply likeReply = LikeReply.fromJson(tokenMap);
+          likeReplys.add(likeReply);
         break;
         case TokenType.muteComment:
-        final MuteComment muteComment = MuteComment.fromJson(tokenMap);
-        muteComments.add(muteComment);
+          final MuteComment muteComment = MuteComment.fromJson(tokenMap);
+          muteComments.add(muteComment);
         break;
         case TokenType.mutePost:
-        final MutePost mutePost = MutePost.fromJson(tokenMap);
-        mutePosts.add(mutePost);
+          final MutePost mutePost = MutePost.fromJson(tokenMap);
+          mutePosts.add(mutePost);
         break;
         case TokenType.muteReply:
-        final MuteReply muteReply = MuteReply.fromJson(tokenMap);
-        muteReplys.add(muteReply);
+          final MuteReply muteReply = MuteReply.fromJson(tokenMap);
+          muteReplys.add(muteReply);
         break;
         case TokenType.muteUser:
-        final MuteUser muteUser = MuteUser.fromJson(tokenMap);
-        muteUsers.add(muteUser);
+          final MuteUser muteUser = MuteUser.fromJson(tokenMap);
+          muteUsers.add(muteUser);
         break;
         case TokenType.readPost:
-        final ReadPost readPost = ReadPost.fromJson(tokenMap);
-        readPosts.add(readPost);
+          final ReadPost readPost = ReadPost.fromJson(tokenMap);
+          readPosts.add(readPost);
         break;
         case TokenType.searchHistory:
-        final SearchHistory searchHistoryInstance = SearchHistory.fromJson(tokenMap);
-        searchHistory.add(searchHistoryInstance);
+          final SearchHistory searchHistoryInstance = SearchHistory.fromJson(tokenMap);
+          searchHistory.add(searchHistoryInstance);
         break;
         case TokenType.watchlist:
-        final Watchlist watchlist = Watchlist.fromJson(tokenMap);
-        watchlists.add(watchlist);
+          final Watchlist watchlist = Watchlist.fromJson(tokenMap);
+          watchlists.add(watchlist);
         break;
       }
     });
-  }
-
-  void setList() {
-    // // likes
-    // likePostIds = prefs.getStringList(likePostIdsPrefsKey) ?? [];
-    // bookmarkLabels.forEach((bookmarkLabel) {
-    //   (bookmarkLabel.bookmarks as List<String> ).forEach((bookmark) {
-    //     final Bookmark x = fromMapToBookmark(map: bookmark as Map<String,dynamic>);
-    //     bookmarks.add(x);
-    //     bookmarksPostIds.add(x.postId);
-    //   });
-    // });
-    // // followingUids
-    // followingUids = userMeta.followingUids.map((e) => e as String).toList();
-    // followingUids.add(currentUser!.uid);
-    // // likeComments
-    // likeCommentIds = prefs.getStringList(likeCommentIdsPrefsKey) ?? [];
-    // // readPosts
-    // readPostIds = prefs.getStringList(readPostIdsPrefsKey) ?? [];
-    // // likeReplys
-    // likeReplyIds = prefs.getStringList(likeReplyIdsPrefsKey) ?? [];
-    // // mutesAndBlocks
-    // voids.setMutesAndBlocks(prefs: prefs, muteUsers: muteUsers, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutePostIds, blockUsers: blockUsers, blocksIpv6s: blockIpv6s, blocksUids: blockUids);
-    // muteReplyIds = prefs.getStringList(muteReplyIdsPrefsKey) ?? [];
-    // muteCommentIds = prefs.getStringList(muteCommentIdsPrefsKey) ?? [];
   }
   
   void reload() {

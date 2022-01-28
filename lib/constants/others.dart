@@ -104,13 +104,6 @@ DocumentReference<Map<String, dynamic>> bookmarkChildRef({required String postId
   return parentRef.doc(activeUid);
 }
 
-DocumentReference<Map<String, dynamic>> commentNotificationRef({ required String passiveUid , required String notificationId}) {
-  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(passiveUid).collection(commentNotificationsFieldKey).doc(notificationId);
-}
-
-DocumentReference<Map<String, dynamic>> replyNotificationRef({ required String passiveUid , required String notificationId}) {
-  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(passiveUid).collection(replyNotificationsFieldKey).doc(notificationId);
-}
 CollectionReference<Map<String,dynamic>> bookmarkLabelParentRef({ required String uid }) {
   return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(bookmarkLabelsString);
 }
@@ -118,20 +111,20 @@ DocumentReference<Map<String, dynamic>> bookmarkLabelRef({ required String uid, 
   return bookmarkLabelParentRef(uid: uid).doc(bookmarkLabelId);
 }
 
-CollectionReference<Map<String, dynamic>>  commentNotificationsParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(commentNotificationsFieldKey);
-}
-
-CollectionReference<Map<String, dynamic>>  replyNotificationsParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(replyNotificationsFieldKey);
-}
-
 CollectionReference<Map<String, dynamic>>  tokensParentRef({ required String uid }) {
   return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(tokensString);
 }
 
 DocumentReference<Map<String, dynamic>>  newTokenChildRef({ required String uid , required DateTime now}) {
-  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(tokensString).doc(returnTokenId(now: now));
+  return tokensParentRef(uid: uid).doc(returnTokenId(now: now));
+}
+
+CollectionReference<Map<String, dynamic>>  notificationParentRef ({ required String uid }) {
+  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(notificationsFieldKey);
+}
+
+DocumentReference<Map<String, dynamic>> newNotificationChildRef({ required String uid , required Timestamp now}) {
+  return notificationParentRef(uid: uid).doc( returnNotificationId(now: now) );
 }
 
 DocumentReference<Map<String,dynamic>> alreadyTokenRef({ required UserMeta userMeta,required String alreadyTokenDocId }) {

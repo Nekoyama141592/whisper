@@ -9,8 +9,6 @@ import 'package:whisper/constants/routes.dart' as routes;
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
-import 'package:whisper/components/notifications/components/reply_notifications/reply_notifications_model.dart';
-import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications_model.dart';
 
 class NotificationIcon extends ConsumerWidget {
 
@@ -25,8 +23,6 @@ class NotificationIcon extends ConsumerWidget {
 
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
-  //   final replyNotificationsModel = ref.watch(replyNotificationsProvider);
-  //   final commentNotificationsModel = ref.watch(commentNotificationsProvider);
   //   return 
   //   Padding(
   //     padding: EdgeInsets.all(20.0),

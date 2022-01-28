@@ -302,8 +302,7 @@ class ReplysModel extends ChangeNotifier {
       userImageURL: currentWhisperUser.imageURL,
       userName: currentWhisperUser.userName
     );
-    final Map<String,dynamic> map = replyNotification.toJson();
-    await replyNotificationRef(passiveUid: whisperComment.uid, notificationId: notificationId).set(map);
+    await newNotificationChildRef(uid: currentWhisperUser.uid, now: now).set(replyNotification.toJson());
   }
 
   Future<void> like({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {

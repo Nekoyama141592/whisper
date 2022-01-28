@@ -1,6 +1,8 @@
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
@@ -24,6 +26,9 @@ String returnTokenId({ required DateTime now }) {
 String returnTokenTypeString({ required TokenType tokenType } ) {
   return tokenType.toString().substring(tokenTypeStartIndex);
 }
+String returnNotificationId({ required Timestamp now }) {
+  return notificationString + microSecondsString(now: now.toDate());
+}
 String returnNotificationTypeString({ required NotificationType notifcationType }) {
   return notifcationType.toString().substring(notificationTypeStartIndex);
 }
@@ -32,6 +37,7 @@ const String bookmarkLabelString = 'bookmarkLabel';
 const String bookmarkLabelsString = 'bookmarkLabels';
 const String tokenString = 'token';
 const String tokensString = 'tokens';
+const String notificationString = 'notification';
 const String unNamedString = 'unNamed';
 // prefs
 const String bookmarkPostIdsPrefsKey = 'bookmarkPostIds';
@@ -78,6 +84,7 @@ const String replyNotificationsFieldKey = 'replyNotifications';
 const String commentsFieldKey = 'comments';
 const String likesFieldKey = 'likes';
 const String scoreFieldKey = 'score';
+const String isReadFieldKey = 'isRead';
 const String postsFieldKey = 'posts';
 const String replysFieldKey = 'replys';
 const String uidFieldKey = 'uid';
@@ -90,6 +97,8 @@ const String numberFieldKey = 'number';
 const String nftOwnersFieldKey = 'nftOwners';
 const String updatedAtFieldKey = 'updatedAt';
 const String passiveUidFieldKey = 'passiveUid';
+const String notificationsFieldKey = 'notifications';
+const String notificationTypeFieldKey = 'notificationType';
 // path
 const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';

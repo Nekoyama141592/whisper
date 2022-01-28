@@ -172,8 +172,7 @@ class CommentsModel extends ChangeNotifier {
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName
       );
-      Map<String,dynamic> map = commentNotification.toJson();
-      await commentNotificationRef(passiveUid: whisperPost.uid, notificationId: commentNotification.notificationId ).set(map);
+      await newNotificationChildRef(uid: currentWhisperUser.uid, now: now).set(commentNotification.toJson());
     } catch(e) {
       print(e.toString());
     }

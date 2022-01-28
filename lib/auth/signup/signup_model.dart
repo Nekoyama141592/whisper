@@ -147,7 +147,6 @@ class SignupModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String bookmarkLabelId = returnBookmarkLabelId(now: now.toDate());
     final Map<String,dynamic> userMetaMap = UserMeta(
-      authNotifications: [],
       birthDay: timestampBirthDay,
       createdAt: now,
       gender: gender, 

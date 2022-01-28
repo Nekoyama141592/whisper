@@ -1,9 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
-// constants
-import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/notifications/components/comment_notifications/components/comment_notification_card.dart';
@@ -11,33 +7,31 @@ import 'package:whisper/components/notifications/components/comment_notification
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications_model.dart';
+import 'package:whisper/components/notifications/notifications_model.dart';
 
 class CommentNotifications extends StatelessWidget {
 
   const CommentNotifications({
     Key? key,
     required this.mainModel,
-    required this.commentNotificationsModel
+    required this.notificationsModel
   }) : super(key: key);
 
   final MainModel mainModel;
-  final CommentNotificationsModel commentNotificationsModel;
+  final NotificationsModel notificationsModel;
 
   @override 
   Widget build(BuildContext context) {
-    final List<DocumentSnapshot<Map<String,dynamic>>> notifications = commentNotificationsModel.notificationDocs;
+    final notifications = notificationsModel.commentNotifications;
     final content = ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
-        final CommentNotification notification = fromMapToCommentNotification(notificationmap: notifications[i].data()!);
-        return CommentNotificationCard(giveCommentId: notification.commentId, firstSubTitle: notification.comment, secondSubTitle: notification.comment, commentNotification: notification, mainModel: mainModel);
+        final CommentNotification notification = notifications[i];
+        return CommentNotificationCard(notification: notification, mainModel: mainModel);
       }
     );
-    final void Function()? reload = () async {
-      await commentNotificationsModel.onReload();
-    };
-    return commentNotificationsModel.isLoading ?
+    final reload = () {};
+    return notificationsModel.isLoading ?
     SizedBox.shrink()
     : Container(
       child: notifications.isEmpty ?
