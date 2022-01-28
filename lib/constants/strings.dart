@@ -137,6 +137,7 @@ const String commentNotificationTokenType = 'commentNotification';
 const String replyNotificationTokenType = 'replyNotification';
 // fieldKey
 const String likesFieldKey = 'likes';
+const String uidFieldKey = 'uid';
 const String tokenTypeFieldKey = 'tokenType';
 // mapKey
 const String tokenTypeMapKey = 'tokenType';

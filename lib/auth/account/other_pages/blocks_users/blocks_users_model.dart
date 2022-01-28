@@ -1,13 +1,11 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';

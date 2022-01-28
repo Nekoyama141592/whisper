@@ -23,10 +23,10 @@ bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> b
   return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data()! ) && !mutesPostIds.contains(post.postId);
 }
 
-bool isDisplayShowPage({ required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> passiveBlocksUids, required MainModel mainModel }) {
+bool isDisplayShowPage({ required bool isBlocked, required MainModel mainModel }) {
   // use on display user show page
   final String myUid = mainModel.currentWhisperUser.uid;
-  return ( !mutesUids.contains(myUid) && blocksUids.contains(myUid) && passiveBlocksUids.contains(myUid) );
+  return ( !mainModel.muteUids.contains(myUid) && mainModel.blockUids.contains(myUid)  );
 }
 
 bool newNotificationExists({ required List<CommentNotification> commentNotifications,required List<ReplyNotification> replyNotifications }) {

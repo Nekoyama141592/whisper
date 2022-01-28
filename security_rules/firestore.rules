@@ -170,32 +170,10 @@ service cloud.firestore {
     match /userMeta/{uid} {
       allow read: if request.auth.uid == uid;
       allow create: if true;
-      match /likePosts/{postId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /likeReplys/{replyId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /likeComments/{commentId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /readPosts/{readPostId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /searchHistory/{searchHistoryId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /commentNotifications/{notificationId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /replyNotifications/{notificationId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /bookmarkLabels/{bookmarkLabelId} {
-        allow read, write: if isAuthenticated();
-      }
-      match /watchlists/{watchlistId} {
-        allow read, write: if isAuthenticated();
+      match /tokens/{tokenId} {
+        allow write: if isAuthenticated();
+        allow list: if isAuthenticated();
+        allow get: if request.resource.data.uid == request.auth.uid;
       }
     }
     match /posts/{postId} {
