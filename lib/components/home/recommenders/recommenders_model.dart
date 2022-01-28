@@ -34,7 +34,7 @@ class RecommendersModel extends ChangeNotifier {
   // late UserMeta userMeta;
   // late WhisperUser currentWhisperUser;
   Query<Map<String, dynamic>> getQuery() {
-    final x = postColRef.orderBy(scoreKey, descending: true).limit(oneTimeReadCount);
+    final x = postColRef.orderBy(scoreFieldKey, descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers

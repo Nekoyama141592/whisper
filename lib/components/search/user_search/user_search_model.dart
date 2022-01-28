@@ -38,7 +38,7 @@ class UserSearchModel extends ChangeNotifier {
     } else {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
-      final Query<Map<String,dynamic>> query = returnSearchQuery(collectionKey: usersKey, searchWords: searchWords);
+      final Query<Map<String,dynamic>> query = returnSearchQuery(collectionKey: usersFieldKey, searchWords: searchWords);
       await processBasicDocs(query: query, docs: results);
       endLoading();
     }

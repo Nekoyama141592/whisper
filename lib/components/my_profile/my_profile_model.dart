@@ -33,7 +33,7 @@ class MyProfileModel extends ChangeNotifier {
   bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    final x = postColRef.where(uidKey,isEqualTo: currentUserDoc['uid']).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where(uidFieldKey,isEqualTo: currentUserDoc['uid']).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -97,7 +97,7 @@ class MyProfileModel extends ChangeNotifier {
   }
 
   Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
+    currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
   }
 
   void reload() {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
@@ -59,7 +60,8 @@ class MutesUsersModel extends ChangeNotifier {
     mutesUids.remove(passiveUid);
     notifyListeners();
     // back
-    getAnddeleteToken;
+    final qshot = await tokensParentRef(uid: currentWhisperUser.uid).where(tokenTypeFieldKey,isEqualTo: muteUserTokenType).where(uidFieldKey,isEqualTo: passiveUid).limit(plusOne).get();
+    await tokensParentRef(uid: currentWhisperUser.uid).doc(qshot.docs.first.id).delete();
   }
 
 }

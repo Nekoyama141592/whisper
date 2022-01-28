@@ -120,7 +120,7 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> processBookmark() async {
     List<String> max10 = bookmarksPostIds.length > (startIndex + tenCount) ? bookmarksPostIds.sublist(0,tenCount) : bookmarksPostIds.sublist( 0,bookmarksPostIds.length );
     List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
-    await FirebaseFirestore.instance.collection(postsKey).where(postIdKey,whereIn: max10).get().then((qshot) {
+    await FirebaseFirestore.instance.collection(postsFieldKey).where(postIdFieldKey,whereIn: max10).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
     });
     voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);

@@ -14,7 +14,7 @@ final userRankingProvider = ChangeNotifierProvider(
 
 class UserRankingModel extends ChangeNotifier {
   bool isLoading = false;
-  final Query<Map<String,dynamic>> query = FirebaseFirestore.instance.collection(usersKey).orderBy(followerCountKey,descending: true).limit(oneTimeReadCount);
+  final Query<Map<String,dynamic>> query = FirebaseFirestore.instance.collection(usersFieldKey).orderBy(followerCountFieldKey,descending: true).limit(oneTimeReadCount);
   List<DocumentSnapshot<Map<String,dynamic>>> userDocs = [];
   RefreshController refreshController = RefreshController(initialRefresh: false);
 

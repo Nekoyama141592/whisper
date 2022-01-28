@@ -34,7 +34,7 @@ class FeedsModel extends ChangeNotifier {
   User? currentUser;
   late UserMeta userMeta;
   Query<Map<String,dynamic>> getQuery({ required List<String> followingUids }) {
-    final x = postColRef.where(uidKey,whereIn: followingUids).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where(uidFieldKey,whereIn: followingUids).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -122,7 +122,7 @@ class FeedsModel extends ChangeNotifier {
   
   Future<void> setCurrentUserDoc() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaKey).doc(currentUser!.uid).get();
+    final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
   }
 

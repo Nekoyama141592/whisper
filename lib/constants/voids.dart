@@ -530,7 +530,7 @@ Future<void> follow(
             passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
         .set({
       createdAtFieldKey: Timestamp.now(),
-      followerUidKey: mainModel.currentWhisperUser.uid,
+      followerUidFKey: mainModel.currentWhisperUser.uid,
     });
   }
 }

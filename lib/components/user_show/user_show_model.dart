@@ -35,7 +35,7 @@ class UserShowModel extends ChangeNotifier {
   late DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc }) {
     final whisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
-    final x = postColRef.where(uidKey,isEqualTo: whisperUser.uid ).orderBy(createdAtKey,descending: true).limit(oneTimeReadCount);
+    final x = postColRef.where(uidFieldKey,isEqualTo: whisperUser.uid ).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   String passiveUid = '';
@@ -74,7 +74,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> init(DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc,SharedPreferences givePrefs) async {
     startLoading();
-    final isBlockedQshot = await FirebaseFirestore.instance.collection(usersKey).doc(givePassiveUserDoc.id).collection(tokensString).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: firebaseAuthCurrentUser!.uid).limit(plusOne).get();
+    final isBlockedQshot = await FirebaseFirestore.instance.collection(usersFieldKey).doc(givePassiveUserDoc.id).collection(tokensString).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: firebaseAuthCurrentUser!.uid).limit(plusOne).get();
     isBlocked = isBlockedQshot.docs.first.exists;
     if (isBlocked == false) {
       audioPlayer = AudioPlayer();

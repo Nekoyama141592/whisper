@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/ints.dart';
 // domain
 import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
@@ -60,7 +61,8 @@ class BlocksUsersModel extends ChangeNotifier {
     blocksUids.remove(passiveUid);
     notifyListeners();
     // back
-    getAnddeleteToken;
+    final qshot = await tokensParentRef(uid: currentWhisperUser.uid).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: passiveUid).limit(plusOne).get();
+    await tokensParentRef(uid: currentWhisperUser.uid).doc(qshot.docs.first.id).delete();
   }
 
 

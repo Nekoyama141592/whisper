@@ -18,7 +18,7 @@ class ReplyNotificationsModel extends ChangeNotifier {
   
   bool isLoading = false;
   List<DocumentSnapshot<Map<String,dynamic>>> notificationDocs = [];
-  final Query<Map<String,dynamic>> query = replyNotificationsParentRef(uid: FirebaseAuth.instance.currentUser!.uid).orderBy(createdAtKey,descending: true);
+  final Query<Map<String,dynamic>> query = replyNotificationsParentRef(uid: FirebaseAuth.instance.currentUser!.uid).orderBy(createdAtFieldKey,descending: true);
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
