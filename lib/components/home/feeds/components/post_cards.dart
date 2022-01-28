@@ -82,13 +82,13 @@ class PostCards extends StatelessWidget {
                     await voids.initAudioPlayer(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: feedsModel.posts, mutesIpv6AndUids: mainModel.muteUsers, post: post, mainModel: mainModel);
+                    await voids.muteUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: feedsModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
                     await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: feedsModel.afterUris, audioPlayer: feedsModel.audioPlayer, results: feedsModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blockUsers, i: i, results: feedsModel.posts, post: post, mainModel: mainModel);
+                    await voids.blockUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: feedsModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

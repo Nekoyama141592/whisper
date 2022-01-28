@@ -14,6 +14,8 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/bookmark/bookmark.dart';
 import 'package:whisper/domain/like_post/like_post.dart';
+import 'package:whisper/domain/block_user/block_user.dart';
+import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
@@ -24,7 +26,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> like({ required Post whisperPost, required MainModel mainModel }) async {
     final String postId = whisperPost.postId;
-    final List<dynamic> likePostIds = mainModel.likePostIds;
+    final List<String> likePostIds = mainModel.likePostIds;
     // process UI
     likePostIds.add(postId);
     notifyListeners();
@@ -71,7 +73,7 @@ class PostFutures extends ChangeNotifier {
     return TextButton(
       onPressed: () async {
         final postId = whisperPost.postId;
-        final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
+        final List<String> bookmarksPostIds = mainModel.bookmarksPostIds;
         // process UI
         bookmarksPostIds.add(postId);
         notifyListeners();
@@ -127,7 +129,7 @@ class PostFutures extends ChangeNotifier {
         onPressed: () async {
           (controller as FlashController ).dismiss();
           final postId = whisperPost.postId;
-          final List<dynamic> bookmarksPostIds = mainModel.bookmarksPostIds;
+          final List<String> bookmarksPostIds = mainModel.bookmarksPostIds;
           // process UI
           bookmarksPostIds.remove(postId);
           notifyListeners();
@@ -185,25 +187,22 @@ class PostFutures extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> muteUser({ required MainModel mainModel, required Map<String,dynamic> map}) async {
-    final List<dynamic> mutesUids = mainModel.mutesUids;
-    final List<dynamic> mutesIpv6AndUids = mainModel.muteUsers;
-    voids.addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: map);
+  Future<void> muteUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
+    voids.addMuteUser(muteUsers: mainModel.muteUsers,mutesUids: mainModel.mutesUids,uid: passiveUid,ipv6: ipv6);
     notifyListeners();
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
+    createDoc;
   }
 
-  Future<void> blockUser({ required MainModel mainModel, required Map<String,dynamic> map}) async {
-    final List<dynamic> blocksIpv6AndUids = mainModel.blockUsers;
-    final List<dynamic> blocksUids = mainModel.blocksUids;
-    voids.addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: map);
+  Future<void> blockUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
+    voids.addBlockUser(blockUsers: mainModel.blockUsers,blocksUids: mainModel.blockUids,uid: passiveUid,ipv6: ipv6 );
     notifyListeners();
-    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
+    createDoc;
   }
 
   Future<void> muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
     mutesCommentIds.add(commentId);
     notifyListeners();
-    await prefs.setStringList(mutesCommentIdsKey, mutesCommentIds);
+    createDoc;
+    await prefs.setStringList(muteCommentIdsPrefsKey, mutesCommentIds);
   }
 }

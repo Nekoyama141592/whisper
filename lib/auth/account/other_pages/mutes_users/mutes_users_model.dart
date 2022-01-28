@@ -25,9 +25,8 @@ class MutesUsersModel extends ChangeNotifier {
     init();
   }
 
-  Future init() async {
+  Future<void> init() async {
     startLoading();
-    final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await setCurrentUserDoc();
     final List<dynamic> mutesIpv6AndUids = currentUserDoc[mutesIpv6AndUidsKey];
     List<dynamic> mutesUids = [];
     mutesIpv6AndUids.forEach((mutesIpv6AndUid) {
@@ -47,13 +46,7 @@ class MutesUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DocumentSnapshot<Map<String,dynamic>>> setCurrentUserDoc() async {
-    final User? currentUser = FirebaseAuth.instance.currentUser;
-    DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    return currentUserDoc;
-  }
-
-  Future getMutesUserDocs({ required List<dynamic> mutesUids }) async {
+  Future<void> getMutesUserDocs({ required List<dynamic> mutesUids }) async {
     if (mutesUids.isNotEmpty) {
       await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: mutesUids).get().then((qshot) {
         qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
@@ -64,18 +57,16 @@ class MutesUsersModel extends ChangeNotifier {
     }
   }
 
-  Future unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required WhisperUser currentWhisperUser, required List<dynamic> mutesIpv6AndUids}) async {
+  Future<void> unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required WhisperUser currentWhisperUser}) async {
     // front
-    // mutesUserDocs.removeWhere((mutesUserDoc) => mutesUserDoc[uidKey] == passiveUid);
     mutesUserDocs.removeWhere((userDoc) {
       final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
       return whisperUser.uid == passiveUid;
     });
+    mutesUids.remove(passiveUid);
     notifyListeners();
     // back
-    mutesIpv6AndUids.removeWhere((mutesIpv6AndUid) => mutesIpv6AndUid[uidKey] == passiveUid);
-    mutesUids.remove(passiveUid);
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: currentWhisperUser);
+    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: muteUsers, currentWhisperUser: currentWhisperUser);
   }
 
 }

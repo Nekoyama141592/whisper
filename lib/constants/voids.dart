@@ -19,7 +19,10 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -31,56 +34,38 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-void setMutesAndBlocks({ required SharedPreferences prefs ,required WhisperUser currentWhisperUser, required List<dynamic> muteUsers, required List<dynamic> mutesIpv6s, required List<dynamic> mutesUids , required List<dynamic>mutesPostIds, required List<dynamic> blockUsers, required List<dynamic> blocksIpv6s, required List<dynamic> blocksUids }) {
+void setMutesAndBlocks({ required SharedPreferences prefs, required List<MuteUser> muteUsers, required List<String> mutesIpv6s, required List<String> mutesUids , required List<String>mutesPostIds, required List<BlockUser> blockUsers, required List<String> blocksIpv6s, required List<String> blocksUids }) {
   // 代入は使えないが.addは反映される
-  currentWhisperUser.mutesIpv6AndUids.forEach((mutesIpv6AndUid) { muteUsers.add(mutesIpv6AndUid); });
-  muteUsers.forEach((mutesIpv6AndUid) {
-    mutesIpv6s.add(mutesIpv6AndUid[ipv6Key]);
-    mutesUids.add(mutesIpv6AndUid[uidKey]);
+  muteUsers.forEach((muteUser) {
+    mutesIpv6s.add(muteUser.ipv6);
+    mutesUids.add(muteUser.uid);
   });
-  (prefs.getStringList(mutesPostIdsKey) ?? []).forEach((mutesPostId) { mutesPostIds.add(mutesPostId); }) ;
-  currentWhisperUser.blocksIpv6AndUids.forEach((blocksIpv6AndUid) { blockUsers.add(blocksIpv6AndUid); });
-  blockUsers.forEach((blocksIpv6AndUid) {
-    blocksUids.add(blocksIpv6AndUid[uidKey]);
-    blocksIpv6s.add(blocksIpv6AndUid[ipv6Key]);
+  (prefs.getStringList(mutePostIdsPrefsKey) ?? []).forEach((mutePostId) { mutesPostIds.add(mutePostId); }) ;
+  blockUsers.forEach((blockUser) {
+    blocksUids.add(blockUser.uid);
+    blocksIpv6s.add(blockUser.ipv6);
   });
 }
 
-void addMutesUidAndMutesIpv6AndUid({ required List<dynamic> mutesUids, required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> map}) {
-  final String uid = map[uidKey];
-  final String ipv6 = map[ipv6Key];
+void addMuteUser({ required List<String> mutesUids, required List<MuteUser> muteUsers, required String uid, required String ipv6  }) {
   mutesUids.add(uid);
-  mutesIpv6AndUids.add({
-    ipv6Key: ipv6,
-    uidKey: uid,
-  });
+  final MuteUser muteUser = MuteUser(createdAt: Timestamp.now(),ipv6: ipv6,uid: uid);
+  muteUsers.add(muteUser);
 }
 
-Future<void> updateMutesIpv6AndUids({ required List<dynamic> mutesIpv6AndUids, required WhisperUser currentWhisperUser }) async {
-  await FirebaseFirestore.instance.collection(usersKey).doc(currentWhisperUser.uid)
-  .update({
-    mutesIpv6AndUidsKey: mutesIpv6AndUids,
-  }); 
-}
+Future<void> createMuteUserDoc() async {}
+Future<void> deleteMuteUserDoc() async {}
 
-void addBlocksUidsAndBlocksIpv6AndUid({ required List<dynamic> blocksUids, required List<dynamic> blocksIpv6AndUids, required Map<String,dynamic> map }) {
-  final String uid = map[uidKey];
-  final String ipv6 = map[ipv6Key];
+void addBlockUser({ required List<String> blocksUids, required List<BlockUser> blockUsers, required String uid, required String ipv6  }) {
   blocksUids.add(uid);
-  blocksIpv6AndUids.add({
-    ipv6Key: ipv6,
-    uidKey: uid,
-  });
+  final BlockUser blockUser = BlockUser(createdAt: Timestamp.now(), ipv6: ipv6, uid: uid);
+  blockUsers.add(blockUser);
 }
 
-Future<void> updateBlocksIpv6AndUids({ required List<dynamic> blocksIpv6AndUids, required WhisperUser currentWhisperUser }) async {
-  await FirebaseFirestore.instance.collection(usersKey).doc(currentWhisperUser.uid)
-  .update({
-    blocksIpv6AndUidsKey: blocksIpv6AndUids,
-  });
-}
-
-Future signOut(BuildContext context) async {
+Future<void> createBlockUserDoc() async {}
+Future<void> deleteBlockUserDoc() async {}
+ 
+Future<void> signOut(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
   Navigator.pop(context);
   routes.toIsFinishedPage(context: context, title: 'ログアウトしました', text: 'お疲れ様でした');
@@ -273,7 +258,7 @@ void onPostDeleteButtonPressed({ required BuildContext context, required AudioPl
   showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await deletePost(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
 }
 
-Future deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
+Future<void> deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<dynamic> posts,required MainModel mainModel, required int i}) async {
   Navigator.pop(context);
   final whisperPost = fromMapToPost(postMap: postMap);
   if (mainModel.currentUser!.uid != whisperPost.uid) {
@@ -305,45 +290,46 @@ Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required A
   } 
 }
 
-Future initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
+Future<void> initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
   await audioPlayer.setAudioSource(playlist,initialIndex: i);
 }
 
-Future mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<dynamic> results}) async {
+Future<void> mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<dynamic> results}) async {
   final Post whisperPost = fromMapToPost(postMap: post);
   final String postId = whisperPost.postId;
-  mainModel.mutesPostIds.add(postId);
+  mainModel.mutePostIds.add(postId);
   results.removeWhere((result) => result[postIdKey] == postId);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
-  await mainModel.prefs.setStringList(mutesPostIdsKey, mainModel.mutesPostIds);
+  error;
+  await mainModel.prefs.setStringList(mutePostIdsPrefsKey, mainModel.mutePostIds);
 }
 
-Future muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> mutesUids, required int i, required List<dynamic> results,required List<dynamic> mutesIpv6AndUids, required Map<String,dynamic> post, required MainModel mainModel}) async {
+Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<dynamic> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
   final whisperPost = fromMapToPost(postMap: post);
   final String passiveUid = whisperPost.uid;
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  addMutesUidAndMutesIpv6AndUid(mutesIpv6AndUids: mutesIpv6AndUids,mutesUids: mutesUids,map: post);
+  addMuteUser(mutesUids: mutesUids, muteUsers: muteUsers, uid: passiveUid, ipv6: whisperPost.ipv6);
   mainModel.reload();
-  await updateMutesIpv6AndUids(mutesIpv6AndUids: mutesIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
+  await updateMutesIpv6AndUids(muteUsers: muteUsers, currentWhisperUser: mainModel.currentWhisperUser);
 }
 
-Future blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<dynamic> blocksUids, required List<dynamic> blocksIpv6AndUids, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
+Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
   final whisperPost = fromMapToPost(postMap: post);
   final String passiveUid = whisperPost.uid;
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  addBlocksUidsAndBlocksIpv6AndUid(blocksIpv6AndUids: blocksIpv6AndUids,blocksUids: blocksUids,map: post);
+  addBlockUser(blocksUids: blocksUids, blockUsers: blockUsers, uid: passiveUid, ipv6: whisperPost.ipv6 );
   mainModel.reload();
-  await updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentWhisperUser: mainModel.currentWhisperUser);
+  await deleteBlock(blockUsers: blockUsers, currentWhisperUser: mainModel.currentWhisperUser);
 }
 
-Future removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
+Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
   results.removeWhere((result) => result[uidKey] == passiveUid);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
 }
 
-Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s, required List<dynamic> mutesPostIds }) async {
+Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s, required List<String> mutesPostIds }) async {
   await query.endBeforeDocument(posts.first).get().then((qshot) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
@@ -370,13 +356,13 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
   });
 }
 
-Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds }) async {
+Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s,required List<String> mutesPostIds }) async {
   await query.get().then((qshot) async {
     await basicProcessContent(docs: qshot.docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
   });
 }
 
-Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dynamic>>> docs ,required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds }) async {
+Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dynamic>>> docs ,required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s,required List<String> mutesPostIds }) async {
   
   if (docs.isNotEmpty) {
     docs.sort((a,b) => (b[createdAtKey] as Timestamp).compareTo(a[createdAtKey]));
@@ -399,7 +385,7 @@ Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dy
   }
 }
 
-Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s, required List<dynamic> mutesPostIds }) async {
+Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s, required List<String> mutesPostIds }) async {
   await query.startAfterDocument(posts.last).get().then((qshot) async {
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
@@ -456,7 +442,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   return getDownloadURL;
 }
 
-Future updateUserInfo({ required BuildContext context ,required String userName, required String description, required List<dynamic> links, required MainModel mainModel, required File? croppedFile}) async {
+Future<void> updateUserInfo({ required BuildContext context ,required String userName, required String description, required List<WhisperLink> links, required MainModel mainModel, required File? croppedFile}) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
@@ -471,7 +457,7 @@ Future updateUserInfo({ required BuildContext context ,required String userName,
       WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
       currentWhisperUser.description = description;
       currentWhisperUser.imageURL = downloadURL;
-      currentWhisperUser.links = links;
+      currentWhisperUser.links = links.map((e) => e.toJson()).toList();
       currentWhisperUser.storageImageName = storageImageName;
       currentWhisperUser.updatedAt = Timestamp.fromDate(now);
       currentWhisperUser.userName = userName;
@@ -514,7 +500,7 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
   );
 }
 
-Future follow(
+Future<void> follow(
     BuildContext context,
     MainModel mainModel,
     WhisperUser currentWhisperUser) async {
@@ -536,7 +522,7 @@ Future follow(
   }
 }
 
-Future unfollow(
+Future<void> unfollow(
     MainModel mainModel,
     WhisperUser currentWhisperUser) async {
   final followingUids = mainModel.followingUids;
@@ -559,18 +545,18 @@ Future<void> updateFollowingUidsOfCurrentUser(
   });
 }
 void showFlashDialogue({ required BuildContext context,required Widget content, required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder }) {
-    context.showFlashDialog(
-      persistent: true,
-      title: Text('Flash Dialog'),
-      content: content,
-      negativeActionBuilder: (context, controller, _) {
-        return TextButton(
-          onPressed: () {
-            controller.dismiss();
-          },
-          child: Text('NO',style: textStyle(context: context),),
-        );
-      },
-      positiveActionBuilder: positiveActionBuilder,
-    );
-  }
+  context.showFlashDialog(
+    persistent: true,
+    title: Text('Flash Dialog'),
+    content: content,
+    negativeActionBuilder: (context, controller, _) {
+      return TextButton(
+        onPressed: () {
+          controller.dismiss();
+        },
+        child: Text('NO',style: textStyle(context: context),),
+      );
+    },
+    positiveActionBuilder: positiveActionBuilder,
+  );
+}

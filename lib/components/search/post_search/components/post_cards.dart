@@ -63,7 +63,7 @@ class PostCards extends ConsumerWidget {
           },
           controller: searchController, 
           search: () async {
-            await postSearchModel.operation(context: context ,mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutesPostIds, blocksUids: mainModel.blocksUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blocksIpv6s);
+            await postSearchModel.operation(context: context ,mutesUids: mainModel.mutesUids, mutesPostIds: mainModel.mutePostIds, blocksUids: mainModel.blockUids, mutesIpv6s: mainModel.mutesIpv6s, blocksIpv6s: mainModel.blockIpv6s);
           }
         ),
         results.isNotEmpty ?
@@ -85,13 +85,13 @@ class PostCards extends ConsumerWidget {
                         await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
                       },
                       muteUser: () async {
-                        await voids.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: postSearchModel.results, mutesIpv6AndUids: mainModel.muteUsers, post: post, mainModel: mainModel);
+                        await voids.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.mutesUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
                       },
                       mutePost: () async {
                         await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
                       },
                       blockUser: () async {
-                        await voids.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blocksUids, blocksIpv6AndUids: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
+                        await voids.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
                       },
                       mainModel: mainModel,
                     );

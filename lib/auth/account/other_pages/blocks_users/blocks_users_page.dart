@@ -30,7 +30,7 @@ class BlocksUsersPage extends ConsumerWidget {
       : JudgeScreen(
         list: blocksUsersModel.blocksUserDocs, 
         reload: () async { 
-          await blocksUsersModel.getBlocksUserDocs(blocksUids: mainModel.blocksUids);
+          await blocksUsersModel.getBlocksUserDocs(blocksUids: mainModel.blockUids);
         },
         content: UserCards(userDocs: blocksUsersModel.blocksUserDocs,mainModel: mainModel,blocksUsersModel: blocksUsersModel,)
       )

@@ -26,9 +26,8 @@ class BlocksUsersModel extends ChangeNotifier {
     init();
   }
 
-  Future init() async {
+  Future<void> init() async {
     startLoading();
-    final DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await setCurrentUserDoc();
     final List<dynamic> blocksIpv6AndUids = currentUserDoc[blocksIpv6AndUidsKey];
     List<dynamic> blocksUids = [];
     blocksIpv6AndUids.forEach((blocksIpv6AndUid) {
@@ -48,13 +47,7 @@ class BlocksUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DocumentSnapshot<Map<String,dynamic>>> setCurrentUserDoc() async {
-    final User? currentUser = FirebaseAuth.instance.currentUser;
-    DocumentSnapshot<Map<String,dynamic>> currentUserDoc = await FirebaseFirestore.instance.collection(usersKey).doc(currentUser!.uid).get();
-    return currentUserDoc;
-  }
-
-  Future getBlocksUserDocs({ required List<dynamic> blocksUids }) async {
+  Future<void> getBlocksUserDocs({ required List<dynamic> blocksUids }) async {
     if (blocksUids.isNotEmpty) {
       await FirebaseFirestore.instance.collection(usersKey).where(uidKey,whereIn: blocksUids).get().then((qshot) {
         qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
@@ -65,17 +58,16 @@ class BlocksUsersModel extends ChangeNotifier {
     }
   }
 
-  Future unBlockUser({ required String passiveUid, required List<dynamic> blocksUids, required WhisperUser currentWhisperUser, required List<dynamic> blocksIpv6AndUids}) async {
+  Future<void> unBlockUser({ required String passiveUid, required List<dynamic> blocksUids, required WhisperUser currentWhisperUser}) async {
     // front
     blocksUserDocs.removeWhere((userDoc) {
       final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
       return whisperUser.uid == passiveUid;
     });
+    blocksUids.remove(passiveUid);
     notifyListeners();
     // back
-    blocksIpv6AndUids.removeWhere((blocksIpv6AndUid) => blocksIpv6AndUid[uidKey] == passiveUid);
-    blocksUids.remove(passiveUid);
-    voids.updateBlocksIpv6AndUids(blocksIpv6AndUids: blocksIpv6AndUids, currentWhisperUser: currentWhisperUser);
+    voids.deleteBlock(blockUsers: blockUsers, currentWhisperUser: currentWhisperUser);
   }
 
 

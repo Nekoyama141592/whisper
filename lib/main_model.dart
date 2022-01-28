@@ -10,9 +10,11 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
-import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/bookmark/bookmark.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/block_user/block_user.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 
 final mainProvider = ChangeNotifierProvider(
@@ -32,24 +34,24 @@ class MainModel extends ChangeNotifier {
 
   List<String> likePostIds = [];
   List<String> bookmarksPostIds = [];
-  List<dynamic> followingUids = [];
-  List<dynamic> likeCommentIds = [];
+  List<String> followingUids = [];
+  List<String> likeCommentIds = [];
   // bookmark
   List<Bookmark> bookmarks = [];
   List<BookmarkLabel> bookmarkLabels = [];
-  List<dynamic> readPostIds = [];
-  List<dynamic> likeReplyIds = [];
+  List<String> readPostIds = [];
+  List<String> likeReplyIds = [];
   // mutes 
-  List<dynamic> mutesUids = [];
-  List<dynamic> mutesIpv6s = [];
-  List<dynamic> muteUsers = [];
-  List<String> mutesReplyIds = [];
-  List<String> mutesCommentIds = [];
-  List<String> mutesPostIds = [];
+  List<String> mutesUids = [];
+  List<String> mutesIpv6s = [];
+  // List<MuteUser> muteUsers = [];
+  List<String> muteReplyIds = [];
+  List<String> muteCommentIds = [];
+  List<String> mutePostIds = [];
   // block
-  List<dynamic> blocksUids = [];
-  List<dynamic> blocksIpv6s = [];
-  List<dynamic> blockUsers = [];
+  List<String> blockUids = [];
+  List<String> blockIpv6s = [];
+  // List<BlockUser> blockUsers = [];
   // bookmarkLabel
   String bookmarkLabelId = '';
 
@@ -94,14 +96,14 @@ class MainModel extends ChangeNotifier {
     // likes
     likePostIds = prefs.getStringList(likePostIdsPrefsKey) ?? [];
     bookmarkLabels.forEach((bookmarkLabel) {
-      (bookmarkLabel.bookmarks as List<dynamic> ).forEach((bookmark) {
+      (bookmarkLabel.bookmarks as List<String> ).forEach((bookmark) {
         final Bookmark x = fromMapToBookmark(map: bookmark as Map<String,dynamic>);
         bookmarks.add(x);
         bookmarksPostIds.add(x.postId);
       });
     });
     // followingUids
-    followingUids = userMeta.followingUids;
+    followingUids = userMeta.followingUids.map((e) => e as String).toList();
     followingUids.add(currentUser!.uid);
     // likeComments
     likeCommentIds = prefs.getStringList(likeCommentIdsPrefsKey) ?? [];
@@ -110,9 +112,9 @@ class MainModel extends ChangeNotifier {
     // likeReplys
     likeReplyIds = prefs.getStringList(likeReplyIdsPrefsKey) ?? [];
     // mutesAndBlocks
-    voids.setMutesAndBlocks(prefs: prefs,currentWhisperUser: currentWhisperUser,muteUsers: muteUsers, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockUsers: blockUsers, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
-    mutesReplyIds = prefs.getStringList(mutesReplyIdsKey) ?? [];
-    mutesCommentIds = prefs.getStringList(mutesCommentIdsKey) ?? [];
+    voids.setMutesAndBlocks(prefs: prefs, muteUsers: muteUsers, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutePostIds, blockUsers: blockUsers, blocksIpv6s: blockIpv6s, blocksUids: blockUids);
+    muteReplyIds = prefs.getStringList(muteReplyIdsPrefsKey) ?? [];
+    muteCommentIds = prefs.getStringList(muteCommentIdsPrefsKey) ?? [];
   }
   
   void reload() {

@@ -106,5 +106,25 @@ const String bookmarkPostIdsPrefsKey = 'bookmarkPostIds';
 const String likePostIdsPrefsKey = 'likePostIds';
 const String likeCommentIdsPrefsKey = 'likeCommentIds';
 const String likeReplyIdsPrefsKey = 'likeReplyIds';
+const String muteCommentIdsPrefsKey = 'muteCommentIds';
+const String muteReplyIdsPrefsKey = 'muteReplyIds';
+const String mutePostIdsPrefsKey = 'mutePostIds';
 const String readPostIdsPrefsKey = 'readPostIds';
 const String speedPrefsKey = 'speed';
+// tokenTypes(positive)
+const String bookmarkLabelTokenType = 'bookmarkLabel';
+const String bookmarkPostTokenType = 'bookmarkPost';
+const String likePostTokenType = 'likePost';
+const String likeCommentTokenType = 'likeComment';
+const String likeReplyTokenType = 'likeReply';
+const String searchHistoryTokenType = 'searchHistory';
+const String readPostTokenType = 'readPost';
+const String watchlistTokenType = 'watchlist';
+const String blockUserTokenType = 'blockUser';
+const String muteCommentTokenType = 'muteComment';
+const String mutePostTokenType = 'mutePost';
+const String muteReplyTokenType = 'muteReply';
+const String muteUserTokenType = 'muteUser';
+// tokenType(notification)
+const String commentNotificationTokenType = 'commentNotification';
+const String replyNotificationTokenType = 'replyNotification';
