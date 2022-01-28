@@ -200,3 +200,15 @@ TextStyle textStyle({ required BuildContext context }) {
 }
 
 final User? firebaseAuthCurrentUser = FirebaseAuth.instance.currentUser;
+
+Future<List<MuteUser>> returnMuteUserTokens({ required String myUid }) async {
+  final qshot = await tokensParentRef(uid: myUid).where(tokenTypeFieldKey,isEqualTo: muteUserTokenType).get();
+  final List<MuteUser> x = qshot.docs.map((DocumentSnapshot<Map<String,dynamic>> doc) =>  MuteUser.fromJson(doc.data()!)).toList();
+  return x;
+}
+
+Future<List<BlockUser>> returnBlockUserTokens({ required String myUid }) async {
+  final qshot = await tokensParentRef(uid: myUid).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).get();
+  final List<BlockUser> x = qshot.docs.map((DocumentSnapshot<Map<String,dynamic>> doc) =>  BlockUser.fromJson(doc.data()!)).toList();
+  return x;
+}

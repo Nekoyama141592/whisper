@@ -28,7 +28,7 @@ class MutesUsersModel extends ChangeNotifier {
 
   Future<void> init() async {
     startLoading();
-    final List<MuteUser> muteUsers = currentUserDoc[mutesIpv6AndUidsKey];
+    final List<MuteUser> muteUsers = await returnMuteUserTokens(myUid: firebaseAuthCurrentUser!.uid);
     List<String> mutesUids = muteUsers.map((e) => e.uid).toList();
     await getMutesUserDocs(mutesUids: mutesUids);
     endLoading();

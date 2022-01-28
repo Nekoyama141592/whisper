@@ -31,7 +31,7 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final userShowModel = ref.watch(userShowProvider);
-
+    
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: isDisplayShowPage(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids, passiveBlocksUids: passiveBlocksUids, mainModel: mainModel ) ?

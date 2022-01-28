@@ -17,6 +17,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/domain/mute_post/mute_post.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
@@ -308,7 +309,9 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   results.removeWhere((result) => result[postIdKey] == postId);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
-  await createToken;
+  final Timestamp now = Timestamp.now();
+  final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId);
+  await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(mutePost.toJson());
   await mainModel.prefs.setStringList(mutePostIdsPrefsKey, mainModel.mutePostIds);
 }
 
@@ -318,7 +321,9 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addMuteUser(mutesUids: mutesUids, muteUsers: muteUsers, uid: passiveUid, ipv6: whisperPost.ipv6);
   mainModel.reload();
-  await createToken;
+  final Timestamp now = Timestamp.now();
+  final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, uid: passiveUid,ipv6: whisperPost.ipv6,createdAt: now);
+  await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(muteUser.toJson());
 }
 
 Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -327,7 +332,9 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addBlockUser(blocksUids: blocksUids, blockUsers: blockUsers, uid: passiveUid, ipv6: whisperPost.ipv6 );
   mainModel.reload();
-  await createToken;
+  final Timestamp now = Timestamp.now();
+  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,uid: whisperPost.uid,);
+  await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(blockUser.toJson());
 }
 
 Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {

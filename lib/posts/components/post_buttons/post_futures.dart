@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/mute_comment/mute_comment.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -190,19 +191,26 @@ class PostFutures extends ChangeNotifier {
   Future<void> muteUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
     voids.addMuteUser(muteUsers: mainModel.muteUsers,mutesUids: mainModel.muteUids,uid: passiveUid,ipv6: ipv6);
     notifyListeners();
-    createDoc;
+    final Timestamp now = Timestamp.now();
+    final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, uid: passiveUid,ipv6: ipv6,createdAt: now);
+    await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(muteUser.toJson());
   }
 
   Future<void> blockUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
     voids.addBlockUser(blockUsers: mainModel.blockUsers,blocksUids: mainModel.blockUids,uid: passiveUid,ipv6: ipv6 );
     notifyListeners();
-    createDoc;
+    final Timestamp now = Timestamp.now();
+    final BlockUser blockUser = BlockUser(createdAt: now,ipv6: ipv6,uid: passiveUid);
+    await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(blockUser.toJson());
   }
 
-  Future<void> muteComment(List<String> mutesCommentIds,String commentId,SharedPreferences prefs) async {
-    mutesCommentIds.add(commentId);
+  Future<void> muteComment({ required MainModel mainModel, required String commentId }) async {
+    final muteCommentIds = mainModel.muteCommentIds;
+    muteCommentIds.add(commentId);
     notifyListeners();
-    createDoc;
-    await prefs.setStringList(muteCommentIdsPrefsKey, mutesCommentIds);
+    final Timestamp now = Timestamp.now();
+    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,commentId: commentId,createdAt: now);
+    await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(muteComment.toJson());
+    await mainModel.prefs.setStringList(muteCommentIdsPrefsKey, muteCommentIds);
   }
 }

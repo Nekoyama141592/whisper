@@ -29,7 +29,7 @@ class BlocksUsersModel extends ChangeNotifier {
 
   Future<void> init() async {
     startLoading();
-    final List<BlockUser> blockUsers = currentUserDoc[blocksIpv6AndUidsKey];
+    final List<BlockUser> blockUsers = await returnBlockUserTokens(myUid: firebaseAuthCurrentUser!.uid);
     List<String> blocksUids = blockUsers.map((e) => e.uid).toList();
     await getBlocksUserDocs(blocksUids: blocksUids);
     endLoading();
