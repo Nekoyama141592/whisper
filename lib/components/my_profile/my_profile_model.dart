@@ -150,7 +150,7 @@ class MyProfileModel extends ChangeNotifier {
   
   Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     startLoading();
-    await voids.updateUserInfo(context: context, userName: userName, description: description, links: mainModel.currentWhisperUser.links, mainModel: mainModel, croppedFile: croppedFile);
+    await voids.updateUserInfo(context: context, userName: userName, description: description, links: mainModel.currentWhisperUser.links.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList(), mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
     endLoading();
   }

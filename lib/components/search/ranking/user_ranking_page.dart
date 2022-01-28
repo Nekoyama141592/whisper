@@ -58,7 +58,7 @@ class UserRankingPage extends ConsumerWidget {
             itemBuilder: (BuildContext context, int i) {
               final DocumentSnapshot<Map<String,dynamic>> userDoc = userRankingModel.userDocs[i];
               final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
-              return mainModel.mutesUids.contains(whisperUser.uid) || mainModel.blockUids.contains(whisperUser.uid) ?
+              return mainModel.muteUids.contains(whisperUser.uid) || mainModel.blockUids.contains(whisperUser.uid) ?
               ListTile(
                 title: Text('非表示'),
                 leading: Icon(Icons.block),

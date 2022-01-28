@@ -66,7 +66,7 @@ class MutesUsersModel extends ChangeNotifier {
     mutesUids.remove(passiveUid);
     notifyListeners();
     // back
-    voids.updateMutesIpv6AndUids(mutesIpv6AndUids: muteUsers, currentWhisperUser: currentWhisperUser);
+    deleteToken;
   }
 
 }

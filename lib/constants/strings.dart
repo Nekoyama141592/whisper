@@ -1,3 +1,7 @@
+// constants
+import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/ints.dart';
+
 const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
@@ -16,6 +20,9 @@ String returnBookmarkLabelId({ required DateTime now }) {
 }
 String returnTokenId({ required DateTime now }) {
   return tokenString + microSecondsString(now: now);
+}
+String returnTokenTypeString({ required TokenType tokenType } ) {
+  return tokenType.toString().substring(tokenTypeStartIndex);
 }
 // keys
 const String accountNameKey = 'accountName';
@@ -112,22 +119,24 @@ const String mutePostIdsPrefsKey = 'mutePostIds';
 const String readPostIdsPrefsKey = 'readPostIds';
 const String speedPrefsKey = 'speed';
 // tokenTypes
-const String bookmarkLabelTokenType = 'bookmarkLabel';
+final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
+final String bookmarkLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkLabel);
 // const String bookmarkPostTokenType = 'bookmarkPost';
-const String likePostTokenType = 'likePost';
-const String likeCommentTokenType = 'likeComment';
-const String likeReplyTokenType = 'likeReply';
-const String searchHistoryTokenType = 'searchHistory';
-const String readPostTokenType = 'readPost';
-const String watchlistTokenType = 'watchlist';
-const String blockUserTokenType = 'blockUser';
-const String muteCommentTokenType = 'muteComment';
-const String mutePostTokenType = 'mutePost';
-const String muteReplyTokenType = 'muteReply';
-const String muteUserTokenType = 'muteUser';
+final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);
+final String likeCommentTokenType = returnTokenTypeString(tokenType: TokenType.likeComment);
+final String watchlistTokenType = returnTokenTypeString(tokenType: TokenType.watchlist);
+final String muteCommentTokenType = returnTokenTypeString(tokenType: TokenType.muteComment);
+final String mutePostTokenType = returnTokenTypeString(tokenType: TokenType.mutePost);
+final String muteReplyTokenType = returnTokenTypeString(tokenType: TokenType.muteReply);
+final String muteUserTokenType = returnTokenTypeString(tokenType: TokenType.muteUser);
+final String likeReplyTokenType = returnTokenTypeString(tokenType: TokenType.likeReply);
+final String searchHistoryTokenType = returnTokenTypeString(tokenType: TokenType.searchHistory);
+final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.readPost);
 // tokenType(notification)
 const String commentNotificationTokenType = 'commentNotification';
 const String replyNotificationTokenType = 'replyNotification';
 // fieldKey
 const String likesFieldKey = 'likes';
 const String tokenTypeFieldKey = 'tokenType';
+// mapKey
+const String tokenTypeMapKey = 'tokenType';

@@ -48,7 +48,7 @@ class UserList extends StatelessWidget {
           },
           controller: searchController, 
           search: () async {
-            await userSearchModel.operation(context: context, mutesUids: mainModel.mutesUids, blocksUids: mainModel.blockUids);
+            await userSearchModel.operation(context: context, mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids);
           }
         ),
         Expanded(

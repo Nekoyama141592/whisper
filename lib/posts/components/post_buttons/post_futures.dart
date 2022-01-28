@@ -188,7 +188,7 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> muteUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
-    voids.addMuteUser(muteUsers: mainModel.muteUsers,mutesUids: mainModel.mutesUids,uid: passiveUid,ipv6: ipv6);
+    voids.addMuteUser(muteUsers: mainModel.muteUsers,mutesUids: mainModel.muteUids,uid: passiveUid,ipv6: ipv6);
     notifyListeners();
     createDoc;
   }

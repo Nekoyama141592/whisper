@@ -15,8 +15,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
-import 'package:whisper/domain/user_meta/user_meta.dart';
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/block_user/block_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -52,14 +52,14 @@ class RecommendersModel extends ChangeNotifier {
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // block and mutes
   late SharedPreferences prefs;
-  List<dynamic> mutesIpv6AndUids = [];
-  List<dynamic> mutesUids = [];
-  List<dynamic> mutesIpv6s = [];
+  List<MuteUser> muteUser = [];
+  List<String> mutesUids = [];
+  List<String> mutesIpv6s = [];
   List<String> mutesPostIds = [];
-  List<dynamic> blocksIpv6AndUids = [];
-  List<dynamic> blocksUids = [];
-  List<dynamic> blocksIpv6s = [];
-  List<dynamic> readPostIds = [];
+  List<BlockUser> blockUser = [];
+  List<String> blocksUids = [];
+  List<String> blocksIpv6s = [];
+  List<String> readPostIds = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
@@ -76,7 +76,7 @@ class RecommendersModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     prefs = await SharedPreferences.getInstance();
-    voids.setMutesAndBlocks(prefs: prefs, currentWhisperUser: currentWhisperUser, muteUsers: mutesIpv6AndUids, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockUsers: blocksIpv6AndUids, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
+    voids.setMutesAndBlocks(prefs: prefs, muteUsers: muteUser, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockUsers: blockUser, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getRecommenders();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -126,7 +126,7 @@ class RecommendersModel extends ChangeNotifier {
   Future<void> getRecommenders() async {
     try {
       await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
-    } catch(e) { print(e.toString() + "!!!!!!!!!!!!!!!!!!!!!"); }
+    } catch(e) { print(e.toString() ); }
   }
 
   Future<void> getOldRecommenders() async {

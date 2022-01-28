@@ -67,7 +67,7 @@ class BlocksUsersModel extends ChangeNotifier {
     blocksUids.remove(passiveUid);
     notifyListeners();
     // back
-    voids.deleteBlock(blockUsers: blockUsers, currentWhisperUser: currentWhisperUser);
+    deleteToken;
   }
 
 

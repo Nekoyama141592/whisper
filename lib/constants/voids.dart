@@ -23,6 +23,8 @@ import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
+import 'package:whisper/domain/reply_notification/reply_notification.dart';
+import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -99,9 +101,12 @@ void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfo
   editPostInfoModel.reload();
 }
 
-Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required Map<String,dynamic> notification, required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId}) async {
-
-  isRead = true;
+Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId, required dynamic notification }) async {
+  if (notification is ReplyNotification) {
+    notification.isRead = true;
+  } else if (notification is CommentNotification ) {
+    notification.isRead = true;
+  }
   // Plaase don`t notification['commentId'].
   // Please use commentNotification['commentId'], replyNotification['elementId']
   bool postExists = await onePostModel.init(givePostId: givePostId);
@@ -115,6 +120,7 @@ Future<void> onNotificationPressed({ required BuildContext context ,required Mai
   } else {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
   }
+  mainModel.reload();
 }
 
 // just_audio
@@ -302,7 +308,7 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   results.removeWhere((result) => result[postIdKey] == postId);
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
-  error;
+  await createToken;
   await mainModel.prefs.setStringList(mutePostIdsPrefsKey, mainModel.mutePostIds);
 }
 
@@ -312,7 +318,7 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addMuteUser(mutesUids: mutesUids, muteUsers: muteUsers, uid: passiveUid, ipv6: whisperPost.ipv6);
   mainModel.reload();
-  await updateMutesIpv6AndUids(muteUsers: muteUsers, currentWhisperUser: mainModel.currentWhisperUser);
+  await createToken;
 }
 
 Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -321,7 +327,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   addBlockUser(blocksUids: blocksUids, blockUsers: blockUsers, uid: passiveUid, ipv6: whisperPost.ipv6 );
   mainModel.reload();
-  await deleteBlock(blockUsers: blockUsers, currentWhisperUser: mainModel.currentWhisperUser);
+  await createToken;
 }
 
 Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
