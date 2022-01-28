@@ -167,7 +167,7 @@ class CommentsModel extends ChangeNotifier {
         passiveUid: whisperPost.uid,
         postTitle: whisperPost.title,
         postId: whisperPost.postId,
-        uid: currentWhisperUser.uid,
+        activeUid: currentWhisperUser.uid,
         updatedAt: now,
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName

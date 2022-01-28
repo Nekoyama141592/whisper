@@ -1,5 +1,7 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 part 'comment_notification.g.dart';
 
@@ -20,12 +22,13 @@ class CommentNotification {
     required this.passiveUid,
     required this.postTitle,
     required this.postId,
-    required this.uid,
+    required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
     required this.userName
   });
   final String accountName;
+  final String activeUid;
   final String comment;
   final String commentId;
   final num commentScore;
@@ -39,7 +42,7 @@ class CommentNotification {
   final String passiveUid;
   final String postTitle;
   final String postId;
-  final String uid;
+  final String tokenType = commentNotificationTokenType;
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;

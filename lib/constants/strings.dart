@@ -111,9 +111,9 @@ const String muteReplyIdsPrefsKey = 'muteReplyIds';
 const String mutePostIdsPrefsKey = 'mutePostIds';
 const String readPostIdsPrefsKey = 'readPostIds';
 const String speedPrefsKey = 'speed';
-// tokenTypes(positive)
+// tokenTypes
 const String bookmarkLabelTokenType = 'bookmarkLabel';
-const String bookmarkPostTokenType = 'bookmarkPost';
+// const String bookmarkPostTokenType = 'bookmarkPost';
 const String likePostTokenType = 'likePost';
 const String likeCommentTokenType = 'likeComment';
 const String likeReplyTokenType = 'likeReply';

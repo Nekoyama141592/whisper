@@ -24,7 +24,7 @@ ReplyNotification _$ReplyNotificationFromJson(Map<String, dynamic> json) =>
       reply: json['reply'] as String,
       replyScore: json['replyScore'] as num,
       replyId: json['replyId'] as String,
-      uid: json['uid'] as String,
+      activeUid: json['activeUid'] as String,
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
@@ -33,6 +33,7 @@ ReplyNotification _$ReplyNotificationFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ReplyNotificationToJson(ReplyNotification instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
+      'activeUid': instance.activeUid,
       'comment': instance.comment,
       'createdAt': instance.createdAt,
       'elementId': instance.elementId,
@@ -48,7 +49,6 @@ Map<String, dynamic> _$ReplyNotificationToJson(ReplyNotification instance) =>
       'reply': instance.reply,
       'replyScore': instance.replyScore,
       'replyId': instance.replyId,
-      'uid': instance.uid,
       'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,

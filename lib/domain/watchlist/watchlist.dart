@@ -1,5 +1,7 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 part 'watchlist.g.dart';
 
@@ -15,9 +17,10 @@ class Watchlist {
   });
   final dynamic createdAt;
   final String label;
+  final String myUid;
+  final String tokenType = watchlistTokenType;
   final String watchlistId;
   final List<dynamic> uids;
-  final String myUid;
   final dynamic updatedAt;
 
   factory Watchlist.fromJson(Map<String,dynamic> json) => _$WatchlistFromJson(json);

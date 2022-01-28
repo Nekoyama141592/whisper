@@ -18,8 +18,8 @@ Watchlist _$WatchlistFromJson(Map<String, dynamic> json) => Watchlist(
 Map<String, dynamic> _$WatchlistToJson(Watchlist instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
       'label': instance.label,
+      'myUid': instance.myUid,
       'watchlistId': instance.watchlistId,
       'uids': instance.uids,
-      'myUid': instance.myUid,
       'updatedAt': instance.updatedAt,
     };

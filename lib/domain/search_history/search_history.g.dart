@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mute_user.dart';
+part of 'search_history.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MuteUser _$MuteUserFromJson(Map<String, dynamic> json) => MuteUser(
+SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
+    SearchHistory(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      ipv6: json['ipv6'] as String,
-      uid: json['uid'] as String,
+      searchTerm: json['searchTerm'] as String,
     );
 
-Map<String, dynamic> _$MuteUserToJson(MuteUser instance) => <String, dynamic>{
+Map<String, dynamic> _$SearchHistoryToJson(SearchHistory instance) =>
+    <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'ipv6': instance.ipv6,
-      'uid': instance.uid,
+      'searchTerm': instance.searchTerm,
     };

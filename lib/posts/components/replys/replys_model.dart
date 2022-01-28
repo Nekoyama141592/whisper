@@ -297,7 +297,7 @@ class ReplysModel extends ChangeNotifier {
       reply: reply, 
       replyScore: newWhisperReply.score,
       replyId: newWhisperReply.replyId,
-      uid: currentWhisperUser.uid,
+      activeUid: currentWhisperUser.uid,
       updatedAt: now,
       userImageURL: currentWhisperUser.imageURL,
       userName: currentWhisperUser.userName

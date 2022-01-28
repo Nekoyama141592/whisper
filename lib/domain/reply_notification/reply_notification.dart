@@ -1,5 +1,7 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 part 'reply_notification.g.dart';
 
@@ -22,12 +24,13 @@ class ReplyNotification {
     required this.reply,
     required this.replyScore,
     required this.replyId,
-    required this.uid,
+    required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
     required this.userName
   });
   final String accountName;
+  final String activeUid;
   final String comment;
   final dynamic createdAt;
   final String elementId;
@@ -43,7 +46,7 @@ class ReplyNotification {
   final String reply;
   final num replyScore;
   final String replyId;
-  final String uid;
+  final String tokenType = replyNotificationTokenType;
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;

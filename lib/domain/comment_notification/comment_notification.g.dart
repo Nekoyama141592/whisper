@@ -22,7 +22,7 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
       passiveUid: json['passiveUid'] as String,
       postTitle: json['postTitle'] as String,
       postId: json['postId'] as String,
-      uid: json['uid'] as String,
+      activeUid: json['activeUid'] as String,
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
@@ -32,6 +32,7 @@ Map<String, dynamic> _$CommentNotificationToJson(
         CommentNotification instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
+      'activeUid': instance.activeUid,
       'comment': instance.comment,
       'commentId': instance.commentId,
       'commentScore': instance.commentScore,
@@ -45,7 +46,6 @@ Map<String, dynamic> _$CommentNotificationToJson(
       'passiveUid': instance.passiveUid,
       'postTitle': instance.postTitle,
       'postId': instance.postId,
-      'uid': instance.uid,
       'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,

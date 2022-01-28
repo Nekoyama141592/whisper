@@ -1,5 +1,7 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+// constants
+import 'package:whisper/constants/strings.dart';
 
 part 'like_comment.g.dart';
 
@@ -14,6 +16,7 @@ class LikeComment {
   final String activeUid;
   final String commentId;
   final dynamic createdAt;
+  final String tokenType = likeCommentTokenType;
 
   factory LikeComment.fromJson(Map<String,dynamic> json) => _$LikeCommentFromJson(json);
 
