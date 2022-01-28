@@ -15,6 +15,8 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
+import 'package:whisper/domain/read_post/read_post.dart';
+import 'package:whisper/domain/mute_post/mute_post.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
 // notifiers
@@ -31,8 +33,6 @@ class RecommendersModel extends ChangeNotifier {
   bool isLoading = false;
   // user
   User? currentUser;
-  // late UserMeta userMeta;
-  // late WhisperUser currentWhisperUser;
   Query<Map<String, dynamic>> getQuery() {
     final x = postColRef.orderBy(scoreFieldKey, descending: true).limit(oneTimeReadCount);
     return x;
@@ -52,13 +52,14 @@ class RecommendersModel extends ChangeNotifier {
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // block and mutes
   late SharedPreferences prefs;
-  List<MuteUser> muteUser = [];
-  List<String> mutesUids = [];
-  List<String> mutesIpv6s = [];
-  List<String> mutesPostIds = [];
-  List<BlockUser> blockUser = [];
-  List<String> blocksUids = [];
-  List<String> blocksIpv6s = [];
+  // mute
+  List<MuteUser> muteUsers = [];
+  List<String> muteUids = [];
+  List<String> muteIpv6s = [];
+  List<String> mutePostIds = [];
+  List<BlockUser> blockUsers = [];
+  List<String> blockUids = [];
+  List<String> blockIpv6s = [];
   List<String> readPostIds = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -76,7 +77,6 @@ class RecommendersModel extends ChangeNotifier {
     audioPlayer = AudioPlayer();
     setCurrentUser();
     prefs = await SharedPreferences.getInstance();
-    voids.setMutesAndBlocks(prefs: prefs, muteUsers: muteUser, mutesIpv6s: mutesIpv6s, mutesUids: mutesUids, mutesPostIds: mutesPostIds, blockUsers: blockUser, blocksIpv6s: blocksIpv6s, blocksUids: blocksUids);
     await getRecommenders();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -100,6 +100,33 @@ class RecommendersModel extends ChangeNotifier {
   void seek(Duration position) {
     audioPlayer.seek(position);
   }
+
+  Future<void> distributeTokens() async {
+    final List<TokenType> userTokenTypes = [TokenType.readPost,TokenType.blockUser,TokenType.muteUser,TokenType.mutePost];
+    final List<String> tokenTypeStrings = userTokenTypes.map((e) => returnTokenTypeString(tokenType: e) ).toList();
+    final qshot = await tokensParentRef(uid: firebaseAuthCurrentUser!.uid).where(tokenTypeFieldKey,whereIn: tokenTypeStrings).get();
+    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+      final Map<String,dynamic> tokenMap = doc.data()!;
+      final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap );
+      if (tokenType == TokenType.readPost) {
+        final ReadPost readPost = ReadPost.fromJson(tokenMap);
+        readPostIds.add(readPost.postId);
+      } else if (tokenType == TokenType.blockUser) {
+        final BlockUser blockUser = BlockUser.fromJson(tokenMap);
+        blockUsers.add(blockUser);
+        blockUids.add(blockUser.uid);
+        blockIpv6s.add(blockUser.ipv6);
+      } else if (tokenType == TokenType.muteUser) {
+        final MuteUser muteUser = MuteUser.fromJson(tokenMap);
+        muteUsers.add(muteUser);
+        muteUids.add(muteUser.uid);
+        muteIpv6s.add(muteUser.uid);
+      } else if (tokenType == TokenType.mutePost) {
+        final MutePost mutePost = MutePost.fromJson(tokenMap);
+        mutePostIds.add(mutePost.postId);
+      }
+    });
+  }
   
   Future<void> onRefresh() async {
     await getNewRecommenders();
@@ -120,18 +147,18 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future<void> getNewRecommenders() async {
-    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
   }
 
   Future<void> getRecommenders() async {
     try {
-      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
     } catch(e) { print(e.toString() ); }
   }
 
   Future<void> getOldRecommenders() async {
     try {
-      await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, mutesPostIds: mutesPostIds);
+      await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
     } catch(e) { print(e.toString()); }
   }
 

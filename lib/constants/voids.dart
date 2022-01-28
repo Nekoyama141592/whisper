@@ -39,36 +39,17 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-void setMutesAndBlocks({ required SharedPreferences prefs, required List<MuteUser> muteUsers, required List<String> mutesIpv6s, required List<String> mutesUids , required List<String>mutesPostIds, required List<BlockUser> blockUsers, required List<String> blocksIpv6s, required List<String> blocksUids }) {
-  // 代入は使えないが.addは反映される
-  muteUsers.forEach((muteUser) {
-    mutesIpv6s.add(muteUser.ipv6);
-    mutesUids.add(muteUser.uid);
-  });
-  (prefs.getStringList(mutePostIdsPrefsKey) ?? []).forEach((mutePostId) { mutesPostIds.add(mutePostId); }) ;
-  blockUsers.forEach((blockUser) {
-    blocksUids.add(blockUser.uid);
-    blocksIpv6s.add(blockUser.ipv6);
-  });
-}
-
 void addMuteUser({ required List<String> mutesUids, required List<MuteUser> muteUsers, required String uid, required String ipv6  }) {
   mutesUids.add(uid);
   final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: Timestamp.now(),ipv6: ipv6,uid: uid);
   muteUsers.add(muteUser);
 }
 
-Future<void> createMuteUserDoc() async {}
-Future<void> deleteMuteUserDoc() async {}
-
 void addBlockUser({ required List<String> blocksUids, required List<BlockUser> blockUsers, required String uid, required String ipv6  }) {
   blocksUids.add(uid);
   final BlockUser blockUser = BlockUser(createdAt: Timestamp.now(), ipv6: ipv6, uid: uid);
   blockUsers.add(blockUser);
 }
-
-Future<void> createBlockUserDoc() async {}
-Future<void> deleteBlockUserDoc() async {}
  
 Future<void> signOut(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
