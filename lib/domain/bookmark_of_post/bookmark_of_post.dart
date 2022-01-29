@@ -1,11 +1,11 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'bookmark.g.dart';
+part 'bookmark_of_post.g.dart';
 
 @JsonSerializable()
-class Bookmark {
-  Bookmark({
+class BookmarkOfPost {
+  BookmarkOfPost({
     required this.activeUid,
     required this.createdAt,
     required this.postId,
@@ -15,7 +15,7 @@ class Bookmark {
   final dynamic createdAt;
   final String postId;
 
-  factory Bookmark.fromJson(Map<String,dynamic> json) => _$BookmarkFromJson(json);
+  factory BookmarkOfPost.fromJson(Map<String,dynamic> json) => _$BookmarkOfPostFromJson(json);
 
-  Map<String,dynamic> toJson() => _$BookmarkToJson(this);
+  Map<String,dynamic> toJson() => _$BookmarkOfPostToJson(this);
 }

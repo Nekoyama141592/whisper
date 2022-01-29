@@ -52,7 +52,7 @@ const String speedPrefsKey = 'speed';
 // tokenTypes
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
 final String bookmarkLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkLabel);
-// const String bookmarkPostTokenType = 'bookmarkPost';
+final String bookmarkPostTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPost);
 final String followingTokenType = returnTokenTypeString(tokenType: TokenType.following);
 final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);
 final String likeCommentTokenType = returnTokenTypeString(tokenType: TokenType.likeComment);
@@ -71,6 +71,7 @@ final String commentNotificationType = returnNotificationTypeString(notifcationT
 final String replyNotificationType = returnNotificationTypeString(notifcationType: NotificationType.replyNotification );
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
+const String bookmarkLabelIdFieldKey = 'bookmarkLabelId';
 const String createdAtFieldKey = 'createdAt';
 const String elementIdFieldKey = 'elementId';
 const String followerUidsFieldKey = 'followerUids';

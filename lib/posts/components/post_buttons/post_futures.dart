@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flash/flash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
@@ -13,11 +13,11 @@ import 'package:whisper/domain/mute_comment/mute_comment.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/bookmark/bookmark.dart';
 import 'package:whisper/domain/like_post/like_post.dart';
-import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_of_post/bookmark_of_post.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -90,19 +90,16 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    final Bookmark bookmark = Bookmark(activeUid: mainModel.userMeta.uid,createdAt: Timestamp.now(),postId: whisperPost.postId);
+    final BookmarkOfPost bookmark = BookmarkOfPost(activeUid: mainModel.userMeta.uid,createdAt: Timestamp.now(),postId: whisperPost.postId);
     await bookmarkChildRef(postId: whisperPost.postId, activeUid: mainModel.currentWhisperUser.uid).set(bookmark.toJson());
   }
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now , required String bookmarkLabelId }) async {
-    final Bookmark bookmark = Bookmark(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,);
+    final BookmarkOfPost bookmark = BookmarkOfPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,);
     final String uid = mainModel.userMeta.uid;
     await newTokenChildRef(uid: uid, now: now.toDate()).set(bookmark.toJson());
-    await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId ).update({
-      bookmarksFieldKey: FieldValue.arrayUnion([bookmark]),
-      updatedAtFieldKey: now,
-    });
+    await tokensParentRef(uid: uid).doc(bookmarkLabelId).set(bookmark.toJson());
   }
 
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
@@ -149,14 +146,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.bookmarksPostIds.remove(whisperPost.postId);
     notifyListeners();
     final qshot = await tokensParentRef(uid: mainModel.userMeta.uid).where(postIdFieldKey,isEqualTo: whisperPost.postId).get();
-    final DocumentSnapshot<Map<String,dynamic>> alreadyBookmark = qshot.docs.first;
-    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: alreadyBookmark.id ).delete();
-    await bookmarkLabelRef(uid: mainModel.userMeta.uid, bookmarkLabelId: bookmarkLabelId).update({
-      bookmarksFieldKey: FieldValue.arrayRemove(mainModel.bookmarks.where((element) {
-        final Bookmark bookmark = fromMapToBookmark(map: element as Map<String,dynamic>);
-        return bookmark.postId == whisperPost.postId;
-      }).toList())
-    });
+    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id ).delete();
   }
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
@@ -175,10 +165,9 @@ class PostFutures extends ChangeNotifier {
   
   Future<void> removeLikeOfUser({ required Post whisperPost, required MainModel mainModel}) async {
     mainModel.likePostIds.remove(whisperPost.postId);
-    final DateTime now = DateTime.now();
     final String uid = mainModel.userMeta.uid;
-    final LikePost likePost = LikePost(activeUid: uid, createdAt: Timestamp.fromDate(now), postId: whisperPost.postId);
-    await newTokenChildRef(uid: uid, now: now).set(likePost.toJson());
+    final qshot = await tokensParentRef(uid: uid).where(tokenTypeFieldKey,isEqualTo: likePostTokenType).where(postIdFieldKey,isEqualTo: whisperPost.postId).limit(plusOne).get();
+    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id).delete();
   }
   
   void reload() {

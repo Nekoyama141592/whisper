@@ -10,7 +10,7 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 // domain
-import 'package:whisper/domain/bookmark/bookmark.dart';
+import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/following/following.dart';
 import 'package:whisper/domain/likeComment/like_comment.dart';
 import 'package:whisper/domain/likeReply/like_reply.dart';
@@ -51,7 +51,7 @@ class MainModel extends ChangeNotifier {
   List<LikeReply> likeReplys = [];
   List<String> likeReplyIds = [];
   // bookmark
-  List<Bookmark> bookmarks = [];
+  List<BookmarkPost> bookmarkPosts = [];
   List<BookmarkLabel> bookmarkLabels = [];
   List<ReadPost> readPosts = [];
   List<String> readPostIds = [];
@@ -128,6 +128,11 @@ class MainModel extends ChangeNotifier {
         case TokenType.bookmarkLabel:
           final BookmarkLabel bookmarkLabel = BookmarkLabel.fromJson(tokenMap);
           bookmarkLabels.add(bookmarkLabel);
+        break;
+        case TokenType.bookmarkPost:
+          final BookmarkPost bookmarkPost = BookmarkPost.fromJson(tokenMap);
+          bookmarkPosts.add(bookmarkPost);
+          bookmarksPostIds.add(bookmarkPost.postId);
         break;
         case TokenType.following:
           final Following followingInstantce = Following.fromJson(tokenMap);

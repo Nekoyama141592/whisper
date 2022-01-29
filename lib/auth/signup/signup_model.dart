@@ -157,9 +157,10 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
     ).toJson();
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMetaMap);
-    await others.bookmarkLabelRef(uid: uid, bookmarkLabelId: bookmarkLabelId).set(
-      returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId)
-    );
+    // await others.bookmarkLabelRef(uid: uid, bookmarkLabelId: bookmarkLabelId).set(
+    //   returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId)
+    // );
+    await others.tokensParentRef(uid: uid).doc(bookmarkLabelId).set(returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId));
   }
 
   void showCupertinoDatePicker(BuildContext context) {

@@ -13,8 +13,8 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 // domain
-import 'package:whisper/domain/bookmark/bookmark.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // notifiers
@@ -44,7 +44,7 @@ class BookmarksModel extends ChangeNotifier {
   List<AudioSource> afterUris = [];
   // cloudFirestore
   int startIndex = 0;
-  List<String> bookmarksPostIds = [];
+  List<String> bookmarkPostIds = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -54,10 +54,10 @@ class BookmarksModel extends ChangeNotifier {
   // enums
   final PostType postType = PostType.bookmarks;
   
-  Future<void> init({ required MainModel mainModel }) async {
+  Future<void> init({ required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
     startLoading();
     audioPlayer = AudioPlayer();
-    await setBookmarksPostIds(userMeta: mainModel.userMeta);
+    await setBookmarksPostIds(userMeta: mainModel.userMeta, bookmarkLabel: bookmarkLabel);
     await getBookmarks();
     prefs = mainModel.prefs;
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
@@ -92,33 +92,25 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> onLoading() async {
-    await getOldBookmarks(bookmarksPostIds: bookmarksPostIds);
+    await getOldBookmarks(bookmarksPostIds: bookmarkPostIds);
     refreshController.loadComplete();
     notifyListeners();
   }
 
-  Future<void> setBookmarksPostIds({ required UserMeta userMeta }) async {
-    // List<Bookmark> maps = userMeta.bookmarks.map((bookmark) => fromMapToBookmark(map: bookmark) ).toList();
-    // maps.sort((a,b) => (b.createdAt as Timestamp ).compareTo(a.createdAt));
-    // maps.forEach((map) {
-    //   bookmarksPostIds.add(map.postId);
-    // });
-    await bookmarkLabelParentRef(uid: userMeta.uid).get().then((qshot) {
-      final DocumentSnapshot<Map<String,dynamic>> first = qshot.docs.first;
-      final BookmarkLabel bookmarkLabel = fromMapToBookmarkLabel(map: first.data()!);
-      final List<Bookmark> bookmarks = (bookmarkLabel.bookmarks as List<dynamic> ).map((bookmark) => fromMapToBookmark(map: bookmark as Map<String,dynamic> ) ).toList();
-      bookmarks.sort((a,b) => (b.createdAt as Timestamp ).compareTo(a.createdAt as Timestamp ));
-      bookmarksPostIds = bookmarks.map((bookmark) => bookmark.postId ).toList();
+  Future<void> setBookmarksPostIds({ required UserMeta userMeta,required BookmarkLabel bookmarkLabel }) async {
+    final String bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
+    await tokensParentRef(uid: userMeta.uid).where(tokenTypeFieldKey,isEqualTo: bookmarkPostTokenType).where(bookmarkLabelIdFieldKey,isEqualTo: bookmarkLabelId).get().then((qshot){
+      bookmarkPostIds = qshot.docs.map((e) => BookmarkPost.fromJson(e.data()).postId ).toList();
     });
     notifyListeners();
   }
 
   Future<void> getBookmarks() async {
-    if (bookmarksPostIds.isNotEmpty) { await processBookmark(); }
+    if (bookmarkPostIds.isNotEmpty) { await processBookmark(); }
   }
 
   Future<void> processBookmark() async {
-    List<String> max10 = bookmarksPostIds.length > (startIndex + tenCount) ? bookmarksPostIds.sublist(0,tenCount) : bookmarksPostIds.sublist( 0,bookmarksPostIds.length );
+    List<String> max10 = bookmarkPostIds.length > (startIndex + tenCount) ? bookmarkPostIds.sublist(0,tenCount) : bookmarkPostIds.sublist( 0,bookmarkPostIds.length );
     List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
     await FirebaseFirestore.instance.collection(postsFieldKey).where(postIdFieldKey,whereIn: max10).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
@@ -126,11 +118,6 @@ class BookmarksModel extends ChangeNotifier {
     voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
     startIndex = posts.length;
   }
-
-  // Future<void> getNewBookmarks({ required List<String> bookmarksPostIds}) async {
-    
-  // }
-
 
   Future<void> getOldBookmarks({ required List<String> bookmarksPostIds}) async {
     if (bookmarksPostIds.length > (startIndex + oneTimeReadCount)) {

@@ -15,7 +15,6 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/bookmark/bookmark.dart';
 import 'package:whisper/domain/nft_owner/nft_owner.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
@@ -104,13 +103,6 @@ DocumentReference<Map<String, dynamic>> bookmarkChildRef({required String postId
   return parentRef.doc(activeUid);
 }
 
-CollectionReference<Map<String,dynamic>> bookmarkLabelParentRef({ required String uid }) {
-  return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(bookmarkLabelsString);
-}
-DocumentReference<Map<String, dynamic>> bookmarkLabelRef({ required String uid, required String bookmarkLabelId }) {
-  return bookmarkLabelParentRef(uid: uid).doc(bookmarkLabelId);
-}
-
 CollectionReference<Map<String, dynamic>>  tokensParentRef({ required String uid }) {
   return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(tokensString);
 }
@@ -169,9 +161,6 @@ WhisperLink fromMapToWhisperLink({ required Map<String,dynamic> whisperLink }) {
 
 BookmarkLabel fromMapToBookmarkLabel({ required Map<String,dynamic> map }) {
   return BookmarkLabel.fromJson(map);
-}
-Bookmark fromMapToBookmark({ required Map<String,dynamic> map }) {
-  return Bookmark.fromJson(map);
 }
 MuteUser fromMapToMutesIpv6AndUid({ required Map<String,dynamic> map }) {
   return MuteUser.fromJson(map);
