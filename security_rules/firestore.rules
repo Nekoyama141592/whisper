@@ -60,6 +60,9 @@ service cloud.firestore {
         allow create: if basicValidation(followerUid);
         allow delete: if basicValidation(uid) || basicValidation(followerUid);
       }
+      match /timelines/{postId} {
+        allow read, write: if isAuthenticated();
+      }
     }
 
     match /userMeta/{uid} {

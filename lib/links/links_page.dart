@@ -28,29 +28,14 @@ class LinksPage extends ConsumerWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                TextButton(
-                  onPressed: onCancelButtonPressed,
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: Theme.of(context).focusColor,
-                      fontSize: 25
-                    ),
-                  ),
-                ),
-                SizedBox(width: size.width * 0.4,),
-                RoundedButton(
-                  text: '保存', 
-                  widthRate: 0.25, 
-                  verticalPadding: 10.0, 
-                  horizontalPadding: 5.0, 
-                  press: onSaveButtonPressed,
-                  textColor: Colors.white, 
-                  buttonColor: Theme.of(context).highlightColor
-                )
-              ],
+            RoundedButton(
+              text: '決定', 
+              widthRate: 0.25, 
+              verticalPadding: 10.0, 
+              horizontalPadding: 5.0, 
+              press: () { Navigator.pop(context); },
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
             ),
             Expanded(
               child: ListView.builder(
@@ -65,7 +50,6 @@ class LinksPage extends ConsumerWidget {
                     ),
                     onChanged: (text) {
                       linksModel.whisperLinks[i].label = text;
-                      print(linksModel.whisperLinks[i].label);
                     },
                     
                     controller: textEditingController,
