@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // pages
 import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
@@ -98,8 +99,8 @@ void toAccountPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(mainModel: mainModel,)));
 }
 
-void toNotificationsPage({ required BuildContext context, required MainModel mainModel, required ThemeModel themeModel, required LinksModel linksModel, required NotificationsModel notificationsModel}) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel, linksModel: linksModel,notificationsModel: notificationsModel, ) ));
+void toNotificationsPage({ required BuildContext context, required MainModel mainModel, required ThemeModel themeModel, required LinksModel linksModel, required NotificationsModel notificationsModel,}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel, linksModel: linksModel,notificationsModel: notificationsModel,) ));
 }
 
 void toAddPostPage ({ required BuildContext context, required AddPostModel addPostModel, required MainModel mainModel }) {

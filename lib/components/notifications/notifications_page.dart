@@ -1,11 +1,13 @@
 // material
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications.dart';
 // constants
 import 'constants/tab_bar_elements.dart';
 // components
 import 'package:whisper/details/whisper_drawer.dart';
+// domain
 import 'package:whisper/components/notifications/components/reply_notifications/reply_notifications.dart';
+import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/links/links_model.dart';
@@ -19,7 +21,7 @@ class NotificationsPage extends StatelessWidget {
     required this.mainModel,
     required this.linksModel,
     required this.themeModel,
-    required this.notificationsModel
+    required this.notificationsModel,
   });
 
   final MainModel mainModel;
@@ -58,11 +60,16 @@ class NotificationsPage extends StatelessWidget {
           
         ),
         drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel, linksModel: linksModel),
-        body: TabBarView(
-          children: [
-            CommentNotifications(mainModel: mainModel, notificationsModel: notificationsModel),
-            ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel),
-          ]
+        body: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
+          stream: notificationsModel.notificationStream,
+          builder: (context, snapshot) {
+            return TabBarView(
+              children: [
+                CommentNotifications(isLoading: notificationsModel.isLoading, mainModel: mainModel, snapshot: snapshot),
+                ReplyNotifications(isLoading: notificationsModel.isLoading ,mainModel: mainModel, snapshot: snapshot)
+              ]
+            );
+          }
         ),
       ),
     );

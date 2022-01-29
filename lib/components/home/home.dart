@@ -42,6 +42,7 @@ class Home extends StatelessWidget {
             NotificationIcon(
               mainModel: mainModel, 
               themeModel: themeModel,
+              linksModel: linksModel,
             )
           ],
           bottom: TabBar(
