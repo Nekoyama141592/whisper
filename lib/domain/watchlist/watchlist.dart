@@ -20,7 +20,7 @@ class Watchlist {
   final String myUid;
   final String tokenType = watchlistTokenType;
   final String watchlistId;
-  final List<dynamic> uids;
+  final List<String> uids;
   final dynamic updatedAt;
 
   factory Watchlist.fromJson(Map<String,dynamic> json) => _$WatchlistFromJson(json);
