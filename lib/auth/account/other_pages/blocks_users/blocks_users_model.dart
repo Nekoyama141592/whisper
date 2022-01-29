@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/ints.dart';
 // domain
 import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-
+// model
+import 'package:whisper/main_model.dart';
 
 final blocksUsersProvider = ChangeNotifierProvider(
   (ref) => BlocksUsersModel()
@@ -20,17 +22,17 @@ class BlocksUsersModel extends ChangeNotifier {
 
   // basic
   bool isLoading = false;
-  List<DocumentSnapshot<Map<String,dynamic>>> blocksUserDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> userDocs = [];
+  int lastIndex = 0;
+  List<String> blockUids = [];
+  // refresh
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  BlocksUsersModel() {
-    init();
-  }
-
-  Future<void> init() async {
+  Future<void> init({ required MainModel mainModel }) async {
     startLoading();
-    final List<BlockUser> blockUsers = await returnBlockUserTokens(myUid: firebaseAuthCurrentUser!.uid);
-    List<String> blocksUids = blockUsers.map((e) => e.uid).toList();
-    await getBlocksUserDocs(blocksUids: blocksUids);
+    final List<BlockUser> blockUsers = mainModel.blockUsers;
+    blockUids = blockUsers.map((e) => e.uid ).toList();
+    await getBlocksUserDocs();
     endLoading();
   }
 
@@ -44,21 +46,39 @@ class BlocksUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getBlocksUserDocs({ required List<dynamic> blocksUids }) async {
-    if (blocksUids.isNotEmpty) {
-      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: blocksUids).get().then((qshot) {
-        blocksUserDocs = qshot.docs;
-      });
+  Future<void> getBlocksUserDocs() async {
+    await processBlockUsers();
+  }
+
+  Future<void> onLoading() async {
+    await getOldBlockUsers();
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+
+  Future<void> getOldBlockUsers() async {
+    if (blockUids.length > (lastIndex + tenCount)) {
+      await processBlockUsers();
     }
   }
 
-  Future<void> unBlockUser({ required String passiveUid, required List<dynamic> blocksUids, required WhisperUser currentWhisperUser}) async {
+  Future<void> processBlockUsers() async {
+    if (blockUids.isNotEmpty) {
+      List<String> max10 = blockUids.length > (lastIndex + tenCount) ? blockUids.sublist(0,tenCount) : blockUids.sublist( 0,blockUids.length );
+      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: max10 ).get().then((qshot) {
+        userDocs = qshot.docs;
+      });
+      lastIndex = userDocs.length;
+    }
+  }
+
+  Future<void> unBlockUser({ required String passiveUid, required List<String> blockUids, required WhisperUser currentWhisperUser}) async {
     // front
-    blocksUserDocs.removeWhere((userDoc) {
+    userDocs.removeWhere((userDoc) {
       final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
       return whisperUser.uid == passiveUid;
     });
-    blocksUids.remove(passiveUid);
+    blockUids.remove(passiveUid);
     notifyListeners();
     // back
     final qshot = await tokensParentRef(uid: currentWhisperUser.uid).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: passiveUid).limit(plusOne).get();

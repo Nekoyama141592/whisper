@@ -43,7 +43,7 @@ class BookmarksModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  int startIndex = 0;
+  int lastIndex = 0;
   List<String> bookmarkPostIds = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
@@ -80,7 +80,7 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   // Future<void> onRefresh() async {
-  //   await getNewBookmarks(bookmarksPostIds: bookmarksPostIds);
+  //   await getNewBookmarks(bookmarkPostIds: bookmarkPostIds);
   //   refreshController.refreshCompleted();
   //   notifyListeners();
   // }
@@ -92,7 +92,7 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> onLoading() async {
-    await getOldBookmarks(bookmarksPostIds: bookmarkPostIds);
+    await getOldBookmarks();
     refreshController.loadComplete();
     notifyListeners();
   }
@@ -106,21 +106,23 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> getBookmarks() async {
-    if (bookmarkPostIds.isNotEmpty) { await processBookmark(); }
+    await processBookmark();
   }
 
   Future<void> processBookmark() async {
-    List<String> max10 = bookmarkPostIds.length > (startIndex + tenCount) ? bookmarkPostIds.sublist(0,tenCount) : bookmarkPostIds.sublist( 0,bookmarkPostIds.length );
-    List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
-    await FirebaseFirestore.instance.collection(postsFieldKey).where(postIdFieldKey,whereIn: max10).get().then((qshot) {
-      qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
-    });
-    voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
-    startIndex = posts.length;
+    if (bookmarkPostIds.isNotEmpty) {
+      List<String> max10 = bookmarkPostIds.length > (lastIndex + tenCount) ? bookmarkPostIds.sublist(0,tenCount) : bookmarkPostIds.sublist( 0,bookmarkPostIds.length );
+      List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
+      await FirebaseFirestore.instance.collection(postsFieldKey).where(postIdFieldKey,whereIn: max10).get().then((qshot) {
+        docs = qshot.docs;
+      });
+      await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      lastIndex = posts.length;
+    }
   }
 
-  Future<void> getOldBookmarks({ required List<String> bookmarksPostIds}) async {
-    if (bookmarksPostIds.length > (startIndex + oneTimeReadCount)) {
+  Future<void> getOldBookmarks() async {
+    if (bookmarkPostIds.length > (lastIndex + tenCount)) {
       await processBookmark();
     }
   }

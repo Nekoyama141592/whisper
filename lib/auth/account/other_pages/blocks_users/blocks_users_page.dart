@@ -28,11 +28,11 @@ class BlocksUsersPage extends ConsumerWidget {
       body: blocksUsersModel.isLoading ?
       Loading()
       : JudgeScreen(
-        list: blocksUsersModel.blocksUserDocs, 
+        list: blocksUsersModel.userDocs, 
         reload: () async { 
-          await blocksUsersModel.getBlocksUserDocs(blocksUids: mainModel.blockUids);
+          await blocksUsersModel.getBlocksUserDocs();
         },
-        content: UserCards(userDocs: blocksUsersModel.blocksUserDocs,mainModel: mainModel,blocksUsersModel: blocksUsersModel,)
+        content: UserCards(userDocs: blocksUsersModel.userDocs,mainModel: mainModel,blocksUsersModel: blocksUsersModel,)
       )
     );
   }

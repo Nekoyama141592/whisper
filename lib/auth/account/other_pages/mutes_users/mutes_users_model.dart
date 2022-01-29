@@ -5,11 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
+// model
+import 'package:whisper/main_model.dart';
 
 final mutesUsersProvider = ChangeNotifierProvider(
   (ref) => MutesUsersModel()
@@ -19,17 +22,17 @@ class MutesUsersModel extends ChangeNotifier {
 
   // basic
   bool isLoading = false;
-  List<DocumentSnapshot<Map<String,dynamic>>> mutesUserDocs = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> userDocs = [];
+  int lastIndex = 0;
+  List<String> muteUids = [];
+  // refresh
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  MutesUsersModel() {
-    init();
-  }
-
-  Future<void> init() async {
+  Future<void> init({ required MainModel mainModel }) async {
     startLoading();
-    final List<MuteUser> muteUsers = await returnMuteUserTokens(myUid: firebaseAuthCurrentUser!.uid);
-    List<String> mutesUids = muteUsers.map((e) => e.uid).toList();
-    await getMutesUserDocs(mutesUids: mutesUids);
+    final List<MuteUser> muteUsers = mainModel.muteUsers;
+    muteUids = muteUsers.map((muteUser) => muteUser.uid).toList();
+    await getMutesUserDocs();
     endLoading();
   }
 
@@ -43,17 +46,35 @@ class MutesUsersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getMutesUserDocs({ required List<dynamic> mutesUids }) async {
-    if (mutesUids.isNotEmpty) {
-      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: mutesUids).get().then((qshot) {
-        mutesUserDocs = qshot.docs;
+  Future<void> onLoading() async {
+    await getOldMuteUsers();
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+
+  Future<void> getMutesUserDocs() async {
+    await processMuteUsers();
+  }
+
+  Future<void> getOldMuteUsers() async {
+    if (muteUids.length > (lastIndex + tenCount)) {
+      await processMuteUsers();
+    }
+  }
+
+  Future<void> processMuteUsers() async {
+    if (muteUids.isNotEmpty) {
+      List<String> max10 = muteUids.length > (lastIndex + tenCount) ? muteUids.sublist(0,tenCount) : muteUids.sublist( 0,muteUids.length );
+      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: max10 ).get().then((qshot) {
+        userDocs = qshot.docs;
       });
+      lastIndex = userDocs.length;
     }
   }
 
   Future<void> unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required WhisperUser currentWhisperUser}) async {
     // front
-    mutesUserDocs.removeWhere((userDoc) {
+    userDocs.removeWhere((userDoc) {
       final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
       return whisperUser.uid == passiveUid;
     });
