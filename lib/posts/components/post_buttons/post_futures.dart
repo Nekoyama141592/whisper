@@ -146,7 +146,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.bookmarksPostIds.remove(whisperPost.postId);
     notifyListeners();
     final qshot = await tokensParentRef(uid: mainModel.userMeta.uid).where(postIdFieldKey,isEqualTo: whisperPost.postId).get();
-    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id ).delete();
+    await qshot.docs.first.reference.delete();
   }
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
@@ -167,7 +167,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.likePostIds.remove(whisperPost.postId);
     final String uid = mainModel.userMeta.uid;
     final qshot = await tokensParentRef(uid: uid).where(tokenTypeFieldKey,isEqualTo: likePostTokenType).where(postIdFieldKey,isEqualTo: whisperPost.postId).limit(plusOne).get();
-    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id).delete();
+    await qshot.docs.first.reference.delete();
   }
   
   void reload() {

@@ -80,93 +80,14 @@ class AccountModel extends ChangeNotifier {
       if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
         Navigator.pop(context);
         routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
-        await deleteStorage(mainModel: mainModel);
-        await deletePostsOfCurrentUser();
-        await deleteReplysOfCurrentUser();
-        await deleteCommentsOfCurrentUser();
         await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
       }
     });
   }
 
-  Future<void> deleteStorage({ required MainModel mainModel }) async {
-    await postParentRef(mainModel: mainModel).delete();
-    await postImageParentRef(mainModel: mainModel).delete();
-    await userImageParentRef(uid: mainModel.currentUser!.uid).delete();
-  }
-
-  Future<void> deletePostsOfCurrentUser() async {
-    await FirebaseFirestore.instance
-    .collection(postsFieldKey).where(uidFieldKey,isEqualTo: currentUser!.uid).get()
-    .then((qshot) {
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-      final docs = qshot.docs;
-      int index = 0;
-      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) async {
-        if ((index + 1) % 500 == 0) {
-          // commit by 500 and initialize batch instance
-          await batch.commit();
-          batch = FirebaseFirestore.instance.batch();
-        }
-        batch.delete(doc.reference);
-        index++;
-      });
-      // last commit
-      return batch.commit();
-    });
-  }
-  
-  Future<void> deleteReplysOfCurrentUser() async {
-    await FirebaseFirestore.instance
-    .collection(replysFieldKey)
-    .where(uidFieldKey,isEqualTo: currentUser!.uid)
-    .get()
-    .then((qshot) {
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-      final docs = qshot.docs;
-      int index = 0;
-      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) async {
-        if ((index + 1) % 500 == 0) {
-          // commit by 500 and initialize batch instance
-          await batch.commit();
-          batch = FirebaseFirestore.instance.batch();
-        }
-        batch.delete(doc.reference);
-        index++;
-      });
-      // last commit
-      return batch.commit();
-    });
-  }
-  Future<void> deleteCommentsOfCurrentUser() async {
-    await FirebaseFirestore.instance
-    .collection(commentsFieldKey)
-    .where(uidFieldKey,isEqualTo: currentUser!.uid)
-    .get()
-    .then((qshot) {
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-      final docs = qshot.docs;
-      int index = 0;
-      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) async {
-        if ((index + 1) % 500 == 0) {
-          // commit by 500 and initialize batch instance
-          await batch.commit();
-          batch = FirebaseFirestore.instance.batch();
-        }
-        batch.delete(doc.reference);
-        index++;
-      });
-      // last commit
-      return batch.commit();
-    });
-  }
   Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {
     await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentWhisperUser.uid).delete().then((_) async {
-      try {
-        await currentUser!.delete();
-      } catch(e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-      }
+      await currentUser!.delete();  
     });
   }
 

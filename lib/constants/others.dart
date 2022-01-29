@@ -60,18 +60,18 @@ Reference postImageParentRef({ required MainModel mainModel }) {
   return FirebaseStorage.instance.ref().child(postImagesPathKey).child(mainModel.currentUser!.uid);
 }
 
-Reference postImageChildRef({ required MainModel mainModel, required String postImageName }) {
+Reference postImageChildRef({ required MainModel mainModel, required String postImageName,required String postId }) {
   final parentRef = postImageParentRef(mainModel: mainModel);
-  return parentRef.child(postImageName);
+  return parentRef.child(postId).child(postImageName);
 }
 
 Reference postParentRef({ required MainModel mainModel }) {
   return FirebaseStorage.instance.ref().child(postsFieldKey).child(mainModel.currentWhisperUser.uid);
 }
 
-Reference postChildRef({ required MainModel mainModel, required String storagePostName }) {
+Reference postChildRef({ required MainModel mainModel, required String storagePostName,required String postId }) {
   final parentRef = postParentRef(mainModel: mainModel);
-  return parentRef.child(storagePostName);
+  return parentRef.child(postId).child(storagePostName);
 }
 
 final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection(postsFieldKey);

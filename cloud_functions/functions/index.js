@@ -7,6 +7,7 @@ const likeScore = 100.0;
 const unlikeScore = -100.0;
 const bookmarkScore = 150.0;
 const unbookmarkScore = -150;
+const limit = 500;
 // const algoliasearch = require('algoliasearch');
 // const ALGOLIA_APP_ID = functions.config().algolia.app_id
 // const ALGOLIA_SEARCH_API_KEY = functions.config().algolia.api_key
@@ -16,13 +17,8 @@ const unbookmarkScore = -150;
 // const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_API_KEY)
 
 // firestore
-var fireStore = admin.firestore()
-
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
+const fireStore = admin.firestore();
+const bucket = admin.storage().bucket();
 exports.likePost = functions.firestore.document('posts/{id}/likes/{uid}').onCreate(
     async (snap,_) => {
         const newValue = snap.data();
@@ -110,17 +106,131 @@ exports.unfollowUser = functions.firestore.document('users/{uid}/followers/{foll
     }
 );
 
+exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
+    async (snap,_) => {
+        const oldValue = snap.data();
+        // delete user
+        const userMeta = await fireStore.collection('userMeta').doc(oldValue.id).get();
+        await userMeta.ref.delete();
+        // delete posts
+        const posts = await fireStore.collection('posts').where('uid','==',oldValue.id).get();
+        let postCount = 0;
+        let postBatch = fireStore.batch();
+        for (const post of posts.docs) {
+            postBatch.delete(post.ref);
+            postCount += 1;
+            if (postCount == limit) {
+                await postBatch.commit();
+                postBatch = fireStore.batch();
+                postCount = 0;
+            }
+        }
+        if (postCount > 0) {
+            await postBatch.commit();
+        }
+        // delete comments
+        const comments = await fireStore.collection('comments').where('uid','==',oldValue.id).get();
+        let commentCount = 0;
+        let commentBatch = fireStore.batch();
+        for (const comment of comments.docs) {
+            commentBatch.delete(comment.ref);
+            commentCount += 1;
+            if (commentCount == limit) {
+                await commentBatch.commit();
+                commentBatch = fireStore.batch();
+                commentCount = 0;
+            }
+        }
+        if (replyCount > 0) {
+            await replyBatch.commit();
+        }
+        // delete replys
+        const replys = await fireStore.collection('replys').where('uid','==',oldValue.id).get();
+        let replyCount = 0;
+        let replyBatch = fireStore.batch();
+        for (const reply of replys.docs) {
+            replyBatch.delete(reply.ref);
+            replyCount += 1;
+            if (replyCount == limit) {
+                await replyBatch.commit();
+                replyBatch = fireStore.batch();
+                replyCount = 0;
+            }
+        }
+        if (replyCount > 0) {
+            await replyBatch.commit();
+        }
+        // delete tokens
+        const tokens = await fireStore.collection('userMeta').doc(oldValue.id).collection('tokens').get();
+        let tokenCount = 0;
+        let tokenBatch = fireStore.batch();
+        for (const token of tokens.docs) {
+            tokenBatch.delete(token.ref);
+            tokenCount += 1;
+            if (tokenCount == limit) {
+                await tokenBatch.commit();
+                tokenBatch = fireStore.batch();
+                tokenCount = 0;
+            }
+        }
+        if (tokenCount > 0) {
+            await tokenBatch.commit();
+        }
+        // delete notifications
+        const notifications = await fireStore.collection('userMeta').doc(oldValue.id).collection('notifications').get();
+        let notificationCount = 0;
+        let notificationBatch = fireStore.batch();
+        for (const notification of notifications.docs) {
+            notificationBatch.delete(notification.ref);
+            notificationCount += 1;
+            if (notificationCount == limit) {
+                await notificationBatch.commit();
+                notificationBatch = fireStore.batch();
+                notificationCount = 0;
+            }
+        }
+        if (notificationCount > 0) {
+            await notificationBatch.commit();
+        }
+        // delete post storage
+        bucket.deleteFiles({
+            prefix: `posts/${oldValue.id}`
+        });
+        // delete userImage storage
+        bucket.deleteFiles({
+            prefix: `userImages/${oldValue.id}`
+        });
+        // delete postImages storage
+        bucket.deleteFiles({
+            prefix: `postImages/${oldValue.id}`
+        });
+    }
+);
+
 exports.createTimeline = functions.firestore.document('posts/{id}').onCreate(
     async (snap,_) => {
         const newValue = snap.data();
-        let qshot = await fireStore.collection('users').doc(newValue.uid).collection('followers').get();
-        qshot.docs.forEach(doc => {
-            await fireStore.collection('users').doc(doc.id).collection('timelines').doc(newValue.postId).set({
-               'createdAt': admin.firestore.Timestamp.now(),
-               'creatorUid': newValue.uid,
-               'postId': newValue.postId,
+        const followers = await fireStore.collection('users').doc(newValue.uid).collection('followers').get();
+        let count = 0;
+        let batch = fireStore.batch();
+        for (const follower of followers.docs) {
+            const ref = fireStore.collection('users').doc(follower.id).collection('timelines').doc(newValue.postId);
+            batch.set(ref,{
+                'createdAt': admin.firestore.Timestamp.now(),
+                'creatorUid': newValue.uid,
+                'postId': newValue.postId,
             });
-        });
+            count += 1;
+            if (count == limit) {
+                await batch.commit();
+                batch = fireStore.batch();
+                count = 0;
+            }
+        }
+        if (count >0) {
+            await batch.commit();
+        }
+        
     }
 );
 
