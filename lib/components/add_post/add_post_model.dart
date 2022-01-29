@@ -21,6 +21,7 @@ import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -210,6 +211,7 @@ class AddPostModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
     final List<String> searchWords = returnSearchWords(searchTerm: title);
+    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: '', label: '', url: link);
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
@@ -229,7 +231,7 @@ class AddPostModel extends ChangeNotifier {
       isOfficial: currentWhiseprUser.isOfficial,
       isPinned: false,
       likeCount: 0,
-      links: [link], 
+      links: [whisperLink.toJson()], 
       negativeScore: 0,
       playCount: 0,
       postId: postId, 
@@ -237,7 +239,7 @@ class AddPostModel extends ChangeNotifier {
       score: defaultScore.toDouble(),
       storageImageName: storageImageName, 
       storagePostName: storagePostName, 
-      tagUids: [],
+      tagAccountNames: [],
       tokenToSearch: returnTokenToSearch(searchWords: searchWords),
       title: title,
       uid: currentWhiseprUser.uid,

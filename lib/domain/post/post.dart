@@ -32,7 +32,7 @@ class Post{
     required this.score,
     required this.storageImageName,
     required this.storagePostName,
-    required this.tagUids,
+    required this.tagAccountNames,
     required this.title,
     required this.tokenToSearch,
     required this.uid,
@@ -49,8 +49,8 @@ class Post{
   dynamic createdAt;
   String description;
   String genre;
-  List<dynamic> hashTags;
-  List<dynamic> imageURLs;
+  List<String> hashTags;
+  List<String> imageURLs;
   int impression;
   String ipv6;
   bool isDelete;
@@ -58,7 +58,7 @@ class Post{
   bool isOfficial;
   bool isPinned;
   int likeCount;
-  List<dynamic> links;
+  List<Map<String,dynamic>> links;
   num negativeScore;
   int playCount;
   String postId;
@@ -66,7 +66,7 @@ class Post{
   num score;
   String storageImageName;
   String storagePostName;
-  List<dynamic> tagUids;
+  List<String> tagAccountNames;
   Map<String,dynamic> tokenToSearch;
   String title;
   String uid;

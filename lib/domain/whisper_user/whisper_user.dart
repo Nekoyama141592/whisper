@@ -38,7 +38,7 @@ class WhisperUser {
   bool isKeyAccount;
   bool isNFTicon;
   bool isOfficial;
-  List<dynamic> links;
+  List<Map<String,dynamic>> links;
   String recommendState;
   num score;
   String storageImageName;

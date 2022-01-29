@@ -18,7 +18,9 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       isKeyAccount: json['isKeyAccount'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
       isOfficial: json['isOfficial'] as bool,
-      links: json['links'] as List<dynamic>,
+      links: (json['links'] as List<dynamic>)
+          .map((e) => e as Map<String, dynamic>)
+          .toList(),
       recommendState: json['recommendState'] as String,
       score: json['score'] as num,
       storageImageName: json['storageImageName'] as String,

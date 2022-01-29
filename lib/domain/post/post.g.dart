@@ -16,8 +16,10 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       createdAt: json['createdAt'],
       description: json['description'] as String,
       genre: json['genre'] as String,
-      hashTags: json['hashTags'] as List<dynamic>,
-      imageURLs: json['imageURLs'] as List<dynamic>,
+      hashTags:
+          (json['hashTags'] as List<dynamic>).map((e) => e as String).toList(),
+      imageURLs:
+          (json['imageURLs'] as List<dynamic>).map((e) => e as String).toList(),
       impression: json['impression'] as int,
       ipv6: json['ipv6'] as String,
       isDelete: json['isDelete'] as bool,
@@ -25,7 +27,9 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       isOfficial: json['isOfficial'] as bool,
       isPinned: json['isPinned'] as bool,
       likeCount: json['likeCount'] as int,
-      links: json['links'] as List<dynamic>,
+      links: (json['links'] as List<dynamic>)
+          .map((e) => e as Map<String, dynamic>)
+          .toList(),
       negativeScore: json['negativeScore'] as num,
       playCount: json['playCount'] as int,
       postId: json['postId'] as String,
@@ -33,7 +37,9 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       score: json['score'] as num,
       storageImageName: json['storageImageName'] as String,
       storagePostName: json['storagePostName'] as String,
-      tagUids: json['tagUids'] as List<dynamic>,
+      tagAccountNames: (json['tagAccountNames'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       title: json['title'] as String,
       tokenToSearch: json['tokenToSearch'] as Map<String, dynamic>,
       uid: json['uid'] as String,
@@ -69,7 +75,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'score': instance.score,
       'storageImageName': instance.storageImageName,
       'storagePostName': instance.storagePostName,
-      'tagUids': instance.tagUids,
+      'tagAccountNames': instance.tagAccountNames,
       'tokenToSearch': instance.tokenToSearch,
       'title': instance.title,
       'uid': instance.uid,
