@@ -11,7 +11,6 @@ WhisperLink _$WhisperLinkFromJson(Map<String, dynamic> json) => WhisperLink(
       imageURL: json['imageURL'] as String,
       label: json['label'] as String,
       link: json['link'] as String,
-      storageImageName: json['storageImageName'] as String,
     );
 
 Map<String, dynamic> _$WhisperLinkToJson(WhisperLink instance) =>
@@ -20,5 +19,4 @@ Map<String, dynamic> _$WhisperLinkToJson(WhisperLink instance) =>
       'imageURL': instance.imageURL,
       'label': instance.label,
       'link': instance.link,
-      'storageImageName': instance.storageImageName,
     };

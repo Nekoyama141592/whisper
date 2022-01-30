@@ -60,18 +60,24 @@ Reference postImageParentRef({ required MainModel mainModel }) {
   return FirebaseStorage.instance.ref().child(postImagesPathKey).child(mainModel.currentUser!.uid);
 }
 
+Reference postImagePostRef({ required MainModel mainModel, required String postId }) {
+  return postImageParentRef(mainModel: mainModel).child(postId);
+}
+
 Reference postImageChildRef({ required MainModel mainModel, required String postImageName,required String postId }) {
-  final parentRef = postImageParentRef(mainModel: mainModel);
-  return parentRef.child(postId).child(postImageName);
+  return postImagePostRef(mainModel: mainModel,postId: postId).child(postImageName);
 }
 
 Reference postParentRef({ required MainModel mainModel }) {
   return FirebaseStorage.instance.ref().child(postsFieldKey).child(mainModel.currentWhisperUser.uid);
 }
 
-Reference postChildRef({ required MainModel mainModel, required String storagePostName,required String postId }) {
-  final parentRef = postParentRef(mainModel: mainModel);
-  return parentRef.child(postId).child(storagePostName);
+Reference postChildRef({ required MainModel mainModel, required String storagePostName }) {
+  return postParentRef(mainModel: mainModel).child(storagePostName);
+}
+
+Reference refFromPost({ required Post post }) {
+  return FirebaseStorage.instance.refFromURL(post.audioURL);
 }
 
 final CollectionReference<Map<String, dynamic>> postColRef = FirebaseFirestore.instance.collection(postsFieldKey);

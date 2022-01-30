@@ -20,7 +20,6 @@ class WhisperUser {
     required this.links,
     required this.recommendState,
     required this.score,
-    required this.storageImageName,
     required this.tokenToSearch,
     required this.userName,
     required this.uid,
@@ -41,7 +40,6 @@ class WhisperUser {
   List<Map<String,dynamic>> links;
   String recommendState;
   num score;
-  String storageImageName;
   Map<String,dynamic> tokenToSearch;
   String userName;
   String uid;

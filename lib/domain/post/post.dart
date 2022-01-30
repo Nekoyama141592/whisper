@@ -30,8 +30,6 @@ class Post{
     required this.postId,
     required this.positiveScore,
     required this.score,
-    required this.storageImageName,
-    required this.storagePostName,
     required this.tagAccountNames,
     required this.title,
     required this.tokenToSearch,
@@ -64,8 +62,6 @@ class Post{
   String postId;
   num positiveScore;
   num score;
-  String storageImageName;
-  String storagePostName;
   List<String> tagAccountNames;
   Map<String,dynamic> tokenToSearch;
   String title;

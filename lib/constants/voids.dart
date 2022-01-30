@@ -261,10 +261,12 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
       await FirebaseFirestore.instance.collection(postsFieldKey).doc(whisperPost.postId).delete();
-      await postChildRef(mainModel: mainModel, storagePostName: whisperPost.storagePostName,postId: whisperPost.postId).delete();
-      if (whisperPost.storageImageName.isNotEmpty) {
-        await postImageChildRef(mainModel: mainModel, postImageName: whisperPost.storageImageName, postId: whisperPost.postId ).delete();
+  
+      await refFromPost(post: whisperPost).delete();
+      if (isImageExist(post: whisperPost) == true) {
+        await postImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
       }
+
     } catch(e) {
       print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
@@ -446,25 +448,18 @@ Future<void> updateUserInfo({ required BuildContext context ,required String use
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
   // }
   final DateTime now = DateTime.now();
-  final String storageImageName = (croppedFile == null) ? mainModel.currentWhisperUser.storageImageName :  storageUserImageName(now: now);
-  final String downloadURL = (croppedFile == null) ? mainModel.currentWhisperUser.imageURL : await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
-  if (downloadURL.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('エラーが発生。もう一度待ってからお試しください')));
-  } else {
-    try {
-      WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
-      currentWhisperUser.description = description;
-      currentWhisperUser.imageURL = downloadURL;
-      currentWhisperUser.links = links.map((e) => e.toJson()).toList();
-      currentWhisperUser.storageImageName = storageImageName;
-      currentWhisperUser.updatedAt = Timestamp.fromDate(now);
-      currentWhisperUser.userName = userName;
-      await FirebaseFirestore.instance.collection(usersFieldKey).doc(mainModel.currentWhisperUser.uid).update(
-        currentWhisperUser.toJson()
-      );
-      mainModel.reload();
-    } catch(e) { print(e.toString()); }
+  WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
+  currentWhisperUser.description = description;
+  currentWhisperUser.links = links.map((e) => e.toJson()).toList();
+  currentWhisperUser.updatedAt = Timestamp.fromDate(now);
+  currentWhisperUser.userName = userName;
+  if (croppedFile != null) {
+    final String storageImageName = storageUserImageName(now: now);
+    final String downloadURL = await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
+    currentWhisperUser.imageURL = downloadURL;
   }
+  await FirebaseFirestore.instance.collection(usersFieldKey).doc(mainModel.currentWhisperUser.uid).update( currentWhisperUser.toJson() );
+  mainModel.reload();
 }
 
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {

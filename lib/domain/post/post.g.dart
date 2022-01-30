@@ -35,8 +35,6 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       postId: json['postId'] as String,
       positiveScore: json['positiveScore'] as num,
       score: json['score'] as num,
-      storageImageName: json['storageImageName'] as String,
-      storagePostName: json['storagePostName'] as String,
       tagAccountNames: (json['tagAccountNames'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -73,8 +71,6 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'postId': instance.postId,
       'positiveScore': instance.positiveScore,
       'score': instance.score,
-      'storageImageName': instance.storageImageName,
-      'storagePostName': instance.storagePostName,
       'tagAccountNames': instance.tagAccountNames,
       'tokenToSearch': instance.tokenToSearch,
       'title': instance.title,

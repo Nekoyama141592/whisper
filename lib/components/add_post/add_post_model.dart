@@ -162,7 +162,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel,required String postId }) async {
-    final Reference storageRef = others.postChildRef(mainModel: mainModel, storagePostName: storagePostName, postId: postId);
+    final Reference storageRef = others.postChildRef(mainModel: mainModel, storagePostName: storagePostName);
     await storageRef.putFile(audioFile);
     final String postDownloadURL = await storageRef.getDownloadURL();
     return postDownloadURL;
@@ -192,7 +192,7 @@ class AddPostModel extends ChangeNotifier {
       final String storagePostName = 'post' + microSecondsString + postExtension;
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
       // post firestore
-      await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, storageImageName: storageImageName, storagePostName: storagePostName, postId: postId);
+      await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId);
       postTitleNotifier.value = '';
       endLoading();
     }
@@ -206,12 +206,12 @@ class AddPostModel extends ChangeNotifier {
   }
 
   
-  Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL, required String storageImageName, required  String storagePostName,required String postId }) async {
+  Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId }) async {
     final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
     final List<String> searchWords = returnSearchWords(searchTerm: title);
-    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: imageURL, label: '', link: link, storageImageName: storageImageName);
+    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: imageURL, label: '', link: link, );
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
@@ -237,8 +237,6 @@ class AddPostModel extends ChangeNotifier {
       postId: postId, 
       positiveScore: 0,
       score: defaultScore.toDouble(),
-      storageImageName: storageImageName, 
-      storagePostName: storagePostName, 
       tagAccountNames: [],
       tokenToSearch: returnTokenToSearch(searchWords: searchWords),
       title: title,

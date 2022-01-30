@@ -64,4 +64,13 @@ bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesU
     return true;
   }
 }
+bool isImageExist({ required Post post }) {
+  bool isImageExist = false;
+  post.imageURLs.forEach((element) { 
+    if (element.isNotEmpty) {
+      isImageExist = true;
+    }
+  });
+  return isImageExist;
+}
 
