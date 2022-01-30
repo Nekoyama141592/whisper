@@ -58,7 +58,9 @@ Future<void> signOut(BuildContext context) async {
 }
 
 void showCupertinoDialogue({required BuildContext context, required String title, required String content, required void Function()? action}) {
-  showCupertinoDialog(context: context, builder: (context) {
+  showCupertinoDialog(
+    context: context, 
+    builder: (innerContext) {
     return CupertinoAlertDialog(
       title: Text(title),
       content: Text(content),
@@ -66,7 +68,7 @@ void showCupertinoDialogue({required BuildContext context, required String title
         CupertinoDialogAction(
           child: const Text('Cancel'),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(innerContext);
           },
         ),
         CupertinoDialogAction(

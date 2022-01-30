@@ -17,6 +17,7 @@ class LinksModel extends ChangeNotifier {
 
   void init({ required BuildContext context  ,required List<dynamic> linkMaps }) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage() ));
+    whisperLinks = [];
     linkMaps.forEach((linkMap) {
       final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: linkMap as Map<String,dynamic>);
       whisperLinks.add(whisperLink);
