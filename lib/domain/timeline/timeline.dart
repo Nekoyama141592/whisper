@@ -8,11 +8,13 @@ class Timeline {
   Timeline({
     required this.createdAt,
     required this.creatorUid,
+    required this.isRead,
     required this.postId,
   });
   
   final dynamic createdAt;
   final String creatorUid;
+  bool isRead;
   final String postId;
   
   factory Timeline.fromJson(Map<String,dynamic> json) => _$TimelineFromJson(json);

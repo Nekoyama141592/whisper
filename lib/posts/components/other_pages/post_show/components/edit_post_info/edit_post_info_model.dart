@@ -49,9 +49,9 @@ class EditPostInfoModel extends ChangeNotifier {
     }
   }
 
-  Future<String> uploadImage({ required MainModel mainModel }) async {
+  Future<String> uploadImage({ required MainModel mainModel,required String postId }) async {
     final thisPostImageName = postImageName(now: DateTime.now());
-    final ref = postImageChildRef(mainModel: mainModel,postImageName: thisPostImageName);
+    final ref = postImageChildRef(mainModel: mainModel,postImageName: thisPostImageName,postId: postId);
     await ref.putFile(croppedFile!);
     final String downloadURL = await ref.getDownloadURL();
     return downloadURL;
@@ -59,7 +59,7 @@ class EditPostInfoModel extends ChangeNotifier {
 
   Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context }) async {
     final Post whisperPost = fromMapToPost(postMap: currentSongMap);
-    final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel);
+    final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
     try{
       whisperPost.title = postTitle;
       whisperPost.imageURLs = [imageURL];

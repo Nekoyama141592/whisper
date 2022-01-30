@@ -218,6 +218,7 @@ exports.createTimeline = functions.firestore.document('posts/{id}').onCreate(
             batch.set(ref,{
                 'createdAt': admin.firestore.Timestamp.now(),
                 'creatorUid': newValue.uid,
+                'isRead': false,
                 'postId': newValue.postId,
             });
             count += 1;
