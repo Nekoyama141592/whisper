@@ -1,24 +1,22 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'whisper_link.g.dart';
+part 'whisper_image.g.dart';
 
 @JsonSerializable()
-class WhisperLink {
-  WhisperLink({
+class WhisperImage {
+  WhisperImage({
     required this.description,
     required this.imageURL,
     required this.label,
-    required this.link,
     required this.storageImageName
   });
   String description;
   String imageURL;
   String label;
-  String link;
   String storageImageName;
 
-  factory WhisperLink.fromJson(Map<String,dynamic> json) => _$WhisperLinkFromJson(json);
+  factory WhisperImage.fromJson(Map<String,dynamic> json) => _$WhisperImageFromJson(json);
 
-  Map<String,dynamic> toJson() => _$WhisperLinkToJson(this);
+  Map<String,dynamic> toJson() => _$WhisperImageToJson(this);
 }

@@ -23,8 +23,8 @@ class RedirectToUrlButton extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: whisperPost.links.first as Map<String,dynamic> );
-    final link = whisperLink.url;
+    final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: whisperPost.links.first );
+    final link = whisperLink.link;
 
     return InkWell(
         onTap: () async {

@@ -161,8 +161,8 @@ class AddPostModel extends ChangeNotifier {
     }
   }
 
-  Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel }) async {
-    final Reference storageRef = others.postChildRef(mainModel: mainModel, storagePostName: storagePostName);
+  Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel,required String postId }) async {
+    final Reference storageRef = others.postChildRef(mainModel: mainModel, storagePostName: storagePostName, postId: postId);
     await storageRef.putFile(audioFile);
     final String postDownloadURL = await storageRef.getDownloadURL();
     return postDownloadURL;
@@ -184,22 +184,22 @@ class AddPostModel extends ChangeNotifier {
       Navigator.pop(context);
       final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
+      final String postId = 'post' + mainModel.currentWhisperUser.uid + microSecondsString;
       // postImage
       final String storageImageName = (croppedFile == null) ? '' : 'postImage' + microSecondsString + imageExtension;
-      final String imageURL = (croppedFile == null) ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel);
+      final String imageURL = (croppedFile == null) ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel,postId: postId);
       // post
       final String storagePostName = 'post' + microSecondsString + postExtension;
-      final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel);
+      final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
       // post firestore
-      final String postId = 'post' + mainModel.currentWhisperUser.uid + microSecondsString;
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, storageImageName: storageImageName, storagePostName: storagePostName, postId: postId);
       postTitleNotifier.value = '';
       endLoading();
     }
   }
 
-  Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel}) async {
-    final Reference storageRef = others.postImageChildRef(mainModel: mainModel, postImageName: postImageName);
+  Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel,required String postId }) async {
+    final Reference storageRef = others.postImageChildRef(mainModel: mainModel, postImageName: postImageName, postId: postId);
     await storageRef.putFile(croppedFile!);
     final String downloadURL = await storageRef.getDownloadURL();
     return downloadURL;
@@ -211,7 +211,7 @@ class AddPostModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
     final List<String> searchWords = returnSearchWords(searchTerm: title);
-    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: '', label: '', url: link);
+    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: imageURL, label: '', link: link, storageImageName: storageImageName);
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 

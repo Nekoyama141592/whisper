@@ -121,7 +121,7 @@ class UserShowHeader extends StatelessWidget {
                 ),
                 SizedBox(width: 20),
                 if (whisperLinks.isNotEmpty) LinkButton(
-                  link: whisperLinks.first.url
+                  link: whisperLinks.first.link
                 )
               ],
             ),

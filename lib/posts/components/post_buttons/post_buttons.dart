@@ -9,8 +9,6 @@ import 'package:whisper/posts/components/post_buttons/components/like_button.dar
 import 'package:whisper/posts/components/post_buttons/components/bookmark_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/comment_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/redirect_to_url_button.dart';
-// domain
-import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
@@ -40,7 +38,7 @@ class PostButtons extends StatelessWidget {
       builder: (_,currentSongMap,__) {
         final whisperPost = fromMapToPost(postMap: currentSongMapNotifier.value);
         final String link = whisperPost.links.isEmpty ? '' 
-        : fromMapToWhisperLink(whisperLink: whisperPost.links.first as Map<String,dynamic> ).url;
+        : fromMapToWhisperLink(whisperLink: whisperPost.links.first as Map<String,dynamic> ).link;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

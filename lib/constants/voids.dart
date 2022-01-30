@@ -259,9 +259,9 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
       await FirebaseFirestore.instance.collection(postsFieldKey).doc(whisperPost.postId).delete();
-      await postChildRef(mainModel: mainModel, storagePostName: whisperPost.storagePostName).delete();
+      await postChildRef(mainModel: mainModel, storagePostName: whisperPost.storagePostName,postId: whisperPost.postId).delete();
       if (whisperPost.storageImageName.isNotEmpty) {
-        await postImageChildRef(mainModel: mainModel, postImageName: whisperPost.storageImageName ).delete();
+        await postImageChildRef(mainModel: mainModel, postImageName: whisperPost.storageImageName, postId: whisperPost.postId ).delete();
       }
     } catch(e) {
       print(e.toString());
