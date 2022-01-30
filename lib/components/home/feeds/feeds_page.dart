@@ -32,7 +32,7 @@ class FeedsPage extends ConsumerWidget {
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final editPostInfoModel = ref.watch(editPostInfoProvider);
-    final isLoading = mainModel.isLoading;
+    final isLoading = mainModel.isFeedLoading;
     final postDocs = mainModel.posts;
 
     return isLoading ?

@@ -120,6 +120,7 @@ class MainModel extends ChangeNotifier {
     await setCurrentUser();
     final tokensQshot = await tokensParentRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
+    await getFeeds(followingUids: followingUids);
     endLoading();
   }
 
@@ -233,9 +234,9 @@ class MainModel extends ChangeNotifier {
   }
 
   Future<void> onReload({ required List<String> followingUids }) async {
-    startLoading();
+    startFeedLoading();
     await getFeeds(followingUids: followingUids);
-    endLoading();
+    endFeedLoading();
   }
 
   Future<void> onLoading({ required List<String> followingUids }) async {
