@@ -13,7 +13,6 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/home/feeds/feeds_model.dart';
 
 class PostCards extends StatelessWidget {
 
@@ -35,7 +34,6 @@ class PostCards extends StatelessWidget {
     required this.isLastSongNotifier,
     required this.onNextSongButtonPressed,
     required this.mainModel,
-    required this.feedsModel
   }) : super(key: key);
 
  
@@ -56,7 +54,6 @@ class PostCards extends StatelessWidget {
   final ValueNotifier<bool> isLastSongNotifier;
   final void Function()? onNextSongButtonPressed;
   final MainModel mainModel;
-  final FeedsModel feedsModel;
 
   @override 
   Widget build(BuildContext context) {
@@ -77,18 +74,18 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: feedsModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: feedsModel.afterUris, posts: feedsModel.posts, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
-                    await voids.initAudioPlayer(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, i: i);
+                    await voids.initAudioPlayer(audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: feedsModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                    await voids.muteUser(audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: feedsModel.afterUris, audioPlayer: feedsModel.audioPlayer, results: feedsModel.posts );
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: feedsModel.audioPlayer, afterUris: feedsModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: feedsModel.posts, post: post, mainModel: mainModel);
+                    await voids.blockUser(audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: mainModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

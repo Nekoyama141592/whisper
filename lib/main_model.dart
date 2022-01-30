@@ -1,14 +1,18 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:just_audio/just_audio.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/following/following.dart';
@@ -26,6 +30,10 @@ import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/watchlist/watchlist.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+// notifiers
+import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+import 'package:whisper/posts/notifiers/progress_notifier.dart';
+import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -33,14 +41,14 @@ final mainProvider = ChangeNotifierProvider(
 
 class MainModel extends ChangeNotifier {
 
-  // base
+  // basic
   bool isLoading = false;
+  late SharedPreferences prefs;
   // user
   User? currentUser;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   late UserMeta userMeta;
   late WhisperUser currentWhisperUser;
-  late SharedPreferences prefs;
   // tokens
   List<LikePost> likePosts = [];
   List<String> likePostIds = [];
@@ -77,6 +85,30 @@ class MainModel extends ChangeNotifier {
   List<Following> following = [];
   // bookmarkLabel
   String bookmarkLabelId = '';
+  // feeds
+  bool isFeedLoading = false;
+  Query<Map<String,dynamic>> getQuery({ required List<String> followingUids }) {
+    final x = postColRef.where(uidFieldKey,whereIn: followingUids).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
+    return x;
+  }
+  // notifiers
+  final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
+  final progressNotifier = ProgressNotifier();
+  final repeatButtonNotifier = RepeatButtonNotifier();
+  final isFirstSongNotifier = ValueNotifier<bool>(true);
+  final playButtonNotifier = PlayButtonNotifier();
+  final isLastSongNotifier = ValueNotifier<bool>(true);
+  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
+  // just_audio
+  late AudioPlayer audioPlayer;
+  List<AudioSource> afterUris = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
+  // refresh
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+  // speed
+  final speedNotifier = ValueNotifier<double>(1.0);
+  // enum
+  final PostType postType = PostType.feeds;
 
   MainModel() {
     init();
@@ -88,7 +120,6 @@ class MainModel extends ChangeNotifier {
     await setCurrentUser();
     final tokensQshot = await tokensParentRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
-    await setBookmarkLabels();
     endLoading();
   }
 
@@ -102,18 +133,16 @@ class MainModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reload() {
+    notifyListeners();
+  }
+
   Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
     final currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentUser!.uid).get();
     currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(currentUser!.uid).get();
     userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
-  }
-
-  Future<void> setBookmarkLabels() async {
-    await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(currentUser!.uid).collection(bookmarkLabelsString).get().then((qshot) {
-      bookmarkLabels = qshot.docs.map((doc) => fromMapToBookmarkLabel(map: doc.data()) ).toList();
-    });
   }
 
   void distributeTokens({ required QuerySnapshot<Map<String, dynamic>> tokensQshot }) {
@@ -181,8 +210,61 @@ class MainModel extends ChangeNotifier {
       }
     });
   }
-  
-  void reload() {
+  // feeds
+
+  void startFeedLoading() {
+    isFeedLoading = true;
     notifyListeners();
   }
+
+  void endFeedLoading() {
+    isFeedLoading = false;
+    notifyListeners();
+  }
+
+  void seek(Duration position) {
+    audioPlayer.seek(position);
+  }
+
+  Future<void> onRefresh({ required List<String> followingUids }) async {
+    await getNewFeeds(followingUids: followingUids);
+    refreshController.refreshCompleted();
+    notifyListeners();
+  }
+
+  Future<void> onReload({ required List<String> followingUids }) async {
+    startLoading();
+    await getFeeds(followingUids: followingUids);
+    endLoading();
+  }
+
+  Future<void> onLoading({ required List<String> followingUids }) async {
+    await getOldFeeds(followingUids: followingUids);
+    refreshController.loadComplete();
+    notifyListeners();
+  }
+
+  Future<void> getNewFeeds({ required List<String> followingUids }) async {
+    if (followingUids.isNotEmpty) {
+      await voids.processNewPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+    }
+  }
+
+  // getFeeds
+  Future<void> getFeeds({ required List<String> followingUids }) async {
+    try{
+      if (followingUids.isNotEmpty) {
+        await voids.processBasicPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      }
+    } catch(e) { print(e.toString()); }
+  }
+
+  Future<void> getOldFeeds({ required List<String> followingUids }) async {
+    try {
+      if (followingUids.isNotEmpty) {
+        voids.processOldPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      }
+    } catch(e) { print(e.toString()); }
+  }
+
 }

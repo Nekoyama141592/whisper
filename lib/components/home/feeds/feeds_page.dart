@@ -12,7 +12,6 @@ import 'package:whisper/details/loading.dart';
 import 'package:whisper/components/home/feeds/components/post_cards.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/home/feeds/feeds_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
@@ -30,70 +29,68 @@ class FeedsPage extends ConsumerWidget {
   
   Widget build(BuildContext context, WidgetRef ref) {
     
-    final feedsModel = ref.watch(feedsProvider);
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final editPostInfoModel = ref.watch(editPostInfoProvider);
-    final isLoading = feedsModel.isLoading;
-    final postDocs = feedsModel.posts;
+    final isLoading = mainModel.isLoading;
+    final postDocs = mainModel.posts;
 
     return isLoading ?
     Loading()
     : JudgeScreen(
       list: postDocs,
       reload: () async {
-        await feedsModel.onReload(followingUids: mainModel.followingUids);
+        await mainModel.onReload(followingUids: mainModel.followingUids);
       },
       content: PostCards(
         postDocs: postDocs, 
         route: () {
           routes.toPostShowPage(
             context: context,
-            speedNotifier: feedsModel.speedNotifier,
-            speedControll:  () async { await voids.speedControll(audioPlayer: feedsModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: feedsModel.speedNotifier); },
-            currentSongMapNotifier: feedsModel.currentSongMapNotifier, 
-            progressNotifier: feedsModel.progressNotifier, 
-            seek: feedsModel.seek, 
-            repeatButtonNotifier: feedsModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: feedsModel.audioPlayer, repeatButtonNotifier: feedsModel.repeatButtonNotifier); }, 
-            isFirstSongNotifier: feedsModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: feedsModel.audioPlayer); }, 
-            playButtonNotifier: feedsModel.playButtonNotifier, 
+            speedNotifier: mainModel.speedNotifier,
+            speedControll:  () async { await voids.speedControll(audioPlayer: mainModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: mainModel.speedNotifier); },
+            currentSongMapNotifier: mainModel.currentSongMapNotifier, 
+            progressNotifier: mainModel.progressNotifier, 
+            seek: mainModel.seek, 
+            repeatButtonNotifier: mainModel.repeatButtonNotifier, 
+            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: mainModel.audioPlayer, repeatButtonNotifier: mainModel.repeatButtonNotifier); }, 
+            isFirstSongNotifier: mainModel.isFirstSongNotifier, 
+            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); }, 
+            playButtonNotifier: mainModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: feedsModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: mainModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: mainModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
             }, 
-            pause: () { voids.pause(audioPlayer: feedsModel.audioPlayer); }, 
-            isLastSongNotifier: feedsModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
+            pause: () { voids.pause(audioPlayer: mainModel.audioPlayer); }, 
+            isLastSongNotifier: mainModel.isLastSongNotifier, 
+            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, feedsModel.audioPlayer, feedsModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: feedsModel.currentSongMapNotifier.value).postId,);
+              await commentsModel.init(context, mainModel.audioPlayer, mainModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: mainModel.currentSongMapNotifier.value).postId,);
             },
             toEditingMode:  () {
-              voids.toEditPostInfoMode(audioPlayer: feedsModel.audioPlayer, editPostInfoModel: editPostInfoModel);
+              voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel);
             },
-            postType: feedsModel.postType,
+            postType: mainModel.postType,
             mainModel: mainModel
           ); 
         }, 
-        progressNotifier: feedsModel.progressNotifier,
-        seek: feedsModel.seek,
-        currentSongMapNotifier: feedsModel.currentSongMapNotifier,
-        playButtonNotifier: feedsModel.playButtonNotifier,
+        progressNotifier: mainModel.progressNotifier,
+        seek: mainModel.seek,
+        currentSongMapNotifier: mainModel.currentSongMapNotifier,
+        playButtonNotifier: mainModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: feedsModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: feedsModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: mainModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: mainModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
-          voids.pause(audioPlayer: feedsModel.audioPlayer);
+          voids.pause(audioPlayer: mainModel.audioPlayer);
         }, 
-        refreshController: feedsModel.refreshController,
-        onRefresh: () async { await feedsModel.onRefresh(followingUids: mainModel.followingUids); },
-        onLoading: () async { await feedsModel.onLoading(followingUids: mainModel.followingUids ); },
-        isFirstSongNotifier: feedsModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
-        isLastSongNotifier: feedsModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: feedsModel.audioPlayer); },
+        refreshController: mainModel.refreshController,
+        onRefresh: () async { await mainModel.onRefresh(followingUids: mainModel.followingUids); },
+        onLoading: () async { await mainModel.onLoading(followingUids: mainModel.followingUids ); },
+        isFirstSongNotifier: mainModel.isFirstSongNotifier,
+        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
+        isLastSongNotifier: mainModel.isLastSongNotifier,
+        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
         mainModel: mainModel,
-        feedsModel: feedsModel,
       )
     );
   }
