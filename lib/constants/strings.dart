@@ -82,6 +82,7 @@ const String officialAdsensesFieldKey = 'officialAdsenses';
 const String commentNotificationsFieldKey = 'commentNotifications';
 const String followersFieldKey = 'followers';
 const String replyNotificationsFieldKey = 'replyNotifications';
+const String timelinesFieldKey = 'timelines';
 const String commentsFieldKey = 'comments';
 const String likesFieldKey = 'likes';
 const String scoreFieldKey = 'score';

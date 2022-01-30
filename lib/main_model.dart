@@ -30,6 +30,7 @@ import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/watchlist/watchlist.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/timeline/timeline.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -87,9 +88,9 @@ class MainModel extends ChangeNotifier {
   String bookmarkLabelId = '';
   // feeds
   bool isFeedLoading = false;
-  Query<Map<String,dynamic>> getQuery({ required List<String> followingUids }) {
-    final x = postColRef.where(uidFieldKey,whereIn: followingUids).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
-    return x;
+  Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {
+    final List<String> max10 = timelinesQshot.docs.map((e) => Timeline.fromJson(e.data()).postId ).toList();
+    return postColRef.where(postIdFieldKey,whereIn: max10);
   }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
@@ -103,6 +104,7 @@ class MainModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
+  List<DocumentSnapshot<Map<String,dynamic>>> timelineDocs = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
@@ -246,26 +248,28 @@ class MainModel extends ChangeNotifier {
   }
 
   Future<void> getNewFeeds({ required List<String> followingUids }) async {
+    final timelinesQshot = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(firebaseAuthCurrentUser!.uid).collection(timelinesFieldKey).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
+    timelinesQshot.docs.reversed.forEach((element) { timelineDocs.insert(0, element); });
     if (followingUids.isNotEmpty) {
-      await voids.processNewPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      await voids.processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
     }
   }
 
   // getFeeds
   Future<void> getFeeds({ required List<String> followingUids }) async {
-    try{
-      if (followingUids.isNotEmpty) {
-        await voids.processBasicPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
-      }
-    } catch(e) { print(e.toString()); }
+    final timelinesQshot = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(firebaseAuthCurrentUser!.uid).collection(timelinesFieldKey).orderBy(createdAtFieldKey,descending: true).limit(tenCount).get();
+    timelineDocs = timelinesQshot.docs;
+    if (followingUids.isNotEmpty) {
+      await voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+    }
   }
 
   Future<void> getOldFeeds({ required List<String> followingUids }) async {
-    try {
-      if (followingUids.isNotEmpty) {
-        voids.processOldPosts(query: getQuery(followingUids: followingUids), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
-      }
-    } catch(e) { print(e.toString()); }
+    final timelinesQshot = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(firebaseAuthCurrentUser!.uid).collection(timelinesFieldKey).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
+    timelinesQshot.docs.forEach((element) { timelineDocs.add(element); });
+    if (followingUids.isNotEmpty) {
+      voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+    }
   }
 
 }
