@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/details/loading.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/posts/components/replys/components/reply_card/reply_card.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -15,12 +17,12 @@ class ReplyCards extends StatelessWidget {
 
   const ReplyCards({
     Key? key,
-    required this.thisComment,
+    required this.whisperComment,
     required this.mainModel,
     required this.replysModel
   }) : super(key: key);
 
-  final Map<String,dynamic> thisComment;
+  final WhisperComment whisperComment;
   final MainModel mainModel;
   final ReplysModel replysModel;
 
@@ -44,12 +46,13 @@ class ReplyCards extends StatelessWidget {
           header: WaterDropHeader(),
           controller: replysModel.refreshController,
           onLoading: () {
-            replysModel.onLoading(thisComment);
+            replysModel.onLoading(whisperComment: whisperComment);
           },
           child: ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-              Map<String, dynamic> reply = doc.data()! as Map<String, dynamic>;
-              return ReplyCard(reply: reply, replysModel: replysModel, mainModel: mainModel);
+              final Map<String, dynamic> reply = doc.data()! as Map<String, dynamic>;
+              final WhisperReply whisperReply = WhisperReply.fromJson(reply);
+              return ReplyCard(whisperReply: whisperReply, replysModel: replysModel, mainModel: mainModel);
             }).toList(),
           ),
         );

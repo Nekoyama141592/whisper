@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/details/loading.dart';
 // components
 import 'package:whisper/details/comments_or_replys_header.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/posts/components/replys/components/reply_cards/reply_cards.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -17,13 +18,13 @@ class ReplysPage extends StatelessWidget {
     Key? key,
     required this.replysModel,
     required this.whisperPost,
-    required this.thisComment,
+    required this.whisperComment,
     required this.mainModel
   }) : super(key: key);
 
   final ReplysModel replysModel;
   final Post whisperPost;
-  final Map<String,dynamic> thisComment;
+  final WhisperComment whisperComment;
   final MainModel mainModel;
 
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class ReplysPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_comment),
         onPressed: () {
-          replysModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, thisComment: thisComment, mainModel: mainModel);
+          replysModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperComment, mainModel: mainModel);
         },
       ),
       body: SafeArea(
@@ -43,10 +44,11 @@ class ReplysPage extends StatelessWidget {
         : Column(
           children: [
             CommentsOrReplysHeader(
-              onMenuPressed: () { replysModel.showSortDialogue(context, thisComment); }
+              onMenuPressed: () { replysModel.showSortDialogue(context, whisperComment); }
             ),
-            Expanded(child: ReplyCards(thisComment: thisComment,mainModel: mainModel, replysModel: replysModel))
-          ]
+            Expanded(child: ReplyCards(whisperComment: whisperComment, mainModel: mainModel, replysModel: replysModel)
+            )
+          ]  
         )
       ),
     );

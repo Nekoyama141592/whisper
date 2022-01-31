@@ -32,7 +32,7 @@ const List<String> commonPasswords = [
   'zaq12wsx',
   'qwertyui'
 ];
-
+final List<String> notUseOnField = ['.','[',']','*','`'];
 List<String> returnSearchWords({ required String searchTerm }) {
   final int length = searchTerm.length;
   List<String> searchWords = [];

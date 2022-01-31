@@ -9,6 +9,7 @@ import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -76,9 +77,10 @@ class CommentsPage extends ConsumerWidget {
                 child: ListView.builder(
                   itemCount: commentsModel.commentDocs.length,
                   itemBuilder: (BuildContext context,int i) {
-                    Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
+                    final Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
+                    final WhisperComment whisperComment = WhisperComment.fromJson(comment);
                     return CommentCard(
-                      comment: comment,
+                      whisperComment: whisperComment,
                       currentSongMap: currentSongMap,
                       commentsModel: commentsModel,
                       replysModel: replysModel,

@@ -70,7 +70,7 @@ class PostSearchModel extends ChangeNotifier{
 
   bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds}) {
     final whisperPost = fromMapToPost(postMap: map);
-    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: map) && !mutesPostIds.contains(whisperPost.postId);
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, ipv6: whisperPost.ipv6,uid: whisperPost.uid) && !mutesPostIds.contains(whisperPost.postId);
   }
 
   Future operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {

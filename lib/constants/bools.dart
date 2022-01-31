@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
-import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -11,16 +10,13 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required Map<String,dynamic> map}) {
-  // use on comments or replys on display
-  final String uid = map[uidMapKey];
-  final String ipv6 = map[ipv6MapKey];
+bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid,required String ipv6}) {
   return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) && !mutesIpv6s.contains(ipv6) && !blocksIpv6s.contains(ipv6) ) ;
 }
 
 bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   final Post post = fromMapToPost(postMap: doc.data()!);
-  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, map: doc.data()! ) && !mutesPostIds.contains(post.postId);
+  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid,ipv6: ipv6 ) && !mutesPostIds.contains(post.postId);
 }
 
 bool isDisplayShowPage({ required bool isBlocked, required MainModel mainModel }) {

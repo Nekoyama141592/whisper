@@ -52,7 +52,7 @@ class OneCommentPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BackArrowButton(),
-              CommentCard(comment: oneCommentModel.oneCommentMap, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, currentSongMap: onePostModel.currentSongMapNotifier.value,),
+              CommentCard(whisperComment: oneCommentModel.oneWhisperComment, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, currentSongMap: onePostModel.currentSongMapNotifier.value,),
               OnePostAudioWindow(
                 route: () {
                   routes.toPostShowPage(

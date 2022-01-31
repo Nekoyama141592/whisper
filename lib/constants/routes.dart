@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 // pages
 import 'package:whisper/main.dart';
 import 'package:whisper/links/links_page.dart';
@@ -115,8 +116,8 @@ void toCommentsPage(context,AudioPlayer audioPlayer,ValueNotifier<Map<String,dyn
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, currentSongMap: currentSongMapNotifier.value, mainModel: mainModel) ));
 }
 
-void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required Map<String,dynamic> thisComment, required MainModel mainModel  }) {
- Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, thisComment: thisComment, mainModel: mainModel) )); 
+void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperComment whisperComment, required MainModel mainModel  }) {
+ Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperComment: whisperComment, mainModel: mainModel) )); 
 }
 
 void toBlocksUsersPage(context, MainModel mainModel) {

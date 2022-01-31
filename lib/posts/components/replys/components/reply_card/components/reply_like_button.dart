@@ -9,21 +9,20 @@ class ReplyLikeButton extends StatelessWidget {
 
   const ReplyLikeButton({
     Key? key,
-    required this.thisReply,
+    required this.whisperReply,
     required this.mainModel,
     required this.replysModel
   }) : super(key: key);
 
-  final Map<String,dynamic> thisReply;
+  final WhisperReply whisperReply;
   final MainModel mainModel;
   final ReplysModel replysModel;
   @override 
   Widget build(BuildContext context) {
 
-    final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
     final likeCount = whisperReply.likeCount;
 
-    return mainModel.likeReplyIds.contains(whisperReply.replyId) ?
+    return mainModel.likeReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 5.0
@@ -36,7 +35,7 @@ class ReplyLikeButton extends StatelessWidget {
               color: Colors.red
             ),
             onTap: () async {
-              replysModel.unlike(thisReply: thisReply, mainModel: mainModel);
+              replysModel.unlike(whisperReply: whisperReply, mainModel: mainModel);
             },
           ),
           SizedBox(width: 5.0),
@@ -55,7 +54,7 @@ class ReplyLikeButton extends StatelessWidget {
           InkWell(
             child: Icon(Icons.favorite),
             onTap: () async {
-              await replysModel.like(thisReply: thisReply, mainModel: mainModel);
+              await replysModel.like(whisperReply: whisperReply, mainModel: mainModel);
             }
           ),
           SizedBox(width: 5.0),

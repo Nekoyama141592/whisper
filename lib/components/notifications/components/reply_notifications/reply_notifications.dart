@@ -31,7 +31,7 @@ class ReplyNotifications extends StatelessWidget {
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
         final ReplyNotification notification = notifications[i];
-        return ReplyNotificationCard(notification: notification, mainModel: mainModel);
+        return ReplyNotificationCard(replyNotification: notification, mainModel: mainModel);
       }
     );
     final reload = () {};

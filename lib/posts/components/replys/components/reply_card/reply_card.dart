@@ -19,19 +19,18 @@ class ReplyCard extends ConsumerWidget {
 
   const ReplyCard({
     Key? key,
-    required this.reply,
+    required this.whisperReply,
     required this.replysModel,
     required this.mainModel
   }) : super(key: key);
 
-  final Map<String,dynamic> reply;
+  final WhisperReply whisperReply;
   final ReplysModel replysModel;
   final MainModel mainModel;
 
   Widget build(BuildContext context,WidgetRef ref) {
 
     final postFutures = ref.watch(postsFeaturesProvider);
-    final WhisperReply whisperReply = WhisperReply.fromJson(reply);
     final String userImageURL = whisperReply.userImageURL;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final length = 60.0;
@@ -41,7 +40,7 @@ class ReplyCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids, blocksIpv6s: mainModel.blockIpv6s, mutesIpv6s: mainModel.muteIpv6s, map: reply) && !mainModel.muteReplyIds.contains(whisperReply.replyId) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids, blocksIpv6s: mainModel.blockIpv6s, mutesIpv6s: mainModel.muteIpv6s, ipv6: whisperReply.ipv6,uid: whisperReply.uid ) && !mainModel.muteReplyIds.contains(whisperReply.postCommentReplyId) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -109,7 +108,7 @@ class ReplyCard extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ReplyLikeButton(thisReply: reply, mainModel: mainModel, replysModel: replysModel)
+                        ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: replysModel)
                       ],
                     )
                   ]

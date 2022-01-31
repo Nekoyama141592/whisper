@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -12,19 +13,18 @@ class CommentLikeButton extends StatelessWidget {
   const CommentLikeButton({
     Key? key,
     required this.commentsModel,
-    required this.comment,
+    required this.whisperComment,
     required this.mainModel
   }) : super(key: key);
 
   final CommentsModel commentsModel;
-  final Map<String,dynamic> comment;
+  final WhisperComment whisperComment;
   final MainModel mainModel;
   
   @override 
   Widget build(BuildContext context) {
     
-    final whisperComment = fromMapToWhisperComment(commentMap: comment);
-    final commentId = whisperComment.commentId;
+    final commentId = whisperComment.postCommentId;
     final likeCount = whisperComment.likeCount;
     final plusOneCount = likeCount + plusOne;
     return mainModel.likeCommentIds.contains(commentId) ?

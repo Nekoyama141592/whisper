@@ -9,6 +9,7 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
 import 'package:whisper/posts/components/comments/components/show_replys_button.dart';
 // domain
@@ -23,14 +24,14 @@ class CommentCard extends ConsumerWidget {
 
   const CommentCard({
     Key? key,
-    required this.comment,
+    required this.whisperComment,
     required this.currentSongMap,
     required this.commentsModel,
     required this.replysModel,
     required this.mainModel
   }): super(key: key);
   
-  final Map<String,dynamic> comment;
+  final WhisperComment whisperComment;
   final Map<String,dynamic> currentSongMap;
   final CommentsModel commentsModel;
   final ReplysModel replysModel;
@@ -41,14 +42,13 @@ class CommentCard extends ConsumerWidget {
     
     final postFutures = ref.watch(postsFeaturesProvider);
     final fontSize = 16.0;
-    final whisperComment = fromMapToWhisperComment(commentMap: comment);
     final Post whisperPost = fromMapToPost(postMap: currentSongMap);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
       // overflow: TextOverflow.ellipsis
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids, mutesIpv6s: mainModel.muteIpv6s, blocksIpv6s: mainModel.blockIpv6s , map: comment ) && !mainModel.muteCommentIds.contains(whisperComment.commentId) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids, mutesIpv6s: mainModel.muteIpv6s, blocksIpv6s: mainModel.blockIpv6s ,uid: whisperComment.uid,ipv6: whisperComment.ipv6 ) && !mainModel.muteCommentIds.contains(whisperComment.postCommentId) ?
 
     Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -113,8 +113,8 @@ class CommentCard extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CommentLikeButton(commentsModel: commentsModel, comment: comment, mainModel: mainModel),
-                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,thisComment: comment, whisperPost: whisperPost)
+                        CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
+                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperComment: whisperComment, whisperPost: whisperPost)
                       ],
                     )
                   ]

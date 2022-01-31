@@ -31,7 +31,7 @@ class CommentNotifications extends StatelessWidget {
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
         final CommentNotification notification = notifications[i];
-        return CommentNotificationCard(notification: notification, mainModel: mainModel);
+        return CommentNotificationCard(commentNotification: notification, mainModel: mainModel);
       }
     );
     final reload = () {};

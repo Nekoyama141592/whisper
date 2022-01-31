@@ -34,6 +34,12 @@ String returnNotificationId({ required Timestamp now }) {
 String returnNotificationTypeString({ required NotificationType notifcationType }) {
   return notifcationType.toString().substring(notificationTypeStartIndex);
 }
+String returnPostCommentId({ required String uid }) {
+  return 'postComment' + '_' + uid + '_' + uuid4;
+}
+String returnPostCommentReplyId({ required String uid }) {
+  return 'postCommentReply' + '_' + uid + '_' + uuid4;
+}
 // strings
 const String bookmarkLabelString = 'bookmarkLabel';
 const String bookmarkLabelsString = 'bookmarkLabels';
@@ -85,12 +91,10 @@ const String commentNotificationsFieldKey = 'commentNotifications';
 const String followersFieldKey = 'followers';
 const String replyNotificationsFieldKey = 'replyNotifications';
 const String timelinesFieldKey = 'timelines';
-const String commentsFieldKey = 'comments';
 const String likesFieldKey = 'likes';
 const String scoreFieldKey = 'score';
 const String isReadFieldKey = 'isRead';
 const String postsFieldKey = 'posts';
-const String replysFieldKey = 'replys';
 const String uidFieldKey = 'uid';
 const String userMetaFieldKey = 'userMeta';
 const String usersFieldKey = 'users';

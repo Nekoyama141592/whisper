@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 
 final oneCommentProvider = ChangeNotifierProvider(
   (ref) => OneCommentModel()
@@ -15,14 +14,14 @@ class OneCommentModel extends ChangeNotifier {
   String commentId = '';
   bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> oneCommentDoc;
-  Map<String,dynamic> oneCommentMap = {};
+  late WhisperComment oneWhisperComment;
 
-  Future<bool> init({ required String giveCommentId}) async {
+  Future<bool> init({ required DocumentReference<Map<String,dynamic>> postCommentDocRef ,required String giveCommentId }) async {
     startLoading();
     if (commentId != giveCommentId) {
-      oneCommentDoc = await FirebaseFirestore.instance.collection(commentsFieldKey).doc(giveCommentId).get();
+      oneCommentDoc = await postCommentDocRef.get();
     } 
-    oneCommentMap = oneCommentDoc.data()!;
+    oneWhisperComment = WhisperComment.fromJson(oneCommentDoc.data()!);
     endLoading();
     return oneCommentDoc.exists;
   }
