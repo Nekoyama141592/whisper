@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/nums.dart';
 // constants
 import 'package:whisper/constants/maps.dart';
@@ -144,8 +145,7 @@ class SignupModel extends ChangeNotifier {
   Future<void> createUserMeta({ required String uid }) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
     final Timestamp now = Timestamp.now();
-    final String bookmarkLabelId = returnBookmarkLabelId(now: now.toDate());
-    final Map<String,dynamic> userMetaMap = UserMeta(
+    final UserMeta userMeta = UserMeta(
       birthDay: timestampBirthDay,
       createdAt: now,
       gender: gender, 
@@ -154,8 +154,9 @@ class SignupModel extends ChangeNotifier {
       language: language, 
       uid: uid,
       updatedAt: now,
-    ).toJson();
-    await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMetaMap);
+    );
+    final String bookmarkLabelId = returnTokenId(now: now, userMeta: userMeta, tokenType: TokenType.bookmarkLabel );
+    await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
     // await others.bookmarkLabelRef(uid: uid, bookmarkLabelId: bookmarkLabelId).set(
     //   returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId)
     // );

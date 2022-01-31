@@ -10,6 +10,7 @@ Watchlist _$WatchlistFromJson(Map<String, dynamic> json) => Watchlist(
       createdAt: json['createdAt'],
       label: json['label'] as String,
       watchlistId: json['watchlistId'] as String,
+      tokenId: json['tokenId'] as String,
       uids: (json['uids'] as List<dynamic>).map((e) => e as String).toList(),
       myUid: json['myUid'] as String,
       updatedAt: json['updatedAt'],
@@ -20,6 +21,7 @@ Map<String, dynamic> _$WatchlistToJson(Watchlist instance) => <String, dynamic>{
       'label': instance.label,
       'myUid': instance.myUid,
       'watchlistId': instance.watchlistId,
+      'tokenId': instance.tokenId,
       'uids': instance.uids,
       'updatedAt': instance.updatedAt,
     };

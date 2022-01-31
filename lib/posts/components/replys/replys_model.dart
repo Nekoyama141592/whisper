@@ -18,6 +18,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/reply_like/reply_like.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/likeReply/like_reply.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -320,10 +321,9 @@ class ReplysModel extends ChangeNotifier {
   Future<void> addLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
-    await likeChildRef(parentColKey: replysFieldKey, uniqueId: whisperReply.replyId, activeUid: currentWhisperUser.uid).set({
-      uidFieldKey: currentWhisperUser.uid,
-      createdAtFieldKey: Timestamp.now(),
-    });
+    final Timestamp now = Timestamp.now();
+    final ReplyLike replyLike = ReplyLike(activeUid: mainModel.userMeta.uid, createdAt: now, replyId: whisperReply.replyId );
+    ref.set();
   }
 
 
@@ -333,9 +333,10 @@ class ReplysModel extends ChangeNotifier {
       mainModel.likeReplyIds.add(whisperReply.replyId);
       notifyListeners();
       final String activeUid = mainModel.userMeta.uid;
-      final DateTime now = DateTime.now();
-      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: Timestamp.fromDate(now),replyId: whisperReply.replyId);
-      await newTokenChildRef(uid: activeUid, now: now).set(likeReply.toJson());
+      final Timestamp now = Timestamp.now();
+      final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
+      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.replyId,tokenId: tokenId);
+      await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
     } catch(e) {
       print(e.toString());
     }

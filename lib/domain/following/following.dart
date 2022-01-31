@@ -10,11 +10,13 @@ class Following{
   Following({
     required this.myUid,
     required this.createdAt,
-    required this.passiveUid
+    required this.passiveUid,
+    required this.tokenId
   });
   final dynamic createdAt;
   final String myUid;
   final String passiveUid;
+  final String tokenId;
   final String tokenType = followingTokenType;
   
   factory Following.fromJson(Map<String,dynamic> json) => _$FollowingFromJson(json);

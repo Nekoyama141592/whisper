@@ -6,11 +6,11 @@ part 'follower.g.dart';
 @JsonSerializable()
 class Follower{
   Follower({
-    required this.activeUid,
+    required this.followerUid,
     required this.myUid,
     required this.createdAt,
   });
-  final String activeUid;
+  final String followerUid;
   final dynamic createdAt;
   final String myUid;
   

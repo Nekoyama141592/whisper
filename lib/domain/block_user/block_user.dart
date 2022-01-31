@@ -10,11 +10,13 @@ class BlockUser {
   BlockUser({
     required this.createdAt,
     required this.ipv6,
+    required this.tokenId,
     required this.uid
   });
   
   final dynamic createdAt;
   final String ipv6;
+  final String tokenId;
   final String tokenType = blockUserTokenType;
   final String uid;
 

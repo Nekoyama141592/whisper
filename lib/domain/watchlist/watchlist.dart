@@ -11,6 +11,7 @@ class Watchlist {
     required this.createdAt,
     required this.label,
     required this.watchlistId,
+    required this.tokenId,
     required this.uids,
     required this.myUid,
     required this.updatedAt
@@ -20,6 +21,7 @@ class Watchlist {
   final String myUid;
   final String tokenType = watchlistTokenType;
   final String watchlistId;
+  final String tokenId;
   final List<String> uids;
   final dynamic updatedAt;
 

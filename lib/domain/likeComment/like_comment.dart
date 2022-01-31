@@ -11,11 +11,13 @@ class LikeComment {
     required this.activeUid,
     required this.commentId,
     required this.createdAt,
+    required this.tokenId
   });
   
   final String activeUid;
   final String commentId;
   final dynamic createdAt;
+  final String tokenId;
   final String tokenType = likeCommentTokenType;
 
   factory LikeComment.fromJson(Map<String,dynamic> json) => _$LikeCommentFromJson(json);

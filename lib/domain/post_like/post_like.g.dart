@@ -1,20 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bookmark_of_post.dart';
+part of 'post_like.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BookmarkOfPost _$BookmarkOfPostFromJson(Map<String, dynamic> json) =>
-    BookmarkOfPost(
+PostLike _$PostLikeFromJson(Map<String, dynamic> json) => PostLike(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postId: json['postId'] as String,
     );
 
-Map<String, dynamic> _$BookmarkOfPostToJson(BookmarkOfPost instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$PostLikeToJson(PostLike instance) => <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
       'postId': instance.postId,

@@ -11,12 +11,14 @@ class MuteUser {
     required this.activeUid,
     required this.createdAt,
     required this.ipv6,
+    required this.tokenId,
     required this.uid
   });
   
   final String activeUid;
   final dynamic createdAt;
   final String ipv6;
+  final String tokenId;
   final String tokenType = muteUserTokenType;
   final String uid;
 

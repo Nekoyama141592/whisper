@@ -11,11 +11,13 @@ class LikeReply {
     required this.activeUid,
     required this.createdAt,
     required this.replyId,
+    required this.tokenId
   });
   
   final String activeUid;
   final dynamic createdAt;
   final String replyId;
+  final String tokenId;
   final String tokenType = likeReplyTokenType;
 
   factory LikeReply.fromJson(Map<String,dynamic> json) => _$LikeReplyFromJson(json);

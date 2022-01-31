@@ -3,11 +3,14 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
+// domain
+import 'package:whisper/domain/user_meta/user_meta.dart';
 
 const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 const String recommendableString = 'recommendable';
+
 String microSecondsString({ required DateTime now }) {
   return DateTime.now().microsecondsSinceEpoch.toString();
 }
@@ -17,11 +20,9 @@ String storageUserImageName({ required DateTime now }) {
 String postImageName({ required DateTime now }) {
   return 'postImage' + microSecondsString(now: now) + imageExtension;
 }
-String returnBookmarkLabelId({ required DateTime now }) {
-  return  bookmarkLabelString + now.microsecondsSinceEpoch.toString();
-}
-String returnTokenId({ required DateTime now }) {
-  return tokenString + microSecondsString(now: now);
+
+String returnTokenId({ required Timestamp now ,required UserMeta userMeta,required TokenType tokenType }) {
+  return returnTokenTypeString(tokenType: tokenType)  + userMeta.uid + microSecondsString(now: now.toDate() );
 }
 String returnTokenTypeString({ required TokenType tokenType } ) {
   return tokenType.toString().substring(tokenTypeStartIndex);

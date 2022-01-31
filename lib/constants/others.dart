@@ -91,13 +91,8 @@ DocumentReference<Map<String, dynamic>> followerChildRef({ required String passi
   return parentRef.doc(followerUid);
 }
 
-CollectionReference<Map<String, dynamic>> likesParentRef({ required String parentColKey ,required String uniqueId }) {
-  return FirebaseFirestore.instance.collection(parentColKey).doc(uniqueId).collection(likesFieldKey);
-}
-
-DocumentReference<Map<String, dynamic>> likeChildRef({ required String parentColKey,  required String uniqueId, required String activeUid}) {
-  final parentRef =likesParentRef(parentColKey: parentColKey, uniqueId: uniqueId);
-  return parentRef.doc(activeUid);
+DocumentReference<Map<String, dynamic>> replyLikeDocumentRef() {
+  return FirebaseFirestore.instance.collection('users').doc(creatorUid).collection('posts').doc(postId).collection('postComments').doc(commentId).collection('postCommentReplys').doc(replyId).collection('postCommentReplyLikes').doc(myUid);
 }
 
 CollectionReference<Map<String, dynamic>> bookmarkParentRef({required String postId }) {
@@ -113,8 +108,8 @@ CollectionReference<Map<String, dynamic>>  tokensParentRef({ required String uid
   return FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).collection(tokensString);
 }
 
-DocumentReference<Map<String, dynamic>>  newTokenChildRef({ required String uid , required DateTime now}) {
-  return tokensParentRef(uid: uid).doc(returnTokenId(now: now));
+DocumentReference<Map<String, dynamic>>  newTokenChildRef({ required String uid , required String tokenId }) {
+  return tokensParentRef(uid: uid).doc(tokenId);
 }
 
 CollectionReference<Map<String, dynamic>>  notificationParentRef ({ required String uid }) {

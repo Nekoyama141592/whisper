@@ -9,8 +9,10 @@ part 'auth_notification.g.dart';
 class AuthNotification{
   AuthNotification({
     required this.createdAt,
+    required this.notificationId
   });
   final dynamic createdAt;
+  final String notificationId;
   final String notificationType = authNotificationType;
   
   factory AuthNotification.fromJson(Map<String,dynamic> json) => _$AuthNotificationFromJson(json);

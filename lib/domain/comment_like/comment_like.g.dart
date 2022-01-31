@@ -1,21 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mute_post.dart';
+part of 'comment_like.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MutePost _$MutePostFromJson(Map<String, dynamic> json) => MutePost(
+CommentLike _$CommentLikeFromJson(Map<String, dynamic> json) => CommentLike(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      postId: json['postId'] as String,
-      tokenId: json['tokenId'] as String,
+      commentId: json['commentId'] as String,
     );
 
-Map<String, dynamic> _$MutePostToJson(MutePost instance) => <String, dynamic>{
+Map<String, dynamic> _$CommentLikeToJson(CommentLike instance) =>
+    <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'postId': instance.postId,
-      'tokenId': instance.tokenId,
+      'commentId': instance.commentId,
     };

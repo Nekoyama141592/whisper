@@ -39,17 +39,6 @@ import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
-void addMuteUser({ required List<String> mutesUids, required List<MuteUser> muteUsers, required String uid, required String ipv6  }) {
-  mutesUids.add(uid);
-  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: Timestamp.now(),ipv6: ipv6,uid: uid);
-  muteUsers.add(muteUser);
-}
-
-void addBlockUser({ required List<String> blocksUids, required List<BlockUser> blockUsers, required String uid, required String ipv6  }) {
-  blocksUids.add(uid);
-  final BlockUser blockUser = BlockUser(createdAt: Timestamp.now(), ipv6: ipv6, uid: uid);
-  blockUsers.add(blockUser);
-}
  
 Future<void> signOut(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
@@ -297,8 +286,9 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
   final Timestamp now = Timestamp.now();
-  final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId);
-  await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(mutePost.toJson());
+  final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
+  final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId);
+  await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId ).set(mutePost.toJson());
   await mainModel.prefs.setStringList(mutePostIdsPrefsKey, mainModel.mutePostIds);
 }
 
@@ -306,22 +296,26 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   final whisperPost = fromMapToPost(postMap: post);
   final String passiveUid = whisperPost.uid;
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  addMuteUser(mutesUids: mutesUids, muteUsers: muteUsers, uid: passiveUid, ipv6: whisperPost.ipv6);
-  mainModel.reload();
+  mainModel.muteUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
-  final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, uid: passiveUid,ipv6: whisperPost.ipv6,createdAt: now);
-  await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(muteUser.toJson());
+  final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
+  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: Timestamp.now(),ipv6: whisperPost.ipv6,uid: passiveUid,tokenId: tokenId);
+  mainModel.muteUsers.add(muteUser);
+  mainModel.reload();
+  await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId ).set(muteUser.toJson());
 }
 
 Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
   final whisperPost = fromMapToPost(postMap: post);
   final String passiveUid = whisperPost.uid;
   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  addBlockUser(blocksUids: blocksUids, blockUsers: blockUsers, uid: passiveUid, ipv6: whisperPost.ipv6 );
-  mainModel.reload();
+  blocksUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
-  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,uid: whisperPost.uid,);
-  await newTokenChildRef(uid: mainModel.userMeta.uid, now: now.toDate() ).set(blockUser.toJson());
+  final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
+  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,uid: whisperPost.uid,tokenId: tokenId);
+  blockUsers.add(blockUser);
+  mainModel.reload();
+  await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId ).set(blockUser.toJson());
 }
 
 Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
@@ -504,17 +498,6 @@ Future<void> follow({ required BuildContext context,required MainModel mainModel
   }
 }
 
-// Future<void> unfollow(
-//     MainModel mainModel,
-//     WhisperUser currentWhisperUser) async {
-//   final followingUids = mainModel.followingUids;
-//   followingUids.remove(currentWhisperUser.uid);
-//   mainModel.reload();
-//   await createFollowingToken(followingUids, mainModel.currentWhisperUser);
-//   await followerChildRef(
-//     passiveUid: currentWhisperUser.uid, followerUid: mainModel.currentWhisperUser.uid)
-//   .delete();
-// }
 Future<void> unfollow({ required MainModel mainModel,required String passiveUid }) async {
   mainModel.followingUids.remove(passiveUid);
   mainModel.reload();
@@ -523,8 +506,9 @@ Future<void> unfollow({ required MainModel mainModel,required String passiveUid 
 
 Future<void> createFollowingToken({ required UserMeta userMeta,required String passiveUid }) async {
   final Timestamp now = Timestamp.now();
-  final Following following = Following(myUid: userMeta.uid, createdAt: now, passiveUid: passiveUid);
-  await newTokenChildRef(uid: userMeta.uid, now: now.toDate()).set(following.toJson());
+  final String tokenId = returnTokenId(now: now, userMeta: userMeta, tokenType: TokenType.following );
+  final Following following = Following(myUid: userMeta.uid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId);
+  await newTokenChildRef(uid: userMeta.uid, tokenId: tokenId ).set(following.toJson());
 }
 
 Future<void> deleteFollowingToken({ required UserMeta userMeta, required String passiveUid }) async {

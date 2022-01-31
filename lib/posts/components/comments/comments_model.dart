@@ -16,6 +16,7 @@ import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/domain/comment_like/comment_like.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
@@ -190,19 +191,22 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final LikeComment likeComment = LikeComment(activeUid: currentWhisperUser.uid,createdAt: Timestamp.now(),commentId: whisperComment.commentId);
+    final Timestamp now = Timestamp.now();
+    final CommentLike commentLike = CommentLike(activeUid: currentWhisperUser.uid, createdAt: now, commentId: whisperComment.commentId );
     await likeChildRef(parentColKey: commentsFieldKey, uniqueId: whisperComment.commentId , activeUid: currentWhisperUser.uid ).set(likeComment.toJson());
   }
 
   Future<void> createLikeCommentDoc({ required String commentId, required MainModel mainModel }) async {
     final activeUid = mainModel.userMeta.uid;
-    final now = DateTime.now();
+    final now = Timestamp.now();
+    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
     final LikeComment likeComment = LikeComment(
       activeUid: activeUid,
       commentId: commentId,
-      createdAt: Timestamp.fromDate(now),
+      createdAt: now,
+      tokenId: tokenId
     );
-    await newTokenChildRef(uid: activeUid, now: now).set(likeComment.toJson());
+    await newTokenChildRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
   }
 
   Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {

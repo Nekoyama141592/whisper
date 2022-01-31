@@ -1,21 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mute_post.dart';
+part of 'reply_like.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MutePost _$MutePostFromJson(Map<String, dynamic> json) => MutePost(
+ReplyLike _$ReplyLikeFromJson(Map<String, dynamic> json) => ReplyLike(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      postId: json['postId'] as String,
-      tokenId: json['tokenId'] as String,
+      replyId: json['replyId'] as String,
     );
 
-Map<String, dynamic> _$MutePostToJson(MutePost instance) => <String, dynamic>{
+Map<String, dynamic> _$ReplyLikeToJson(ReplyLike instance) => <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'postId': instance.postId,
-      'tokenId': instance.tokenId,
+      'replyId': instance.replyId,
     };

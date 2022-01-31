@@ -10,6 +10,7 @@ BookmarkPost _$BookmarkPostFromJson(Map<String, dynamic> json) => BookmarkPost(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postId: json['postId'] as String,
+      tokenId: json['tokenId'] as String,
       bookmarkLabelId: json['bookmarkLabelId'] as String,
     );
 
@@ -18,5 +19,6 @@ Map<String, dynamic> _$BookmarkPostToJson(BookmarkPost instance) =>
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
       'postId': instance.postId,
+      'tokenId': instance.tokenId,
       'bookmarkLabelId': instance.bookmarkLabelId,
     };

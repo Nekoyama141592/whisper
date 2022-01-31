@@ -9,8 +9,10 @@ part 'official_notification.g.dart';
 class OfficialNotification{
   OfficialNotification({
     required this.createdAt,
+    required this.notificationId
   });
   final dynamic createdAt;
+  final String notificationId;
   final String notificationType = officialNotificationType;
   
   factory OfficialNotification.fromJson(Map<String,dynamic> json) => _$OfficialNotificationFromJson(json);
