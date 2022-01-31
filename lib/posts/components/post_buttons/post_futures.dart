@@ -42,7 +42,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final Timestamp now = Timestamp.now();
     final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId);
-    await postLikeDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).set(postLike.toJson());
+    await returnPostLikeDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).set(postLike.toJson());
   }
   
   Future<void> addLikesToCurrentUser({ required Post whisperPost, required MainModel mainModel }) async {
@@ -53,7 +53,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.likePostIds.add(whisperPost.postId);
     mainModel.likePosts.add(likePost);
     notifyListeners();
-    await tokenDocRef(uid: activeUid, tokenId: tokenId).set(likePost.toJson());
+    await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likePost.toJson());
   }
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
@@ -98,7 +98,7 @@ class PostFutures extends ChangeNotifier {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
     final PostBookmark postBookmark = PostBookmark(activeUid: activeUid,createdAt: now,postId: whisperPost.postId);
-    await postBookmarkDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
+    await returnPostBookmarkDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 
 
@@ -108,7 +108,7 @@ class PostFutures extends ChangeNotifier {
     final String uid = mainModel.userMeta.uid;
     mainModel.bookmarkPosts.add(bookmarkPost);
     mainModel.bookmarksPostIds.add(bookmarkPost.postId);
-    await tokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
+    await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
   }
 
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
@@ -148,14 +148,14 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await postBookmarkDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostBookmarkDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
   Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel , required String bookmarkLabelId }) async {
     mainModel.bookmarksPostIds.remove(whisperPost.postId);
     notifyListeners();
     final deleteBookmarkPostToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
-    await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteBookmarkPostToken.tokenId ).delete();
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteBookmarkPostToken.tokenId ).delete();
   }
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
@@ -169,7 +169,7 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await postLikeDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostLikeDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
   
   Future<void> deleteLikePostTokenDoc({ required Post whisperPost, required MainModel mainModel}) async {
@@ -177,7 +177,7 @@ class PostFutures extends ChangeNotifier {
     notifyListeners();
     final String uid = mainModel.userMeta.uid;
     final deleteLikePostToken = mainModel.likePosts.where((element) => element.postId == whisperPost.postId).toList().first;
-    await tokenDocRef(uid: uid, tokenId: deleteLikePostToken.tokenId ).delete();
+    await returnTokenDocRef(uid: uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
   
   void reload() {
@@ -191,7 +191,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(muteUser.uid);
     notifyListeners();
-    await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
   }
 
   Future<void> blockUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
@@ -201,7 +201,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.blockUsers.add(blockUser);
     mainModel.blockUids.add(blockUser.uid);
     notifyListeners();
-    await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
   }
 
   Future<void> muteComment({ required MainModel mainModel, required String commentId }) async {
@@ -211,7 +211,7 @@ class PostFutures extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
     final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,commentId: commentId,createdAt: now, tokenId: tokenId);
-    await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
     await mainModel.prefs.setStringList(muteCommentIdsPrefsKey, muteCommentIds);
   }
 }

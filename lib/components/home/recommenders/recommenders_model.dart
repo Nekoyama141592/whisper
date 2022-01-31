@@ -34,7 +34,7 @@ class RecommendersModel extends ChangeNotifier {
   // user
   User? currentUser;
   Query<Map<String, dynamic>> getQuery() {
-    final x = postsColGroupQuery.orderBy(scoreFieldKey, descending: true).limit(oneTimeReadCount);
+    final x = returnPostsColGroupQuery.orderBy(scoreFieldKey, descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -104,7 +104,7 @@ class RecommendersModel extends ChangeNotifier {
   Future<void> distributeTokens() async {
     final List<TokenType> userTokenTypes = [TokenType.readPost,TokenType.blockUser,TokenType.muteUser,TokenType.mutePost];
     final List<String> tokenTypeStrings = userTokenTypes.map((e) => returnTokenTypeString(tokenType: e) ).toList();
-    final qshot = await tokensColRef(uid: firebaseAuthCurrentUser!.uid).where(tokenTypeFieldKey,whereIn: tokenTypeStrings).get();
+    final qshot = await returnTokensColRef(uid: firebaseAuthCurrentUser!.uid).where(tokenTypeFieldKey,whereIn: tokenTypeStrings).get();
     qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final Map<String,dynamic> tokenMap = doc.data()!;
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap );

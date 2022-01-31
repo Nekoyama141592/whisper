@@ -20,8 +20,7 @@ class OneCommentModel extends ChangeNotifier {
   Future<bool> init({ required String giveCommentId,required String postCreatorUid,required String postId }) async {
     startLoading();
     if (commentId != giveCommentId) {
-      // oneCommentDoc = await postCommentDocRef(uid: passiveUid,)
-      
+      oneCommentDoc = await postCommentDocRef(uid: passiveUid,)
     } 
     oneWhisperComment = WhisperComment.fromJson(oneCommentDoc.data()!);
     endLoading();

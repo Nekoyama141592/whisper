@@ -107,7 +107,7 @@ class ReplysModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(context);
-                replysStream = postCommentReplysColGroupQuery
+                replysStream = returnPostCommentReplysColGroupQuery
                 .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(limitIndex)
@@ -126,7 +126,7 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 sortState = SortState.byNewestFirst;
-                replysStream = postCommentReplysColGroupQuery
+                replysStream = returnPostCommentReplysColGroupQuery
                 .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(limitIndex)
@@ -145,7 +145,7 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 sortState = SortState.byOldestFirst;
-                replysStream = postCommentReplysColGroupQuery
+                replysStream = returnPostCommentReplysColGroupQuery
                 .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(limitIndex)
@@ -187,7 +187,7 @@ class ReplysModel extends ChangeNotifier {
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = postCommentReplysColGroupQuery.where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = returnPostCommentReplysColGroupQuery.where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -199,21 +199,21 @@ class ReplysModel extends ChangeNotifier {
     limitIndex += oneTimeReadCount;
     switch(sortState) {
       case SortState.byLikedUidCount:
-      replysStream = postCommentReplysColGroupQuery
+      replysStream = returnPostCommentReplysColGroupQuery
       .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(likeCountFieldKey,descending: true )
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byNewestFirst:
-      replysStream = postCommentReplysColGroupQuery
+      replysStream = returnPostCommentReplysColGroupQuery
       .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: true)
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byOldestFirst:
-      replysStream = postCommentReplysColGroupQuery
+      replysStream = returnPostCommentReplysColGroupQuery
       .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: false)
       .limit(limitIndex)
@@ -231,7 +231,7 @@ class ReplysModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String replyId = 'reply' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
     final WhisperReply newWhisperReply = makeWhisperReply(commentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
-    await postCommentReplyDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: replyId ).set(newWhisperReply.toJson());
+    await returnPostCommentReplyDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: replyId ).set(newWhisperReply.toJson());
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
       await makeReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
@@ -291,7 +291,7 @@ class ReplysModel extends ChangeNotifier {
       userImageURL: currentWhisperUser.imageURL,
       userName: currentWhisperUser.userName
     );
-    await notificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(replyNotification.toJson());
+    await returnNotificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(replyNotification.toJson());
   }
 
   Future<void> like({ required WhisperReply whisperReply, required MainModel mainModel }) async {
@@ -307,7 +307,7 @@ class ReplysModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final ReplyLike replyLike = ReplyLike(activeUid: mainModel.userMeta.uid, createdAt: now, replyId: whisperReply.postCommentReplyId );
-    await postCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: currentWhisperUser.uid ).set(replyLike.toJson());
+    await returnPostCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: currentWhisperUser.uid ).set(replyLike.toJson());
   }
 
 
@@ -319,7 +319,7 @@ class ReplysModel extends ChangeNotifier {
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
       final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.postCommentReplyId,tokenId: tokenId);
-      await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
+      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
     } catch(e) {
       print(e.toString());
     }
@@ -335,7 +335,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required WhisperReply whisperReply,required MainModel mainModel }) async {
-    await postCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
   Future<void> deleteLikeReplyTokenDoc({ required MainModel mainModel, required WhisperReply whisperReply }) async {
@@ -343,7 +343,7 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
     final String uid = mainModel.userMeta.uid;
     final deleteLikeReply = mainModel.likeReplys.where((element) => element.replyId == whisperReply.postCommentReplyId).toList().first;
-    await tokenDocRef(uid: uid, tokenId: deleteLikeReply.tokenId ).delete();
+    await returnTokenDocRef(uid: uid, tokenId: deleteLikeReply.tokenId ).delete();
   }
   
 }

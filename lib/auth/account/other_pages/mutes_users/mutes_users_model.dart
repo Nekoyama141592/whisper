@@ -84,7 +84,7 @@ class MutesUsersModel extends ChangeNotifier {
     notifyListeners();
     // back
     final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.uid == passiveUid ).toList().first;
-    await tokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
+    await returnTokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
   }
 
 }

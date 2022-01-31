@@ -90,7 +90,7 @@ class MainModel extends ChangeNotifier {
   bool isFeedLoading = false;
   Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {
     final List<String> max10 = timelinesQshot.docs.map((e) => Timeline.fromJson(e.data()).postId ).toList();
-    return postsColGroupQuery.where(postIdFieldKey,whereIn: max10);
+    return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10);
   }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
@@ -120,7 +120,7 @@ class MainModel extends ChangeNotifier {
     startLoading();
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
-    final tokensQshot = await tokensColRef(uid: userMeta.uid).get();
+    final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
     await getFeeds(followingUids: followingUids);
     endLoading();

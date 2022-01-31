@@ -84,7 +84,7 @@ class BlocksUsersModel extends ChangeNotifier {
     notifyListeners();
     // back
     final deleteBlockToken = mainModel.blockUsers.where((element) => element.uid == passiveUid).toList().first;
-    await tokenDocRef(uid: currentWhisperUser.uid, tokenId: deleteBlockToken.tokenId ).delete();
+    await returnTokenDocRef(uid: currentWhisperUser.uid, tokenId: deleteBlockToken.tokenId ).delete();
   }
 
 

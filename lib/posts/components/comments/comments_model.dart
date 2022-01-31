@@ -61,7 +61,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
-    await postCommentsColGroupQuery.where(postIdFieldKey,isEqualTo: postId).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await returnPostCommentsColGroupQuery.where(postIdFieldKey,isEqualTo: postId).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
@@ -112,7 +112,7 @@ class CommentsModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final WhisperComment whisperComment = WhisperComment.fromJson(commentMap);
-    await postCommentDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
+    await returnPostCommentDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
       final Timestamp now = Timestamp.now();
@@ -174,7 +174,7 @@ class CommentsModel extends ChangeNotifier {
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName
       );
-      await notificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(commentNotification.toJson());
+      await returnNotificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(commentNotification.toJson());
     } catch(e) {
       print(e.toString());
     }
@@ -194,7 +194,7 @@ class CommentsModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final CommentLike commentLike = CommentLike(activeUid: currentWhisperUser.uid, createdAt: now, commentId: whisperComment.postCommentId );
-    await postCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
+    await returnPostCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
   }
 
   Future<void> createLikeCommentTokenDoc({ required String commentId, required MainModel mainModel }) async {
@@ -207,7 +207,7 @@ class CommentsModel extends ChangeNotifier {
       createdAt: now,
       tokenId: tokenId
     );
-    await tokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
+    await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
   }
 
   Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
@@ -222,13 +222,13 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
-    await postCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
   Future<void> deleteLikeCommentTokenDoc({ required String commentId,required MainModel mainModel}) async {
     final String uid = mainModel.userMeta.uid;
     final deleteLikeComment = mainModel.likeComments.where((element) => element.commentId == commentId ).toList().first;
-    await tokenDocRef(uid: uid, tokenId: deleteLikeComment.tokenId ).delete();
+    await returnTokenDocRef(uid: uid, tokenId: deleteLikeComment.tokenId ).delete();
   }
 
   void showSortDialogue(BuildContext context,Post whisperPost) {
@@ -245,7 +245,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 commentDocs = [];
                 sortState = SortState.byLikedUidCount;
-                await postCommentsColGroupQuery
+                await returnPostCommentsColGroupQuery
                 .where(postIdFieldKey,isEqualTo: postId)
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(oneTimeReadCount)
@@ -267,7 +267,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 commentDocs = [];
                 sortState = SortState.byNewestFirst;
-                await postCommentsColGroupQuery
+                await returnPostCommentsColGroupQuery
                 .where(postIdFieldKey,isEqualTo: postId)
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(oneTimeReadCount)
@@ -289,7 +289,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 commentDocs = [];
                 sortState = SortState.byOldestFirst;
-                await postCommentsColGroupQuery
+                await returnPostCommentsColGroupQuery
                 .where(postIdFieldKey,isEqualTo: postId)
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(oneTimeReadCount)
@@ -329,7 +329,7 @@ class CommentsModel extends ChangeNotifier {
       case SortState.byLikedUidCount:
       break;
       case SortState.byNewestFirst:
-      QuerySnapshot<Map<String, dynamic>> newSnapshots = await postCommentsColGroupQuery
+      QuerySnapshot<Map<String, dynamic>> newSnapshots = await returnPostCommentsColGroupQuery
       .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtFieldKey,descending: true)
       .endBeforeDocument(commentDocs[0])
@@ -353,7 +353,7 @@ class CommentsModel extends ChangeNotifier {
   Future<void> onLoading(Post whisperPost) async {
     switch(sortState) {
       case SortState.byLikedUidCount:
-      await postCommentsColGroupQuery
+      await returnPostCommentsColGroupQuery
       .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(likeCountFieldKey,descending: true )
       .startAfterDocument(commentDocs.last)
@@ -365,7 +365,7 @@ class CommentsModel extends ChangeNotifier {
       });
       break;
       case SortState.byNewestFirst:
-      await postCommentsColGroupQuery
+      await returnPostCommentsColGroupQuery
       .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtFieldKey,descending: true)
       .startAfterDocument(commentDocs.last)
@@ -375,7 +375,7 @@ class CommentsModel extends ChangeNotifier {
       });
       break;
       case SortState.byOldestFirst:
-      await postCommentsColGroupQuery
+      await returnPostCommentsColGroupQuery
       .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtFieldKey,descending: false)
       .startAfterDocument(commentDocs.last)

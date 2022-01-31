@@ -162,7 +162,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel,required String postId }) async {
-    final Reference storageRef = others.postChildRef(mainModel: mainModel, storagePostName: storagePostName);
+    final Reference storageRef = others.returnPostChildRef(mainModel: mainModel, storagePostName: storagePostName);
     await storageRef.putFile(audioFile);
     final String postDownloadURL = await storageRef.getDownloadURL();
     return postDownloadURL;
@@ -199,7 +199,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel,required String postId }) async {
-    final Reference storageRef = others.postImageChildRef(mainModel: mainModel, postImageName: postImageName, postId: postId);
+    final Reference storageRef = others.returnPostImageChildRef(mainModel: mainModel, postImageName: postImageName, postId: postId);
     await storageRef.putFile(croppedFile!);
     final String downloadURL = await storageRef.getDownloadURL();
     return downloadURL;
@@ -247,7 +247,7 @@ class AddPostModel extends ChangeNotifier {
       ).toJson();
       try {
         // await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).set(postMap);
-        await others.postDocRef(uid: currentWhiseprUser.uid, postId: postId).set(postMap);
+        await others.returnPostDocRef(uid: currentWhiseprUser.uid, postId: postId).set(postMap);
         addPostStateNotifier.value = AddPostState.uploaded;
       } catch(e) {
         print(e.toString());

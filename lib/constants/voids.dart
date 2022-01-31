@@ -258,10 +258,10 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
       posts.remove(posts[i]);
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
-      await postDocRef(uid: whisperPost.uid, postId: whisperPost.postId ).delete();
-      await refFromPost(post: whisperPost).delete();
+      await returnPostDocRef(uid: whisperPost.uid, postId: whisperPost.postId ).delete();
+      await returnRefFromPost(post: whisperPost).delete();
       if (isImageExist(post: whisperPost) == true) {
-        await postImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
+        await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
       }
 
     } catch(e) {
@@ -296,7 +296,7 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
   final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId);
-  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
+  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
 }
 
 Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<dynamic> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -309,7 +309,7 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: Timestamp.now(),ipv6: whisperPost.ipv6,uid: passiveUid,tokenId: tokenId);
   mainModel.muteUsers.add(muteUser);
   mainModel.reload();
-  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
+  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
 }
 
 Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -322,7 +322,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,uid: whisperPost.uid,tokenId: tokenId);
   blockUsers.add(blockUser);
   mainModel.reload();
-  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
+  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
 }
 
 Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
@@ -436,7 +436,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   // can`t be given mainModel because of lib/auth/signup/signup_model.dart
   String getDownloadURL = '';
   try {
-    final Reference storageRef = userImageChildRef(uid: uid, storageImageName: storageImageName);
+    final Reference storageRef = returnUserImageChildRef(uid: uid, storageImageName: storageImageName);
     await storageRef.putFile(croppedFile!);
     getDownloadURL = await storageRef.getDownloadURL();
   } catch(e) { print(e.toString()); }
@@ -516,12 +516,12 @@ Future<void> createFollowingToken({ required UserMeta userMeta,required String p
   final String activeUid = userMeta.uid;
   final String tokenId = returnTokenId(now: now, userMeta: userMeta, tokenType: TokenType.following );
   final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId);
-  await tokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
+  await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
 }
 
 Future<void> deleteFollowingToken({ required MainModel mainModel, required String passiveUid }) async {
   final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
-  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteFollowingToken.tokenId ).delete();
+  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteFollowingToken.tokenId ).delete();
 }
 
 void showFlashDialogue({ required BuildContext context,required Widget content, required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder }) {

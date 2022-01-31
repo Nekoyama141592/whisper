@@ -51,7 +51,7 @@ class EditPostInfoModel extends ChangeNotifier {
 
   Future<String> uploadImage({ required MainModel mainModel,required String postId }) async {
     final thisPostImageName = postImageName(now: DateTime.now());
-    final ref = postImageChildRef(mainModel: mainModel,postImageName: thisPostImageName,postId: postId);
+    final ref = returnPostImageChildRef(mainModel: mainModel,postImageName: thisPostImageName,postId: postId);
     await ref.putFile(croppedFile!);
     final String downloadURL = await ref.getDownloadURL();
     return downloadURL;
@@ -65,7 +65,7 @@ class EditPostInfoModel extends ChangeNotifier {
       whisperPost.imageURLs = [imageURL];
       whisperPost.updatedAt = Timestamp.now();
       // await FirebaseFirestore.instance.collection(postsFieldKey).doc(whisperPost.postId).update(whisperPost.toJson());
-      await postDocRef(uid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
+      await returnPostDocRef(uid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
       isEditing = false;
       notifyListeners();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('データが更新されました！表示に反映されなければ、タブをきってください')));

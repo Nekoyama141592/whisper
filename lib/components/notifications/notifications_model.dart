@@ -17,7 +17,7 @@ class NotificationsModel extends ChangeNotifier {
   // basic
   bool isLoading = false;
   // notifications
-  Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = notificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
+  Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
   NotificationsModel() {
     init();
   }

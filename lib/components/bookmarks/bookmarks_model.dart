@@ -109,7 +109,7 @@ class BookmarksModel extends ChangeNotifier {
     if (bookmarkPostIds.isNotEmpty) {
       List<String> max10 = bookmarkPostIds.length > (lastIndex + tenCount) ? bookmarkPostIds.sublist(0,tenCount) : bookmarkPostIds.sublist( 0,bookmarkPostIds.length );
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
-      await postsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
+      await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
         docs = qshot.docs;
       });
       await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
