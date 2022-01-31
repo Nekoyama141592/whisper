@@ -7,6 +7,8 @@ import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 // domain
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
+// constants
+import 'package:whisper/constants/others.dart';
 
 class RedirectToUrlButton extends StatelessWidget {
 
