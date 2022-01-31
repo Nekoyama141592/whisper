@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
@@ -108,7 +109,7 @@ class BookmarksModel extends ChangeNotifier {
     if (bookmarkPostIds.isNotEmpty) {
       List<String> max10 = bookmarkPostIds.length > (lastIndex + tenCount) ? bookmarkPostIds.sublist(0,tenCount) : bookmarkPostIds.sublist( 0,bookmarkPostIds.length );
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
-      await FirebaseFirestore.instance.collection(postsFieldKey).where(postIdFieldKey,whereIn: max10).get().then((qshot) {
+      await postsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
         docs = qshot.docs;
       });
       await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);

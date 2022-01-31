@@ -258,8 +258,7 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
       posts.remove(posts[i]);
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
-      await FirebaseFirestore.instance.collection(postsFieldKey).doc(whisperPost.postId).delete();
-  
+      await postDocRef(uid: whisperPost.uid, postId: whisperPost.postId ).delete();
       await refFromPost(post: whisperPost).delete();
       if (isImageExist(post: whisperPost) == true) {
         await postImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();

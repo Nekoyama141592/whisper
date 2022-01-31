@@ -69,7 +69,7 @@ Reference postImageChildRef({ required MainModel mainModel, required String post
 }
 
 Reference postParentRef({ required MainModel mainModel }) {
-  return FirebaseStorage.instance.ref().child(postsFieldKey).child(mainModel.currentWhisperUser.uid);
+  return FirebaseStorage.instance.ref().child(postPathKey).child(mainModel.currentWhisperUser.uid);
 }
 
 Reference postChildRef({ required MainModel mainModel, required String storagePostName }) {

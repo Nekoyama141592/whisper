@@ -94,7 +94,6 @@ const String timelinesFieldKey = 'timelines';
 const String likesFieldKey = 'likes';
 const String scoreFieldKey = 'score';
 const String isReadFieldKey = 'isRead';
-const String postsFieldKey = 'posts';
 const String uidFieldKey = 'uid';
 const String userMetaFieldKey = 'userMeta';
 const String usersFieldKey = 'users';
@@ -110,6 +109,7 @@ const String notificationTypeFieldKey = 'notificationType';
 // path
 const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';
+const String postPathKey = 'posts';
 // mapKey
 const String ipv6MapKey = 'ipv6';
 const String tokenTypeMapKey = 'tokenType';

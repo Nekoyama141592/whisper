@@ -46,7 +46,8 @@ class OnePostModel extends ChangeNotifier {
     if (postId != givePostId) {
       onePostDocList = [];
       postId = givePostId;
-      onePostDoc = await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).get();
+      // onePostDoc = await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).get();
+      onePostDoc = await postDocRef(uid: uid, postId: postId).get();
       onePostDocList.add(onePostDoc);
       currentSongMapNotifier.value = onePostDoc.data()!;
       // final post = fromMapToManyUpdatePost(manyUpdatePostMap: currentSongMapNotifier.value);
