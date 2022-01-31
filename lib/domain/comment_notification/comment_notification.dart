@@ -40,8 +40,8 @@ class CommentNotification {
   bool isRead;
   final String notificationId;
   final String passiveUid;
-  final String postTitle;
   final String postId;
+  final String postTitle;
   final String notificationType = commentNotificationType;
   final dynamic updatedAt;
   final String userImageURL;

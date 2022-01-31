@@ -22,7 +22,7 @@ class ReplyNotification {
     required this.postId,
     required this.reply,
     required this.replyScore,
-    required this.replyId,
+    required this.postCommentReplyId,
     required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
@@ -43,7 +43,7 @@ class ReplyNotification {
   final String postId;
   final String reply;
   final num replyScore;
-  final String replyId;
+  final String postCommentReplyId;
   final String notificationType = replyNotificationType;
   final dynamic updatedAt;
   final String userImageURL;
