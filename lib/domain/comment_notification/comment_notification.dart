@@ -20,8 +20,10 @@ class CommentNotification {
     required this.isRead,
     required this.notificationId,
     required this.passiveUid,
-    required this.postTitle,
     required this.postId,
+    required this.postCommentDocRef,
+    required this.postDocRef,
+    required this.postTitle,
     required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
@@ -41,6 +43,8 @@ class CommentNotification {
   final String notificationId;
   final String passiveUid;
   final String postId;
+  final dynamic postCommentDocRef;
+  final dynamic postDocRef;
   final String postTitle;
   final String notificationType = commentNotificationType;
   final dynamic updatedAt;

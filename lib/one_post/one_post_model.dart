@@ -40,14 +40,14 @@ class OnePostModel extends ChangeNotifier {
   late DocumentSnapshot<Map<String,dynamic>> onePostDoc;
   List<DocumentSnapshot<Map<String,dynamic>>> onePostDocList = [];
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
-  String postId = '';
-  Future<bool> init({ required String givePostId}) async {
+  String indexPostId = '';
+
+  Future<bool> init({ required String postId, required DocumentReference<Map<String,dynamic>> postDocRef }) async {
     startLoading();
-    if (postId != givePostId) {
+    if (indexPostId != postId) {
       onePostDocList = [];
-      postId = givePostId;
-      // onePostDoc = await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).get();
-      onePostDoc = await returnPostDocRef(uid: uid, postId: postId).get();
+      indexPostId = postId;
+      onePostDoc = await postDocRef.get();
       onePostDocList.add(onePostDoc);
       currentSongMapNotifier.value = onePostDoc.data()!;
       // final post = fromMapToManyUpdatePost(manyUpdatePostMap: currentSongMapNotifier.value);

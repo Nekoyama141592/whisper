@@ -42,7 +42,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final Timestamp now = Timestamp.now();
     final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId);
-    await returnPostLikeDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).set(postLike.toJson());
+    await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).set(postLike.toJson());
   }
   
   Future<void> addLikesToCurrentUser({ required Post whisperPost, required MainModel mainModel }) async {
@@ -98,7 +98,7 @@ class PostFutures extends ChangeNotifier {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
     final PostBookmark postBookmark = PostBookmark(activeUid: activeUid,createdAt: now,postId: whisperPost.postId);
-    await returnPostBookmarkDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
+    await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 
 
@@ -148,7 +148,7 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await returnPostBookmarkDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
   Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel , required String bookmarkLabelId }) async {
@@ -169,7 +169,7 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await returnPostLikeDocRef(uid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
   
   Future<void> deleteLikePostTokenDoc({ required Post whisperPost, required MainModel mainModel}) async {

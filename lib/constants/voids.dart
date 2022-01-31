@@ -78,9 +78,9 @@ void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfo
 
 Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {
   commentNotification.isRead = true;
-  bool postExists = await onePostModel.init(givePostId: commentNotification.postId );
+  bool postExists = await onePostModel.init(postId: commentNotification.postId, postDocRef: commentNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
   if (postExists) {
-    bool commentExists = await oneCommentModel.init(giveCommentId: commentNotification.postCommentId );
+    bool commentExists = await oneCommentModel.init(postCommentId: commentNotification.postCommentId, postCommentDocRef: commentNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
     if (commentExists) {
       routes.toOneCommentPage(context: context, mainModel: mainModel);
     } else {
@@ -94,9 +94,9 @@ Future<void> onCommentNotificationPressed({ required BuildContext context ,requi
 
 Future<void> onReplyNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  ReplyNotification replyNotification }) async {
   replyNotification.isRead = true;
-  bool postExists = await onePostModel.init(givePostId: replyNotification.postId );
+  bool postExists = await onePostModel.init(postId: replyNotification.postId, postDocRef: replyNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
   if (postExists) {
-    bool commentExists = await oneCommentModel.init(giveCommentId: replyNotification.postCommentId );
+    bool commentExists = await oneCommentModel.init(postCommentId: replyNotification.postCommentId, postCommentDocRef: replyNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
     if (commentExists) {
       routes.toOneCommentPage(context: context, mainModel: mainModel);
     } else {
@@ -258,7 +258,7 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
       posts.remove(posts[i]);
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
-      await returnPostDocRef(uid: whisperPost.uid, postId: whisperPost.postId ).delete();
+      await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
       await returnRefFromPost(post: whisperPost).delete();
       if (isImageExist(post: whisperPost) == true) {
         await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();

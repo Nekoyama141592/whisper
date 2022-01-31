@@ -229,9 +229,9 @@ class ReplysModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
-    final String replyId = 'reply' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
-    final WhisperReply newWhisperReply = makeWhisperReply(commentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
-    await returnPostCommentReplyDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: replyId ).set(newWhisperReply.toJson());
+    final String postCommentReplyId = generatePostCommentReplyId(uid: mainModel.userMeta.uid);
+    final WhisperReply newWhisperReply = makeWhisperReply(commentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
+    await returnPostCommentReplyDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: postCommentReplyId ).set(newWhisperReply.toJson());
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
       await makeReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
@@ -264,7 +264,7 @@ class ReplysModel extends ChangeNotifier {
     return whisperReply;
   }
 
-  Future<void> makeReplyNotification({ required String elementId, required , required MainModel mainModel, required WhisperComment whisperComment, required WhisperReply newWhisperReply }) async {
+  Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperComment whisperComment, required WhisperReply newWhisperReply }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
     final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
@@ -283,6 +283,8 @@ class ReplysModel extends ChangeNotifier {
       notificationId: notificationId, 
       passiveUid: whisperComment.uid,
       postId: whisperComment.postId,
+      postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId , postCommentId: whisperComment.postCommentId ) ,
+      postDocRef: returnPostDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId ),
       reply: reply, 
       replyScore: newWhisperReply.score,
       postCommentReplyId: newWhisperReply.postCommentReplyId,
@@ -291,7 +293,7 @@ class ReplysModel extends ChangeNotifier {
       userImageURL: currentWhisperUser.imageURL,
       userName: currentWhisperUser.userName
     );
-    await returnNotificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(replyNotification.toJson());
+    await returnNotificationDocRef(uid: whisperComment.uid,notificationId: notificationId).set(replyNotification.toJson());
   }
 
   Future<void> like({ required WhisperReply whisperReply, required MainModel mainModel }) async {
@@ -307,7 +309,7 @@ class ReplysModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final ReplyLike replyLike = ReplyLike(activeUid: mainModel.userMeta.uid, createdAt: now, replyId: whisperReply.postCommentReplyId );
-    await returnPostCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: currentWhisperUser.uid ).set(replyLike.toJson());
+    await returnPostCommentReplyLikeDocRef(postCreatorUid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: currentWhisperUser.uid ).set(replyLike.toJson());
   }
 
 
@@ -335,7 +337,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required WhisperReply whisperReply,required MainModel mainModel }) async {
-    await returnPostCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostCommentReplyLikeDocRef(postCreatorUid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
   Future<void> deleteLikeReplyTokenDoc({ required MainModel mainModel, required WhisperReply whisperReply }) async {

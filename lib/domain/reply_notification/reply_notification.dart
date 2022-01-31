@@ -9,6 +9,7 @@ part 'reply_notification.g.dart';
 class ReplyNotification {
   ReplyNotification({
     required this.accountName,
+    required this.activeUid,
     required this.comment,
     required this.createdAt,
     required this.postCommentId,
@@ -20,10 +21,11 @@ class ReplyNotification {
     required this.notificationId,
     required this.passiveUid,
     required this.postId,
+    required this.postCommentDocRef,
+    required this.postCommentReplyId,
+    required this.postDocRef,
     required this.reply,
     required this.replyScore,
-    required this.postCommentReplyId,
-    required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
     required this.userName
@@ -44,6 +46,8 @@ class ReplyNotification {
   final String reply;
   final num replyScore;
   final String postCommentReplyId;
+  final dynamic postCommentDocRef;
+  final dynamic postDocRef;
   final String notificationType = replyNotificationType;
   final dynamic updatedAt;
   final String userImageURL;

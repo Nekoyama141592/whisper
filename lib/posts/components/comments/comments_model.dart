@@ -112,7 +112,7 @@ class CommentsModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final WhisperComment whisperComment = WhisperComment.fromJson(commentMap);
-    await returnPostCommentDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
+    await returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
       final Timestamp now = Timestamp.now();
@@ -127,7 +127,7 @@ class CommentsModel extends ChangeNotifier {
     final WhisperComment whisperComment = WhisperComment(
       accountName: currentWhisperUser.accountName,
       comment: comment, 
-      postCommentId: 'comment' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+      postCommentId: generatePostCommentId(uid: currentWhisperUser.uid ),
       createdAt: now,
       followerCount: currentWhisperUser.followerCount,
       ipv6: ipv6, 
@@ -167,14 +167,16 @@ class CommentsModel extends ChangeNotifier {
         isRead: false,
         notificationId: notificationId,
         passiveUid: whisperPost.uid,
-        postTitle: whisperPost.title,
         postId: whisperPost.postId,
+        postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId ),
+        postDocRef: returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ),
+        postTitle: whisperPost.title,
         activeUid: currentWhisperUser.uid,
         updatedAt: now,
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName
       );
-      await returnNotificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(commentNotification.toJson());
+      await returnNotificationDocRef(uid: whisperComment.uid, notificationId: notificationId).set(commentNotification.toJson());
     } catch(e) {
       print(e.toString());
     }
@@ -194,7 +196,7 @@ class CommentsModel extends ChangeNotifier {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final CommentLike commentLike = CommentLike(activeUid: currentWhisperUser.uid, createdAt: now, commentId: whisperComment.postCommentId );
-    await returnPostCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
+    await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
   }
 
   Future<void> createLikeCommentTokenDoc({ required String commentId, required MainModel mainModel }) async {
@@ -222,7 +224,7 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
-    await returnPostCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.uid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
   Future<void> deleteLikeCommentTokenDoc({ required String commentId,required MainModel mainModel}) async {

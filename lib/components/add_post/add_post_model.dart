@@ -247,7 +247,7 @@ class AddPostModel extends ChangeNotifier {
       ).toJson();
       try {
         // await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).set(postMap);
-        await others.returnPostDocRef(uid: currentWhiseprUser.uid, postId: postId).set(postMap);
+        await others.returnPostDocRef(postCreatorUid: currentWhiseprUser.uid, postId: postId).set(postMap);
         addPostStateNotifier.value = AddPostState.uploaded;
       } catch(e) {
         print(e.toString());

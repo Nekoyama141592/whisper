@@ -34,10 +34,10 @@ String returnNotificationId({ required Timestamp now }) {
 String returnNotificationTypeString({ required NotificationType notifcationType }) {
   return notifcationType.toString().substring(notificationTypeStartIndex);
 }
-String returnPostCommentId({ required String uid }) {
+String generatePostCommentId({ required String uid }) {
   return 'postComment' + '_' + uid + '_' + uuid4;
 }
-String returnPostCommentReplyId({ required String uid }) {
+String generatePostCommentReplyId({ required String uid }) {
   return 'postCommentReply' + '_' + uid + '_' + uuid4;
 }
 // strings
