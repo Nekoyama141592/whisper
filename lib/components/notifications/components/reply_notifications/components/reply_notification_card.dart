@@ -18,11 +18,11 @@ class ReplyNotificationCard extends ConsumerWidget {
 
   const ReplyNotificationCard({
     Key? key,
-    required this.notification,
+    required this.replyNotification,
     required this.mainModel
   }) : super(key: key);
 
-  final ReplyNotification notification;
+  final ReplyNotification replyNotification;
   final MainModel mainModel;
 
   @override
@@ -33,7 +33,7 @@ class ReplyNotificationCard extends ConsumerWidget {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
-    final userImageURL = notification.userImageURL;
+    final userImageURL = replyNotification.userImageURL;
 
     return Card(
       child: Column(
@@ -42,15 +42,14 @@ class ReplyNotificationCard extends ConsumerWidget {
           ListTile(
             leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.imageURL ),
             title: Text(currentWhisperUser.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,),),
-            subtitle: Text(notification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
+            subtitle: Text(replyNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
           ),
           ListTile(
-            tileColor: notification.isRead == true ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
-            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: notification.activeUid,mainModel: mainModel,),
-            subtitle: Text(notification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
+            tileColor: replyNotification.isRead == true ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor.withOpacity(0.85),
+            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: replyNotification.activeUid,mainModel: mainModel,),
+            subtitle: Text(replyNotification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
             onTap: () async {
-              final String givePostId = notification.postId;
-              await voids.onNotificationPressed(context: context, mainModel: mainModel, notification: notification.toJson(), oneCommentModel: oneCommentModel, onePostModel: onePostModel, giveCommentId: notification.elementId, givePostId: givePostId);
+              await voids.onReplyNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification);
             },
           )
         ],

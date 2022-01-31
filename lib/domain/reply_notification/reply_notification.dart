@@ -11,8 +11,7 @@ class ReplyNotification {
     required this.accountName,
     required this.comment,
     required this.createdAt,
-    required this.elementId,
-    required this.elementState,
+    required this.postCommentId,
     required this.followerCount,
     required this.isDelete,
     required this.isNFTicon,
@@ -33,8 +32,7 @@ class ReplyNotification {
   final String activeUid;
   final String comment;
   final dynamic createdAt;
-  final String elementId;
-  final String elementState;
+  final String postCommentId;
   final int followerCount;
   final bool isDelete;
   final bool isNFTicon;

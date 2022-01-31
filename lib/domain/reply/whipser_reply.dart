@@ -8,7 +8,7 @@ class WhisperReply {
   WhisperReply({
     required this.accountName,
     required this.createdAt,
-    required this.commentId,
+    required this.postCommentId,
     required this.followerCount,
     required this.ipv6,
     required this.isDelete,
@@ -20,7 +20,7 @@ class WhisperReply {
     required this.postId,
     required this.positiveScore,
     required this.reply,
-    required this.replyId,
+    required this.postCommentReplyId,
     required this.score,
     required this.uid,
     required this.updatedAt,
@@ -29,7 +29,7 @@ class WhisperReply {
   });
   final String accountName;
   final dynamic createdAt;
-  final String commentId;
+  final String postCommentId;
   final int followerCount;
   final String ipv6;
   final bool isDelete;
@@ -41,7 +41,7 @@ class WhisperReply {
   final String postId;
   final num positiveScore;
   final String reply;
-  final String replyId;
+  final String postCommentReplyId;
   final num score;
   final String uid;
   final dynamic updatedAt;

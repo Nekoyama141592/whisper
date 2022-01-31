@@ -8,7 +8,7 @@ class WhisperComment {
   WhisperComment({
     required this.accountName,
     required this.comment,
-    required this.commentId,
+    required this.postCommentId,
     required this.createdAt,
     required this.followerCount,
     required this.ipv6,
@@ -29,7 +29,7 @@ class WhisperComment {
   });
   final String accountName;
   final String comment;
-  final String commentId;
+  final String postCommentId;
   final dynamic createdAt;
   final int followerCount;
   final String ipv6;

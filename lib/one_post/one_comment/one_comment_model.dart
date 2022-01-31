@@ -16,7 +16,7 @@ class OneCommentModel extends ChangeNotifier {
   late DocumentSnapshot<Map<String,dynamic>> oneCommentDoc;
   late WhisperComment oneWhisperComment;
 
-  Future<bool> init({ required DocumentReference<Map<String,dynamic>> postCommentDocRef ,required String giveCommentId }) async {
+  Future<bool> init({ required String giveCommentId }) async {
     startLoading();
     if (commentId != giveCommentId) {
       oneCommentDoc = await postCommentDocRef.get();

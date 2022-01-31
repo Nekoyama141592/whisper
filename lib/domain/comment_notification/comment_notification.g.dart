@@ -10,7 +10,7 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
     CommentNotification(
       accountName: json['accountName'] as String,
       comment: json['comment'] as String,
-      commentId: json['commentId'] as String,
+      postCommentId: json['postCommentId'] as String,
       commentScore: json['commentScore'] as num,
       createdAt: json['createdAt'],
       followerCount: json['followerCount'] as int,
@@ -34,7 +34,7 @@ Map<String, dynamic> _$CommentNotificationToJson(
       'accountName': instance.accountName,
       'activeUid': instance.activeUid,
       'comment': instance.comment,
-      'commentId': instance.commentId,
+      'postCommentId': instance.postCommentId,
       'commentScore': instance.commentScore,
       'createdAt': instance.createdAt,
       'followerCount': instance.followerCount,

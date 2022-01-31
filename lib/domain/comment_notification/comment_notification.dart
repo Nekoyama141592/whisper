@@ -10,7 +10,7 @@ class CommentNotification {
   CommentNotification({
     required this.accountName,
     required this.comment,
-    required this.commentId,
+    required this.postCommentId,
     required this.commentScore,
     required this.createdAt,
     required this.followerCount,
@@ -30,7 +30,7 @@ class CommentNotification {
   final String accountName;
   final String activeUid;
   final String comment;
-  final String commentId;
+  final String postCommentId;
   final num commentScore;
   final dynamic createdAt;
   final int followerCount;

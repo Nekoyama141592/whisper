@@ -76,17 +76,11 @@ void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfo
   editPostInfoModel.reload();
 }
 
-Future<void> onNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OneCommentModel oneCommentModel, required OnePostModel onePostModel,required String giveCommentId, required String givePostId, required dynamic notification }) async {
-  if (notification is ReplyNotification) {
-    notification.isRead = true;
-  } else if (notification is CommentNotification ) {
-    notification.isRead = true;
-  }
-  // Plaase don`t notification['commentId'].
-  // Please use commentNotification['commentId'], replyNotification['elementId']
-  bool postExists = await onePostModel.init(givePostId: givePostId);
+Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {
+  commentNotification.isRead = true;
+  bool postExists = await onePostModel.init(givePostId: commentNotification.postId );
   if (postExists) {
-    bool commentExists = await oneCommentModel.init(giveCommentId: giveCommentId);
+    bool commentExists = await oneCommentModel.init(giveCommentId: commentNotification.postCommentId );
     if (commentExists) {
       routes.toOneCommentPage(context: context, mainModel: mainModel);
     } else {
@@ -98,6 +92,21 @@ Future<void> onNotificationPressed({ required BuildContext context ,required Mai
   mainModel.reload();
 }
 
+Future<void> onReplyNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  ReplyNotification replyNotification }) async {
+  replyNotification.isRead = true;
+  bool postExists = await onePostModel.init(givePostId: replyNotification.postId );
+  if (postExists) {
+    bool commentExists = await oneCommentModel.init(giveCommentId: replyNotification.postCommentId );
+    if (commentExists) {
+      routes.toOneCommentPage(context: context, mainModel: mainModel);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
+  }
+  mainModel.reload();
+}
 // just_audio
 
 Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
