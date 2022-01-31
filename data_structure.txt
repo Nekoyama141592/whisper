@@ -1,0 +1,32 @@
+db: {
+    users(WhisperUser) {
+        posts(Post) {
+            postComments(WhisperComment) {
+                postCommentReplys(WhisperReply) {
+                    postCommentReplyLikes(ReplyLike) {
+
+                    }
+                }
+                postCommentLikes(commentlike)
+            }
+            postLikes(postLike) {
+
+            }
+            postBookmarks(postBookmark) {
+
+            }
+        }
+        
+        followers {
+
+        }
+    }
+    userMeta(userMeta) {
+        tokens {
+
+        }
+        notifications {
+
+        }
+    }
+}

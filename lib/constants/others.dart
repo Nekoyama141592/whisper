@@ -91,11 +91,13 @@ DocumentReference<Map<String, dynamic>> followerChildRef({ required String passi
 
 CollectionReference<Map<String, dynamic>> usersColRef() { return FirebaseFirestore.instance.collection('users'); }
 DocumentReference<Map<String, dynamic>> userDocRef({ required String uid }) { return usersColRef().doc(uid); }
+CollectionReference<Map<String, dynamic>> userMetaColRef() { return FirebaseFirestore.instance.collection('userMeta'); }
+DocumentReference<Map<String, dynamic>> userMetaDocRef({ required String uid }) { return userMetaColRef().doc(uid); }
 CollectionReference<Map<String, dynamic>> followersColRef({ required String uid }) { return userDocRef(uid: uid).collection('followers'); }
 DocumentReference<Map<String, dynamic>> followerDocRef({ required String uid, required String followerUid }) { return followersColRef(uid: uid).doc(followerUid); }
-CollectionReference<Map<String, dynamic>>  tokensColRef({ required String uid }) { return userDocRef(uid: uid).collection('tokens'); }
+CollectionReference<Map<String, dynamic>>  tokensColRef({ required String uid }) { return userMetaDocRef(uid: uid).collection('tokens'); }
 DocumentReference<Map<String, dynamic>>  tokenDocRef({ required String uid , required String tokenId }) { return tokensColRef(uid: uid).doc(tokenId); }
-CollectionReference<Map<String, dynamic>>  notificationsColRef ({ required String uid }) { return userDocRef(uid: uid).collection('notifications'); }
+CollectionReference<Map<String, dynamic>>  notificationsColRef ({ required String uid }) { return userMetaDocRef(uid: uid).collection('notifications'); }
 DocumentReference<Map<String, dynamic>> notificationDocRef({ required String uid ,required String notificationId }) { return notificationsColRef(uid: uid).doc(notificationId); }
 CollectionReference<Map<String, dynamic>> postsColRef({ required String uid }) { return userDocRef(uid: uid).collection('posts'); }
 final Query<Map<String, dynamic>> postsColGroupQuery = FirebaseFirestore.instance.collectionGroup('posts');
