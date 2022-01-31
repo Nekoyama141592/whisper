@@ -66,7 +66,7 @@ class ReplysModel extends ChangeNotifier {
     // このPostの投稿主が自分の場合
     // このPostの投稿主とコメントの投稿主が一致している場合
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final WhisperComment whisperComment = WhisperComment.fromJson(thisComment);
     if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
       showMakeReplyInputFlashBar(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, mainModel: mainModel, thisComment: thisComment);
     } else {
@@ -98,7 +98,7 @@ class ReplysModel extends ChangeNotifier {
   }
 
   void showSortDialogue(BuildContext context,Map<String,dynamic> thisComment) {
-    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final WhisperComment whisperComment = WhisperComment.fromJson(thisComment);
     showCupertinoDialog(
       context: context, 
       builder: (context) {
@@ -188,12 +188,12 @@ class ReplysModel extends ChangeNotifier {
   void getReplysStream({ required BuildContext context, required Map<String,dynamic> thisComment, required ReplysModel replysModel, required Post whisperPost, required MainModel mainModel })  {
     refreshController = RefreshController(initialRefresh: false);
     routes.toReplysPage(context: context, replysModel: replysModel, whisperPost: whisperPost, thisComment: thisComment, mainModel: mainModel);
-    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final WhisperComment whisperComment = WhisperComment.fromJson(thisComment);
     final String commentId = whisperComment.commentId ;
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = FirebaseFirestore.instance.collection(replysFieldKey).where(elementIdFieldKey,isEqualTo: whisperComment.commentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = postCommentReplysColGroupQuery.where(elementIdFieldKey,isEqualTo: whisperComment.commentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -203,7 +203,7 @@ class ReplysModel extends ChangeNotifier {
 
   Future onLoading(Map<String,dynamic> thisComment) async {
     limitIndex += oneTimeReadCount;
-    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
+    final WhisperComment whisperComment = WhisperComment.fromJson(thisComment);
     switch(sortState) {
       case SortState.byLikedUidCount:
       replysStream = FirebaseFirestore.instance
@@ -235,25 +235,25 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future makeReply({ required Post whisperPost,required MainModel mainModel, required Map<String,dynamic> thisComment}) async {
-    final whisperComment = fromMapToWhisperComment(commentMap: thisComment);
-    final elementId = whisperComment.commentId ;
+    final WhisperComment whisperComment = WhisperComment.fromJson(thisComment);
+    final commentId = whisperComment.commentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
     final String replyId = 'reply' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
-    final WhisperReply newWhisperReply = makeWhisperReply(elementId: elementId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
-    await FirebaseFirestore.instance.collection(replysFieldKey).doc(replyId).set(newWhisperReply.toJson());
+    final WhisperReply newWhisperReply = makeWhisperReply(commentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: replyId );
+    await postCommentReplyDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.commentId, postCommentReplyId: replyId ).set(newWhisperReply.toJson());
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
-      await makeReplyNotification(elementId: elementId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
+      await makeReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
     }
   }
 
-  WhisperReply makeWhisperReply({ required String elementId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
+  WhisperReply makeWhisperReply({ required String commentId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
     final WhisperReply whisperReply = WhisperReply(
       accountName: currentWhisperUser.accountName,
       createdAt: now,
-      elementId: elementId, elementState: elementState, 
+      commentId: commentId,
       followerCount: currentWhisperUser.followerCount,
       ipv6: ipv6, 
       isDelete: false,
@@ -303,47 +303,47 @@ class ReplysModel extends ChangeNotifier {
       userImageURL: currentWhisperUser.imageURL,
       userName: currentWhisperUser.userName
     );
-    await newNotificationChildRef(uid: currentWhisperUser.uid, now: now).set(replyNotification.toJson());
+    await notificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(replyNotification.toJson());
   }
 
   Future<void> like({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {
     // process UI
-    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
     final replyId = whisperReply.replyId;
     final List<dynamic> likeReplyIds = mainModel.likeReplyIds;
     likeReplyIds.add(replyId);
     notifyListeners();
     // backend
     await addLikeSubCol(thisReply: thisReply, mainModel: mainModel);
-    await updateLikeReplysOfUser(thisReply: thisReply, mainModel: mainModel);
+    await createLikeReplyTokenDoc(thisReply: thisReply, mainModel: mainModel);
   }
 
   Future<void> addLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
     final Timestamp now = Timestamp.now();
     final ReplyLike replyLike = ReplyLike(activeUid: mainModel.userMeta.uid, createdAt: now, replyId: whisperReply.replyId );
-    ref.set();
+    await postCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.commentId, postCommentReplyId: whisperReply.replyId, activeUid: currentWhisperUser.uid ).set(replyLike.toJson());
   }
 
 
-  Future<void> updateLikeReplysOfUser({ required Map<String,dynamic> thisReply, required MainModel mainModel}) async {
+  Future<void> createLikeReplyTokenDoc({ required Map<String,dynamic> thisReply, required MainModel mainModel}) async {
     try {
-      final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+      final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
       mainModel.likeReplyIds.add(whisperReply.replyId);
       notifyListeners();
       final String activeUid = mainModel.userMeta.uid;
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
       final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.replyId,tokenId: tokenId);
-      await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
+      await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
     } catch(e) {
       print(e.toString());
     }
   }
 
   Future<void> unlike({ required Map<String,dynamic> thisReply, required MainModel mainModel }) async {
-    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+    final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
     final replyId = whisperReply.replyId;
     final likeReplyIds = mainModel.likeReplyIds;
     // processUI
@@ -351,21 +351,21 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
     // backend
     await deleteLikeSubCol(thisReply: thisReply, mainModel: mainModel);
-    await removeLikedReplyOfUser(mainModel: mainModel, thisReply: thisReply);
+    await deleteLikeReplyTokenDoc(mainModel: mainModel, thisReply: thisReply);
   }
 
   Future<void> deleteLikeSubCol({ required Map<String,dynamic> thisReply,required MainModel mainModel }) async {
-    final whisperReply = fromMapToWhisperReply(replyMap: thisReply);
-    await likeChildRef(parentColKey: replysFieldKey, uniqueId: whisperReply.replyId, activeUid: mainModel.currentWhisperUser.uid).delete();
+    final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
+    await postCommentReplyLikeDocRef(uid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.commentId, postCommentReplyId: whisperReply.replyId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
-  Future<void> removeLikedReplyOfUser({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {
-    final WhisperReply whisperReply = fromMapToWhisperReply(replyMap: thisReply);
+  Future<void> deleteLikeReplyTokenDoc({ required MainModel mainModel, required Map<String,dynamic> thisReply }) async {
+    final WhisperReply whisperReply = WhisperReply.fromJson(thisReply);
     mainModel.likeReplyIds.remove(whisperReply.postId);
     notifyListeners();
     final String uid = mainModel.userMeta.uid;
-    final qshot = await tokensParentRef(uid: uid).where(replyIdFieldKey,isEqualTo: whisperReply.replyId).get();
-    await alreadyTokenRef(userMeta: mainModel.userMeta, alreadyTokenDocId: qshot.docs.first.id ).delete();
+    final deleteLikeReply = mainModel.likeReplys.where((element) => element.replyId == whisperReply.replyId).toList().first;
+    await tokenDocRef(uid: uid, tokenId: deleteLikeReply.tokenId ).delete();
   }
   
 }

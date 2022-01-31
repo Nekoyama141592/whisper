@@ -6,7 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/others.dart';
+import 'package:whisper/domain/reply/whipser_reply.dart';
 // components
 import 'package:whisper/posts/components/replys/components/reply_card/components/reply_like_button.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -31,7 +31,7 @@ class ReplyCard extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
 
     final postFutures = ref.watch(postsFeaturesProvider);
-    final whisperReply = fromMapToWhisperReply(replyMap: reply);
+    final WhisperReply whisperReply = WhisperReply.fromJson(reply);
     final String userImageURL = whisperReply.userImageURL;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final length = 60.0;

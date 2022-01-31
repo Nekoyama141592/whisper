@@ -48,6 +48,7 @@ dependencies:
   freezed_annotation: ^0.14.3
   json_serializable: ^6.1.3
   just_audio_background: any # substitute version number
+  uuid: ^3.0.5
 
 
 dev_dependencies:

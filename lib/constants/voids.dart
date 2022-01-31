@@ -288,8 +288,7 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
   final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId);
-  await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId ).set(mutePost.toJson());
-  await mainModel.prefs.setStringList(mutePostIdsPrefsKey, mainModel.mutePostIds);
+  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
 }
 
 Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<dynamic> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -302,7 +301,7 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: Timestamp.now(),ipv6: whisperPost.ipv6,uid: passiveUid,tokenId: tokenId);
   mainModel.muteUsers.add(muteUser);
   mainModel.reload();
-  await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId ).set(muteUser.toJson());
+  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
 }
 
 Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
@@ -315,7 +314,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,uid: whisperPost.uid,tokenId: tokenId);
   blockUsers.add(blockUser);
   mainModel.reload();
-  await newTokenChildRef(uid: mainModel.userMeta.uid, tokenId: tokenId ).set(blockUser.toJson());
+  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
 }
 
 Future<void> removeTheUsersPost({ required List<dynamic> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
@@ -501,20 +500,20 @@ Future<void> follow({ required BuildContext context,required MainModel mainModel
 Future<void> unfollow({ required MainModel mainModel,required String passiveUid }) async {
   mainModel.followingUids.remove(passiveUid);
   mainModel.reload();
-  await deleteFollowingToken(userMeta: mainModel.userMeta, passiveUid: passiveUid);
+  await deleteFollowingToken(mainModel: mainModel, passiveUid: passiveUid);
 }
 
 Future<void> createFollowingToken({ required UserMeta userMeta,required String passiveUid }) async {
   final Timestamp now = Timestamp.now();
+  final String activeUid = userMeta.uid;
   final String tokenId = returnTokenId(now: now, userMeta: userMeta, tokenType: TokenType.following );
-  final Following following = Following(myUid: userMeta.uid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId);
-  await newTokenChildRef(uid: userMeta.uid, tokenId: tokenId ).set(following.toJson());
+  final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId);
+  await tokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
 }
 
-Future<void> deleteFollowingToken({ required UserMeta userMeta, required String passiveUid }) async {
-  final parentRef = tokensParentRef(uid: userMeta.uid);
-  final qshot = await parentRef.where(passiveUidFieldKey,isEqualTo: passiveUid).get();
-  await parentRef.doc(qshot.docs.first.id).delete();
+Future<void> deleteFollowingToken({ required MainModel mainModel, required String passiveUid }) async {
+  final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
+  await tokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteFollowingToken.tokenId ).delete();
 }
 
 void showFlashDialogue({ required BuildContext context,required Widget content, required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder }) {

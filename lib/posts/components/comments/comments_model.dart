@@ -61,7 +61,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs(String postId) async {
     commentDocs = [];
-    await FirebaseFirestore.instance.collection(commentsFieldKey).where(postIdFieldKey,isEqualTo: postId).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await postCommentsColGroupQuery.where(postIdFieldKey,isEqualTo: postId).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
@@ -111,8 +111,8 @@ class CommentsModel extends ChangeNotifier {
   Future<void> makeComment({ required BuildContext context, required Post whisperPost, required MainModel mainModel }) async {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
-    final whisperComment = fromMapToWhisperComment(commentMap: commentMap);
-    await FirebaseFirestore.instance.collection(commentsFieldKey).doc(whisperComment.commentId).set(commentMap);
+    final WhisperComment whisperComment = WhisperComment.fromJson(commentMap);
+    await postCommentDocRef(uid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.commentId).set(whisperComment.toJson());
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
       final Timestamp now = Timestamp.now();
@@ -152,6 +152,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperComment whisperComment, required Timestamp now }) async {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
+    final String notificationId= 'commentNotification' + currentWhisperUser.uid + now.toDate().microsecondsSinceEpoch.toString();
     try{
       final CommentNotification commentNotification = CommentNotification(
         accountName: currentWhisperUser.accountName,
@@ -164,7 +165,7 @@ class CommentsModel extends ChangeNotifier {
         isNFTicon: currentWhisperUser.isNFTicon,
         isOfficial: currentWhisperUser.isOfficial,
         isRead: false,
-        notificationId: 'commentNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString(),
+        notificationId: notificationId,
         passiveUid: whisperPost.uid,
         postTitle: whisperPost.title,
         postId: whisperPost.postId,
@@ -173,7 +174,7 @@ class CommentsModel extends ChangeNotifier {
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName
       );
-      await newNotificationChildRef(uid: currentWhisperUser.uid, now: now).set(commentNotification.toJson());
+      await notificationDocRef(uid: currentWhisperUser.uid, notificationId: notificationId).set(commentNotification.toJson());
     } catch(e) {
       print(e.toString());
     }
@@ -186,17 +187,17 @@ class CommentsModel extends ChangeNotifier {
     likeCommentIds.add(commentId);
     notifyListeners();
     await addLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await createLikeCommentDoc(commentId: commentId, mainModel: mainModel);
+    await createLikeCommentTokenDoc(commentId: commentId, mainModel: mainModel);
   }
 
   Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final CommentLike commentLike = CommentLike(activeUid: currentWhisperUser.uid, createdAt: now, commentId: whisperComment.commentId );
-    await likeChildRef(parentColKey: commentsFieldKey, uniqueId: whisperComment.commentId , activeUid: currentWhisperUser.uid ).set(likeComment.toJson());
+    await postCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
   }
 
-  Future<void> createLikeCommentDoc({ required String commentId, required MainModel mainModel }) async {
+  Future<void> createLikeCommentTokenDoc({ required String commentId, required MainModel mainModel }) async {
     final activeUid = mainModel.userMeta.uid;
     final now = Timestamp.now();
     final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
@@ -206,7 +207,7 @@ class CommentsModel extends ChangeNotifier {
       createdAt: now,
       tokenId: tokenId
     );
-    await newTokenChildRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
+    await tokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
   }
 
   Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
@@ -217,17 +218,17 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
     // backend
     await deleteLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await removeLikedCommentsFromCurrentUser(commentId: commentId, mainModel: mainModel);
+    await deleteLikeCommentTokenDoc(commentId: commentId, mainModel: mainModel);
   }
 
   Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
-    await likeChildRef(parentColKey: commentsFieldKey, uniqueId: whisperComment.commentId , activeUid: mainModel.currentWhisperUser.uid ).delete();
+    await postCommentLikeDocRef(uid: whisperComment.uid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
-  Future<void> removeLikedCommentsFromCurrentUser({ required String commentId,required MainModel mainModel}) async {
+  Future<void> deleteLikeCommentTokenDoc({ required String commentId,required MainModel mainModel}) async {
     final String uid = mainModel.userMeta.uid;
-    final qshot = await tokensParentRef(uid: uid).where(commentId,isEqualTo: commentId).limit(plusOne).get();
-    await tokensParentRef(uid: uid).doc(qshot.docs.first.id).delete();
+    final deleteLikeComment = mainModel.likeComments.where((element) => element.commentId == commentId ).toList().first;
+    await tokenDocRef(uid: uid, tokenId: deleteLikeComment.tokenId ).delete();
   }
 
   void showSortDialogue(BuildContext context,Post whisperPost) {

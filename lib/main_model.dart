@@ -90,7 +90,7 @@ class MainModel extends ChangeNotifier {
   bool isFeedLoading = false;
   Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {
     final List<String> max10 = timelinesQshot.docs.map((e) => Timeline.fromJson(e.data()).postId ).toList();
-    return postColRef.where(postIdFieldKey,whereIn: max10);
+    return postsColGroupQuery.where(postIdFieldKey,whereIn: max10);
   }
   // notifiers
   final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
@@ -120,7 +120,7 @@ class MainModel extends ChangeNotifier {
     startLoading();
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
-    final tokensQshot = await tokensParentRef(uid: userMeta.uid).get();
+    final tokensQshot = await tokensColRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
     await getFeeds(followingUids: followingUids);
     endLoading();
@@ -142,10 +142,10 @@ class MainModel extends ChangeNotifier {
 
   Future<void> setCurrentUser() async {
     currentUser = FirebaseAuth.instance.currentUser;
-    final currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentUser!.uid).get();
-    currentWhisperUser = fromMapToWhisperUser(userMap: currentUserDoc.data()!);
+    currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentUser!.uid).get();
+    currentWhisperUser = WhisperUser.fromJson(currentUserDoc.data()!);
     final userMetaDoc = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(currentUser!.uid).get();
-    userMeta = fromMapToUserMeta(userMetaMap: userMetaDoc.data()!);
+    userMeta = UserMeta.fromJson(userMetaDoc.data()!);
   }
 
   void distributeTokens({ required QuerySnapshot<Map<String, dynamic>> tokensQshot }) {

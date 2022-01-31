@@ -10,12 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 // domain
-import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -57,7 +54,7 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> init({ required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
     startLoading();
     audioPlayer = AudioPlayer();
-    await setBookmarksPostIds(userMeta: mainModel.userMeta, bookmarkLabel: bookmarkLabel);
+    await setBookmarksPostIds(mainModel: mainModel, bookmarkLabel: bookmarkLabel);
     await getBookmarks();
     prefs = mainModel.prefs;
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
@@ -97,11 +94,9 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setBookmarksPostIds({ required UserMeta userMeta,required BookmarkLabel bookmarkLabel }) async {
+  Future<void> setBookmarksPostIds({ required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
     final String bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
-    await tokensParentRef(uid: userMeta.uid).where(tokenTypeFieldKey,isEqualTo: bookmarkPostTokenType).where(bookmarkLabelIdFieldKey,isEqualTo: bookmarkLabelId).get().then((qshot){
-      bookmarkPostIds = qshot.docs.map((e) => BookmarkPost.fromJson(e.data()).postId ).toList();
-    });
+    bookmarkPostIds = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == bookmarkLabelId ).map((e) => e.postId ).toList();
     notifyListeners();
   }
 

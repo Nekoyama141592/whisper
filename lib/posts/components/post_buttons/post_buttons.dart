@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/others.dart';
+import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // components
 import 'package:whisper/posts/components/post_buttons/components/edit_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';
@@ -36,9 +37,9 @@ class PostButtons extends StatelessWidget {
     return ValueListenableBuilder<Map<String,dynamic>>(
       valueListenable: currentSongMapNotifier,
       builder: (_,currentSongMap,__) {
-        final whisperPost = fromMapToPost(postMap: currentSongMapNotifier.value);
+        final whisperPost = Post.fromJson(currentSongMapNotifier.value);
         final String link = whisperPost.links.isEmpty ? '' 
-        : fromMapToWhisperLink(whisperLink: whisperPost.links.first as Map<String,dynamic> ).link;
+        : WhisperLink.fromJson(whisperPost.links.first).link;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

@@ -35,7 +35,7 @@ class UserShowModel extends ChangeNotifier {
   late DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
   Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc }) {
     final whisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
-    final x = postColRef.where(uidFieldKey,isEqualTo: whisperUser.uid ).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
+    final x = postsColGroupQuery.where(uidFieldKey,isEqualTo: whisperUser.uid ).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   String passiveUid = '';

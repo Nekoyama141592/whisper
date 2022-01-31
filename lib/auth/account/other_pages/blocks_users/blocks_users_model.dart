@@ -72,17 +72,19 @@ class BlocksUsersModel extends ChangeNotifier {
     }
   }
 
-  Future<void> unBlockUser({ required String passiveUid, required List<String> blockUids, required WhisperUser currentWhisperUser}) async {
+  Future<void> unBlockUser({ required String passiveUid, required MainModel mainModel }) async {
+    final currentWhisperUser = mainModel.currentWhisperUser;
     // front
     userDocs.removeWhere((userDoc) {
       final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
       return whisperUser.uid == passiveUid;
     });
+    mainModel.blockUids.remove(passiveUid);
     blockUids.remove(passiveUid);
     notifyListeners();
     // back
-    final qshot = await tokensParentRef(uid: currentWhisperUser.uid).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: passiveUid).limit(plusOne).get();
-    await tokensParentRef(uid: currentWhisperUser.uid).doc(qshot.docs.first.id).delete();
+    final deleteBlockToken = mainModel.blockUsers.where((element) => element.uid == passiveUid).toList().first;
+    await tokenDocRef(uid: currentWhisperUser.uid, tokenId: deleteBlockToken.tokenId ).delete();
   }
 
 

@@ -8,8 +8,7 @@ class WhisperReply {
   WhisperReply({
     required this.accountName,
     required this.createdAt,
-    required this.elementId,
-    required this.elementState,
+    required this.commentId,
     required this.followerCount,
     required this.ipv6,
     required this.isDelete,
@@ -30,8 +29,7 @@ class WhisperReply {
   });
   final String accountName;
   final dynamic createdAt;
-  final String elementId;
-  final String elementState;
+  final String commentId;
   final int followerCount;
   final String ipv6;
   final bool isDelete;

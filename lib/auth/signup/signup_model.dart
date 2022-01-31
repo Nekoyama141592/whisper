@@ -15,10 +15,11 @@ import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/constants/others.dart' as others;
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
+import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
@@ -80,7 +81,7 @@ class SignupModel extends ChangeNotifier {
   Future<void> cropImage() async {
     isCropped = false;
     croppedFile = null;
-    croppedFile = await others.returnCroppedFile(xFile: xFile);
+    croppedFile = await returnCroppedFile(xFile: xFile);
     if (croppedFile != null) {
       isCropped = true;
     }
@@ -156,11 +157,9 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
     );
     final String bookmarkLabelId = returnTokenId(now: now, userMeta: userMeta, tokenType: TokenType.bookmarkLabel );
+    final BookmarkLabel bookmarkLabel = BookmarkLabel(bookmarkLabelId: bookmarkLabelId,uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkLabelId);
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
-    // await others.bookmarkLabelRef(uid: uid, bookmarkLabelId: bookmarkLabelId).set(
-    //   returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId)
-    // );
-    await others.tokensParentRef(uid: uid).doc(bookmarkLabelId).set(returnFirstBookmarkLabel(now: now, uid: uid, bookmarkLabelId: bookmarkLabelId));
+    await tokenDocRef(uid: uid, tokenId: bookmarkLabelId ).set(bookmarkLabel.toJson());
   }
 
   void showCupertinoDatePicker(BuildContext context) {

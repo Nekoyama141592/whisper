@@ -2,6 +2,7 @@
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 // packages
+import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
@@ -10,7 +11,7 @@ const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 const String recommendableString = 'recommendable';
-
+final String uuid4 = Uuid().v4();
 String microSecondsString({ required DateTime now }) {
   return DateTime.now().microsecondsSinceEpoch.toString();
 }

@@ -98,17 +98,22 @@ DocumentReference<Map<String, dynamic>>  tokenDocRef({ required String uid , req
 CollectionReference<Map<String, dynamic>>  notificationsColRef ({ required String uid }) { return userDocRef(uid: uid).collection('notifications'); }
 DocumentReference<Map<String, dynamic>> notificationDocRef({ required String uid ,required String notificationId }) { return notificationsColRef(uid: uid).doc(notificationId); }
 CollectionReference<Map<String, dynamic>> postsColRef({ required String uid }) { return userDocRef(uid: uid).collection('posts'); }
+final Query<Map<String, dynamic>> postsColGroupQuery = FirebaseFirestore.instance.collectionGroup('posts');
 DocumentReference<Map<String, dynamic>> postDocRef({ required String uid, required String postId }) { return postsColRef(uid: uid).doc(postId); }
 CollectionReference<Map<String, dynamic>> postLikesColRef({ required String uid,required String postId }) { return postDocRef(uid: uid, postId: postId).collection('postLikes'); }
-DocumentReference<Map<String, dynamic>> postLikeDocRef({ required String uid,required String postId,required String postLikeId }) { return postLikesColRef(uid: uid, postId: postId).doc(postLikeId);  }
-CollectionReference<Map<String, dynamic>> postCommentsColRef({ required String uid,required String postId }) { return postDocRef(uid: uid, postId: postId).collection('comments'); }
+DocumentReference<Map<String, dynamic>> postLikeDocRef({ required String uid,required String postId,required String activeUid }) { return postLikesColRef(uid: uid, postId: postId).doc(activeUid);  }
+CollectionReference<Map<String, dynamic>> postBookmarksColRef({ required String uid,required String postId }) { return postDocRef(uid: uid, postId: postId).collection('postBookmarks'); }
+DocumentReference<Map<String, dynamic>> postBookmarkDocRef({ required String uid,required String postId,required String activeUid }) { return postLikesColRef(uid: uid, postId: postId).doc(activeUid);  }
+CollectionReference<Map<String, dynamic>> postCommentsColRef({ required String uid,required String postId }) { return postDocRef(uid: uid, postId: postId).collection('postComments'); }
+final Query<Map<String,dynamic>> postCommentsColGroupQuery = FirebaseFirestore.instance.collectionGroup('postComments');
 DocumentReference<Map<String, dynamic>> postCommentDocRef({ required String uid,required String postId,required String postCommentId }) { return postCommentsColRef(uid: uid, postId: postId).doc(postCommentId);  }
 CollectionReference<Map<String, dynamic>> postCommentLikesColRef({ required String uid,required String postId }) { return postDocRef(uid: uid, postId: postId).collection('postCommentLikes');  }
-DocumentReference<Map<String, dynamic>> postCommentLikeDocRef({ required String uid,required String postId ,required String postCommentLikeId }) { return postCommentLikesColRef(uid: uid, postId: postId).doc(postCommentLikeId); }
+DocumentReference<Map<String, dynamic>> postCommentLikeDocRef({ required String uid,required String postId ,required String activeUid }) { return postCommentLikesColRef(uid: uid, postId: postId).doc(activeUid); }
 CollectionReference<Map<String, dynamic>> postCommentReplysColRef({ required String uid,required String postId ,required String postCommentId }) { return postCommentDocRef(uid: uid, postId: postId, postCommentId: postCommentId).collection('postCommentReplys');  }
+final Query<Map<String,dynamic>> postCommentReplysColGroupQuery = FirebaseFirestore.instance.collectionGroup('postCommentReplys');
 DocumentReference<Map<String, dynamic>> postCommentReplyDocRef({ required String uid,required String postId,required String postCommentId,required String postCommentReplyId }) { return postCommentReplysColRef(uid: uid, postId: postId, postCommentId: postCommentId).doc(postCommentReplyId); }
 CollectionReference<Map<String, dynamic>> postCommentReplyLikesColRef({ required String uid,required String postId,required String postCommentId, required String postCommentReplyId }) { return postCommentReplyDocRef(uid: uid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection('postCommentReplyLikes'); }
-DocumentReference<Map<String, dynamic>> postCommentReplyLikeDocRef({ required String uid,required String postId,required String postCommentId, required String postCommentReplyId ,required String postCommentReplyLikeId }) { return postCommentReplyLikesColRef(uid: uid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).doc(postCommentReplyLikeId); }
+DocumentReference<Map<String, dynamic>> postCommentReplyLikeDocRef({ required String uid,required String postId,required String postCommentId, required String postCommentReplyId ,required String activeUid }) { return postCommentReplyLikesColRef(uid: uid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).doc(activeUid); }
 
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
   return WhisperUser.fromJson(userMap);
@@ -169,15 +174,3 @@ TextStyle textStyle({ required BuildContext context }) {
 }
 
 final User? firebaseAuthCurrentUser = FirebaseAuth.instance.currentUser;
-
-// Future<List<MuteUser>> returnMuteUserTokens({ required String myUid }) async {
-//   final qshot = await tokensParentRef(uid: myUid).where(tokenTypeFieldKey,isEqualTo: muteUserTokenType).get();
-//   final List<MuteUser> x = qshot.docs.map((DocumentSnapshot<Map<String,dynamic>> doc) =>  MuteUser.fromJson(doc.data()!)).toList();
-//   return x;
-// }
-
-// Future<List<BlockUser>> returnBlockUserTokens({ required String myUid }) async {
-//   final qshot = await tokensParentRef(uid: myUid).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).get();
-//   final List<BlockUser> x = qshot.docs.map((DocumentSnapshot<Map<String,dynamic>> doc) =>  BlockUser.fromJson(doc.data()!)).toList();
-//   return x;
-// }

@@ -72,17 +72,19 @@ class MutesUsersModel extends ChangeNotifier {
     }
   }
 
-  Future<void> unMuteUser({ required String passiveUid, required List<dynamic> mutesUids, required WhisperUser currentWhisperUser}) async {
+  Future<void> unMuteUser({ required String passiveUid, required MainModel mainModel }) async {
+    final currentWhisperUser = mainModel.currentWhisperUser;
     // front
     userDocs.removeWhere((userDoc) {
       final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
       return whisperUser.uid == passiveUid;
     });
-    mutesUids.remove(passiveUid);
+    mainModel.muteUids.remove(passiveUid);
+    muteUids.remove(passiveUid);
     notifyListeners();
     // back
-    final qshot = await tokensParentRef(uid: currentWhisperUser.uid).where(tokenTypeFieldKey,isEqualTo: muteUserTokenType).where(uidFieldKey,isEqualTo: passiveUid).limit(plusOne).get();
-    await tokensParentRef(uid: currentWhisperUser.uid).doc(qshot.docs.first.id).delete();
+    final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.uid == passiveUid ).toList().first;
+    await tokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
   }
 
 }
