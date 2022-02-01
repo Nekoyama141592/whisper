@@ -31,7 +31,7 @@ class MutesUsersModel extends ChangeNotifier {
   Future<void> init({ required MainModel mainModel }) async {
     startLoading();
     final List<MuteUser> muteUsers = mainModel.muteUsers;
-    muteUids = muteUsers.map((muteUser) => muteUser.uid).toList();
+    muteUids = muteUsers.map((muteUser) => muteUser.passiveUid).toList();
     await getMutesUserDocs();
     endLoading();
   }
@@ -83,7 +83,7 @@ class MutesUsersModel extends ChangeNotifier {
     muteUids.remove(passiveUid);
     notifyListeners();
     // back
-    final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.uid == passiveUid ).toList().first;
+    final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.passiveUid == passiveUid ).toList().first;
     await returnTokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
   }
 

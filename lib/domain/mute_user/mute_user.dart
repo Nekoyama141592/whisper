@@ -12,7 +12,7 @@ class MuteUser {
     required this.createdAt,
     required this.ipv6,
     required this.tokenId,
-    required this.uid
+    required this.passiveUid
   });
   
   final String activeUid;
@@ -20,7 +20,7 @@ class MuteUser {
   final String ipv6;
   final String tokenId;
   final String tokenType = muteUserTokenType;
-  final String uid;
+  final String passiveUid;
 
   factory MuteUser.fromJson(Map<String,dynamic> json) => _$MuteUserFromJson(json);
 

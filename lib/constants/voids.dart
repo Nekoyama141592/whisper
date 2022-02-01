@@ -306,7 +306,7 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   mainModel.muteUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,ipv6: whisperPost.ipv6,uid: passiveUid,tokenId: tokenId);
+  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,ipv6: whisperPost.ipv6,passiveUid: passiveUid,tokenId: tokenId);
   mainModel.muteUsers.add(muteUser);
   mainModel.reload();
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
@@ -319,7 +319,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   blocksUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,uid: whisperPost.uid,tokenId: tokenId);
+  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId);
   blockUsers.add(blockUser);
   mainModel.reload();
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());

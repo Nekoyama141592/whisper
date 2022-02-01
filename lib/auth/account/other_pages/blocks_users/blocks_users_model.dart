@@ -31,7 +31,7 @@ class BlocksUsersModel extends ChangeNotifier {
   Future<void> init({ required MainModel mainModel }) async {
     startLoading();
     final List<BlockUser> blockUsers = mainModel.blockUsers;
-    blockUids = blockUsers.map((e) => e.uid ).toList();
+    blockUids = blockUsers.map((e) => e.activeUid ).toList();
     await getBlocksUserDocs();
     endLoading();
   }
@@ -83,7 +83,7 @@ class BlocksUsersModel extends ChangeNotifier {
     blockUids.remove(passiveUid);
     notifyListeners();
     // back
-    final deleteBlockToken = mainModel.blockUsers.where((element) => element.uid == passiveUid).toList().first;
+    final deleteBlockToken = mainModel.blockUsers.where((element) => element.activeUid == passiveUid).toList().first;
     await returnTokenDocRef(uid: currentWhisperUser.uid, tokenId: deleteBlockToken.tokenId ).delete();
   }
 

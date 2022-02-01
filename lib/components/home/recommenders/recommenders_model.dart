@@ -114,13 +114,13 @@ class RecommendersModel extends ChangeNotifier {
       } else if (tokenType == TokenType.blockUser) {
         final BlockUser blockUser = BlockUser.fromJson(tokenMap);
         blockUsers.add(blockUser);
-        blockUids.add(blockUser.uid);
+        blockUids.add(blockUser.activeUid);
         blockIpv6s.add(blockUser.ipv6);
       } else if (tokenType == TokenType.muteUser) {
         final MuteUser muteUser = MuteUser.fromJson(tokenMap);
         muteUsers.add(muteUser);
-        muteUids.add(muteUser.uid);
-        muteIpv6s.add(muteUser.uid);
+        muteUids.add(muteUser.passiveUid);
+        muteIpv6s.add(muteUser.passiveUid);
       } else if (tokenType == TokenType.mutePost) {
         final MutePost mutePost = MutePost.fromJson(tokenMap);
         mutePostIds.add(mutePost.postId);

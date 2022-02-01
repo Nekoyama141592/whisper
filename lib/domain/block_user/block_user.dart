@@ -8,17 +8,19 @@ part 'block_user.g.dart';
 @JsonSerializable()
 class BlockUser {
   BlockUser({
+    required this.activeUid,
     required this.createdAt,
     required this.ipv6,
     required this.tokenId,
-    required this.uid
+    required this.passiveUid
   });
   
+  final String activeUid;
   final dynamic createdAt;
   final String ipv6;
   final String tokenId;
   final String tokenType = blockUserTokenType;
-  final String uid;
+  final String passiveUid;
 
   factory BlockUser.fromJson(Map<String,dynamic> json) => _$BlockUserFromJson(json);
 

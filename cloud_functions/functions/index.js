@@ -20,7 +20,12 @@ const limit = 500;
 const fireStore = admin.firestore();
 const bucket = admin.storage().bucket();
 
-exports.tokenCreate = functions.firestore.document('userMeta/{uid}/tokens/{tokenId}')
+exports.tokenCreate = functions.firestore.document('userMeta/{uid}/tokens/{tokenId}').onCreate(
+    async (snap,_) => {
+
+    }
+);
+
 exports.likePost = functions.firestore.document('users/{uid}/posts/{postId}/postLikes/{activeUid}').onCreate(
     async (snap,_) => {
         const newValue = snap.data();
