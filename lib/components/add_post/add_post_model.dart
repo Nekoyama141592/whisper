@@ -139,7 +139,7 @@ class AddPostModel extends ChangeNotifier {
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      filePath = directory.path + '/' + mainModel.currentWhisperUser.uid +  DateTime.now().microsecondsSinceEpoch.toString() + postExtension;
+      filePath = directory.path + '/' + returnStoragePostName;
       await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
@@ -182,14 +182,13 @@ class AddPostModel extends ChangeNotifier {
     } else {
       startLoading();
       Navigator.pop(context);
-      final String microSecondsString = DateTime.now().microsecondsSinceEpoch.toString();
       if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
-      final String postId = 'post' + mainModel.currentWhisperUser.uid + microSecondsString;
+      final String postId = returnPostId(userMeta: mainModel.userMeta);
       // postImage
-      final String storageImageName = (croppedFile == null) ? '' : 'postImage' + microSecondsString + imageExtension;
+      final String storageImageName = (croppedFile == null) ? '' : returnStoragePostImageName();
       final String imageURL = (croppedFile == null) ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel,postId: postId);
       // post
-      final String storagePostName = 'post' + microSecondsString + postExtension;
+      final String storagePostName = returnStoragePostName;
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
       // post firestore
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId);

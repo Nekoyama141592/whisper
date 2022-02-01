@@ -3,7 +3,6 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 // packages
 import 'package:uuid/uuid.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
 
@@ -11,34 +10,39 @@ const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 const String recommendableString = 'recommendable';
+final String hyphenString = '-';
 final String uuid4 = Uuid().v4();
-String microSecondsString({ required DateTime now }) {
-  return DateTime.now().microsecondsSinceEpoch.toString();
+
+String returnStorageUserImageName() {
+  return 'userImageStorage' + hyphenString + uuid4 + hyphenString + imageExtension;
 }
-String storageUserImageName({ required DateTime now }) {
-  return 'userImage' + microSecondsString(now: now) + imageExtension;
+String returnStoragePostImageName() {
+  return 'postImageStorage' + hyphenString + uuid4 + hyphenString + imageExtension;
 }
-String postImageName({ required DateTime now }) {
-  return 'postImage' + microSecondsString(now: now) + imageExtension;
+final String returnStoragePostName = 'postSorage' + hyphenString + uuid4 + hyphenString + postExtension;
+
+
+String returnPostId({ required UserMeta userMeta }) {
+  return 'post' + hyphenString + userMeta.uid + hyphenString + uuid4;
 }
 
-String returnTokenId({ required Timestamp now ,required UserMeta userMeta,required TokenType tokenType }) {
-  return returnTokenTypeString(tokenType: tokenType)  + userMeta.uid + microSecondsString(now: now.toDate() );
+String returnTokenId({required UserMeta userMeta,required TokenType tokenType }) {
+  return returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + uuid4 ;
 }
 String returnTokenTypeString({ required TokenType tokenType } ) {
   return tokenType.toString().substring(tokenTypeStartIndex);
 }
-String returnNotificationId({ required Timestamp now }) {
-  return notificationString + microSecondsString(now: now.toDate());
+String returnNotificationId({ required NotificationType notificationType}) {
+  return returnNotificationTypeString(notificationType: notificationType) + hyphenString + uuid4;
 }
-String returnNotificationTypeString({ required NotificationType notifcationType }) {
-  return notifcationType.toString().substring(notificationTypeStartIndex);
+String returnNotificationTypeString({ required NotificationType notificationType }) {
+  return notificationType.toString().substring(notificationTypeStartIndex);
 }
 String generatePostCommentId({ required String uid }) {
-  return 'postComment' + '_' + uid + '_' + uuid4;
+  return 'postComment' + hyphenString + uid + hyphenString + uuid4;
 }
 String generatePostCommentReplyId({ required String uid }) {
-  return 'postCommentReply' + '_' + uid + '_' + uuid4;
+  return 'postCommentReply' + hyphenString + uid + hyphenString + uuid4;
 }
 // strings
 const String bookmarkLabelString = 'bookmarkLabel';
@@ -73,10 +77,10 @@ final String likeReplyTokenType = returnTokenTypeString(tokenType: TokenType.lik
 final String searchHistoryTokenType = returnTokenTypeString(tokenType: TokenType.searchHistory);
 final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.readPost);
 // tokenType(notification)
-final String authNotificationType = returnNotificationTypeString(notifcationType: NotificationType.authNotification);
-final String officialNotificationType = returnNotificationTypeString(notifcationType: NotificationType.officialNotification);
-final String commentNotificationType = returnNotificationTypeString(notifcationType: NotificationType.commentNotification);
-final String replyNotificationType = returnNotificationTypeString(notifcationType: NotificationType.replyNotification );
+final String authNotificationType = returnNotificationTypeString(notificationType: NotificationType.authNotification);
+final String officialNotificationType = returnNotificationTypeString(notificationType: NotificationType.officialNotification);
+final String commentNotificationType = returnNotificationTypeString(notificationType: NotificationType.commentNotification);
+final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.replyNotification );
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String bookmarkLabelIdFieldKey = 'bookmarkLabelId';

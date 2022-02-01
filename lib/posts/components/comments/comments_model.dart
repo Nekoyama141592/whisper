@@ -152,7 +152,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperComment whisperComment, required Timestamp now }) async {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
-    final String notificationId= 'commentNotification' + currentWhisperUser.uid + now.toDate().microsecondsSinceEpoch.toString();
+    final String notificationId = returnNotificationId(notificationType: NotificationType.commentNotification);
     try{
       final CommentNotification commentNotification = CommentNotification(
         accountName: currentWhisperUser.accountName,
@@ -202,7 +202,7 @@ class CommentsModel extends ChangeNotifier {
   Future<void> createLikeCommentTokenDoc({ required String commentId, required MainModel mainModel }) async {
     final activeUid = mainModel.userMeta.uid;
     final now = Timestamp.now();
-    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
     final LikeComment likeComment = LikeComment(
       activeUid: activeUid,
       commentId: commentId,

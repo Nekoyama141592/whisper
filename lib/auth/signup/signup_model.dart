@@ -98,7 +98,7 @@ class SignupModel extends ChangeNotifier {
         UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,);
         User? user = result.user;
         final String uid = user!.uid;
-        final String storageImageName = strings.storageUserImageName(now: DateTime.now());
+        final String storageImageName = strings.returnStorageUserImageName();
         final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
         await addUserToFireStore(uid: uid, imageURL: imageURL,);
         await createUserMeta(uid: uid);
@@ -156,7 +156,7 @@ class SignupModel extends ChangeNotifier {
       uid: uid,
       updatedAt: now,
     );
-    final String bookmarkLabelId = returnTokenId(now: now, userMeta: userMeta, tokenType: TokenType.bookmarkLabel );
+    final String bookmarkLabelId = returnTokenId( userMeta: userMeta, tokenType: TokenType.bookmarkLabel );
     final BookmarkLabel bookmarkLabel = BookmarkLabel(bookmarkLabelId: bookmarkLabelId,uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkLabelId);
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkLabelId ).set(bookmarkLabel.toJson());

@@ -267,7 +267,7 @@ class ReplysModel extends ChangeNotifier {
   Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperComment whisperComment, required WhisperReply newWhisperReply }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final String notificationId = 'replyNotification' + currentWhisperUser.uid + DateTime.now().microsecondsSinceEpoch.toString();
+    final String notificationId = returnNotificationId(notificationType: NotificationType.replyNotification );
     final comment = whisperComment.comment;
     final Timestamp now = Timestamp.now();
     final ReplyNotification replyNotification = ReplyNotification(
@@ -319,7 +319,7 @@ class ReplysModel extends ChangeNotifier {
       notifyListeners();
       final String activeUid = mainModel.userMeta.uid;
       final Timestamp now = Timestamp.now();
-      final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
+      final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
       final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.postCommentReplyId,tokenId: tokenId);
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
     } catch(e) {

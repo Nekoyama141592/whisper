@@ -48,7 +48,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> addLikesToCurrentUser({ required Post whisperPost, required MainModel mainModel }) async {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.likePost );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likePost );
     final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId );
     mainModel.likePostIds.add(whisperPost.postId);
     mainModel.likePosts.add(likePost);
@@ -103,7 +103,7 @@ class PostFutures extends ChangeNotifier {
 
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now,required String bookmarkLabelId  }) async {
-    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
     final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: bookmarkLabelId,tokenId: tokenId );
     final String uid = mainModel.userMeta.uid;
     mainModel.bookmarkPosts.add(bookmarkPost);
@@ -186,7 +186,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> muteUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
     final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, uid: passiveUid,ipv6: ipv6,createdAt: now,tokenId: tokenId);
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(muteUser.uid);
@@ -196,7 +196,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> blockUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
     final BlockUser blockUser = BlockUser(createdAt: now,ipv6: ipv6,uid: passiveUid,tokenId: tokenId);
     mainModel.blockUsers.add(blockUser);
     mainModel.blockUids.add(blockUser.uid);
@@ -209,7 +209,7 @@ class PostFutures extends ChangeNotifier {
     muteCommentIds.add(commentId);
     notifyListeners();
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(now: now, userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
     final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,commentId: commentId,createdAt: now, tokenId: tokenId);
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
     await mainModel.prefs.setStringList(muteCommentIdsPrefsKey, muteCommentIds);
