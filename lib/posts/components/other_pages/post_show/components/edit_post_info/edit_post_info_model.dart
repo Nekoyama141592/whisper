@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/links/links_model.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -20,7 +21,6 @@ final editPostInfoProvider = ChangeNotifierProvider(
 class EditPostInfoModel extends ChangeNotifier {
   
   bool isEditing = false;
-  String postTitle = '';
   // image
   bool isCropped = false;
   XFile? xFile;
@@ -57,14 +57,13 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context }) async {
+  Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context,required LinksModel linksModel }) async {
     final Post whisperPost = fromMapToPost(postMap: currentSongMap);
     final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
     try{
-      whisperPost.title = postTitle;
       whisperPost.imageURLs = [imageURL];
       whisperPost.updatedAt = Timestamp.now();
-      // await FirebaseFirestore.instance.collection(postsFieldKey).doc(whisperPost.postId).update(whisperPost.toJson());
+      whisperPost.links = linksModel.whisperLinks.map((e) => e.toJson() ).toList();
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
       isEditing = false;
       notifyListeners();

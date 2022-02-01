@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/links/links_model.dart';
 // components
 import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
@@ -66,6 +67,8 @@ class PostShowPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, WidgetRef ref) {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
+    final LinksModel linksModel = ref.watch(linksProvider);
+
     final currentSongMap = currentSongMapNotifier.value;
     final size = MediaQuery.of(context).size;
 
@@ -74,7 +77,7 @@ class PostShowPage extends ConsumerWidget {
       extendBodyBehindAppBar: false,
       body: SafeArea(
         child: editPostInfoModel.isEditing ?
-        EditPostInfoScreen(mainModel: mainModel, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel)
+        EditPostInfoScreen(mainModel: mainModel, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel,linksModel: linksModel,)
         : SingleChildScrollView(
           child: Column(
             children: [

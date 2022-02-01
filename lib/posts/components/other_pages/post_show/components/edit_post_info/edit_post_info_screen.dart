@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/links/links_model.dart';
 // model
 import 'edit_post_info_model.dart';
 import 'package:whisper/main_model.dart';
+
 
 class EditPostInfoScreen extends StatelessWidget {
 
@@ -15,18 +17,20 @@ class EditPostInfoScreen extends StatelessWidget {
     required this.mainModel,
     required this.currentSongMap,
     required this.editPostInfoModel,
+    required this.linksModel
   }) : super(key: key);
 
   final MainModel mainModel;
   final Map<String,dynamic> currentSongMap;
   final EditPostInfoModel editPostInfoModel;
+  final LinksModel linksModel;
   @override 
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
-    final postTitleController = TextEditingController(text: editPostInfoModel.postTitle);
     final whisperPost = fromMapToPost(postMap: currentSongMap);
+    final postTitleController = TextEditingController(text: whisperPost.title );
     final String imageURL = whisperPost.imageURLs.first;
     final String userImageURL = whisperPost.userImageURL;
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
@@ -62,7 +66,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       verticalPadding: 10, 
                       horizontalPadding: 5, 
                       press: () async  {
-                        await editPostInfoModel.updatePostInfo(currentSongMap: currentSongMap, mainModel: mainModel, context: context);
+                        await editPostInfoModel.updatePostInfo(currentSongMap: currentSongMap, mainModel: mainModel, context: context, linksModel: linksModel );
                       },
                       textColor: Colors.white, 
                       buttonColor: Theme.of(context).highlightColor
@@ -85,14 +89,28 @@ class EditPostInfoScreen extends StatelessWidget {
                 ) 
                 : SizedBox(width: length,height: length,child: Image.file(editPostInfoModel.croppedFile!)),
                 SizedBox(height: 20.0),
-                RoundedButton(
-                  text: editPostInfoModel.isCropped ? '写真を変更する' :'投稿用の写真を編集',
-                  widthRate: 0.95, 
-                  verticalPadding: 20.0, 
-                  horizontalPadding: 10.0, 
-                  press: () async { editPostInfoModel.showImagePicker(); }, 
-                  textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
-                  buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
+                Row(
+                  children: [
+                    RoundedButton(
+                      text: editPostInfoModel.isCropped ? '写真を変更する' :'投稿用の写真を編集',
+                      widthRate: 0.45, 
+                      verticalPadding: 20.0, 
+                      horizontalPadding: 10.0, 
+                      press: () async { editPostInfoModel.showImagePicker(); }, 
+                      textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
+                      buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
+                    ),
+                    SizedBox(width: 16.0,),
+                    RoundedButton(
+                      text: 'リンクを編集',
+                      widthRate: 0.45, 
+                      verticalPadding: 20.0, 
+                      horizontalPadding: 10.0, 
+                      press: () { linksModel.init(context: context, linkMaps: whisperPost.links ); }, 
+                      textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
+                      buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10.0),
                 Text(
@@ -110,7 +128,7 @@ class EditPostInfoScreen extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   controller: postTitleController,
                   onChanged: (text) {
-                    editPostInfoModel.postTitle = text;
+                    whisperPost.title = text;
                   },
                   decoration: InputDecoration(
                     hintText: whisperPost.title,
