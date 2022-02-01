@@ -128,7 +128,7 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
         const userMeta = await fireStore.collection('userMeta').doc(oldValue.id).get();
         await userMeta.ref.delete();
         // delete posts
-        const posts = await fireStore.collection('posts').where('uid','==',oldValue.id).get();
+        const posts = await fireStore.collection('users').doc(oldValue.id).collection('posts').where('uid','==',oldValue.id).get();
         let postCount = 0;
         let postBatch = fireStore.batch();
         for (const post of posts.docs) {
@@ -143,21 +143,69 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
         if (postCount > 0) {
             await postBatch.commit();
         }
-        // delete comments
-        const comments = await fireStore.collectionGroup('postComments').where('uid','==',oldValue.id).get();
-        let commentCount = 0;
-        let commentBatch = fireStore.batch();
-        for (const comment of comments.docs) {
-            commentBatch.delete(comment.ref);
-            commentCount += 1;
-            if (commentCount == limit) {
-                await commentBatch.commit();
-                commentBatch = fireStore.batch();
-                commentCount = 0;
+        // delete postLikes
+        const postLikes = await fireStore.collectionGroup('postLikes').where('activeUid','==',oldValue.id).get();
+        let postLikeCount = 0;
+        let postLikeBatch = fireStore.batch();
+        for (const postLike of postLikes.docs) {
+            postLikeBatch.delete(postLike.ref);
+            postLikeCount += 1;
+            if (postLikeCount == limit) {
+                await postLikeBatch.commit();
+                postLikeBatch = fireStore.batch();
+                postLikeCount = 0;
             }
         }
-        if (replyCount > 0) {
-            await replyBatch.commit();
+        if (postLikeCount > 0) {
+            await postLikeBatch.commit();
+        }
+        // delete postBookmarks
+        const postBookmarks = await fireStore.collectionGroup('postBookmarks').where('activeUid','==',oldValue.id).get();
+        let postBookmarkCount = 0;
+        let postBookmarkBatch = fireStore.batch();
+        for (const postBookmark of postBookmarks.docs) {
+            postBookmarkBatch.delete(postBookmark.ref);
+            postBookmarkCount += 1;
+            if (postBookmarkCount == limit) {
+                await postBookmarkBatch.commit();
+                postBookmarkBatch = fireStore.batch();
+                postBookmarkCount = 0;
+            }
+        }
+        if (postBookmarkCount > 0) {
+            await postBookmarkBatch.commit();
+        }
+        // delete comments
+        const postComments = await fireStore.collectionGroup('postComments').where('uid','==',oldValue.id).get();
+        let postCommentCount = 0;
+        let postCommentBatch = fireStore.batch();
+        for (const comment of postComments.docs) {
+            postCommentBatch.delete(comment.ref);
+            postCommentCount += 1;
+            if (postCommentCount == limit) {
+                await postCommentBatch.commit();
+                postCommentBatch = fireStore.batch();
+                postCommentCount = 0;
+            }
+        }
+        if (postCommentCount > 0) {
+            await postCommentBatch.commit();
+        }
+        // deletePostCommentLikes
+        const postCommentLikes = await fireStore.collectionGroup('postCommentLikes').where('activeUid','==',oldValue.id).get();
+        let postCommentLikeCount = 0;
+        let postCommentLikeBatch = fireStore.batch();
+        for (const postCommentLike of postCommentLikes.docs) {
+            postCommentLikeBatch.delete(postCommentLike.ref);
+            postCommentLikeCount += 1;
+            if (postCommentLikeCount == limit) {
+                await postCommentLikeBatch.commit();
+                postCommentLikeBatch = fireStore.batch();
+                postCommentLikeCount = 0;
+            }
+        }
+        if (postCommentLikeCount > 0) {
+            await postCommentLikeBatch.commit();
         }
         // delete replys
         const replys = await fireStore.collectionGroup('postCommentReplys').where('uid','==',oldValue.id).get();
@@ -174,6 +222,22 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
         }
         if (replyCount > 0) {
             await replyBatch.commit();
+        }
+        // delete postCommentReplyLikes
+        const postCommentReplyLikes = await fireStore.collectionGroup('postCommentReplyLikes').where('uid','==',oldValue.id).get();
+        let postCommentReplyLikeCount = 0;
+        let postCommentReplyLikeBatch = fireStore.batch();
+        for (const postCommentReplyLike of postCommentReplyLikes.docs) {
+            postCommentReplyLikeBatch.delete(postCommentReplyLike.ref);
+            postCommentReplyLikeCount += 1;
+            if (postCommentReplyLikeCount == limit) {
+                await postCommentReplyLikeBatch.commit();
+                postCommentReplyLikeBatch = fireStore.batch();
+                postCommentReplyLikeCount = 0;
+            }
+        }
+        if (postCommentReplyLikeCount > 0) {
+            await postCommentReplyLikeBatch.commit();
         }
         // delete tokens
         const tokens = await fireStore.collection('userMeta').doc(oldValue.id).collection('tokens').get();
@@ -207,6 +271,22 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
         if (notificationCount > 0) {
             await notificationBatch.commit();
         }
+        // delete timeline
+        const timelines = await fireStore.collection('userMeta').doc(oldValue.id).collection('timelines').get();
+        let timelineCount = 0;
+        let timelineBatch = fireStore.batch();
+        for (const timeline of timelines.docs) {
+            timelineBatch.delete(timeline.ref);
+            timelineCount += 1;
+            if (timelineCount == limit) {
+                await timelineBatch.commit();
+                timelineBatch = fireStore.batch();
+                timelineCount = 0;
+            }
+        }
+        if (timelineCount > 0) {
+            await timelineBatch.commit();
+        }
         // delete post storage
         bucket.deleteFiles({
             prefix: `posts/${oldValue.id}`
@@ -222,18 +302,19 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
     }
 );
 
-exports.createTimeline = functions.firestore.document('posts/{id}').onCreate(
+exports.createTimeline = functions.firestore.document('users/{uid}/posts/{id}').onCreate(
     async (snap,_) => {
         const newValue = snap.data();
         const followers = await fireStore.collection('users').doc(newValue.uid).collection('followers').get();
         let count = 0;
         let batch = fireStore.batch();
         for (const follower of followers.docs) {
-            const ref = fireStore.collection('users').doc(follower.id).collection('timelines').doc(newValue.postId);
+            const ref = fireStore.collection('userMeta').doc(follower.id).collection('timelines').doc(newValue.postId);
             batch.set(ref,{
                 'createdAt': admin.firestore.Timestamp.now(),
                 'creatorUid': newValue.uid,
                 'isRead': false,
+                'isDelete': false,
                 'postId': newValue.postId,
             });
             count += 1;
@@ -243,7 +324,7 @@ exports.createTimeline = functions.firestore.document('posts/{id}').onCreate(
                 count = 0;
             }
         }
-        if (count >0) {
+        if (count > 0) {
             await batch.commit();
         }
         
