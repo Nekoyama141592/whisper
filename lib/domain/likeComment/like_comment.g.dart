@@ -11,6 +11,7 @@ LikeComment _$LikeCommentFromJson(Map<String, dynamic> json) => LikeComment(
       commentId: json['commentId'] as String,
       createdAt: json['createdAt'],
       tokenId: json['tokenId'] as String,
+      postCommentDocRef: json['postCommentDocRef'],
     );
 
 Map<String, dynamic> _$LikeCommentToJson(LikeComment instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$LikeCommentToJson(LikeComment instance) =>
       'commentId': instance.commentId,
       'createdAt': instance.createdAt,
       'tokenId': instance.tokenId,
+      'postCommentDocRef': instance.postCommentDocRef,
     };

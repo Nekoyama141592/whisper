@@ -11,7 +11,8 @@ class LikeReply {
     required this.activeUid,
     required this.createdAt,
     required this.replyId,
-    required this.tokenId
+    required this.tokenId,
+    required this.postCommentReplyDocRef
   });
   
   final String activeUid;
@@ -19,6 +20,7 @@ class LikeReply {
   final String replyId;
   final String tokenId;
   final String tokenType = likeReplyTokenType;
+  final dynamic postCommentReplyDocRef;
 
   factory LikeReply.fromJson(Map<String,dynamic> json) => _$LikeReplyFromJson(json);
 

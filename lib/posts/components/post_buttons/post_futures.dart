@@ -11,6 +11,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
+import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/mute_comment/mute_comment.dart';
 import 'package:whisper/domain/post_like/post_like.dart';
 import 'package:whisper/main_model.dart';
@@ -49,7 +50,7 @@ class PostFutures extends ChangeNotifier {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likePost );
-    final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId );
+    final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId,passiveUid: whisperPost.uid );
     mainModel.likePostIds.add(whisperPost.postId);
     mainModel.likePosts.add(likePost);
     notifyListeners();
@@ -104,7 +105,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now,required String bookmarkLabelId  }) async {
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
-    final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: bookmarkLabelId,tokenId: tokenId );
+    final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: bookmarkLabelId,tokenId: tokenId ,passiveUid: whisperPost.uid);
     final String uid = mainModel.userMeta.uid;
     mainModel.bookmarkPosts.add(bookmarkPost);
     mainModel.bookmarksPostIds.add(bookmarkPost.postId);
@@ -204,13 +205,14 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
   }
 
-  Future<void> muteComment({ required MainModel mainModel, required String commentId }) async {
+  Future<void> muteComment({ required MainModel mainModel, required WhisperComment whisperComment }) async {
     final muteCommentIds = mainModel.muteCommentIds;
-    muteCommentIds.add(commentId);
+    final String postCommentId = whisperComment.postCommentId;
+    muteCommentIds.add(postCommentId);
     notifyListeners();
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
-    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,commentId: commentId,createdAt: now, tokenId: tokenId);
+    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId), );
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
   }
 }

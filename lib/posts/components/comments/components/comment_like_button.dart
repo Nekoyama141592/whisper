@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/ints.dart';
 // constants
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 // model
 import 'package:whisper/main_model.dart';

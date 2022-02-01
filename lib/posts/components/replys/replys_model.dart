@@ -321,7 +321,7 @@ class ReplysModel extends ChangeNotifier {
       final String activeUid = mainModel.userMeta.uid;
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
-      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.postCommentReplyId,tokenId: tokenId);
+      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.postCommentReplyId,tokenId: tokenId, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
     } catch(e) {
       print(e.toString());

@@ -11,7 +11,8 @@ class MutePost {
     required this.activeUid,
     required this.createdAt,
     required this.postId,
-    required this.tokenId
+    required this.tokenId,
+    required this.passiveUid
   });
   
   final String activeUid;
@@ -19,6 +20,7 @@ class MutePost {
   final String postId;
   final String tokenId;
   final String tokenType = mutePostTokenType;
+  final String passiveUid;
 
   factory MutePost.fromJson(Map<String,dynamic> json) => _$MutePostFromJson(json);
 

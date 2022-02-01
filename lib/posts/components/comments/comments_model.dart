@@ -189,7 +189,7 @@ class CommentsModel extends ChangeNotifier {
     likeCommentIds.add(commentId);
     notifyListeners();
     await addLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await createLikeCommentTokenDoc(commentId: commentId, mainModel: mainModel);
+    await createLikeCommentTokenDoc(whisperComment: whisperComment, mainModel: mainModel);
   }
 
   Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
@@ -199,15 +199,16 @@ class CommentsModel extends ChangeNotifier {
     await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
   }
 
-  Future<void> createLikeCommentTokenDoc({ required String commentId, required MainModel mainModel }) async {
+  Future<void> createLikeCommentTokenDoc({ required WhisperComment whisperComment, required MainModel mainModel }) async {
     final activeUid = mainModel.userMeta.uid;
     final now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
     final LikeComment likeComment = LikeComment(
       activeUid: activeUid,
-      commentId: commentId,
+      postCommentId: whisperComment.postCommentId,
       createdAt: now,
-      tokenId: tokenId
+      tokenId: tokenId,
+      postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: whisperComment.postCommentId )
     );
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
   }
@@ -229,7 +230,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> deleteLikeCommentTokenDoc({ required String commentId,required MainModel mainModel}) async {
     final String uid = mainModel.userMeta.uid;
-    final deleteLikeComment = mainModel.likeComments.where((element) => element.commentId == commentId ).toList().first;
+    final deleteLikeComment = mainModel.likeComments.where((element) => element.postCommentId == commentId ).toList().first;
     await returnTokenDocRef(uid: uid, tokenId: deleteLikeComment.tokenId ).delete();
   }
 

@@ -11,7 +11,8 @@ class ReadPost {
     required this.activeUid,
     required this.createdAt,
     required this.postId,
-    required this.tokenId
+    required this.tokenId,
+    required this.passiveUid
   });
   
   final String activeUid;
@@ -19,6 +20,7 @@ class ReadPost {
   final String postId;
   final String tokenId;
   final String tokenType = readPostTokenType;
+  final String passiveUid;
 
   factory ReadPost.fromJson(Map<String,dynamic> json) => _$ReadPostFromJson(json);
 

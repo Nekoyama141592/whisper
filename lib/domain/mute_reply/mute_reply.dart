@@ -11,12 +11,14 @@ class MuteReply {
     required this.activeUid,
     required this.createdAt,
     required this.replyId,
+    required this.postCommentReplyDocRef
   });
   
   final String activeUid;
   final dynamic createdAt;
   final String replyId;
   final String tokenType = muteReplyTokenType;
+  final dynamic postCommentReplyDocRef;
 
   factory MuteReply.fromJson(Map<String,dynamic> json) => _$MuteReplyFromJson(json);
 

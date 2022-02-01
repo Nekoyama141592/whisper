@@ -11,7 +11,8 @@ class MuteComment {
     required this.activeUid,
     required this.createdAt,
     required this.commentId,
-    required this.tokenId
+    required this.tokenId,
+    required this.postCommentDocRef
   });
   
   final String activeUid;
@@ -19,6 +20,7 @@ class MuteComment {
   final String commentId;
   final String tokenId;
   final String tokenType = muteCommentTokenType;
+  final dynamic postCommentDocRef;
 
   factory MuteComment.fromJson(Map<String,dynamic> json) => _$MuteCommentFromJson(json);
 
