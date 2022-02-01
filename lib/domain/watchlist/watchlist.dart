@@ -14,7 +14,8 @@ class Watchlist {
     required this.tokenId,
     required this.uids,
     required this.myUid,
-    required this.updatedAt
+    required this.updatedAt,
+    required this.watchlistRef
   });
   final dynamic createdAt;
   final String label;
@@ -24,6 +25,7 @@ class Watchlist {
   final String tokenId;
   final List<String> uids;
   final dynamic updatedAt;
+  final dynamic watchlistRef;
 
   factory Watchlist.fromJson(Map<String,dynamic> json) => _$WatchlistFromJson(json);
 

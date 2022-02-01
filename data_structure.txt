@@ -7,25 +7,30 @@ db: {
 
                     }
                 }
-                postCommentLikes(commentlike)
+                postCommentLikes(CommentLike)
             }
             postLikes(postLike) {
 
             }
-            postBookmarks(postBookmark) {
+            postBookmarks(PostBookmark) {
 
             }
         }
         
-        followers {
+        followers(Follower) {
 
         }
     }
     userMeta(userMeta) {
         tokens {
-
+            watchlistTimelines( tokenType == watchlist )(WatchlistTimeline) {
+                
+            }
         }
         notifications {
+
+        }
+        timelines (Timeline) {
 
         }
     }

@@ -1,16 +1,17 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'timeline.g.dart';
+part 'watchlist_timeline.g.dart';
 
 @JsonSerializable()
-class Timeline {
-  Timeline({
+class WatchlistTimeline {
+  WatchlistTimeline({
     required this.createdAt,
     required this.postCreatorUid,
     required this.isRead,
     required this.isDelete,
     required this.postId,
+    required this.watchlistId
   });
   
   final dynamic createdAt;
@@ -18,8 +19,9 @@ class Timeline {
   bool isRead;
   bool isDelete;
   final String postId;
+  final String watchlistId;
   
-  factory Timeline.fromJson(Map<String,dynamic> json) => _$TimelineFromJson(json);
+  factory WatchlistTimeline.fromJson(Map<String,dynamic> json) => _$WatchlistTimelineFromJson(json);
 
-  Map<String,dynamic> toJson() => _$TimelineToJson(this);
+  Map<String,dynamic> toJson() => _$WatchlistTimelineToJson(this);
 }
