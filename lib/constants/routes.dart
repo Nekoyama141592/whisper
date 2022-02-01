@@ -156,7 +156,5 @@ void toOneCommentPage ({ required BuildContext context, required MainModel mainM
   Navigator.push(context, MaterialPageRoute(builder: (context) => OneCommentPage(mainModel: mainModel,) ));
 }
 
-void toLinkPage({ required BuildContext context }) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage() ) );
-}
+
 

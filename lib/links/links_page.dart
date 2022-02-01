@@ -1,24 +1,24 @@
 // material
 import 'package:flutter/material.dart';
-// packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // domain
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
-import 'package:whisper/links/links_model.dart';
 
-class LinksPage extends ConsumerWidget {
+class LinksPage extends StatelessWidget {
 
   const LinksPage({
     Key? key,
+    required this.controllers,
+    required this.whisperLinks
   }) : super(key: key);
 
+  final List<WhisperLink> whisperLinks;
+  final List<TextEditingController> controllers;
   
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final LinksModel linksModel = ref.watch(linksProvider);
-    final Size size = MediaQuery.of(context).size;
+  Widget build(BuildContext context) {
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -39,17 +39,17 @@ class LinksPage extends ConsumerWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: linksModel.whisperLinks.length,
+                itemCount: whisperLinks.length,
                 itemBuilder: (BuildContext context, int i) {
-                  final WhisperLink whisperLink = linksModel.whisperLinks[i];
-                  final TextEditingController textEditingController = linksModel.controllers[i];
+                  final WhisperLink whisperLink = whisperLinks[i];
+                  final TextEditingController textEditingController = controllers[i];
                   return TextFormField(
                     decoration: InputDecoration(
                       hintText: whisperLink.label,
                       suffixIcon: Icon(Icons.delete)
                     ),
                     onChanged: (text) {
-                      linksModel.whisperLinks[i].label = text;
+                      whisperLinks[i].label = text;
                     },
                     
                     controller: textEditingController,

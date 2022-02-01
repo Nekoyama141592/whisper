@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -12,6 +11,7 @@ import 'package:whisper/components/user_show/components/details/user_show_post_s
 import 'package:whisper/components/user_show/components/other_pages/edit_profile_screen.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/links/links_model.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
@@ -31,6 +31,7 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final userShowModel = ref.watch(userShowProvider);
+    final linksModel = ref.watch(linksProvider);
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -50,7 +51,7 @@ class UserShowPage extends ConsumerWidget {
           child: EditProfileScreen(
             onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, mainModel: mainModel);
+              await userShowModel.onSaveButtonPressed(context: context, mainModel: mainModel, links: linksModel.whisperLinks );
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
@@ -63,6 +64,7 @@ class UserShowPage extends ConsumerWidget {
             isLoading: userShowModel.isLoading,
             isCropped: userShowModel.isCropped,
             mainModel: mainModel,
+            linksModel: linksModel,
           )
         )
         : GradientScreen(

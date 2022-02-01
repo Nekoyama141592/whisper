@@ -17,6 +17,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
@@ -172,9 +173,9 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel}) async {
+  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel, required List<WhisperLink> links }) async {
     startLoading();
-    await voids.updateUserInfo(context: context, userName: userName, description: description, links: mainModel.currentWhisperUser.links.map((e) => fromMapToWhisperLink(whisperLink: e)).toList(), mainModel: mainModel, croppedFile: croppedFile);
+    await voids.updateUserInfo(context: context, userName: userName, description: description, links: links, mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
     endLoading();
   }

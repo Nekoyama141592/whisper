@@ -15,11 +15,11 @@ class LinksModel extends ChangeNotifier {
   List<WhisperLink> whisperLinks = [];
   List<TextEditingController> controllers = [];
 
-  void init({ required BuildContext context  ,required List<dynamic> linkMaps }) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage() ));
+  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps }) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(controllers: controllers, whisperLinks: whisperLinks, ) ));
     whisperLinks = [];
     linkMaps.forEach((linkMap) {
-      final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: linkMap as Map<String,dynamic>);
+      final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: linkMap);
       whisperLinks.add(whisperLink);
       final TextEditingController textEditingController = TextEditingController(text: whisperLink.label);
       controllers.add(textEditingController);
