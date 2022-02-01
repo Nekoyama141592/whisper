@@ -21,7 +21,7 @@ class WhisperReply {
     required this.positiveScore,
     required this.reply,
     required this.postCommentReplyId,
-    required this.postCommentDocRef,
+    required this.postDocRef,
     required this.score,
     required this.uid,
     required this.updatedAt,
@@ -42,7 +42,7 @@ class WhisperReply {
   final String postId;
   final num positiveScore;
   final String reply;
-  final dynamic postCommentDocRef;
+  final dynamic postDocRef;
   final String postCommentReplyId;
   final num score;
   final String uid;
