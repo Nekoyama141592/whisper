@@ -34,7 +34,7 @@ service firebase.storage {
        allow read, delete: if isTheSameUser(uid);
        allow create: if canCreate(uid,resource);
         match /{storagePostImageName} {
-         allow read, delete: if isTheSameUser(uid);
+         allow read, delete: if isTheSameUser(uid) && isValidImage(storagePostImageName) ;
          allow create: if canCreate(uid,resource);
         }
       }
@@ -47,7 +47,7 @@ service firebase.storage {
        allow read, delete: if isTheSameUser(uid);
        allow create: if canCreate(uid,resource);
         match /{storagePostName} {
-         allow read, delete: if isTheSameUser(uid);
+         allow read, delete: if isTheSameUser(uid) && isValidPost(storagePostName) ;
          allow create: if canCreate(uid,resource);
         }
       }
@@ -57,7 +57,7 @@ service firebase.storage {
      allow read, delete: if isTheSameUser(uid);
      allow create: if canCreate(uid,resource);
       match /{storageImageName} {
-       allow read, delete: if isTheSameUser(uid);
+       allow read, delete: if isTheSameUser(uid) && isValidImage(storageImageName) ;
        allow create: if canCreate(uid,resource);
       }
     }
