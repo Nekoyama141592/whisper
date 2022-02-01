@@ -1,0 +1,23 @@
+userImages {
+    uids {
+        .jpgs {
+
+        }
+    }
+}
+postImages {
+    uids {
+        postIds {
+            .jpgs {
+
+            }
+        }
+    } 
+}
+posts {
+    uids {
+        .aacs {
+            
+        }
+    }
+} 
