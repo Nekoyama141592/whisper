@@ -20,96 +20,104 @@ const limit = 500;
 const fireStore = admin.firestore();
 const bucket = admin.storage().bucket();
 
-exports.tokenCreate = functions.firestore.document('userMeta/{uid}/tokens/{tokenId}').onCreate(
+exports.onCreateToken = functions.firestore.document('userMeta/{uid}/tokens/{tokenId}').onCreate(
     async (snap,_) => {
+        const token = snap.data();
+        const tokenType = token.tokenType;
+        if (tokenType == 'bookmarkLabel' ) {
+            
+        } else if (tokenType == 'bookmarkPost' ) {
+            await fireStore.collection('users').doc(token.passiveUid).collection('posts').doc(token.postId).update({
+                'bookmarkCount': admin.firestore.FieldValue.increment(plusOne),
+                'score': admin.firestore.FieldValue.increment(bookmarkScore),
+            });
+        } else if (tokenType == 'following' ) {
+            await fireStore.collection('users').doc(token.passiveUid).collection('followers').doc(token.myUid).set({
+               'followerUid': token.myUid,
+               'myUid': token.passiveUid,
+               'createdAt': token.createdAt, 
+            });
+            await fireStore.collection('users').doc(token.passiveUid).update({
+                'followerCount': admin.firestore.FieldValue.increment(plusOne),
+            });
+        } else if (tokenType == 'likePost' ) {
+            await fireStore.collection('users').doc(token.passiveUid).collection('posts').doc(token.postId).update({
+                'likeCount': admin.firestore.FieldValue.increment(plusOne),
+                'score': admin.firestore.FieldValue.increment(likeScore),
+            });
+        } else if (tokenType == 'likeComment' ) {
+            await token.postCommentDocRef.update({
+                'likeCount': admin.firestore.FieldValue.increment(plusOne),
+            });
+        } else if (tokenType == 'likeReply' ) {
+            await token.postCommentReplyDocRef.update({
+                'likeCount': admin.firestore.FieldValue.increment(plusOne),
+            });
+        } else if (tokenType == 'searchHistory' ) {
 
-    }
-);
+        } else if (tokenType == 'readPost' ) {
 
-exports.likePost = functions.firestore.document('users/{uid}/posts/{postId}/postLikes/{activeUid}').onCreate(
-    async (snap,_) => {
-        const newValue = snap.data();
-        fireStore.collection('posts').doc(newValue.postId).update({
-            'likeCount': admin.firestore.FieldValue.increment(plusOne),
-            'score': admin.firestore.FieldValue.increment(likeScore),
-        });
-    }
-);
-exports.unlikePost = functions.firestore.document('posts/{id}/likes/{uid}').onDelete(
-    async (snap,_) => {
-        const oldValue = snap.data();
-        fireStore.collection('posts').doc(oldValue.postId).update({
-            'likeCount': admin.firestore.FieldValue.increment(minusOne),
-            'score': admin.firestore.FieldValue.increment(unlikeScore),
-        });
-    }
-);
-exports.bookmarkPost = functions.firestore.document('posts/{id}/bookmarks/{uid}').onCreate(
-    async (snap,_) => {
-        const newValue = snap.data();
-        fireStore.collection('posts').doc(newValue.postId).update({
-            'bookmarkCount': admin.firestore.FieldValue.increment(plusOne),
-            'score': admin.firestore.FieldValue.increment(bookmarkScore),
-        });
-    }
-);
-exports.unbookmarkPost = functions.firestore.document('posts/{id}/bookmarks/{uid}').onDelete(
-    async (snap,_) => {
-        const oldValue = snap.data();
-        fireStore.collection('posts').doc(oldValue.postId).update({
-            'bookmarkCount': admin.firestore.FieldValue.increment(minusOne),
-            'score': admin.firestore.FieldValue.increment(unbookmarkScore),
-        });
-    }
-);
-exports.likeComment = functions.firestore.document('comments/{id}/likes/{uid}').onCreate(
-    async (snap,_) => {
-        const newValue = snap.data();
-        fireStore.collection('posts').doc(newValue.postId).update({
-            'likeCount': admin.firestore.FieldValue.increment(plusOne),
-        });
-    }
-);
-exports.unlikeComment = functions.firestore.document('comments/{id}/likes/{uid}').onDelete(
-    async (snap,_) => {
-        const oldValue = snap.data();
-        fireStore.collection('posts').doc(oldValue.postId).update({
-            'likeCount': admin.firestore.FieldValue.increment(minusOne),
-        });
-    }
-);
-exports.likeReply = functions.firestore.document('posts/{id}/likes/{uid}').onCreate(
-    async (snap,_) => {
-        const newValue = snap.data();
-        fireStore.collection('posts').doc(newValue.postId).update({
-            'likeCount': admin.firestore.FieldValue.increment(plusOne),
-        });
-    }
-);
-exports.unlikeReply = functions.firestore.document('replys/{id}/likes/{uid}').onDelete(
-    async (snap,_) => {
-        const oldValue = snap.data();
-        fireStore.collection('posts').doc(oldValue.postId).update({
-            'likeCount': admin.firestore.FieldValue.increment(minusOne),
-        });
-    }
-);
+        } else if (tokenType == 'watchlist' ) {
 
-exports.followUser = functions.firestore.document('users/{uid}/followers/{followerUid}').onCreate(
-    async (snap,_) => {
-        const newValue = snap.data();
-        fireStore.collection('users').doc(newValue.passiveUid).update({
-            'followerCount': admin.firestore.FieldValue.increment(plusOne),
-        });
+        } else if (tokenType == 'blockUser' ) {
+
+        } else if (tokenType == 'muteComment' ) {
+
+        } else if (tokenType == 'mutePost' ) {
+
+        } else if (tokenType == 'muteReply' ) {
+
+        } else if (tokenType == 'muteUser' ) {
+            
+        }
     }
 );
-
-exports.unfollowUser = functions.firestore.document('users/{uid}/followers/{followerUid}').onDelete(
+exports.onDeleteToken = functions.firestore.document('userMeta/{uid}/tokens/{tokenId}').onDelete(
     async (snap,_) => {
-        const oldValue = snap.data();
-        fireStore.collection('users').doc(oldValue.passiveUid).update({
-            'followerCount': admin.firestore.FieldValue.increment(minusOne),
-        });
+        const token = snap.data();
+        const tokenType = token.tokenType;
+        if (tokenType == 'bookmarkLabel' ) {
+
+        } else if (tokenType == 'bookmarkPost' ) {
+            await fireStore.collection('users').doc(token.passiveUid).collection('posts').doc(token.postId).update({
+                'bookmarkCount': admin.firestore.FieldValue.increment(minusOne),
+                'score': admin.firestore.FieldValue.increment(unbookmarkScore),
+            });
+        } else if (tokenType == 'following' ) {
+            await fireStore.collection('users').doc(token.passiveUid).collection('followers').doc(token.myUid).delete();
+            await fireStore.collection('users').doc(token.passiveUid).update({
+                'followerCount': admin.firestore.FieldValue.increment(minusOne),
+            });
+        } else if (tokenType == 'likePost' ) {
+            await fireStore.collection('users').doc(token.passiveUid).collection('posts').doc(token.postId).update({
+                'likeCount': admin.firestore.FieldValue.increment(minusOne),
+                'score': admin.firestore.FieldValue.increment(unlikeScore),
+            });
+        } else if (tokenType == 'likeComment' ) {
+            await token.postCommentDocRef.update({
+                'likeCount': admin.firestore.FieldValue.increment(minusOne),
+            });
+        } else if (tokenType == 'likeReply' ) {
+            await token.postCommentReplyDocRef.update({
+                'likeCount': admin.firestore.FieldValue.increment(minusOne),
+            });
+        } else if (tokenType == 'searchHistory' ) {
+
+        } else if (tokenType == 'readPost' ) {
+
+        } else if (tokenType == 'watchlist' ) {
+
+        } else if (tokenType == 'blockUser' ) {
+
+        } else if (tokenType == 'muteComment' ) {
+
+        } else if (tokenType == 'mutePost' ) {
+
+        } else if (tokenType == 'muteReply' ) {
+
+        } else if (tokenType == 'muteUser' ) {
+
+        }
     }
 );
 
