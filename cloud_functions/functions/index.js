@@ -19,7 +19,7 @@ const limit = 500;
 // firestore
 const fireStore = admin.firestore();
 const bucket = admin.storage().bucket();
-exports.likePost = functions.firestore.document('posts/{id}/likes/{uid}').onCreate(
+exports.likePost = functions.firestore.document('users/{uid}/posts/{postId}/postLikes/{activeUid}').onCreate(
     async (snap,_) => {
         const newValue = snap.data();
         fireStore.collection('posts').doc(newValue.postId).update({
@@ -129,7 +129,7 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
             await postBatch.commit();
         }
         // delete comments
-        const comments = await fireStore.collection('comments').where('uid','==',oldValue.id).get();
+        const comments = await fireStore.collectionGroup('postComments').where('uid','==',oldValue.id).get();
         let commentCount = 0;
         let commentBatch = fireStore.batch();
         for (const comment of comments.docs) {
@@ -145,7 +145,7 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
             await replyBatch.commit();
         }
         // delete replys
-        const replys = await fireStore.collection('replys').where('uid','==',oldValue.id).get();
+        const replys = await fireStore.collectionGroup('postCommentReplys').where('uid','==',oldValue.id).get();
         let replyCount = 0;
         let replyBatch = fireStore.batch();
         for (const reply of replys.docs) {

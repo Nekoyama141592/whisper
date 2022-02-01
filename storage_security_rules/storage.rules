@@ -27,44 +27,38 @@ service firebase.storage {
     return isTheSameUser(uid) && isNotTheSameThing(resource);
   }
 
-  function canDelete(uid) {
-    return isTheSameUser(uid);
-  }
-
   match /b/{bucket}/o {
     match /postImages/{uid} {
-      // allow create: if canCreate(uid,resource);
-      // allow delete: if canDelete(uid);
-      allow read, write: if isAuthenticated();
-      match /{storageImageName} {
-        allow read, write: if isAuthenticated();
-        // allow read: if isTheSameUser(uid) && isValidImage(storageImageName);
-        // allow create: if canCreate(uid,resource) && isValidImage(storageImageName);
-        // allow delete: if canDelete(uid);
+      allow read, delete: if isTheSameUser(uid);
+      match /{postId} {
+       allow read, delete: if isTheSameUser(uid);
+       allow create: if canCreate(uid,resource);
+        match /{storagePostImageName} {
+         allow read, delete: if isTheSameUser(uid);
+         allow create: if canCreate(uid,resource);
+        }
       }
     }
 
     match /posts/{uid} {
-      // allow create: if canCreate(uid,resource);
-      // allow delete: if canDelete(uid);
-      allow read, write: if isAuthenticated();
-      match /{storagePostName} {
-        allow read, write: if isAuthenticated();
-        // allow read: if isTheSameUser(uid) && isValidPost(storagePostName);
-        // allow create: if canCreate(uid,resource) && isValidPost(storagePostName);
-        // allow delete: if canDelete(uid);
+     allow read, delete: if isTheSameUser(uid);
+     allow create: if canCreate(uid,resource);
+      match /{postId} {
+       allow read, delete: if isTheSameUser(uid);
+       allow create: if canCreate(uid,resource);
+        match /{storagePostName} {
+         allow read, delete: if isTheSameUser(uid);
+         allow create: if canCreate(uid,resource);
+        }
       }
     }
 
     match /userImages/{uid} {
-      allow read, write: if isAuthenticated();
-      // allow create: if canCreate(uid,resource);
-      // allow delete: if canDelete(uid);
+     allow read, delete: if isTheSameUser(uid);
+     allow create: if canCreate(uid,resource);
       match /{storageImageName} {
-        allow read, write: if isAuthenticated();
-        // allow read: if isTheSameUser(uid) && isValidImage(storageImageName);
-        // allow create: if canCreate(uid,resource) && isValidImage(storageImageName);
-        // allow delete: if canDelete(uid);
+       allow read, delete: if isTheSameUser(uid);
+       allow create: if canCreate(uid,resource);
       }
     }
 
