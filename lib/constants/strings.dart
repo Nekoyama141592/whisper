@@ -6,12 +6,15 @@ import 'package:uuid/uuid.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
 
+const String hyphenString = '-';
+final String uuid4 = Uuid().v4();
+const String tokenString = 'token';
 const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
-const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
+const String unNamedString = 'unNamed';
+const String notificationString = 'notification';
 const String recommendableString = 'recommendable';
-final String hyphenString = '-';
-final String uuid4 = Uuid().v4();
+const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 
 String returnStorageUserImageName() {
   return 'userImageStorage' + hyphenString + uuid4 + hyphenString + imageExtension;
@@ -19,8 +22,7 @@ String returnStorageUserImageName() {
 String returnStoragePostImageName() {
   return 'postImageStorage' + hyphenString + uuid4 + hyphenString + imageExtension;
 }
-final String returnStoragePostName = 'postSorage' + hyphenString + uuid4 + hyphenString + postExtension;
-
+final String returnStoragePostName = 'postStorage' + hyphenString + uuid4 + hyphenString + postExtension;
 
 String returnPostId({ required UserMeta userMeta }) {
   return 'post' + hyphenString + userMeta.uid + hyphenString + uuid4;
@@ -44,22 +46,7 @@ String generatePostCommentId({ required String uid }) {
 String generatePostCommentReplyId({ required String uid }) {
   return 'postCommentReply' + hyphenString + uid + hyphenString + uuid4;
 }
-// strings
-const String bookmarkLabelString = 'bookmarkLabel';
-const String bookmarkLabelsString = 'bookmarkLabels';
-const String tokenString = 'token';
-const String tokensString = 'tokens';
-const String notificationString = 'notification';
-const String unNamedString = 'unNamed';
 // prefs
-const String bookmarkPostIdsPrefsKey = 'bookmarkPostIds';
-const String likePostIdsPrefsKey = 'likePostIds';
-const String likeCommentIdsPrefsKey = 'likeCommentIds';
-const String likeReplyIdsPrefsKey = 'likeReplyIds';
-const String muteCommentIdsPrefsKey = 'muteCommentIds';
-const String muteReplyIdsPrefsKey = 'muteReplyIds';
-const String mutePostIdsPrefsKey = 'mutePostIds';
-const String readPostIdsPrefsKey = 'readPostIds';
 const String speedPrefsKey = 'speed';
 // tokenTypes
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
@@ -81,6 +68,19 @@ final String authNotificationType = returnNotificationTypeString(notificationTyp
 final String officialNotificationType = returnNotificationTypeString(notificationType: NotificationType.officialNotification);
 final String commentNotificationType = returnNotificationTypeString(notificationType: NotificationType.commentNotification);
 final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.replyNotification );
+// colRefName
+const String usersColRefName = 'users';
+const String userMetaColRefName = 'userMeta';
+const String followersColRefName = 'followers';
+const String tokensColRefName = 'tokens';
+const String notificationsColRefName = 'notifications';
+const String postsColRefName = 'posts';
+const String postLikesColRefName = 'postLikes';
+const String postBookmarksColRefName = 'postBookmarks';
+const String postCommentsColRefName = 'postComments';
+const String postCommentLikesColRefName = 'postCommentLikes';
+const String postCommentReplysColRefName = 'postCommentReplys';
+const String postCommentReplyLikesColRefName = 'postCommentReplyLikes';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String bookmarkLabelIdFieldKey = 'bookmarkLabelId';
@@ -115,7 +115,5 @@ const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';
 const String postPathKey = 'posts';
 // mapKey
-const String ipv6MapKey = 'ipv6';
-const String tokenTypeMapKey = 'tokenType';
-const String notificationTypeMapKey = 'notificationType';
-const String uidMapKey = 'uid';
+const String tokenTypeMapKey = 'tokenType'; // lib/constants/enums.dart
+const String notificationTypeMapKey = 'notificationType'; // lib/constants/enums.dart

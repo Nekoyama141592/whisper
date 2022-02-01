@@ -212,6 +212,5 @@ class PostFutures extends ChangeNotifier {
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
     final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,commentId: commentId,createdAt: now, tokenId: tokenId);
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
-    await mainModel.prefs.setStringList(muteCommentIdsPrefsKey, muteCommentIds);
   }
 }
