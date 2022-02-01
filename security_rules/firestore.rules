@@ -77,55 +77,6 @@ service cloud.firestore {
         allow read, write: if isAuthenticated();
       }
     }
-    match /posts/{postId} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated()
-      && isValidPost(request.resource.data);
-      allow update: if isAuthenticated()
-      && isValidPost(request.resource.data);
-      allow delete: if isAuthenticated()
-      && request.auth.uid == resource.data.uid;
-      match /likes/{activeUid} {
-        allow read: if basicValidation(activeUid);
-        allow create: if basicValidation(activeUid);
-        allow delete: if basicValidation(activeUid);
-      }
-      match /bookmarks/{activeUid} {
-        allow read: if basicValidation(activeUid);
-        allow create: if basicValidation(activeUid);
-        allow delete: if basicValidation(activeUid);
-      }
-    }
-
-    match /replys/{replyId} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated()
-      && isValidReply(request.resource.data);
-      allow update: if isAuthenticated()
-      && isValidReply(request.resource.data);
-      allow delete: if isAuthenticated()
-      && request.auth.uid == resource.data.uid;
-      match /likes/{activeUid} {
-        allow read: if basicValidation(activeUid);
-        allow create: if basicValidation(activeUid);
-        allow delete: if basicValidation(activeUid);
-      }
-    }
-
-    match /comments/{commentId} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated()
-      && isValidComment(request.resource.data);
-      allow update: if isAuthenticated()
-      && isValidComment(request.resource.data);
-      allow delete: if isAuthenticated()
-      && request.auth.uid == resource.data.uid;
-      match /likes/{activeUid} {
-        allow read: if basicValidation(activeUid);
-        allow create: if basicValidation(activeUid);
-        allow delete: if basicValidation(activeUid);
-      }
-    }
 
     match /nftOwners/{nftOwnerId} {
       allow read: if isAuthenticated();
