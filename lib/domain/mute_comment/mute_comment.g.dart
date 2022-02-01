@@ -9,7 +9,7 @@ part of 'mute_comment.dart';
 MuteComment _$MuteCommentFromJson(Map<String, dynamic> json) => MuteComment(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      postCommentId: json['commentId'] as String,
+      postCommentId: json['postCommentId'] as String,
       tokenId: json['tokenId'] as String,
       postCommentDocRef: json['postCommentDocRef'],
     );
@@ -18,7 +18,7 @@ Map<String, dynamic> _$MuteCommentToJson(MuteComment instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'commentId': instance.postCommentId,
+      'postCommentId': instance.postCommentId,
       'tokenId': instance.tokenId,
       'postCommentDocRef': instance.postCommentDocRef,
     };

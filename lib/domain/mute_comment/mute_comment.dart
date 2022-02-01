@@ -10,14 +10,14 @@ class MuteComment {
   MuteComment({
     required this.activeUid,
     required this.createdAt,
-    required this.commentId,
+    required this.postCommentId,
     required this.tokenId,
     required this.postCommentDocRef
   });
   
   final String activeUid;
   final dynamic createdAt;
-  final String commentId;
+  final String postCommentId;
   final String tokenId;
   final String tokenType = muteCommentTokenType;
   final dynamic postCommentDocRef;

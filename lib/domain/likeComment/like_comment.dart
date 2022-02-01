@@ -9,14 +9,14 @@ part 'like_comment.g.dart';
 class LikeComment {
   LikeComment({
     required this.activeUid,
-    required this.commentId,
+    required this.postCommentId,
     required this.createdAt,
     required this.tokenId,
     required this.postCommentDocRef
   });
   
   final String activeUid;
-  final String commentId;
+  final String postCommentId;
   final dynamic createdAt;
   final String tokenId;
   final String tokenType = likeCommentTokenType;
