@@ -230,7 +230,7 @@ class ReplysModel extends ChangeNotifier {
     if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
     final String postCommentReplyId = generatePostCommentReplyId(uid: mainModel.userMeta.uid);
-    final WhisperReply newWhisperReply = makeWhisperReply(commentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
+    final WhisperReply newWhisperReply = makeWhisperReply(postCommentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
     await returnPostCommentReplyDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: postCommentReplyId ).set(newWhisperReply.toJson());
     // notification
     if (whisperPost.uid != currentWhisperUser.uid) {
@@ -238,11 +238,11 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  WhisperReply makeWhisperReply({ required String commentId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
+  WhisperReply makeWhisperReply({ required String postCommentId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
     final WhisperReply whisperReply = WhisperReply(
       accountName: currentWhisperUser.accountName,
       createdAt: now,
-      postCommentId: commentId,
+      postCommentId: postCommentId,
       followerCount: currentWhisperUser.followerCount,
       ipv6: ipv6, 
       isDelete: false,
@@ -255,6 +255,7 @@ class ReplysModel extends ChangeNotifier {
       positiveScore: 0,
       reply: reply, 
       postCommentReplyId: replyId,
+      postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: postCommentId ),
       score: defaultScore,
       uid: currentWhisperUser.uid,
       updatedAt: now,
