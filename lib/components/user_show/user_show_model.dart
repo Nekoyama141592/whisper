@@ -58,8 +58,6 @@ class UserShowModel extends ChangeNotifier {
   late RefreshController refreshController;
   // Edit profile
   bool isEditing = false;
-  String userName = '';
-  String description = '';
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -165,17 +163,14 @@ class UserShowModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  void onEditButtonPressed({ required MainModel mainModel}) {
-    final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
-    userName = currentWhisperUser.userName;
-    description = currentWhisperUser.description;
+  void onEditButtonPressed() {
     isEditing = true;
     notifyListeners();
   }
 
-  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel, required List<WhisperLink> links }) async {
+  Future onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser,required MainModel mainModel, required List<WhisperLink> links }) async {
     startLoading();
-    await voids.updateUserInfo(context: context, userName: userName, description: description, links: links, mainModel: mainModel, croppedFile: croppedFile);
+    await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, croppedFile: croppedFile, mainModel: mainModel);
     isEditing = false;
     endLoading();
   }

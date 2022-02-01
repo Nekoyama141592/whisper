@@ -443,23 +443,20 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   return getDownloadURL;
 }
 
-Future<void> updateUserInfo({ required BuildContext context ,required String userName, required String description, required List<WhisperLink> links, required MainModel mainModel, required File? croppedFile}) async {
+Future<void> updateUserInfo({ required BuildContext context ,required List<WhisperLink> links, required WhisperUser updateWhisperUser, required File? croppedFile,required MainModel mainModel }) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
   // }
   final DateTime now = DateTime.now();
-  WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
-  currentWhisperUser.description = description;
-  currentWhisperUser.links = links.map((e) => e.toJson()).toList();
-  currentWhisperUser.updatedAt = Timestamp.fromDate(now);
-  currentWhisperUser.userName = userName;
+  updateWhisperUser.links = links.map((e) => e.toJson()).toList();
+  updateWhisperUser.updatedAt = Timestamp.fromDate(now);
   if (croppedFile != null) {
     final String storageImageName = returnStorageUserImageName();
-    final String downloadURL = await uploadUserImageAndGetURL(uid: mainModel.currentUser!.uid, croppedFile: croppedFile, storageImageName: storageImageName );
-    currentWhisperUser.imageURL = downloadURL;
+    final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
+    updateWhisperUser.imageURL = downloadURL;
   }
-  await FirebaseFirestore.instance.collection(usersFieldKey).doc(mainModel.currentWhisperUser.uid).update( currentWhisperUser.toJson() );
+  await FirebaseFirestore.instance.collection(usersFieldKey).doc(updateWhisperUser.uid).update( updateWhisperUser.toJson() );
   mainModel.reload();
 }
 

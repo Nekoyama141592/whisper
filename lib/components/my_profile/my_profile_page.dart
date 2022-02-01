@@ -26,22 +26,23 @@ class MyProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final myProfileModel = ref.watch(myProfileProvider);
     final linksModel = ref.watch(linksProvider);
+    final currentWhisperUser = mainModel.currentWhisperUser;
 
     return SafeArea(
       child: myProfileModel.isEditing ?
       EditProfileScreen(
         onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
         onSaveButtonPressed: () async {
-          await myProfileModel.onSaveButtonPressed(context: context, mainModel: mainModel, links: linksModel.whisperLinks );
+          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, links: linksModel.whisperLinks );
         }, 
         showImagePicker: () async {
           await myProfileModel.showImagePicker();
         },
         onUserNameChanged: (text) {
-          myProfileModel.userName = text;
+          currentWhisperUser.userName = text;
         }, 
         onDescriptionChanged: (text) {
-          myProfileModel.description = text;
+          currentWhisperUser.description = text;
         }, 
         croppedFile: myProfileModel.croppedFile,
         isLoading: myProfileModel.isLoading,
@@ -53,7 +54,7 @@ class MyProfilePage extends ConsumerWidget {
         top: SizedBox.shrink(), 
         header: UserShowHeader(
           onEditButtonPressed: () {
-            myProfileModel.onEditButtonPressed(mainModel: mainModel);
+            myProfileModel.onEditButtonPressed();
           },
           passiveWhisperUser: mainModel.currentWhisperUser,
           backArrow: SizedBox.shrink(), 

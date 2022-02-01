@@ -51,14 +51,14 @@ class UserShowPage extends ConsumerWidget {
           child: EditProfileScreen(
             onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, mainModel: mainModel, links: linksModel.whisperLinks );
+              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: passiveWhisperUser, mainModel: mainModel, links: linksModel.whisperLinks );
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
-              userShowModel.userName = text;
+              passiveWhisperUser.userName = text;
             },
             onDescriptionChanged: (text) {
-              userShowModel.description = text;
+              passiveWhisperUser.description = text;
             },
             croppedFile: userShowModel.croppedFile,
             isLoading: userShowModel.isLoading,
@@ -71,7 +71,7 @@ class UserShowPage extends ConsumerWidget {
           top: SizedBox.shrink(), 
           header: UserShowHeader(
             onEditButtonPressed: () {
-              userShowModel.onEditButtonPressed(mainModel: mainModel);
+              userShowModel.onEditButtonPressed();
             },
             passiveWhisperUser: passiveWhisperUser,
             backArrow: InkWell(

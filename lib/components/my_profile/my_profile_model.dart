@@ -18,7 +18,7 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
-import 'package:whisper/links/links_model.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -55,8 +55,6 @@ class MyProfileModel extends ChangeNotifier {
   late RefreshController refreshController;
   // Edit profile
   bool isEditing = false;
-  String userName = '';
-  String description = '';
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -142,17 +140,14 @@ class MyProfileModel extends ChangeNotifier {
     } catch(e) { print(e.toString()); }
   }
 
-  void onEditButtonPressed({ required MainModel mainModel }) {
-    final currentWhisperUser = mainModel.currentWhisperUser;
-    userName = currentWhisperUser.userName;
-    description = currentWhisperUser.description;
+  void onEditButtonPressed() {
     isEditing = true;
     notifyListeners();
   }
   
-  Future onSaveButtonPressed({ required BuildContext context, required MainModel mainModel,required List<WhisperLink> links }) async {
+  Future onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,required List<WhisperLink> links }) async {
     startLoading();
-    await voids.updateUserInfo(context: context, userName: userName, description: description, links: links, mainModel: mainModel, croppedFile: croppedFile);
+    await voids.updateUserInfo(context: context,links: links, updateWhisperUser: updateWhisperUser, mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
     endLoading();
   }
