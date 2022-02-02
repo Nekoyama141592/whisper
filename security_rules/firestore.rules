@@ -19,10 +19,10 @@ service cloud.firestore {
         allow write: if isTheSameUser(uid);
         match /postComments/{postCommentId} {
           allow read: if isAuthenticated();
-          allow write: if isTheSameUser(uid); 
+          allow write: if isAuthenticated() ; 
           match /postCommentReplys/{postCommentReplyId} {
             allow read: if isAuthenticated();
-            allow write: if isTheSameUser(uid);
+            allow write: if isAuthenticated();
             match /postCommentReplyLikes/{activeUid} {
               allow read: if isAuthenticated();
               allow write: if isTheSameUser(activeUid);
@@ -77,5 +77,6 @@ service cloud.firestore {
       allow read: if isAuthenticated();
       allow write: if false;
     }
+
   }
 }
