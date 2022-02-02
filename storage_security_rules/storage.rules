@@ -1,9 +1,5 @@
 rules_version = '2';
 service firebase.storage {
-  
-  function isAuthenticated(){
-    return request.auth != null;
-  }
 
   function isTheSameUser(uid) {
     return request.auth.uid == uid;
