@@ -13,8 +13,10 @@ service cloud.firestore {
 
     match /users/{uid} {
       allow read: if isAuthenticated();
-      allow write: if isTheSameUser(uid)
-      && request.auth.uid == resource.data.uid;
+      allow create: if isTheSameUser(uid)
+      && request.auth.uid == request.resource.data.uid;
+      allow update, delete: if isTheSameUser(uid)
+      && request.auth.uid == request.resource.data.uid;
       match /posts/{postId} {
         allow read: if isAuthenticated();
         allow write: if isTheSameUser(uid);

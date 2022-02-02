@@ -13,10 +13,13 @@ ThemeData lightThemeData(BuildContext context) {
     scaffoldBackgroundColor: kBackgroundColor,
     // appBarTheme: AppBarTheme(),
     iconTheme: IconThemeData(color: kContentColorLightTheme),
-    textTheme: GoogleFonts.inconsolataTextTheme(
-      Theme.of(context).textTheme
-    ).apply(bodyColor: kContentColorLightTheme) ,
+    // textTheme: GoogleFonts.inconsolataTextTheme(
+    //   Theme.of(context).textTheme
+    // ).apply(bodyColor: kContentColorLightTheme) ,
     // or .robotoMono
+    textTheme: GoogleFonts.robotoMonoTextTheme(
+      Theme.of(context).textTheme
+    ).apply(bodyColor: kContentColorLightTheme),
     colorScheme: ColorScheme.light(
       primary: kPrimaryColor,
       secondary: kSecondaryColor,
@@ -41,10 +44,12 @@ ThemeData darkThemeData(BuildContext context){
     // appBarTheme: AppBar
     appBarTheme: AppBarTheme(color: kTertiaryColor),
     iconTheme: IconThemeData(color: kContentColorDarkTheme),
-    textTheme: GoogleFonts.inconsolataTextTheme(
+    // textTheme: GoogleFonts.inconsolataTextTheme(
+    //   Theme.of(context).textTheme
+    // ).apply(bodyColor: kContentColorDarkTheme) ,
+    textTheme: GoogleFonts.robotoMonoTextTheme(
       Theme.of(context).textTheme
-    ).apply(bodyColor: kContentColorDarkTheme) ,
-    // or .robotoMono
+    ).apply(bodyColor: kContentColorDarkTheme),
     colorScheme: ColorScheme.dark().copyWith(
       primary: kTertiaryColor,
       secondary: kQuaternaryColor,
