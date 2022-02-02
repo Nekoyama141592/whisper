@@ -12,30 +12,35 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     match /users/{uid} {
-      allow create: if true;
-      allow update: if isAuthenticated();
       allow read: if isAuthenticated();
-      allow delete: if isAuthenticated()
+      allow write: if isTheSameUser(uid);
       && request.auth.uid == resource.data.uid;
       match /posts/{postId} {
-        allow read, write: if isAuthenticated();
+        allow read: if isAuthenticated();
+        allow write: if isTheSameUser(uid);
         match /postComments/{postCommentId} {
-          allow read, write: if isAuthenticated(); 
+          allow read: if isAuthenticated();
+          allow write: if isTheSameUser(uid); 
           match /postCommentReplys/{postCommentReplyId} {
-            allow read, write: if isAuthenticated();
+            allow read: if isAuthenticated();
+            allow write: if isTheSameUser(uid);
             match /postCommentReplyLikes/{activeUid} {
-              allow read, write: if isAuthenticated();
+              allow read: if isAuthenticated();
+              allow write: if isTheSameUser(activeUid);
             }
           }
           match /postCommentLikes/{activeUid} {
-            allow read, write: if isAuthenticated();
+            allow read: if isAuthenticated();
+            allow write: if isTheSameUser(activeUid);
           }
         }
         match /postLikes/{activeUid} {
-          allow read, write: if isAuthenticated();
+          allow read: if isAuthenticated();
+          allow write: if isTheSameUser(activeUid);
         }
         match /postBookmarks/{activeUid} {
-          allow read, write: if isAuthenticated();
+          allow read: if isAuthenticated();
+          allow write: if isTheSameUser(activeUid);
         }
       }
       match /followers/{followerUid} {
@@ -50,15 +55,17 @@ service cloud.firestore {
       allow read, update, delete: if request.auth.uid == uid;
       allow create: if true;
       match /tokens/{tokenId} {
-        allow write: if isAuthenticated();
+        allow write: if isTheSameUser(uid);
         allow list: if isAuthenticated();
         allow get: if request.resource.data.uid == request.auth.uid;
       }
       match /notifications/{notificationId} {
-        allow read, write: if isAuthenticated();
+        allow read: if isAuthenticated();
+        allow write: if isTheSameUser(uid);
       }
       match /timelines/{postId} {
-        allow read, write: if isAuthenticated();
+        allow read: if isAuthenticated();
+        allow write: if isTheSameUser(uid);
       }
     }
 
