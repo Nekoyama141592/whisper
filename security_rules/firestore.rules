@@ -5,43 +5,8 @@ service cloud.firestore {
     return request.auth != null;
   }
 
-  function isValidUser(user) {
-    return 
-    'createdAt' in user && user.createdAt is timestamp
-    && 'updatedAt' in user && user.updatedAt is timestamp;
-  }
-
-  function isValidUserMeta(userMeta) {
-    return 'createdAt' in user && user.createdAt is timestamp
-    && 'updatedAt' in user && user.updatedAt is timestamp;
-  }
-  
-  function isValidPost(post) {
-    return true;
-  }
-
-  function isValidComment(comment) {
-    return 'createdAt' in comment && comment.createdAt is timestamp;
-  }
-
-  function isValidReply(reply) {
-    return true;
-  }
-
-  function isValidNFTowners(nftOwner) {
-    return 
-    nftOwner.size() == 7
-    && 'ethPrice' in nftOwner && nftOwner.ethPrice is float
-    && 'link' in nftOwner && nftOwner.link is string
-    && 'userName' in nftOwner && nftOwner.name is string
-    && 'number' in nftOwner && nftOwner.number is int
-    && 'uid' in nftOwner && nftOwner.uid is string
-    && 'usdPrice' in nftOwner && nftOwner.usdPrice is float
-    && 'userImageURL' in nftOwner && nftOwner.userImageURL is string;
-  }
-
-  function basicValidation(uid) {
-    return isAuthenticated() && request.auth.uid == uid;
+  function isTheSameUser(uid) {
+    return request.auth.uid == uid;
   }
 
   match /databases/{database}/documents {
@@ -53,36 +18,36 @@ service cloud.firestore {
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
       match /posts/{postId} {
-        allow read, write: if true;
+        allow read, write: if isAuthenticated();
         match /postComments/{postCommentId} {
-          allow read, write: if true; 
+          allow read, write: if isAuthenticated(); 
           match /postCommentReplys/{postCommentReplyId} {
-            allow read, write: if true;
+            allow read, write: if isAuthenticated();
             match /postCommentReplyLikes/{activeUid} {
-              allow read, write: if true;
+              allow read, write: if isAuthenticated();
             }
           }
           match /postCommentLikes/{activeUid} {
-            allow read, write: if true;
+            allow read, write: if isAuthenticated();
           }
         }
         match /postLikes/{activeUid} {
-          allow read, write: if true;
+          allow read, write: if isAuthenticated();
         }
         match /postBookmarks/{activeUid} {
-          allow read, write: if true;
+          allow read, write: if isAuthenticated();
         }
       }
       match /followers/{followerUid} {
-        allow read: if basicValidation(uid);
-        allow create: if basicValidation(followerUid);
-        allow delete: if basicValidation(uid) || basicValidation(followerUid);
+        allow read: if isTheSameUser(uid);
+        allow create: if isTheSameUser(followerUid);
+        allow delete: if isTheSameUser(uid) || isTheSameUser(followerUid);
       }
       
     }
 
     match /userMeta/{uid} {
-      allow read: if request.auth.uid == uid;
+      allow read, update, delete: if request.auth.uid == uid;
       allow create: if true;
       match /tokens/{tokenId} {
         allow write: if isAuthenticated();
