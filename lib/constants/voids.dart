@@ -295,7 +295,7 @@ Future<void> mutePost({ required MainModel mainModel, required int i, required M
   mainModel.reload();
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
-  final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId,passiveUid: whisperPost.uid,);
+  final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: mutePostTokenType );
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
 }
 
@@ -306,7 +306,7 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   mainModel.muteUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,ipv6: whisperPost.ipv6,passiveUid: passiveUid,tokenId: tokenId);
+  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,ipv6: whisperPost.ipv6,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
   mainModel.muteUsers.add(muteUser);
   mainModel.reload();
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
@@ -319,7 +319,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   blocksUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId);
+  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
   blockUsers.add(blockUser);
   mainModel.reload();
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
@@ -512,7 +512,7 @@ Future<void> createFollowingToken({ required UserMeta userMeta,required String p
   final Timestamp now = Timestamp.now();
   final String activeUid = userMeta.uid;
   final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.following );
-  final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId);
+  final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId, tokenType: followingTokenType );
   await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
 }
 

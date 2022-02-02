@@ -50,7 +50,7 @@ class PostFutures extends ChangeNotifier {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likePost );
-    final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId,passiveUid: whisperPost.uid );
+    final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: likePostTokenType );
     mainModel.likePostIds.add(whisperPost.postId);
     mainModel.likePosts.add(likePost);
     notifyListeners();
@@ -105,7 +105,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now,required String bookmarkLabelId  }) async {
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
-    final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: bookmarkLabelId,tokenId: tokenId ,passiveUid: whisperPost.uid);
+    final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: bookmarkLabelId,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
     final String uid = mainModel.userMeta.uid;
     mainModel.bookmarkPosts.add(bookmarkPost);
     mainModel.bookmarksPostIds.add(bookmarkPost.postId);
@@ -188,7 +188,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> muteUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-    final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, passiveUid: passiveUid,ipv6: ipv6,createdAt: now,tokenId: tokenId);
+    final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, passiveUid: passiveUid,ipv6: ipv6,createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(muteUser.passiveUid);
     notifyListeners();
@@ -198,7 +198,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> blockUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-    final BlockUser blockUser = BlockUser(createdAt: now,ipv6: ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId);
+    final BlockUser blockUser = BlockUser(createdAt: now,ipv6: ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
     mainModel.blockUsers.add(blockUser);
     mainModel.blockUids.add(blockUser.activeUid);
     notifyListeners();
@@ -212,7 +212,7 @@ class PostFutures extends ChangeNotifier {
     notifyListeners();
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
-    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId), );
+    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: muteCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
   }
 }

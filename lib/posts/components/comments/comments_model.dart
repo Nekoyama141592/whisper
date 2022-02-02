@@ -172,6 +172,7 @@ class CommentsModel extends ChangeNotifier {
         postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId ),
         postDocRef: returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ),
         postTitle: whisperPost.title,
+        notificationType: commentNotificationType,
         activeUid: currentWhisperUser.uid,
         updatedAt: now,
         userImageURL: currentWhisperUser.imageURL,
@@ -209,6 +210,7 @@ class CommentsModel extends ChangeNotifier {
       postCommentId: whisperComment.postCommentId,
       createdAt: now,
       tokenId: tokenId,
+      tokenType: likeCommentTokenType,
       postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: whisperComment.postCommentId )
     );
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
