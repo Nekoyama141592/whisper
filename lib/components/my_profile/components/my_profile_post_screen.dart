@@ -100,7 +100,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, myProfileModel.audioPlayer, myProfileModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value).postId);
+              await commentsModel.init(context: context, audioPlayer: myProfileModel.audioPlayer, whisperPostNotifier: myProfileModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value) );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel);

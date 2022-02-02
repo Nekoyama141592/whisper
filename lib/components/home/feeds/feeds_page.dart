@@ -64,7 +64,7 @@ class FeedsPage extends ConsumerWidget {
             isLastSongNotifier: mainModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, mainModel.audioPlayer, mainModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: mainModel.currentSongMapNotifier.value).postId,);
+              await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: mainModel.currentSongMapNotifier.value) );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel);

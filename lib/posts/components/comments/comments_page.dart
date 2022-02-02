@@ -59,7 +59,7 @@ class CommentsPage extends ConsumerWidget {
             commentsModel.commentDocs.isEmpty ?
             Expanded(
               child: Nothing(reload: () async {
-                await commentsModel.getCommentDocs(whisperPost.postId);
+                await commentsModel.getCommentDocs(whisperPost: whisperPost);
               }),
             )
             : Expanded(

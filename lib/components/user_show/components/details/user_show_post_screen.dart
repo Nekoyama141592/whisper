@@ -99,7 +99,7 @@ class UserShowPostScreen extends ConsumerWidget {
             isLastSongNotifier: userShowModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, userShowModel.audioPlayer, userShowModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: userShowModel.currentSongMapNotifier.value).postId);
+              await commentsModel.init(context: context, audioPlayer: userShowModel.audioPlayer, whisperPostNotifier: userShowModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: userShowModel.currentSongMapNotifier.value) );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: userShowModel.audioPlayer, editPostInfoModel: editPostInfoModel);

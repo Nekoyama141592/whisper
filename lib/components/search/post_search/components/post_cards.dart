@@ -120,7 +120,7 @@ class PostCards extends ConsumerWidget {
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                     toCommentsPage:  () async {
-                      await commentsModel.init(context, postSearchModel.audioPlayer, postSearchModel.currentSongMapNotifier, mainModel, whisperPost.postId);
+                      await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: postSearchModel.currentSongMapNotifier.value) );
                     },
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);

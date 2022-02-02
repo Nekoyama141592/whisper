@@ -62,7 +62,7 @@ class RecommendersPage extends ConsumerWidget {
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context, recommendersModel.audioPlayer, recommendersModel.currentSongMapNotifier, mainModel, fromMapToPost(postMap: recommendersModel.currentSongMapNotifier.value).postId);
+              await commentsModel.init(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPostNotifier: recommendersModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: recommendersModel.currentSongMapNotifier.value) );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel);
