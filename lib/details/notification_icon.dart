@@ -37,7 +37,9 @@ class NotificationIcon extends ConsumerWidget {
           onTap: () {
             routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, linksModel: linksModel, notificationsModel: notificationsModel,);
           },
-          child: Stack(
+          child: snapshot.data == null ?
+          SizedBox.shrink() : 
+          Stack(
             children: [
               Icon(Icons.notifications),
               Positioned(

@@ -26,7 +26,7 @@ class ReplyNotifications extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    final List<ReplyNotification> notifications = snapshot.data!.docs.where((element) => ReplyNotification.fromJson(element.data()).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()) ).toList();
+    final List<ReplyNotification> notifications = snapshot.data == null ? [] : snapshot.data!.docs.where((element) => ReplyNotification.fromJson(element.data()).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()) ).toList();
     final content = ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {

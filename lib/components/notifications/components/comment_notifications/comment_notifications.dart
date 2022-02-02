@@ -26,7 +26,7 @@ class CommentNotifications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<CommentNotification> notifications = snapshot.data!.docs.where((element) => CommentNotification.fromJson(element.data()).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()) ).toList();
+    final List<CommentNotification> notifications = snapshot.data == null ? [] :  snapshot.data!.docs.where((element) => CommentNotification.fromJson(element.data()).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()) ).toList();
     final content = ListView.builder(
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
