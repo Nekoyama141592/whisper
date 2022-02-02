@@ -107,7 +107,7 @@ class ReplysModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(context);
-                replysStream = returnPostCommentReplysColGroupQuery
+                replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
                 .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(limitIndex)
@@ -126,7 +126,7 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 sortState = SortState.byNewestFirst;
-                replysStream = returnPostCommentReplysColGroupQuery
+                replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
                 .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(limitIndex)
@@ -145,7 +145,7 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 sortState = SortState.byOldestFirst;
-                replysStream = returnPostCommentReplysColGroupQuery
+                replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
                 .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(limitIndex)
@@ -187,7 +187,7 @@ class ReplysModel extends ChangeNotifier {
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = returnPostCommentReplysColGroupQuery.where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId ).where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -199,21 +199,21 @@ class ReplysModel extends ChangeNotifier {
     limitIndex += oneTimeReadCount;
     switch(sortState) {
       case SortState.byLikedUidCount:
-      replysStream = returnPostCommentReplysColGroupQuery
+      replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
       .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(likeCountFieldKey,descending: true )
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byNewestFirst:
-      replysStream = returnPostCommentReplysColGroupQuery
+      replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
       .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: true)
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byOldestFirst:
-      replysStream = returnPostCommentReplysColGroupQuery
+      replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
       .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: false)
       .limit(limitIndex)
