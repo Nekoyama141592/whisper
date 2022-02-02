@@ -37,8 +37,7 @@ class PostCards extends ConsumerWidget {
     
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
-    final whisperPost = fromMapToPost(postMap: postSearchModel.currentSongMapNotifier.value);
+    final officialAdsensesModel = ref.watch(officialAdsensesProvider);
     final searchController = TextEditingController.fromValue(
       TextEditingValue(
         text: postSearchModel.searchTerm,
@@ -114,7 +113,7 @@ class PostCards extends ConsumerWidget {
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
                     play: () async { 
-                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: whisperPost.postId, officialAdsensesModel: officialAdsensesModel);
+                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: postSearchModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
                     }, 
                     pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
@@ -133,7 +132,7 @@ class PostCards extends ConsumerWidget {
                 currentSongMapNotifier: postSearchModel.currentSongMapNotifier,
                 playButtonNotifier: postSearchModel.playButtonNotifier,
                 play: () async {
-                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: whisperPost.postId, officialAdsensesModel: officialAdsensesModel);
+                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: postSearchModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
                 },
                 pause: () {
                   voids.pause(audioPlayer: postSearchModel.audioPlayer);
