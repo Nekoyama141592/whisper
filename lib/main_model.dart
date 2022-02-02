@@ -121,10 +121,7 @@ class MainModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
     final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
-    // if (tokensQshot.docs.isNotEmpty) {
-    //   distributeTokens(tokensQshot: tokensQshot);
-    // }
-    print(tokensQshot.docs.length.toString() + "LENGTH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    distributeTokens(tokensQshot: tokensQshot);
     await getFeeds(followingUids: followingUids);
     endLoading();
   }
