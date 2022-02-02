@@ -134,7 +134,7 @@ class SignupModel extends ChangeNotifier {
       links: [],
       recommendState: recommendableString,
       score: defaultScore,
-      tokenToSearch: returnTokenToSearch(searchWords: searchWords),
+      searchToken: returnSearchToken(searchWords: searchWords),
       uid : uid,
       updatedAt: now,
       userName: userName,

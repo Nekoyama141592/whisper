@@ -20,7 +20,7 @@ class WhisperUser {
     required this.links,
     required this.recommendState,
     required this.score,
-    required this.tokenToSearch,
+    required this.searchToken,
     required this.userName,
     required this.uid,
     required this.updatedAt,
@@ -40,7 +40,7 @@ class WhisperUser {
   List<Map<String,dynamic>> links;
   String recommendState;
   num score;
-  Map<String,dynamic> tokenToSearch;
+  Map<String,dynamic> searchToken;
   String userName;
   String uid;
   dynamic updatedAt;

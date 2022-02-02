@@ -33,6 +33,7 @@ const List<String> commonPasswords = [
   'qwertyui'
 ];
 final List<String> notUseOnField = ['.','[',']','*','`'];
+
 List<String> returnSearchWords({ required String searchTerm }) {
   List<String> afterSplit =  searchTerm.split('');
   afterSplit.removeWhere((element) => notUseOnField.contains(element) );

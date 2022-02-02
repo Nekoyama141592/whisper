@@ -237,7 +237,7 @@ class AddPostModel extends ChangeNotifier {
       positiveScore: 0,
       score: defaultScore.toDouble(),
       tagAccountNames: [],
-      tokenToSearch: returnTokenToSearch(searchWords: searchWords),
+      searchToken: returnSearchToken(searchWords: searchWords),
       title: title,
       uid: currentWhiseprUser.uid,
       updatedAt: now,

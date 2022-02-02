@@ -32,7 +32,7 @@ class Post{
     required this.score,
     required this.tagAccountNames,
     required this.title,
-    required this.tokenToSearch,
+    required this.searchToken,
     required this.uid,
     required this.updatedAt,
     required this.userImageURL,
@@ -63,7 +63,7 @@ class Post{
   num positiveScore;
   num score;
   List<String> tagAccountNames;
-  Map<String,dynamic> tokenToSearch;
+  Map<String,dynamic> searchToken;
   String title;
   String uid;
   dynamic updatedAt;
