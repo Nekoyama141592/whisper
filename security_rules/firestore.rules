@@ -13,8 +13,9 @@ service cloud.firestore {
 
     match /users/{uid} {
       allow read: if isAuthenticated();
-      allow create: if isTheSameUser(uid)
-      && request.auth.uid == request.resource.data.uid;
+      allow create: if isTheSameUser(uid);
+      // do not use
+      // && request.auth.uid == request.resource.data.uid && request.resource.data.uid ;
       allow update, delete: if isTheSameUser(uid)
       && request.auth.uid == request.resource.data.uid && resource.data.uid ;
       match /posts/{postId} {
@@ -56,8 +57,9 @@ service cloud.firestore {
     match /userMeta/{uid} {
       allow create: if isTheSameUser(uid)
       && request.auth.uid == request.resource.data.uid;
-      allow read, update, delete: if isTheSameUser(uid)
-      && request.auth.uid == request.resource.data.uid && resource.data.uid ;
+      allow read, update, delete: if isTheSameUser(uid);
+      // do not use
+      // && request.auth.uid == request.resource.data.uid && resource.data.uid ;
       match /tokens/{tokenId} {
         allow write: if isTheSameUser(uid);
         allow list: if isAuthenticated();

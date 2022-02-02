@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:whisper/constants/strings.dart';
-
 part 'bookmark_label.g.dart';
 
 @JsonSerializable()
@@ -11,6 +9,7 @@ class BookmarkLabel {
     required this.label,
     required this.bookmarkLabelId,
     required this.tokenId,
+    required this.tokenType,
     required this.uid,
     required this.updatedAt
   });
@@ -19,7 +18,7 @@ class BookmarkLabel {
   final String label;
   final String bookmarkLabelId;
   final String tokenId;
-  final String tokenType = bookmarkLabelTokenType;
+  final String tokenType;
   final String uid;
   final dynamic updatedAt;
 

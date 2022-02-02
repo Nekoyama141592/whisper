@@ -8,7 +8,7 @@ part of 'like_comment.dart';
 
 LikeComment _$LikeCommentFromJson(Map<String, dynamic> json) => LikeComment(
       activeUid: json['activeUid'] as String,
-      postCommentId: json['commentId'] as String,
+      postCommentId: json['postCommentId'] as String,
       createdAt: json['createdAt'],
       tokenId: json['tokenId'] as String,
       postCommentDocRef: json['postCommentDocRef'],
@@ -17,7 +17,7 @@ LikeComment _$LikeCommentFromJson(Map<String, dynamic> json) => LikeComment(
 Map<String, dynamic> _$LikeCommentToJson(LikeComment instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
-      'commentId': instance.postCommentId,
+      'postCommentId': instance.postCommentId,
       'createdAt': instance.createdAt,
       'tokenId': instance.tokenId,
       'postCommentDocRef': instance.postCommentDocRef,

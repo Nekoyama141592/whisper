@@ -39,7 +39,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
           .map((e) => e as String)
           .toList(),
       title: json['title'] as String,
-      searchToken: json['tokenToSearch'] as Map<String, dynamic>,
+      searchToken: json['searchToken'] as Map<String, dynamic>,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
@@ -72,7 +72,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'positiveScore': instance.positiveScore,
       'score': instance.score,
       'tagAccountNames': instance.tagAccountNames,
-      'tokenToSearch': instance.searchToken,
+      'searchToken': instance.searchToken,
       'title': instance.title,
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
