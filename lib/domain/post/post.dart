@@ -65,7 +65,7 @@ class Post{
   List<String> tagAccountNames;
   Map<String,dynamic> searchToken;
   String title;
-  String uid;
+  final String uid;
   dynamic updatedAt;
   String userImageURL;
   String userName;

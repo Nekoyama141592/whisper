@@ -22,7 +22,7 @@ class UserMeta {
   bool isAdmin;
   bool isDelete;
   String language;
-  String uid;
+  final String uid;
   dynamic updatedAt;
 
   factory UserMeta.fromJson(Map<String,dynamic> json) => _$UserMetaFromJson(json);

@@ -42,7 +42,7 @@ class WhisperUser {
   num score;
   Map<String,dynamic> searchToken;
   String userName;
-  String uid;
+  final String uid;
   dynamic updatedAt;
   String walletAddress;
 
