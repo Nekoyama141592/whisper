@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// 
-import 'package:whisper/constants/strings.dart';
 
 part 'mute_reply.g.dart';
 
@@ -11,13 +9,14 @@ class MuteReply {
     required this.activeUid,
     required this.createdAt,
     required this.replyId,
+    required this.tokenType,
     required this.postCommentReplyDocRef
   });
   
   final String activeUid;
   final dynamic createdAt;
   final String replyId;
-  final String tokenType = muteReplyTokenType;
+  final String tokenType;
   final dynamic postCommentReplyDocRef;
 
   factory MuteReply.fromJson(Map<String,dynamic> json) => _$MuteReplyFromJson(json);

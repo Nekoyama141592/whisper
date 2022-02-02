@@ -24,6 +24,7 @@ class CommentNotification {
     required this.postCommentDocRef,
     required this.postDocRef,
     required this.postTitle,
+    required this.notificationType,
     required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
@@ -46,7 +47,7 @@ class CommentNotification {
   final dynamic postCommentDocRef;
   final dynamic postDocRef;
   final String postTitle;
-  final String notificationType = commentNotificationType;
+  final String notificationType;
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;

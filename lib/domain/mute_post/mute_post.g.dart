@@ -11,6 +11,7 @@ MutePost _$MutePostFromJson(Map<String, dynamic> json) => MutePost(
       createdAt: json['createdAt'],
       postId: json['postId'] as String,
       tokenId: json['tokenId'] as String,
+      tokenType: json['tokenType'] as String,
       passiveUid: json['passiveUid'] as String,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$MutePostToJson(MutePost instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
       'postId': instance.postId,
       'tokenId': instance.tokenId,
+      'tokenType': instance.tokenType,
       'passiveUid': instance.passiveUid,
     };

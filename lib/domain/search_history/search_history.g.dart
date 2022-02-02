@@ -12,6 +12,7 @@ SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'],
       searchTerm: json['searchTerm'] as String,
       tokenId: json['tokenId'] as String,
+      tokenType: json['tokenType'] as String,
     );
 
 Map<String, dynamic> _$SearchHistoryToJson(SearchHistory instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$SearchHistoryToJson(SearchHistory instance) =>
       'createdAt': instance.createdAt,
       'searchTerm': instance.searchTerm,
       'tokenId': instance.tokenId,
+      'tokenType': instance.tokenType,
     };

@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'like_reply.g.dart';
 
@@ -12,6 +10,7 @@ class LikeReply {
     required this.createdAt,
     required this.replyId,
     required this.tokenId,
+    required this.tokenType,
     required this.postCommentReplyDocRef
   });
   
@@ -19,7 +18,7 @@ class LikeReply {
   final dynamic createdAt;
   final String replyId;
   final String tokenId;
-  final String tokenType = likeReplyTokenType;
+  final String tokenType;
   final dynamic postCommentReplyDocRef;
 
   factory LikeReply.fromJson(Map<String,dynamic> json) => _$LikeReplyFromJson(json);

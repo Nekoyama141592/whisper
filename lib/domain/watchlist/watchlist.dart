@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'watchlist.g.dart';
 
@@ -14,13 +12,14 @@ class Watchlist {
     required this.tokenId,
     required this.uids,
     required this.myUid,
+    required this.tokenType,
     required this.updatedAt,
     required this.watchlistRef
   });
   final dynamic createdAt;
   final String label;
   final String myUid;
-  final String tokenType = watchlistTokenType;
+  final String tokenType;
   final String watchlistId;
   final String tokenId;
   final List<String> uids;

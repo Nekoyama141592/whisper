@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'block_user.g.dart';
 
@@ -12,6 +10,7 @@ class BlockUser {
     required this.createdAt,
     required this.ipv6,
     required this.tokenId,
+    required this.tokenType,
     required this.passiveUid
   });
   
@@ -19,7 +18,7 @@ class BlockUser {
   final dynamic createdAt;
   final String ipv6;
   final String tokenId;
-  final String tokenType = blockUserTokenType;
+  final String tokenType;
   final String passiveUid;
 
   factory BlockUser.fromJson(Map<String,dynamic> json) => _$BlockUserFromJson(json);

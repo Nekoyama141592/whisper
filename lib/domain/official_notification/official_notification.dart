@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'official_notification.g.dart';
 
@@ -9,11 +7,12 @@ part 'official_notification.g.dart';
 class OfficialNotification{
   OfficialNotification({
     required this.createdAt,
-    required this.notificationId
+    required this.notificationId,
+    required this.notificationType
   });
   final dynamic createdAt;
   final String notificationId;
-  final String notificationType = officialNotificationType;
+  final String notificationType;
   
   factory OfficialNotification.fromJson(Map<String,dynamic> json) => _$OfficialNotificationFromJson(json);
 

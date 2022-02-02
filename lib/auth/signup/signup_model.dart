@@ -157,7 +157,7 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
     );
     final String bookmarkLabelId = returnTokenId( userMeta: userMeta, tokenType: TokenType.bookmarkLabel );
-    final BookmarkLabel bookmarkLabel = BookmarkLabel(bookmarkLabelId: bookmarkLabelId,uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkLabelId);
+    final BookmarkLabel bookmarkLabel = BookmarkLabel(bookmarkLabelId: bookmarkLabelId,uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkLabelId, tokenType: bookmarkLabelTokenType );
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkLabelId ).set(bookmarkLabel.toJson());
   }

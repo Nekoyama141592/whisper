@@ -12,6 +12,7 @@ LikePost _$LikePostFromJson(Map<String, dynamic> json) => LikePost(
       passiveUid: json['passiveUid'] as String,
       postId: json['postId'] as String,
       tokenId: json['tokenId'] as String,
+      tokenType: json['tokenType'] as String,
     );
 
 Map<String, dynamic> _$LikePostToJson(LikePost instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$LikePostToJson(LikePost instance) => <String, dynamic>{
       'passiveUid': instance.passiveUid,
       'postId': instance.postId,
       'tokenId': instance.tokenId,
+      'tokenType': instance.tokenType,
     };

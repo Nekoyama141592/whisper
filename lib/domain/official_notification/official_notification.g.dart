@@ -11,6 +11,7 @@ OfficialNotification _$OfficialNotificationFromJson(
     OfficialNotification(
       createdAt: json['createdAt'],
       notificationId: json['notificationId'] as String,
+      notificationType: json['notificationType'] as String,
     );
 
 Map<String, dynamic> _$OfficialNotificationToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$OfficialNotificationToJson(
     <String, dynamic>{
       'createdAt': instance.createdAt,
       'notificationId': instance.notificationId,
+      'notificationType': instance.notificationType,
     };

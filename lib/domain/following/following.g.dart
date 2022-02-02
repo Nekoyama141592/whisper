@@ -11,6 +11,7 @@ Following _$FollowingFromJson(Map<String, dynamic> json) => Following(
       createdAt: json['createdAt'],
       passiveUid: json['passiveUid'] as String,
       tokenId: json['tokenId'] as String,
+      tokenType: json['tokenType'] as String,
     );
 
 Map<String, dynamic> _$FollowingToJson(Following instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$FollowingToJson(Following instance) => <String, dynamic>{
       'myUid': instance.myUid,
       'passiveUid': instance.passiveUid,
       'tokenId': instance.tokenId,
+      'tokenType': instance.tokenType,
     };

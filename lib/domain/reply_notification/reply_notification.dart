@@ -24,6 +24,7 @@ class ReplyNotification {
     required this.postCommentDocRef,
     required this.postCommentReplyId,
     required this.postDocRef,
+    required this.notificationType,
     required this.reply,
     required this.replyScore,
     required this.updatedAt,
@@ -48,7 +49,7 @@ class ReplyNotification {
   final String postCommentReplyId;
   final dynamic postCommentDocRef;
   final dynamic postDocRef;
-  final String notificationType = replyNotificationType;
+  final String notificationType;
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;

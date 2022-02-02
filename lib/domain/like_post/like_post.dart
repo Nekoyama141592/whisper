@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'like_post.g.dart';
 
@@ -13,13 +11,14 @@ class LikePost{
     required this.passiveUid,
     required this.postId,
     required this.tokenId,
+    required this.tokenType,
   });
   final String activeUid;
   final dynamic createdAt;
   final String passiveUid;
   final String postId;
   final String tokenId;
-  final String tokenType = likePostTokenType;
+  final String tokenType;
   
   factory LikePost.fromJson(Map<String,dynamic> json) => _$LikePostFromJson(json);
 

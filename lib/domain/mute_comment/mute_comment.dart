@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'mute_comment.g.dart';
 
@@ -12,6 +10,7 @@ class MuteComment {
     required this.createdAt,
     required this.postCommentId,
     required this.tokenId,
+    required this.tokenType,
     required this.postCommentDocRef
   });
   
@@ -19,7 +18,7 @@ class MuteComment {
   final dynamic createdAt;
   final String postCommentId;
   final String tokenId;
-  final String tokenType = muteCommentTokenType;
+  final String tokenType;
   final dynamic postCommentDocRef;
 
   factory MuteComment.fromJson(Map<String,dynamic> json) => _$MuteCommentFromJson(json);

@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'bookmark_post.g.dart';
 
@@ -13,6 +11,7 @@ class BookmarkPost {
     required this.passiveUid,
     required this.postId,
     required this.tokenId,
+    required this.tokenType,
     required this.bookmarkLabelId
   });
   
@@ -21,7 +20,7 @@ class BookmarkPost {
   final String passiveUid;
   final String postId;
   final String tokenId;
-  final String tokenType = bookmarkPostTokenType;
+  final String tokenType;
   final String bookmarkLabelId;
 
   factory BookmarkPost.fromJson(Map<String,dynamic> json) => _$BookmarkPostFromJson(json);

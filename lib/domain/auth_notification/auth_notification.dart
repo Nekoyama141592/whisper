@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'auth_notification.g.dart';
 
@@ -9,11 +7,12 @@ part 'auth_notification.g.dart';
 class AuthNotification{
   AuthNotification({
     required this.createdAt,
-    required this.notificationId
+    required this.notificationId,
+    required this.notificationType
   });
   final dynamic createdAt;
   final String notificationId;
-  final String notificationType = authNotificationType;
+  final String notificationType;
   
   factory AuthNotification.fromJson(Map<String,dynamic> json) => _$AuthNotificationFromJson(json);
 

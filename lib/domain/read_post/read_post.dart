@@ -1,7 +1,5 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 part 'read_post.g.dart';
 
@@ -12,6 +10,7 @@ class ReadPost {
     required this.createdAt,
     required this.postId,
     required this.tokenId,
+    required this.tokenType,
     required this.passiveUid
   });
   
@@ -19,7 +18,7 @@ class ReadPost {
   final dynamic createdAt;
   final String postId;
   final String tokenId;
-  final String tokenType = readPostTokenType;
+  final String tokenType;
   final String passiveUid;
 
   factory ReadPost.fromJson(Map<String,dynamic> json) => _$ReadPostFromJson(json);

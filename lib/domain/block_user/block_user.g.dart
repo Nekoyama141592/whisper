@@ -11,6 +11,7 @@ BlockUser _$BlockUserFromJson(Map<String, dynamic> json) => BlockUser(
       createdAt: json['createdAt'],
       ipv6: json['ipv6'] as String,
       tokenId: json['tokenId'] as String,
+      tokenType: json['tokenType'] as String,
       passiveUid: json['passiveUid'] as String,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$BlockUserToJson(BlockUser instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
       'ipv6': instance.ipv6,
       'tokenId': instance.tokenId,
+      'tokenType': instance.tokenType,
       'passiveUid': instance.passiveUid,
     };
