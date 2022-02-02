@@ -34,7 +34,7 @@ service firebase.storage {
        allow read, write: if isTheSameUser(uid);
         match /{storagePostImageName} {
          allow read, delete: if isTheSameUser(uid) && isValidImage(storagePostImageName) ;
-         allow create: if canCreate(uid,resource) isValidImage(storagePostImageName) ;
+         allow create: if canCreate(uid,resource) && isValidImage(storagePostImageName) ;
         }
       }
     }
