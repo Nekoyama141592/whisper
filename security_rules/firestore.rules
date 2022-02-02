@@ -47,22 +47,38 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     match /users/{uid} {
-      // allow create: if isValidUser(request.resource.data)
-      // && isAuthenticated()
-      // && request.resource.data.uid == request.auth.uid;
       allow create: if true;
       allow update: if isAuthenticated();
       allow read: if isAuthenticated();
       allow delete: if isAuthenticated()
       && request.auth.uid == resource.data.uid;
+      match /posts/{postId} {
+        allow read, write: if true;
+        match /postComments/{postCommentId} {
+          allow read, write: if true; 
+          match /postCommentReplys/{postCommentReplyId} {
+            allow read, write: if true;
+            match /postCommentReplyLikes/{activeUid} {
+              allow read, write: if true;
+            }
+          }
+          match /postCommentLikes/{activeUid} {
+            allow read, write: if true;
+          }
+        }
+        match /postLikes/{activeUid} {
+          allow read, write: if true;
+        }
+        match /postBookmarks/{activeUid} {
+          allow read, write: if true;
+        }
+      }
       match /followers/{followerUid} {
         allow read: if basicValidation(uid);
         allow create: if basicValidation(followerUid);
         allow delete: if basicValidation(uid) || basicValidation(followerUid);
       }
-      match /timelines/{postId} {
-        allow read, write: if isAuthenticated();
-      }
+      
     }
 
     match /userMeta/{uid} {
@@ -74,6 +90,9 @@ service cloud.firestore {
         allow get: if request.resource.data.uid == request.auth.uid;
       }
       match /notifications/{notificationId} {
+        allow read, write: if isAuthenticated();
+      }
+      match /timelines/{postId} {
         allow read, write: if isAuthenticated();
       }
     }

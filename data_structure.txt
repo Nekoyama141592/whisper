@@ -34,4 +34,6 @@ db: {
 
         }
     }
+    nftOwners {}
+    officialAdsenses {}
 }
