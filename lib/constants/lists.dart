@@ -34,14 +34,19 @@ const List<String> commonPasswords = [
 ];
 final List<String> notUseOnField = ['.','[',']','*','`'];
 List<String> returnSearchWords({ required String searchTerm }) {
-  final int length = searchTerm.length;
+  List<String> afterSplit =  searchTerm.split('');
+  afterSplit.removeWhere((element) => notUseOnField.contains(element) );
+  String result = '';
+  afterSplit.forEach((element) { result += element; });
+  // bi-gram
+  final int length = result.length;
   List<String> searchWords = [];
   if (length < nGramIndex) {
-    searchWords.add(searchTerm);
+    searchWords.add(result);
   } else {
     int termIndex = 0;
     for (int i = 0; i < length - nGramIndex + 1; i++) {
-      final String word = searchTerm.substring(termIndex,termIndex + nGramIndex);
+      final String word = result.substring(termIndex,termIndex + nGramIndex);
       searchWords.add(word);
       termIndex++;
     }
