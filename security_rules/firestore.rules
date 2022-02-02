@@ -78,5 +78,9 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /{path=**}/posts/{postId} {
+      allow read: if isAuthenticated();
+    }
+
   }
 }

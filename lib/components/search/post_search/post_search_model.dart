@@ -86,7 +86,7 @@ class PostSearchModel extends ChangeNotifier{
     } else {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
-      final Query<Map<String,dynamic>> query = returnSearchQuery(collectionKey: usersFieldKey, searchWords: searchWords);
+      final Query<Map<String,dynamic>> query = returnPostSearchQuery(searchWords: searchWords);
       await processBasicDocs(query: query, docs: results);
       endLoading();
     }

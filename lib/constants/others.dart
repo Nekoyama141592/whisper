@@ -98,12 +98,10 @@ DocumentReference<Map<String, dynamic>> returnPostLikeDocRef({ required String p
 CollectionReference<Map<String, dynamic>> returnPostBookmarksColRef({ required String postCreatorUid,required String postId }) { return returnPostDocRef(postCreatorUid: postCreatorUid, postId: postId).collection(postBookmarksColRefName); }
 DocumentReference<Map<String, dynamic>> returnPostBookmarkDocRef({ required String postCreatorUid,required String postId,required String activeUid }) { return returnPostLikesColRef(postCreatorUid: postCreatorUid, postId: postId).doc(activeUid);  }
 CollectionReference<Map<String, dynamic>> returnPostCommentsColRef({ required String postCreatorUid,required String postId }) { return returnPostDocRef(postCreatorUid: postCreatorUid, postId: postId).collection(postCommentsColRefName); }
-final Query<Map<String,dynamic>> returnPostCommentsColGroupQuery = FirebaseFirestore.instance.collectionGroup(postCommentsColRefName);
 DocumentReference<Map<String, dynamic>> returnPostCommentDocRef({ required String postCreatorUid,required String postId,required String postCommentId }) { return returnPostCommentsColRef(postCreatorUid: postCreatorUid, postId: postId).doc(postCommentId);  }
 CollectionReference<Map<String, dynamic>> returnPostCommentLikesColRef({ required String postCreatorUid,required String postId }) { return returnPostDocRef(postCreatorUid: postCreatorUid, postId: postId).collection(postCommentLikesColRefName);  }
 DocumentReference<Map<String, dynamic>> returnPostCommentLikeDocRef({ required String postCreatorUid,required String postId ,required String activeUid }) { return returnPostCommentLikesColRef(postCreatorUid: postCreatorUid, postId: postId).doc(activeUid); }
 CollectionReference<Map<String, dynamic>> returnPostCommentReplysColRef({ required String postCreatorUid,required String postId ,required String postCommentId }) { return returnPostCommentDocRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId).collection(postCommentReplysColRefName);  }
-final Query<Map<String,dynamic>> returnPostCommentReplysColGroupQuery = FirebaseFirestore.instance.collectionGroup(postCommentReplysColRefName);
 DocumentReference<Map<String, dynamic>> returnPostCommentReplyDocRef({ required String postCreatorUid,required String postId,required String postCommentId,required String postCommentReplyId }) { return returnPostCommentReplysColRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId).doc(postCommentReplyId); }
 CollectionReference<Map<String, dynamic>> returnPostCommentReplyLikesColRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId }) { return returnPostCommentReplyDocRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplyLikesColRefName); }
 DocumentReference<Map<String, dynamic>> returnPostCommentReplyLikeDocRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId ,required String activeUid }) { return returnPostCommentReplyLikesColRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).doc(activeUid); }
@@ -154,10 +152,17 @@ BlockUser fromMapToBlocksIpv6AndUid({ required Map<String,dynamic> map }) {
   return BlockUser.fromJson(map);
 }
 
-Query<Map<String,dynamic>> returnSearchQuery({ required String collectionKey ,required List<String> searchWords }) {
-  Query<Map<String,dynamic>> query = FirebaseFirestore.instance.collection(collectionKey).limit(oneTimeReadCount);
+Query<Map<String,dynamic>> returnPostSearchQuery({required List<String> searchWords }) {
+  Query<Map<String,dynamic>> query = returnPostsColGroupQuery.limit(oneTimeReadCount);
   searchWords.forEach((word) {
-    query = query.where(tokenToSearchFieldKey + '.' + word,isEqualTo: true);
+    query = query.where(searchTokenFieldKey + '.' + word,isEqualTo: true);
+  });
+  return query;
+}
+Query<Map<String,dynamic>> returnUserSearchQuery({ required List<String> searchWords }) {
+  Query<Map<String,dynamic>> query = returnUsersColRef().limit(oneTimeReadCount);
+  searchWords.forEach((word) {
+    query = query.where(searchTokenFieldKey + '.' + word,isEqualTo: true);
   });
   return query;
 }
