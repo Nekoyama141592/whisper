@@ -28,20 +28,23 @@ class NotificationIcon extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
   final NotificationsModel notificationsModel = ref.watch(notificationsProvider);
+  
   return Padding(
     padding: EdgeInsets.all(20.0),
     child: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
       stream: notificationsModel.notificationStream,
       builder: ( context,snapshot ) {
+        bool isNotificationExists = (snapshot.data == null) ? false : snapshot.data!.docs.isNotEmpty;
         return InkWell(
           onTap: () {
             routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, linksModel: linksModel, notificationsModel: notificationsModel,);
           },
-          child: snapshot.data == null ?
-          SizedBox.shrink() : 
+          child: 
+          
           Stack(
             children: [
               Icon(Icons.notifications),
+              isNotificationExists ?
               Positioned(
                 right: 0,
                 top: 0,
@@ -53,7 +56,7 @@ class NotificationIcon extends ConsumerWidget {
                     shape: BoxShape.circle
                   ),
                 )
-              )
+              ) : SizedBox.shrink()
             ]
           ),
         );

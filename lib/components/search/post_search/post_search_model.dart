@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // package
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 // import 'package:algolia/algolia.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/strings.dart';
@@ -81,8 +81,8 @@ class PostSearchModel extends ChangeNotifier{
   }
 
   Future<void> search({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
-    if (searchTerm.length < 64) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('64文字未満で検索してください')));
+    if (searchTerm.length > maxSearchLength ) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字未満で検索してください')));
     } else {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);

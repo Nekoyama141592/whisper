@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/ints.dart';
 // import 'package:algolia/algolia.dart';
 import 'package:whisper/constants/lists.dart';
 // constants
@@ -33,8 +34,8 @@ class UserSearchModel extends ChangeNotifier {
   }
 
   Future<void> operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
-    if (searchTerm.length < 64) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('64文字未満で検索してください')));
+    if (searchTerm.length > maxSearchLength ) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字未満で検索してください')));
     } else {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
