@@ -13,7 +13,7 @@ service cloud.firestore {
 
     match /users/{uid} {
       allow read: if isAuthenticated();
-      allow write: if isTheSameUser(uid);
+      allow write: if isTheSameUser(uid)
       && request.auth.uid == resource.data.uid;
       match /posts/{postId} {
         allow read: if isAuthenticated();
@@ -71,12 +71,10 @@ service cloud.firestore {
 
     match /nftOwners/{nftOwnerId} {
       allow read: if isAuthenticated();
-      allow create: if isAuthenticated() && isValidNFTowners(request.resource.data);
-      allow update: if isAuthenticated() && isValidNFTowners(request.resource.data);
-      allow delete: if false;
+      allow write: if false;
     }
 
-    match /officialAdsenses/{officialAdsense} {
+    match /officialAdsenses/{officialAdsenseId} {
       allow read: if isAuthenticated();
       allow write: if false;
     }
