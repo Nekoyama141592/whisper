@@ -38,7 +38,10 @@ List<String> returnSearchWords({ required String searchTerm }) {
   List<String> afterSplit =  searchTerm.split('');
   afterSplit.removeWhere((element) => notUseOnField.contains(element) );
   String result = '';
-  afterSplit.forEach((element) { result += element; });
+  afterSplit.forEach((element) { 
+    final x = element.toLowerCase();
+    result += x; 
+  });
   // bi-gram
   final int length = result.length;
   List<String> searchWords = [];

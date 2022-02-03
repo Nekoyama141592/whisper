@@ -105,7 +105,7 @@ class UserShowHeader extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 18.0
+                    fontSize: 16.0
                   ),
                 ),
                 SizedBox(width: 20,),
@@ -116,10 +116,12 @@ class UserShowHeader extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 18.0
+                    fontSize: 16.0
                   ),
                 ),
                 SizedBox(width: 20),
+                Icon(Icons.search),
+                Icon(Icons.link),
                 if (whisperLinks.isNotEmpty) LinkButton(
                   link: whisperLinks.first.link
                 )
