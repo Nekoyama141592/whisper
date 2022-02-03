@@ -20,6 +20,8 @@ import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 class PostShowPage extends ConsumerWidget {
   
@@ -27,7 +29,7 @@ class PostShowPage extends ConsumerWidget {
     Key? key,
     required this.speedNotifier,
     required this.speedControll,
-    required this.currentSongMapNotifier,
+    required this.currentWhisperPostNotifier,
     required this.progressNotifier,
     required this.seek,
     required this.repeatButtonNotifier,
@@ -47,7 +49,7 @@ class PostShowPage extends ConsumerWidget {
 
   final ValueNotifier<double> speedNotifier;
   final void Function()? speedControll;
-  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
+  final ValueNotifier<Post?> currentWhisperPostNotifier;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
   final RepeatButtonNotifier repeatButtonNotifier;
@@ -68,77 +70,80 @@ class PostShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final LinksModel linksModel = ref.watch(linksProvider);
-
-    final currentSongMap = currentSongMapNotifier.value;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: false,
-      body: SafeArea(
-        child: editPostInfoModel.isEditing ?
-        EditPostInfoScreen(mainModel: mainModel, currentSongMap: currentSongMap, editPostInfoModel: editPostInfoModel,linksModel: linksModel,)
-        : SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20.0
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      color: Theme.of(context).focusColor,
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      }, 
+      body: ValueListenableBuilder<Post?>(
+        valueListenable: currentWhisperPostNotifier,
+        builder: (_,whisperPost,__) {
+          return SafeArea(
+            child: editPostInfoModel.isEditing ?
+            EditPostInfoScreen(mainModel: mainModel, currentWhisperPost: currentWhisperPostNotifier.value!, editPostInfoModel: editPostInfoModel,linksModel: linksModel,)
+            : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0
                     ),
-                    SizedBox(width: size.width * 0.38),
-                    TimestampDisplay(currentSongMapNotifier: currentSongMapNotifier)
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SquarePostImage(currentSongMapNotifier: currentSongMapNotifier),
-                      CurrentSongUserName(currentSongMapNotifier: currentSongMapNotifier),
-                      SizedBox(height: 10.0),
-                      CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier),
-                      SizedBox(height: 10.0),
-                      PostButtons(currentSongMapNotifier: currentSongMapNotifier, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
-                      SizedBox(height: 10.0),
-                      AudioStateDesign(
-                        speedNotifier: speedNotifier,
-                        speedControll: speedControll,
-                        bookmarkedPostIds: mainModel.bookmarksPostIds,
-                        likePostIds: mainModel.likePostIds,
-                        currentSongMapNotifier: currentSongMapNotifier,
-                        progressNotifier: progressNotifier,
-                        seek: seek,
-                        repeatButtonNotifier: repeatButtonNotifier,
-                        onRepeatButtonPressed: onRepeatButtonPressed,
-                        isFirstSongNotifier: isFirstSongNotifier,
-                        onPreviousSongButtonPressed: onPreviousSongButtonPressed,
-                        playButtonNotifier: playButtonNotifier,
-                        play: play,
-                        pause: pause,
-                        isLastSongNotifier: isLastSongNotifier,
-                        onNextSongButtonPressed: onNextSongButtonPressed,
-                      ),
-                      
-                    ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          color: Theme.of(context).focusColor,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          }, 
+                        ),
+                        SizedBox(width: size.width * 0.38),
+                        TimestampDisplay(whisperPost: whisperPost!)
+                      ],
+                    ),
                   ),
-                ),
+                  SingleChildScrollView(
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SquarePostImage(whisperPost: whisperPost),
+                          CurrentSongUserName(whisperPost: whisperPost),
+                          SizedBox(height: 10.0),
+                          CurrentSongTitle(whisperPost: whisperPost,),
+                          SizedBox(height: 10.0),
+                          PostButtons(whisperPost: whisperPost, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                          SizedBox(height: 10.0),
+                          AudioStateDesign(
+                            speedNotifier: speedNotifier,
+                            speedControll: speedControll,
+                            bookmarkedPostIds: mainModel.bookmarksPostIds,
+                            likePostIds: mainModel.likePostIds,
+                            currentWhisperPost: whisperPost,
+                            progressNotifier: progressNotifier,
+                            seek: seek,
+                            repeatButtonNotifier: repeatButtonNotifier,
+                            onRepeatButtonPressed: onRepeatButtonPressed,
+                            isFirstSongNotifier: isFirstSongNotifier,
+                            onPreviousSongButtonPressed: onPreviousSongButtonPressed,
+                            playButtonNotifier: playButtonNotifier,
+                            play: play,
+                            pause: pause,
+                            isLastSongNotifier: isLastSongNotifier,
+                            onNextSongButtonPressed: onNextSongButtonPressed,
+                          ),
+                          
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                ],
               ),
-              
-            ],
-          ),
-        )
+            )
+          );
+        }
       ),
     );
   }

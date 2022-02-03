@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -47,7 +46,7 @@ class RecommendersPage extends ConsumerWidget {
             context: context,
             speedNotifier: recommendersModel.speedNotifier,
             speedControll:  () async { await voids.speedControll(audioPlayer: recommendersModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: recommendersModel.speedNotifier); },
-            currentSongMapNotifier: recommendersModel.currentSongMapNotifier, 
+            currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier, 
             progressNotifier: recommendersModel.progressNotifier, 
             seek: recommendersModel.seek, 
             repeatButtonNotifier: recommendersModel.repeatButtonNotifier, 
@@ -56,13 +55,13 @@ class RecommendersPage extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); }, 
             playButtonNotifier: recommendersModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: recommendersModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPostNotifier: recommendersModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: recommendersModel.currentSongMapNotifier.value) );
+              await commentsModel.init(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPostNotifier: recommendersModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: recommendersModel.currentWhisperPostNotifier.value! );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -73,10 +72,10 @@ class RecommendersPage extends ConsumerWidget {
         }, 
         progressNotifier: recommendersModel.progressNotifier,
         seek: recommendersModel.seek,
-        currentSongMapNotifier: recommendersModel.currentSongMapNotifier,
+        currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier,
         playButtonNotifier: recommendersModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: recommendersModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: recommendersModel.audioPlayer);

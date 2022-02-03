@@ -39,7 +39,6 @@ class OneCommentPage extends ConsumerWidget {
     final ReplysModel replysModel = ref.watch(replysProvider);
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
-    final Post post = fromMapToPost(postMap: onePostModel.currentSongMapNotifier.value);
 
     return Scaffold(
       body: oneCommentModel.isLoading ?
@@ -52,14 +51,14 @@ class OneCommentPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BackArrowButton(),
-              CommentCard(whisperComment: oneCommentModel.oneWhisperComment, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, currentSongMap: onePostModel.currentSongMapNotifier.value,),
+              CommentCard(whisperComment: oneCommentModel.oneWhisperComment, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,),
               OnePostAudioWindow(
                 route: () {
                   routes.toPostShowPage(
                     context: context,
                     speedNotifier: onePostModel.speedNotifier,
                     speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
-                    currentSongMapNotifier: onePostModel.currentSongMapNotifier, 
+                    currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, 
                     progressNotifier: onePostModel.progressNotifier, 
                     seek: onePostModel.seek, 
                     repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
@@ -67,12 +66,12 @@ class OneCommentPage extends ConsumerWidget {
                     isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
                     playButtonNotifier: onePostModel.playButtonNotifier, 
-                    play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: post.postId, officialAdsensesModel: officialAdsensesModel); }, 
+                    play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel); }, 
                     pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                     isLastSongNotifier: onePostModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
                     toCommentsPage:  () async {
-                      await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: post );
+                      await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value! );
                     },
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -84,10 +83,10 @@ class OneCommentPage extends ConsumerWidget {
                 progressNotifier: onePostModel.progressNotifier, 
                 playButtonNotifier: onePostModel.playButtonNotifier, 
                 seek: onePostModel.seek, 
-                play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: post.postId, officialAdsensesModel: officialAdsensesModel); }, 
+                play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel); }, 
                 pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                 title: Text(
-                  post.title,
+                  onePostModel.currentWhisperPostNotifier.value!.title,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0 ),
                 ), 
                 currentWhisperUser: mainModel.currentWhisperUser,

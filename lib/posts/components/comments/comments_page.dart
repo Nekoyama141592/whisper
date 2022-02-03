@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-// constants
-import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
@@ -15,18 +13,20 @@ import 'package:whisper/posts/components/comments/components/comment_card.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 class CommentsPage extends ConsumerWidget {
   
   const CommentsPage({
     Key? key,
     required this.audioPlayer,
-    required this.currentSongMap,
+    required this.whisperPost,
     required this.mainModel
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
-  final Map<String,dynamic> currentSongMap;
+  final Post whisperPost;
   final MainModel mainModel;
 
   @override  
@@ -34,7 +34,6 @@ class CommentsPage extends ConsumerWidget {
     final commentsModel = ref.watch(commentsProvider);
     final replysModel = ref.watch(replysProvider);
     final commentEditingController = TextEditingController();
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -81,7 +80,7 @@ class CommentsPage extends ConsumerWidget {
                     final WhisperComment whisperComment = WhisperComment.fromJson(comment);
                     return CommentCard(
                       whisperComment: whisperComment,
-                      currentSongMap: currentSongMap,
+                      whisperPost: whisperPost,
                       commentsModel: commentsModel,
                       replysModel: replysModel,
                       mainModel: mainModel,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -85,7 +84,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             context: context,
             speedNotifier: myProfileModel.speedNotifier,
             speedControll:  () async { await voids.speedControll(audioPlayer: myProfileModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: myProfileModel.speedNotifier); },
-            currentSongMapNotifier: myProfileModel.currentSongMapNotifier, 
+            currentWhisperPostNotifier: myProfileModel.currentWhisperPostNotifier, 
             progressNotifier: myProfileModel.progressNotifier, 
             seek: myProfileModel.seek, 
             repeatButtonNotifier: myProfileModel.repeatButtonNotifier, 
@@ -94,13 +93,13 @@ class MyProfilePostScreen extends ConsumerWidget {
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); }, 
             playButtonNotifier: myProfileModel.playButtonNotifier, 
             play: () async { 
-              await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
+              await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: myProfileModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
             }, 
             pause: () { voids.pause(audioPlayer: myProfileModel.audioPlayer); }, 
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: myProfileModel.audioPlayer, whisperPostNotifier: myProfileModel.currentSongMapNotifier, mainModel: mainModel, whisperPost: fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value) );
+              await commentsModel.init(context: context, audioPlayer: myProfileModel.audioPlayer, whisperPostNotifier: myProfileModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: myProfileModel.currentWhisperPostNotifier.value! );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel);
@@ -111,10 +110,10 @@ class MyProfilePostScreen extends ConsumerWidget {
         }, 
         progressNotifier: myProfileModel.progressNotifier,
         seek: myProfileModel.seek,
-        currentSongMapNotifier: myProfileModel.currentSongMapNotifier,
+        currentWhisperPostNotifier: myProfileModel.currentWhisperPostNotifier,
         playButtonNotifier: myProfileModel.playButtonNotifier,
         play: () async {
-          await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: fromMapToPost(postMap: myProfileModel.currentSongMapNotifier.value).postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: myProfileModel.audioPlayer, mainModel: mainModel, postId: myProfileModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
         },
         pause: () {
           voids.pause(audioPlayer: myProfileModel.audioPlayer);

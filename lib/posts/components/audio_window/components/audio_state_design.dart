@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
 import 'current_song_title.dart';
-
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 class AudioStateDesign extends StatelessWidget {
   
@@ -18,7 +19,7 @@ class AudioStateDesign extends StatelessWidget {
     required this.speedControll,
     required this.bookmarkedPostIds,
     required this.likePostIds,
-    required this.currentSongMapNotifier,
+    required this.currentWhisperPost,
     required this.progressNotifier,
     required this.seek,
     required this.repeatButtonNotifier,
@@ -36,7 +37,7 @@ class AudioStateDesign extends StatelessWidget {
   final void Function()? speedControll;
   final List bookmarkedPostIds;
   final List likePostIds;
-  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
+  final Post currentWhisperPost;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
   final RepeatButtonNotifier repeatButtonNotifier;
@@ -57,7 +58,7 @@ class AudioStateDesign extends StatelessWidget {
         children: [
           AudioControllButtons(speedControll: speedControll,speedNotifier: speedNotifier,repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed),
           AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
-          CurrentSongTitle(currentSongMapNotifier: currentSongMapNotifier)
+          CurrentSongTitle(whisperPost: currentWhisperPost)
         ],
       ),
     );

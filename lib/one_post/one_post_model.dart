@@ -39,7 +39,7 @@ class OnePostModel extends ChangeNotifier {
   // post
   late DocumentSnapshot<Map<String,dynamic>> onePostDoc;
   List<DocumentSnapshot<Map<String,dynamic>>> onePostDocList = [];
-  final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
+  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
   String indexPostId = '';
 
   Future<bool> init({ required String postId, required DocumentReference<Map<String,dynamic>> postDocRef }) async {
@@ -49,14 +49,12 @@ class OnePostModel extends ChangeNotifier {
       indexPostId = postId;
       onePostDoc = await postDocRef.get();
       onePostDocList.add(onePostDoc);
-      currentSongMapNotifier.value = onePostDoc.data()!;
-      // final post = fromMapToManyUpdatePost(manyUpdatePostMap: currentSongMapNotifier.value);
-      final Post post = fromMapToPost(postMap: currentSongMapNotifier.value);
+      final Post post = fromMapToPost(postMap: onePostDoc.data()! );
       Uri song = Uri.parse(post.audioURL);
-      UriAudioSource audioSource = AudioSource.uri(song,tag: onePostDoc);
+      UriAudioSource audioSource = AudioSource.uri(song,tag: post );
       audioPlayer = AudioPlayer();
       await audioPlayer.setAudioSource(audioSource);
-      voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+      voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     }
     endLoading();
     return onePostDoc.exists;

@@ -35,6 +35,8 @@ import 'package:whisper/domain/timeline/timeline.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
@@ -93,7 +95,7 @@ class MainModel extends ChangeNotifier {
     return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10);
   }
   // notifiers
-  final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
+  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);

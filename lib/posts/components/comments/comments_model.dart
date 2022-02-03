@@ -50,9 +50,9 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> init({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Map<String,dynamic>> whisperPostNotifier, required MainModel mainModel,required Post whisperPost  }) async {
+  Future<void> init({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> whisperPostNotifier, required MainModel mainModel,required Post whisperPost  }) async {
     refreshController = RefreshController(initialRefresh: false);
-    routes.toCommentsPage(context, audioPlayer, whisperPostNotifier, mainModel);
+    routes.toCommentsPage(context: context, audioPlayer: audioPlayer, currentWhisperPostNotifier: whisperPostNotifier, mainModel: mainModel);
     final String postId = whisperPost.postId;
     if (indexPostId != postId) {
       indexPostId = postId;

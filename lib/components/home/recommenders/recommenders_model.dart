@@ -14,6 +14,7 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/post/post.dart';
 // domain
 import 'package:whisper/domain/read_post/read_post.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
@@ -38,7 +39,7 @@ class RecommendersModel extends ChangeNotifier {
     return x;
   }
   // notifiers
-  final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
+  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -79,7 +80,7 @@ class RecommendersModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await getRecommenders();
     await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
   }
 

@@ -5,11 +5,9 @@ class EditButton extends StatelessWidget {
   
   const EditButton({
     Key? key,
-    required this.currentSongMap,
     required this.toEditingMode,
   }) : super(key: key);
   
-  final Map<String,dynamic> currentSongMap;
   final void Function()? toEditingMode;
   @override 
   

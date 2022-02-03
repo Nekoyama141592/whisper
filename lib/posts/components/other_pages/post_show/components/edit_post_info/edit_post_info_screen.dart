@@ -1,27 +1,26 @@
 // material
 import 'package:flutter/material.dart';
-// constants
-import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/links/links_model.dart';
 // model
 import 'edit_post_info_model.dart';
 import 'package:whisper/main_model.dart';
-
+// domain
+import 'package:whisper/domain/post/post.dart';
 
 class EditPostInfoScreen extends StatelessWidget {
 
   const EditPostInfoScreen({
     Key? key,
     required this.mainModel,
-    required this.currentSongMap,
+    required this.currentWhisperPost,
     required this.editPostInfoModel,
     required this.linksModel
   }) : super(key: key);
 
   final MainModel mainModel;
-  final Map<String,dynamic> currentSongMap;
+  final Post currentWhisperPost;
   final EditPostInfoModel editPostInfoModel;
   final LinksModel linksModel;
   @override 
@@ -29,10 +28,9 @@ class EditPostInfoScreen extends StatelessWidget {
 
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
-    final whisperPost = fromMapToPost(postMap: currentSongMap);
-    final postTitleController = TextEditingController(text: whisperPost.title );
-    final String imageURL = whisperPost.imageURLs.first;
-    final String userImageURL = whisperPost.userImageURL;
+    final postTitleController = TextEditingController(text: currentWhisperPost.title );
+    final String imageURL = currentWhisperPost.imageURLs.first;
+    final String userImageURL = currentWhisperPost.userImageURL;
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
 
     return Scaffold(
@@ -66,7 +64,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       verticalPadding: 10, 
                       horizontalPadding: 5, 
                       press: () async  {
-                        await editPostInfoModel.updatePostInfo(currentSongMap: currentSongMap, mainModel: mainModel, context: context, linksModel: linksModel );
+                        await editPostInfoModel.updatePostInfo(whisperPost: currentWhisperPost, mainModel: mainModel, context: context, linksModel: linksModel );
                       },
                       textColor: Colors.white, 
                       buttonColor: Theme.of(context).highlightColor
@@ -106,7 +104,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       widthRate: 0.45, 
                       verticalPadding: 20.0, 
                       horizontalPadding: 10.0, 
-                      press: () { linksModel.init(context: context, linkMaps: whisperPost.links ); }, 
+                      press: () { linksModel.init(context: context, linkMaps: currentWhisperPost.links ); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
                     ),
@@ -128,10 +126,10 @@ class EditPostInfoScreen extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   controller: postTitleController,
                   onChanged: (text) {
-                    whisperPost.title = text;
+                    currentWhisperPost.title = text;
                   },
                   decoration: InputDecoration(
-                    hintText: whisperPost.title,
+                    hintText: currentWhisperPost.title,
                     hintStyle: TextStyle(fontWeight: FontWeight.bold)
                   ),
                 )

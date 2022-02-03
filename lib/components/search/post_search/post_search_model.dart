@@ -14,6 +14,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 // notifiers
@@ -35,7 +36,7 @@ class PostSearchModel extends ChangeNotifier{
   List<AudioSource> afterUris = [];
   List<DocumentSnapshot<Map<String,dynamic>>> results = [];
    // notifiers
-  final currentSongMapNotifier = ValueNotifier<Map<String,dynamic>>({});
+  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
   final progressNotifier = ProgressNotifier();
   final repeatButtonNotifier = RepeatButtonNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -76,7 +77,7 @@ class PostSearchModel extends ChangeNotifier{
   Future operation({ required BuildContext context , required WhisperUser passiveWhisperUser ,required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
     startLoading();
     await search(context: context, mutesUids: mutesUids, blocksUids: blocksUids,passiveWhisperUser:  passiveWhisperUser);
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
   }
 

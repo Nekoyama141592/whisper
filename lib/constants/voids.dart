@@ -126,12 +126,12 @@ Future<void> speedControll({ required ValueNotifier<double> speedNotifier, requi
   }
 }
 
-void listenForStates({ required AudioPlayer audioPlayer, required PlayButtonNotifier playButtonNotifier, required ProgressNotifier progressNotifier, required ValueNotifier<Map<String,dynamic>> currentSongMapNotifier, required ValueNotifier<bool> isShuffleModeEnabledNotifier, required ValueNotifier<bool> isFirstSongNotifier, required ValueNotifier<bool> isLastSongNotifier}) {
+void listenForStates({ required AudioPlayer audioPlayer, required PlayButtonNotifier playButtonNotifier, required ProgressNotifier progressNotifier, required ValueNotifier<Post?> currentWhisperPostNotifier, required ValueNotifier<bool> isShuffleModeEnabledNotifier, required ValueNotifier<bool> isFirstSongNotifier, required ValueNotifier<bool> isLastSongNotifier}) {
   listenForChangesInPlayerState(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier);
   listenForChangesInPlayerPosition(audioPlayer: audioPlayer, progressNotifier: progressNotifier);
   listenForChangesInBufferedPosition(audioPlayer: audioPlayer, progressNotifier: progressNotifier);
   listenForChangesInTotalDuration(audioPlayer: audioPlayer, progressNotifier: progressNotifier);
-  listenForChangesInSequenceState(audioPlayer: audioPlayer, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+  listenForChangesInSequenceState(audioPlayer: audioPlayer, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
 }
 void listenForStatesForAddPostModel({ required AudioPlayer audioPlayer, required PlayButtonNotifier playButtonNotifier, required ProgressNotifier progressNotifier, }) {
   listenForChangesInPlayerState(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier);
@@ -191,13 +191,13 @@ void listenForChangesInTotalDuration({ required AudioPlayer audioPlayer, require
   });
 }
 
-void listenForChangesInSequenceState({ required AudioPlayer audioPlayer, required ValueNotifier<Map<String,dynamic>> currentSongMapNotifier, required ValueNotifier<bool> isShuffleModeEnabledNotifier, required ValueNotifier<bool> isFirstSongNotifier, required ValueNotifier<bool> isLastSongNotifier }) {
+void listenForChangesInSequenceState({ required AudioPlayer audioPlayer, required ValueNotifier<Post?> currentWhisperPostNotifier, required ValueNotifier<bool> isShuffleModeEnabledNotifier, required ValueNotifier<bool> isFirstSongNotifier, required ValueNotifier<bool> isLastSongNotifier }) {
   audioPlayer.sequenceStateStream.listen((sequenceState) {
     if (sequenceState == null) return;
     // update current song doc
     final currentItem = sequenceState.currentSource;
-    final Map<String,dynamic> currentSongMap = currentItem?.tag;
-    currentSongMapNotifier.value = currentSongMap;
+    final Post currentWhisperPost = currentItem?.tag;
+    currentWhisperPostNotifier.value = currentWhisperPost;
     // update playlist
     final playlist = sequenceState.effectiveSequence;
     isShuffleModeEnabledNotifier.value = 
@@ -345,7 +345,7 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
         if (x) {
           posts.insert(0, doc);
           Uri song = Uri.parse(whisperPost.audioURL);
-          UriAudioSource source = AudioSource.uri(song, tag: doc.data());
+          UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
           afterUris.insert(0, source);
         }
       });
@@ -375,7 +375,7 @@ Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dy
       if (x) {
         posts.add(doc);
         Uri song = Uri.parse(whisperPost.audioURL);
-        UriAudioSource source = AudioSource.uri(song, tag: doc.data());
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
         afterUris.add(source);
       }
     });
@@ -400,7 +400,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
         if (x) {
           posts.add(doc);
           Uri song = Uri.parse(whisperPost.audioURL);
-          UriAudioSource source = AudioSource.uri(song, tag: doc.data());
+          UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
           afterUris.add(source);
         }
       });

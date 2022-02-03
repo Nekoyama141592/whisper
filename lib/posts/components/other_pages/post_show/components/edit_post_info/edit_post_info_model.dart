@@ -57,8 +57,7 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo({ required Map<String,dynamic> currentSongMap , required MainModel mainModel, required BuildContext context,required LinksModel linksModel }) async {
-    final Post whisperPost = fromMapToPost(postMap: currentSongMap);
+  Future updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context,required LinksModel linksModel }) async {
     final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
     try{
       whisperPost.imageURLs = [imageURL];

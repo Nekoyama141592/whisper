@@ -17,7 +17,7 @@ import 'package:whisper/posts/components/other_pages/post_show/components/edit_p
 class PostButtons extends StatelessWidget {
 
   const PostButtons({
-    required this.currentSongMapNotifier,
+    required this.whisperPost,
     required this.postType,
     required this.toCommentsPage,
     required this.toEditingMode,
@@ -25,7 +25,7 @@ class PostButtons extends StatelessWidget {
     required this.editPostInfoModel
   });
 
-  final ValueNotifier<Map<String,dynamic>> currentSongMapNotifier;
+  final Post whisperPost;
   final PostType postType;
   final void Function()? toCommentsPage;
   final void Function()? toEditingMode;
@@ -34,23 +34,17 @@ class PostButtons extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Map<String,dynamic>>(
-      valueListenable: currentSongMapNotifier,
-      builder: (_,currentSongMap,__) {
-        final whisperPost = Post.fromJson(currentSongMapNotifier.value);
-        final String link = whisperPost.links.isEmpty ? '' 
-        : WhisperLink.fromJson(whisperPost.links.first).link;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            LikeButton(postType: postType, whisperPost: whisperPost, mainModel: mainModel),
-            BookmarkButton(postType: postType, whisperPost: whisperPost, mainModel: mainModel),
-            CommentButton(currentSongMap: currentSongMap,mainModel: mainModel,toCommentsPage: toCommentsPage),
-            if (mainModel.currentWhisperUser.uid == whisperPost.uid) EditButton(currentSongMap: currentSongMap, toEditingMode: toEditingMode,),
-            if (link.isNotEmpty) RedirectToUrlButton(currentSongMap: currentSongMap,)
-          ],
-        );
-      }
+    final String link = whisperPost.links.isEmpty ? '' 
+    : WhisperLink.fromJson(whisperPost.links.first).link;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        LikeButton(postType: postType, whisperPost: whisperPost, mainModel: mainModel),
+        BookmarkButton(postType: postType, whisperPost: whisperPost, mainModel: mainModel),
+        CommentButton(mainModel: mainModel,toCommentsPage: toCommentsPage),
+        if (mainModel.currentWhisperUser.uid == whisperPost.uid) EditButton(toEditingMode: toEditingMode,),
+        if (link.isNotEmpty) RedirectToUrlButton(whisperPost: whisperPost,)
+      ],
     );
   }
 }

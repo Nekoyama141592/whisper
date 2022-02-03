@@ -8,12 +8,10 @@ class CommentButton extends StatelessWidget {
 
   CommentButton({
     Key? key,
-    required this.currentSongMap,
     required this.toCommentsPage,
     required this.mainModel
   }) : super(key: key);
 
-  final Map<String,dynamic> currentSongMap;
   final void Function()? toCommentsPage;
   final MainModel mainModel;
 

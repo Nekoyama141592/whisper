@@ -6,7 +6,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
@@ -25,14 +24,14 @@ class CommentCard extends ConsumerWidget {
   const CommentCard({
     Key? key,
     required this.whisperComment,
-    required this.currentSongMap,
+    required this.whisperPost,
     required this.commentsModel,
     required this.replysModel,
     required this.mainModel
   }): super(key: key);
   
   final WhisperComment whisperComment;
-  final Map<String,dynamic> currentSongMap;
+  final Post whisperPost;
   final CommentsModel commentsModel;
   final ReplysModel replysModel;
   final MainModel mainModel;
@@ -42,7 +41,6 @@ class CommentCard extends ConsumerWidget {
     
     final postFutures = ref.watch(postsFeaturesProvider);
     final fontSize = 16.0;
-    final Post whisperPost = fromMapToPost(postMap: currentSongMap);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,

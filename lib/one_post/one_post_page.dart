@@ -30,14 +30,13 @@ class OnePostPage extends ConsumerWidget {
 
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
-    final Post post = fromMapToPost(postMap: onePostModel.currentSongMapNotifier.value);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
 
     return Scaffold(
       body: PostShowPage(
         speedNotifier: onePostModel.speedNotifier, 
         speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
-        currentSongMapNotifier: onePostModel.currentSongMapNotifier, 
+        currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, 
         progressNotifier: onePostModel.progressNotifier, 
         seek: onePostModel.seek, 
         repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
@@ -46,13 +45,13 @@ class OnePostPage extends ConsumerWidget {
         onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
         playButtonNotifier: onePostModel.playButtonNotifier, 
         play: () async { 
-          await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: post.postId, officialAdsensesModel: officialAdsensesModel);
+          await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
         }, 
         pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); },
         isLastSongNotifier: onePostModel.isLastSongNotifier, 
         onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
         toCommentsPage: () {
-          routes.toCommentsPage(context, onePostModel.audioPlayer, onePostModel.currentSongMapNotifier, mainModel);
+          routes.toCommentsPage(context: context, audioPlayer: onePostModel.audioPlayer, currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel);
         },
         toEditingMode: () { voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel); },
         postType: onePostModel.postType,
