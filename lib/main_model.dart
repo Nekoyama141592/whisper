@@ -251,7 +251,7 @@ class MainModel extends ChangeNotifier {
   }
 
   Future<void> getNewFeeds({ required List<String> followingUids }) async {
-    final timelinesQshot = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(firebaseAuthCurrentUser!.uid).collection(timelinesFieldKey).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
+    final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
     timelinesQshot.docs.reversed.forEach((element) { timelineDocs.insert(0, element); });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
       await voids.processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
@@ -260,7 +260,7 @@ class MainModel extends ChangeNotifier {
 
   // getFeeds
   Future<void> getFeeds({ required List<String> followingUids }) async {
-    final timelinesQshot = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(firebaseAuthCurrentUser!.uid).collection(timelinesFieldKey).orderBy(createdAtFieldKey,descending: true).limit(tenCount).get();
+    final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).limit(tenCount).get();
     timelineDocs = timelinesQshot.docs;
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
       await voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
@@ -268,7 +268,7 @@ class MainModel extends ChangeNotifier {
   }
 
   Future<void> getOldFeeds({ required List<String> followingUids }) async {
-    final timelinesQshot = await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(firebaseAuthCurrentUser!.uid).collection(timelinesFieldKey).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
+    final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
     timelinesQshot.docs.forEach((element) { timelineDocs.add(element); });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
       voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);

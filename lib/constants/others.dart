@@ -84,6 +84,7 @@ CollectionReference<Map<String, dynamic>> returnUsersColRef() { return FirebaseF
 DocumentReference<Map<String, dynamic>> returnUserDocRef({ required String uid }) { return returnUsersColRef().doc(uid); }
 CollectionReference<Map<String, dynamic>> returnUserMetaColRef() { return FirebaseFirestore.instance.collection(userMetaColRefName); }
 DocumentReference<Map<String, dynamic>> returnUserMetaDocRef({ required String uid }) { return returnUserMetaColRef().doc(uid); }
+CollectionReference<Map<String,dynamic>> returnTimelinesColRef({ required String uid }) { return returnUserMetaDocRef(uid: uid).collection(timelinesFieldKey); }
 CollectionReference<Map<String, dynamic>> returnFollowersColRef({ required String uid }) { return returnUserDocRef(uid: uid).collection(followersColRefName); }
 DocumentReference<Map<String, dynamic>> returnFollowerDocRef({ required String uid, required String followerUid }) { return returnFollowersColRef(uid: uid).doc(followerUid); }
 CollectionReference<Map<String, dynamic>>  returnTokensColRef({ required String uid }) { return returnUserMetaDocRef(uid: uid).collection(tokensColRefName); }

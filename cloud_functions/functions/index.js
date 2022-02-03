@@ -305,18 +305,20 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
 exports.createTimeline = functions.firestore.document('users/{uid}/posts/{id}').onCreate(
     async (snap,_) => {
         const newValue = snap.data();
+        const timeline = {
+            'createdAt': admin.firestore.Timestamp.now(),
+            'creatorUid': newValue.uid,
+            'isRead': false,
+            'isDelete': false,
+            'postId': newValue.postId,  
+        };
+        await fireStore.collection('userMeta').doc(newValue.uid).collection('timelines').doc(newValue.postId).set(timeline);
         const followers = await fireStore.collection('users').doc(newValue.uid).collection('followers').get();
         let count = 0;
         let batch = fireStore.batch();
         for (const follower of followers.docs) {
             const ref = fireStore.collection('userMeta').doc(follower.id).collection('timelines').doc(newValue.postId);
-            batch.set(ref,{
-                'createdAt': admin.firestore.Timestamp.now(),
-                'creatorUid': newValue.uid,
-                'isRead': false,
-                'isDelete': false,
-                'postId': newValue.postId,
-            });
+            batch.set(ref,timeline );
             count += 1;
             if (count == limit) {
                 await batch.commit();
