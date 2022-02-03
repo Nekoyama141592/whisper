@@ -62,7 +62,9 @@ class EditPostInfoModel extends ChangeNotifier {
     final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
     try{
       whisperPost.imageURLs = [imageURL];
-      whisperPost.title = 'title';
+      if (title.isNotEmpty) {
+        whisperPost.title = title;
+      }
       whisperPost.updatedAt = Timestamp.now();
       whisperPost.links = linksModel.whisperLinks.map((e) => e.toJson() ).toList();
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
