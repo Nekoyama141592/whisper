@@ -28,7 +28,7 @@ class EditPostInfoScreen extends StatelessWidget {
 
     final size = MediaQuery.of(context).size;
     final length = size.width * 0.8;
-    final postTitleController = TextEditingController(text: currentWhisperPost.title );
+    final postTitleController = TextEditingController(text: editPostInfoModel.title );
     final String imageURL = currentWhisperPost.imageURLs.first;
     final String userImageURL = currentWhisperPost.userImageURL;
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
@@ -126,7 +126,7 @@ class EditPostInfoScreen extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   controller: postTitleController,
                   onChanged: (text) {
-                    currentWhisperPost.title = text;
+                    editPostInfoModel.title = text;
                   },
                   decoration: InputDecoration(
                     hintText: currentWhisperPost.title,

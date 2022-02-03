@@ -21,6 +21,7 @@ final editPostInfoProvider = ChangeNotifierProvider(
 class EditPostInfoModel extends ChangeNotifier {
   
   bool isEditing = false;
+  String title = '';
   // image
   bool isCropped = false;
   XFile? xFile;
@@ -61,12 +62,13 @@ class EditPostInfoModel extends ChangeNotifier {
     final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
     try{
       whisperPost.imageURLs = [imageURL];
+      whisperPost.title = 'title';
       whisperPost.updatedAt = Timestamp.now();
       whisperPost.links = linksModel.whisperLinks.map((e) => e.toJson() ).toList();
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
       isEditing = false;
       notifyListeners();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('データが更新されました！表示に反映されなければ、タブをきってください')));
+      title = '';
     } catch(e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
     }
