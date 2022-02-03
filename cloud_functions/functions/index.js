@@ -230,7 +230,7 @@ exports.deleteUser = functions.firestore.document('users/{uid}').onDelete(
             await replyBatch.commit();
         }
         // delete postCommentReplyLikes
-        const postCommentReplyLikes = await fireStore.collectionGroup('postCommentReplyLikes').where('uid','==',oldValue.id).get();
+        const postCommentReplyLikes = await fireStore.collectionGroup('postCommentReplyLikes').where('activeUid','==',oldValue.id).get();
         let postCommentReplyLikeCount = 0;
         let postCommentReplyLikeBatch = fireStore.batch();
         for (const postCommentReplyLike of postCommentReplyLikes.docs) {
