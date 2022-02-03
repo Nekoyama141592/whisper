@@ -36,7 +36,7 @@ class MyProfileModel extends ChangeNotifier {
   bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   Query<Map<String, dynamic>> getQuery() {
-    final x = returnPostsColGroupQuery.where(uidFieldKey,isEqualTo: currentUserDoc['uid']).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
+    final x = returnPostsColRef(postCreatorUid: currentUserDoc.id ).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   // notifiers
