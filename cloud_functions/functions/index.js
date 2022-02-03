@@ -40,6 +40,9 @@ exports.onCreateToken = functions.firestore.document('userMeta/{uid}/tokens/{tok
             await fireStore.collection('users').doc(token.passiveUid).update({
                 'followerCount': admin.firestore.FieldValue.increment(plusOne),
             });
+            await fireStore.collection('users').doc(token.myUid).update({
+                'followingCount': admin.firestore.FieldValue.increment(plusOne),
+            });
         } else if (tokenType == 'likePost' ) {
             await fireStore.collection('users').doc(token.passiveUid).collection('posts').doc(token.postId).update({
                 'likeCount': admin.firestore.FieldValue.increment(plusOne),
@@ -87,6 +90,9 @@ exports.onDeleteToken = functions.firestore.document('userMeta/{uid}/tokens/{tok
             await fireStore.collection('users').doc(token.passiveUid).collection('followers').doc(token.myUid).delete();
             await fireStore.collection('users').doc(token.passiveUid).update({
                 'followerCount': admin.firestore.FieldValue.increment(minusOne),
+            });
+            await fireStore.collection('users').doc(token.myUid).update({
+                'followingCount': admin.firestore.FieldValue.increment(minusOne),
             });
         } else if (tokenType == 'likePost' ) {
             await fireStore.collection('users').doc(token.passiveUid).collection('posts').doc(token.postId).update({

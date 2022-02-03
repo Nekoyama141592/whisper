@@ -35,7 +35,7 @@ class UserShowHeader extends StatelessWidget {
     final followerCount = passiveWhisperUser.followerCount;
     final plusOneCount = followerCount + 1;
     final List<WhisperLink> whisperLinks = passiveWhisperUser.links.map((link){
-      return fromMapToWhisperLink(whisperLink: link as Map<String,dynamic>);
+      return fromMapToWhisperLink(whisperLink: link);
     }).toList();
     return Padding(
       padding: const EdgeInsets.fromLTRB(
@@ -101,7 +101,7 @@ class UserShowHeader extends StatelessWidget {
               children: [
                 Text(
                   // mainModel.followingUids contains myUid because of lib/components/home/feeds/feeds_model.dart
-                  mainModel.currentWhisperUser.uid == passiveWhisperUser.uid ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveWhisperUser.followerCount.toString() + 'following',
+                  mainModel.currentWhisperUser.uid == passiveWhisperUser.uid ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveWhisperUser.followingCount.toString() + 'following',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -11,6 +11,7 @@ class WhisperUser {
     required this.description,
     required this.dmState,
     required this.followerCount,
+    required this.followingCount,
     required this.imageURL,
     required this.isBanned,
     required this.isDelete,
@@ -31,6 +32,7 @@ class WhisperUser {
   String description;
   String dmState;
   int followerCount;
+  int followingCount;
   String imageURL;
   bool isBanned;
   bool isDelete;
