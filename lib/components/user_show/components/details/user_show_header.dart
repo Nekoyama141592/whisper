@@ -100,7 +100,7 @@ class UserShowHeader extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  // mainModel.followingUids contains myUid because of lib/components/home/feeds/feeds_model.dart
+                  // mainModel.followingUids contains myUid because of lib/main_model.dart
                   mainModel.currentWhisperUser.uid == passiveWhisperUser.uid ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveWhisperUser.followingCount.toString() + 'following',
                   style: TextStyle(
                     color: Colors.white,
