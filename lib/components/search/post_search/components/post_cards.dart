@@ -10,6 +10,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/search_input_field.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // model
@@ -23,11 +24,13 @@ class PostCards extends ConsumerWidget {
 
   const PostCards({
     Key? key,
+    required this.passiveWhisperUser,
     required this.results,
     required this.mainModel,
     required this.postSearchModel,
   }) : super(key: key);
 
+  final WhisperUser passiveWhisperUser;
   final List<DocumentSnapshot<Map<String,dynamic>>> results;
   final MainModel mainModel;
   final PostSearchModel postSearchModel;
@@ -62,7 +65,7 @@ class PostCards extends ConsumerWidget {
           },
           controller: searchController, 
           search: () async {
-            await postSearchModel.operation(context: context ,mutesUids: mainModel.muteUids, mutesPostIds: mainModel.mutePostIds, blocksUids: mainModel.blockUids, mutesIpv6s: mainModel.muteIpv6s, blocksIpv6s: mainModel.blockIpv6s);
+            await postSearchModel.operation(context: context, passiveWhisperUser: passiveWhisperUser,mutesUids: mainModel.muteUids, mutesPostIds: mainModel.mutePostIds, blocksUids: mainModel.blockUids, mutesIpv6s: mainModel.muteIpv6s, blocksIpv6s: mainModel.blockIpv6s);
           }
         ),
         results.isNotEmpty ?

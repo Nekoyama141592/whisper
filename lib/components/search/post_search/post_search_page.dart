@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/components/search/post_search/components//post_cards.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'post_search_model.dart';
 import 'package:whisper/main_model.dart';
@@ -13,10 +14,12 @@ class PostSearchPage extends ConsumerWidget {
 
   const PostSearchPage({
     Key? key,
+    required this.passiveWhisperUser,
     required this.mainModel,
     required this.postSearchModel
   }) : super(key: key);
 
+  final WhisperUser passiveWhisperUser;
   final MainModel mainModel;
   final PostSearchModel postSearchModel;
   
@@ -27,6 +30,7 @@ class PostSearchPage extends ConsumerWidget {
     return searchModel.isLoading ?
     Loading() 
     : PostCards(
+      passiveWhisperUser: passiveWhisperUser,
       results: searchModel.results,
       mainModel: mainModel,
       postSearchModel: postSearchModel,

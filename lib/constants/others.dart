@@ -152,8 +152,8 @@ BlockUser fromMapToBlocksIpv6AndUid({ required Map<String,dynamic> map }) {
   return BlockUser.fromJson(map);
 }
 
-Query<Map<String,dynamic>> returnPostSearchQuery({required List<String> searchWords }) {
-  Query<Map<String,dynamic>> query = returnPostsColGroupQuery.limit(oneTimeReadCount);
+Query<Map<String,dynamic>> returnPostSearchQuery({ required String postCreatorUid ,required List<String> searchWords }) {
+  Query<Map<String,dynamic>> query = returnPostsColRef(postCreatorUid: postCreatorUid).limit(oneTimeReadCount);
   searchWords.forEach((word) {
     query = query.where(searchTokenFieldKey + '.' + word,isEqualTo: true);
   });

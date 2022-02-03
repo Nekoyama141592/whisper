@@ -10,11 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/voids.dart';
-import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // import 'package:whisper/components/search/constants/AlgoliaApplication.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -73,20 +73,20 @@ class PostSearchModel extends ChangeNotifier{
     return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, ipv6: whisperPost.ipv6,uid: whisperPost.uid) && !mutesPostIds.contains(whisperPost.postId);
   }
 
-  Future operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
+  Future operation({ required BuildContext context , required WhisperUser passiveWhisperUser ,required List<dynamic> mutesUids, required List<String> mutesPostIds, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s}) async {
     startLoading();
-    await search(context: context, mutesUids: mutesUids, blocksUids: blocksUids);
+    await search(context: context, mutesUids: mutesUids, blocksUids: blocksUids,passiveWhisperUser:  passiveWhisperUser);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentSongMapNotifier: currentSongMapNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
   }
 
-  Future<void> search({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
+  Future<void> search({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required WhisperUser passiveWhisperUser }) async {
     if (searchTerm.length > maxSearchLength ) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字未満で検索してください')));
     } else {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
-      final Query<Map<String,dynamic>> query = returnPostSearchQuery(searchWords: searchWords);
+      final Query<Map<String,dynamic>> query = returnPostSearchQuery(postCreatorUid: passiveWhisperUser.uid,searchWords: searchWords);
       await processBasicDocs(query: query, docs: results);
       endLoading();
     }

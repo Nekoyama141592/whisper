@@ -57,7 +57,6 @@ class SearchPage extends ConsumerWidget {
           children: [
             UserSearchPage(mainModel: mainModel),
             UserRankingPage(mainModel: mainModel),
-            PostSearchPage(mainModel: mainModel, postSearchModel: postSearchModel),
           ]
         )
       ),
