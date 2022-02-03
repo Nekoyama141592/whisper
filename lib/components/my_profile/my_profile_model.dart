@@ -56,6 +56,8 @@ class MyProfileModel extends ChangeNotifier {
   late RefreshController refreshController;
   // Edit profile
   bool isEditing = false;
+  String userName = '';
+  String description = '';
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -148,7 +150,7 @@ class MyProfileModel extends ChangeNotifier {
   
   Future onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,required List<WhisperLink> links }) async {
     startLoading();
-    await voids.updateUserInfo(context: context,links: links, updateWhisperUser: updateWhisperUser, mainModel: mainModel, croppedFile: croppedFile);
+    await voids.updateUserInfo(context: context,links: links, updateWhisperUser: updateWhisperUser, description: description, userName: userName ,mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
     endLoading();
   }

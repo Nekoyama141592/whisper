@@ -55,11 +55,13 @@ class UserShowPage extends ConsumerWidget {
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
-              passiveWhisperUser.userName = text;
+              userShowModel.userName = text;
             },
             onDescriptionChanged: (text) {
-              passiveWhisperUser.description = text;
+              userShowModel.description = text;
             },
+            descriptionController: TextEditingController(text: passiveWhisperUser.description ),
+            userNameController: TextEditingController(text: passiveWhisperUser.userName ),
             croppedFile: userShowModel.croppedFile,
             isLoading: userShowModel.isLoading,
             isCropped: userShowModel.isCropped,

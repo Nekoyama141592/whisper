@@ -20,6 +20,8 @@ class EditProfileScreen extends StatelessWidget {
     required this.showImagePicker,
     required this.onUserNameChanged,
     required this.onDescriptionChanged,
+    required this.userNameController,
+    required this.descriptionController,
     required this.croppedFile,
     required this.isLoading,
     required this.isCropped,
@@ -32,6 +34,8 @@ class EditProfileScreen extends StatelessWidget {
   final void Function()? showImagePicker;
   final void Function(String)? onUserNameChanged;
   final void Function(String)? onDescriptionChanged;
+  final TextEditingController userNameController;
+  final TextEditingController descriptionController;
   final File? croppedFile;
   final bool isLoading;
   final bool isCropped;
@@ -40,13 +44,6 @@ class EditProfileScreen extends StatelessWidget {
   
   @override 
   Widget build(BuildContext context) {
-
-    final userNameController = TextEditingController(
-      text: mainModel.currentWhisperUser.userName
-    );
-    final descriptionController = TextEditingController(
-      text: mainModel.currentWhisperUser.description
-    );
 
     final textStyle = TextStyle(
       fontWeight: FontWeight.bold,

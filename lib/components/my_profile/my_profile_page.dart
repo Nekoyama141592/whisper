@@ -39,11 +39,13 @@ class MyProfilePage extends ConsumerWidget {
           await myProfileModel.showImagePicker();
         },
         onUserNameChanged: (text) {
-          currentWhisperUser.userName = text;
+          myProfileModel.userName = text;
         }, 
         onDescriptionChanged: (text) {
-          currentWhisperUser.description = text;
+          myProfileModel.description = text;
         }, 
+        descriptionController: TextEditingController(text:  currentWhisperUser.description),
+        userNameController: TextEditingController(text: currentWhisperUser.userName),
         croppedFile: myProfileModel.croppedFile,
         isLoading: myProfileModel.isLoading,
         isCropped: myProfileModel.isCropped,

@@ -443,7 +443,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   return getDownloadURL;
 }
 
-Future<void> updateUserInfo({ required BuildContext context ,required List<WhisperLink> links, required WhisperUser updateWhisperUser, required File? croppedFile,required MainModel mainModel }) async {
+Future<void> updateUserInfo({ required BuildContext context ,required List<WhisperLink> links, required WhisperUser updateWhisperUser, required String userName , required String description,required File? croppedFile,required MainModel mainModel }) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
@@ -451,6 +451,12 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
   final DateTime now = DateTime.now();
   updateWhisperUser.links = links.map((e) => e.toJson()).toList();
   updateWhisperUser.updatedAt = Timestamp.fromDate(now);
+  if (userName.isNotEmpty) {
+    updateWhisperUser.userName = userName;
+  }
+  if (description.isNotEmpty) {
+    updateWhisperUser.description = description;
+  }
   if (croppedFile != null) {
     final String storageImageName = returnStorageUserImageName();
     final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
