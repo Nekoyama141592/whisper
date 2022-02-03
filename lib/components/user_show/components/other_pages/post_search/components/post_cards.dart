@@ -18,7 +18,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
-import 'package:whisper/components/search/post_search/post_search_model.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class PostCards extends ConsumerWidget {
@@ -66,7 +66,7 @@ class PostCards extends ConsumerWidget {
           },
           controller: searchController, 
           search: () async {
-            await postSearchModel.operation(context: context, passiveWhisperUser: passiveWhisperUser,mutesUids: mainModel.muteUids, mutesPostIds: mainModel.mutePostIds, blocksUids: mainModel.blockUids, mutesIpv6s: mainModel.muteIpv6s, blocksIpv6s: mainModel.blockIpv6s);
+            await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
           }
         ),
         results.isNotEmpty ?

@@ -1,11 +1,15 @@
 // material
 import 'package:flutter/material.dart';
 // package
-import 'package:whisper/constants/others.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/follow_or_edit_button.dart';
 import 'package:whisper/components/user_show/components/details/link_button.dart';
+// constants
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
@@ -14,7 +18,7 @@ import 'package:whisper/components/user_show/components/other_pages/show_descrip
 // models
 import 'package:whisper/main_model.dart';
 
-class UserShowHeader extends StatelessWidget {
+class UserShowHeader extends ConsumerWidget {
 
   const UserShowHeader({
     Key? key,
@@ -30,10 +34,11 @@ class UserShowHeader extends StatelessWidget {
   final MainModel mainModel;
 
   @override 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref ) {
 
     final followerCount = passiveWhisperUser.followerCount;
     final plusOneCount = followerCount + 1;
+    final PostSearchModel postSearchModel = ref.watch(postSearchProvider);
     final List<WhisperLink> whisperLinks = passiveWhisperUser.links.map((link){
       return fromMapToWhisperLink(whisperLink: link);
     }).toList();
@@ -120,7 +125,12 @@ class UserShowHeader extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 20),
-                Icon(Icons.search),
+                InkWell(
+                  child: Icon(Icons.search),
+                  onTap: () {
+                    routes.toPostSearchPage(context: context, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
+                  },
+                ),
                 Icon(Icons.link),
                 if (whisperLinks.isNotEmpty) LinkButton(
                   link: whisperLinks.first.link

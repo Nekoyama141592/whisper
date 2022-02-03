@@ -153,7 +153,7 @@ class RecommendersModel extends ChangeNotifier {
 
   Future<void> getRecommenders() async {
     try {
-      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, muteIpv6s: muteIpv6s, blockIpv6s: blockIpv6s, mutePostIds: mutePostIds);
     } catch(e) { print(e.toString() ); }
   }
 

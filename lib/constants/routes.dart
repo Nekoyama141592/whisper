@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 // pages
 import 'package:whisper/main.dart';
@@ -32,6 +33,7 @@ import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.da
 import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
 import 'package:whisper/auth/account/other_pages/blocks_users/blocks_users_page.dart';
 import 'package:whisper/auth/login/verify_password_reset/verify_password_reset_page.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_page.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 // domain
@@ -153,6 +155,10 @@ void toNFTownersPage(context) {
 
 void toOneCommentPage ({ required BuildContext context, required MainModel mainModel} ) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => OneCommentPage(mainModel: mainModel,) ));
+}
+
+void toPostSearchPage ({ required BuildContext context,required WhisperUser passiveWhisperUser,required MainModel mainModel, required PostSearchModel postSearchModel }) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PostSearchPage(passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel) ) );
 }
 
 
