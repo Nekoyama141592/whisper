@@ -108,7 +108,6 @@ class ReplysModel extends ChangeNotifier {
               onPressed: () {
                 Navigator.pop(context);
                 replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
-                .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(limitIndex)
                 .snapshots();
@@ -127,7 +126,6 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byNewestFirst;
                 replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
-                .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(limitIndex)
                 .snapshots();
@@ -146,7 +144,6 @@ class ReplysModel extends ChangeNotifier {
                 Navigator.pop(context);
                 sortState = SortState.byOldestFirst;
                 replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
-                .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(limitIndex)
                 .snapshots();
@@ -187,7 +184,7 @@ class ReplysModel extends ChangeNotifier {
     try {
       if (indexCommentId != commentId) {
         indexCommentId = commentId;
-        replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId ).where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
+        replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId ).orderBy(createdAtFieldKey,descending: true).limit(limitIndex).snapshots();
       }
     } catch(e) {
       print(e.toString());
@@ -200,21 +197,18 @@ class ReplysModel extends ChangeNotifier {
     switch(sortState) {
       case SortState.byLikedUidCount:
       replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
-      .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(likeCountFieldKey,descending: true )
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byNewestFirst:
       replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
-      .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: true)
       .limit(limitIndex)
       .snapshots();
       break;
       case SortState.byOldestFirst:
       replysStream = returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
-      .where(elementIdFieldKey,isEqualTo: whisperComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: false)
       .limit(limitIndex)
       .snapshots();

@@ -62,7 +62,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs({ required Post whisperPost }) async {
     commentDocs = [];
-    await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,).where(postIdFieldKey,isEqualTo: whisperPost.postId).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
+    await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
       qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
     });
     notifyListeners();
@@ -252,7 +252,6 @@ class CommentsModel extends ChangeNotifier {
                 commentDocs = [];
                 sortState = SortState.byLikedUidCount;
                 await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-                .where(postIdFieldKey,isEqualTo: postId)
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
@@ -274,7 +273,6 @@ class CommentsModel extends ChangeNotifier {
                 commentDocs = [];
                 sortState = SortState.byNewestFirst;
                 await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-                .where(postIdFieldKey,isEqualTo: postId)
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
@@ -296,7 +294,6 @@ class CommentsModel extends ChangeNotifier {
                 commentDocs = [];
                 sortState = SortState.byOldestFirst;
                 await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-                .where(postIdFieldKey,isEqualTo: postId)
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
@@ -336,7 +333,6 @@ class CommentsModel extends ChangeNotifier {
       break;
       case SortState.byNewestFirst:
       QuerySnapshot<Map<String, dynamic>> newSnapshots = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtFieldKey,descending: true)
       .endBeforeDocument(commentDocs[0])
       .limit(oneTimeReadCount)
@@ -360,7 +356,6 @@ class CommentsModel extends ChangeNotifier {
     switch(sortState) {
       case SortState.byLikedUidCount:
       await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(likeCountFieldKey,descending: true )
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
@@ -372,7 +367,6 @@ class CommentsModel extends ChangeNotifier {
       break;
       case SortState.byNewestFirst:
       await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtFieldKey,descending: true)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
@@ -382,7 +376,6 @@ class CommentsModel extends ChangeNotifier {
       break;
       case SortState.byOldestFirst:
       await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .where(postIdFieldKey,isEqualTo: whisperPost.postId)
       .orderBy(createdAtFieldKey,descending: false)
       .startAfterDocument(commentDocs.last)
       .limit(oneTimeReadCount)
