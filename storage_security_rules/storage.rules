@@ -10,13 +10,11 @@ service firebase.storage {
   }
 
   function isValidPost(storagePostName) {
-    // request.resource.contentType == 'video/mp4' is false;
-    return storagePostName.matches('.*\\.aac')
+    return storagePostName.matches('.*\\.aac') && request.resource.contentType == 'video/mp4';
   }
 
   function isValidImage(imageName) {
-    // (request.resource.contentType == 'image/jpeg' || request.resource.contentType == 'image/png'); is false
-    return imageName.matches('.*\\.jpeg');
+    return imageName.matches('.*\\.jpeg') && request.resource.contentType == 'image/jpeg';
   }
 
   function canCreate(uid, resource) {

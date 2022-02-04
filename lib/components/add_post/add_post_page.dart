@@ -20,6 +20,8 @@ class AddPostPage extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
     return Scaffold(
       body: GradientScreen(
         top: Row(
@@ -37,17 +39,17 @@ class AddPostPage extends StatelessWidget {
           ],
         ),
         header: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(height/75.0),
           child: Text(
             '投稿する',
             style: TextStyle(
-              fontSize: 30.0,
+              fontSize: height/25.0,
               fontWeight: FontWeight.bold
             )
           ),
         ),
         content: AddPostContent(addPostModel: addPostModel, mainModel: mainModel),
-        circular: 35.0,
+        circular: height/32.0,
       ),
     );
   }

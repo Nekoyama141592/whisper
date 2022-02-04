@@ -16,6 +16,7 @@ class AudioButton extends StatelessWidget {
   
   @override 
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Column(
       children: [
         InkWell(
@@ -23,8 +24,8 @@ class AudioButton extends StatelessWidget {
           onTap: press,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 5
+          padding:  EdgeInsets.symmetric(
+            vertical: height/100.0
           ),
           child: Text(
             description,

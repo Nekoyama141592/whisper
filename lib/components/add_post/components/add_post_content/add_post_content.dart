@@ -38,6 +38,8 @@ class AddPostContent extends StatelessWidget {
       )
     );
     final size = MediaQuery.of(context).size;
+    final height = size.height;
+
     final Widget onePostAudioWindow = OnePostAudioWindow(
       route: null,
       progressNotifier: addPostModel.progressNotifier, 
@@ -74,13 +76,13 @@ class AddPostContent extends StatelessWidget {
               ),
               value == AddPostState.uploaded ?
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 25.0
+                padding: EdgeInsets.symmetric(
+                  vertical: height/75.0
                 ),
                 child: Text(
                   '投稿お疲れ様です！',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: height/64.0,
                     fontWeight: FontWeight.bold
                   ),
                 )
@@ -88,7 +90,7 @@ class AddPostContent extends StatelessWidget {
               : SizedBox.shrink(),
               // SvgPicture
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(height/75.0),
                 child: SvgPicture.asset(
                   'assets/svgs/recording-bro.svg',
                   height: 
@@ -117,7 +119,7 @@ class AddPostContent extends StatelessWidget {
               )
               : RetryButton(addPostModel,'次の投稿を行う'),
             
-              RecordingTime(addPostModel,value != AddPostState.recorded ? 75.0 : 40.0),
+              RecordingTime(addPostModel,value != AddPostState.recorded ? height/12.0 : height/24.0 ),
             
               value == AddPostState.recorded ?
               Column(
@@ -138,8 +140,8 @@ class AddPostContent extends StatelessWidget {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20
+                    padding: EdgeInsets.symmetric(
+                      vertical: height/75.0
                     ),
                   ),
                   onePostAudioWindow

@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 //model
@@ -23,7 +25,7 @@ class CommentsStateButton extends StatelessWidget {
         
         return AudioButton(
           description: commentsStateDisplayName, 
-          icon: Icon(Icons.comment,color: Theme.of(context).focusColor,size: 80.0, ),
+          icon: Icon(Icons.comment,color: Theme.of(context).focusColor,size: addPostIconSize(context: context), ),
           press: () { addPostModel.showCommentStatePopUp(context); },
         );
       }

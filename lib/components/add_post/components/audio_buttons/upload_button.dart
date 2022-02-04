@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 //model
@@ -24,7 +26,7 @@ class UploadButton extends StatelessWidget {
       icon: Icon(
         Icons.upload_file,
         color: Theme.of(context).highlightColor,
-        size: 80.0,
+        size: addPostIconSize(context: context),
       ),
       press: () async {
         await addPostModel.onUploadButtonPressed(context: context, mainModel: mainModel);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 // model
 import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/constants/doubles.dart';
 
 class AddLinkButton extends StatelessWidget {
 
@@ -25,12 +26,12 @@ class AddLinkButton extends StatelessWidget {
       icon: addPostModel.link.isEmpty ?
       Icon(
         Icons.add_link,
-        size: 80.0,
+        size: addPostIconSize(context: context),
       )
       : Icon(
         Icons.link,
         color: Theme.of(context).highlightColor,
-        size: 80.0,
+        size: addPostIconSize(context: context),
       ),
       press: () { addPostModel.showAddLinkDialogue(context, linkEditingController); },
     );

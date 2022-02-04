@@ -49,11 +49,12 @@ class AudioWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return InkWell(
       onTap: route,
       child: Container(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(height/75.0),
           child: Column(
             children: [
               AudioProgressBar(progressNotifier: progressNotifier, seek: seek),

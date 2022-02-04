@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 // model
@@ -18,7 +20,7 @@ class RetryButton extends StatelessWidget {
       icon: Icon(
         Icons.replay,
         color: Theme.of(context).highlightColor,
-        size: 100.0,
+        size: addPostIconSize(context: context),
       ),
       press: (){
         addPostModel.onRecordAgainButtonPressed();

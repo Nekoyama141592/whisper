@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 // notifier
@@ -30,11 +32,11 @@ class RecordButton extends StatelessWidget {
           '停止する'
           : '録音する',
           icon: value == AddPostState.recording ?
-          Icon(Icons.pause, size: 100.0,)
+          Icon(Icons.pause, size: addPostIconSize(context: context),)
           : Icon(
             Icons.fiber_manual_record,
             color: Theme.of(context).highlightColor,
-            size: 100.0,
+            size: addPostIconSize(context: context),
           ),
           press: () async {
             addPostModel.onRecordButtonPressed(context: context, mainModel: mainModel);

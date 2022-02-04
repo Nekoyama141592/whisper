@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/doubles.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
@@ -28,7 +29,7 @@ class ArrowForwardButton extends StatelessWidget {
       icon: Icon(
         Icons.arrow_forward,
         color: Theme.of(context).highlightColor,
-        size: 100.0,
+        size: addPostIconSize(context: context),
       ),
       press: (){
         if (addPostModel.postTitleNotifier.value.isEmpty) {

@@ -36,11 +36,10 @@ class OnePostAudioWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final size = MediaQuery.of(context).size;
-    final audioWindowHeight = size.height * 0.15;
-    final fontSize = 20.0;
+    final height = size.height;
+    final fontSize = height/32.0;
 
     return Container(
-      height: audioWindowHeight,
       child: InkWell(
         onTap: route,
         child: Column(
@@ -52,7 +51,7 @@ class OnePostAudioWindow extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: size.width * 0.03,
                   ),
-                  child: UserImage(userImageURL: currentWhisperUser.imageURL,length: 60.0,padding: 5.0,)
+                  child: UserImage(userImageURL: currentWhisperUser.imageURL,length: height/12.0,padding: height/64.0,)
                 ),
                 Container(
                   width: size.width * 0.55,
