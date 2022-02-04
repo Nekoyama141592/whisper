@@ -40,7 +40,7 @@ class ReplyCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids, blocksIpv6s: mainModel.blockIpv6s, mutesIpv6s: mainModel.muteIpv6s, ipv6: whisperReply.ipv6,uid: whisperReply.uid ) && !mainModel.muteReplyIds.contains(whisperReply.postCommentReplyId) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.muteReplyIds.contains(whisperReply.postCommentReplyId) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),
@@ -52,7 +52,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid, ipv6: whisperReply.ipv6);
+            await postFutures.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
           } ,
         ),
 
@@ -61,7 +61,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel: mainModel,passiveUid: whisperReply.uid, ipv6: whisperReply.ipv6);
+            await postFutures.blockUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
           },
         ),
       ] : [],

@@ -185,20 +185,20 @@ class PostFutures extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> muteUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
+  Future<void> muteUser({ required MainModel mainModel, required String passiveUid,}) async {
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-    final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, passiveUid: passiveUid,ipv6: ipv6,createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
+    final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, passiveUid: passiveUid, createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(muteUser.passiveUid);
     notifyListeners();
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
   }
 
-  Future<void> blockUser({ required MainModel mainModel, required String passiveUid,required String ipv6}) async {
+  Future<void> blockUser({ required MainModel mainModel, required String passiveUid,}) async {
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-    final BlockUser blockUser = BlockUser(createdAt: now,ipv6: ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
+    final BlockUser blockUser = BlockUser(createdAt: now, activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
     mainModel.blockUsers.add(blockUser);
     mainModel.blockUids.add(blockUser.activeUid);
     notifyListeners();

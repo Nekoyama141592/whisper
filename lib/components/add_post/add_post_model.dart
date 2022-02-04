@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:just_audio/just_audio.dart';
@@ -57,8 +56,6 @@ class AddPostModel extends ChangeNotifier {
   // imagePicker
   XFile? xFile;
   File? croppedFile;
-  // IP
-  String ipv6 = '';
   // commentsState
   final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
   String commentsState = 'open';
@@ -182,7 +179,6 @@ class AddPostModel extends ChangeNotifier {
     } else {
       startLoading();
       Navigator.pop(context);
-      if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
       final String postId = returnPostId(userMeta: mainModel.userMeta);
       // postImage
       final String storageImageName = (croppedFile == null) ? '' : returnStoragePostImageName();
@@ -224,7 +220,6 @@ class AddPostModel extends ChangeNotifier {
       hashTags: [],
       imageURLs: [imageURL], 
       impression: 0,
-      ipv6: ipv6, 
       isDelete: false,
       isNFTicon: currentWhiseprUser.isNFTicon,
       isOfficial: currentWhiseprUser.isOfficial,

@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flash/flash.dart';
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
-import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/nums.dart';
@@ -38,8 +36,6 @@ class CommentsModel extends ChangeNotifier {
   Map<String,dynamic> postComment = {};
   // comments
   List<DocumentSnapshot<Map<String,dynamic>>> commentDocs = [];
-  // IP
-  String ipv6 = '';
   // refresh
   SortState sortState = SortState.byNewestFirst;
   late RefreshController refreshController;
@@ -110,7 +106,6 @@ class CommentsModel extends ChangeNotifier {
 
   
   Future<void> makeComment({ required BuildContext context, required Post whisperPost, required MainModel mainModel }) async {
-    if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final WhisperComment whisperComment = WhisperComment.fromJson(commentMap);
     await returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
@@ -131,7 +126,6 @@ class CommentsModel extends ChangeNotifier {
       postCommentId: generatePostCommentId(uid: currentWhisperUser.uid ),
       createdAt: now,
       followerCount: currentWhisperUser.followerCount,
-      ipv6: ipv6, 
       isDelete: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,

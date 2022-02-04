@@ -21,7 +21,6 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       imageURLs:
           (json['imageURLs'] as List<dynamic>).map((e) => e as String).toList(),
       impression: json['impression'] as int,
-      ipv6: json['ipv6'] as String,
       isDelete: json['isDelete'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
       isOfficial: json['isOfficial'] as bool,
@@ -59,7 +58,6 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'hashTags': instance.hashTags,
       'imageURLs': instance.imageURLs,
       'impression': instance.impression,
-      'ipv6': instance.ipv6,
       'isDelete': instance.isDelete,
       'isNFTicon': instance.isNFTicon,
       'isOfficial': instance.isOfficial,

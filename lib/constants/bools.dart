@@ -10,13 +10,13 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid,required String ipv6}) {
-  return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) && !mutesIpv6s.contains(ipv6) && !blocksIpv6s.contains(ipv6) ) ;
+bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid,}) {
+  return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) ) ;
 }
 
-bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
+bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   final Post post = fromMapToPost(postMap: doc.data()!);
-  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid,ipv6: ipv6 ) && !mutesPostIds.contains(post.postId);
+  return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, uid: uid,) && !mutesPostIds.contains(post.postId);
 }
 
 bool isDisplayShowPage({ required bool isBlocked, required MainModel mainModel }) {
@@ -32,26 +32,26 @@ bool newNotificationExists({ required List<CommentNotification> commentNotificat
   return x;
 }
 
-bool isValidReadPost({ required PostType postType ,required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required String uid, required String ipv6, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
+bool isValidReadPost({ required PostType postType ,required List<dynamic> muteUids, required List<dynamic> blockUids, required String uid, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   // post is DocumentSnapshot<Map<String,dynamic>> or Map<String,dynamic>
   switch(postType) {
     case PostType.bookmarks:
     return true;
 
     case PostType.feeds:
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc );
+    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc );
 
     case PostType.myProfile:
     return true;
 
     case PostType.postSearch:
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc );
+    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc );
 
     case PostType.recommenders:
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
     final Post post = fromMapToPost(postMap: doc.data()!);
-    return basicScanOfPost(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
+    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
 
     case PostType.userShow:
     return true;

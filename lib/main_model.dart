@@ -69,7 +69,6 @@ class MainModel extends ChangeNotifier {
   // mutes 
   List<MuteUser> muteUsers = [];
   List<String> muteUids = [];
-  List<String> muteIpv6s = [];
   List<MuteReply> muteReplys = [];
   List<String> muteReplyIds = [];
   List<MuteComment> muteComments = [];
@@ -79,7 +78,6 @@ class MainModel extends ChangeNotifier {
   // block
   List<BlockUser> blockUsers = [];
   List<String> blockUids = [];
-  List<String> blockIpv6s = [];
   // searchHistory
   List<SearchHistory> searchHistory = [];
   // watchlist 
@@ -254,7 +252,7 @@ class MainModel extends ChangeNotifier {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
     timelinesQshot.docs.reversed.forEach((element) { timelineDocs.insert(0, element); });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      await voids.processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      await voids.processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutesPostIds: mutePostIds);
     }
   }
 
@@ -263,7 +261,7 @@ class MainModel extends ChangeNotifier {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).limit(tenCount).get();
     timelineDocs = timelinesQshot.docs;
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      await voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, muteIpv6s: muteIpv6s, blockIpv6s: blockIpv6s, mutePostIds: mutePostIds);
+      await voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
     }
   }
 
@@ -271,7 +269,7 @@ class MainModel extends ChangeNotifier {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
     timelinesQshot.docs.forEach((element) { timelineDocs.add(element); });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutesPostIds: mutePostIds);
     }
   }
 

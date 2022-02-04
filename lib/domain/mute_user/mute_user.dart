@@ -8,7 +8,6 @@ class MuteUser {
   MuteUser({
     required this.activeUid,
     required this.createdAt,
-    required this.ipv6,
     required this.tokenId,
     required this.tokenType,
     required this.passiveUid
@@ -16,7 +15,6 @@ class MuteUser {
   
   final String activeUid;
   final dynamic createdAt;
-  final String ipv6;
   final String tokenId;
   final String tokenType;
   final String passiveUid;

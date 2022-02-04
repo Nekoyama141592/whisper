@@ -5,12 +5,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dart_ipify/dart_ipify.dart';
+import 'package:whisper/constants/nums.dart';
+import 'package:whisper/constants/enums.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/nums.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/strings.dart';
@@ -147,12 +148,14 @@ class SignupModel extends ChangeNotifier {
   Future<void> createUserMeta({ required String uid }) async {
     final timestampBirthDay = Timestamp.fromDate(birthDay);
     final Timestamp now = Timestamp.now();
+    final ipv6 =  await Ipify.ipv64();
     final UserMeta userMeta = UserMeta(
       birthDay: timestampBirthDay,
       createdAt: now,
       gender: gender, 
       isAdmin: false,
       isDelete: false,
+      ipv6: ipv6,
       language: language, 
       uid: uid,
       updatedAt: now,

@@ -130,13 +130,13 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future<void> getNewUserShowPosts() async {
-    await voids.processNewPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+    await voids.processNewPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
   }
 
   Future<void> getPosts() async {
     try {
       posts = [];
-      await voids.processBasicPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], muteIpv6s: [], blockIpv6s: [], mutePostIds: []);
+      await voids.processBasicPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
 
     } catch(e) { print(e.toString()); }
     notifyListeners();
@@ -144,7 +144,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> getOldUserShowPosts() async {
     try {
-      await voids.processOldPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      await voids.processOldPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
     } catch(e) { print(e.toString()); }
   }
 

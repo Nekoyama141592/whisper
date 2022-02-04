@@ -10,7 +10,6 @@ class WhisperReply {
     required this.createdAt,
     required this.postCommentId,
     required this.followerCount,
-    required this.ipv6,
     required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
@@ -32,7 +31,6 @@ class WhisperReply {
   final dynamic createdAt;
   final String postCommentId;
   final int followerCount;
-  final String ipv6;
   final bool isDelete;
   final bool isNFTicon;
   final bool isOfficial;

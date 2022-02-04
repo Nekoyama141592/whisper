@@ -56,11 +56,9 @@ class RecommendersModel extends ChangeNotifier {
   // mute
   List<MuteUser> muteUsers = [];
   List<String> muteUids = [];
-  List<String> muteIpv6s = [];
   List<String> mutePostIds = [];
   List<BlockUser> blockUsers = [];
   List<String> blockUids = [];
-  List<String> blockIpv6s = [];
   List<String> readPostIds = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -116,12 +114,10 @@ class RecommendersModel extends ChangeNotifier {
         final BlockUser blockUser = BlockUser.fromJson(tokenMap);
         blockUsers.add(blockUser);
         blockUids.add(blockUser.activeUid);
-        blockIpv6s.add(blockUser.ipv6);
       } else if (tokenType == TokenType.muteUser) {
         final MuteUser muteUser = MuteUser.fromJson(tokenMap);
         muteUsers.add(muteUser);
         muteUids.add(muteUser.passiveUid);
-        muteIpv6s.add(muteUser.passiveUid);
       } else if (tokenType == TokenType.mutePost) {
         final MutePost mutePost = MutePost.fromJson(tokenMap);
         mutePostIds.add(mutePost.postId);
@@ -148,18 +144,18 @@ class RecommendersModel extends ChangeNotifier {
   }
 
   Future<void> getNewRecommenders() async {
-    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
   }
 
   Future<void> getRecommenders() async {
     try {
-      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, muteIpv6s: muteIpv6s, blockIpv6s: blockIpv6s, mutePostIds: mutePostIds);
+      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
     } catch(e) { print(e.toString() ); }
   }
 
   Future<void> getOldRecommenders() async {
     try {
-      await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+      await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
     } catch(e) { print(e.toString()); }
   }
 

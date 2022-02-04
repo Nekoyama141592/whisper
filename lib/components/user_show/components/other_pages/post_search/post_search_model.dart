@@ -67,9 +67,9 @@ class PostSearchModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesIpv6s, required List<dynamic> blocksIpv6s,required List<dynamic> mutesPostIds}) {
+  bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesPostIds}) {
     final whisperPost = fromMapToPost(postMap: map);
-    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, ipv6: whisperPost.ipv6,uid: whisperPost.uid) && !mutesPostIds.contains(whisperPost.postId);
+    return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids,uid: whisperPost.uid) && !mutesPostIds.contains(whisperPost.postId);
   }
 
   Future<void> search({ required BuildContext context ,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
@@ -79,7 +79,7 @@ class PostSearchModel extends ChangeNotifier{
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
       final Query<Map<String,dynamic>> query = returnPostSearchQuery(postCreatorUid: passiveWhisperUser.uid,searchWords: searchWords);
-      await processBasicPosts(query: query, posts: results, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, muteIpv6s: mainModel.muteIpv6s, blockIpv6s: mainModel.blockIpv6s, mutePostIds: mainModel.mutePostIds);
+      await processBasicPosts(query: query, posts: results, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
       endLoading();
     }
   }

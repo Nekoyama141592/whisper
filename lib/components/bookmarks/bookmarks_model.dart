@@ -113,7 +113,7 @@ class BookmarksModel extends ChangeNotifier {
       await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
         docs = qshot.docs;
       });
-      await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: [], blocksUids: [], mutesIpv6s: [], blocksIpv6s: [], mutesPostIds: []);
+      await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
       lastIndex = posts.length;
     }
   }

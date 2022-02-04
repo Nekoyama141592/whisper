@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
 import 'package:flash/flash.dart';
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -40,8 +39,6 @@ class ReplysModel extends ChangeNotifier {
   // snapshots
   int limitIndex = oneTimeReadCount;
   late Stream<QuerySnapshot> replysStream;
-  // IP
-  String ipv6 = '';
   // refresh
   SortState sortState = SortState.byNewestFirst;
   late RefreshController refreshController;
@@ -221,7 +218,6 @@ class ReplysModel extends ChangeNotifier {
   Future makeReply({ required Post whisperPost,required MainModel mainModel, required WhisperComment whisperComment}) async {
     final commentId = whisperComment.postCommentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
-    if (ipv6.isEmpty) { ipv6 =  await Ipify.ipv64(); }
     final Timestamp now = Timestamp.now();
     final String postCommentReplyId = generatePostCommentReplyId(uid: mainModel.userMeta.uid);
     final WhisperReply newWhisperReply = makeWhisperReply(postCommentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
@@ -238,7 +234,6 @@ class ReplysModel extends ChangeNotifier {
       createdAt: now,
       postCommentId: postCommentId,
       followerCount: currentWhisperUser.followerCount,
-      ipv6: ipv6, 
       isDelete: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,

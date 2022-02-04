@@ -306,7 +306,7 @@ Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSou
   mainModel.muteUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,ipv6: whisperPost.ipv6,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
+  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
   mainModel.muteUsers.add(muteUser);
   mainModel.reload();
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
@@ -319,7 +319,7 @@ Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSo
   blocksUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-  final BlockUser blockUser = BlockUser(createdAt: now,ipv6: whisperPost.ipv6,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
+  final BlockUser blockUser = BlockUser(createdAt: now,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
   blockUsers.add(blockUser);
   mainModel.reload();
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
@@ -330,7 +330,7 @@ Future<void> removeTheUsersPost({ required List<dynamic> results,required String
   await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
 }
 
-Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s, required List<String> mutesPostIds }) async {
+Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
   await query.endBeforeDocument(posts.first).get().then((qshot) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
     if (docs.isNotEmpty) {
@@ -340,8 +340,7 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()!);
         final String uid = whisperPost.uid;
-        final String ipv6 = whisperPost.ipv6;
-        bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
+        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc);
         if (x) {
           posts.insert(0, doc);
           Uri song = Uri.parse(whisperPost.audioURL);
@@ -357,21 +356,20 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
   });
 }
 
-Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> muteUids, required List<String> blockUids, required List<String> muteIpv6s, required List<String> blockIpv6s,required List<String> mutePostIds }) async {
+Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> muteUids, required List<String> blockUids, required List<String> mutePostIds }) async {
   await query.get().then((qshot) async {
-    await basicProcessContent(docs: qshot.docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, mutesUids: muteUids, blocksUids: blockUids, mutesIpv6s: muteIpv6s, blocksIpv6s: blockIpv6s, mutesPostIds: mutePostIds);
+    await basicProcessContent(docs: qshot.docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
   });
 }
 
-Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dynamic>>> docs ,required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s,required List<String> mutesPostIds }) async {
+Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dynamic>>> docs ,required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids ,required List<String> mutesPostIds }) async {
   
   if (docs.isNotEmpty) {
     docs.sort((a,b) => (fromMapToPost(postMap: b.data()!).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()!).createdAt ));
     docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final whisperPost = fromMapToPost(postMap: doc.data()! );
       final String uid = whisperPost.uid;
-      final String ipv6 = whisperPost.ipv6;
-      bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds,doc: doc);
+      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc);
       if (x) {
         posts.add(doc);
         Uri song = Uri.parse(whisperPost.audioURL);
@@ -386,7 +384,7 @@ Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dy
   }
 }
 
-Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> mutesUids, required List<String> blocksUids, required List<String> mutesIpv6s, required List<String> blocksIpv6s, required List<String> mutesPostIds }) async {
+Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
   await query.startAfterDocument(posts.last).get().then((qshot) async {
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
@@ -395,8 +393,8 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()! );
         final String uid = whisperPost.uid;
-        final String ipv6 = whisperPost.ipv6;
-        bool x = isValidReadPost(postType: postType, mutesUids: mutesUids, blocksUids: blocksUids, mutesIpv6s: mutesIpv6s, blocksIpv6s: blocksIpv6s, uid: uid, ipv6: ipv6, mutesPostIds: mutesPostIds, doc: doc);
+  
+        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc);
         if (x) {
           posts.add(doc);
           Uri song = Uri.parse(whisperPost.audioURL);

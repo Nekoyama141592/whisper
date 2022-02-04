@@ -18,7 +18,6 @@ class Post{
     required this.hashTags,
     required this.imageURLs,
     required this.impression,
-    required this.ipv6,
     required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
@@ -50,7 +49,6 @@ class Post{
   List<String> hashTags;
   List<String> imageURLs;
   int impression;
-  String ipv6;
   bool isDelete;
   bool isNFTicon;
   bool isOfficial;
