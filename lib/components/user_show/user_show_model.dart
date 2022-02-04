@@ -179,6 +179,9 @@ class UserShowModel extends ChangeNotifier {
     startLoading();
     await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,description: description,croppedFile: croppedFile, mainModel: mainModel);
     isEditing = false;
+    userName = '';
+    description = '';
+    whisperLinksOfModel = [];
     endLoading();
   }
 

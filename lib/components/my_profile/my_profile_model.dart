@@ -156,6 +156,9 @@ class MyProfileModel extends ChangeNotifier {
     startLoading();
     await voids.updateUserInfo(context: context,links: links, updateWhisperUser: updateWhisperUser, description: description, userName: userName ,mainModel: mainModel, croppedFile: croppedFile);
     isEditing = false;
+    userName = '';
+    description = '';
+    whisperLinksOfModel = [];
     endLoading();
   }
 

@@ -77,6 +77,7 @@ class EditPostInfoModel extends ChangeNotifier {
       isEditing = false;
       notifyListeners();
       title = '';
+      whisperLinksOfModel = [];
     } catch(e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
     }
