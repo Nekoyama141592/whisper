@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/voids.dart';
 import 'package:whisper/links/links_model.dart';
 import 'package:whisper/main_model.dart';
 // domain
@@ -53,7 +54,7 @@ class EditPostInfoModel extends ChangeNotifier {
   Future<String> uploadImage({ required MainModel mainModel,required String postId }) async {
     final thisPostImageName = returnStoragePostImageName();
     final ref = returnPostImageChildRef(mainModel: mainModel,postImageName: thisPostImageName,postId: postId);
-    await ref.putFile(croppedFile!);
+    await putImage(imageRef: ref, file: croppedFile! );
     final String downloadURL = await ref.getDownloadURL();
     return downloadURL;
   }

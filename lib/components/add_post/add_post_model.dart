@@ -163,7 +163,7 @@ class AddPostModel extends ChangeNotifier {
 
   Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel,required String postId }) async {
     final Reference storageRef = others.returnPostChildRef(mainModel: mainModel, storagePostName: storagePostName);
-    await storageRef.putFile(audioFile);
+    await voids.putPost(postRef: storageRef, postFile: audioFile );
     final String postDownloadURL = await storageRef.getDownloadURL();
     return postDownloadURL;
   }
@@ -199,7 +199,7 @@ class AddPostModel extends ChangeNotifier {
 
   Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel,required String postId }) async {
     final Reference storageRef = others.returnPostImageChildRef(mainModel: mainModel, postImageName: postImageName, postId: postId);
-    await storageRef.putFile(croppedFile!);
+    await voids.putImage(imageRef: storageRef, file: croppedFile! );
     final String downloadURL = await storageRef.getDownloadURL();
     return downloadURL;
   }

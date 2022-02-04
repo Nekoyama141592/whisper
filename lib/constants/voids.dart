@@ -437,7 +437,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   String getDownloadURL = '';
   try {
     final Reference storageRef = returnUserImageChildRef(uid: uid, storageImageName: storageImageName);
-    await storageRef.putFile(croppedFile!);
+    await putImage(imageRef: storageRef, file: croppedFile! );
     getDownloadURL = await storageRef.getDownloadURL();
   } catch(e) { print(e.toString()); }
   return getDownloadURL;
@@ -542,4 +542,10 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
     },
     positiveActionBuilder: positiveActionBuilder,
   );
+}
+Future<void> putImage({ required Reference imageRef,required File file }) async {
+  await imageRef.putFile(file,imageMetadata);
+}
+Future<void> putPost({ required Reference postRef,required File postFile }) async {
+  await postRef.putFile(postFile,postMetadata);
 }

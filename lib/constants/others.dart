@@ -46,6 +46,8 @@ Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   );
   return result;
 }
+final SettableMetadata imageMetadata = SettableMetadata(contentType: 'image/jpeg' );
+final SettableMetadata postMetadata = SettableMetadata(contentType: 'video/mp4');
 
 Reference returnUserImageParentRef({ required String uid }) {
   return FirebaseStorage.instance.ref().child(userImagesPathKey).child(uid);
