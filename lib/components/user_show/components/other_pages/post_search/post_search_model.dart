@@ -29,6 +29,7 @@ class PostSearchModel extends ChangeNotifier{
 
   String searchTerm = '';
   bool isLoading = false;
+  bool isFirstSearch = false;
    // just_audio
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
@@ -77,11 +78,23 @@ class PostSearchModel extends ChangeNotifier{
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字未満で検索してください')));
     } else if (searchTerm.isNotEmpty) {
       startLoading();
+      results = [];
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
       final Query<Map<String,dynamic>> query = returnPostSearchQuery(postCreatorUid: passiveWhisperUser.uid,searchWords: searchWords);
       await processBasicPosts(query: query, posts: results, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
+      if (isFirstSearch == false) {
+        voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+        isFirstSearch = true;
+      }
       endLoading();
     }
+  }
+
+  Future<void> onReload({ required BuildContext context ,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
+    startLoading();
+    await search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
+    
+    endLoading();
   }
 
   void seek(Duration position) {

@@ -1,14 +1,12 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'package:whisper/details/search_input_field.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
@@ -42,120 +40,93 @@ class PostCards extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider);
-    final searchController = TextEditingController.fromValue(
-      TextEditingValue(
-        text: postSearchModel.searchTerm,
-        selection: TextSelection.collapsed(
-          offset: postSearchModel.searchTerm.length
-        )
-      )
-    );
-
+    
     return
-    Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SearchInputField(
-          onCloseButtonPressed: () {
-            searchController.text = '';
-            postSearchModel.searchTerm = '';
-          },
-          onLongPress: () async { await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }); },
-          onChanged: (text) {
-            postSearchModel.searchTerm = text;
-          },
-          controller: searchController, 
-          search: () async {
-            await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
-          }
-        ),
-        results.isNotEmpty ?
-        Flexible(
-          flex: 10,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: results.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    final Map<String,dynamic> post = results[i].data()!;
-                    return 
-                    PostCard(
-                      post: post,
-                      onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
-                      initAudioPlayer: () async {
-                        await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
-                      },
-                      muteUser: () async {
-                        await voids.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
-                      },
-                      mutePost: () async {
-                        await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
-                      },
-                      blockUser: () async {
-                        await voids.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
-                      },
-                      mainModel: mainModel,
-                    );
-                  }
-                )
-              ),
-              ValueListenableBuilder<Post?>(
-                valueListenable: postSearchModel.currentWhisperPostNotifier,
-                builder: (_,whisperPost,__) {
-                  return AudioWindow(
-                    route: () {
-                      routes.toPostShowPage(
-                        postType: postSearchModel.postType,
-                        context: context,
-                        speedNotifier: postSearchModel.speedNotifier,
-                        speedControll:  () async { await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },
-                        currentWhisperPostNotifier: postSearchModel.currentWhisperPostNotifier, 
-                        progressNotifier: postSearchModel.progressNotifier, 
-                        seek: postSearchModel.seek, 
-                        repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
-                        onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: postSearchModel.audioPlayer, repeatButtonNotifier: postSearchModel.repeatButtonNotifier); }, 
-                        isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
-                        onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
-                        playButtonNotifier: postSearchModel.playButtonNotifier, 
-                        play: () async { 
-                          await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-                        }, 
-                        pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
-                        isLastSongNotifier: postSearchModel.isLastSongNotifier, 
-                        onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
-                        toCommentsPage:  () async {
-                          await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value! );
-                        },
-                        toEditingMode:  () {
-                          voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);
-                        },
-                        mainModel: mainModel
-                      ); 
-                    }, 
-                    progressNotifier: postSearchModel.progressNotifier,
-                    seek: postSearchModel.seek,
-                    whisperPost: whisperPost!,
-                    playButtonNotifier: postSearchModel.playButtonNotifier,
-                    play: () async {
-                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-                    },
-                    pause: () {
-                      voids.pause(audioPlayer: postSearchModel.audioPlayer);
-                    }, 
-                    isFirstSongNotifier: postSearchModel.isFirstSongNotifier,
-                    onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
-                    isLastSongNotifier: postSearchModel.isLastSongNotifier,
-                    onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
-                    mainModel: mainModel,
-                  );
-                }
-              )
-            ],
+    results.isNotEmpty ?
+    Flexible(
+      flex: 10,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: results.length,
+              itemBuilder: (BuildContext context, int i) {
+                final Map<String,dynamic> post = results[i].data()!;
+                return 
+                PostCard(
+                  post: post,
+                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
+                  initAudioPlayer: () async {
+                    await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
+                  },
+                  muteUser: () async {
+                    await voids.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                  },
+                  mutePost: () async {
+                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
+                  },
+                  blockUser: () async {
+                    await voids.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
+                  },
+                  mainModel: mainModel,
+                );
+              }
+            )
           ),
-        ) : SizedBox.shrink(),
-      ],
-    );
+          ValueListenableBuilder<Post?>(
+            valueListenable: postSearchModel.currentWhisperPostNotifier,
+            builder: (_,whisperPost,__) {
+              return AudioWindow(
+                route: () {
+                  routes.toPostShowPage(
+                    postType: postSearchModel.postType,
+                    context: context,
+                    speedNotifier: postSearchModel.speedNotifier,
+                    speedControll:  () async { await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },
+                    currentWhisperPostNotifier: postSearchModel.currentWhisperPostNotifier, 
+                    progressNotifier: postSearchModel.progressNotifier, 
+                    seek: postSearchModel.seek, 
+                    repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
+                    onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: postSearchModel.audioPlayer, repeatButtonNotifier: postSearchModel.repeatButtonNotifier); }, 
+                    isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
+                    onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
+                    playButtonNotifier: postSearchModel.playButtonNotifier, 
+                    play: () async { 
+                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
+                    }, 
+                    pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
+                    isLastSongNotifier: postSearchModel.isLastSongNotifier, 
+                    onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
+                    toCommentsPage:  () async {
+                      await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value! );
+                    },
+                    toEditingMode:  () {
+                      voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);
+                    },
+                    mainModel: mainModel
+                  ); 
+                }, 
+                progressNotifier: postSearchModel.progressNotifier,
+                seek: postSearchModel.seek,
+                whisperPost: whisperPost!,
+                playButtonNotifier: postSearchModel.playButtonNotifier,
+                play: () async {
+                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
+                },
+                pause: () {
+                  voids.pause(audioPlayer: postSearchModel.audioPlayer);
+                }, 
+                isFirstSongNotifier: postSearchModel.isFirstSongNotifier,
+                onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
+                isLastSongNotifier: postSearchModel.isLastSongNotifier,
+                onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
+                mainModel: mainModel,
+              );
+            }
+          )
+        ],
+      ),
+    ) : SizedBox.shrink();
   }
 }

@@ -20,7 +20,7 @@ class Nothing extends StatelessWidget {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Center(
             child: SvgPicture.asset(
