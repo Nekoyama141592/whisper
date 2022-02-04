@@ -10,7 +10,6 @@ import 'package:whisper/components/notifications/components/reply_notifications/
 import 'package:whisper/components/notifications/components/comment_notifications/comment_notifications.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/links/links_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/components/notifications/notifications_model.dart';
 
@@ -19,13 +18,11 @@ class NotificationsPage extends StatelessWidget {
   const NotificationsPage({
     Key? key,
     required this.mainModel,
-    required this.linksModel,
     required this.themeModel,
     required this.notificationsModel,
   });
 
   final MainModel mainModel;
-  final LinksModel linksModel;
   final ThemeModel themeModel;
   final NotificationsModel notificationsModel;
 
@@ -59,7 +56,7 @@ class NotificationsPage extends StatelessWidget {
           ),
           
         ),
-        drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel, linksModel: linksModel),
+        drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel,),
         body: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
           stream: notificationsModel.notificationStream,
           builder: (context, snapshot) {

@@ -2,22 +2,19 @@
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
-// domain
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
-
 class LinksPage extends StatelessWidget {
 
   const LinksPage({
     Key? key,
-    required this.controllers,
-    required this.whisperLinks
+    required this.whisperLinksOfModel
   }) : super(key: key);
 
-  final List<WhisperLink> whisperLinks;
-  final List<TextEditingController> controllers;
+  final List<WhisperLink> whisperLinksOfModel;
   
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -39,20 +36,28 @@ class LinksPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: whisperLinks.length,
+                itemCount: whisperLinksOfModel.length,
                 itemBuilder: (BuildContext context, int i) {
-                  final WhisperLink whisperLink = whisperLinks[i];
-                  final TextEditingController textEditingController = controllers[i];
-                  return TextFormField(
-                    decoration: InputDecoration(
-                      hintText: whisperLink.label,
-                      suffixIcon: Icon(Icons.delete)
+                  final TextEditingController labelEditingController = TextEditingController(text: whisperLinksOfModel[i].label );
+                  final TextEditingController linkEditingController = TextEditingController(text: whisperLinksOfModel[i].link);
+                  return Padding(
+                    padding: EdgeInsets.all(size.height/64.0),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.delete)
+                          ),
+                          controller: labelEditingController,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.delete)
+                          ),
+                          controller: linkEditingController
+                        ),
+                      ],
                     ),
-                    onChanged: (text) {
-                      whisperLinks[i].label = text;
-                    },
-                    
-                    controller: textEditingController,
                   );
                 }
               ),

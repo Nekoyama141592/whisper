@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/routes.dart' as routes;
-import 'package:whisper/links/links_model.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
@@ -18,12 +17,10 @@ class NotificationIcon extends ConsumerWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.linksModel
   }) : super(key: key);
 
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final LinksModel linksModel;
 
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +34,7 @@ class NotificationIcon extends ConsumerWidget {
         bool isNotificationExists = (snapshot.data == null) ? false : snapshot.data!.docs.isNotEmpty;
         return InkWell(
           onTap: () {
-            routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, linksModel: linksModel, notificationsModel: notificationsModel,);
+            routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, notificationsModel: notificationsModel,);
           },
           child: 
           

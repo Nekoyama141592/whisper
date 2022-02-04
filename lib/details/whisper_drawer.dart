@@ -6,7 +6,6 @@ import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
-import 'package:whisper/links/links_model.dart';
 
 class WhisperDrawer extends StatelessWidget {
   
@@ -14,12 +13,10 @@ class WhisperDrawer extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.linksModel
   }) : super(key: key);
 
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final LinksModel linksModel;
   
   @override  
   Widget build(BuildContext context) {
@@ -53,12 +50,6 @@ class WhisperDrawer extends StatelessWidget {
               routes.toImportantMattersPage(context);
             },
           ),
-          ListTile(
-            title: Text('Links'),
-            onTap: () {
-              linksModel.init(context: context, linkMaps: mainModel.currentWhisperUser.links);
-            },
-          )
         ],
       ),
     );

@@ -7,7 +7,6 @@ import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/circle_image.dart';
 import 'package:whisper/details/rounded_button.dart';
-import 'package:whisper/links/links_model.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -20,18 +19,19 @@ class EditProfileScreen extends StatelessWidget {
     required this.showImagePicker,
     required this.onUserNameChanged,
     required this.onDescriptionChanged,
+    required this.onEditLinkButtonPressed,
     required this.userNameController,
     required this.descriptionController,
     required this.croppedFile,
     required this.isLoading,
     required this.isCropped,
     required this.mainModel,
-    required this.linksModel
   }) : super(key: key);
 
   final void Function()? onCancelButtonPressed;
   final void Function()? onSaveButtonPressed;
   final void Function()? showImagePicker;
+  final void Function()? onEditLinkButtonPressed;
   final void Function(String)? onUserNameChanged;
   final void Function(String)? onDescriptionChanged;
   final TextEditingController userNameController;
@@ -40,7 +40,6 @@ class EditProfileScreen extends StatelessWidget {
   final bool isLoading;
   final bool isCropped;
   final MainModel mainModel;
-  final LinksModel linksModel;
   
   @override 
   Widget build(BuildContext context) {
@@ -93,7 +92,7 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(width: 16.0,),
                 InkWell(
                   child: Icon(Icons.link),
-                  onTap: () { linksModel.init(context: context, linkMaps: mainModel.currentWhisperUser.links ); },
+                  onTap: onEditLinkButtonPressed
                 )
               ],
             ),

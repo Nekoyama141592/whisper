@@ -8,7 +8,6 @@ import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
 import 'package:whisper/components/my_profile/components/my_profile_post_screen.dart';
 import 'package:whisper/components/user_show/components/other_pages/edit_profile_screen.dart';
-import 'package:whisper/links/links_model.dart';
 // models
 import 'my_profile_model.dart';
 import 'package:whisper/main_model.dart';
@@ -25,7 +24,6 @@ class MyProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final myProfileModel = ref.watch(myProfileProvider);
-    final linksModel = ref.watch(linksProvider);
     final currentWhisperUser = mainModel.currentWhisperUser;
 
     return SafeArea(
@@ -33,7 +31,7 @@ class MyProfilePage extends ConsumerWidget {
       EditProfileScreen(
         onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
         onSaveButtonPressed: () async {
-          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, links: linksModel.whisperLinks );
+          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, links: myProfileModel.whisperLinksOfModel );
         }, 
         showImagePicker: () async {
           await myProfileModel.showImagePicker();
@@ -44,13 +42,15 @@ class MyProfilePage extends ConsumerWidget {
         onDescriptionChanged: (text) {
           myProfileModel.description = text;
         }, 
+        onEditLinkButtonPressed: () {
+          myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links );
+        },
         descriptionController: TextEditingController(text:  currentWhisperUser.description),
         userNameController: TextEditingController(text: currentWhisperUser.userName),
         croppedFile: myProfileModel.croppedFile,
         isLoading: myProfileModel.isLoading,
         isCropped: myProfileModel.isCropped,
         mainModel: mainModel,
-        linksModel: linksModel,
       ) 
       : GradientScreen(
         top: SizedBox.shrink(), 

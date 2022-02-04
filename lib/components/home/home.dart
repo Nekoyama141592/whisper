@@ -11,19 +11,16 @@ import 'package:whisper/components/home/recommenders/recommenders_page.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
-import 'package:whisper/links/links_model.dart';
 
 class Home extends StatelessWidget {
 
   const Home({
     Key? key,
     required this.mainModel,
-    required this.linksModel,
     required this.themeModel,
   }) : super(key: key);
   
   final MainModel mainModel;
-  final LinksModel linksModel;
   final ThemeModel themeModel;
 
   @override  
@@ -42,7 +39,6 @@ class Home extends StatelessWidget {
             NotificationIcon(
               mainModel: mainModel, 
               themeModel: themeModel,
-              linksModel: linksModel,
             )
           ],
           bottom: TabBar(
@@ -57,7 +53,6 @@ class Home extends StatelessWidget {
         
         drawer: WhisperDrawer(
           mainModel: mainModel,
-          linksModel: linksModel,
           themeModel: themeModel,
         ),
         body: TabBarView(

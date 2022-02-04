@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
-import 'package:whisper/links/links_model.dart';
 // model
 import 'edit_post_info_model.dart';
 import 'package:whisper/main_model.dart';
@@ -16,13 +15,11 @@ class EditPostInfoScreen extends StatelessWidget {
     required this.mainModel,
     required this.currentWhisperPost,
     required this.editPostInfoModel,
-    required this.linksModel
   }) : super(key: key);
 
   final MainModel mainModel;
   final Post currentWhisperPost;
   final EditPostInfoModel editPostInfoModel;
-  final LinksModel linksModel;
   @override 
   Widget build(BuildContext context) {
 
@@ -64,7 +61,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       verticalPadding: 10, 
                       horizontalPadding: 5, 
                       press: () async  {
-                        await editPostInfoModel.updatePostInfo(whisperPost: currentWhisperPost, mainModel: mainModel, context: context, linksModel: linksModel );
+                        await editPostInfoModel.updatePostInfo(whisperPost: currentWhisperPost, mainModel: mainModel, context: context,);
                       },
                       textColor: Colors.white, 
                       buttonColor: Theme.of(context).highlightColor
@@ -104,7 +101,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       widthRate: 0.45, 
                       verticalPadding: 20.0, 
                       horizontalPadding: 10.0, 
-                      press: () { linksModel.init(context: context, linkMaps: currentWhisperPost.links ); }, 
+                      press: () { editPostInfoModel.init(context: context, linkMaps: currentWhisperPost.links ); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
                     ),

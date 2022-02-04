@@ -10,10 +10,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart';
-import 'package:whisper/links/links_model.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
+// pagas
+import 'package:whisper/links/links_page.dart';
 
 final editPostInfoProvider = ChangeNotifierProvider(
   (ref) => EditPostInfoModel()
@@ -27,6 +29,9 @@ class EditPostInfoModel extends ChangeNotifier {
   bool isCropped = false;
   XFile? xFile;
   File? croppedFile;
+  List<WhisperLink> whisperLinksOfModel = [];
+
+  
 
   void reload() {
     notifyListeners();
@@ -59,7 +64,7 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context,required LinksModel linksModel }) async {
+  Future updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context }) async {
     final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
     try{
       whisperPost.imageURLs = [imageURL];
@@ -67,7 +72,7 @@ class EditPostInfoModel extends ChangeNotifier {
         whisperPost.title = title;
       }
       whisperPost.updatedAt = Timestamp.now();
-      whisperPost.links = linksModel.whisperLinks.map((e) => e.toJson() ).toList();
+      whisperPost.links = whisperLinksOfModel.map((e) => e.toJson()).toList();
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
       isEditing = false;
       notifyListeners();
@@ -75,6 +80,24 @@ class EditPostInfoModel extends ChangeNotifier {
     } catch(e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
     }
+  }
+
+  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps }) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksOfModel: whisperLinksOfModel,) ));
+    whisperLinksOfModel = [];
+    whisperLinksOfModel = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
+    notifyListeners();
+  }
+
+  void onAddButtonPressed() {
+    final WhisperLink whisperLink = WhisperLink(description: '',imageURL: '',label: '',link: '');
+    whisperLinksOfModel.add(whisperLink);
+    notifyListeners();
+  }
+
+  void onDeleteButtonPressed({ required int i }) {
+    whisperLinksOfModel.removeAt(i);
+    notifyListeners();
   }
   
 }
