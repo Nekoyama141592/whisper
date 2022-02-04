@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/details/judge_screen.dart';
 // components
-import 'package:whisper/details/search_input_field.dart';
-import 'package:whisper/details/loading.dart';
 import 'components/post_cards.dart';
+import 'package:whisper/details/loading.dart';
+import 'package:whisper/details/search_input_field.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'post_search_model.dart';
@@ -40,6 +41,14 @@ class PostSearchPage extends ConsumerWidget {
     );
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(passiveWhisperUser.userName,),
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(size.height/32.0),
+        ),
+      ),
+      ),
       body: SafeArea(
         child: searchModel.isLoading ?
         Loading() 
@@ -47,7 +56,6 @@ class PostSearchPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
               child: SearchInputField(
                 onCloseButtonPressed: () {
                   searchController.text = '';
