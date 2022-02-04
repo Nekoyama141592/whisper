@@ -34,8 +34,7 @@ class PostButtons extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
-    final String link = whisperPost.links.isEmpty ? '' 
-    : WhisperLink.fromJson(whisperPost.links.first).link;
+    
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -43,7 +42,7 @@ class PostButtons extends StatelessWidget {
         BookmarkButton(postType: postType, whisperPost: whisperPost, mainModel: mainModel),
         CommentButton(mainModel: mainModel,toCommentsPage: toCommentsPage),
         if (mainModel.currentWhisperUser.uid == whisperPost.uid) EditButton(toEditingMode: toEditingMode,),
-        if (link.isNotEmpty) RedirectToUrlButton(whisperPost: whisperPost,)
+        if (whisperPost.links.isNotEmpty) RedirectToUrlButton(whisperPost: whisperPost,)
       ],
     );
   }

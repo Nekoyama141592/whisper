@@ -39,9 +39,7 @@ class UserShowHeader extends ConsumerWidget {
     final followerCount = passiveWhisperUser.followerCount;
     final plusOneCount = followerCount + 1;
     final PostSearchModel postSearchModel = ref.watch(postSearchProvider);
-    final List<WhisperLink> whisperLinks = passiveWhisperUser.links.map((link){
-      return fromMapToWhisperLink(whisperLink: link);
-    }).toList();
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         20.0, 
@@ -132,9 +130,7 @@ class UserShowHeader extends ConsumerWidget {
                   },
                 ),
                 Icon(Icons.link),
-                if (whisperLinks.isNotEmpty) LinkButton(
-                  link: whisperLinks.first.link
-                )
+                if (passiveWhisperUser.links.isNotEmpty) LinkButton(passiveWhisperUser: passiveWhisperUser)
               ],
             ),
           ),

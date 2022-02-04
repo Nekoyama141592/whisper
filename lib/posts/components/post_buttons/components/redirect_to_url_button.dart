@@ -1,15 +1,12 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
-// packages
-import 'package:clipboard/clipboard.dart';
-import 'package:url_launcher/url_launcher.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // constants
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 
 class RedirectToUrlButton extends StatelessWidget {
 
@@ -22,66 +19,24 @@ class RedirectToUrlButton extends StatelessWidget {
   @override 
 
   Widget build(BuildContext context) {
-    
-    final WhisperLink whisperLink = fromMapToWhisperLink(whisperLink: whisperPost.links.first );
-    final link = whisperLink.link;
+
+    final List<WhisperLink> whisperLinks = whisperPost.links.map((element) => fromMapToWhisperLink(whisperLink: element) ).toList();
 
     return InkWell(
-        onTap: () async {
-        if ( await canLaunch(link)) {
-          showCupertinoDialog(
-            context: context, 
-            builder: (_) {
-              return CupertinoAlertDialog(
-                title: Text('ページ遷移'),
-                content: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: link,
-                        style: TextStyle(
-                          color: Theme.of(context).highlightColor,
-                          fontWeight: FontWeight.bold
-                        ),
-                        recognizer: TapGestureRecognizer()..onTap = () async {
-                          await FlutterClipboard.copy(link).then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
-                          });
-                        },
-                      ),
-                      TextSpan(
-                        text: 'に移動します。',
-                        style: TextStyle(
-                          color: Theme.of(context).focusColor,
-                          fontWeight: FontWeight.bold,
-                        )
-                      )
-                    ]
-                  )
-                ),
-                actions: [
-                  CupertinoDialogAction(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  CupertinoDialogAction(
-                    child: const Text('Ok'),
-                    isDestructiveAction: true,
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      await Future.delayed(Duration(seconds: 1));
-                      await launch(link);
-                    },
-                  )
-                ],
-              );
-            }
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
-        }
+      onTap: () async {
+        showCupertinoModalPopup(
+          context: context, 
+          builder: (innerContext) {
+            return CupertinoActionSheet(
+              actions: whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
+                child: Text(whisperLink.label,style: textStyle(context: context),),
+                onPressed: () {
+                  voids.showLinkDialogue(context: context, link: whisperLink.link );
+                }, 
+              ) ).toList(),
+            );
+          }
+        );  
       },
       child: Icon(Icons.link),
     );

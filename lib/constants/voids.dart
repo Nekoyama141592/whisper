@@ -3,9 +3,12 @@ import 'dart:io';
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 // packages
 import 'package:flash/flash.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -546,4 +549,61 @@ Future<void> putImage({ required Reference imageRef,required File file }) async 
 }
 Future<void> putPost({ required Reference postRef,required File postFile }) async {
   await postRef.putFile(postFile,postMetadata);
+}
+
+Future<void> showLinkDialogue({ required BuildContext context, required String link }) async {
+  if ( await canLaunch(link)) {
+    showCupertinoDialog(
+      context: context, 
+      builder: (innerContext) {
+        return CupertinoAlertDialog(
+          title: Text('ページ遷移'),
+          content: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: link,
+                  style: TextStyle(
+                    color: Theme.of(context).highlightColor,
+                    fontWeight: FontWeight.bold
+                  ),
+                  recognizer: TapGestureRecognizer()..onTap = () async {
+                    await FlutterClipboard.copy(link).then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
+                    });
+                  },
+                ),
+                TextSpan(
+                  text: 'に移動します。',
+                  style: TextStyle(
+                    color: Theme.of(context).focusColor,
+                    fontWeight: FontWeight.bold,
+                  )
+                )
+              ]
+            )
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(innerContext);
+              },
+            ),
+            CupertinoDialogAction(
+              child: const Text('Ok'),
+              isDestructiveAction: true,
+              onPressed: () async {
+                Navigator.pop(innerContext);
+                await Future.delayed(Duration(seconds: 1));
+                await launch(link);
+              },
+            )
+          ],
+        );
+      }
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
+  }
 }
