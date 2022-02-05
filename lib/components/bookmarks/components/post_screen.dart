@@ -44,7 +44,12 @@ class PostScreen extends ConsumerWidget {
         padding: EdgeInsets.all(height/32.0),
         child: Row(
           children: [
-            BackArrowButton(),
+            InkWell(
+              child: Icon(Icons.arrow_back_ios),
+              onTap: () {
+                bookmarksModel.back();
+              },
+            ),
             Text(
               'BookMarks',
               style: TextStyle(

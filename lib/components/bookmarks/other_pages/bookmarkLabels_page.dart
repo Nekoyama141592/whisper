@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 // constants
 import 'package:whisper/constants/routes.dart';
 import 'package:whisper/details/gradient_screen.dart';
@@ -26,7 +27,9 @@ class BookmarkLabelsPage extends ConsumerWidget {
     final bookmarksModel = ref.watch(bookmarksProvider);
     final height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+    return bookmarksModel.isBookmarkMode ?
+    BookmarksPage(mainModel: mainModel, bookmarksModel: bookmarksModel) : 
+    Scaffold(
       body: GradientScreen(
           top: SizedBox.shrink(), 
           header: Padding(
@@ -49,7 +52,6 @@ class BookmarkLabelsPage extends ConsumerWidget {
               leading: Icon(Icons.list),
               title: Text(bookmarkLabel.label,style: TextStyle(fontSize: height/32.0,),),
               onTap: () async {
-                toBookmarksPage(context: context, mainModel: mainModel, bookmarksModel: bookmarksModel);
                 await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
               },
             );
