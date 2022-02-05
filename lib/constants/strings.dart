@@ -7,7 +7,6 @@ import 'package:uuid/uuid.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 
 const String hyphenString = '-';
-final String uuid4 = Uuid().v4();
 const String tokenString = 'token';
 const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
@@ -17,34 +16,38 @@ const String recommendableString = 'recommendable';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 
 String returnStorageUserImageName() {
-  return 'userImageStorage' + hyphenString + uuid4 + hyphenString + imageExtension;
+  return 'userImageStorage' + hyphenString + returnUuid4()+ hyphenString + imageExtension;
 }
 String returnStoragePostImageName() {
-  return 'postImageStorage' + hyphenString + uuid4 + hyphenString + imageExtension;
+  return 'postImageStorage' + hyphenString + returnUuid4()+ hyphenString + imageExtension;
 }
-final String returnStoragePostName = 'postStorage' + hyphenString + uuid4 + hyphenString + postExtension;
+final String returnStoragePostName = 'postStorage' + hyphenString + returnUuid4()+ hyphenString + postExtension;
 
 String returnPostId({ required UserMeta userMeta }) {
-  return 'post' + hyphenString + userMeta.uid + hyphenString + uuid4;
+  return 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
+}
+
+String returnUuid4() {
+  return Uuid().v4();
 }
 
 String returnTokenId({required UserMeta userMeta,required TokenType tokenType }) {
-  return returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + uuid4 ;
+  return returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + returnUuid4();
 }
 String returnTokenTypeString({ required TokenType tokenType } ) {
   return tokenType.toString().substring(tokenTypeStartIndex);
 }
 String returnNotificationId({ required NotificationType notificationType}) {
-  return returnNotificationTypeString(notificationType: notificationType) + hyphenString + uuid4;
+  return returnNotificationTypeString(notificationType: notificationType) + hyphenString + returnUuid4();
 }
 String returnNotificationTypeString({ required NotificationType notificationType }) {
   return notificationType.toString().substring(notificationTypeStartIndex);
 }
 String generatePostCommentId({ required String uid }) {
-  return 'postComment' + hyphenString + uid + hyphenString + uuid4;
+  return 'postComment' + hyphenString + uid + hyphenString + returnUuid4();
 }
 String generatePostCommentReplyId({ required String uid }) {
-  return 'postCommentReply' + hyphenString + uid + hyphenString + uuid4;
+  return 'postCommentReply' + hyphenString + uid + hyphenString + returnUuid4();
 }
 // prefs
 const String speedPrefsKey = 'speed';

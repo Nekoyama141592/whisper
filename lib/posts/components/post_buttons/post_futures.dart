@@ -81,16 +81,18 @@ class PostFutures extends ChangeNotifier {
   final positiveActionBuilder = (_, controller, __) {
     return TextButton(
       onPressed: () async {
-        final postId = whisperPost.postId;
-        final List<String> bookmarksPostIds = mainModel.bookmarksPostIds;
         // process UI
-        bookmarksPostIds.add(postId);
+        final Timestamp now = Timestamp.now();
+        final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
+        final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: mainModel.bookmarkLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
+        final String uid = mainModel.userMeta.uid;
+        mainModel.bookmarkPosts.add(bookmarkPost);
+        mainModel.bookmarksPostIds.add(bookmarkPost.postId);
         notifyListeners();
         (controller as FlashController ).dismiss();
         // backend
-        final Timestamp now = Timestamp.now();
+        await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
         await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: mainModel.bookmarkLabelTokenIdNotifier.value );
       }, 
       child: Text('OK', style: textStyle(context: context), )
     );
@@ -105,35 +107,25 @@ class PostFutures extends ChangeNotifier {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 
-
-  Future<void> addBookmarksToUser({ required Post whisperPost, required MainModel mainModel ,required Timestamp now,required String bookmarkLabelId  }) async {
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
-    final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: bookmarkLabelId,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
-    final String uid = mainModel.userMeta.uid;
-    mainModel.bookmarkPosts.add(bookmarkPost);
-    mainModel.bookmarksPostIds.add(bookmarkPost.postId);
-    await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
-  }
-
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
     final postId = whisperPost.postId;
+    final indexDeleteToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
     // processUid
-    final List<String> bookmarksPostIds = mainModel.bookmarksPostIds;
-    bookmarksPostIds.remove(postId);
+    mainModel.bookmarksPostIds.remove(postId);
     mainModel.bookmarkPosts.removeWhere((e) => e.postId == postId);
     notifyListeners();
     // backend
+    await deleteBookmarkPostTokenDoc(whisperPost: whisperPost, mainModel: mainModel,indexDeleteToken: indexDeleteToken );
     await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-    await deleteBookmarkPostTokenDoc(whisperPost: whisperPost, mainModel: mainModel, );
   }
 
   Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
-  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel  }) async {
-    final deleteBookmarkPostToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
-    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteBookmarkPostToken.tokenId ).delete();
+  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel,required BookmarkPost indexDeleteToken  }) async {
+    
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: indexDeleteToken.tokenId ).delete();
   }
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {

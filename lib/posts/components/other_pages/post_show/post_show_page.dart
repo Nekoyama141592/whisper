@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
@@ -72,6 +74,9 @@ class PostShowPage extends ConsumerWidget {
     final height = size.height;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        print(returnUuid4());
+      },),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: false,
       body: ValueListenableBuilder<Post?>(
