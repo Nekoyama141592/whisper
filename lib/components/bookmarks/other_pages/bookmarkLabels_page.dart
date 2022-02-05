@@ -1,30 +1,41 @@
 // material
 import 'package:flutter/material.dart';
-// components
-import 'package:whisper/details/loading.dart';
+// packages
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/routes.dart';
 // domain
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
-class BookmarkLabelsPage extends StatelessWidget {
+class BookmarkLabelsPage extends ConsumerWidget {
   
   const BookmarkLabelsPage({
     Key? key,
     required this.mainModel,
-    required this.bookmarkLabels
   }) : super(key: key);
   
   final MainModel mainModel;
-  final List<BookmarkLabel> bookmarkLabels;
+
   @override 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref ) {
+
+    final bookmarksModel = ref.watch(bookmarksProvider);
+
     return Scaffold(
       body: ListView.builder(
-        itemCount: bookmarkLabels.length,
+        itemCount: mainModel.bookmarkLabels.length,
         itemBuilder: (BuildContext context, int i) {
-          final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
-          return ListTile(title: Text(bookmarkLabel.label),);
+          final BookmarkLabel bookmarkLabel = mainModel.bookmarkLabels[i];
+          return ListTile(
+            title: Text(bookmarkLabel.label),
+            onTap: () async {
+              toBookmarksPage(context: context, mainModel: mainModel, bookmarksModel: bookmarksModel);
+              await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
+            },
+          );
         }
       )
     );

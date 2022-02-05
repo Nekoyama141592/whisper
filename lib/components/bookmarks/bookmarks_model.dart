@@ -53,7 +53,7 @@ class BookmarksModel extends ChangeNotifier {
   // enums
   final PostType postType = PostType.bookmarks;
   
-  Future<void> init({ required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
+  Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
     startLoading();
     audioPlayer = AudioPlayer();
     await setBookmarksPostIds(mainModel: mainModel, bookmarkLabel: bookmarkLabel);

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
+import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 // pages
 import 'package:whisper/main.dart';
@@ -84,8 +86,8 @@ void toReauthenticationPage({required context, required User? currentUser, requi
   Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,mainModel: mainModel,)));
 }
 
-void toBookmarksPage(context,MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(mainModel: mainModel) ));
+void toBookmarksPage({ required BuildContext context, required MainModel mainModel, required BookmarksModel bookmarksModel}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => BookmarksPage(mainModel: mainModel, bookmarksModel: bookmarksModel, ) ));
 }
 
 void toPostShowPage({ required BuildContext context, required ValueNotifier<double> speedNotifier, required void Function()? speedControll, required ValueNotifier<Post?> currentWhisperPostNotifier, required ProgressNotifier progressNotifier, required void Function(Duration)? seek, required RepeatButtonNotifier repeatButtonNotifier, required void Function()? onRepeatButtonPressed, required ValueNotifier<bool> isFirstSongNotifier, required void Function()? onPreviousSongButtonPressed, required PlayButtonNotifier playButtonNotifier, required void Function()? play, required void Function()? pause, required ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed,void Function()? toCommentsPage,void Function()? toEditingMode, required PostType postType,required MainModel mainModel}) {

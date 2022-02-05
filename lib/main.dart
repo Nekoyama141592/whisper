@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:whisper/constants/enums.dart';
+import 'package:whisper/components/bookmarks/other_pages/bookmarkLabels_page.dart';
 // constants
 import 'themes/themes.dart';
 //components
@@ -17,7 +17,6 @@ import 'package:whisper/components/home/home.dart';
 import 'auth/signup/signup_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/components/search/search_page.dart';
-import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 import 'package:whisper/components/add_post/other_pages/which_type.dart';
 import 'package:whisper/components/my_profile/my_profile_page.dart';
 // models
@@ -87,8 +86,8 @@ class MyHomePage extends ConsumerWidget {
             themeModel: themeModel,
           ),
           WhichType(mainModel: mainModel),
-          BookmarksPage(mainModel: mainModel),
-          MyProfilePage(mainModel: mainModel)
+          BookmarkLabelsPage(mainModel: mainModel),
+          MyProfilePage(mainModel: mainModel),
         ],
       ),
       bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),
