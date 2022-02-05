@@ -5,7 +5,6 @@ import 'package:flash/flash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
@@ -59,18 +58,22 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
     final Widget content = SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
-      width: 300.0,
-      child: ListView.builder(
-        itemCount: bookmarkLabels.length,
-        itemBuilder: (BuildContext context, int i) {
-          final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
-          return ListTile(
-            leading: mainModel.bookmarkLabelId == bookmarkLabel.bookmarkLabelId ? Icon(Icons.check) : SizedBox.shrink(),
-            title: Text(bookmarkLabel.label),
-            onTap: () {
-              mainModel.bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
-            },
+      height: MediaQuery.of(context).size.height * 0.70,
+      child: ValueListenableBuilder<String>(
+        valueListenable: mainModel.bookmarkLabelIdNotifier,
+        builder: (_,bookmarkLabelid,__) {
+          return ListView.builder(
+            itemCount: bookmarkLabels.length,
+            itemBuilder: (BuildContext context, int i) {
+              final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
+              return ListTile(
+                leading: mainModel.bookmarkLabelIdNotifier.value == bookmarkLabel.bookmarkLabelId ? Icon(Icons.check) : SizedBox.shrink(),
+                title: Text(bookmarkLabel.label),
+                onTap: () {
+                  mainModel.bookmarkLabelIdNotifier.value = bookmarkLabel.bookmarkLabelId;
+                },
+              );
+            }
           );
         }
       ),
@@ -87,12 +90,12 @@ class PostFutures extends ChangeNotifier {
         // backend
         final Timestamp now = Timestamp.now();
         await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: mainModel.bookmarkLabelId);
+        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: mainModel.bookmarkLabelIdNotifier.value );
       }, 
       child: Text('OK', style: textStyle(context: context), )
     );
   };
-  voids.showFlashDialogue(context: context, content: content, positiveActionBuilder: positiveActionBuilder);
+  voids.showFlashDialogue(context: context, content: content, titleText: 'どのリストにブックマークしますか？',positiveActionBuilder: positiveActionBuilder);
   }
 
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
@@ -113,48 +116,22 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
-    final Widget content = 
-    SingleChildScrollView(
-      child: ListView.builder(
-        itemCount: bookmarkLabels.length,
-        itemBuilder: (BuildContext context, int i) {
-          final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
-          return ListTile(
-            leading: mainModel.bookmarkLabelId == bookmarkLabel.bookmarkLabelId ? Icon(Icons.check) : SizedBox.shrink(),
-            title: Text(bookmarkLabel.label),
-            onTap: () {
-              mainModel.bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
-            },
-          );
-        }
-      )
-    );
-    final positiveActionBuilder = (context, controller, _) {
-      return TextButton(
-        onPressed: () async {
-          (controller as FlashController ).dismiss();
-          final postId = whisperPost.postId;
-          final List<String> bookmarksPostIds = mainModel.bookmarksPostIds;
-          // process UI
-          bookmarksPostIds.remove(postId);
-          notifyListeners();
-          // backend
-          await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-          await deleteBookmarkPostTokenDoc(whisperPost: whisperPost, mainModel: mainModel, bookmarkLabelId: mainModel.bookmarkLabelId);
-        }, 
-        child: Text('OK')
-      );
-    };
-    voids.showFlashDialogue(context: context, content: content, positiveActionBuilder: positiveActionBuilder);
+    final postId = whisperPost.postId;
+    // processUid
+    final List<String> bookmarksPostIds = mainModel.bookmarksPostIds;
+    bookmarksPostIds.remove(postId);
+    mainModel.bookmarkPosts.removeWhere((e) => e.postId == postId);
+    notifyListeners();
+    // backend
+    await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    await deleteBookmarkPostTokenDoc(whisperPost: whisperPost, mainModel: mainModel, );
   }
 
   Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
-  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel , required String bookmarkLabelId }) async {
-    mainModel.bookmarksPostIds.remove(whisperPost.postId);
-    notifyListeners();
+  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel  }) async {
     final deleteBookmarkPostToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteBookmarkPostToken.tokenId ).delete();
   }

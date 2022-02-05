@@ -85,7 +85,7 @@ class MainModel extends ChangeNotifier {
   // following
   List<Following> following = [];
   // bookmarkLabel
-  String bookmarkLabelId = '';
+  final bookmarkLabelIdNotifier = ValueNotifier<String>('');
   // feeds
   bool isFeedLoading = false;
   Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {

@@ -10,6 +10,7 @@ class BookmarkLabel {
     required this.bookmarkLabelId,
     required this.tokenId,
     required this.tokenType,
+    required this.imageURL,
     required this.uid,
     required this.updatedAt
   });
@@ -19,6 +20,7 @@ class BookmarkLabel {
   final String bookmarkLabelId;
   final String tokenId;
   final String tokenType;
+  final String imageURL;
   final String uid;
   final dynamic updatedAt;
 
