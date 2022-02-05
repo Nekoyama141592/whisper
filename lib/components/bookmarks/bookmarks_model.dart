@@ -52,15 +52,29 @@ class BookmarksModel extends ChangeNotifier {
   final speedNotifier = ValueNotifier<double>(1.0);
   // enums
   final PostType postType = PostType.bookmarks;
+  // init
+  bool isInitFinished = false;
+  String indexBookmarkLabelId = '';
   
   Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
+    // if (indexBookmarkLabelId != bookmarkLabel.tokenId) {
+    //   indexBookmarkLabelId = bookmarkLabel.tokenId;
+    //   bookmarkPostIds = [];
+    //   posts = [];
+    //   startLoading();
+    //   audioPlayer = AudioPlayer();
+    //   await setBookmarksPostIds(mainModel: mainModel, bookmarkLabel: bookmarkLabel);
+    //   await getBookmarks();
+    //   prefs = mainModel.prefs;
+    //   await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
+    //   if (isInitFinished == false) {
+    //     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    //     isInitFinished = true;
+    //   }
+    //   endLoading();
+    // }
     startLoading();
-    audioPlayer = AudioPlayer();
-    await setBookmarksPostIds(mainModel: mainModel, bookmarkLabel: bookmarkLabel);
-    await getBookmarks();
-    prefs = mainModel.prefs;
-    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    await Future.delayed(Duration(seconds: 1));
     endLoading();
   }
 

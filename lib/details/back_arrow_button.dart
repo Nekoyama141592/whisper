@@ -7,7 +7,7 @@ class BackArrowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.all(size.height/64.0),
+      padding: EdgeInsets.all(size.height/75.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

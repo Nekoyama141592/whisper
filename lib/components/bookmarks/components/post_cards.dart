@@ -64,8 +64,8 @@ class PostCards extends StatelessWidget {
       children: [
         Expanded(
           child: SmartRefresher(
-            enablePullDown: true,
-            // enablePullUp: true,
+            // enablePullDown: true,
+            enablePullUp: true,
             header: WaterDropHeader(),
             controller: refreshController,
             // onRefresh: onRefresh,

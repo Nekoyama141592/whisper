@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/details/back_arrow_button.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/gradient_screen.dart';
@@ -34,18 +36,24 @@ class PostScreen extends ConsumerWidget {
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final postDocs = bookmarksModel.posts;
+    final height = MediaQuery.of(context).size.height;
     
     return GradientScreen(
       top: SizedBox.shrink(), 
       header: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          'BookMarks',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+        padding: EdgeInsets.all(height/32.0),
+        child: Row(
+          children: [
+            BackArrowButton(),
+            Text(
+              'BookMarks',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: height/32.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
       content: postDocs.isEmpty ?
@@ -53,8 +61,8 @@ class PostScreen extends ConsumerWidget {
         await bookmarksModel.onReload();
       })
       : Padding(
-        padding: const EdgeInsets.only(
-          top: 20.0
+        padding: EdgeInsets.only(
+          top: height/32.0,
         ),
         child: PostCards(
           postDocs: postDocs, 
@@ -107,7 +115,7 @@ class PostScreen extends ConsumerWidget {
           bookmarksModel: bookmarksModel,
         ),
       ), 
-      circular: 35.0
+      circular: height/32.0
     );
   }
 }

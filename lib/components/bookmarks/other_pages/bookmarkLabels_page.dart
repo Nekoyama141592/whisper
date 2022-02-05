@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/routes.dart';
+import 'package:whisper/details/gradient_screen.dart';
 // domain
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 // model
@@ -23,21 +24,38 @@ class BookmarkLabelsPage extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref ) {
 
     final bookmarksModel = ref.watch(bookmarksProvider);
+    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: ListView.builder(
-        itemCount: mainModel.bookmarkLabels.length,
-        itemBuilder: (BuildContext context, int i) {
-          final BookmarkLabel bookmarkLabel = mainModel.bookmarkLabels[i];
-          return ListTile(
-            title: Text(bookmarkLabel.label),
-            onTap: () async {
-              toBookmarksPage(context: context, mainModel: mainModel, bookmarksModel: bookmarksModel);
-              await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
-            },
-          );
-        }
-      )
+      body: GradientScreen(
+          top: SizedBox.shrink(), 
+          header: Padding(
+          padding: EdgeInsets.all(height/32.0),
+          child: Text(
+            'リストを選択',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: height/32.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        circular: height/32.0,
+        content: ListView.builder(
+          itemCount: mainModel.bookmarkLabels.length,
+          itemBuilder: (BuildContext context, int i) {
+            final BookmarkLabel bookmarkLabel = mainModel.bookmarkLabels[i];
+            return ListTile(
+              leading: Icon(Icons.list),
+              title: Text(bookmarkLabel.label,style: TextStyle(fontSize: height/32.0,),),
+              onTap: () async {
+                toBookmarksPage(context: context, mainModel: mainModel, bookmarksModel: bookmarksModel);
+                await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
+              },
+            );
+          }
+        ) 
+      ),
     );
   }
 }
