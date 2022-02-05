@@ -97,7 +97,7 @@ class PostShowPage extends ConsumerWidget {
                             Navigator.pop(context);
                           }, 
                         ),
-                        SizedBox(width: size.width * 0.38),
+                        Expanded(child: SizedBox()),
                         TimestampDisplay(whisperPost: whisperPost!)
                       ],
                     ),

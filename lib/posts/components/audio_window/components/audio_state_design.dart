@@ -53,12 +53,11 @@ class AudioStateDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
+      
       child: Column(
         children: [
           AudioControllButtons(speedControll: speedControll,speedNotifier: speedNotifier,repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed),
           AudioProgressBar(progressNotifier: progressNotifier, seek: seek),
-          CurrentSongTitle(whisperPost: currentWhisperPost)
         ],
       ),
     );
