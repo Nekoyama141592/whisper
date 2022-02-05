@@ -74,9 +74,6 @@ class PostShowPage extends ConsumerWidget {
     final height = size.height;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(returnUuid4());
-      },),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: false,
       body: ValueListenableBuilder<Post?>(
