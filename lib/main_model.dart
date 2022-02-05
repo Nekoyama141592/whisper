@@ -111,6 +111,8 @@ class MainModel extends ChangeNotifier {
   final speedNotifier = ValueNotifier<double>(1.0);
   // enum
   final PostType postType = PostType.feeds;
+  // test
+  List<DocumentSnapshot<Map<String,dynamic>>> testDocs = [];
 
   MainModel() {
     init();
@@ -152,6 +154,7 @@ class MainModel extends ChangeNotifier {
   }
 
   void distributeTokens({ required QuerySnapshot<Map<String, dynamic>> tokensQshot }) {
+    testDocs = tokensQshot.docs;
     tokensQshot.docs.forEach((DocumentSnapshot<Map<String, dynamic>> tokenDoc) {
       final Map<String,dynamic> tokenMap = tokenDoc.data()!;
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap);

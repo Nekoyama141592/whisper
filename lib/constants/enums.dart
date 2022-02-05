@@ -44,5 +44,7 @@ dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
     return TokenType.muteReply;
   } else if (tokenTypeString == muteUserTokenType) {
     return TokenType.muteUser;
+  } else if (tokenTypeString == bookmarkPostTokenType) {
+    return TokenType.bookmarkPost;
   }
 }
