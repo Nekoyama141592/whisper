@@ -129,12 +129,6 @@ class UserShowHeader extends ConsumerWidget {
                     routes.toPostSearchPage(context: context, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
                   },
                 ),
-                if (passiveWhisperUser.links.isNotEmpty) InkWell(
-                  child: Icon(Icons.link),
-                  onTap: () {
-                    voids.showLinkCupertinoModalPopup(context: context, whisperLinks: passiveWhisperUser.links.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList() );
-                  },
-                ),
                 if (passiveWhisperUser.links.isNotEmpty) LinkButton(passiveWhisperUser: passiveWhisperUser)
               ],
             ),

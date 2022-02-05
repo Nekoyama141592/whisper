@@ -171,7 +171,7 @@ Query<Map<String,dynamic>> returnUserSearchQuery({ required List<String> searchW
 }
 
 TextStyle textStyle({ required BuildContext context }) {
-  return TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: MediaQuery.of(context).size.height/64.0 ,overflow: TextOverflow.ellipsis);
+  return TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: MediaQuery.of(context).size.height/32.0 ,overflow: TextOverflow.ellipsis);
 }
 
 final User? firebaseAuthCurrentUser = FirebaseAuth.instance.currentUser;

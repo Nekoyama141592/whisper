@@ -612,13 +612,19 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
   showCupertinoModalPopup(
       context: context, 
       builder: (innerContext) {
+        final List<Widget> actions = 
+        whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
+          child: Text(whisperLink.label,style: textStyle(context: context),),
+          onPressed: () {
+            showLinkDialogue(context: context, link: whisperLink.link );
+          }, 
+        ) ).toList();
+        actions.add(CupertinoActionSheetAction(
+          child: Text('Cancel',style: textStyle(context: context),),
+          onPressed: () { Navigator.pop(innerContext); },
+        ));
         return CupertinoActionSheet(
-          actions: whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
-            child: Text(whisperLink.label,style: textStyle(context: context),),
-            onPressed: () {
-              showLinkDialogue(context: context, link: whisperLink.link );
-            }, 
-          ) ).toList(),
+          actions: actions
         );
       }
     );  
