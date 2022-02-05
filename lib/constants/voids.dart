@@ -16,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/lists.dart';
+import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
@@ -454,6 +456,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
   updateWhisperUser.updatedAt = Timestamp.fromDate(now);
   if (userName.isNotEmpty) {
     updateWhisperUser.userName = userName;
+    updateWhisperUser.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: userName) );
   }
   if (description.isNotEmpty) {
     updateWhisperUser.description = description;

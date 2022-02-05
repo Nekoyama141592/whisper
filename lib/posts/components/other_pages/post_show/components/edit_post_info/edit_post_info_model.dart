@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whisper/constants/lists.dart';
+import 'package:whisper/constants/maps.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
@@ -68,6 +70,7 @@ class EditPostInfoModel extends ChangeNotifier {
       whisperPost.imageURLs = [imageURL];
       if (title.isNotEmpty) {
         whisperPost.title = title;
+        whisperPost.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: title)  );
       }
       whisperPost.updatedAt = Timestamp.now();
       whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
