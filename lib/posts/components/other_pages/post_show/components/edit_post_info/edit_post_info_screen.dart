@@ -29,6 +29,7 @@ class EditPostInfoScreen extends StatelessWidget {
     final String imageURL = currentWhisperPost.imageURLs.first;
     final String userImageURL = currentWhisperPost.userImageURL;
     final String resultURL = imageURL.isNotEmpty ? imageURL : userImageURL;
+    final height = size.height;
 
     return Scaffold(
       body: SafeArea(
@@ -58,8 +59,8 @@ class EditPostInfoScreen extends StatelessWidget {
                     RoundedButton(
                       text: '保存', 
                       widthRate: 0.25, 
-                      verticalPadding: 10, 
-                      horizontalPadding: 5, 
+                      verticalPadding: height/64.0, 
+                      horizontalPadding: height/75.0, 
                       press: () async  {
                         await editPostInfoModel.updatePostInfo(whisperPost: currentWhisperPost, mainModel: mainModel, context: context,);
                       },
@@ -83,14 +84,14 @@ class EditPostInfoScreen extends StatelessWidget {
                   ),
                 ) 
                 : SizedBox(width: length,height: length,child: Image.file(editPostInfoModel.croppedFile!)),
-                SizedBox(height: 20.0),
+                SizedBox(height: height/25.0 ),
                 Row(
                   children: [
                     RoundedButton(
                       text: editPostInfoModel.isCropped ? '写真を変更する' :'投稿用の写真を編集',
                       widthRate: 0.45, 
-                      verticalPadding: 20.0, 
-                      horizontalPadding: 10.0, 
+                      verticalPadding: height/64.0, 
+                      horizontalPadding: height/75.0, 
                       press: () async { editPostInfoModel.showImagePicker(); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
@@ -99,25 +100,25 @@ class EditPostInfoScreen extends StatelessWidget {
                     RoundedButton(
                       text: 'リンクを編集',
                       widthRate: 0.45, 
-                      verticalPadding: 20.0, 
-                      horizontalPadding: 10.0, 
-                      press: () { editPostInfoModel.init(context: context, linkMaps: currentWhisperPost.links ); }, 
+                      verticalPadding: height/64.0, 
+                      horizontalPadding: height/75.0, 
+                      press: () { editPostInfoModel.init(context: context, linkMaps: currentWhisperPost.links,mainModel: mainModel ); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
                     ),
                   ],
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: height/64.0 ),
                 Text(
                   '投稿のタイトル',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: height/25.0,
                     fontWeight: FontWeight.bold
                   ),
                 ),
                 TextFormField(
                   style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: height/25.0,
                     fontWeight: FontWeight.bold
                   ),
                   keyboardType: TextInputType.text,

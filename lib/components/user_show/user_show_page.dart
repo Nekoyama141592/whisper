@@ -30,16 +30,18 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final userShowModel = ref.watch(userShowProvider);
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
 
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
       Column(
         children: [
-            Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),),
-            SizedBox(height: 20.0,),
+            Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: height/16.0 ),),
+            SizedBox(height: height/10.0,),
             Text('あなたはこのユーザーをミュート、ブロック'),
-            SizedBox(height: 20.0,),
+            SizedBox(height: height/10.0,),
             Text('もしくは相手にブロックされています')
         ],
       )
@@ -49,7 +51,7 @@ class UserShowPage extends ConsumerWidget {
           child: EditProfileScreen(
             onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: passiveWhisperUser, mainModel: mainModel, links: userShowModel.whisperLinksOfModel );
+              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: passiveWhisperUser, mainModel: mainModel, links: userShowModel.whisperLinksNotifier.value );
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
@@ -59,7 +61,7 @@ class UserShowPage extends ConsumerWidget {
               userShowModel.description = text;
             },
             onEditLinkButtonPressed: () {
-              userShowModel.initLinks(context: context, linkMaps: passiveWhisperUser.links );
+              userShowModel.initLinks(context: context, linkMaps: passiveWhisperUser.links,mainModel: mainModel );
             },
             descriptionController: TextEditingController(text: passiveWhisperUser.description ),
             userNameController: TextEditingController(text: passiveWhisperUser.userName ),
@@ -85,7 +87,7 @@ class UserShowPage extends ConsumerWidget {
             mainModel: mainModel, 
           ),
           content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
-          circular: 35.0
+          circular: height/16.0
         ),
       )
     );

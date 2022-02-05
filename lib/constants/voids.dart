@@ -607,3 +607,32 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
   }
 }
+
+void showLinkCupertinoModalPopup({ required BuildContext context,required List<WhisperLink> whisperLinks }) {
+  showCupertinoModalPopup(
+      context: context, 
+      builder: (innerContext) {
+        return CupertinoActionSheet(
+          actions: whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
+            child: Text(whisperLink.label,style: textStyle(context: context),),
+            onPressed: () {
+              showLinkDialogue(context: context, link: whisperLink.link );
+            }, 
+          ) ).toList(),
+        );
+      }
+    );  
+}
+
+void onAddLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisperLinksNotifier }) async {
+  final WhisperLink whisperLink = WhisperLink(description: '',imageURL: '',label: '',link: '');
+  List<WhisperLink> x = whisperLinksNotifier.value;
+  x.add(whisperLink);
+  whisperLinksNotifier.value = x.map((e) => e).toList();
+}
+
+void onDeleteLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisperLinksNotifier,required int i }) {
+  List<WhisperLink> x = whisperLinksNotifier.value;
+  x.removeAt(i);
+  whisperLinksNotifier.value = x.map((e) => e).toList();
+}

@@ -50,8 +50,10 @@ class EditProfileScreen extends StatelessWidget {
     );
 
     final size = MediaQuery.of(context).size;
+    final height = size.height;
+
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(height/64.0),
       child: isLoading ?
       Loading()
       : SingleChildScrollView(
@@ -66,7 +68,7 @@ class EditProfileScreen extends StatelessWidget {
                     'Cancel',
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
-                      fontSize: 25
+                      fontSize: height/30.0
                     ),
                   ),
                 ),
@@ -74,8 +76,8 @@ class EditProfileScreen extends StatelessWidget {
                 RoundedButton(
                   text: '保存', 
                   widthRate: 0.25, 
-                  verticalPadding: 10.0, 
-                  horizontalPadding: 5.0, 
+                  verticalPadding: height/64.0, 
+                  horizontalPadding: height/75.0, 
                   press: onSaveButtonPressed,
                   textColor: Colors.white, 
                   buttonColor: Theme.of(context).highlightColor
@@ -86,12 +88,12 @@ class EditProfileScreen extends StatelessWidget {
             Row(
               children: [
                 InkWell(
-                  child: isCropped ?  CircleImage(length: 80.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.imageURL, length: 80.0, padding: 10.0),
+                  child: isCropped ?  CircleImage(length: height/12.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.imageURL, length: 80.0, padding: 10.0),
                   onTap: showImagePicker,
                 ),
-                SizedBox(width: 16.0,),
+                SizedBox(width: height/64.0, ),
                 InkWell(
-                  child: Icon(Icons.link),
+                  child: Icon(Icons.link,size: height/16.0,),
                   onTap: onEditLinkButtonPressed
                 )
               ],

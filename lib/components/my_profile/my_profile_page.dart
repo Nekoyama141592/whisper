@@ -31,7 +31,7 @@ class MyProfilePage extends ConsumerWidget {
       EditProfileScreen(
         onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
         onSaveButtonPressed: () async {
-          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, links: myProfileModel.whisperLinksOfModel );
+          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, links: myProfileModel.whisperLinksNotifier.value );
         }, 
         showImagePicker: () async {
           await myProfileModel.showImagePicker();
@@ -43,7 +43,7 @@ class MyProfilePage extends ConsumerWidget {
           myProfileModel.description = text;
         }, 
         onEditLinkButtonPressed: () {
-          myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links );
+          myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links,mainModel: mainModel );
         },
         descriptionController: TextEditingController(text:  currentWhisperUser.description),
         userNameController: TextEditingController(text: currentWhisperUser.userName),
@@ -62,7 +62,7 @@ class MyProfilePage extends ConsumerWidget {
           backArrow: SizedBox.shrink(), 
           mainModel: mainModel, 
         ), 
-        circular: 35.0,
+        circular: MediaQuery.of(context).size.height/16.0,
         content: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
       )
     );

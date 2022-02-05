@@ -29,9 +29,7 @@ class EditPostInfoModel extends ChangeNotifier {
   bool isCropped = false;
   XFile? xFile;
   File? croppedFile;
-  List<WhisperLink> whisperLinksOfModel = [];
-
-  
+  final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
 
   void reload() {
     notifyListeners();
@@ -72,32 +70,23 @@ class EditPostInfoModel extends ChangeNotifier {
         whisperPost.title = title;
       }
       whisperPost.updatedAt = Timestamp.now();
-      whisperPost.links = whisperLinksOfModel.map((e) => e.toJson()).toList();
+      whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
       isEditing = false;
       notifyListeners();
       title = '';
-      whisperLinksOfModel = [];
+      whisperLinksNotifier.value = [];
     } catch(e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
     }
   }
 
-  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps }) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksOfModel: whisperLinksOfModel,) ));
-    whisperLinksOfModel = [];
-    whisperLinksOfModel = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
-    notifyListeners();
-  }
-
-  void onAddButtonPressed() {
-    final WhisperLink whisperLink = WhisperLink(description: '',imageURL: '',label: '',link: '');
-    whisperLinksOfModel.add(whisperLink);
-    notifyListeners();
-  }
-
-  void onDeleteButtonPressed({ required int i }) {
-    whisperLinksOfModel.removeAt(i);
+  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps ,required MainModel mainModel }) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(
+      whisperLinksNotifier: whisperLinksNotifier,
+    ) ));
+    whisperLinksNotifier.value = [];
+    whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
     notifyListeners();
   }
   

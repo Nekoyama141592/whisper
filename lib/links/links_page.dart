@@ -1,80 +1,96 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
+
 class LinksPage extends StatelessWidget {
 
   const LinksPage({
     Key? key,
-    required this.whisperLinksOfModel
+    required this.whisperLinksNotifier,
   }) : super(key: key);
 
-  final List<WhisperLink> whisperLinksOfModel;
-  
+  final ValueNotifier<List<WhisperLink>> whisperLinksNotifier;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+        onPressed: () {
+          voids.onAddLinkButtonPressed(whisperLinksNotifier: whisperLinksNotifier);
+        },
+        child: Icon(Icons.new_label),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            RoundedButton(
-              text: '決定', 
-              widthRate: 0.25, 
-              verticalPadding: 10.0, 
-              horizontalPadding: 5.0, 
-              press: () { Navigator.pop(context); },
-              textColor: Colors.white, 
-              buttonColor: Theme.of(context).highlightColor
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: whisperLinksOfModel.length,
-                itemBuilder: (BuildContext context, int i) {
-                  final whisperLink = whisperLinksOfModel[i];
-                  final TextEditingController labelEditingController = TextEditingController(text: whisperLink.label );
-                  final TextEditingController linkEditingController = TextEditingController(text: whisperLink.link);
-                  return Padding(
-                    padding: EdgeInsets.all(size.height/64.0),
-                    child: Column(
-                      children: [
-                        Text('ラベル'),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.delete),
-                            hintText: '公式サイト'
-                          ),
-                          controller: labelEditingController,
-                          onChanged: (text) {
-                            whisperLink.label = text;
-                          },
+      body: ValueListenableBuilder<List<WhisperLink>>(
+        valueListenable: whisperLinksNotifier,
+        builder: (_,whisperLinks,__) {
+          return Padding(
+            padding: EdgeInsets.all(size.height/64.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                RoundedButton(
+                  text: '決定', 
+                  widthRate: 0.25, 
+                  verticalPadding: size.height/64.0,
+                  horizontalPadding: size.height/64.0,
+                  press: () { Navigator.pop(context); },
+                  textColor: Colors.white, 
+                  buttonColor: Theme.of(context).highlightColor
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: whisperLinks.length,
+                    itemBuilder: (BuildContext context, int i) {
+                      final whisperLink = whisperLinks[i];
+                      final TextEditingController labelEditingController = TextEditingController(text: whisperLink.label );
+                      final TextEditingController linkEditingController = TextEditingController(text: whisperLink.link);
+                      return Padding(
+                        padding: EdgeInsets.all(size.height/64.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('ラベル'),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                suffixIcon: InkWell(
+                                  child: Icon(Icons.delete),
+                                  onTap: () {
+                                    voids.onDeleteLinkButtonPressed(whisperLinksNotifier: whisperLinksNotifier, i: i);
+                                  },
+                                ),
+                                hintText: '例)公式サイト'
+                              ),
+                              controller: labelEditingController,
+                              onChanged: (text) {
+                                whisperLink.label = text;
+                              },
+                            ),
+                            Text('URL'),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'https://'
+                              ),
+                              controller: linkEditingController,
+                              onChanged: (text) {
+                                whisperLink.link = text;
+                              },
+                            ),
+                          ],
                         ),
-                        Text('URL'),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.delete),
-                            hintText: 'https://'
-                          ),
-                          controller: linkEditingController,
-                          onChanged: (text) {
-                            whisperLink.link = text;
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              ),
+                      );
+                    }
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        }
       ),
     );
   }

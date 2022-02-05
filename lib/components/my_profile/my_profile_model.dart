@@ -18,7 +18,6 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // domain
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
@@ -61,7 +60,7 @@ class MyProfileModel extends ChangeNotifier {
   bool isEditing = false;
   String userName = '';
   String description = '';
-  List<WhisperLink> whisperLinksOfModel = [];
+  final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -158,7 +157,7 @@ class MyProfileModel extends ChangeNotifier {
     isEditing = false;
     userName = '';
     description = '';
-    whisperLinksOfModel = [];
+    whisperLinksNotifier.value = [];
     endLoading();
   }
 
@@ -249,21 +248,10 @@ class MyProfileModel extends ChangeNotifier {
     );
   } 
 
-  void initLinks({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps }) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksOfModel: whisperLinksOfModel,) ));
-    whisperLinksOfModel = [];
-    whisperLinksOfModel = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
-    notifyListeners();
-  }
-
-  void onAddButtonPressed() {
-    final WhisperLink whisperLink = WhisperLink(description: '',imageURL: '',label: '',link: '');
-    whisperLinksOfModel.add(whisperLink);
-    notifyListeners();
-  }
-
-  void onDeleteButtonPressed({ required int i }) {
-    whisperLinksOfModel.removeAt(i);
+  void initLinks({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps,required MainModel mainModel }) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier, ) ));
+    whisperLinksNotifier.value = [];
+    whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
     notifyListeners();
   }
 
