@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/strings.dart';
 // constants
@@ -174,8 +175,8 @@ class AddPostModel extends ChangeNotifier {
   Future onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     if (postTitleNotifier.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
-    } else if (postTitleNotifier.value.length >= 64) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルは64文字以内にしてください')));
+    } else if (postTitleNotifier.value.length > maxSearchLength ) {
+      voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
       startLoading();
       Navigator.pop(context);

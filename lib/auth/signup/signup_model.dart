@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:image_picker/image_picker.dart';
@@ -92,8 +93,8 @@ class SignupModel extends ChangeNotifier {
   Future<void> signup(BuildContext context) async {
     if (commonPasswords.contains(password)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ありふれたパスワードです。変更してください')));
-    } else if (userName.length >= 64) {
-       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザー名は64文字以内にしてください')));
+    } else if (userName.length > maxSearchLength ) {
+       voids.maxSearchLengthAlert(context: context,isUserName: true);
     }else {
       try{
         UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,);

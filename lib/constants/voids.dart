@@ -645,3 +645,11 @@ void onDeleteLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisp
   x.removeAt(i);
   whisperLinksNotifier.value = x.map((e) => e).toList();
 }
+
+void maxSearchLengthAlert ({ required BuildContext context,required bool isUserName }) {
+  if (isUserName == true) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください')));
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルは' + maxSearchLength.toString() + '文字以内にしてください')));
+  }
+} 

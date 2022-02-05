@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/maps.dart';
 // constants
@@ -64,23 +65,27 @@ class EditPostInfoModel extends ChangeNotifier {
     return downloadURL;
   }
 
-  Future updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context }) async {
-    final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
-    try{
-      whisperPost.imageURLs = [imageURL];
-      if (title.isNotEmpty) {
-        whisperPost.title = title;
-        whisperPost.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: title)  );
+  Future<void> updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context }) async {
+    if (title.length <= maxSearchLength ) {
+      final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
+      try{
+        whisperPost.imageURLs = [imageURL];
+        if (title.isNotEmpty) {
+          whisperPost.title = title;
+          whisperPost.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: title)  );
+        }
+        whisperPost.updatedAt = Timestamp.now();
+        whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
+        await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
+        isEditing = false;
+        notifyListeners();
+        title = '';
+        whisperLinksNotifier.value = [];
+      } catch(e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
       }
-      whisperPost.updatedAt = Timestamp.now();
-      whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
-      await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
-      isEditing = false;
-      notifyListeners();
-      title = '';
-      whisperLinksNotifier.value = [];
-    } catch(e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
+    } else {
+      maxSearchLengthAlert(context: context, isUserName: false );
     }
   }
 

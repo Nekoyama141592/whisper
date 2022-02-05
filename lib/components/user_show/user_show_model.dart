@@ -174,14 +174,18 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser,required MainModel mainModel, required List<WhisperLink> links }) async {
-    startLoading();
-    await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,description: description,croppedFile: croppedFile, mainModel: mainModel);
-    isEditing = false;
-    userName = '';
-    description = '';
-    whisperLinksNotifier.value = [];
-    endLoading();
+  Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser,required MainModel mainModel, required List<WhisperLink> links }) async {
+    if (userName.length <= maxSearchLength) {
+      startLoading();
+      await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,description: description,croppedFile: croppedFile, mainModel: mainModel);
+      isEditing = false;
+      userName = '';
+      description = '';
+      whisperLinksNotifier.value = [];
+      endLoading();
+    } else {
+      voids.maxSearchLengthAlert(context: context,isUserName: true);
+    }
   }
 
   void onCancelButtonPressed() {

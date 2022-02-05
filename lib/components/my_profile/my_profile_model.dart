@@ -151,24 +151,28 @@ class MyProfileModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  Future onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,required List<WhisperLink> links }) async {
-    startLoading();
-    await voids.updateUserInfo(context: context,links: links, updateWhisperUser: updateWhisperUser, description: description, userName: userName ,mainModel: mainModel, croppedFile: croppedFile);
-    isEditing = false;
-    userName = '';
-    description = '';
-    whisperLinksNotifier.value = [];
-    endLoading();
+  Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,required List<WhisperLink> links }) async {
+    if (userName.length <= maxSearchLength ) {
+      startLoading();
+      await voids.updateUserInfo(context: context,links: links, updateWhisperUser: updateWhisperUser, description: description, userName: userName ,mainModel: mainModel, croppedFile: croppedFile);
+      isEditing = false;
+      userName = '';
+      description = '';
+      whisperLinksNotifier.value = [];
+      endLoading();
+    } else {
+      voids.maxSearchLengthAlert(context: context,isUserName: true);
+    }
   }
 
-  Future showImagePicker() async {
+  Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     xFile = await _picker.pickImage(source: ImageSource.gallery);
     if (xFile != null) { await cropImage(); }
     notifyListeners();
   }
 
-  Future cropImage() async {
+  Future<void> cropImage() async {
     isCropped = false;
     croppedFile = null;
     croppedFile = await returnCroppedFile(xFile: xFile);
