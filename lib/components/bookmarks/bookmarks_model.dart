@@ -97,8 +97,8 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> setBookmarksPostIds({ required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
-    final String bookmarkLabelId = bookmarkLabel.bookmarkLabelId;
-    bookmarkPostIds = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == bookmarkLabelId ).map((e) => e.postId ).toList();
+    final String bookmarkLabelTokenId = bookmarkLabel.tokenId;
+    bookmarkPostIds = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == bookmarkLabelTokenId ).map((e) => e.postId ).toList();
     notifyListeners();
   }
 

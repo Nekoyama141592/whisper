@@ -60,17 +60,17 @@ class PostFutures extends ChangeNotifier {
     final Widget content = SizedBox(
       height: MediaQuery.of(context).size.height * 0.70,
       child: ValueListenableBuilder<String>(
-        valueListenable: mainModel.bookmarkLabelIdNotifier,
+        valueListenable: mainModel.bookmarkLabelTokenIdNotifier,
         builder: (_,bookmarkLabelid,__) {
           return ListView.builder(
             itemCount: bookmarkLabels.length,
             itemBuilder: (BuildContext context, int i) {
               final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
               return ListTile(
-                leading: mainModel.bookmarkLabelIdNotifier.value == bookmarkLabel.bookmarkLabelId ? Icon(Icons.check) : SizedBox.shrink(),
+                leading: mainModel.bookmarkLabelTokenIdNotifier.value == bookmarkLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
                 title: Text(bookmarkLabel.label),
                 onTap: () {
-                  mainModel.bookmarkLabelIdNotifier.value = bookmarkLabel.bookmarkLabelId;
+                  mainModel.bookmarkLabelTokenIdNotifier.value = bookmarkLabel.tokenId;
                 },
               );
             }
@@ -90,7 +90,7 @@ class PostFutures extends ChangeNotifier {
         // backend
         final Timestamp now = Timestamp.now();
         await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: mainModel.bookmarkLabelIdNotifier.value );
+        await addBookmarksToUser(whisperPost: whisperPost, mainModel: mainModel, now: now, bookmarkLabelId: mainModel.bookmarkLabelTokenIdNotifier.value );
       }, 
       child: Text('OK', style: textStyle(context: context), )
     );

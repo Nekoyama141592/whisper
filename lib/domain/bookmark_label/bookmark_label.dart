@@ -7,7 +7,6 @@ class BookmarkLabel {
   BookmarkLabel({
     required this.createdAt,
     required this.label,
-    required this.bookmarkLabelId,
     required this.tokenId,
     required this.tokenType,
     required this.imageURL,
@@ -17,7 +16,6 @@ class BookmarkLabel {
   
   final dynamic createdAt;
   final String label;
-  final String bookmarkLabelId;
   final String tokenId;
   final String tokenType;
   final String imageURL;
