@@ -159,6 +159,7 @@ class MainModel extends ChangeNotifier {
         case TokenType.blockUser:
           final BlockUser blockUser = BlockUser.fromJson(tokenMap);
           blockUsers.add(blockUser);
+          blockUids.add(blockUser.passiveUid);
         break;
         case TokenType.bookmarkLabel:
           final BookmarkLabel bookmarkLabel = BookmarkLabel.fromJson(tokenMap);
@@ -172,38 +173,47 @@ class MainModel extends ChangeNotifier {
         case TokenType.following:
           final Following followingInstantce = Following.fromJson(tokenMap);
           following.add(followingInstantce);
+          followingUids.add(followingInstantce.passiveUid);
         break;
         case TokenType.likeComment:
           final LikeComment likeComment = LikeComment.fromJson(tokenMap);
           likeComments.add(likeComment);
+          likeCommentIds.add(likeComment.postCommentId);
         break;
         case TokenType.likePost:
           final LikePost likePost = LikePost.fromJson(tokenMap);
           likePosts.add(likePost);
+          likePostIds.add(likePost.postId);
         break;
         case TokenType.likeReply:
           final LikeReply likeReply = LikeReply.fromJson(tokenMap);
           likeReplys.add(likeReply);
+          likeReplyIds.add(likeReply.postCommentReplyId);
         break;
         case TokenType.muteComment:
           final MuteComment muteComment = MuteComment.fromJson(tokenMap);
           muteComments.add(muteComment);
+          muteCommentIds.add(muteComment.postCommentId);
         break;
         case TokenType.mutePost:
           final MutePost mutePost = MutePost.fromJson(tokenMap);
           mutePosts.add(mutePost);
+          mutePostIds.add(mutePost.postId);
         break;
         case TokenType.muteReply:
           final MuteReply muteReply = MuteReply.fromJson(tokenMap);
           muteReplys.add(muteReply);
+          muteReplyIds.add(muteReply.postCommentReplyId);
         break;
         case TokenType.muteUser:
           final MuteUser muteUser = MuteUser.fromJson(tokenMap);
           muteUsers.add(muteUser);
+          muteUids.add(muteUser.passiveUid);
         break;
         case TokenType.readPost:
           final ReadPost readPost = ReadPost.fromJson(tokenMap);
           readPosts.add(readPost);
+          readPostIds.add(readPost.postId);
         break;
         case TokenType.searchHistory:
           final SearchHistory searchHistoryInstance = SearchHistory.fromJson(tokenMap);

@@ -8,14 +8,14 @@ class MuteReply {
   MuteReply({
     required this.activeUid,
     required this.createdAt,
-    required this.replyId,
+    required this.postCommentReplyId,
     required this.tokenType,
     required this.postCommentReplyDocRef
   });
   
   final String activeUid;
   final dynamic createdAt;
-  final String replyId;
+  final String postCommentReplyId;
   final String tokenType;
   final dynamic postCommentReplyDocRef;
 

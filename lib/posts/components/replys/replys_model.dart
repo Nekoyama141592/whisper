@@ -311,7 +311,7 @@ class ReplysModel extends ChangeNotifier {
       final String activeUid = mainModel.userMeta.uid;
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
-      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,replyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likeReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
+      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likeReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
     } catch(e) {
       print(e.toString());
@@ -335,7 +335,7 @@ class ReplysModel extends ChangeNotifier {
     mainModel.likeReplyIds.remove(whisperReply.postId);
     notifyListeners();
     final String uid = mainModel.userMeta.uid;
-    final deleteLikeReply = mainModel.likeReplys.where((element) => element.replyId == whisperReply.postCommentReplyId).toList().first;
+    final deleteLikeReply = mainModel.likeReplys.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
     await returnTokenDocRef(uid: uid, tokenId: deleteLikeReply.tokenId ).delete();
   }
   

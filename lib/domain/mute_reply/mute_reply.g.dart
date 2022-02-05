@@ -9,7 +9,7 @@ part of 'mute_reply.dart';
 MuteReply _$MuteReplyFromJson(Map<String, dynamic> json) => MuteReply(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      replyId: json['replyId'] as String,
+      postCommentReplyId: json['postCommentReplyId'] as String,
       tokenType: json['tokenType'] as String,
       postCommentReplyDocRef: json['postCommentReplyDocRef'],
     );
@@ -17,7 +17,7 @@ MuteReply _$MuteReplyFromJson(Map<String, dynamic> json) => MuteReply(
 Map<String, dynamic> _$MuteReplyToJson(MuteReply instance) => <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'replyId': instance.replyId,
+      'postCommentReplyId': instance.postCommentReplyId,
       'tokenType': instance.tokenType,
       'postCommentReplyDocRef': instance.postCommentReplyDocRef,
     };
