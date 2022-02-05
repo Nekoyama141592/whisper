@@ -82,7 +82,7 @@ class AddPostContent extends StatelessWidget {
                 child: Text(
                   '投稿お疲れ様です！',
                   style: TextStyle(
-                    fontSize: height/64.0,
+                    fontSize: height/30.0,
                     fontWeight: FontWeight.bold
                   ),
                 )

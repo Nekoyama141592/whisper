@@ -19,21 +19,26 @@ class AddLinkButton extends StatelessWidget {
   
   Widget build(BuildContext context) {
 
-    final linkEditingController = TextEditingController(text: addPostModel.link);
+    final linkEditingController = TextEditingController(text: addPostModel.linkNotifier.value );
 
-    return AudioButton(
-      description: addPostModel.link.isEmpty ? 'リンクを追加(任意)' : 'リンクを変更',
-      icon: addPostModel.link.isEmpty ?
-      Icon(
-        Icons.add_link,
-        size: addPostIconSize(context: context),
-      )
-      : Icon(
-        Icons.link,
-        color: Theme.of(context).highlightColor,
-        size: addPostIconSize(context: context),
-      ),
-      press: () { addPostModel.showAddLinkDialogue(context, linkEditingController); },
+    return ValueListenableBuilder<String>(
+      valueListenable: addPostModel.linkNotifier,
+      builder: (_,link,__) {
+        return AudioButton(
+          description: link.isEmpty ? 'リンクを追加(任意)' : 'リンクを変更',
+          icon: link.isEmpty ?
+          Icon(
+            Icons.add_link,
+            size: addPostIconSize(context: context),
+          )
+          : Icon(
+            Icons.link,
+            color: Theme.of(context).highlightColor,
+            size: addPostIconSize(context: context),
+          ),
+          press: () { addPostModel.showAddLinkDialogue(context, linkEditingController); },
+        );
+      }
     );
   }
 }

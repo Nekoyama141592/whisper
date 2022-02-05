@@ -61,8 +61,7 @@ class AddPostModel extends ChangeNotifier {
   final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
   String commentsState = 'open';
   // link 
-  String link = '';
-
+  final linkNotifier = ValueNotifier<String>('');
   AddPostModel() {
     init();
   }
@@ -207,7 +206,7 @@ class AddPostModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
     final List<String> searchWords = returnSearchWords(searchTerm: title);
-    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: imageURL, label: '', link: link, );
+    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: imageURL, label: '', link: linkNotifier.value, );
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
@@ -250,9 +249,10 @@ class AddPostModel extends ChangeNotifier {
   }
 
     void showAddLinkDialogue(BuildContext context, TextEditingController linkEditingController) {
+    final height = MediaQuery.of(context).size.height;
     showDialog(
       context: context, 
-      builder: (_) {
+      builder: (innerContext) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
@@ -268,19 +268,26 @@ class AddPostModel extends ChangeNotifier {
                 fontWeight: FontWeight.bold
               ),
               decoration: InputDecoration(
+                prefixIcon: InkWell(
+                  child: Icon(Icons.close),
+                  onTap: () { 
+                    linkNotifier.value = '';
+                    linkEditingController.text = '';
+                    notifyListeners();
+                  },
+                ),
                 border: OutlineInputBorder(),
                 hintText: 'https://'
               ),
     
               onChanged: (text) {
-                link = text;
+                linkNotifier.value = text;
               },
             ),
             actions: [
               TextButton(
                 onPressed: () {
-                  link = '';
-                  Navigator.pop(context);
+                  Navigator.pop(innerContext);
                 },
                 child: Text(
                   'Cancel',
@@ -293,9 +300,13 @@ class AddPostModel extends ChangeNotifier {
               RoundedButton(
                 text: 'OK', 
                 widthRate: 0.25, 
-                verticalPadding: 12.0, 
+                verticalPadding: height/64.0, 
                 horizontalPadding: 0.0, 
-                press: () { Navigator.pop(context); }, 
+                press: () async { 
+                  Navigator.pop(innerContext); 
+                  await Future.delayed(Duration(microseconds: 500));
+                  notifyListeners();
+                }, 
                 textColor: Colors.white, 
                 buttonColor: Theme.of(context).highlightColor
               )
