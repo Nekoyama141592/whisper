@@ -5,6 +5,7 @@
 *.swp
 *.env
 *.rules
+*.js
 .DS_Store
 .atom/
 .buildlog/
