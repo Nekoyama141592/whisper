@@ -5,6 +5,7 @@ import 'package:whisper/components/add_post/components/audio_buttons/audio_butto
 // model
 import 'package:whisper/components/add_post/add_post_model.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 
 class AddLinkButton extends StatelessWidget {
 
@@ -19,14 +20,12 @@ class AddLinkButton extends StatelessWidget {
   
   Widget build(BuildContext context) {
 
-    final linkEditingController = TextEditingController(text: addPostModel.linkNotifier.value );
-
-    return ValueListenableBuilder<String>(
-      valueListenable: addPostModel.linkNotifier,
-      builder: (_,link,__) {
+    return ValueListenableBuilder<List<WhisperLink>>(
+      valueListenable: addPostModel.whisperLinksNotifier,
+      builder: (_,whisperLinks,__) {
         return AudioButton(
-          description: link.isEmpty ? 'リンクを追加(任意)' : 'リンクを変更',
-          icon: link.isEmpty ?
+          description: whisperLinks.isEmpty ? 'リンクを追加(任意)' : 'リンクを変更',
+          icon: whisperLinks.isEmpty ?
           Icon(
             Icons.add_link,
             size: addPostIconSize(context: context),
@@ -36,7 +35,7 @@ class AddLinkButton extends StatelessWidget {
             color: Theme.of(context).highlightColor,
             size: addPostIconSize(context: context),
           ),
-          press: () { addPostModel.showAddLinkDialogue(context, linkEditingController); },
+          press: () { addPostModel.initLinks(context: context); },
         );
       }
     );

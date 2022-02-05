@@ -252,7 +252,7 @@ class MyProfileModel extends ChangeNotifier {
     );
   } 
 
-  void initLinks({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps,required MainModel mainModel }) {
+  void initLinks({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps}) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier, ) ));
     whisperLinksNotifier.value = [];
     whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();

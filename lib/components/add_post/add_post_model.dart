@@ -21,17 +21,17 @@ import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/others.dart' as others;
-import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
-// components
-import 'package:whisper/details/rounded_button.dart';
+// pages
+import 'package:whisper/links/links_page.dart';
 
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
@@ -61,7 +61,7 @@ class AddPostModel extends ChangeNotifier {
   final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
   String commentsState = 'open';
   // link 
-  final linkNotifier = ValueNotifier<String>('');
+  final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
   AddPostModel() {
     init();
   }
@@ -206,7 +206,7 @@ class AddPostModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
     final List<String> searchWords = returnSearchWords(searchTerm: title);
-    final WhisperLink whisperLink = WhisperLink(description: '', imageURL: imageURL, label: '', link: linkNotifier.value, );
+
     Map<String,dynamic> postMap = Post(
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
@@ -225,7 +225,7 @@ class AddPostModel extends ChangeNotifier {
       isOfficial: currentWhiseprUser.isOfficial,
       isPinned: false,
       likeCount: 0,
-      links: [whisperLink.toJson()], 
+      links: whisperLinksNotifier.value.map((e) => e.toJson() ).toList(), 
       negativeScore: 0,
       playCount: 0,
       postId: postId, 
@@ -246,75 +246,6 @@ class AddPostModel extends ChangeNotifier {
       } catch(e) {
         print(e.toString());
       }
-  }
-
-    void showAddLinkDialogue(BuildContext context, TextEditingController linkEditingController) {
-    final height = MediaQuery.of(context).size.height;
-    showDialog(
-      context: context, 
-      builder: (innerContext) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(16.0)
-            )
-          ),
-          child: AlertDialog(
-            title: Text('リンクを追加'),
-            content: TextField(
-              controller: linkEditingController,
-              keyboardType: TextInputType.url,
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-              decoration: InputDecoration(
-                prefixIcon: InkWell(
-                  child: Icon(Icons.close),
-                  onTap: () { 
-                    linkNotifier.value = '';
-                    linkEditingController.text = '';
-                    notifyListeners();
-                  },
-                ),
-                border: OutlineInputBorder(),
-                hintText: 'https://'
-              ),
-    
-              onChanged: (text) {
-                linkNotifier.value = text;
-              },
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(innerContext);
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Theme.of(context).focusColor,
-                    fontWeight: FontWeight.bold
-                  ),
-                )
-              ),
-              RoundedButton(
-                text: 'OK', 
-                widthRate: 0.25, 
-                verticalPadding: height/64.0, 
-                horizontalPadding: 0.0, 
-                press: () async { 
-                  Navigator.pop(innerContext); 
-                  await Future.delayed(Duration(microseconds: 500));
-                  notifyListeners();
-                }, 
-                textColor: Colors.white, 
-                buttonColor: Theme.of(context).highlightColor
-              )
-            ],
-          ),
-        );
-      }
-    );
   }
 
   void showCommentStatePopUp(BuildContext context) {
@@ -358,4 +289,11 @@ class AddPostModel extends ChangeNotifier {
       }
     );
   }
+
+  void initLinks({ required BuildContext context }) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier, ) ));
+    whisperLinksNotifier.value = [];
+    notifyListeners();
+  }
+
 }

@@ -16,13 +16,14 @@ class SquarePostImage extends StatelessWidget {
   
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final length = size.width * 0.8;
+    final height = size.height;
+    final length = height/2.4;
     final String imageURL = whisperPost.imageURLs.first;
     final String resultURL = imageURL.isNotEmpty ? whisperPost.imageURLs.first : whisperPost.userImageURL;
     
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 35.0
+      padding: EdgeInsets.only(
+        bottom: height/16.0
       ),
       child: Center(
         child: Container(

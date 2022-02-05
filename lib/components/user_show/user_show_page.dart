@@ -61,7 +61,7 @@ class UserShowPage extends ConsumerWidget {
               userShowModel.description = text;
             },
             onEditLinkButtonPressed: () {
-              userShowModel.initLinks(context: context, linkMaps: passiveWhisperUser.links,mainModel: mainModel );
+              userShowModel.initLinks(context: context, linkMaps: passiveWhisperUser.links );
             },
             descriptionController: TextEditingController(text: passiveWhisperUser.description ),
             userNameController: TextEditingController(text: passiveWhisperUser.userName ),

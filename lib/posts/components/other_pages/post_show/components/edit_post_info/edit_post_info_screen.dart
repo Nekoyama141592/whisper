@@ -102,7 +102,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       widthRate: 0.45, 
                       verticalPadding: height/64.0, 
                       horizontalPadding: height/75.0, 
-                      press: () { editPostInfoModel.init(context: context, linkMaps: currentWhisperPost.links,mainModel: mainModel ); }, 
+                      press: () { editPostInfoModel.init(context: context, linkMaps: currentWhisperPost.links, ); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
                     ),

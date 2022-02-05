@@ -69,6 +69,7 @@ class PostShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final size = MediaQuery.of(context).size;
+    final height = size.height;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -83,8 +84,8 @@ class PostShowPage extends ConsumerWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20.0
+                    padding: EdgeInsets.symmetric(
+                      vertical: height/64.0
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -108,11 +109,11 @@ class PostShowPage extends ConsumerWidget {
                         children: [
                           SquarePostImage(whisperPost: whisperPost),
                           CurrentSongUserName(whisperPost: whisperPost),
-                          SizedBox(height: 10.0),
+                          SizedBox(height: height/64.0),
                           CurrentSongTitle(whisperPost: whisperPost,),
-                          SizedBox(height: 10.0),
+                          SizedBox(height: height/64.0),
                           PostButtons(whisperPost: whisperPost, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
-                          SizedBox(height: 10.0),
+                          SizedBox(height: height/64.0),
                           AudioStateDesign(
                             speedNotifier: speedNotifier,
                             speedControll: speedControll,

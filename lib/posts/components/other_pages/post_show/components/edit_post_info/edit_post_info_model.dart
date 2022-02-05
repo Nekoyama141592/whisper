@@ -89,7 +89,7 @@ class EditPostInfoModel extends ChangeNotifier {
     }
   }
 
-  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps ,required MainModel mainModel }) {
+  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps  }) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(
       whisperLinksNotifier: whisperLinksNotifier,
     ) ));

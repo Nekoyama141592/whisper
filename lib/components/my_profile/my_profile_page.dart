@@ -43,7 +43,7 @@ class MyProfilePage extends ConsumerWidget {
           myProfileModel.description = text;
         }, 
         onEditLinkButtonPressed: () {
-          myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links,mainModel: mainModel );
+          myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links, );
         },
         descriptionController: TextEditingController(text:  currentWhisperUser.description),
         userNameController: TextEditingController(text: currentWhisperUser.userName),
