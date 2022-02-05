@@ -74,16 +74,15 @@ class BlocksUsersModel extends ChangeNotifier {
 
   Future<void> unBlockUser({ required String passiveUid, required MainModel mainModel }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    // front
-    userDocs.removeWhere((userDoc) {
-      final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
-      return whisperUser.uid == passiveUid;
-    });
-    mainModel.blockUids.remove(passiveUid);
+    final deleteBlockToken = mainModel.blockUsers.where((element) => element.activeUid == passiveUid).toList().first;
+    // front blocks_users_model
+    userDocs.removeWhere((element) => element.id == passiveUid );
     blockUids.remove(passiveUid);
+    // front main_model
+    mainModel.blockUsers.remove(deleteBlockToken);
+    mainModel.blockUids.remove(passiveUid);
     notifyListeners();
     // back
-    final deleteBlockToken = mainModel.blockUsers.where((element) => element.activeUid == passiveUid).toList().first;
     await returnTokenDocRef(uid: currentWhisperUser.uid, tokenId: deleteBlockToken.tokenId ).delete();
   }
 

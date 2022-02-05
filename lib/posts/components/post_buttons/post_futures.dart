@@ -12,7 +12,9 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
 import 'package:whisper/domain/mute_comment/mute_comment.dart';
+import 'package:whisper/domain/mute_reply/mute_reply.dart';
 import 'package:whisper/domain/post_like/post_like.dart';
+import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -36,7 +38,13 @@ class PostFutures extends ChangeNotifier {
     notifyListeners();
     // backend
     await addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
-    await addLikesToCurrentUser(whisperPost: whisperPost, mainModel: mainModel);
+    // create likePostToken
+    final String activeUid = mainModel.userMeta.uid;
+    final Timestamp now = Timestamp.now();
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likePost );
+    final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: likePostTokenType );
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likePost.toJson());
+    mainModel.likePosts.add(likePost);
   }
 
   Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
@@ -44,17 +52,7 @@ class PostFutures extends ChangeNotifier {
     final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId);
     await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).set(postLike.toJson());
   }
-  
-  Future<void> addLikesToCurrentUser({ required Post whisperPost, required MainModel mainModel }) async {
-    final String activeUid = mainModel.userMeta.uid;
-    final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likePost );
-    final LikePost likePost = LikePost(activeUid: activeUid, createdAt: now, postId: whisperPost.postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: likePostTokenType );
-    mainModel.likePostIds.add(whisperPost.postId);
-    mainModel.likePosts.add(likePost);
-    notifyListeners();
-    await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likePost.toJson());
-  }
+
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
     final Widget content = SizedBox(
@@ -86,8 +84,8 @@ class PostFutures extends ChangeNotifier {
         final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
         final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: mainModel.bookmarkLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
         final String uid = mainModel.userMeta.uid;
-        mainModel.bookmarkPosts.add(bookmarkPost);
         mainModel.bookmarksPostIds.add(bookmarkPost.postId);
+        mainModel.bookmarkPosts.add(bookmarkPost);
         notifyListeners();
         (controller as FlashController ).dismiss();
         // backend
@@ -110,43 +108,42 @@ class PostFutures extends ChangeNotifier {
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
     final postId = whisperPost.postId;
     final indexDeleteToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
-    // processUid
+    // processUI
     mainModel.bookmarksPostIds.remove(postId);
-    mainModel.bookmarkPosts.removeWhere((e) => e.postId == postId);
+    mainModel.bookmarkPosts.remove(indexDeleteToken);
     notifyListeners();
     // backend
     await deleteBookmarkPostTokenDoc(whisperPost: whisperPost, mainModel: mainModel,indexDeleteToken: indexDeleteToken );
     await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    mainModel.bookmarkPosts.removeWhere((e) => e.postId == postId);
   }
 
   Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
-  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel,required BookmarkPost indexDeleteToken  }) async {
-    
+  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel,required BookmarkPost indexDeleteToken }) async {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: indexDeleteToken.tokenId ).delete();
   }
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
     final postId = whisperPost.postId; 
+    final deleteLikePostToken = mainModel.likePosts.where((element) => element.postId == whisperPost.postId).toList().first;
     // process UI
     mainModel.likePostIds.remove(postId);
+    mainModel.likePosts.remove(deleteLikePostToken);
     notifyListeners();
     // backend
     await deleteLikeSubCol(whisperPost: whisperPost,mainModel: mainModel);
-    await deleteLikePostTokenDoc(whisperPost: whisperPost, mainModel: mainModel);
+    await deleteLikePostTokenDoc(whisperPost: whisperPost, mainModel: mainModel, deleteLikePostToken: deleteLikePostToken );
   }
 
   Future<void> deleteLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
   
-  Future<void> deleteLikePostTokenDoc({ required Post whisperPost, required MainModel mainModel}) async {
-    mainModel.likePostIds.remove(whisperPost.postId);
-    notifyListeners();
+  Future<void> deleteLikePostTokenDoc({ required Post whisperPost, required MainModel mainModel, required LikePost deleteLikePostToken  } ) async {
     final String uid = mainModel.userMeta.uid;
-    final deleteLikePostToken = mainModel.likePosts.where((element) => element.postId == whisperPost.postId).toList().first;
     await returnTokenDocRef(uid: uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
   
@@ -169,19 +166,32 @@ class PostFutures extends ChangeNotifier {
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
     final BlockUser blockUser = BlockUser(createdAt: now, activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
     mainModel.blockUsers.add(blockUser);
-    mainModel.blockUids.add(blockUser.activeUid);
+    mainModel.blockUids.add(blockUser.passiveUid);
     notifyListeners();
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
   }
 
   Future<void> muteComment({ required MainModel mainModel, required WhisperComment whisperComment }) async {
-    final muteCommentIds = mainModel.muteCommentIds;
-    final String postCommentId = whisperComment.postCommentId;
-    muteCommentIds.add(postCommentId);
-    notifyListeners();
+    // UI
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
+    final String postCommentId = whisperComment.postCommentId;
     final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: muteCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
+    mainModel.muteCommentIds.add(postCommentId);
+    mainModel.muteComments.add(muteComment);
+    notifyListeners();
+    // Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
+  }
+
+  Future<void> muteReply({ required MainModel mainModel, required WhisperReply whisperReply }) async {
+    // UI
+    final Timestamp now = Timestamp.now();
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteReply );
+    final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: muteReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
+    mainModel.muteReplyIds.add(muteReply.postCommentReplyId);
+    mainModel.muteReplys.add(muteReply);
+    notifyListeners();
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
   }
 }
