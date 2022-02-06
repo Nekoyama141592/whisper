@@ -11,6 +11,7 @@ class UserMeta {
     required this.gender,
     required this.isAdmin,
     required this.isDelete,
+    required this.isSuspended,
     required this.ipv6,
     required this.language,
     required this.uid,
@@ -22,6 +23,7 @@ class UserMeta {
   String gender;
   bool isAdmin;
   bool isDelete;
+  final bool isSuspended;
   String ipv6;
   String language;
   final String uid;
