@@ -8,12 +8,12 @@ part of 'follower.dart';
 
 Follower _$FollowerFromJson(Map<String, dynamic> json) => Follower(
       followerUid: json['followerUid'] as String,
-      myUid: json['myUid'] as String,
+      followedUid: json['myUid'] as String,
       createdAt: json['createdAt'],
     );
 
 Map<String, dynamic> _$FollowerToJson(Follower instance) => <String, dynamic>{
       'followerUid': instance.followerUid,
       'createdAt': instance.createdAt,
-      'myUid': instance.myUid,
+      'myUid': instance.followedUid,
     };

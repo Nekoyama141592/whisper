@@ -7,12 +7,12 @@ part 'follower.g.dart';
 class Follower{
   Follower({
     required this.followerUid,
-    required this.myUid,
+    required this.followedUid,
     required this.createdAt,
   });
   final String followerUid;
   final dynamic createdAt;
-  final String myUid;
+  final String followedUid;
   
   factory Follower.fromJson(Map<String,dynamic> json) => _$FollowerFromJson(json);
 

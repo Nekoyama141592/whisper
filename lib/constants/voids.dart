@@ -525,29 +525,34 @@ Future<void> follow({ required BuildContext context,required MainModel mainModel
     // processUI
     mainModel.following.add(following);
     mainModel.followingUids.add(passiveUid);
+    mainModel.currentWhisperUser.followingCount += plusOne;
     mainModel.reload();
     // process backend
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
     await createFollower(userMeta: userMeta, now: now, passiveUid: passiveUid);
+    await returnUserDocRef(uid: userMeta.uid).update(mainModel.currentWhisperUser.toJson());
   }
 }
 
 Future<void> createFollower({ required UserMeta userMeta,required Timestamp now,required String passiveUid }) async {
-  final Follower follower = Follower(createdAt: now,myUid: passiveUid,followerUid: userMeta.uid );
+  final Follower follower = Follower(createdAt: now,followedUid: passiveUid,followerUid: userMeta.uid );
   await returnFollowerDocRef(uid: passiveUid, followerUid: userMeta.uid ).set(follower.toJson());
 }
 
 Future<void> unfollow({ required MainModel mainModel,required String passiveUid }) async {
   // process set
-  final activeUid = mainModel.userMeta.uid;
+  final userMeta = mainModel.userMeta;
+  final activeUid = userMeta.uid;
   final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
   // processUI
   mainModel.following.remove(deleteFollowingToken);
   mainModel.followingUids.remove(passiveUid);
+  mainModel.currentWhisperUser.followingCount += minusOne;
   mainModel.reload();
   // process backend
   await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();
   await returnFollowerDocRef(uid: passiveUid, followerUid: activeUid ).delete();
+  await returnUserDocRef(uid: userMeta.uid).update(mainModel.currentWhisperUser.toJson());
 }
 
 

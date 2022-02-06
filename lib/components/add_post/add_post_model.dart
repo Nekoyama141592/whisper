@@ -229,6 +229,7 @@ class AddPostModel extends ChangeNotifier {
       negativeScore: 0,
       playCount: 0,
       postId: postId, 
+      postCommentCount: 0,
       positiveScore: 0,
       score: defaultScore.toDouble(),
       tagAccountNames: [],
