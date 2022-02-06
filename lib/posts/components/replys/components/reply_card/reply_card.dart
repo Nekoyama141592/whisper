@@ -41,7 +41,7 @@ class ReplyCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.muteReplyIds.contains(whisperReply.postCommentReplyId) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.mutePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     
     Slidable(
       actionPane: SlidableBehindActionPane(),

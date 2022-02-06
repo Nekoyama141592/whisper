@@ -23,7 +23,7 @@ class ReplyLikeButton extends StatelessWidget {
 
     final likeCount = whisperReply.likeCount;
 
-    return mainModel.likeReplyIds.contains(whisperReply.postCommentReplyId) ?
+    return mainModel.likePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
       padding: EdgeInsets.symmetric(
         horizontal: defaultPadding(context: context)/2.0

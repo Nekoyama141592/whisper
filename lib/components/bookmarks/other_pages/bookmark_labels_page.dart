@@ -47,9 +47,9 @@ class BookmarkLabelsPage extends ConsumerWidget {
         ),
         circular: height/32.0,
         content: ListView.builder(
-          itemCount: mainModel.bookmarkLabels.length,
+          itemCount: mainModel.bookmarkPostLabels.length,
           itemBuilder: (BuildContext context, int i) {
-            final BookmarkLabel bookmarkLabel = mainModel.bookmarkLabels[i];
+            final BookmarkLabel bookmarkLabel = mainModel.bookmarkPostLabels[i];
             return ListTile(
               leading: Icon(Icons.list),
               trailing: InkWell(

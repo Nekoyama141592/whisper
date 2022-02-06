@@ -190,12 +190,12 @@ class CommentsModel extends ChangeNotifier {
       postCommentId: whisperComment.postCommentId,
       createdAt: now,
       tokenId: tokenId,
-      tokenType: likeCommentTokenType,
+      tokenType: likePostCommentTokenType,
       postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: whisperComment.postCommentId )
     );
     // processUi
-    mainModel.likeCommentIds.add(postCommentId);
-    mainModel.likeComments.add(likeComment);
+    mainModel.likePostCommentIds.add(postCommentId);
+    mainModel.likePostComments.add(likeComment);
     notifyListeners();
     // process back
     await addLikeSubCol(whisperComment: whisperComment,activeUid: activeUid ,now: now);
@@ -210,10 +210,10 @@ class CommentsModel extends ChangeNotifier {
   Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
     // process set
     final commentId = whisperComment.postCommentId;
-    final deleteLikeComment = mainModel.likeComments.where((element) => element.postCommentId == commentId ).toList().first;
+    final deleteLikeComment = mainModel.likePostComments.where((element) => element.postCommentId == commentId ).toList().first;
     // process UI
-    mainModel.likeCommentIds.remove(commentId);
-    mainModel.likeComments.remove(deleteLikeComment);
+    mainModel.likePostCommentIds.remove(commentId);
+    mainModel.likePostComments.remove(deleteLikeComment);
     notifyListeners();
     // backend
     await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();

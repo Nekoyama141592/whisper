@@ -40,7 +40,7 @@ class BookmarkButton extends ConsumerWidget {
               color: Theme.of(context).highlightColor,
             ),
             onTap: () async {
-              await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkLabels: mainModel.bookmarkLabels );
+              await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkLabels: mainModel.bookmarkPostLabels );
             }),
           SizedBox(width: 5.0),
           if(currentWhisperUser.uid == whisperPost.uid) Text(
@@ -54,7 +54,7 @@ class BookmarkButton extends ConsumerWidget {
           InkWell(
             child: Icon(Icons.bookmark_border),
             onTap: () async {
-              await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkLabels: mainModel.bookmarkLabels );
+              await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostLabels );
             }, 
           ),
           SizedBox(width: 5.0),
@@ -72,12 +72,12 @@ class BookmarkButton extends ConsumerWidget {
           color: Theme.of(context).highlightColor,
         ),
         onTap: () async {
-          await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkLabels: mainModel.bookmarkLabels);
+          await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkLabels: mainModel.bookmarkPostLabels);
         })
       : InkWell(
         child: Icon(Icons.bookmark_border),
         onTap: () async {
-          await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkLabels: mainModel.bookmarkLabels );
+          await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostLabels );
         }, 
       );
     }

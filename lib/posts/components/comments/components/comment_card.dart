@@ -47,7 +47,7 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize,
       // overflow: TextOverflow.ellipsis
     );
-    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.muteCommentIds.contains(whisperComment.postCommentId) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) ?
 
     Slidable(
       actionPane: SlidableBehindActionPane(),

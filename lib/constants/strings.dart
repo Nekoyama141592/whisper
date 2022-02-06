@@ -53,17 +53,17 @@ String generatePostCommentReplyId({ required String uid }) {
 const String speedPrefsKey = 'speed';
 // tokenTypes
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
-final String bookmarkLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkLabel);
+final String bookmarkPostLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPostLabel);
 final String bookmarkPostTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPost);
 final String followingTokenType = returnTokenTypeString(tokenType: TokenType.following);
 final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);
-final String likeCommentTokenType = returnTokenTypeString(tokenType: TokenType.likePostComment);
+final String likePostCommentTokenType = returnTokenTypeString(tokenType: TokenType.likePostComment);
 final String watchlistTokenType = returnTokenTypeString(tokenType: TokenType.watchlist);
-final String muteCommentTokenType = returnTokenTypeString(tokenType: TokenType.mutePostComment);
+final String mutePostCommentTokenType = returnTokenTypeString(tokenType: TokenType.mutePostComment);
 final String mutePostTokenType = returnTokenTypeString(tokenType: TokenType.mutePost);
-final String muteReplyTokenType = returnTokenTypeString(tokenType: TokenType.mutePostCommentReply);
+final String mutePostCommentReplyTokenType = returnTokenTypeString(tokenType: TokenType.mutePostCommentReply);
 final String muteUserTokenType = returnTokenTypeString(tokenType: TokenType.muteUser);
-final String likeReplyTokenType = returnTokenTypeString(tokenType: TokenType.likePostCommentReply);
+final String likePostCommentReplyTokenType = returnTokenTypeString(tokenType: TokenType.likePostCommentReply);
 final String searchHistoryTokenType = returnTokenTypeString(tokenType: TokenType.searchHistory);
 final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.readPost);
 // tokenType(notification)
@@ -86,7 +86,6 @@ const String postCommentReplysColRefName = 'postCommentReplys';
 const String postCommentReplyLikesColRefName = 'postCommentReplyLikes';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
-const String bookmarkLabelIdFieldKey = 'bookmarkLabelId';
 const String createdAtFieldKey = 'createdAt';
 const String followerUidsFieldKey = 'followerUids';
 const String followerCountFieldKey = 'followerCount';

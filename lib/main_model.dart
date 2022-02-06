@@ -57,22 +57,22 @@ class MainModel extends ChangeNotifier {
   List<String> likePostIds = [];
   List<String> bookmarksPostIds = [];
   List<String> followingUids = [];
-  List<LikeComment> likeComments = [];
-  List<String> likeCommentIds = [];
-  List<LikeReply> likeReplys = [];
-  List<String> likeReplyIds = [];
+  List<LikeComment> likePostComments = [];
+  List<String> likePostCommentIds = [];
+  List<LikeReply> likePostCommentReplys = [];
+  List<String> likePostCommentReplyIds = [];
   // bookmark
   List<BookmarkPost> bookmarkPosts = [];
-  List<BookmarkLabel> bookmarkLabels = [];
+  List<BookmarkLabel> bookmarkPostLabels = [];
   List<ReadPost> readPosts = [];
   List<String> readPostIds = [];
   // mutes 
   List<MuteUser> muteUsers = [];
   List<String> muteUids = [];
-  List<MuteReply> muteReplys = [];
-  List<String> muteReplyIds = [];
-  List<MuteComment> muteComments = [];
-  List<String> muteCommentIds = [];
+  List<MuteReply> mutePostCommentReplys = [];
+  List<String> mutePostCommentReplyIds = [];
+  List<MuteComment> mutePostComments = [];
+  List<String> mutePostCommentIds = [];
   List<MutePost> mutePosts = [];
   List<String> mutePostIds = [];
   // block
@@ -85,7 +85,7 @@ class MainModel extends ChangeNotifier {
   // following
   List<Following> following = [];
   // bookmarkLabel
-  final bookmarkLabelTokenIdNotifier = ValueNotifier<String>('');
+  final bookmarkPostLabelTokenIdNotifier = ValueNotifier<String>('');
   // feeds
   bool isFeedLoading = false;
   Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {
@@ -164,9 +164,9 @@ class MainModel extends ChangeNotifier {
           blockUsers.add(blockUser);
           blockUids.add(blockUser.passiveUid);
         break;
-        case TokenType.bookmarkLabel:
+        case TokenType.bookmarkPostLabel:
           final BookmarkLabel bookmarkLabel = BookmarkLabel.fromJson(tokenMap);
-          bookmarkLabels.add(bookmarkLabel);
+          bookmarkPostLabels.add(bookmarkLabel);
         break;
         case TokenType.bookmarkPost:
           final BookmarkPost bookmarkPost = BookmarkPost.fromJson(tokenMap);
@@ -180,8 +180,8 @@ class MainModel extends ChangeNotifier {
         break;
         case TokenType.likePostComment:
           final LikeComment likeComment = LikeComment.fromJson(tokenMap);
-          likeComments.add(likeComment);
-          likeCommentIds.add(likeComment.postCommentId);
+          likePostComments.add(likeComment);
+          likePostCommentIds.add(likeComment.postCommentId);
         break;
         case TokenType.likePost:
           final LikePost likePost = LikePost.fromJson(tokenMap);
@@ -190,13 +190,13 @@ class MainModel extends ChangeNotifier {
         break;
         case TokenType.likePostCommentReply:
           final LikeReply likeReply = LikeReply.fromJson(tokenMap);
-          likeReplys.add(likeReply);
-          likeReplyIds.add(likeReply.postCommentReplyId);
+          likePostCommentReplys.add(likeReply);
+          likePostCommentReplyIds.add(likeReply.postCommentReplyId);
         break;
         case TokenType.mutePostComment:
           final MuteComment muteComment = MuteComment.fromJson(tokenMap);
-          muteComments.add(muteComment);
-          muteCommentIds.add(muteComment.postCommentId);
+          mutePostComments.add(muteComment);
+          mutePostCommentIds.add(muteComment.postCommentId);
         break;
         case TokenType.mutePost:
           final MutePost mutePost = MutePost.fromJson(tokenMap);
@@ -205,8 +205,8 @@ class MainModel extends ChangeNotifier {
         break;
         case TokenType.mutePostCommentReply:
           final MuteReply muteReply = MuteReply.fromJson(tokenMap);
-          muteReplys.add(muteReply);
-          muteReplyIds.add(muteReply.postCommentReplyId);
+          mutePostCommentReplys.add(muteReply);
+          mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
         break;
         case TokenType.muteUser:
           final MuteUser muteUser = MuteUser.fromJson(tokenMap);

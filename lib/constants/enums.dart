@@ -15,18 +15,18 @@ dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
     return NotificationType.replyNotification;
   }
 }
-enum TokenType { bookmarkLabel,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
+enum TokenType { bookmarkPostLabel,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
 dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
-  if (tokenTypeString == bookmarkLabelTokenType) {
-    return TokenType.bookmarkLabel;
+  if (tokenTypeString == bookmarkPostLabelTokenType) {
+    return TokenType.bookmarkPostLabel;
   } else if(tokenTypeString == followingTokenType) {
     return TokenType.following;
   } else if (tokenTypeString == likePostTokenType) {
     return TokenType.likePost;
-  } else if (tokenTypeString == likeCommentTokenType) {
+  } else if (tokenTypeString == likePostCommentTokenType) {
     return TokenType.likePostComment;
-  } else if (tokenTypeString == likeReplyTokenType) {
+  } else if (tokenTypeString == likePostCommentReplyTokenType) {
     return TokenType.likePostCommentReply;
   } else if (tokenTypeString == searchHistoryTokenType) {
     return TokenType.searchHistory;
@@ -36,11 +36,11 @@ dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
     return TokenType.watchlist;
   } else if (tokenTypeString == blockUserTokenType) {
     return TokenType.blockUser;
-  } else if (tokenTypeString == muteCommentTokenType) {
+  } else if (tokenTypeString == mutePostCommentTokenType) {
     return TokenType.mutePostComment;
   } else if (tokenTypeString == mutePostTokenType) {
     return TokenType.mutePost;
-  } else if (tokenTypeString == muteReplyTokenType) {
+  } else if (tokenTypeString == mutePostCommentReplyTokenType) {
     return TokenType.mutePostCommentReply;
   } else if (tokenTypeString == muteUserTokenType) {
     return TokenType.muteUser;

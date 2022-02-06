@@ -54,21 +54,21 @@ class PostFutures extends ChangeNotifier {
   }
 
 
-  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
+  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkPostLabels }) async {
     final Widget content = SizedBox(
       height: MediaQuery.of(context).size.height * 0.70,
       child: ValueListenableBuilder<String>(
-        valueListenable: mainModel.bookmarkLabelTokenIdNotifier,
-        builder: (_,bookmarkLabelid,__) {
+        valueListenable: mainModel.bookmarkPostLabelTokenIdNotifier,
+        builder: (_,bookmarkPostLabelId,__) {
           return ListView.builder(
-            itemCount: bookmarkLabels.length,
+            itemCount: bookmarkPostLabels.length,
             itemBuilder: (BuildContext context, int i) {
-              final BookmarkLabel bookmarkLabel = bookmarkLabels[i];
+              final BookmarkLabel bookmarkPostLabel = bookmarkPostLabels[i];
               return ListTile(
-                leading: mainModel.bookmarkLabelTokenIdNotifier.value == bookmarkLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
-                title: Text(bookmarkLabel.label),
+                leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
+                title: Text(bookmarkPostLabel.label),
                 onTap: () {
-                  mainModel.bookmarkLabelTokenIdNotifier.value = bookmarkLabel.tokenId;
+                  mainModel.bookmarkPostLabelTokenIdNotifier.value = bookmarkPostLabel.tokenId;
                 },
               );
             }
@@ -82,7 +82,7 @@ class PostFutures extends ChangeNotifier {
         // process UI
         final Timestamp now = Timestamp.now();
         final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
-        final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: mainModel.bookmarkLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
+        final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: mainModel.bookmarkPostLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
         final String uid = mainModel.userMeta.uid;
         mainModel.bookmarksPostIds.add(bookmarkPost.postId);
         mainModel.bookmarkPosts.add(bookmarkPost);
@@ -161,10 +161,10 @@ class PostFutures extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.mutePostComment );
     final String postCommentId = whisperComment.postCommentId;
-    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: muteCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
+    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: mutePostCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
     // process UI
-    mainModel.muteCommentIds.add(postCommentId);
-    mainModel.muteComments.add(muteComment);
+    mainModel.mutePostCommentIds.add(postCommentId);
+    mainModel.mutePostComments.add(muteComment);
     notifyListeners();
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
@@ -174,10 +174,10 @@ class PostFutures extends ChangeNotifier {
     // process set
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePostCommentReply );
-    final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: muteReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
+    final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: mutePostCommentReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
     // process UI
-    mainModel.muteReplyIds.add(muteReply.postCommentReplyId);
-    mainModel.muteReplys.add(muteReply);
+    mainModel.mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
+    mainModel.mutePostCommentReplys.add(muteReply);
     notifyListeners();
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());

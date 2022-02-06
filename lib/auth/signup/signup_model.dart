@@ -162,10 +162,10 @@ class SignupModel extends ChangeNotifier {
       uid: uid,
       updatedAt: now,
     );
-    final String bookmarkLabelId = returnTokenId( userMeta: userMeta, tokenType: TokenType.bookmarkLabel );
-    final BookmarkLabel bookmarkLabel = BookmarkLabel(uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkLabelId, tokenType: bookmarkLabelTokenType,imageURL: '' );
+    final String bookmarkPostLabelId = returnTokenId( userMeta: userMeta, tokenType: TokenType.bookmarkPostLabel );
+    final BookmarkLabel bookmarkPostLabel = BookmarkLabel(uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostLabelId, tokenType: bookmarkPostLabelTokenType,imageURL: '' );
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
-    await returnTokenDocRef(uid: uid, tokenId: bookmarkLabelId ).set(bookmarkLabel.toJson());
+    await returnTokenDocRef(uid: uid, tokenId: bookmarkPostLabelId ).set(bookmarkPostLabel.toJson());
   }
 
   void showCupertinoDatePicker(BuildContext context) {

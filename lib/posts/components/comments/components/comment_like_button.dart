@@ -27,7 +27,7 @@ class CommentLikeButton extends StatelessWidget {
     final commentId = whisperComment.postCommentId;
     final likeCount = whisperComment.likeCount;
     final plusOneCount = likeCount + plusOne;
-    return mainModel.likeCommentIds.contains(commentId) ?
+    return mainModel.likePostCommentIds.contains(commentId) ?
     Padding(
       padding: EdgeInsets.symmetric(
         horizontal: defaultPadding(context: context)

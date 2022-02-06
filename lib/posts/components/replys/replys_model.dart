@@ -294,9 +294,9 @@ class ReplysModel extends ChangeNotifier {
     // process UI
     final userMeta = mainModel.userMeta;
     final postCommentReplyId = whisperReply.postCommentReplyId;
-    final LikeReply likeReply = LikeReply(activeUid: userMeta.uid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likeReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
-    mainModel.likeReplyIds.add(postCommentReplyId);
-    mainModel.likeReplys.add(likeReply);
+    final LikeReply likeReply = LikeReply(activeUid: userMeta.uid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likePostCommentReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
+    mainModel.likePostCommentReplyIds.add(postCommentReplyId);
+    mainModel.likePostCommentReplys.add(likeReply);
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
@@ -313,10 +313,10 @@ class ReplysModel extends ChangeNotifier {
   Future<void> unlike({ required WhisperReply whisperReply, required MainModel mainModel }) async {
     // process set
     final postCommentReplyId = whisperReply.postCommentReplyId;
-    final deleteLikeReply = mainModel.likeReplys.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
+    final deleteLikeReply = mainModel.likePostCommentReplys.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
     // processUI
-    mainModel.likeReplyIds.remove(postCommentReplyId);
-    mainModel.likeReplys.remove(deleteLikeReply);
+    mainModel.likePostCommentReplyIds.remove(postCommentReplyId);
+    mainModel.likePostCommentReplys.remove(deleteLikeReply);
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeReply.tokenId ).delete();
