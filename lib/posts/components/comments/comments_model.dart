@@ -234,7 +234,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 commentDocs = [];
                 sortState = SortState.byLikedUidCount;
-                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
+                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
@@ -255,7 +255,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 commentDocs = [];
                 sortState = SortState.byNewestFirst;
-                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
+                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
@@ -276,7 +276,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(context);
                 commentDocs = [];
                 sortState = SortState.byOldestFirst;
-                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
+                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(oneTimeReadCount)
                 .get().then((qshot) {
@@ -317,7 +317,7 @@ class CommentsModel extends ChangeNotifier {
       case SortState.byNewestFirst:
       QuerySnapshot<Map<String, dynamic>> newSnapshots = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
       .orderBy(createdAtFieldKey,descending: true)
-      .endBeforeDocument(commentDocs[0])
+      .endBeforeDocument(commentDocs.first)
       .limit(oneTimeReadCount)
       .get();
       // Sort by oldest first
