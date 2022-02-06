@@ -66,6 +66,17 @@ class BookmarkLabelsPage extends ConsumerWidget {
                   };
                   final Widget content = TextFormField(
                     controller: labelEditingController,
+                    decoration: InputDecoration(
+                      hintText: '例)面白い人',
+                      suffixIcon: InkWell(
+                        child: Icon(Icons.close),
+                        onTap: () {
+                          labelEditingController.text = '';
+                          bookmarksModel.editLabel = '';
+                          mainModel.reload();
+                        },
+                      )
+                    ),
                     onChanged: (text) {
                       bookmarksModel.editLabel = text;
                     },
