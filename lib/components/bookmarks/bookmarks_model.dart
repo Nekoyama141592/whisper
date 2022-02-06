@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -56,6 +58,8 @@ class BookmarksModel extends ChangeNotifier {
   bool isInitFinished = false;
   String indexBookmarkLabelId = '';
   bool isBookmarkMode = false;
+  // editLabel
+  String editLabel = '';
   
   Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
     isBookmarkMode = true;
@@ -140,6 +144,20 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> getOldBookmarks() async {
     if (bookmarkPostIds.length > (lastIndex + tenCount)) {
       await processBookmark();
+    }
+  }
+
+  Future<void> onUpdateLabelButtonPressed({ required FlashController flashController,required BookmarkLabel bookmarkLabel,required UserMeta userMeta}) async {
+    flashController.dismiss();
+    if (editLabel.isEmpty) {
+
+    } else if (editLabel.length > maxSearchLength) {
+
+    } else {
+      bookmarkLabel.label = editLabel;
+      notifyListeners();
+      await returnTokenDocRef(uid: userMeta.uid, tokenId: bookmarkLabel.tokenId ).update(bookmarkLabel.toJson());
+      editLabel = '';
     }
   }
 

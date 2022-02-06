@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:whisper/components/bookmarks/other_pages/bookmarkLabels_page.dart';
+import 'package:whisper/components/bookmarks/other_pages/bookmark_labels_page.dart';
 // constants
 import 'themes/themes.dart';
 //components

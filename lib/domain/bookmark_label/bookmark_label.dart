@@ -15,10 +15,10 @@ class BookmarkLabel {
   });
   
   final dynamic createdAt;
-  final String label;
+  String label;
   final String tokenId;
   final String tokenType;
-  final String imageURL;
+  String imageURL;
   final String uid;
   final dynamic updatedAt;
 
