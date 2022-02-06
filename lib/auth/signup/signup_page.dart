@@ -77,12 +77,12 @@ class SignupPage extends ConsumerWidget {
                                   child: signupModel.isCropped ?
                                   Padding(
                                     padding: EdgeInsets.all(defaultPadding(context: context)),
-                                    child: CircleImage(length: defaultPadding(context: context) * 5, image: FileImage(signupModel.croppedFile!)),
+                                    child: CircleImage(length: defaultHeaderTextSize(context: context) * 5, image: FileImage(signupModel.croppedFile!)),
                                   )
                                   : Column(
                                     children: [
                                       InkWell(
-                                        child: Icon(Icons.image,size: defaultPadding(context: context) * 5),
+                                        child: Icon(Icons.image,size: defaultHeaderTextSize(context: context) * 5),
                                         onTap: () async {
                                           await signupModel.showImagePicker();
                                         },

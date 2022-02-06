@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'text_field_container.dart';
 
@@ -36,7 +37,7 @@ class RoundedInputField extends StatelessWidget {
         child: TextFormField(
           style: TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: defaultHeaderTextSize(context: context),
             fontWeight: FontWeight.bold,
           ),
           // これも要素

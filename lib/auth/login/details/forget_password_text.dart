@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 
@@ -14,7 +15,7 @@ class ForgetPasswordText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:  EdgeInsets.symmetric(
-        vertical: 5
+        vertical: defaultPadding(context: context)
       ),
       child: Center(
         child: RichText(
@@ -27,8 +28,8 @@ class ForgetPasswordText extends StatelessWidget {
               TextSpan(
                 text: 'パスワードを忘れた場合',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 18
+                  color: Theme.of(context).highlightColor,
+                  fontSize: defaultHeaderTextSize(context: context)
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {
                   routes.toVerifyPasswordResetPage(context);

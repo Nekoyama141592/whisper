@@ -50,7 +50,7 @@ class LoginPage extends ConsumerWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: IconButton(
-                      color: Colors.black,
+                      color: Colors.white,
                       icon: Icon(Icons.arrow_back),
                       onPressed: () {
                         routes.toSignupPage(context);
@@ -60,7 +60,7 @@ class LoginPage extends ConsumerWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: defaultPadding(context: context),
-                      vertical: defaultPadding(context: context),
+                      vertical: defaultPadding(context: context)/2.0,
                     ),
                     child: Text("ログイン", style: TextStyle(color: Colors.white, fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold)),
                   ),

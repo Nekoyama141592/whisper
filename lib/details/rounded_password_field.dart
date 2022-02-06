@@ -37,7 +37,7 @@ class RoundedPasswordField extends ConsumerWidget {
         child: TextField(
           style: TextStyle(
             color: Colors.black,
-            fontSize: defaultPadding(context: context),
+            fontSize: defaultHeaderTextSize(context: context),
             fontWeight: FontWeight.bold
           ),
           keyboardType: TextInputType.visiblePassword,
