@@ -292,41 +292,51 @@ Future<void> initAudioPlayer({ required AudioPlayer audioPlayer, required List<A
 }
 
 Future<void> mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<dynamic> results}) async {
+  // process set
   final Post whisperPost = fromMapToPost(postMap: post);
   final String postId = whisperPost.postId;
-  mainModel.mutePostIds.add(postId);
-  results.removeWhere((result) => fromMapToPost(postMap: result).postId == whisperPost.postId );
-  await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  mainModel.reload();
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
   final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: mutePostTokenType );
+  // process UI
+  mainModel.mutePostIds.add(postId);
+  mainModel.mutePosts.add(mutePost);
+  results.removeWhere((result) => fromMapToPost(postMap: result).postId == whisperPost.postId );
+  await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+  mainModel.reload();
+  // process Backend
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
 }
 
 Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<dynamic> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
+  // process set
   final whisperPost = fromMapToPost(postMap: post);
   final String passiveUid = whisperPost.uid;
-  await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  mainModel.muteUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
   final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
+  // process Ui
   mainModel.muteUsers.add(muteUser);
+  mainModel.muteUids.add(whisperPost.uid);
+  await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
+  // process Backend
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
 }
 
 Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<dynamic> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
+  // process set
   final whisperPost = fromMapToPost(postMap: post);
   final String passiveUid = whisperPost.uid;
-  await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  blocksUids.add(passiveUid);
   final Timestamp now = Timestamp.now();
   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
   final BlockUser blockUser = BlockUser(createdAt: now,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
+  // process UI
   blockUsers.add(blockUser);
+  blocksUids.add(passiveUid);
+  await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   mainModel.reload();
+  // process Backend
   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
 }
 

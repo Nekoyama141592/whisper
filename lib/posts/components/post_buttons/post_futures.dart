@@ -144,36 +144,42 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> blockUser({ required MainModel mainModel, required String passiveUid,}) async {
+    // process set
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
     final BlockUser blockUser = BlockUser(createdAt: now, activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
+    // process UI
     mainModel.blockUsers.add(blockUser);
     mainModel.blockUids.add(blockUser.passiveUid);
     notifyListeners();
+    // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
   }
 
   Future<void> muteComment({ required MainModel mainModel, required WhisperComment whisperComment }) async {
-    // UI
+    // process set
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
     final String postCommentId = whisperComment.postCommentId;
     final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: muteCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
+    // process UI
     mainModel.muteCommentIds.add(postCommentId);
     mainModel.muteComments.add(muteComment);
     notifyListeners();
-    // Backend
+    // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
   }
 
   Future<void> muteReply({ required MainModel mainModel, required WhisperReply whisperReply }) async {
-    // UI
+    // process set
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteReply );
     final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: muteReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
+    // process UI
     mainModel.muteReplyIds.add(muteReply.postCommentReplyId);
     mainModel.muteReplys.add(muteReply);
     notifyListeners();
+    // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
   }
 }
