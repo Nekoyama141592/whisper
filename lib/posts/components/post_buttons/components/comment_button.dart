@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -23,7 +24,7 @@ class CommentButton extends StatelessWidget {
           child: Icon(Icons.comment),
           onTap: toCommentsPage,
         ),
-        SizedBox(width: 5.0),  
+        SizedBox(width: defaultPadding(context: context)/2.0 ),  
       ],
     );
   }

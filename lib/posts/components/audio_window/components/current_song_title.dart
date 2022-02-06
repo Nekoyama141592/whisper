@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/cupertino.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/domain/post/post.dart';
 
@@ -17,7 +18,7 @@ class CurrentSongTitle extends StatelessWidget {
    return Text(
     whisperPost.title,
     style: TextStyle(
-      fontSize: 20,
+      fontSize: defaultHeaderTextSize(context: context),
       fontWeight: FontWeight.bold
     ),
     overflow: TextOverflow.ellipsis,

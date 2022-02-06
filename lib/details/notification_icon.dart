@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // models
 import 'package:whisper/main_model.dart';
@@ -27,7 +28,7 @@ class NotificationIcon extends ConsumerWidget {
   final NotificationsModel notificationsModel = ref.watch(notificationsProvider);
   
   return Padding(
-    padding: EdgeInsets.all(20.0),
+    padding: EdgeInsets.all(defaultPadding(context: context)),
     child: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
       stream: notificationsModel.notificationStream,
       builder: ( context,snapshot ) {
@@ -46,8 +47,8 @@ class NotificationIcon extends ConsumerWidget {
                 right: 0,
                 top: 0,
                 child: Container(
-                  height: 12.0,
-                  width: 12.0,
+                  height: defaultPadding(context: context),
+                  width: defaultPadding(context: context),
                   decoration: BoxDecoration(
                     color: kErrorColor,
                     shape: BoxShape.circle

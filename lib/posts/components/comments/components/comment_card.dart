@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/domain/comment/whisper_comment.dart';
@@ -40,7 +41,7 @@ class CommentCard extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
     
     final postFutures = ref.watch(postsFeaturesProvider);
-    final fontSize = 16.0;
+    final fontSize = defaultHeaderTextSize(context: context);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,

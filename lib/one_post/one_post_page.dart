@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // comopnents
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
-// domain
-import 'package:whisper/domain/post/post.dart';
 // other_pages
 import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
 // model

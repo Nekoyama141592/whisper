@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/details/back_arrow_button.dart';
 // components
@@ -41,7 +42,7 @@ class PostScreen extends ConsumerWidget {
     return GradientScreen(
       top: SizedBox.shrink(), 
       header: Padding(
-        padding: EdgeInsets.all(height/32.0),
+        padding: EdgeInsets.all(defaultPadding(context: context)),
         child: Row(
           children: [
             InkWell(
@@ -54,7 +55,7 @@ class PostScreen extends ConsumerWidget {
               'BookMarks',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: height/32.0,
+                fontSize: defaultHeaderTextSize(context: context),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -67,7 +68,7 @@ class PostScreen extends ConsumerWidget {
       })
       : Padding(
         padding: EdgeInsets.only(
-          top: height/32.0,
+          top: defaultPadding(context: context),
         ),
         child: PostCards(
           postDocs: postDocs, 
@@ -120,7 +121,7 @@ class PostScreen extends ConsumerWidget {
           bookmarksModel: bookmarksModel,
         ),
       ), 
-      circular: height/32.0
+      circular: defaultPadding(context: context)
     );
   }
 }

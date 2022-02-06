@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // components
 import 'package:whisper/posts/components/replys/components/reply_card/components/reply_like_button.dart';
@@ -33,9 +34,9 @@ class ReplyCard extends ConsumerWidget {
     final postFutures = ref.watch(postsFeaturesProvider);
     final String userImageURL = whisperReply.userImageURL;
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final length = 60.0;
+    final length = defaultPadding(context: context) * 4.0;
     final padding = 0.0;
-    final fontSize = 16.0;
+    final fontSize = defaultPadding(context: context);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
@@ -77,14 +78,14 @@ class ReplyCard extends ConsumerWidget {
               Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(4.0))
+                  borderRadius: BorderRadius.all(Radius.circular(defaultPadding(context: context)/4.0))
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0
+                      padding: EdgeInsets.symmetric(
+                        horizontal: defaultPadding(context: context)
                       ),
                       child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: whisperReply.uid, mainModel: mainModel),
                     ),
@@ -96,7 +97,7 @@ class ReplyCard extends ConsumerWidget {
                               whisperReply.userName,
                               style: whisperTextStyle
                             ),
-                            SizedBox(height: 10.0,),
+                            SizedBox(height: defaultPadding(context: context),),
                             Text(
                               whisperReply.reply,
                               style: whisperTextStyle

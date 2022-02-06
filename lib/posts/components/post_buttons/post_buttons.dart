@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // components
 import 'package:whisper/posts/components/post_buttons/components/edit_button.dart';
 import 'package:whisper/posts/components/post_buttons/components/like_button.dart';

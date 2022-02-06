@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // notifier
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 
@@ -17,14 +18,14 @@ class PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = 32.0;
+    final iconSize = defaultPadding(context: context) * 2.0;
     return ValueListenableBuilder<ButtonState>(
       valueListenable: playButtonNotifier,
       builder: (_, value, __){
         switch (value) {
           case ButtonState.loading:
             return Container(
-              margin: EdgeInsets.all(8.0),
+              margin: EdgeInsets.all(defaultPadding(context: context)),
               width: iconSize,
               height: iconSize,
               child: CircularProgressIndicator(),

@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/domain/post/post.dart';
@@ -19,6 +20,6 @@ class AudioWindowUserImage extends StatelessWidget {
   
   @override 
   Widget build(BuildContext context) {
-    return RedirectUserImage(userImageURL: whisperPost.userImageURL, length: 40.0, padding: 5.0,passiveUserDocId: whisperPost.uid,mainModel: mainModel,);
+    return RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 2.5, padding: defaultPadding(context: context),passiveUserDocId: whisperPost.uid,mainModel: mainModel,);
   }
 }

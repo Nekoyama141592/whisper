@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
@@ -44,7 +45,7 @@ class LikeButton extends ConsumerWidget {
                 await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel);
               },
             ),
-            SizedBox(width: 5.0),
+            SizedBox(width: defaultPadding(context: context)/2.0),
             Text(
               plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
               style: TextStyle(color: Colors.red)
@@ -59,7 +60,7 @@ class LikeButton extends ConsumerWidget {
                 await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel);
               },
             ),
-            SizedBox(width: 5.0),
+            SizedBox(width: defaultPadding(context: context)/2.0),
             Text(
               likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
             )

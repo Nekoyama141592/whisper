@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:whisper/constants/doubles.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 
@@ -19,7 +20,7 @@ class CurrentSongUserName extends StatelessWidget {
     return Text(
       whisperPost.userName,
       style: TextStyle(
-        fontSize: 20
+        fontSize: defaultHeaderTextSize(context: context)
       ),
       overflow: TextOverflow.ellipsis,
     );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
@@ -52,26 +53,19 @@ class SignupPage extends ConsumerWidget {
                   // back arrow
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10
+                      horizontal: defaultPadding(context: context),
+                      vertical: defaultPadding(context: context)
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("新規登録", style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
-                        SizedBox(height: 10,),
-                        Text("ようこそWhisperへ！", style: TextStyle(color: Colors.white, fontSize: 18),)
-                      ],
-                    ),
+                    child: Text("新規登録", style: TextStyle(color: Colors.white, fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold)),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: defaultPadding(context: context) ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(60),
-                          topRight: Radius.circular(60)
+                          topLeft: Radius.circular(defaultPadding(context: context) * 2.0),
+                          topRight: Radius.circular(defaultPadding(context: context) * 2.0),
                         )
                       ),
                       child: SingleChildScrollView(
@@ -82,20 +76,20 @@ class SignupPage extends ConsumerWidget {
                                 Container(
                                   child: signupModel.isCropped ?
                                   Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: CircleImage(length: 160.0, image: FileImage(signupModel.croppedFile!)),
+                                    padding: EdgeInsets.all(defaultPadding(context: context)),
+                                    child: CircleImage(length: defaultPadding(context: context) * 5, image: FileImage(signupModel.croppedFile!)),
                                   )
                                   : Column(
                                     children: [
                                       InkWell(
-                                        child: Icon(Icons.image,size: 160.0),
+                                        child: Icon(Icons.image,size: defaultPadding(context: context) * 5),
                                         onTap: () async {
                                           await signupModel.showImagePicker();
                                         },
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 5
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: defaultPadding(context: context)
                                         ),
                                         child: Text('上のアイコンをタップして写真を選択',style: TextStyle(fontWeight: FontWeight.bold),),
                                       )
@@ -130,13 +124,13 @@ class SignupPage extends ConsumerWidget {
                               },
                             ),
                             
-                            SizedBox(height: 24),
+                            SizedBox(height: defaultPadding(context: context) ),
                             Center(
                               child: RoundedButton(
                                 text: '次へ',
                                 widthRate: 0.8,
-                                verticalPadding: 20.0,
-                                horizontalPadding: 10.0,
+                                verticalPadding: defaultPadding(context: context),
+                                horizontalPadding: defaultPadding(context: context),
                                 press: () {
                                   if (signupModel.croppedFile == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('写真を選択してください')));

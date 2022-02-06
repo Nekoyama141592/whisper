@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // constants
@@ -26,7 +27,7 @@ class UserCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).focusColor.withOpacity(0.3),
-            blurRadius: 20,
+            blurRadius: defaultPadding(context: context),
             offset: Offset(0, 5)
           )
         ]
@@ -36,13 +37,12 @@ class UserCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              // result['objectID']も可
-              leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: 50.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
+              leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: defaultPadding(context: context) * 2.4, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
               title: Text(
                 passiveWhisperUser.userName,
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
-                  fontSize: 20.0
+                  fontSize: defaultHeaderTextSize(context: context)
                 ),
               ),
               subtitle: Text(
@@ -50,7 +50,7 @@ class UserCard extends StatelessWidget {
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
+                  fontSize: defaultHeaderTextSize(context: context),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

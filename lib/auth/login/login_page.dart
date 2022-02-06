@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/rounded_input_field.dart';
@@ -58,26 +59,19 @@ class LoginPage extends ConsumerWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 5
+                      horizontal: defaultPadding(context: context),
+                      vertical: defaultPadding(context: context),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("ログイン", style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
-                        SizedBox(height: 10,),
-                        Text("お帰りなさい", style: TextStyle(color: Colors.white, fontSize: 18),)
-                      ],
-                    ),
+                    child: Text("ログイン", style: TextStyle(color: Colors.white, fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold)),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: defaultPadding(context: context) ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(60),
-                          topRight: Radius.circular(60)
+                          topLeft: Radius.circular(defaultPadding(context: context) * 2.0),
+                          topRight: Radius.circular(defaultPadding(context: context) * 2.0),
                         )
                       ),
                       child: SingleChildScrollView(
@@ -112,13 +106,13 @@ class LoginPage extends ConsumerWidget {
                                 loginModel.password = value;
                               },
                             ),
-                            SizedBox(height: 24),
+                            SizedBox(height: defaultPadding(context: context) ),
                             Center(
                               child: RoundedButton(
                                 text: 'ログイン',
                                 widthRate: 0.8,
-                                verticalPadding: 20.0,
-                                horizontalPadding: 10.0,
+                                verticalPadding: defaultPadding(context: context),
+                                horizontalPadding: defaultPadding(context: context),
                                 press: () async {
                                   await loginModel.login(context);
                                 },

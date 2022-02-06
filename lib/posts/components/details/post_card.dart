@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
@@ -73,7 +74,7 @@ class PostCard extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).highlightColor.withOpacity(0.1),
-                blurRadius: 15.0,
+                blurRadius: defaultPadding(context: context)
               )
             ]
           ),
@@ -82,11 +83,11 @@ class PostCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: 50.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
+                  leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 3.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
                   title: Text(
                     whisperPost.userName,
                     style: TextStyle(
-                      fontSize: 20.0
+                      fontSize: defaultPadding(context: context)
                     ),
                   ),
                   subtitle: Text(
@@ -94,7 +95,7 @@ class PostCard extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18.0
+                      fontSize: defaultPadding(context: context)
                     ),
                   ),
                 )

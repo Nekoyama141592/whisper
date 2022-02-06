@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
+import 'package:whisper/constants/doubles.dart';
 
 class Loading extends StatelessWidget {
 
@@ -25,7 +26,7 @@ class Loading extends StatelessWidget {
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(defaultPadding(context: context)),
               child: Text('Loading'),
             ),
           ),

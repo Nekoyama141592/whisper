@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 
 class ToggleIcon extends StatelessWidget {
 
@@ -20,7 +21,7 @@ class ToggleIcon extends StatelessWidget {
       child: Icon(
         iconData,
         color: color,
-        size: 60,
+        size: defaultPadding(context: context) * 3.0
       ),
     );
   }

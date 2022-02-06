@@ -2,16 +2,14 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/back_arrow_button.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_window.dart';
 // constants
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
-// domain
-import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
@@ -44,7 +42,7 @@ class OneCommentPage extends ConsumerWidget {
       body: oneCommentModel.isLoading ?
       SizedBox.shrink()
       : Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(defaultPadding(context: context)),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +85,7 @@ class OneCommentPage extends ConsumerWidget {
                 pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                 title: Text(
                   onePostModel.currentWhisperPostNotifier.value!.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0 ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: defaultHeaderTextSize(context: context) ),
                 ), 
                 currentWhisperUser: mainModel.currentWhisperUser,
               )

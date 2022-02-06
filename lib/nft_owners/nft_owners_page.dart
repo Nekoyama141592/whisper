@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/links.dart';
 // components
@@ -29,21 +30,21 @@ class NFTownersPage extends ConsumerWidget {
         title: Text('NFT所有者様方'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15.0)
+            bottom: Radius.circular(defaultPadding(context: context))
           )
         ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(defaultPadding(context: context)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RoundedButton(
                 text: '購入ページのリンクをコピー', 
                 widthRate: 0.90, 
-                verticalPadding: 16.0, 
-                horizontalPadding: 10.0, 
+                verticalPadding: defaultPadding(context: context),
+                horizontalPadding: defaultPadding(context: context),
                 press: () async {
                   await FlutterClipboard.copy(openSeaLink)
                   .then((_) {

@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/ints.dart';
 // constants
 import 'package:whisper/domain/comment/whisper_comment.dart';
@@ -28,8 +29,8 @@ class CommentLikeButton extends StatelessWidget {
     final plusOneCount = likeCount + plusOne;
     return mainModel.likeCommentIds.contains(commentId) ?
     Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5.0
+      padding: EdgeInsets.symmetric(
+        horizontal: defaultPadding(context: context)
       ),
       child: Row(
         children: [
@@ -39,7 +40,7 @@ class CommentLikeButton extends StatelessWidget {
               await commentsModel.unlike(whisperComment: whisperComment, mainModel: mainModel);
             },
           ),
-          SizedBox(width: 5.0),
+          SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
             plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
             style: TextStyle(color: Colors.red)
@@ -47,8 +48,8 @@ class CommentLikeButton extends StatelessWidget {
         ],
       ),
     ) : Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5.0
+      padding: EdgeInsets.symmetric(
+        horizontal: defaultPadding(context: context)/2.0
       ),
       child: Row(
         children: [
@@ -58,7 +59,7 @@ class CommentLikeButton extends StatelessWidget {
               await commentsModel.like(whisperComment: whisperComment, mainModel: mainModel);
             },
           ),
-          SizedBox(width: 5.0),
+          SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
             likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
           )

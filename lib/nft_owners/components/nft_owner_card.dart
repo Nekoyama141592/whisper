@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 // domain
@@ -27,10 +28,10 @@ class NFTownerCard extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
-              borderRadius: BorderRadius.all(Radius.circular(4.0))
+              borderRadius: BorderRadius.all(Radius.circular( defaultPadding(context: context) ))
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all( defaultPadding(context: context) ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -39,7 +40,7 @@ class NFTownerCard extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 5.0),
+                  SizedBox(height: defaultPadding(context: context)/2.0 ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -47,12 +48,12 @@ class NFTownerCard extends StatelessWidget {
                         'number' + nftOwner.number.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(width: 5.0),
+                      SizedBox(width: defaultPadding(context: context)/2.0),
                       Text(
                         nftOwner.ethPrice.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(width: 5.0),
+                      SizedBox(width: defaultPadding(context: context)/2.0 ),
                       InkWell(
                         child: Icon(Icons.link),
                         onTap: () async {

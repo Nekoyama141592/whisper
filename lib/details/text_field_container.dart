@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 
 class TextFieldContainer extends StatelessWidget {
   
@@ -17,8 +18,8 @@ class TextFieldContainer extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 5,
+          horizontal: defaultPadding(context: context),
+          vertical: defaultPadding(context: context),
         ),
         width: size.width * 0.9 ,
         decoration: BoxDecoration(
@@ -30,7 +31,7 @@ class TextFieldContainer extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).focusColor.withOpacity(0.3),
-              blurRadius: 20,
+              blurRadius: defaultPadding(context: context),
               offset: Offset(0, 0)
             )
           ],

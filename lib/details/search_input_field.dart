@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/text_field_container.dart';
 
@@ -31,7 +32,7 @@ class SearchInputField extends StatelessWidget {
         child: TextField(
           style: TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: defaultPadding(context: context),
             fontWeight: FontWeight.bold
           ),
           keyboardType: TextInputType.text,
@@ -45,7 +46,7 @@ class SearchInputField extends StatelessWidget {
             ),
             suffixIcon: TextButton(
               onPressed: search, 
-              child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: 18,fontWeight: FontWeight.bold),),
+              child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: defaultPadding(context: context),fontWeight: FontWeight.bold),),
             ),
             hintText: 'Search...',
             hintStyle: TextStyle(

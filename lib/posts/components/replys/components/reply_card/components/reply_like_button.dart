@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -24,8 +25,8 @@ class ReplyLikeButton extends StatelessWidget {
 
     return mainModel.likeReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5.0
+      padding: EdgeInsets.symmetric(
+        horizontal: defaultPadding(context: context)/2.0
       ),
       child: Row(
         children: [
@@ -38,7 +39,7 @@ class ReplyLikeButton extends StatelessWidget {
               replysModel.unlike(whisperReply: whisperReply, mainModel: mainModel);
             },
           ),
-          SizedBox(width: 5.0),
+          SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
             likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
             style: TextStyle(color: Colors.red)
@@ -46,8 +47,8 @@ class ReplyLikeButton extends StatelessWidget {
         ],
       ),
     ) : Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5.0
+      padding: EdgeInsets.symmetric(
+        horizontal: defaultPadding(context: context)/2.0
       ),
       child: Row(
         children: [
@@ -57,7 +58,7 @@ class ReplyLikeButton extends StatelessWidget {
               await replysModel.like(whisperReply: whisperReply, mainModel: mainModel);
             }
           ),
-          SizedBox(width: 5.0),
+          SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
             likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
           )

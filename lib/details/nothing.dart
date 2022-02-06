@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_svg/svg.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 
@@ -37,7 +38,7 @@ class Nothing extends StatelessWidget {
               ),
             ),
           ),
-          RoundedButton(text: '再読み込み', widthRate: 0.95, verticalPadding: 20.0, horizontalPadding: 10.0, press: reload, textColor: Theme.of(context).focusColor, buttonColor: Theme.of(context).highlightColor)
+          RoundedButton(text: '再読み込み', widthRate: 0.95, verticalPadding: defaultPadding(context: context), horizontalPadding: defaultPadding(context: context), press: reload, textColor: Theme.of(context).focusColor, buttonColor: Theme.of(context).highlightColor)
         ],
       ),
     );
