@@ -159,7 +159,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> muteComment({ required MainModel mainModel, required WhisperComment whisperComment }) async {
     // process set
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteComment );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.mutePostComment );
     final String postCommentId = whisperComment.postCommentId;
     final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: muteCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
     // process UI
@@ -173,7 +173,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> muteReply({ required MainModel mainModel, required WhisperReply whisperReply }) async {
     // process set
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteReply );
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePostCommentReply );
     final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: muteReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
     // process UI
     mainModel.muteReplyIds.add(muteReply.postCommentReplyId);

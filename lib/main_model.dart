@@ -178,7 +178,7 @@ class MainModel extends ChangeNotifier {
           following.add(followingInstantce);
           followingUids.add(followingInstantce.passiveUid);
         break;
-        case TokenType.likeComment:
+        case TokenType.likePostComment:
           final LikeComment likeComment = LikeComment.fromJson(tokenMap);
           likeComments.add(likeComment);
           likeCommentIds.add(likeComment.postCommentId);
@@ -188,12 +188,12 @@ class MainModel extends ChangeNotifier {
           likePosts.add(likePost);
           likePostIds.add(likePost.postId);
         break;
-        case TokenType.likeReply:
+        case TokenType.likePostCommentReply:
           final LikeReply likeReply = LikeReply.fromJson(tokenMap);
           likeReplys.add(likeReply);
           likeReplyIds.add(likeReply.postCommentReplyId);
         break;
-        case TokenType.muteComment:
+        case TokenType.mutePostComment:
           final MuteComment muteComment = MuteComment.fromJson(tokenMap);
           muteComments.add(muteComment);
           muteCommentIds.add(muteComment.postCommentId);
@@ -203,7 +203,7 @@ class MainModel extends ChangeNotifier {
           mutePosts.add(mutePost);
           mutePostIds.add(mutePost.postId);
         break;
-        case TokenType.muteReply:
+        case TokenType.mutePostCommentReply:
           final MuteReply muteReply = MuteReply.fromJson(tokenMap);
           muteReplys.add(muteReply);
           muteReplyIds.add(muteReply.postCommentReplyId);

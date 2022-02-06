@@ -184,7 +184,7 @@ class CommentsModel extends ChangeNotifier {
     final postCommentId = whisperComment.postCommentId;
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.likePostComment );
     final LikeComment likeComment = LikeComment(
       activeUid: activeUid,
       postCommentId: whisperComment.postCommentId,

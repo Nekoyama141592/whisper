@@ -290,7 +290,7 @@ class ReplysModel extends ChangeNotifier {
   Future<void> like({ required WhisperReply whisperReply, required MainModel mainModel }) async {
     // process set
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likePostCommentReply );
     // process UI
     final userMeta = mainModel.userMeta;
     final postCommentReplyId = whisperReply.postCommentReplyId;

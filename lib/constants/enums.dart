@@ -15,7 +15,7 @@ dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
     return NotificationType.replyNotification;
   }
 }
-enum TokenType { bookmarkLabel,bookmarkPost,following,likePost,likeComment,likeReply,searchHistory,readPost,watchlist,blockUser,muteComment,mutePost,muteReply,muteUser }
+enum TokenType { bookmarkLabel,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
 dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
   if (tokenTypeString == bookmarkLabelTokenType) {
@@ -25,9 +25,9 @@ dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   } else if (tokenTypeString == likePostTokenType) {
     return TokenType.likePost;
   } else if (tokenTypeString == likeCommentTokenType) {
-    return TokenType.likeComment;
+    return TokenType.likePostComment;
   } else if (tokenTypeString == likeReplyTokenType) {
-    return TokenType.likeReply;
+    return TokenType.likePostCommentReply;
   } else if (tokenTypeString == searchHistoryTokenType) {
     return TokenType.searchHistory;
   } else if (tokenTypeString == readPostTokenType) {
@@ -37,11 +37,11 @@ dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   } else if (tokenTypeString == blockUserTokenType) {
     return TokenType.blockUser;
   } else if (tokenTypeString == muteCommentTokenType) {
-    return TokenType.muteComment;
+    return TokenType.mutePostComment;
   } else if (tokenTypeString == mutePostTokenType) {
     return TokenType.mutePost;
   } else if (tokenTypeString == muteReplyTokenType) {
-    return TokenType.muteReply;
+    return TokenType.mutePostCommentReply;
   } else if (tokenTypeString == muteUserTokenType) {
     return TokenType.muteUser;
   } else if (tokenTypeString == bookmarkPostTokenType) {
