@@ -27,7 +27,7 @@ class RoundedButton extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: defaultPadding(context: context) ),
       width: size.width * widthRate,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(defaultPadding(context: context)),
         child: ElevatedButton(
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -39,7 +39,7 @@ class RoundedButton extends StatelessWidget {
               style: TextStyle(
                 color: textColor,
                 fontWeight: FontWeight.bold,
-                fontSize: defaultPadding(context: context)
+                fontSize: defaultHeaderTextSize(context: context)
               ),
             ),
           ),

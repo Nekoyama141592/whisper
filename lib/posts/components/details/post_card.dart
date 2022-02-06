@@ -87,7 +87,7 @@ class PostCard extends StatelessWidget {
                   title: Text(
                     whisperPost.userName,
                     style: TextStyle(
-                      fontSize: defaultPadding(context: context)
+                      fontSize: defaultHeaderTextSize(context: context)
                     ),
                   ),
                   subtitle: Text(
@@ -95,7 +95,7 @@ class PostCard extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context).focusColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: defaultPadding(context: context)
+                      fontSize: defaultHeaderTextSize(context: context)
                     ),
                   ),
                 )

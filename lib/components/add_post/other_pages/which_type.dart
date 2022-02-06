@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // components
@@ -31,13 +32,13 @@ class WhichType extends ConsumerWidget {
         child: Text(
           'WhichType',
           style: TextStyle(
-            fontSize: 35.0,
+            fontSize: defaultHeaderTextSize(context: context),
             fontWeight: FontWeight.bold
           ),
         ),
       ),
       content: Content(mainModel: mainModel, addPostModel: addPostModel),
-      circular: 35.0
+      circular: defaultHeaderTextSize(context: context),
     );
   }
 }
@@ -57,8 +58,8 @@ class Content extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10
+        padding: EdgeInsets.symmetric(
+          vertical: defaultPadding(context: context)
         ),
         child: Container(
           
@@ -70,13 +71,13 @@ class Content extends StatelessWidget {
                 height: size.height * 0.3,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20
+                padding: EdgeInsets.symmetric(
+                  vertical: defaultPadding(context: context),
                 ),
                 child: Text(
                   'Which type?',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: defaultHeaderTextSize(context: context),
                     fontWeight: FontWeight.bold
                   ),
                 ),
@@ -84,8 +85,8 @@ class Content extends StatelessWidget {
               RoundedButton(
                 text: '広告の投稿',
                 widthRate: 0.8,
-                verticalPadding: 20.0,
-                horizontalPadding: 10.0,
+                verticalPadding: defaultPadding(context: context),
+                horizontalPadding: defaultPadding(context: context),
                 press: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -99,8 +100,8 @@ class Content extends StatelessWidget {
               RoundedButton(
                 text: '普通の投稿', 
                 widthRate: 0.8,
-                verticalPadding: 20.0,
-                horizontalPadding: 10.0,
+                verticalPadding: defaultPadding(context: context),
+                horizontalPadding: defaultPadding(context: context),
                 press: () {
                   routes.toAddPostPage(context: context, addPostModel: addPostModel, mainModel: mainModel);
                 }, 

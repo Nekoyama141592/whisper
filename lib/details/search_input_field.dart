@@ -32,7 +32,7 @@ class SearchInputField extends StatelessWidget {
         child: TextField(
           style: TextStyle(
             color: Colors.black,
-            fontSize: defaultPadding(context: context),
+            fontSize: defaultHeaderTextSize(context: context),
             fontWeight: FontWeight.bold
           ),
           keyboardType: TextInputType.text,
@@ -46,11 +46,12 @@ class SearchInputField extends StatelessWidget {
             ),
             suffixIcon: TextButton(
               onPressed: search, 
-              child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: defaultPadding(context: context),fontWeight: FontWeight.bold),),
+              child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold),),
             ),
             hintText: 'Search...',
             hintStyle: TextStyle(
-              color: Colors.black.withOpacity(0.5)
+              color: Colors.black.withOpacity(0.5),
+              fontSize: defaultHeaderTextSize(context: context)
             ),
             border: InputBorder.none
           ),

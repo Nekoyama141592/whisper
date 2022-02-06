@@ -5,7 +5,7 @@ double addPostIconSize({ required  BuildContext context }) {
 }
 
 double defaultPadding({ required BuildContext context  }) {
-  return MediaQuery.of(context).size.height/32.0;
+  return MediaQuery.of(context).size.height/50.0;
 }
 
 double defaultHeaderTextSize({ required BuildContext context  }) {
