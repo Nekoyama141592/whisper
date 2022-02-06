@@ -1,6 +1,6 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // model
@@ -19,7 +19,7 @@ class ShowReplyButton extends StatelessWidget {
 
   final MainModel mainModel;
   final ReplysModel replysModel;
-  final WhisperComment whisperComment;
+  final WhisperPostComment whisperComment;
   final Post whisperPost;
 
   Widget build(BuildContext context) {

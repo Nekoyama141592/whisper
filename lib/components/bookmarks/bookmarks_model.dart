@@ -15,7 +15,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 // notifiers
@@ -61,7 +61,7 @@ class BookmarksModel extends ChangeNotifier {
   // editLabel
   String editLabel = '';
   
-  Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
+  Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkPostLabel bookmarkLabel }) async {
     isBookmarkMode = true;
     notifyListeners();
     if (indexBookmarkLabelId != bookmarkLabel.tokenId) {
@@ -119,7 +119,7 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setBookmarksPostIds({ required MainModel mainModel,required BookmarkLabel bookmarkLabel }) async {
+  Future<void> setBookmarksPostIds({ required MainModel mainModel,required BookmarkPostLabel bookmarkLabel }) async {
     final String bookmarkLabelTokenId = bookmarkLabel.tokenId;
     bookmarkPostIds = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == bookmarkLabelTokenId ).map((e) => e.postId ).toList();
     notifyListeners();
@@ -147,7 +147,7 @@ class BookmarksModel extends ChangeNotifier {
     }
   }
 
-  Future<void> onUpdateLabelButtonPressed({ required FlashController flashController,required BookmarkLabel bookmarkLabel,required UserMeta userMeta}) async {
+  Future<void> onUpdateLabelButtonPressed({ required FlashController flashController,required BookmarkPostLabel bookmarkLabel,required UserMeta userMeta}) async {
     flashController.dismiss();
     if (editLabel.isEmpty) {
 

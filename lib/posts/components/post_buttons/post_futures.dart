@@ -10,7 +10,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/mute_comment/mute_comment.dart';
 import 'package:whisper/domain/mute_reply/mute_reply.dart';
 import 'package:whisper/domain/post_like/post_like.dart';
@@ -21,7 +21,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/like_post/like_post.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
@@ -54,7 +54,7 @@ class PostFutures extends ChangeNotifier {
   }
 
 
-  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkPostLabels }) async {
+  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostLabel> bookmarkPostLabels }) async {
     final Widget content = SizedBox(
       height: MediaQuery.of(context).size.height * 0.70,
       child: ValueListenableBuilder<String>(
@@ -63,7 +63,7 @@ class PostFutures extends ChangeNotifier {
           return ListView.builder(
             itemCount: bookmarkPostLabels.length,
             itemBuilder: (BuildContext context, int i) {
-              final BookmarkLabel bookmarkPostLabel = bookmarkPostLabels[i];
+              final BookmarkPostLabel bookmarkPostLabel = bookmarkPostLabels[i];
               return ListTile(
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
                 title: Text(bookmarkPostLabel.label),
@@ -105,7 +105,7 @@ class PostFutures extends ChangeNotifier {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 
-  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkLabel> bookmarkLabels }) async {
+  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostLabel> bookmarkLabels }) async {
     final postId = whisperPost.postId;
     final indexDeleteToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
     // processUI
@@ -156,7 +156,7 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
   }
 
-  Future<void> muteComment({ required MainModel mainModel, required WhisperComment whisperComment }) async {
+  Future<void> muteComment({ required MainModel mainModel, required WhisperPostComment whisperComment }) async {
     // process set
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.mutePostComment );

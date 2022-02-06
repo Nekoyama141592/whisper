@@ -21,7 +21,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
@@ -163,7 +163,7 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
     );
     final String bookmarkPostLabelId = returnTokenId( userMeta: userMeta, tokenType: TokenType.bookmarkPostLabel );
-    final BookmarkLabel bookmarkPostLabel = BookmarkLabel(uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostLabelId, tokenType: bookmarkPostLabelTokenType,imageURL: '' );
+    final BookmarkPostLabel bookmarkPostLabel = BookmarkPostLabel(uid: uid,label: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostLabelId, tokenType: bookmarkPostLabelTokenType,imageURL: '' );
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkPostLabelId ).set(bookmarkPostLabel.toJson());
   }

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bookmark_label.dart';
+part of 'bookmark_post_label.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BookmarkLabel _$BookmarkLabelFromJson(Map<String, dynamic> json) =>
-    BookmarkLabel(
+BookmarkPostLabel _$BookmarkPostLabelFromJson(Map<String, dynamic> json) =>
+    BookmarkPostLabel(
       createdAt: json['createdAt'],
       label: json['label'] as String,
       tokenId: json['tokenId'] as String,
@@ -17,7 +17,7 @@ BookmarkLabel _$BookmarkLabelFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'],
     );
 
-Map<String, dynamic> _$BookmarkLabelToJson(BookmarkLabel instance) =>
+Map<String, dynamic> _$BookmarkPostLabelToJson(BookmarkPostLabel instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
       'label': instance.label,

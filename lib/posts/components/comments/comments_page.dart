@@ -7,7 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -77,7 +77,7 @@ class CommentsPage extends ConsumerWidget {
                   itemCount: commentsModel.commentDocs.length,
                   itemBuilder: (BuildContext context,int i) {
                     final Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
-                    final WhisperComment whisperComment = WhisperComment.fromJson(comment);
+                    final WhisperPostComment whisperComment = WhisperPostComment.fromJson(comment);
                     return CommentCard(
                       whisperComment: whisperComment,
                       whisperPost: whisperPost,

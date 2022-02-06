@@ -16,7 +16,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/reply_like/reply_like.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/likeReply/like_reply.dart';
@@ -58,7 +58,7 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onAddReplyButtonPressed({ required BuildContext context, required  Post whisperPost, required TextEditingController replyEditingController, required  WhisperComment whisperComment, required MainModel mainModel }) {
+  void onAddReplyButtonPressed({ required BuildContext context, required  Post whisperPost, required TextEditingController replyEditingController, required  WhisperPostComment whisperComment, required MainModel mainModel }) {
     // コメントの投稿主が自分の場合
     // このPostの投稿主が自分の場合
     // このPostの投稿主とコメントの投稿主が一致している場合
@@ -70,7 +70,7 @@ class ReplysModel extends ChangeNotifier {
     }
   }
 
-  void showMakeReplyInputFlashBar({ required BuildContext context, required Post whisperPost, required TextEditingController replyEditingController,required MainModel mainModel , required WhisperComment whisperComment}) {
+  void showMakeReplyInputFlashBar({ required BuildContext context, required Post whisperPost, required TextEditingController replyEditingController,required MainModel mainModel , required WhisperPostComment whisperComment}) {
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
@@ -93,7 +93,7 @@ class ReplysModel extends ChangeNotifier {
     voids.showCommentOrReplyDialogue(context: context, title: 'リプライを入力', textEditingController: replyEditingController, onChanged: (text) { reply = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
-  void showSortDialogue(BuildContext context,WhisperComment whisperComment) {
+  void showSortDialogue(BuildContext context,WhisperPostComment whisperComment) {
     showCupertinoDialog(
       context: context, 
       builder: (context) {
@@ -174,7 +174,7 @@ class ReplysModel extends ChangeNotifier {
 
   
 
-  void getReplysStream({ required BuildContext context, required WhisperComment whisperComment, required ReplysModel replysModel, required Post whisperPost, required MainModel mainModel })  {
+  void getReplysStream({ required BuildContext context, required WhisperPostComment whisperComment, required ReplysModel replysModel, required Post whisperPost, required MainModel mainModel })  {
     refreshController = RefreshController(initialRefresh: false);
     routes.toReplysPage(context: context, replysModel: replysModel, whisperPost: whisperPost, whisperComment: whisperComment, mainModel: mainModel);
     final String commentId = whisperComment.postCommentId ;
@@ -189,7 +189,7 @@ class ReplysModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future onLoading({ required WhisperComment whisperComment}) async {
+  Future onLoading({ required WhisperPostComment whisperComment}) async {
     limitIndex += oneTimeReadCount;
     switch(sortState) {
       case SortState.byLikedUidCount:
@@ -215,7 +215,7 @@ class ReplysModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future makeReply({ required Post whisperPost,required MainModel mainModel, required WhisperComment whisperComment}) async {
+  Future makeReply({ required Post whisperPost,required MainModel mainModel, required WhisperPostComment whisperComment}) async {
     final commentId = whisperComment.postCommentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
@@ -254,7 +254,7 @@ class ReplysModel extends ChangeNotifier {
     return whisperReply;
   }
 
-  Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperComment whisperComment, required WhisperReply newWhisperReply }) async {
+  Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperPostComment whisperComment, required WhisperReply newWhisperReply }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
     final String notificationId = returnNotificationId(notificationType: NotificationType.replyNotification );

@@ -9,7 +9,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/details/gradient_screen.dart';
 // domain
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
@@ -49,7 +49,7 @@ class BookmarkLabelsPage extends ConsumerWidget {
         content: ListView.builder(
           itemCount: mainModel.bookmarkPostLabels.length,
           itemBuilder: (BuildContext context, int i) {
-            final BookmarkLabel bookmarkLabel = mainModel.bookmarkPostLabels[i];
+            final BookmarkPostLabel bookmarkLabel = mainModel.bookmarkPostLabels[i];
             return ListTile(
               leading: Icon(Icons.list),
               trailing: InkWell(

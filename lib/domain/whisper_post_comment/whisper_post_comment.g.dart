@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'whisper_comment.dart';
+part of 'whisper_post_comment.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
-    WhisperComment(
+WhisperPostComment _$WhisperPostCommentFromJson(Map<String, dynamic> json) =>
+    WhisperPostComment(
       accountName: json['accountName'] as String,
       comment: json['comment'] as String,
       postCommentId: json['postCommentId'] as String,
@@ -29,7 +29,7 @@ WhisperComment _$WhisperCommentFromJson(Map<String, dynamic> json) =>
       userImageURL: json['userImageURL'] as String,
     );
 
-Map<String, dynamic> _$WhisperCommentToJson(WhisperComment instance) =>
+Map<String, dynamic> _$WhisperPostCommentToJson(WhisperPostComment instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
       'comment': instance.comment,

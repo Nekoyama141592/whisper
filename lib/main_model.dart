@@ -29,7 +29,7 @@ import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/watchlist/watchlist.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 import 'package:whisper/domain/timeline/timeline.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -63,7 +63,7 @@ class MainModel extends ChangeNotifier {
   List<String> likePostCommentReplyIds = [];
   // bookmark
   List<BookmarkPost> bookmarkPosts = [];
-  List<BookmarkLabel> bookmarkPostLabels = [];
+  List<BookmarkPostLabel> bookmarkPostLabels = [];
   List<ReadPost> readPosts = [];
   List<String> readPostIds = [];
   // mutes 
@@ -165,7 +165,7 @@ class MainModel extends ChangeNotifier {
           blockUids.add(blockUser.passiveUid);
         break;
         case TokenType.bookmarkPostLabel:
-          final BookmarkLabel bookmarkLabel = BookmarkLabel.fromJson(tokenMap);
+          final BookmarkPostLabel bookmarkLabel = BookmarkPostLabel.fromJson(tokenMap);
           bookmarkPostLabels.add(bookmarkLabel);
         break;
         case TokenType.bookmarkPost:

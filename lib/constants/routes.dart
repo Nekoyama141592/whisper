@@ -5,8 +5,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // pages
 import 'package:whisper/main.dart';
 import 'package:whisper/auth/login/login_page.dart';
@@ -115,7 +115,7 @@ void toCommentsPage({ required BuildContext context, required AudioPlayer audioP
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, whisperPost: currentWhisperPostNotifier.value!, mainModel: mainModel) ));
 }
 
-void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperComment whisperComment, required MainModel mainModel  }) {
+void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperPostComment whisperComment, required MainModel mainModel  }) {
  Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperComment: whisperComment, mainModel: mainModel) )); 
 }
 

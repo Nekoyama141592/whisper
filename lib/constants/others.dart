@@ -12,13 +12,13 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/domain/bookmark_label/bookmark_label.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/nft_owner/nft_owner.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
@@ -112,8 +112,8 @@ DocumentReference<Map<String, dynamic>> returnPostCommentReplyLikeDocRef({ requi
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
   return WhisperUser.fromJson(userMap);
 }
-WhisperComment fromMapToWhisperComment({ required Map<String,dynamic> commentMap }) {
-  return WhisperComment.fromJson(commentMap);
+WhisperPostComment fromMapToWhisperComment({ required Map<String,dynamic> commentMap }) {
+  return WhisperPostComment.fromJson(commentMap);
 }
 Post fromMapToPost({ required Map<String,dynamic> postMap }) {
   return Post.fromJson(postMap);
@@ -145,8 +145,8 @@ WhisperLink fromMapToWhisperLink({ required Map<String,dynamic> whisperLink }) {
   return WhisperLink.fromJson(whisperLink);
 }
 
-BookmarkLabel fromMapToBookmarkLabel({ required Map<String,dynamic> map }) {
-  return BookmarkLabel.fromJson(map);
+BookmarkPostLabel fromMapToBookmarkLabel({ required Map<String,dynamic> map }) {
+  return BookmarkPostLabel.fromJson(map);
 }
 MuteUser fromMapToMutesIpv6AndUid({ required Map<String,dynamic> map }) {
   return MuteUser.fromJson(map);

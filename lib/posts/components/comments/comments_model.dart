@@ -18,7 +18,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/comment_like/comment_like.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/likeComment/like_comment.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
@@ -108,7 +108,7 @@ class CommentsModel extends ChangeNotifier {
   
   Future<void> makeComment({ required BuildContext context, required Post whisperPost, required MainModel mainModel }) async {
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
-    final WhisperComment whisperComment = WhisperComment.fromJson(commentMap);
+    final WhisperPostComment whisperComment = WhisperPostComment.fromJson(commentMap);
     await returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
@@ -121,7 +121,7 @@ class CommentsModel extends ChangeNotifier {
   Map<String,dynamic> makeCommentMap({ required MainModel mainModel, required Post whisperPost }) {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
-    final WhisperComment whisperComment = WhisperComment(
+    final WhisperPostComment whisperComment = WhisperPostComment(
       accountName: currentWhisperUser.accountName,
       comment: comment, 
       postCommentId: generatePostCommentId(uid: currentWhisperUser.uid ),
@@ -146,7 +146,7 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperComment whisperComment, required Timestamp now }) async {
+  Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperPostComment whisperComment, required Timestamp now }) async {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     final String notificationId = returnNotificationId(notificationType: NotificationType.commentNotification);
     try{
@@ -179,7 +179,7 @@ class CommentsModel extends ChangeNotifier {
     }
   }
   
-  Future<void> like({ required WhisperComment whisperComment, required MainModel mainModel}) async {
+  Future<void> like({ required WhisperPostComment whisperComment, required MainModel mainModel}) async {
     // process set
     final postCommentId = whisperComment.postCommentId;
     final String activeUid = mainModel.userMeta.uid;
@@ -202,12 +202,12 @@ class CommentsModel extends ChangeNotifier {
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
   }
 
-  Future<void> addLikeSubCol({ required WhisperComment whisperComment,required String activeUid,required Timestamp now }) async {
+  Future<void> addLikeSubCol({ required WhisperPostComment whisperComment,required String activeUid,required Timestamp now }) async {
     final CommentLike commentLike = CommentLike(activeUid: activeUid, createdAt: now, commentId: whisperComment.postCommentId );
     await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, activeUid: activeUid ).set(commentLike.toJson());
   }
 
-  Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
+  Future<void> unlike({ required WhisperPostComment whisperComment, required MainModel mainModel}) async {
     // process set
     final commentId = whisperComment.postCommentId;
     final deleteLikeComment = mainModel.likePostComments.where((element) => element.postCommentId == commentId ).toList().first;

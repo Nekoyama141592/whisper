@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/ints.dart';
 // constants
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
@@ -18,7 +18,7 @@ class CommentLikeButton extends StatelessWidget {
   }) : super(key: key);
 
   final CommentsModel commentsModel;
-  final WhisperComment whisperComment;
+  final WhisperPostComment whisperComment;
   final MainModel mainModel;
   
   @override 

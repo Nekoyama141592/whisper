@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/details/loading.dart';
 // components
 import 'package:whisper/details/comments_or_replys_header.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/posts/components/replys/components/reply_cards/reply_cards.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -24,7 +24,7 @@ class ReplysPage extends StatelessWidget {
 
   final ReplysModel replysModel;
   final Post whisperPost;
-  final WhisperComment whisperComment;
+  final WhisperPostComment whisperComment;
   final MainModel mainModel;
 
   Widget build(BuildContext context) {

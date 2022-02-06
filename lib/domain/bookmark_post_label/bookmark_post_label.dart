@@ -1,10 +1,10 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
-part 'bookmark_label.g.dart';
+part 'bookmark_post_label.g.dart';
 
 @JsonSerializable()
-class BookmarkLabel {
-  BookmarkLabel({
+class BookmarkPostLabel {
+  BookmarkPostLabel({
     required this.createdAt,
     required this.label,
     required this.tokenId,
@@ -22,7 +22,7 @@ class BookmarkLabel {
   final String uid;
   final dynamic updatedAt;
 
-  factory BookmarkLabel.fromJson(Map<String,dynamic> json) => _$BookmarkLabelFromJson(json);
+  factory BookmarkPostLabel.fromJson(Map<String,dynamic> json) => _$BookmarkPostLabelFromJson(json);
 
-  Map<String,dynamic> toJson() => _$BookmarkLabelToJson(this);
+  Map<String,dynamic> toJson() => _$BookmarkPostLabelToJson(this);
 }

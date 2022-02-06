@@ -1,11 +1,11 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'whisper_comment.g.dart';
+part 'whisper_post_comment.g.dart';
 
 @JsonSerializable()
-class WhisperComment {
-  WhisperComment({
+class WhisperPostComment {
+  WhisperPostComment({
     required this.accountName,
     required this.comment,
     required this.postCommentId,
@@ -45,7 +45,7 @@ class WhisperComment {
   final dynamic updatedAt;
   final String userName;
   final String userImageURL;
-  factory WhisperComment.fromJson(Map<String,dynamic> json) => _$WhisperCommentFromJson(json);
+  factory WhisperPostComment.fromJson(Map<String,dynamic> json) => _$WhisperPostCommentFromJson(json);
 
-  Map<String,dynamic> toJson() => _$WhisperCommentToJson(this);
+  Map<String,dynamic> toJson() => _$WhisperPostCommentToJson(this);
 }

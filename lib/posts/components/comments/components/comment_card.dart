@@ -9,7 +9,7 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
 import 'package:whisper/posts/components/comments/components/show_replys_button.dart';
 // domain
@@ -31,7 +31,7 @@ class CommentCard extends ConsumerWidget {
     required this.mainModel
   }): super(key: key);
   
-  final WhisperComment whisperComment;
+  final WhisperPostComment whisperComment;
   final Post whisperPost;
   final CommentsModel commentsModel;
   final ReplysModel replysModel;

@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/details/loading.dart';
-import 'package:whisper/domain/comment/whisper_comment.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/posts/components/replys/components/reply_card/reply_card.dart';
 // models
@@ -22,7 +22,7 @@ class ReplyCards extends StatelessWidget {
     required this.replysModel
   }) : super(key: key);
 
-  final WhisperComment whisperComment;
+  final WhisperPostComment whisperComment;
   final MainModel mainModel;
   final ReplysModel replysModel;
 
