@@ -179,3 +179,7 @@ final User? firebaseAuthCurrentUser = FirebaseAuth.instance.currentUser;
 DocumentReference<Map<String,dynamic>> postDocRefToPostCommentReplyDocRef({ required DocumentReference<Map<String,dynamic>> postDocRef,required String postCommentId ,required String postCommentReplyId  }) {
   return postDocRef.collection(postCommentsColRefName).doc(postCommentId).collection(postCommentReplysColRefName).doc(postCommentReplyId);
 }
+
+DocumentReference<Map<String,dynamic>> postDocRefToPostCommentReplyLikeRef({ required DocumentReference<Map<String,dynamic>> postDocRef,required String postCommentId ,required String postCommentReplyId,required UserMeta userMeta }) {
+  return postDocRefToPostCommentReplyDocRef(postDocRef: postDocRef, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplysColRefName).doc(userMeta.uid);
+}

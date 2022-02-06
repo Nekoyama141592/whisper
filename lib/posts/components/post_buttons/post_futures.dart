@@ -113,17 +113,8 @@ class PostFutures extends ChangeNotifier {
     mainModel.bookmarkPosts.remove(indexDeleteToken);
     notifyListeners();
     // backend
-    await deleteBookmarkPostTokenDoc(whisperPost: whisperPost, mainModel: mainModel,indexDeleteToken: indexDeleteToken );
-    await deleteBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
-    mainModel.bookmarkPosts.removeWhere((e) => e.postId == postId);
-  }
-
-  Future<void> deleteBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
-    await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
-  }
-
-  Future<void> deleteBookmarkPostTokenDoc({ required Post whisperPost, required MainModel mainModel,required BookmarkPost indexDeleteToken }) async {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: indexDeleteToken.tokenId ).delete();
+    await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
   }
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
@@ -134,17 +125,8 @@ class PostFutures extends ChangeNotifier {
     mainModel.likePosts.remove(deleteLikePostToken);
     notifyListeners();
     // backend
-    await deleteLikeSubCol(whisperPost: whisperPost,mainModel: mainModel);
-    await deleteLikePostTokenDoc(whisperPost: whisperPost, mainModel: mainModel, deleteLikePostToken: deleteLikePostToken );
-  }
-
-  Future<void> deleteLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
-  }
-  
-  Future<void> deleteLikePostTokenDoc({ required Post whisperPost, required MainModel mainModel, required LikePost deleteLikePostToken  } ) async {
-    final String uid = mainModel.userMeta.uid;
-    await returnTokenDocRef(uid: uid, tokenId: deleteLikePostToken.tokenId ).delete();
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
   
   void reload() {

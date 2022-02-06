@@ -1,4 +1,5 @@
 // material
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
@@ -179,25 +180,10 @@ class CommentsModel extends ChangeNotifier {
   }
   
   Future<void> like({ required WhisperComment whisperComment, required MainModel mainModel}) async {
-    final commentId = whisperComment.postCommentId;
-    // processUi
-    final likeCommentIds = mainModel.likeCommentIds;
-    likeCommentIds.add(commentId);
-    notifyListeners();
-    await addLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await createLikeCommentTokenDoc(whisperComment: whisperComment, mainModel: mainModel);
-  }
-
-  Future<void> addLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
-    final currentWhisperUser = mainModel.currentWhisperUser;
+    // process set
+    final postCommentId = whisperComment.postCommentId;
+    final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
-    final CommentLike commentLike = CommentLike(activeUid: currentWhisperUser.uid, createdAt: now, commentId: whisperComment.postCommentId );
-    await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.uid, postId: whisperComment.postId, activeUid: currentWhisperUser.uid).set(commentLike.toJson());
-  }
-
-  Future<void> createLikeCommentTokenDoc({ required WhisperComment whisperComment, required MainModel mainModel }) async {
-    final activeUid = mainModel.userMeta.uid;
-    final now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.likeComment );
     final LikeComment likeComment = LikeComment(
       activeUid: activeUid,
@@ -207,28 +193,31 @@ class CommentsModel extends ChangeNotifier {
       tokenType: likeCommentTokenType,
       postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: whisperComment.postCommentId )
     );
+    // processUi
+    mainModel.likeCommentIds.add(postCommentId);
+    mainModel.likeComments.add(likeComment);
+    notifyListeners();
+    // process back
+    await addLikeSubCol(whisperComment: whisperComment,activeUid: activeUid ,now: now);
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(likeComment.toJson());
   }
 
+  Future<void> addLikeSubCol({ required WhisperComment whisperComment,required String activeUid,required Timestamp now }) async {
+    final CommentLike commentLike = CommentLike(activeUid: activeUid, createdAt: now, commentId: whisperComment.postCommentId );
+    await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, activeUid: activeUid ).set(commentLike.toJson());
+  }
+
   Future<void> unlike({ required WhisperComment whisperComment, required MainModel mainModel}) async {
-    // process UI
+    // process set
     final commentId = whisperComment.postCommentId;
-    final likeCommentIds = mainModel.likeCommentIds;
-    likeCommentIds.remove(commentId);
+    final deleteLikeComment = mainModel.likeComments.where((element) => element.postCommentId == commentId ).toList().first;
+    // process UI
+    mainModel.likeCommentIds.remove(commentId);
+    mainModel.likeComments.remove(deleteLikeComment);
     notifyListeners();
     // backend
-    await deleteLikeSubCol(whisperComment: whisperComment, mainModel: mainModel);
-    await deleteLikeCommentTokenDoc(commentId: commentId, mainModel: mainModel);
-  }
-
-  Future<void> deleteLikeSubCol({ required WhisperComment whisperComment,required MainModel mainModel }) async {
-    await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.uid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
-  }
-
-  Future<void> deleteLikeCommentTokenDoc({ required String commentId,required MainModel mainModel}) async {
-    final String uid = mainModel.userMeta.uid;
-    final deleteLikeComment = mainModel.likeComments.where((element) => element.postCommentId == commentId ).toList().first;
-    await returnTokenDocRef(uid: uid, tokenId: deleteLikeComment.tokenId ).delete();
+    await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid ).delete();
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeComment.tokenId ).delete();
   }
 
   void showSortDialogue(BuildContext context,Post whisperPost) {

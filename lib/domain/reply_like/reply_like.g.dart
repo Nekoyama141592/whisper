@@ -9,11 +9,11 @@ part of 'reply_like.dart';
 ReplyLike _$ReplyLikeFromJson(Map<String, dynamic> json) => ReplyLike(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
-      replyId: json['replyId'] as String,
+      postCommentReplyId: json['replyId'] as String,
     );
 
 Map<String, dynamic> _$ReplyLikeToJson(ReplyLike instance) => <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
-      'replyId': instance.replyId,
+      'replyId': instance.postCommentReplyId,
     };

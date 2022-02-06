@@ -8,12 +8,12 @@ class ReplyLike {
   ReplyLike({
     required this.activeUid,
     required this.createdAt,
-    required this.replyId,
+    required this.postCommentReplyId,
   });
   
   final String activeUid;
   final dynamic createdAt;
-  final String replyId;
+  final String postCommentReplyId;
 
   factory ReplyLike.fromJson(Map<String,dynamic> json) => _$ReplyLikeFromJson(json);
 

@@ -288,55 +288,39 @@ class ReplysModel extends ChangeNotifier {
   }
 
   Future<void> like({ required WhisperReply whisperReply, required MainModel mainModel }) async {
+    // process set
+    final Timestamp now = Timestamp.now();
+    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
     // process UI
-    final replyId = whisperReply.postCommentReplyId;
-    final List<dynamic> likeReplyIds = mainModel.likeReplyIds;
-    likeReplyIds.add(replyId);
+    final userMeta = mainModel.userMeta;
+    final postCommentReplyId = whisperReply.postCommentReplyId;
+    final LikeReply likeReply = LikeReply(activeUid: userMeta.uid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likeReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
+    mainModel.likeReplyIds.add(postCommentReplyId);
+    mainModel.likeReplys.add(likeReply);
     notifyListeners();
     // backend
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
+    await addLikeSubCol(whisperReply: whisperReply, mainModel: mainModel, now: now);
   }
 
-  Future<void> addLikeSubCol({ required WhisperReply whisperReply,required MainModel mainModel }) async {
-    final currentWhisperUser = mainModel.currentWhisperUser;
-    final Timestamp now = Timestamp.now();
-    final ReplyLike replyLike = ReplyLike(activeUid: mainModel.userMeta.uid, createdAt: now, replyId: whisperReply.postCommentReplyId );
-    await returnPostCommentReplyLikeDocRef(postCreatorUid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: currentWhisperUser.uid ).set(replyLike.toJson());
+  Future<void> addLikeSubCol({ required WhisperReply whisperReply,required MainModel mainModel,required Timestamp now }) async {
+    final userMeta = mainModel.userMeta;
+    final ReplyLike replyLike = ReplyLike(activeUid: userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId );
+    await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, userMeta: userMeta).set(replyLike.toJson());
   }
 
-
-  Future<void> createLikeReplyTokenDoc({ required WhisperReply whisperReply, required MainModel mainModel}) async {
-    try {
-      mainModel.likeReplyIds.add(whisperReply.postCommentReplyId);
-      notifyListeners();
-      final String activeUid = mainModel.userMeta.uid;
-      final Timestamp now = Timestamp.now();
-      final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.likeReply );
-      final LikeReply likeReply = LikeReply(activeUid: activeUid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likeReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
-      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
-    } catch(e) {
-      print(e.toString());
-    }
-  }
 
   Future<void> unlike({ required WhisperReply whisperReply, required MainModel mainModel }) async {
-    final replyId = whisperReply.postCommentReplyId;
-    final likeReplyIds = mainModel.likeReplyIds;
+    // process set
+    final postCommentReplyId = whisperReply.postCommentReplyId;
+    final deleteLikeReply = mainModel.likeReplys.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
     // processUI
-    likeReplyIds.remove(replyId);
+    mainModel.likeReplyIds.remove(postCommentReplyId);
+    mainModel.likeReplys.remove(deleteLikeReply);
     notifyListeners();
     // backend
-  }
-
-  Future<void> deleteLikeSubCol({ required WhisperReply whisperReply,required MainModel mainModel }) async {
-    await returnPostCommentReplyLikeDocRef(postCreatorUid: whisperReply.uid, postId: whisperReply.postId, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, activeUid: mainModel.userMeta.uid ).delete();
-  }
-
-  Future<void> deleteLikeReplyTokenDoc({ required MainModel mainModel, required WhisperReply whisperReply }) async {
-    mainModel.likeReplyIds.remove(whisperReply.postId);
-    notifyListeners();
-    final String uid = mainModel.userMeta.uid;
-    final deleteLikeReply = mainModel.likeReplys.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
-    await returnTokenDocRef(uid: uid, tokenId: deleteLikeReply.tokenId ).delete();
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeReply.tokenId ).delete();
+    await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: postCommentReplyId, userMeta: mainModel.userMeta ).delete();
   }
   
 }
