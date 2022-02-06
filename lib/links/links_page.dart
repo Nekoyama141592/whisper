@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 // components
@@ -17,7 +18,6 @@ class LinksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -30,15 +30,15 @@ class LinksPage extends StatelessWidget {
         valueListenable: whisperLinksNotifier,
         builder: (_,whisperLinks,__) {
           return Padding(
-            padding: EdgeInsets.all(size.height/64.0),
+            padding: EdgeInsets.all(defaultPadding(context: context)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 RoundedButton(
                   text: '決定', 
-                  widthRate: 0.25, 
-                  verticalPadding: size.height/64.0,
-                  horizontalPadding: size.height/64.0,
+                  widthRate: 0.3, 
+                  verticalPadding: defaultPadding(context: context),
+                  horizontalPadding: defaultPadding(context: context),
                   press: () { Navigator.pop(context); },
                   textColor: Colors.white, 
                   buttonColor: Theme.of(context).highlightColor
@@ -51,7 +51,7 @@ class LinksPage extends StatelessWidget {
                       final TextEditingController labelEditingController = TextEditingController(text: whisperLink.label );
                       final TextEditingController linkEditingController = TextEditingController(text: whisperLink.link);
                       return Padding(
-                        padding: EdgeInsets.all(size.height/64.0),
+                        padding: EdgeInsets.all(defaultPadding(context: context)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

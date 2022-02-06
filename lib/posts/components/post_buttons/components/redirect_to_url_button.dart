@@ -24,19 +24,7 @@ class RedirectToUrlButton extends StatelessWidget {
 
     return InkWell(
       onTap: () async {
-        showCupertinoModalPopup(
-          context: context, 
-          builder: (innerContext) {
-            return CupertinoActionSheet(
-              actions: whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
-                child: Text(whisperLink.label,style: textStyle(context: context),),
-                onPressed: () {
-                  voids.showLinkDialogue(context: context, link: whisperLink.link );
-                }, 
-              ) ).toList(),
-            );
-          }
-        );  
+        voids.showLinkCupertinoModalPopup(context: context, whisperLinks: whisperLinks);
       },
       child: Icon(Icons.link),
     );
