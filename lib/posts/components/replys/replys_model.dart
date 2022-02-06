@@ -305,7 +305,8 @@ class ReplysModel extends ChangeNotifier {
 
   Future<void> addLikeSubCol({ required WhisperReply whisperReply,required MainModel mainModel,required Timestamp now }) async {
     final userMeta = mainModel.userMeta;
-    final ReplyLike replyLike = ReplyLike(activeUid: userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId );
+    final postCommentReplyDocRef = postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId );
+    final ReplyLike replyLike = ReplyLike(activeUid: userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId,postCommentReplyDocRef: postCommentReplyDocRef,postCommentReplyCreatorUid: whisperReply.uid, );
     await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId, userMeta: userMeta).set(replyLike.toJson());
   }
 

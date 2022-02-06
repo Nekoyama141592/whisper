@@ -8,11 +8,13 @@ class PostBookmark {
   PostBookmark({
     required this.activeUid,
     required this.createdAt,
+    required this.postCreatorUid,
     required this.postId,
   });
   
   final String activeUid;
   final dynamic createdAt;
+  final String postCreatorUid;
   final String postId;
 
   factory PostBookmark.fromJson(Map<String,dynamic> json) => _$PostBookmarkFromJson(json);

@@ -29,7 +29,6 @@ class WhisperReply {
   });
   final String accountName;
   final dynamic createdAt;
-  final String postCommentId;
   final int followerCount;
   final bool isDelete;
   final bool isNFTicon;
@@ -40,8 +39,9 @@ class WhisperReply {
   final String postId;
   final num positiveScore;
   final String reply;
-  final dynamic postDocRef;
+  final String postCommentId;
   final String postCommentReplyId;
+  final dynamic postDocRef;
   final num score;
   final String uid;
   final dynamic updatedAt;

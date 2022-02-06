@@ -204,7 +204,8 @@ class CommentsModel extends ChangeNotifier {
   }
 
   Future<void> addLikeSubCol({ required WhisperPostComment whisperComment,required String activeUid,required Timestamp now }) async {
-    final CommentLike commentLike = CommentLike(activeUid: activeUid, createdAt: now, commentId: whisperComment.postCommentId );
+    final postCommentDocRef = returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: whisperComment.postCommentId );
+    final CommentLike commentLike = CommentLike(activeUid: activeUid, createdAt: now, postCommentId: whisperComment.postCommentId,postId: whisperComment.postId,postCommentCreatorUid: whisperComment.uid,postCommentDocRef: postCommentDocRef,  );
     await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, activeUid: activeUid ).set(commentLike.toJson());
   }
 

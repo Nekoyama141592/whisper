@@ -8,11 +8,13 @@ class PostLike {
   PostLike({
     required this.activeUid,
     required this.createdAt,
+    required this.postCreatorUid,
     required this.postId,
   });
   
   final String activeUid;
   final dynamic createdAt;
+  final String postCreatorUid;
   final String postId;
 
   factory PostLike.fromJson(Map<String,dynamic> json) => _$PostLikeFromJson(json);

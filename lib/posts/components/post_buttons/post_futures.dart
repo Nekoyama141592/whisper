@@ -49,7 +49,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final Timestamp now = Timestamp.now();
-    final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId);
+    final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId, postCreatorUid: whisperPost.uid);
     await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).set(postLike.toJson());
   }
 
@@ -101,7 +101,7 @@ class PostFutures extends ChangeNotifier {
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
-    final PostBookmark postBookmark = PostBookmark(activeUid: activeUid,createdAt: now,postId: whisperPost.postId);
+    final PostBookmark postBookmark = PostBookmark(activeUid: activeUid,createdAt: now,postId: whisperPost.postId,postCreatorUid: whisperPost.uid );
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 

@@ -29,7 +29,6 @@ class WhisperPostComment {
   });
   final String accountName;
   final String comment;
-  final String postCommentId;
   final dynamic createdAt;
   final int followerCount;
   final bool isDelete;
@@ -39,6 +38,7 @@ class WhisperPostComment {
   final num negativeScore;
   final String passiveUid;
   final num positiveScore;
+  final String postCommentId;
   final String postId;
   final int postCommentReplyCount;
   final int replyCount;

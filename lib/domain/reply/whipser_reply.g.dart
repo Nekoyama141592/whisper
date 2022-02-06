@@ -33,7 +33,6 @@ Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
       'createdAt': instance.createdAt,
-      'postCommentId': instance.postCommentId,
       'followerCount': instance.followerCount,
       'isDelete': instance.isDelete,
       'isNFTicon': instance.isNFTicon,
@@ -44,8 +43,9 @@ Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>
       'postId': instance.postId,
       'positiveScore': instance.positiveScore,
       'reply': instance.reply,
-      'postDocRef': instance.postDocRef,
+      'postCommentId': instance.postCommentId,
       'postCommentReplyId': instance.postCommentReplyId,
+      'postDocRef': instance.postDocRef,
       'score': instance.score,
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
