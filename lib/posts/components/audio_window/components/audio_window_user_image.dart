@@ -20,6 +20,6 @@ class AudioWindowUserImage extends StatelessWidget {
   
   @override 
   Widget build(BuildContext context) {
-    return RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 2.5, padding: defaultPadding(context: context),passiveUserDocId: whisperPost.uid,mainModel: mainModel,);
+    return RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 3.6, padding: defaultPadding(context: context),passiveUserDocId: whisperPost.uid,mainModel: mainModel,);
   }
 }

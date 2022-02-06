@@ -83,7 +83,7 @@ class PostCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 3.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
+                  leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
                   title: Text(
                     whisperPost.userName,
                     style: TextStyle(

@@ -55,7 +55,7 @@ class EditPostInfoScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: size.width * 0.4,),
+                    Expanded(child: SizedBox()),
                     RoundedButton(
                       text: '保存', 
                       widthRate: 0.25, 
@@ -88,7 +88,7 @@ class EditPostInfoScreen extends StatelessWidget {
                 Row(
                   children: [
                     RoundedButton(
-                      text: editPostInfoModel.isCropped ? '写真を変更する' :'投稿用の写真を編集',
+                      text: '写真',
                       widthRate: 0.45, 
                       verticalPadding: height/64.0, 
                       horizontalPadding: height/75.0, 
@@ -98,7 +98,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     ),
                     SizedBox(width: 16.0,),
                     RoundedButton(
-                      text: 'リンクを編集',
+                      text: 'リンク',
                       widthRate: 0.45, 
                       verticalPadding: height/64.0, 
                       horizontalPadding: height/75.0, 
@@ -110,7 +110,7 @@ class EditPostInfoScreen extends StatelessWidget {
                 ),
                 SizedBox(height: height/64.0 ),
                 Text(
-                  '投稿のタイトル',
+                  'タイトル',
                   style: TextStyle(
                     fontSize: height/25.0,
                     fontWeight: FontWeight.bold

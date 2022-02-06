@@ -33,29 +33,25 @@ class UserCard extends StatelessWidget {
         ]
       ),
       child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: defaultPadding(context: context) * 2.4, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
-              title: Text(
-                passiveWhisperUser.userName,
-                style: TextStyle(
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: defaultHeaderTextSize(context: context)
-                ),
-              ),
-              subtitle: Text(
-                passiveWhisperUser.description,
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: defaultHeaderTextSize(context: context),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            )
-          ],
+        child: ListTile(
+          leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
+          trailing: Text(passiveWhisperUser.followerCount.toString() ,style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),),
+          title: Text(
+            passiveWhisperUser.userName,
+            style: TextStyle(
+              overflow: TextOverflow.ellipsis,
+              fontSize: defaultHeaderTextSize(context: context)
+            ),
+          ),
+          subtitle: Text(
+            passiveWhisperUser.description,
+            style: TextStyle(
+              color: Theme.of(context).focusColor,
+              fontWeight: FontWeight.bold,
+              fontSize: defaultHeaderTextSize(context: context),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ),
       ),
     );
