@@ -22,6 +22,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/domain/follower/follower.dart';
 import 'package:whisper/domain/following/following.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
 // domain
@@ -512,34 +513,43 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
 }
 
 Future<void> follow({ required BuildContext context,required MainModel mainModel, required String passiveUid }) async {
-  
   if (mainModel.followingUids.length >= maxFollowCount) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Limit' + maxFollowCount.toString() + 'Following' )));
   } else {
+    // process set
+    final Timestamp now = Timestamp.now();
+    final userMeta = mainModel.userMeta;
+    final String activeUid = userMeta.uid;
+    final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.following );
+    final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId, tokenType: followingTokenType );
+    // processUI
+    mainModel.following.add(following);
     mainModel.followingUids.add(passiveUid);
     mainModel.reload();
-    await createFollowingToken(userMeta: mainModel.userMeta, passiveUid: passiveUid);
+    // process backend
+    await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
+    await createFollower(userMeta: userMeta, now: now, passiveUid: passiveUid);
   }
 }
 
+Future<void> createFollower({ required UserMeta userMeta,required Timestamp now,required String passiveUid }) async {
+  final Follower follower = Follower(createdAt: now,myUid: passiveUid,followerUid: userMeta.uid );
+  await returnFollowerDocRef(uid: passiveUid, followerUid: userMeta.uid ).set(follower.toJson());
+}
+
 Future<void> unfollow({ required MainModel mainModel,required String passiveUid }) async {
+  // process set
+  final activeUid = mainModel.userMeta.uid;
+  final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
+  // processUI
+  mainModel.following.remove(deleteFollowingToken);
   mainModel.followingUids.remove(passiveUid);
   mainModel.reload();
-  await deleteFollowingToken(mainModel: mainModel, passiveUid: passiveUid);
+  // process backend
+  await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();
+  await returnFollowerDocRef(uid: passiveUid, followerUid: activeUid ).delete();
 }
 
-Future<void> createFollowingToken({ required UserMeta userMeta,required String passiveUid }) async {
-  final Timestamp now = Timestamp.now();
-  final String activeUid = userMeta.uid;
-  final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.following );
-  final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId, tokenType: followingTokenType );
-  await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
-}
-
-Future<void> deleteFollowingToken({ required MainModel mainModel, required String passiveUid }) async {
-  final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
-  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteFollowingToken.tokenId ).delete();
-}
 
 void showFlashDialogue({ required BuildContext context,required Widget content, required String titleText ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder }) {
   context.showFlashDialog(

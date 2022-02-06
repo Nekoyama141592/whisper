@@ -15,6 +15,9 @@ db: {
             postBookmarks(PostBookmark) {
 
             }
+            postReads {
+                
+            }
         }
         
         followers(Follower) {
