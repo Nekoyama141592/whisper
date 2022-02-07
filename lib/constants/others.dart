@@ -102,8 +102,11 @@ CollectionReference<Map<String, dynamic>> returnPostBookmarksColRef({ required S
 DocumentReference<Map<String, dynamic>> returnPostBookmarkDocRef({ required String postCreatorUid,required String postId,required String activeUid }) { return returnPostBookmarksColRef(postCreatorUid: postCreatorUid, postId: postId).doc(activeUid);  }
 CollectionReference<Map<String, dynamic>> returnPostCommentsColRef({ required String postCreatorUid,required String postId }) { return returnPostDocRef(postCreatorUid: postCreatorUid, postId: postId).collection(postCommentsColRefName); }
 DocumentReference<Map<String, dynamic>> returnPostCommentDocRef({ required String postCreatorUid,required String postId,required String postCommentId }) { return returnPostCommentsColRef(postCreatorUid: postCreatorUid, postId: postId).doc(postCommentId);  }
-CollectionReference<Map<String, dynamic>> returnPostCommentLikesColRef({ required String postCreatorUid,required String postId }) { return returnPostDocRef(postCreatorUid: postCreatorUid, postId: postId).collection(postCommentLikesColRefName);  }
-DocumentReference<Map<String, dynamic>> returnPostCommentLikeDocRef({ required String postCreatorUid,required String postId ,required String activeUid }) { return returnPostCommentLikesColRef(postCreatorUid: postCreatorUid, postId: postId).doc(activeUid); }
+
+CollectionReference<Map<String, dynamic>> returnPostCommentLikesColRef({ required String postCreatorUid,required String postId,required String postCommentId }) { return returnPostCommentDocRef(postCreatorUid: postCreatorUid, postId: postId,postCommentId: postCommentId ).collection(postCommentLikesColRefName);  }
+
+DocumentReference<Map<String, dynamic>> returnPostCommentLikeDocRef({ required String postCreatorUid,required String postId ,required String activeUid,required String postCommentId }) { return returnPostCommentLikesColRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId ).doc(activeUid); }
+
 CollectionReference<Map<String, dynamic>> returnPostCommentReplysColRef({ required String postCreatorUid,required String postId ,required String postCommentId }) { return returnPostCommentDocRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId).collection(postCommentReplysColRefName);  }
 DocumentReference<Map<String, dynamic>> returnPostCommentReplyDocRef({ required String postCreatorUid,required String postId,required String postCommentId,required String postCommentReplyId }) { return returnPostCommentReplysColRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId).doc(postCommentReplyId); }
 CollectionReference<Map<String, dynamic>> returnPostCommentReplyLikesColRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId }) { return returnPostCommentReplyDocRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplyLikesColRefName); }
@@ -186,5 +189,5 @@ DocumentReference<Map<String,dynamic>> postDocRefToPostCommentReplyDocRef({ requ
 }
 
 DocumentReference<Map<String,dynamic>> postDocRefToPostCommentReplyLikeRef({ required DocumentReference<Map<String,dynamic>> postDocRef,required String postCommentId ,required String postCommentReplyId,required UserMeta userMeta }) {
-  return postDocRefToPostCommentReplyDocRef(postDocRef: postDocRef, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplysColRefName).doc(userMeta.uid);
+  return postDocRefToPostCommentReplyDocRef(postDocRef: postDocRef, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplyLikesColRefName).doc(userMeta.uid);
 }
