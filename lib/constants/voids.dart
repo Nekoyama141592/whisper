@@ -581,7 +581,7 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
         onPressed: () {
           controller.dismiss();
         },
-        child: Text('Cancel',style: textStyle(context: context),),
+        child: Text('Cancel',style: cancelStyle(context: context)),
       );
     },
     positiveActionBuilder: positiveActionBuilder,

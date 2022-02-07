@@ -174,6 +174,11 @@ TextStyle textStyle({ required BuildContext context }) {
   return TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: MediaQuery.of(context).size.height/32.0 ,overflow: TextOverflow.ellipsis);
 }
 
+TextStyle cancelStyle({ required BuildContext context }) {
+  return TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: MediaQuery.of(context).size.height/32.0 ,overflow: TextOverflow.ellipsis);
+}
+
+
 final User? firebaseAuthCurrentUser = FirebaseAuth.instance.currentUser;
 
 DocumentReference<Map<String,dynamic>> postDocRefToPostCommentReplyDocRef({ required DocumentReference<Map<String,dynamic>> postDocRef,required String postCommentId ,required String postCommentReplyId  }) {

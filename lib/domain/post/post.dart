@@ -9,7 +9,6 @@ class Post{
     required this.accountName,
     required this.audioURL,
     required this.bookmarkCount,
-    required this.commentCount,
     required this.commentsState,
     required this.country,
     required this.createdAt,
@@ -41,7 +40,6 @@ class Post{
   String accountName;
   String audioURL;
   int bookmarkCount;
-  int commentCount;
   String commentsState;
   String country;
   dynamic createdAt;

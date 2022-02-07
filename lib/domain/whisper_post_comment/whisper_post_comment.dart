@@ -20,7 +20,6 @@ class WhisperPostComment {
     required this.positiveScore,
     required this.postId,
     required this.postCommentReplyCount,
-    required this.replyCount,
     required this.score,
     required this.uid,
     required this.updatedAt,
@@ -41,7 +40,6 @@ class WhisperPostComment {
   final String postCommentId;
   final String postId;
   final int postCommentReplyCount;
-  final int replyCount;
   final num score;
   final String uid;
   final dynamic updatedAt;
