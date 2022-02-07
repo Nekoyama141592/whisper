@@ -34,7 +34,7 @@ class Nothing extends StatelessWidget {
               'Nothing',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 24
+                fontSize: defaultHeaderTextSize(context: context)
               ),
             ),
           ),
