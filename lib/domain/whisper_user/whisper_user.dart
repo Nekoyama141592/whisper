@@ -22,6 +22,7 @@ class WhisperUser {
     required this.recommendState,
     required this.score,
     required this.searchToken,
+    required this.totalAsset,
     required this.userName,
     required this.uid,
     required this.updatedAt,
@@ -43,6 +44,7 @@ class WhisperUser {
   String recommendState;
   num score;
   Map<String,dynamic> searchToken;
+  double totalAsset;
   String userName;
   final String uid;
   dynamic updatedAt;

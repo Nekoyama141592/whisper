@@ -15,6 +15,7 @@ UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
       isSuspended: json['isSuspended'] as bool,
       ipv6: json['ipv6'] as String,
       language: json['language'] as String,
+      totalAsset: json['totalAsset'] as num,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
     );
@@ -28,6 +29,7 @@ Map<String, dynamic> _$UserMetaToJson(UserMeta instance) => <String, dynamic>{
       'isSuspended': instance.isSuspended,
       'ipv6': instance.ipv6,
       'language': instance.language,
+      'totalAsset': instance.totalAsset,
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
     };

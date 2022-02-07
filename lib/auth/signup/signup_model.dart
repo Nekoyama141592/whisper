@@ -138,6 +138,7 @@ class SignupModel extends ChangeNotifier {
       recommendState: recommendableString,
       score: defaultScore,
       searchToken: returnSearchToken(searchWords: searchWords),
+      totalAsset: 0,
       uid : uid,
       updatedAt: now,
       userName: userName,
@@ -159,6 +160,7 @@ class SignupModel extends ChangeNotifier {
       isSuspended: false,
       ipv6: ipv6,
       language: language, 
+      totalAsset: 0,
       uid: uid,
       updatedAt: now,
     );
