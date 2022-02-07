@@ -29,6 +29,7 @@ import 'package:whisper/domain/mute_post/mute_post.dart';
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
+import 'package:whisper/domain/user_update_log/user_update_log.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
@@ -479,14 +480,18 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
     updateWhisperUser.imageURL = downloadURL;
   }
-  await FirebaseFirestore.instance.collection(usersFieldKey).doc(updateWhisperUser.uid).update({
-    linksFieldKey: updateWhisperUser.links,
-    userNameFieldKey: updateWhisperUser.userName,
-    searchTokenFieldKey: updateWhisperUser.searchToken,
-    descriptionFieldKey: updateWhisperUser.description,
-    imageURLFieldKey: updateWhisperUser.imageURL,
-  });
+  final UserUpdateLog updateUserLog = UserUpdateLog(
+    description: updateWhisperUser.description,
+    imageURL: updateWhisperUser.imageURL,
+    links: updateWhisperUser.links,
+    searchToken: updateWhisperUser.searchToken,
+    uid: updateWhisperUser.uid,
+    userName: updateWhisperUser.userName
+  );
   mainModel.reload();
+  // await FirebaseFirestore.instance.collection(usersFieldKey).doc(updateWhisperUser.uid).update(updateUserLog.toJson());
+  await returnUserDocRef(uid: updateWhisperUser.uid).update(updateUserLog.toJson());
+  await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(updateUserLog.toJson());
 }
 
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {

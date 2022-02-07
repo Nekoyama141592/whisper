@@ -23,6 +23,9 @@ db: {
         followers(Follower) {
 
         }
+        userUpdateLogs {
+
+        }
     }
     userMeta(userMeta) {
         tokens {

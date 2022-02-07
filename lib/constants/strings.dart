@@ -49,6 +49,9 @@ String generatePostCommentId({ required String uid }) {
 String generatePostCommentReplyId({ required String uid }) {
   return 'postCommentReply' + hyphenString + uid + hyphenString + returnUuid4();
 }
+String generateUserUpdateLogId() {
+  return 'userUpdateLog' + hyphenString + returnUuid4();
+}
 // prefs
 const String speedPrefsKey = 'speed';
 // tokenTypes
@@ -111,6 +114,7 @@ const String updatedAtFieldKey = 'updatedAt';
 const String passiveUidFieldKey = 'passiveUid';
 const String notificationsFieldKey = 'notifications';
 const String notificationTypeFieldKey = 'notificationType';
+const String userUpdateLogsFieldKey = 'userUpdateLogs';
 // updateFieldKey
 const String imageURLsFieldKey = 'imageURLs';
 const String imageURLFieldKey = 'imageURL';
