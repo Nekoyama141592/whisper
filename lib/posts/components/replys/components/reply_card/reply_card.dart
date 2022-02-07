@@ -36,7 +36,7 @@ class ReplyCard extends ConsumerWidget {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final length = defaultPadding(context: context) * 4.0;
     final padding = 0.0;
-    final fontSize = defaultPadding(context: context);
+    final fontSize = defaultHeaderTextSize(context: context);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: fontSize,
