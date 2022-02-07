@@ -23,7 +23,7 @@ class BookmarksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      body: bookmarksModel.isLoading ? Loading() : PostScreen(bookmarksModel: bookmarksModel, mainModel: mainModel),
+      body: bookmarksModel.isLoading ? Loading() : PostScreen(bookmarksModel: bookmarksModel, mainModel: mainModel, ),
     );
   }
 }

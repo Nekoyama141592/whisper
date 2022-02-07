@@ -44,7 +44,7 @@ class WhisperUser {
   String recommendState;
   num score;
   Map<String,dynamic> searchToken;
-  double totalAsset;
+  num totalAsset;
   String userName;
   final String uid;
   dynamic updatedAt;

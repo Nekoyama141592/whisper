@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
-import 'package:whisper/constants/others.dart';
-import 'package:whisper/details/back_arrow_button.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/gradient_screen.dart';
@@ -37,7 +35,6 @@ class PostScreen extends ConsumerWidget {
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final postDocs = bookmarksModel.posts;
-    final height = MediaQuery.of(context).size.height;
     
     return GradientScreen(
       top: SizedBox.shrink(), 
@@ -64,7 +61,7 @@ class PostScreen extends ConsumerWidget {
       ),
       content: postDocs.isEmpty ?
       Nothing(reload: () async { 
-        await bookmarksModel.onReload();
+        await bookmarksModel.onReload(mainModel: mainModel, );
       })
       : Padding(
         padding: EdgeInsets.only(

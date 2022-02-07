@@ -686,6 +686,6 @@ void maxSearchLengthAlert ({ required BuildContext context,required bool isUserN
   if (isUserName == true) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください')));
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルは' + maxSearchLength.toString() + '文字以内にしてください')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字以内にしてください')));
   }
 } 

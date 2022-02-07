@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // packages
 import 'package:flash/flash.dart';
 import 'package:just_audio/just_audio.dart';
@@ -14,6 +13,7 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 // domain
 import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 import 'package:whisper/domain/post/post.dart';
@@ -56,21 +56,23 @@ class BookmarksModel extends ChangeNotifier {
   final PostType postType = PostType.bookmarks;
   // init
   bool isInitFinished = false;
-  String indexBookmarkLabelId = '';
+  String indexBookmarkPostLabelId = '';
   bool isBookmarkMode = false;
   // editLabel
   String editLabel = '';
+  // new
+  String newLabel = '';
   
   Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkPostLabel bookmarkLabel }) async {
     isBookmarkMode = true;
     notifyListeners();
-    if (indexBookmarkLabelId != bookmarkLabel.tokenId) {
-      indexBookmarkLabelId = bookmarkLabel.tokenId;
+    if (indexBookmarkPostLabelId != bookmarkLabel.tokenId) {
+      indexBookmarkPostLabelId = bookmarkLabel.tokenId;
       bookmarkPostIds = [];
       posts = [];
       startLoading();
       audioPlayer = AudioPlayer();
-      await setBookmarksPostIds(mainModel: mainModel, bookmarkLabel: bookmarkLabel);
+      setBookmarksPostIds(mainModel: mainModel, );
       await getBookmarks();
       prefs = mainModel.prefs;
       await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
@@ -107,8 +109,9 @@ class BookmarksModel extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> onReload() async {
+  Future<void> onReload({ required MainModel mainModel }) async {
     startLoading();
+    setBookmarksPostIds(mainModel: mainModel);
     await getBookmarks();
     endLoading();
   }
@@ -119,9 +122,10 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setBookmarksPostIds({ required MainModel mainModel,required BookmarkPostLabel bookmarkLabel }) async {
-    final String bookmarkLabelTokenId = bookmarkLabel.tokenId;
-    bookmarkPostIds = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == bookmarkLabelTokenId ).map((e) => e.postId ).toList();
+  void setBookmarksPostIds({ required MainModel mainModel, }){
+    final x = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == indexBookmarkPostLabelId ).toList();
+    x.sort((a,b)=> (b.createdAt as Timestamp ).compareTo(a.createdAt) );
+    bookmarkPostIds = x.map((e) => e.postId ).toList();
     notifyListeners();
   }
 
@@ -133,6 +137,7 @@ class BookmarksModel extends ChangeNotifier {
     if (bookmarkPostIds.isNotEmpty) {
       List<String> max10 = bookmarkPostIds.length > (lastIndex + tenCount) ? bookmarkPostIds.sublist(lastIndex,tenCount) : bookmarkPostIds.sublist( lastIndex,bookmarkPostIds.length );
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
+      docs.sort((a,b)=> (BookmarkPost.fromJson(b.data()!).createdAt as Timestamp ).compareTo((BookmarkPost.fromJson(a.data()!).createdAt) ));
       await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
         docs = qshot.docs;
       });
@@ -147,17 +152,41 @@ class BookmarksModel extends ChangeNotifier {
     }
   }
 
-  Future<void> onUpdateLabelButtonPressed({ required FlashController flashController,required BookmarkPostLabel bookmarkLabel,required UserMeta userMeta}) async {
-    flashController.dismiss();
+  Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostLabel bookmarkPostLabel,required UserMeta userMeta}) async {
     if (editLabel.isEmpty) {
-
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('空欄は不適です')));
     } else if (editLabel.length > maxSearchLength) {
-
+      voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
-      bookmarkLabel.label = editLabel;
+      // process set
+      bookmarkPostLabel.label = editLabel;
+      // process UI
+      flashController.dismiss();
       notifyListeners();
-      await returnTokenDocRef(uid: userMeta.uid, tokenId: bookmarkLabel.tokenId ).update(bookmarkLabel.toJson());
+      // process backend
+      await returnTokenDocRef(uid: userMeta.uid, tokenId: bookmarkPostLabel.tokenId ).update(bookmarkPostLabel.toJson());
       editLabel = '';
+    }
+  }
+
+  Future<void> addBookmarkPostLabel({ required MainModel mainModel, required BuildContext context,required FlashController flashController, }) async {
+    if (newLabel.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('空欄は不適です')));
+    } else if (newLabel.length > maxSearchLength) {
+      voids.maxSearchLengthAlert(context: context, isUserName: false );
+    } else {
+      // process set
+      final now = Timestamp.now();
+      final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPostLabel );
+      final BookmarkPostLabel bookmarkPostLabel = BookmarkPostLabel(createdAt: now,updatedAt: now,tokenType: bookmarkPostTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,label: newLabel);
+      bookmarkPostLabel.label = newLabel;
+      // process Ui
+      mainModel.bookmarkPostLabels.add(bookmarkPostLabel);
+      flashController.dismiss();
+      notifyListeners();
+      // process backend
+      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: bookmarkPostLabel.tokenId ).set(bookmarkPostLabel.toJson());
+      newLabel = '';
     }
   }
 

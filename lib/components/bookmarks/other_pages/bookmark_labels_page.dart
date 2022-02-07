@@ -32,6 +32,39 @@ class BookmarkLabelsPage extends ConsumerWidget {
     return bookmarksModel.isBookmarkMode ?
     BookmarksPage(mainModel: mainModel, bookmarksModel: bookmarksModel) : 
     Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(Icons.new_label,color: Colors.white,),
+        onPressed: () async {
+          final TextEditingController textEditingController = TextEditingController(text: bookmarksModel.newLabel);
+          final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
+            return TextButton(
+              onPressed: () async {
+                await bookmarksModel.addBookmarkPostLabel(mainModel: mainModel, context: context, flashController: controller);
+              }, 
+              child: Text('OK',style: textStyle(context: context),)
+            );
+          };
+          final Widget content = TextFormField(
+            controller: textEditingController,
+            decoration: InputDecoration(
+              hintText: '例)面白い人',
+              suffixIcon: InkWell(
+                child: Icon(Icons.close),
+                onTap: () {
+                  textEditingController.text = '';
+                  bookmarksModel.newLabel = '';
+                  mainModel.reload();
+                },
+              )
+            ),
+            onChanged: (text) {
+              bookmarksModel.newLabel = text;
+            },
+          );
+          voids.showFlashDialogue(context: context, content: content, titleText: '新規追加', positiveActionBuilder: positiveActionBuilder);
+        },
+      ),
       body: GradientScreen(
           top: SizedBox.shrink(), 
           header: Padding(
@@ -59,7 +92,7 @@ class BookmarkLabelsPage extends ConsumerWidget {
                   final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
                     return TextButton(
                       onPressed: () async {
-                        await bookmarksModel.onUpdateLabelButtonPressed(flashController: controller, bookmarkLabel: bookmarkLabel, userMeta: mainModel.userMeta );
+                        await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostLabel: bookmarkLabel, userMeta: mainModel.userMeta );
                       }, 
                       child: Text('OK',style: textStyle(context: context),)
                     );
