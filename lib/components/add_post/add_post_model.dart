@@ -20,7 +20,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/constants/others.dart' as others;
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -94,7 +94,7 @@ class AddPostModel extends ChangeNotifier {
   Future cropImage() async {
     isCroppedNotifier.value = false;
     croppedFile = null;
-    croppedFile = await others.returnCroppedFile(xFile: xFile);
+    croppedFile = await returnCroppedFile(xFile: xFile);
     if (croppedFile != null) {
       isCroppedNotifier.value = true;
       notifyListeners();
@@ -159,7 +159,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<String> getPostUrl({ required BuildContext context, required String storagePostName ,required MainModel mainModel,required String postId }) async {
-    final Reference storageRef = others.returnPostChildRef(mainModel: mainModel, storagePostName: storagePostName);
+    final Reference storageRef = returnPostChildRef(mainModel: mainModel, storagePostName: storagePostName);
     await voids.putPost(postRef: storageRef, postFile: audioFile );
     final String postDownloadURL = await storageRef.getDownloadURL();
     return postDownloadURL;
@@ -194,14 +194,15 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel,required String postId }) async {
-    final Reference storageRef = others.returnPostImageChildRef(mainModel: mainModel, postImageName: postImageName, postId: postId);
+    final Reference storageRef = returnPostImageChildRef(mainModel: mainModel, postImageName: postImageName, postId: postId);
     await voids.putImage(imageRef: storageRef, file: croppedFile! );
     final String downloadURL = await storageRef.getDownloadURL();
     return downloadURL;
   }
 
   
-  Future addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId }) async {
+  Future<void> addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId }) async {
+    // process set
     final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
@@ -240,10 +241,13 @@ class AddPostModel extends ChangeNotifier {
       userImageURL: currentWhiseprUser.imageURL,
       userName: currentWhiseprUser.userName
       ).toJson();
+      // process UI
+      mainModel.currentWhisperUser.postCount += plusOne;
       try {
         // await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).set(postMap);
-        await others.returnPostDocRef(postCreatorUid: currentWhiseprUser.uid, postId: postId).set(postMap);
+        await returnPostDocRef(postCreatorUid: currentWhiseprUser.uid, postId: postId).set(postMap);
         addPostStateNotifier.value = AddPostState.uploaded;
+        await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
       } catch(e) {
         print(e.toString());
       }

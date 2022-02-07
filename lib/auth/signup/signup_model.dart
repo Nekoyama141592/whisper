@@ -134,6 +134,7 @@ class SignupModel extends ChangeNotifier {
       isNFTicon: false,
       isOfficial: false,
       isSuspended: false,
+      postCount: 0,
       links: [],
       recommendState: recommendableString,
       score: defaultScore,

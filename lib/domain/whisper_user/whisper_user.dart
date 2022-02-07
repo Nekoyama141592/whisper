@@ -19,6 +19,7 @@ class WhisperUser {
     required this.isNFTicon,
     required this.isOfficial,
     required this.links,
+    required this.postCount,
     required this.recommendState,
     required this.score,
     required this.searchToken,
@@ -41,6 +42,7 @@ class WhisperUser {
   bool isNFTicon;
   bool isOfficial;
   List<Map<String,dynamic>> links;
+  int postCount;
   String recommendState;
   num score;
   Map<String,dynamic> searchToken;

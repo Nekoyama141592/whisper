@@ -261,9 +261,13 @@ Future<void> deletePost({ required BuildContext context, required AudioPlayer au
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
   } else {
     try {
+      // process UI
       posts.remove(posts[i]);
+      mainModel.currentWhisperUser.postCount += minusOne;
       await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       mainModel.reload();
+      // process backend
+      await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
       await returnRefFromPost(post: whisperPost).delete();
       if (isImageExist(post: whisperPost) == true) {
