@@ -22,6 +22,7 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       links: (json['links'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList(),
+      postCount: json['postCount'] as int,
       recommendState: json['recommendState'] as String,
       score: json['score'] as num,
       searchToken: json['searchToken'] as Map<String, dynamic>,
@@ -47,6 +48,7 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'isNFTicon': instance.isNFTicon,
       'isOfficial': instance.isOfficial,
       'links': instance.links,
+      'postCount': instance.postCount,
       'recommendState': instance.recommendState,
       'score': instance.score,
       'searchToken': instance.searchToken,
