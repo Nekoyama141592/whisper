@@ -136,7 +136,6 @@ class CommentsModel extends ChangeNotifier {
       positiveScore: 0, 
       postId: whisperPost.postId, 
       postCommentReplyCount: 0,
-      replyCount: 0,
       score: defaultScore,
       uid: currentWhisperUser.uid,
       updatedAt: now,

@@ -212,7 +212,6 @@ class AddPostModel extends ChangeNotifier {
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
       bookmarkCount: 0,
-      commentCount: 0,
       commentsState: commentsState, 
       country: '', 
       createdAt: now,
