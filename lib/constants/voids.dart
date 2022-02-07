@@ -462,9 +462,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
   // }
-  final DateTime now = DateTime.now();
   updateWhisperUser.links = links.map((e) => e.toJson()).toList();
-  updateWhisperUser.updatedAt = Timestamp.fromDate(now);
   if (userName.isNotEmpty) {
     updateWhisperUser.userName = userName;
     updateWhisperUser.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: userName) );
@@ -477,7 +475,13 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
     updateWhisperUser.imageURL = downloadURL;
   }
-  await FirebaseFirestore.instance.collection(usersFieldKey).doc(updateWhisperUser.uid).update( updateWhisperUser.toJson() );
+  await FirebaseFirestore.instance.collection(usersFieldKey).doc(updateWhisperUser.uid).update({
+    linksFieldKey: updateWhisperUser.links,
+    userNameFieldKey: updateWhisperUser.userName,
+    searchTokenFieldKey: updateWhisperUser.searchToken,
+    descriptionFieldKey: updateWhisperUser.description,
+    imageURLFieldKey: updateWhisperUser.imageURL,
+  });
   mainModel.reload();
 }
 
@@ -512,6 +516,13 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
   );
 }
 
+Future<void> updateFollowingCountOfCurrentWhisperUser({ required WhisperUser currentWhisperUser,required Timestamp now }) async {
+  await returnUserDocRef(uid: currentWhisperUser.uid).update({
+    followingCountFieldKey: currentWhisperUser.followingCount,
+    updatedAtFieldKey: now,
+  });
+}
+
 Future<void> follow({ required BuildContext context,required MainModel mainModel, required String passiveUid }) async {
   if (mainModel.followingUids.length >= maxFollowCount) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Limit' + maxFollowCount.toString() + 'Following' )));
@@ -530,7 +541,7 @@ Future<void> follow({ required BuildContext context,required MainModel mainModel
     // process backend
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
     await createFollower(userMeta: userMeta, now: now, passiveUid: passiveUid);
-    await returnUserDocRef(uid: userMeta.uid).update(mainModel.currentWhisperUser.toJson());
+    await updateFollowingCountOfCurrentWhisperUser(currentWhisperUser: mainModel.currentWhisperUser, now: now);
   }
 }
 
@@ -552,7 +563,7 @@ Future<void> unfollow({ required MainModel mainModel,required String passiveUid 
   // process backend
   await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();
   await returnFollowerDocRef(uid: passiveUid, followerUid: activeUid ).delete();
-  await returnUserDocRef(uid: userMeta.uid).update(mainModel.currentWhisperUser.toJson());
+  await updateFollowingCountOfCurrentWhisperUser(currentWhisperUser: mainModel.currentWhisperUser, now: Timestamp.now() );
 }
 
 

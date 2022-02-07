@@ -67,16 +67,23 @@ class EditPostInfoModel extends ChangeNotifier {
 
   Future<void> updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context }) async {
     if (title.length <= maxSearchLength ) {
-      final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
+      // final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
+      if (croppedFile != null) {
+        whisperPost.imageURLs = [await uploadImage(mainModel: mainModel,postId: whisperPost.postId )];
+      }
+      if (title.isNotEmpty) {
+        whisperPost.title = title;
+        whisperPost.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: title)  );
+      }
+      whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
       try{
-        whisperPost.imageURLs = [imageURL];
-        if (title.isNotEmpty) {
-          whisperPost.title = title;
-          whisperPost.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: title)  );
-        }
-        whisperPost.updatedAt = Timestamp.now();
-        whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
-        await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update(whisperPost.toJson());
+        await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update({
+          imageURLsFieldKey: whisperPost.imageURLs,
+          titleFieldKey: whisperPost.title,
+          searchTokenFieldKey: whisperPost.searchToken,
+          linksFieldKey: whisperPost.links,
+          updatedAtFieldKey: Timestamp.now(),
+        });
         isEditing = false;
         notifyListeners();
         title = '';

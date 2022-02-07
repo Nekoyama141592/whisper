@@ -111,6 +111,14 @@ const String updatedAtFieldKey = 'updatedAt';
 const String passiveUidFieldKey = 'passiveUid';
 const String notificationsFieldKey = 'notifications';
 const String notificationTypeFieldKey = 'notificationType';
+// updateFieldKey
+const String imageURLsFieldKey = 'imageURLs';
+const String imageURLFieldKey = 'imageURL';
+const String titleFieldKey = 'title';
+const String linksFieldKey = '';
+const String followingCountFieldKey = '';
+const String userNameFieldKey = 'userName';
+const String descriptionFieldKey = 'description';
 // path
 const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';
