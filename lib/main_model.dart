@@ -124,7 +124,6 @@ class MainModel extends ChangeNotifier {
     await setCurrentUser();
     audioPlayer = AudioPlayer();
     followingUids.add(userMeta.uid);
-    print(userMeta.uid);
     final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
     await getFeeds(followingUids: followingUids);

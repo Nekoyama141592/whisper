@@ -31,6 +31,9 @@ class UserShowPage extends ConsumerWidget {
     final height = size.height;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        print(userShowModel.isLoading);
+      },),
       extendBodyBehindAppBar: false,
       body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
       Column(
@@ -43,6 +46,7 @@ class UserShowPage extends ConsumerWidget {
         ],
       )
       : userShowModel.isLoading ?
+      Loading() : 
       Container(
         child: userShowModel.isEditing ?
         SafeArea(
@@ -87,7 +91,7 @@ class UserShowPage extends ConsumerWidget {
           content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
           circular: height/16.0
         ),
-      ): Loading()
+      )
     );
   }
 }

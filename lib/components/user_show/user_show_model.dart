@@ -77,10 +77,10 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> init(DocumentSnapshot<Map<String,dynamic>> passiveUserDoc,SharedPreferences givePrefs) async {
     
-    final isBlockedQshot = await returnTokensColRef(uid: passiveUserDoc.id).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: firebaseAuthCurrentUser!.uid).limit(plusOne).get();
-    isBlocked = isBlockedQshot.docs.isEmpty ? false : isBlockedQshot.docs.first.exists;
+    // final isBlockedQshot = await returnTokensColRef(uid: passiveUserDoc.id).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: firebaseAuthCurrentUser!.uid).limit(plusOne).get();
+    // isBlocked = isBlockedQshot.docs.isEmpty ? false : isBlockedQshot.docs.first.exists;
+    startLoading();
     if (isBlocked == false) {
-      startLoading();
       audioPlayer = AudioPlayer();
       refreshController = RefreshController(initialRefresh: false);
       passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()! );
@@ -89,8 +89,8 @@ class UserShowModel extends ChangeNotifier {
       await getPosts();
       await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
       voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
-      endLoading();
     }
+    endLoading();
   }
 
   void theSameUser({ required BuildContext context, required MainModel mainModel }) {
