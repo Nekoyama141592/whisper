@@ -31,9 +31,6 @@ class UserShowPage extends ConsumerWidget {
     final height = size.height;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(userShowModel.isLoading);
-      },),
       extendBodyBehindAppBar: false,
       body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
       Column(

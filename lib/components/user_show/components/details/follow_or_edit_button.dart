@@ -41,7 +41,7 @@ class FollowOrEditButton extends StatelessWidget {
     : !followingUids.contains(passiveWhisperUser.uid) ?
     RoundedButton(
       text: 'follow', 
-      widthRate: 0.35,
+      widthRate: 0.4,
       verticalPadding: verticalPadding,
       horizontalPadding: 10.0,
       press: () async {
@@ -56,7 +56,7 @@ class FollowOrEditButton extends StatelessWidget {
     )
     : RoundedButton(
       text: 'unfollow', 
-      widthRate: 0.35,
+      widthRate: 0.4,
       verticalPadding: verticalPadding,
       horizontalPadding: 10.0,
       press: () async {
