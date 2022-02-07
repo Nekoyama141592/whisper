@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
@@ -34,7 +35,7 @@ class UserShowPostScreen extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
-    final isLoading = userShowModel.isLoading;
+    
     final postDocs = userShowModel.posts;
     final Widget posts = Expanded(
       child: SmartRefresher(
@@ -75,7 +76,7 @@ class UserShowPostScreen extends ConsumerWidget {
       ),
     );
     final content =  Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: defaultPadding(context: context) ),
       child: PostCards(
         postDocs: userShowModel.posts, 
         route: () {
@@ -129,9 +130,8 @@ class UserShowPostScreen extends ConsumerWidget {
       ),
     );
     
-    return isLoading ?
-    Loading()
-    : JudgeScreen(
+    return 
+    JudgeScreen(
       list: postDocs, 
       content: content,
       reload: () async {

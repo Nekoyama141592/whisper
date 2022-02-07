@@ -91,8 +91,8 @@ void toPostShowPage({ required BuildContext context, required ValueNotifier<doub
   Navigator.push(context, MaterialPageRoute(builder: (context) =>PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentWhisperPostNotifier: currentWhisperPostNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, postType: postType,mainModel: mainModel) ));
 }
 
-void toUserShowPage({ required BuildContext context, required WhisperUser passiveWhisperUser, required MainModel mainModel}) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage(passiveWhisperUser: passiveWhisperUser, mainModel: mainModel) ));
+void toUserShowPage({ required BuildContext context, required MainModel mainModel}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage( mainModel: mainModel) ));
 }
 
 void toAccountPage(context,MainModel mainModel) {

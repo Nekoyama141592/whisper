@@ -35,11 +35,9 @@ final userShowProvider = ChangeNotifierProvider(
 );
 
 class UserShowModel extends ChangeNotifier {
-
-  late DocumentSnapshot<Map<String,dynamic>> passiveUserDoc;
-  Query<Map<String, dynamic>> getQuery ({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc }) {
-    final whisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()!);
-    final x = returnPostsColRef(postCreatorUid: whisperUser.uid).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
+  late WhisperUser passiveWhisperUser;
+  Query<Map<String, dynamic>> getQuery ({ required WhisperUser passiveWhisperUser }) {
+    final x = returnPostsColRef(postCreatorUid: passiveWhisperUser.uid).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
     return x;
   }
   String passiveUid = '';
@@ -58,7 +56,7 @@ class UserShowModel extends ChangeNotifier {
   // cloudFirestore
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
-  late RefreshController refreshController;
+  RefreshController refreshController = RefreshController(initialRefresh: false);
   // Edit profile
   bool isEditing = false;
   String userName = '';
@@ -77,27 +75,28 @@ class UserShowModel extends ChangeNotifier {
   final PostType postType = PostType.userShow;
   SortState sortState = SortState.byNewestFirst;
 
-  Future<void> init(DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc,SharedPreferences givePrefs) async {
-    startLoading();
-    final isBlockedQshot = await returnTokensColRef(uid: givePassiveUserDoc.id).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: firebaseAuthCurrentUser!.uid).limit(plusOne).get();
-    isBlocked = isBlockedQshot.docs.first.exists;
+  Future<void> init(DocumentSnapshot<Map<String,dynamic>> passiveUserDoc,SharedPreferences givePrefs) async {
+    
+    final isBlockedQshot = await returnTokensColRef(uid: passiveUserDoc.id).where(tokenTypeFieldKey,isEqualTo: blockUserTokenType).where(uidFieldKey,isEqualTo: firebaseAuthCurrentUser!.uid).limit(plusOne).get();
+    isBlocked = isBlockedQshot.docs.isEmpty ? false : isBlockedQshot.docs.first.exists;
     if (isBlocked == false) {
+      startLoading();
       audioPlayer = AudioPlayer();
       refreshController = RefreshController(initialRefresh: false);
-      passiveUserDoc = givePassiveUserDoc;
-      passiveUid = givePassiveUserDoc.id;
+      passiveWhisperUser = fromMapToWhisperUser(userMap: passiveUserDoc.data()! );
+      passiveUid = passiveUserDoc.id;
       prefs = givePrefs;
       await getPosts();
       await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
       voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+      endLoading();
     }
-    endLoading();
   }
 
   void theSameUser({ required BuildContext context, required MainModel mainModel }) {
     audioPlayer = AudioPlayer();
     refreshController = RefreshController(initialRefresh: false);
-    routes.toUserShowPage(context: context, passiveWhisperUser: fromMapToWhisperUser(userMap: passiveUserDoc.data()!), mainModel: mainModel);
+    routes.toUserShowPage(context: context, mainModel: mainModel);
   }
 
   void startLoading() {
@@ -133,13 +132,13 @@ class UserShowModel extends ChangeNotifier {
   }
 
   Future<void> getNewUserShowPosts() async {
-    await voids.processNewPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+    await voids.processNewPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
   }
 
   Future<void> getPosts() async {
     try {
       posts = [];
-      await voids.processBasicPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+      await voids.processBasicPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
 
     } catch(e) { print(e.toString()); }
     notifyListeners();
@@ -147,7 +146,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> getOldUserShowPosts() async {
     try {
-      await voids.processOldPosts(query: getQuery(passiveUserDoc: passiveUserDoc), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      await voids.processOldPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
     } catch(e) { print(e.toString()); }
   }
 

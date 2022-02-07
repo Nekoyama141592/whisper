@@ -107,7 +107,8 @@ class UserShowHeader extends ConsumerWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: defaultHeaderTextSize(context: context)
+                    fontSize: defaultHeaderTextSize(context: context)/1.2,
+                    overflow: TextOverflow.ellipsis
                   ),
                 ),
                 SizedBox(width: defaultPadding(context: context),),
@@ -118,10 +119,11 @@ class UserShowHeader extends ConsumerWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: defaultHeaderTextSize(context: context)
+                    fontSize: defaultHeaderTextSize(context: context)/1.2,
+                    overflow: TextOverflow.ellipsis
                   ),
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: defaultPadding(context: context) ),
                 InkWell(
                   child: Icon(Icons.search),
                   onTap: () {

@@ -123,11 +123,12 @@ class MainModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await setCurrentUser();
     audioPlayer = AudioPlayer();
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     followingUids.add(userMeta.uid);
+    print(userMeta.uid);
     final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
     await getFeeds(followingUids: followingUids);
+    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
   }
 

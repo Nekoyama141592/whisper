@@ -9,8 +9,7 @@ import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
 import 'package:whisper/components/user_show/components/details/user_show_post_screen.dart';
 import 'package:whisper/components/user_show/components/other_pages/edit_profile_screen.dart';
-// domain
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/details/loading.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
@@ -19,11 +18,9 @@ class UserShowPage extends ConsumerWidget {
   
   const UserShowPage({
     Key? key,
-    required this.passiveWhisperUser,
     required this.mainModel
   });
 
-  final WhisperUser passiveWhisperUser;
   final MainModel mainModel;
 
   @override
@@ -45,13 +42,14 @@ class UserShowPage extends ConsumerWidget {
             Text('もしくは相手にブロックされています')
         ],
       )
-      : Container(
+      : userShowModel.isLoading ?
+      Container(
         child: userShowModel.isEditing ?
         SafeArea(
           child: EditProfileScreen(
             onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: passiveWhisperUser, mainModel: mainModel, links: userShowModel.whisperLinksNotifier.value );
+              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel, links: userShowModel.whisperLinksNotifier.value );
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
@@ -61,10 +59,10 @@ class UserShowPage extends ConsumerWidget {
               userShowModel.description = text;
             },
             onEditLinkButtonPressed: () {
-              userShowModel.initLinks(context: context, linkMaps: passiveWhisperUser.links );
+              userShowModel.initLinks(context: context, linkMaps: userShowModel.passiveWhisperUser.links );
             },
-            descriptionController: TextEditingController(text: passiveWhisperUser.description ),
-            userNameController: TextEditingController(text: passiveWhisperUser.userName ),
+            descriptionController: TextEditingController(text: userShowModel.passiveWhisperUser.description ),
+            userNameController: TextEditingController(text: userShowModel.passiveWhisperUser.userName ),
             croppedFile: userShowModel.croppedFile,
             isLoading: userShowModel.isLoading,
             isCropped: userShowModel.isCropped,
@@ -77,7 +75,7 @@ class UserShowPage extends ConsumerWidget {
             onEditButtonPressed: () {
               userShowModel.onEditButtonPressed();
             },
-            passiveWhisperUser: passiveWhisperUser,
+            passiveWhisperUser: userShowModel.passiveWhisperUser,
             backArrow: InkWell(
               child: Icon(Icons.arrow_back),
               onTap: () {
@@ -89,7 +87,7 @@ class UserShowPage extends ConsumerWidget {
           content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
           circular: height/16.0
         ),
-      )
+      ): Loading()
     );
   }
 }
