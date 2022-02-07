@@ -178,7 +178,7 @@ class BookmarksModel extends ChangeNotifier {
       // process set
       final now = Timestamp.now();
       final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPostLabel );
-      final BookmarkPostLabel bookmarkPostLabel = BookmarkPostLabel(createdAt: now,updatedAt: now,tokenType: bookmarkPostTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,label: newLabel);
+      final BookmarkPostLabel bookmarkPostLabel = BookmarkPostLabel(createdAt: now,updatedAt: now,tokenType: bookmarkPostLabelTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,label: newLabel);
       bookmarkPostLabel.label = newLabel;
       // process Ui
       mainModel.bookmarkPostLabels.add(bookmarkPostLabel);
