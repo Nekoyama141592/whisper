@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
+// constants
+import 'package:whisper/constants/ints.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -22,11 +24,12 @@ class ReplyLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final likeCount = whisperReply.likeCount;
+    final plusOneCount = likeCount + plusOne;
 
     return mainModel.likePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: defaultPadding(context: context)/2.0
+        horizontal: defaultPadding(context: context)
       ),
       child: Row(
         children: [
@@ -41,7 +44,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+            plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
             style: TextStyle(color: Colors.red)
           )
         ],

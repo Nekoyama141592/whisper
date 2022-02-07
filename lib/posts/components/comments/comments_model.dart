@@ -1,5 +1,4 @@
 // material
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
@@ -224,7 +223,7 @@ class CommentsModel extends ChangeNotifier {
   void showSortDialogue(BuildContext context,Post whisperPost) {
     showCupertinoDialog(
       context: context, 
-      builder: (context) {
+      builder: (innerContext) {
         final postId = whisperPost.postId;
         return CupertinoActionSheet(
           title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
@@ -232,15 +231,13 @@ class CommentsModel extends ChangeNotifier {
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
-                Navigator.pop(context);
-                commentDocs = [];
+                Navigator.pop(innerContext);
                 sortState = SortState.byLikedUidCount;
-                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
+                final qshot = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(oneTimeReadCount)
-                .get().then((qshot) {
-                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
-                });
+                .get();
+                commentDocs = qshot.docs;
                 notifyListeners();
               }, 
               child: Text(
@@ -253,15 +250,13 @@ class CommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
-                Navigator.pop(context);
-                commentDocs = [];
+                Navigator.pop(innerContext);
                 sortState = SortState.byNewestFirst;
-                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
+                final qshot = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(oneTimeReadCount)
-                .get().then((qshot) {
-                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
-                });
+                .get();
+                commentDocs = qshot.docs;
                 notifyListeners();
               }, 
               child: Text(
@@ -274,15 +269,13 @@ class CommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
-                Navigator.pop(context);
-                commentDocs = [];
+                Navigator.pop(innerContext);
                 sortState = SortState.byOldestFirst;
-                await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
+                final qshot = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(oneTimeReadCount)
-                .get().then((qshot) {
-                  qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
-                });
+                .get();
+                commentDocs = qshot.docs;
                 notifyListeners();
               }, 
               child: Text(

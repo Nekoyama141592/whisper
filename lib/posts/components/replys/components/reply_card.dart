@@ -9,7 +9,7 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // components
-import 'package:whisper/posts/components/replys/components/reply_card/components/reply_like_button.dart';
+import 'package:whisper/posts/components/replys/components/details/reply_like_button.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 // models
 import 'package:whisper/main_model.dart';

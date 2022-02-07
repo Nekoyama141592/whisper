@@ -116,7 +116,7 @@ void toCommentsPage({ required BuildContext context, required AudioPlayer audioP
 }
 
 void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperPostComment whisperComment, required MainModel mainModel  }) {
- Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperComment: whisperComment, mainModel: mainModel) )); 
+ Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperPostComment: whisperComment, mainModel: mainModel) )); 
 }
 
 void toBlocksUsersPage(context, MainModel mainModel) {

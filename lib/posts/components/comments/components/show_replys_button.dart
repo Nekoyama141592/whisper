@@ -13,19 +13,19 @@ class ShowReplyButton extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.replysModel,
-    required this.whisperComment,
+    required this.whisperPostComment,
     required this.whisperPost
   }) : super(key: key);
 
   final MainModel mainModel;
   final ReplysModel replysModel;
-  final WhisperPostComment whisperComment;
+  final WhisperPostComment whisperPostComment;
   final Post whisperPost;
 
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        replysModel.getReplysStream(context: context, whisperComment: whisperComment, replysModel: replysModel, whisperPost: whisperPost, mainModel: mainModel);
+      onPressed: () async {
+        await replysModel.init(context: context, mainModel: mainModel, whisperPostComment: whisperPostComment);
       }, 
       icon: Icon(Icons.mode_comment)
     );

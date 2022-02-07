@@ -113,7 +113,7 @@ class CommentCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
-                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperComment: whisperComment, whisperPost: whisperPost)
+                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost)
                       ],
                     )
                   ]
