@@ -54,7 +54,6 @@ class BookmarkLabelsPage extends ConsumerWidget {
                 onTap: () {
                   textEditingController.text = '';
                   bookmarksModel.newLabel = '';
-                  mainModel.reload();
                 },
               )
             ),
@@ -106,7 +105,6 @@ class BookmarkLabelsPage extends ConsumerWidget {
                         onTap: () {
                           labelEditingController.text = '';
                           bookmarksModel.editLabel = '';
-                          mainModel.reload();
                         },
                       )
                     ),
