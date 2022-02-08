@@ -43,8 +43,7 @@ class NFTownersPage extends ConsumerWidget {
               RoundedButton(
                 text: '購入ページのリンクをコピー', 
                 widthRate: 0.90, 
-                verticalPadding: defaultPadding(context: context),
-                horizontalPadding: defaultPadding(context: context),
+                fontSize: defaultHeaderTextSize(context: context),
                 press: () async {
                   await FlutterClipboard.copy(openSeaLink)
                   .then((_) {

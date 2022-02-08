@@ -37,8 +37,7 @@ class LinksPage extends StatelessWidget {
                 RoundedButton(
                   text: '決定', 
                   widthRate: 0.3, 
-                  verticalPadding: defaultPadding(context: context),
-                  horizontalPadding: defaultPadding(context: context),
+                  fontSize: defaultHeaderTextSize(context: context),
                   press: () { Navigator.pop(context); },
                   textColor: Colors.white, 
                   buttonColor: Theme.of(context).highlightColor

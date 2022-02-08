@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_password_field.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -56,8 +57,7 @@ class ReauthenticationPage extends StatelessWidget {
             child: RoundedButton(
               text: '認証する', 
               widthRate: 0.95, 
-              verticalPadding: 20.0, 
-              horizontalPadding: 10.0, 
+              fontSize: defaultHeaderTextSize(context: context),
               press: () async { await accountModel.reauthenticateWithCredential(context: context,currentUser: currentUser, mainModel: mainModel); }, 
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary,

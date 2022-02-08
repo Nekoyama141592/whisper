@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 // model
@@ -66,8 +67,7 @@ class AddUserInfoPage extends StatelessWidget {
                           RoundedButton(
                             text: '生年月日', 
                             widthRate: buttonWidthRate, 
-                            verticalPadding: 20.0, 
-                            horizontalPadding: buttonHorizontalPadding, 
+                            fontSize: defaultHeaderTextSize(context: context),
                             press: () {
                              signupModel.showCupertinoDatePicker(context);
                             }, 
@@ -90,8 +90,7 @@ class AddUserInfoPage extends StatelessWidget {
                           RoundedButton(
                             text: '言語', 
                             widthRate: buttonWidthRate, 
-                            verticalPadding: buttonVerticalPadding, 
-                            horizontalPadding: buttonHorizontalPadding, 
+                            fontSize: defaultHeaderTextSize(context: context),
                             press: () {
                               signupModel.showLanguageCupertinoActionSheet(context);
                             }, 
@@ -112,8 +111,7 @@ class AddUserInfoPage extends StatelessWidget {
                           RoundedButton(
                             text: '性別', 
                             widthRate: buttonWidthRate, 
-                            verticalPadding: buttonVerticalPadding, 
-                            horizontalPadding: buttonHorizontalPadding, 
+                            fontSize: defaultHeaderTextSize(context: context),
                             press: () {
                               signupModel.showGenderCupertinoActionSheet(context);
                             }, 
@@ -169,8 +167,7 @@ class AddUserInfoPage extends StatelessWidget {
             RoundedButton(
               text: '新規登録',
               widthRate: 0.95, 
-              verticalPadding: 20.0, 
-              horizontalPadding: 10.0, 
+              fontSize: defaultHeaderTextSize(context: context),
               press: () async {
                 if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10) || !signupModel.isCheckedNotifier.value || signupModel.language.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));

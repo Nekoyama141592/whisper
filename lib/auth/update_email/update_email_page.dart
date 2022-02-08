@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -24,7 +25,7 @@ class UpdateEmailPage extends ConsumerWidget {
     
     final updateEmailModel = ref.watch(updateEmailProvider);
     final newEmailInputController = TextEditingController(text: updateEmailModel.newEmail);
-    final textStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0);
+    final textStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: defaultHeaderTextSize(context: context) );
     
     return Scaffold(
       appBar: AppBar(
@@ -49,12 +50,11 @@ class UpdateEmailPage extends ConsumerWidget {
                 updateEmailModel.newEmail = value;
               },
             ),
-            SizedBox(height: 16,),
+            SizedBox(height: defaultPadding(context: context),),
             RoundedButton(
               text: 'メールアドレスを認証', 
               widthRate: 0.95, 
-              verticalPadding: 20.0,
-              horizontalPadding: 10.0,
+              fontSize: defaultHeaderTextSize(context: context),
               press: () async {
                 await updateEmailModel.verifyBeforeUpdateEmail(context);        
               }, 
@@ -63,7 +63,7 @@ class UpdateEmailPage extends ConsumerWidget {
             ),
             SizedBox(height: 16,),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all( defaultPadding(context: context) ),
               child: RichText(
                 text: TextSpan(
                   children: [
@@ -73,7 +73,7 @@ class UpdateEmailPage extends ConsumerWidget {
                     ),
                     TextSpan(
                       text: 'ログアウト',
-                      style: TextStyle(color: Theme.of(context).highlightColor, fontWeight: FontWeight.bold, fontSize: 25.0 ),
+                      style: TextStyle(color: Theme.of(context).highlightColor, fontWeight: FontWeight.bold, fontSize: defaultPadding(context: context) ),
                       recognizer: TapGestureRecognizer()..onTap = () async {
                         updateEmailModel.showSignOutDialog(context);
                       },

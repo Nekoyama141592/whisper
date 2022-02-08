@@ -129,8 +129,7 @@ class SignupPage extends ConsumerWidget {
                               child: RoundedButton(
                                 text: '次へ',
                                 widthRate: 0.8,
-                                verticalPadding: defaultPadding(context: context),
-                                horizontalPadding: defaultPadding(context: context),
+                                fontSize: defaultHeaderTextSize(context: context),
                                 press: () {
                                   if (signupModel.croppedFile == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('写真を選択してください')));

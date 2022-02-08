@@ -2,6 +2,7 @@
 import 'dart:io';
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/user_image.dart';
@@ -76,8 +77,7 @@ class EditProfileScreen extends StatelessWidget {
                 RoundedButton(
                   text: '保存', 
                   widthRate: 0.25, 
-                  verticalPadding: height/64.0, 
-                  horizontalPadding: height/75.0, 
+                  fontSize: defaultHeaderTextSize(context: context),
                   press: onSaveButtonPressed,
                   textColor: Colors.white, 
                   buttonColor: Theme.of(context).highlightColor

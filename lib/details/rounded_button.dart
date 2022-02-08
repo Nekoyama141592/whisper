@@ -7,16 +7,16 @@ class RoundedButton extends StatelessWidget {
   const RoundedButton({
     Key? key,
     required this.text,
+    required this.fontSize,
     required this.widthRate,
-    required this.verticalPadding,
-    required this.horizontalPadding,
     required this.press,
     required this.textColor,
     required this.buttonColor,
   }) : super(key:key);
 
   final String text;
-  final double widthRate,verticalPadding,horizontalPadding;
+  final double fontSize;
+  final double widthRate;
   final Function()? press;
   final Color textColor, buttonColor;
 
@@ -31,15 +31,15 @@ class RoundedButton extends StatelessWidget {
         child: ElevatedButton(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              vertical: verticalPadding,
-              horizontal: horizontalPadding
+              vertical: defaultPadding(context: context)/2.0,
+              horizontal: defaultPadding(context: context)/2.0
             ),
             child: Text(
               text,
               style: TextStyle(
                 color: textColor,
                 fontWeight: FontWeight.bold,
-                fontSize: defaultHeaderTextSize(context: context)/1.1
+                fontSize: fontSize,
               ),
             ),
           ),

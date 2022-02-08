@@ -85,8 +85,7 @@ class Content extends StatelessWidget {
               RoundedButton(
                 text: '広告の投稿',
                 widthRate: 0.8,
-                verticalPadding: defaultPadding(context: context),
-                horizontalPadding: defaultPadding(context: context),
+                fontSize: defaultHeaderTextSize(context: context),
                 press: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -100,8 +99,7 @@ class Content extends StatelessWidget {
               RoundedButton(
                 text: '普通の投稿', 
                 widthRate: 0.8,
-                verticalPadding: defaultPadding(context: context),
-                horizontalPadding: defaultPadding(context: context),
+                fontSize: defaultHeaderTextSize(context: context),
                 press: () {
                   routes.toAddPostPage(context: context, addPostModel: addPostModel, mainModel: mainModel);
                 }, 

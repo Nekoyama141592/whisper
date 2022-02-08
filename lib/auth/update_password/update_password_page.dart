@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_password_field.dart';
@@ -62,8 +63,7 @@ class UpdatePasswordPage extends ConsumerWidget {
             child: RoundedButton(
               text: 'パスワードを更新', 
               widthRate: 0.95,
-              verticalPadding: 20.0,
-              horizontalPadding: 10.0,
+              fontSize: defaultHeaderTextSize(context: context),
               press:  () async {
                 await _updatePasswordModel.onUpdateButtonPressed(context: context);
               }, 

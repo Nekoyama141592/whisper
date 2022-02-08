@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/details/rounded_button.dart';
@@ -42,8 +43,7 @@ class VerifyPasswordResetPage extends ConsumerWidget {
             child: RoundedButton(
               text: 'リセットメールを受け取る', 
               widthRate: 0.95, 
-              verticalPadding:20.0,
-              horizontalPadding: 10.0,
+              fontSize: defaultHeaderTextSize(context: context),
               press: () async {
                 await _verifyPasswordResetModel.sendPasswordResetEmail(context);
               }, 

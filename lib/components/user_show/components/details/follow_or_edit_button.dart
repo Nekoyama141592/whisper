@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 // components
@@ -25,46 +26,37 @@ class FollowOrEditButton extends StatelessWidget {
   final void Function()? onEditButtonPressed;
   @override 
   Widget build(BuildContext context) {
-    final verticalPadding = 12.0;
+    
     final String passiveUid = passiveWhisperUser.uid;
+    final double withRate = 0.4;
+    final fontSize = defaultHeaderTextSize(context: context)/1.25;
     return passiveWhisperUser.uid == mainModel.currentWhisperUser.uid ?
     // 変更
     RoundedButton(
       text: '編集', 
-      widthRate: 0.25,
-      verticalPadding: verticalPadding,
-      horizontalPadding: 0.0,
+      fontSize: fontSize,
+      widthRate: withRate,
       press: onEditButtonPressed,
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
     )
     : !followingUids.contains(passiveWhisperUser.uid) ?
     RoundedButton(
-      text: 'follow', 
-      widthRate: 0.4,
-      verticalPadding: verticalPadding,
-      horizontalPadding: 10.0,
+      text: 'follow',
+      fontSize: fontSize, 
+      widthRate: withRate,
       press: () async {
-        try {
-          await voids.follow(context: context, mainModel: mainModel, passiveUid: passiveUid);
-        } catch(e) {
-          print(e.toString());          
-        }
+        await voids.follow(context: context, mainModel: mainModel, passiveUid: passiveUid);
       }, 
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
     )
     : RoundedButton(
-      text: 'unfollow', 
-      widthRate: 0.4,
-      verticalPadding: verticalPadding,
-      horizontalPadding: 10.0,
+      text: 'unfollow',
+      fontSize: fontSize, 
+      widthRate: withRate,
       press: () async {
-        try {
-          await voids.unfollow(mainModel: mainModel, passiveUid: passiveUid);
-        } catch(e) {
-          print(e.toString());
-        }
+        await voids.unfollow(mainModel: mainModel, passiveUid: passiveUid);
       },  
       textColor: Colors.white, 
       buttonColor: Theme.of(context).colorScheme.secondary

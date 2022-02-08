@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
@@ -56,8 +57,7 @@ class PickPostImagePage extends StatelessWidget {
                   RoundedButton(
                     text: value ? '写真を変更する' :'写真を追加(任意)', 
                     widthRate: 0.95,
-                    verticalPadding: 20.0, 
-                    horizontalPadding: 10.0,
+                    fontSize: defaultHeaderTextSize(context: context),
                     press: () async {
                       await addPostModel.showImagePicker();
                     }, 

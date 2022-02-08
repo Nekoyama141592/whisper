@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 // model
 import 'package:whisper/auth/verify/verify_model.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/details/rounded_button.dart';
 
 class VerifyPage extends ConsumerWidget {
@@ -48,8 +49,7 @@ class VerifyPage extends ConsumerWidget {
               RoundedButton(
                 text: '始める', 
                 widthRate: 0.95, 
-                verticalPadding: 20.0, 
-                horizontalPadding: 10.0, 
+                fontSize: defaultHeaderTextSize(context: context),
                 press: () async {
                   await verifyModel.setTimer(context);
                   await verifyModel.checkEmailVerified(context);

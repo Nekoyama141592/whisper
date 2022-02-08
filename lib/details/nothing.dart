@@ -38,7 +38,7 @@ class Nothing extends StatelessWidget {
               ),
             ),
           ),
-          RoundedButton(text: '再読み込み', widthRate: 0.95, verticalPadding: defaultPadding(context: context), horizontalPadding: defaultPadding(context: context), press: reload, textColor: Theme.of(context).focusColor, buttonColor: Theme.of(context).highlightColor)
+          RoundedButton(text: '再読み込み', widthRate: 0.95, fontSize: defaultHeaderTextSize(context: context),press: reload, textColor: Theme.of(context).focusColor, buttonColor: Theme.of(context).highlightColor)
         ],
       ),
     );

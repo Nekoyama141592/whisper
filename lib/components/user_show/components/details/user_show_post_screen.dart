@@ -8,7 +8,6 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/components/user_show/components/details/post_cards.dart';

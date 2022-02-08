@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // model
@@ -59,8 +60,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     RoundedButton(
                       text: '保存', 
                       widthRate: 0.25, 
-                      verticalPadding: height/64.0, 
-                      horizontalPadding: height/75.0, 
+                      fontSize: defaultHeaderTextSize(context: context),
                       press: () async  {
                         await editPostInfoModel.updatePostInfo(whisperPost: currentWhisperPost, mainModel: mainModel, context: context,);
                       },
@@ -90,8 +90,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     RoundedButton(
                       text: '写真',
                       widthRate: 0.45, 
-                      verticalPadding: height/64.0, 
-                      horizontalPadding: height/75.0, 
+                      fontSize: defaultHeaderTextSize(context: context), 
                       press: () async { editPostInfoModel.showImagePicker(); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
@@ -100,8 +99,7 @@ class EditPostInfoScreen extends StatelessWidget {
                     RoundedButton(
                       text: 'リンク',
                       widthRate: 0.45, 
-                      verticalPadding: height/64.0, 
-                      horizontalPadding: height/75.0, 
+                      fontSize: defaultHeaderTextSize(context: context),
                       press: () { editPostInfoModel.init(context: context, linkMaps: currentWhisperPost.links, ); }, 
                       textColor: editPostInfoModel.isCropped ? Theme.of(context).focusColor : Colors.black, 
                       buttonColor: editPostInfoModel.isCropped ?  Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
