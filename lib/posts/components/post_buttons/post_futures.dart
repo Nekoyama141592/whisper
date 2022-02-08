@@ -134,12 +134,15 @@ class PostFutures extends ChangeNotifier {
   }
 
   Future<void> muteUser({ required MainModel mainModel, required String passiveUid,}) async {
+    // process set
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
     final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, passiveUid: passiveUid, createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
+    // processUI
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(muteUser.passiveUid);
     notifyListeners();
+    // process backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
   }
 

@@ -49,16 +49,24 @@ class ReplyCard extends ConsumerWidget {
       actions: !(whisperReply.uid == currentWhisperUser.uid) ?
       [
         IconSlideAction(
-          caption: 'mute User',
+          caption: 'Mute User',
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
             await postFutures.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
           } ,
         ),
+        IconSlideAction(
+          caption: 'Mute User',
+          color: Colors.transparent,
+          icon: Icons.person_off,
+          onTap: () async {
+            await postFutures.muteReply(mainModel: mainModel,whisperReply: whisperReply);
+          } ,
+        ),
 
         IconSlideAction(
-          caption: 'block User',
+          caption: 'Block User',
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
