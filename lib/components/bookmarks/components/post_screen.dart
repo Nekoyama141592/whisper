@@ -15,7 +15,9 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class PostScreen extends ConsumerWidget {
   
@@ -34,6 +36,9 @@ class PostScreen extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider); 
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final PostFutures postFutures = ref.watch(postsFeaturesProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
+
     final postDocs = bookmarksModel.posts;
     
     return GradientScreen(
@@ -69,6 +74,7 @@ class PostScreen extends ConsumerWidget {
         ),
         child: PostCards(
           postDocs: postDocs, 
+          postFutures: postFutures,
           route: () {
           routes.toPostShowPage(
             context: context,
@@ -89,7 +95,7 @@ class PostScreen extends ConsumerWidget {
             isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: bookmarksModel.currentWhisperPostNotifier.value! );
+              await commentsModel.init(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: bookmarksModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: bookmarksModel.audioPlayer, editPostInfoModel: editPostInfoModel);

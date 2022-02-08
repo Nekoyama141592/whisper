@@ -17,8 +17,8 @@ import 'package:whisper/posts/components/replys/replys_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
-
 class OneCommentPage extends ConsumerWidget {
   
   OneCommentPage({
@@ -36,6 +36,7 @@ class OneCommentPage extends ConsumerWidget {
     final CommentsModel commentsModel = ref.watch(commentsProvider);
     final ReplysModel replysModel = ref.watch(replysProvider);
     final OnePostModel onePostModel = ref.watch(onePostProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
 
     return Scaffold(
@@ -49,7 +50,7 @@ class OneCommentPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BackArrowButton(),
-              CommentCard(whisperComment: oneCommentModel.oneWhisperComment, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,),
+              CommentCard(whisperComment: oneCommentModel.oneWhisperComment, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel, ),
               OnePostAudioWindow(
                 route: () {
                   routes.toPostShowPage(
@@ -69,7 +70,7 @@ class OneCommentPage extends ConsumerWidget {
                     isLastSongNotifier: onePostModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
                     toCommentsPage:  () async {
-                      await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value! );
+                      await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
                     },
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);

@@ -22,24 +22,17 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/domain/mute_post/mute_post.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/mute_user/mute_user.dart';
-import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/user_update_log/user_update_log.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
-import 'package:whisper/domain/reply_notification/reply_notification.dart';
-import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/one_post/one_post_model.dart';
-import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
@@ -80,37 +73,6 @@ void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfo
   editPostInfoModel.reload();
 }
 
-Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {
-  commentNotification.isRead = true;
-  bool postExists = await onePostModel.init(postId: commentNotification.postId, postDocRef: commentNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
-  if (postExists) {
-    bool commentExists = await oneCommentModel.init(postCommentId: commentNotification.postCommentId, postCommentDocRef: commentNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
-    if (commentExists) {
-      routes.toOneCommentPage(context: context, mainModel: mainModel);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
-    }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
-  }
-  mainModel.reload();
-}
-
-Future<void> onReplyNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  ReplyNotification replyNotification }) async {
-  replyNotification.isRead = true;
-  bool postExists = await onePostModel.init(postId: replyNotification.postId, postDocRef: replyNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
-  if (postExists) {
-    bool commentExists = await oneCommentModel.init(postCommentId: replyNotification.postCommentId, postCommentDocRef: replyNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
-    if (commentExists) {
-      routes.toOneCommentPage(context: context, mainModel: mainModel);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
-    }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
-  }
-  mainModel.reload();
-}
 // just_audio
 
 Future<void> setSpeed({ required ValueNotifier<double> speedNotifier,required SharedPreferences prefs, required AudioPlayer audioPlayer }) async {
@@ -248,37 +210,6 @@ void pause({ required AudioPlayer audioPlayer}) {
   audioPlayer.pause();
 }
 
-void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) {
-  showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await deletePost(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
-}
-
-Future<void> deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
-  Navigator.pop(context);
-  final whisperPost = fromMapToPost(postMap: postMap);
-  if (mainModel.currentUser!.uid != whisperPost.uid) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
-  } else {
-    try {
-      // process UI
-      posts.remove(posts[i]);
-      mainModel.currentWhisperUser.postCount += minusOne;
-      await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-      mainModel.reload();
-      // process backend
-      await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
-      await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
-      await returnRefFromPost(post: whisperPost).delete();
-      if (isImageExist(post: whisperPost) == true) {
-        await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
-      }
-
-    } catch(e) {
-      print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
-    }
-  }
-}
-
 Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required AudioPlayer audioPlayer, required int i }) async {
   // Abstractions in post_futures.dart cause Range errors.
   AudioSource source = afterUris[i];
@@ -292,60 +223,6 @@ Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required A
 Future<void> initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
   await audioPlayer.setAudioSource(playlist,initialIndex: i);
-}
-
-Future<void> mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
-  // process set
-  final Post whisperPost = fromMapToPost(postMap: post);
-  final String postId = whisperPost.postId;
-  final Timestamp now = Timestamp.now();
-  final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
-  final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: mutePostTokenType );
-  // process UI
-  mainModel.mutePostIds.add(postId);
-  mainModel.mutePosts.add(mutePost);
-  results.removeWhere((result) => fromMapToPost(postMap: result.data()!).postId == whisperPost.postId );
-  await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  mainModel.reload();
-  // process Backend
-  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
-}
-
-Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
-  // process set
-  final whisperPost = fromMapToPost(postMap: post);
-  final String passiveUid = whisperPost.uid;
-  final Timestamp now = Timestamp.now();
-  final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-  final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
-  // process Ui
-  mainModel.muteUsers.add(muteUser);
-  mainModel.muteUids.add(whisperPost.uid);
-  await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  mainModel.reload();
-  // process Backend
-  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
-}
-
-Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
-  // process set
-  final whisperPost = fromMapToPost(postMap: post);
-  final String passiveUid = whisperPost.uid;
-  final Timestamp now = Timestamp.now();
-  final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-  final BlockUser blockUser = BlockUser(createdAt: now,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
-  // process UI
-  blockUsers.add(blockUser);
-  blocksUids.add(passiveUid);
-  await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-  mainModel.reload();
-  // process Backend
-  await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
-}
-
-Future<void> removeTheUsersPost({ required List<DocumentSnapshot<Map<String,dynamic>>> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
-  results.removeWhere((result) => fromMapToPost(postMap: result.data()!).uid == passiveUid);
-  await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
 }
 
 Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
@@ -485,7 +362,6 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     uid: updateWhisperUser.uid,
     userName: updateWhisperUser.userName
   );
-  mainModel.reload();
   await returnUserDocRef(uid: updateWhisperUser.uid).update(updateUserLog.toJson());
   await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(updateUserLog.toJson());
 }

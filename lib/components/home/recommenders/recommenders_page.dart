@@ -9,6 +9,8 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/components/home/recommenders/components/post_cards.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 // model
 import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
@@ -31,6 +33,8 @@ class RecommendersPage extends ConsumerWidget {
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final editPostInfoModel = ref.watch(editPostInfoProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
+    final PostFutures postFutures = ref.watch(postsFeaturesProvider);
 
     return recommendersModel.isLoading ?
     Loading()
@@ -41,6 +45,7 @@ class RecommendersPage extends ConsumerWidget {
       },
       content: PostCards(
         postDocs: recommendersModel.posts, 
+        postFutures: postFutures,
         route: () {
           routes.toPostShowPage(
             context: context,
@@ -61,7 +66,7 @@ class RecommendersPage extends ConsumerWidget {
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPostNotifier: recommendersModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: recommendersModel.currentWhisperPostNotifier.value! );
+              await commentsModel.init(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPostNotifier: recommendersModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: recommendersModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel);

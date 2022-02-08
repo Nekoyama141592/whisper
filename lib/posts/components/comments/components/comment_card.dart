@@ -9,7 +9,6 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
-import 'package:whisper/domain/mute_comment/mute_comment.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
 import 'package:whisper/posts/components/comments/components/show_replys_button.dart';
@@ -19,7 +18,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
-import 'package:whisper/posts/components/post_buttons/post_futures.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class CommentCard extends ConsumerWidget {
 
@@ -29,7 +28,8 @@ class CommentCard extends ConsumerWidget {
     required this.whisperPost,
     required this.commentsModel,
     required this.replysModel,
-    required this.mainModel
+    required this.mainModel,
+    required this.commentsOrReplysModel
   }): super(key: key);
   
   final WhisperPostComment whisperComment;
@@ -37,11 +37,11 @@ class CommentCard extends ConsumerWidget {
   final CommentsModel commentsModel;
   final ReplysModel replysModel;
   final MainModel mainModel;
+  final CommentsOrReplysModel commentsOrReplysModel;
 
   @override  
   Widget build(BuildContext context,WidgetRef ref) {
     
-    final postFutures = ref.watch(postsFeaturesProvider);
     final fontSize = defaultHeaderTextSize(context: context);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel: mainModel,passiveUid: whisperComment.uid, );
+            await commentsOrReplysModel.muteUser(mainModel: mainModel,passiveUid: whisperComment.uid, );
           } ,
         ),
         IconSlideAction(
@@ -68,7 +68,7 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteComment(mainModel: mainModel,whisperComment: whisperComment);
+            await commentsOrReplysModel.muteComment(mainModel: mainModel,whisperComment: whisperComment);
           } ,
         ),
 
@@ -77,7 +77,7 @@ class CommentCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel: mainModel,passiveUid: whisperComment.uid, );
+            await commentsOrReplysModel.blockUser(mainModel: mainModel,passiveUid: whisperComment.uid, );
           },
         ),
       ]: [],

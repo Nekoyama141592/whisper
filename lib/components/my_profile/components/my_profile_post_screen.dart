@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
@@ -16,7 +17,9 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/components/my_profile/my_profile_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class MyProfilePostScreen extends ConsumerWidget {
   
@@ -34,6 +37,8 @@ class MyProfilePostScreen extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final PostFutures postFutures = ref.watch(postsFeaturesProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final isLoading = myProfileModel.isLoading;
     final postDocs = myProfileModel.posts;
 
@@ -56,18 +61,18 @@ class MyProfilePostScreen extends ConsumerWidget {
             return 
             PostCard(
               post: post,
-              onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, posts: myProfileModel.posts, mainModel: mainModel, i: i); },
+              onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, posts: myProfileModel.posts, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
                 await voids.initAudioPlayer(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, i: i);
               },
               muteUser: () async {
-                await voids.muteUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: myProfileModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                await postFutures.muteUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: myProfileModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
               },
               mutePost: () async {
-                await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.posts );
+                await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.posts );
               },
               blockUser: () async {
-                await voids.blockUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: myProfileModel.posts, post: post, mainModel: mainModel);
+                await postFutures.blockUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: myProfileModel.posts, post: post, mainModel: mainModel);
               },
               mainModel: mainModel,
             );
@@ -76,7 +81,7 @@ class MyProfilePostScreen extends ConsumerWidget {
       ),
     );
     final content =  Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: defaultPadding(context: context) ),
       child: PostCards(
         postDocs: myProfileModel.posts, 
         route: () {
@@ -99,7 +104,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: myProfileModel.audioPlayer, whisperPostNotifier: myProfileModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: myProfileModel.currentWhisperPostNotifier.value! );
+              await commentsModel.init(context: context, audioPlayer: myProfileModel.audioPlayer, whisperPostNotifier: myProfileModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: myProfileModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel);

@@ -62,8 +62,8 @@ class NotificationsPage extends StatelessWidget {
           builder: (context, snapshot) {
             return TabBarView(
               children: [
-                CommentNotifications(isLoading: notificationsModel.isLoading, mainModel: mainModel, snapshot: snapshot),
-                ReplyNotifications(isLoading: notificationsModel.isLoading ,mainModel: mainModel, snapshot: snapshot)
+                CommentNotifications(isLoading: notificationsModel.isLoading, mainModel: mainModel, snapshot: snapshot,notificationsModel: notificationsModel, ),
+                ReplyNotifications(isLoading: notificationsModel.isLoading ,mainModel: mainModel, snapshot: snapshot,notificationsModel: notificationsModel, )
               ]
             );
           }

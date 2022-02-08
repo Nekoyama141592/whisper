@@ -25,6 +25,7 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 import 'package:whisper/constants/enums.dart';
 // models
 import 'package:whisper/main_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 final commentsProvider = ChangeNotifierProvider(
   (ref) => CommentsModel()
@@ -46,9 +47,9 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> init({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> whisperPostNotifier, required MainModel mainModel,required Post whisperPost  }) async {
+  Future<void> init({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> whisperPostNotifier, required MainModel mainModel,required Post whisperPost,required CommentsOrReplysModel commentsOrReplysModel }) async {
     refreshController = RefreshController(initialRefresh: false);
-    routes.toCommentsPage(context: context, audioPlayer: audioPlayer, currentWhisperPostNotifier: whisperPostNotifier, mainModel: mainModel);
+    routes.toCommentsPage(context: context, audioPlayer: audioPlayer, currentWhisperPostNotifier: whisperPostNotifier, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel );
     final String postId = whisperPost.postId;
     if (indexPostId != postId) {
       indexPostId = postId;

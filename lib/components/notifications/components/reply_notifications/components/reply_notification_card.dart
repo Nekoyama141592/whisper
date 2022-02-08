@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -13,22 +14,25 @@ import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
+import 'package:whisper/components/notifications/notifications_model.dart';
 
 class ReplyNotificationCard extends ConsumerWidget {
 
   const ReplyNotificationCard({
     Key? key,
+    required this.mainModel,
     required this.replyNotification,
-    required this.mainModel
+    required this.notificationsModel
   }) : super(key: key);
 
-  final ReplyNotification replyNotification;
   final MainModel mainModel;
+  final ReplyNotification replyNotification;
+  final NotificationsModel notificationsModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final length = 60.0;
+    final length = defaultPadding(context: context) * 4.0;
     final padding = 0.0;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final OnePostModel onePostModel = ref.watch(onePostProvider);
@@ -49,7 +53,7 @@ class ReplyNotificationCard extends ConsumerWidget {
             leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: replyNotification.activeUid,mainModel: mainModel,),
             subtitle: Text(replyNotification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,),),
             onTap: () async {
-              await voids.onReplyNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification);
+              await notificationsModel.onReplyNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification);
             },
           )
         ],

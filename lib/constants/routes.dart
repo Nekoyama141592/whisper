@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
-import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // pages
 import 'package:whisper/main.dart';
@@ -17,7 +15,6 @@ import 'package:whisper/nft_owners/nft_owners_page.dart';
 import 'package:whisper/components/add_post/add_post_page.dart';
 import 'package:whisper/auth/is_finished/is_finished_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
-import 'package:whisper/components/bookmarks/bookmarks_page.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/one_post/one_comment/one_comment_page.dart';
@@ -53,6 +50,7 @@ import 'package:whisper/auth/account/account_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
 import 'package:whisper/components/notifications/notifications_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 void toMyApp(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
@@ -111,12 +109,12 @@ void toPickPostImagePage({ required BuildContext context, required AddPostModel 
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, mainModel: mainModel,) ));
 }
 
-void toCommentsPage({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> currentWhisperPostNotifier, required MainModel mainModel}) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, whisperPost: currentWhisperPostNotifier.value!, mainModel: mainModel) ));
+void toCommentsPage({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> currentWhisperPostNotifier, required MainModel mainModel,required CommentsOrReplysModel commentsOrReplysModel }) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, whisperPost: currentWhisperPostNotifier.value!, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) ));
 }
 
-void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperPostComment whisperComment, required MainModel mainModel  }) {
- Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperPostComment: whisperComment, mainModel: mainModel) )); 
+void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperPostComment whisperComment, required MainModel mainModel,required CommentsOrReplysModel commentsOrReplysModel}) {
+ Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperPostComment: whisperComment, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) )); 
 }
 
 void toBlocksUsersPage(context, MainModel mainModel) {

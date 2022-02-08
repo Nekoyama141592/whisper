@@ -11,6 +11,7 @@ import 'package:whisper/posts/components/other_pages/post_show/post_show_page.da
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class OnePostPage extends ConsumerWidget {
@@ -27,6 +28,7 @@ class OnePostPage extends ConsumerWidget {
 
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
 
     return Scaffold(
@@ -48,7 +50,7 @@ class OnePostPage extends ConsumerWidget {
         isLastSongNotifier: onePostModel.isLastSongNotifier, 
         onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
         toCommentsPage: () {
-          routes.toCommentsPage(context: context, audioPlayer: onePostModel.audioPlayer, currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel);
+          routes.toCommentsPage(context: context, audioPlayer: onePostModel.audioPlayer, currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel  );
         },
         toEditingMode: () { voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel); },
         postType: onePostModel.postType,

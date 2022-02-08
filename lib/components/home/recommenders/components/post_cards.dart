@@ -16,6 +16,7 @@ import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/home/recommenders/recommenders_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class PostCards extends StatelessWidget {
 
@@ -37,7 +38,8 @@ class PostCards extends StatelessWidget {
     required this.isLastSongNotifier,
     required this.onNextSongButtonPressed,
     required this.mainModel,
-    required this.recommendersModel
+    required this.recommendersModel,
+    required this.postFutures
   }) : super(key: key);
 
  
@@ -59,6 +61,8 @@ class PostCards extends StatelessWidget {
   final void Function()? onNextSongButtonPressed;
   final MainModel mainModel;
   final RecommendersModel recommendersModel;
+  final PostFutures postFutures;
+
   @override 
   Widget build(BuildContext context) {
     return Column(
@@ -78,18 +82,18 @@ class PostCards extends StatelessWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await voids.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                    await postFutures.muteUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts );
+                    await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: recommendersModel.posts, post: post, mainModel: mainModel);
+                    await postFutures.blockUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: recommendersModel.posts, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );

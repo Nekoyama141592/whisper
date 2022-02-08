@@ -2,27 +2,28 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flash/flash.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/enums.dart';
 // constants
+import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
-import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
-import 'package:whisper/domain/mute_comment/mute_comment.dart';
-import 'package:whisper/domain/mute_reply/mute_reply.dart';
-import 'package:whisper/domain/post_like/post_like.dart';
-import 'package:whisper/domain/reply/whipser_reply.dart';
-import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/like_post/like_post.dart';
-import 'package:whisper/domain/mute_user/mute_user.dart';
-import 'package:whisper/domain/block_user/block_user.dart';
-import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/post_like/post_like.dart';
+import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
+import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/mute_post/mute_post.dart';
+import 'package:whisper/domain/block_user/block_user.dart';
+// model 
+import 'package:whisper/main_model.dart';
 
 final postsFeaturesProvider = ChangeNotifierProvider(
   (ref) => PostFutures()
@@ -128,61 +129,89 @@ class PostFutures extends ChangeNotifier {
     await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
-  
-  void reload() {
+
+    Future<void> mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
+    // process set
+    final Post whisperPost = fromMapToPost(postMap: post);
+    final String postId = whisperPost.postId;
+    final Timestamp now = Timestamp.now();
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
+    final MutePost mutePost = MutePost(activeUid: mainModel.userMeta.uid, createdAt: now, postId: postId,tokenId: tokenId,passiveUid: whisperPost.uid,tokenType: mutePostTokenType );
+    // process UI
+    mainModel.mutePostIds.add(postId);
+    mainModel.mutePosts.add(mutePost);
+    results.removeWhere((result) => fromMapToPost(postMap: result.data()!).postId == whisperPost.postId );
+    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
+    // process Backend
+    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
   }
 
-  Future<void> muteUser({ required MainModel mainModel, required String passiveUid,}) async {
+  Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
     // process set
+    final whisperPost = fromMapToPost(postMap: post);
+    final String passiveUid = whisperPost.uid;
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
-    final MuteUser muteUser = MuteUser(activeUid:mainModel.userMeta.uid, passiveUid: passiveUid, createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
-    // processUI
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
+    final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
+    // process Ui
     mainModel.muteUsers.add(muteUser);
-    mainModel.muteUids.add(muteUser.passiveUid);
+    mainModel.muteUids.add(whisperPost.uid);
+    await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
-    // process backend
+    // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
   }
 
-  Future<void> blockUser({ required MainModel mainModel, required String passiveUid,}) async {
+  Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
     // process set
+    final whisperPost = fromMapToPost(postMap: post);
+    final String passiveUid = whisperPost.uid;
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-    final BlockUser blockUser = BlockUser(createdAt: now, activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
+    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
+    final BlockUser blockUser = BlockUser(createdAt: now,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
     // process UI
-    mainModel.blockUsers.add(blockUser);
-    mainModel.blockUids.add(blockUser.passiveUid);
+    blockUsers.add(blockUser);
+    blocksUids.add(passiveUid);
+    await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
   }
 
-  Future<void> muteComment({ required MainModel mainModel, required WhisperPostComment whisperComment }) async {
-    // process set
-    final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.mutePostComment );
-    final String postCommentId = whisperComment.postCommentId;
-    final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: mutePostCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
-    // process UI
-    mainModel.mutePostCommentIds.add(postCommentId);
-    mainModel.mutePostComments.add(muteComment);
-    notifyListeners();
-    // process Backend
-    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
+  Future<void> removeTheUsersPost({ required List<DocumentSnapshot<Map<String,dynamic>>> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
+    results.removeWhere((result) => fromMapToPost(postMap: result.data()!).uid == passiveUid);
+    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+  }
+    Future<void> deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
+    Navigator.pop(context);
+    final whisperPost = fromMapToPost(postMap: postMap);
+    if (mainModel.currentUser!.uid != whisperPost.uid) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
+    } else {
+      try {
+        // process UI
+        posts.remove(posts[i]);
+        mainModel.currentWhisperUser.postCount += minusOne;
+        await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+        notifyListeners();
+        // process backend
+        await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
+        await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
+        await returnRefFromPost(post: whisperPost).delete();
+        if (isImageExist(post: whisperPost) == true) {
+          await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
+        }
+
+      } catch(e) {
+        print(e.toString());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+      }
+    }
   }
 
-  Future<void> muteReply({ required MainModel mainModel, required WhisperReply whisperReply }) async {
-    // process set
-    final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePostCommentReply );
-    final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: mutePostCommentReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
-    // process UI
-    mainModel.mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
-    mainModel.mutePostCommentReplys.add(muteReply);
-    notifyListeners();
-    // process Backend
-    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
-  }
+  void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) {
+    voids.showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await deletePost(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
+  } 
 }
+

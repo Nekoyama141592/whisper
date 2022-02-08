@@ -8,6 +8,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // domain
@@ -18,6 +19,7 @@ import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class PostCards extends ConsumerWidget {
 
@@ -40,7 +42,9 @@ class PostCards extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider);
-    
+    final PostFutures postFutures = ref.watch(postsFeaturesProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
+
     return
     results.isNotEmpty ?
     Flexible(
@@ -56,18 +60,18 @@ class PostCards extends ConsumerWidget {
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
                     await voids.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i);
                   },
                   muteUser: () async {
-                    await voids.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                    await postFutures.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
                   },
                   mutePost: () async {
-                    await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
+                    await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
                   },
                   blockUser: () async {
-                    await voids.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
+                    await postFutures.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
                   },
                   mainModel: mainModel,
                 );
@@ -99,7 +103,7 @@ class PostCards extends ConsumerWidget {
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
                     toCommentsPage:  () async {
-                      await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value! );
+                      await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
                     },
                     toEditingMode:  () {
                       voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);

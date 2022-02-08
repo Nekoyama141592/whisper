@@ -13,7 +13,9 @@ import 'package:whisper/components/home/feeds/components/post_cards.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class FeedsPage extends ConsumerWidget {
   
@@ -31,6 +33,9 @@ class FeedsPage extends ConsumerWidget {
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
     final editPostInfoModel = ref.watch(editPostInfoProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
+    final PostFutures postFutures = ref.watch(postsFeaturesProvider);
+
     final isLoading = mainModel.isFeedLoading;
     final postDocs = mainModel.posts;
 
@@ -43,6 +48,7 @@ class FeedsPage extends ConsumerWidget {
       },
       content: PostCards(
         postDocs: postDocs, 
+        postFutures: postFutures,
         route: () {
           routes.toPostShowPage(
             context: context,
@@ -63,7 +69,7 @@ class FeedsPage extends ConsumerWidget {
             isLastSongNotifier: mainModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: mainModel.currentWhisperPostNotifier.value! );
+              await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: mainModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel);

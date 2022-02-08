@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/components/notifications/notifications_model.dart';
 
 class ReplyNotifications extends StatelessWidget {
 
@@ -17,11 +18,13 @@ class ReplyNotifications extends StatelessWidget {
     Key? key,
     required this.isLoading,
     required this.mainModel,
+    required this.notificationsModel,
     required this.snapshot
   }) : super(key: key);
 
   final bool isLoading;
   final MainModel mainModel;
+  final NotificationsModel notificationsModel;
   final AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot;
 
   @override 
@@ -31,7 +34,7 @@ class ReplyNotifications extends StatelessWidget {
       itemCount: notifications.length,
       itemBuilder: (BuildContext context, int i) {
         final ReplyNotification notification = notifications[i];
-        return ReplyNotificationCard(replyNotification: notification, mainModel: mainModel);
+        return ReplyNotificationCard(replyNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel,  );
       }
     );
     final reload = () {};

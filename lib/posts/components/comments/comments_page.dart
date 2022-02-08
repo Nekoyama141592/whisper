@@ -9,12 +9,13 @@ import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
-// domain
-import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class CommentsPage extends ConsumerWidget {
   
@@ -22,19 +23,21 @@ class CommentsPage extends ConsumerWidget {
     Key? key,
     required this.audioPlayer,
     required this.whisperPost,
-    required this.mainModel
+    required this.mainModel,
+    required this.commentsOrReplysModel
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
   final Post whisperPost;
   final MainModel mainModel;
+  final CommentsOrReplysModel commentsOrReplysModel;
 
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
     final commentsModel = ref.watch(commentsProvider);
     final replysModel = ref.watch(replysProvider);
     final commentEditingController = TextEditingController();
-
+    
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -84,6 +87,7 @@ class CommentsPage extends ConsumerWidget {
                       commentsModel: commentsModel,
                       replysModel: replysModel,
                       mainModel: mainModel,
+                      commentsOrReplysModel: commentsOrReplysModel,
                     );
                   }
                 ),

@@ -14,6 +14,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/components/reply_card.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class ReplysPage extends StatelessWidget {
 
@@ -22,13 +23,15 @@ class ReplysPage extends StatelessWidget {
     required this.replysModel,
     required this.whisperPost,
     required this.whisperPostComment,
-    required this.mainModel
+    required this.mainModel,
+    required this.commentsOrReplysModel
   }) : super(key: key);
 
   final ReplysModel replysModel;
   final Post whisperPost;
   final WhisperPostComment whisperPostComment;
   final MainModel mainModel;
+  final CommentsOrReplysModel commentsOrReplysModel;
 
   Widget build(BuildContext context) {
 
@@ -67,7 +70,7 @@ class ReplysPage extends StatelessWidget {
                   itemCount: replysModel.postCommentReplyDocs.length,
                   itemBuilder: (BuildContext context,int i) {
                     final WhisperReply whisperReply  = fromMapToWhisperReply(replyMap: replysModel.postCommentReplyDocs[i].data()! );
-                    return ReplyCard(whisperReply: whisperReply, replysModel: replysModel, mainModel: mainModel);
+                    return ReplyCard(whisperReply: whisperReply, replysModel: replysModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
                   }
                 ),
               )

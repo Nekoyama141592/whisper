@@ -9,6 +9,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/judge_screen.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/components/user_show/components/details/post_cards.dart';
 // model
@@ -16,6 +17,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
 import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 class UserShowPostScreen extends ConsumerWidget {
   
@@ -34,7 +36,9 @@ class UserShowPostScreen extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final commentsModel = ref.watch(commentsProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
-    
+    final PostFutures postFutures = ref.watch(postsFeaturesProvider);
+    final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
+
     final postDocs = userShowModel.posts;
     final Widget posts = Expanded(
       child: SmartRefresher(
@@ -55,18 +59,18 @@ class UserShowPostScreen extends ConsumerWidget {
             return 
             PostCard(
               post: post,
-              onDeleteButtonPressed: () { voids.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: userShowModel.afterUris, posts: userShowModel.posts, mainModel: mainModel, i: i); },
+              onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: userShowModel.afterUris, posts: userShowModel.posts, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
                 await voids.initAudioPlayer(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, i: i);
               },
               muteUser: () async {
-                await voids.muteUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: userShowModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                await postFutures.muteUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: userShowModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
               },
               mutePost: () async {
-                await voids.mutePost(mainModel: mainModel, i: i, post: post, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts );
+                await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts );
               },
               blockUser: () async {
-                await voids.blockUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: userShowModel.posts, post: post, mainModel: mainModel);
+                await postFutures.blockUser(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: userShowModel.posts, post: post, mainModel: mainModel);
               },
               mainModel: mainModel,
             );
@@ -98,7 +102,7 @@ class UserShowPostScreen extends ConsumerWidget {
             isLastSongNotifier: userShowModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
             toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: userShowModel.audioPlayer, whisperPostNotifier: userShowModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: userShowModel.currentWhisperPostNotifier.value! );
+              await commentsModel.init(context: context, audioPlayer: userShowModel.audioPlayer, whisperPostNotifier: userShowModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: userShowModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
             },
             toEditingMode:  () {
               voids.toEditPostInfoMode(audioPlayer: userShowModel.audioPlayer, editPostInfoModel: editPostInfoModel);

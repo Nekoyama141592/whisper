@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
@@ -18,11 +16,11 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
+// domain
+import 'package:whisper/domain/post/post.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
-// domain
-import 'package:whisper/domain/post/post.dart';
 
 class PostShowPage extends ConsumerWidget {
   

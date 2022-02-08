@@ -14,7 +14,7 @@ import 'package:whisper/details/redirect_user_image.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
-import 'package:whisper/posts/components/post_buttons/post_futures.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class ReplyCard extends ConsumerWidget {
 
@@ -22,16 +22,16 @@ class ReplyCard extends ConsumerWidget {
     Key? key,
     required this.whisperReply,
     required this.replysModel,
-    required this.mainModel
+    required this.mainModel,
+    required this.commentsOrReplysModel
   }) : super(key: key);
 
   final WhisperReply whisperReply;
   final ReplysModel replysModel;
   final MainModel mainModel;
+  final CommentsOrReplysModel commentsOrReplysModel;
 
   Widget build(BuildContext context,WidgetRef ref) {
-
-    final postFutures = ref.watch(postsFeaturesProvider);
     final String userImageURL = whisperReply.userImageURL;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final length = defaultPadding(context: context) * 4.0;
@@ -53,7 +53,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
+            await commentsOrReplysModel.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
           } ,
         ),
         IconSlideAction(
@@ -61,7 +61,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.person_off,
           onTap: () async {
-            await postFutures.muteReply(mainModel: mainModel,whisperReply: whisperReply);
+            await commentsOrReplysModel.muteReply(mainModel: mainModel,whisperReply: whisperReply);
           } ,
         ),
 
@@ -70,7 +70,7 @@ class ReplyCard extends ConsumerWidget {
           color: Colors.transparent,
           icon: Icons.block,
           onTap: () async {
-            await postFutures.blockUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
+            await commentsOrReplysModel.blockUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
           },
         ),
       ] : [],
