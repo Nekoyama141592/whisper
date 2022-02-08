@@ -1,16 +1,17 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
-// constants
-import 'package:whisper/constants/voids.dart' as voids;
+// packages
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/components/user_show/user_show_model.dart';
 
-class FollowOrEditButton extends StatelessWidget {
+class FollowOrEditButton extends ConsumerWidget {
   
   const FollowOrEditButton({
     Key? key,
@@ -24,13 +25,16 @@ class FollowOrEditButton extends StatelessWidget {
   final WhisperUser passiveWhisperUser;
   final List followingUids;
   final void Function()? onEditButtonPressed;
+
   @override 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref ) {
     
     final String passiveUid = passiveWhisperUser.uid;
+    final userShowModel = ref.watch(userShowProvider);
     final double withRate = 0.4;
     final fontSize = defaultHeaderTextSize(context: context)/1.25;
     return passiveWhisperUser.uid == mainModel.currentWhisperUser.uid ?
+
     // 変更
     RoundedButton(
       text: '編集', 
@@ -46,7 +50,7 @@ class FollowOrEditButton extends StatelessWidget {
       fontSize: fontSize, 
       widthRate: withRate,
       press: () async {
-        await voids.follow(context: context, mainModel: mainModel, passiveUid: passiveUid);
+        await userShowModel.follow(context: context, mainModel: mainModel, passiveUid: passiveUid);
       }, 
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
@@ -56,7 +60,7 @@ class FollowOrEditButton extends StatelessWidget {
       fontSize: fontSize, 
       widthRate: withRate,
       press: () async {
-        await voids.unfollow(mainModel: mainModel, passiveUid: passiveUid);
+        await userShowModel.unfollow(mainModel: mainModel, passiveUid: passiveUid);
       },  
       textColor: Colors.white, 
       buttonColor: Theme.of(context).colorScheme.secondary
