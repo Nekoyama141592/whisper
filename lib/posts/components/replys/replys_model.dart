@@ -262,7 +262,7 @@ class ReplysModel extends ChangeNotifier {
     final WhisperReply newWhisperReply = makeWhisperReply(postCommentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
     await returnPostCommentReplyDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: postCommentReplyId ).set(newWhisperReply.toJson());
     // notification
-    if (whisperPost.uid != currentWhisperUser.uid) {
+    if (whisperComment.uid != currentWhisperUser.uid) {
       await makeReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
     }
   }
@@ -296,7 +296,7 @@ class ReplysModel extends ChangeNotifier {
   Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperPostComment whisperComment, required WhisperReply newWhisperReply }) async {
 
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final String notificationId = returnNotificationId(notificationType: NotificationType.replyNotification );
+    final String notificationId = returnNotificationId(notificationType: NotificationType.postCommentReplyNotification );
     final comment = whisperComment.comment;
     final Timestamp now = Timestamp.now();
     final ReplyNotification replyNotification = ReplyNotification(

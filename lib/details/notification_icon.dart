@@ -35,7 +35,11 @@ class NotificationIcon extends ConsumerWidget {
         bool isNotificationExists = (snapshot.data == null) ? false : snapshot.data!.docs.isNotEmpty;
         return InkWell(
           onTap: () {
-            routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, notificationsModel: notificationsModel,);
+            // routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, notificationsModel: notificationsModel,);
+            // print(snapshot.data!.docs.length);
+            snapshot.data!.docs.forEach((element) {
+              print(element.id);
+            });
           },
           child: 
           

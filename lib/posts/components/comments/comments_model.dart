@@ -148,7 +148,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperPostComment whisperComment, required Timestamp now }) async {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
-    final String notificationId = returnNotificationId(notificationType: NotificationType.commentNotification);
+    final String notificationId = returnNotificationId(notificationType: NotificationType.postCommentNotification);
     try{
       final CommentNotification commentNotification = CommentNotification(
         accountName: currentWhisperUser.accountName,
@@ -173,7 +173,7 @@ class CommentsModel extends ChangeNotifier {
         userImageURL: currentWhisperUser.imageURL,
         userName: currentWhisperUser.userName
       );
-      await returnNotificationDocRef(uid: whisperComment.uid, notificationId: notificationId).set(commentNotification.toJson());
+      await returnNotificationDocRef(uid: whisperPost.uid, notificationId: notificationId).set(commentNotification.toJson());
     } catch(e) {
       print(e.toString());
     }

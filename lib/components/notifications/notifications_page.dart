@@ -1,6 +1,7 @@
 // material
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'constants/tab_bar_elements.dart';
 // components
@@ -35,7 +36,7 @@ class NotificationsPage extends StatelessWidget {
           title: Text('Whisper'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30)
+              bottom: Radius.circular( defaultPadding(context: context) )
             )
           ),
           actions: [

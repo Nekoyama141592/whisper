@@ -72,8 +72,8 @@ final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.read
 // tokenType(notification)
 final String authNotificationType = returnNotificationTypeString(notificationType: NotificationType.authNotification);
 final String officialNotificationType = returnNotificationTypeString(notificationType: NotificationType.officialNotification);
-final String commentNotificationType = returnNotificationTypeString(notificationType: NotificationType.commentNotification);
-final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.replyNotification );
+final String commentNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentNotification);
+final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentReplyNotification );
 // colRefName
 const String usersColRefName = 'users';
 const String userMetaColRefName = 'userMeta';
