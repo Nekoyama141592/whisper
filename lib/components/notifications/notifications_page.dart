@@ -1,5 +1,4 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
@@ -59,18 +58,13 @@ class NotificationsPage extends StatelessWidget {
         ),
         drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel,),
         
-        body: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
-          stream: notificationsModel.notificationStream,
-          builder: (context, snapshot) {
-            List<DocumentSnapshot<Map<String,dynamic>>> notifications = snapshot.data == null ? [] :  snapshot.data!.docs;
-            return TabBarView(
-              children: [
-                CommentNotifications( mainModel: mainModel,notificationsModel: notificationsModel,notifications: notifications, ),
-                ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel,notifications: notifications )
-              ]
-            );
-          }
-        ),
+        body: 
+        TabBarView(
+          children: [
+            CommentNotifications( mainModel: mainModel,notificationsModel: notificationsModel, ),
+            ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel, )
+          ]
+        )
       ),
     );
   }

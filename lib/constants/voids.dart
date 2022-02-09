@@ -321,7 +321,7 @@ Future<void> processOldDocs({ required Query<Map<String,dynamic>> query , requir
   await query.limit(oneTimeReadCount).startAfterDocument(docs.last).get().then((qshot) {
     final queryDocs = qshot.docs;
     queryDocs.reversed;
-    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
+    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.insert(0, doc ); });
   });
 }
 

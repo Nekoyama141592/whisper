@@ -5,8 +5,10 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -24,15 +26,19 @@ class NotificationsModel extends ChangeNotifier {
   // basic
   bool isLoading = false;
   // notifications
+  List<DocumentSnapshot<Map<String,dynamic>>> notifications = [];
   Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
+  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount);
+  // refresh
+  RefreshController commentRefreshController = RefreshController(initialRefresh: false);
+  RefreshController replyRefreshController = RefreshController(initialRefresh: false);
   
   NotificationsModel() {
     init();
   }
 
   Future<void> init() async {
-    startLoading();
-    endLoading();
+    await onReload();
   }
 
   void startLoading() {
@@ -43,6 +49,36 @@ class NotificationsModel extends ChangeNotifier {
   void endLoading() {
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> onRefresh() async {
+    await getNewNotifications();
+    commentRefreshController.refreshCompleted();
+    notifyListeners();
+  }
+
+  Future<void> onReload() async {
+    startLoading();
+    await getNotifications();
+    endLoading();
+  }
+
+  Future<void> onLoading() async {
+    await getOldNotifications();
+    commentRefreshController.loadComplete();
+    notifyListeners();
+  }
+
+  Future<void> getNewNotifications() async {
+    await voids.processNewDocs(query: query, docs: notifications );
+  }
+
+  Future<void> getNotifications() async {
+    await voids.processBasicDocs(query: query, docs: notifications);
+  }
+
+  Future<void> getOldNotifications() async {
+    await voids.processOldDocs(query: query, docs: notifications );
   }
 
   Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {

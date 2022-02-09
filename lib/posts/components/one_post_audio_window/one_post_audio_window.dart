@@ -1,5 +1,6 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
@@ -37,7 +38,7 @@ class OnePostAudioWindow extends StatelessWidget {
     
     final size = MediaQuery.of(context).size;
     final height = size.height;
-    final fontSize = height/32.0;
+    final fontSize = defaultHeaderTextSize(context: context);
 
     return Container(
       child: InkWell(
@@ -53,20 +54,21 @@ class OnePostAudioWindow extends StatelessWidget {
                   ),
                   child: UserImage(userImageURL: currentWhisperUser.imageURL,length: height/12.0,padding: height/64.0,)
                 ),
-                Container(
-                  width: size.width * 0.55,
-                  child: Column(
-                    children: [
-                      Text(
-                        currentWhisperUser.userName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSize
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          currentWhisperUser.userName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSize
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      title
-                    ],
+                        title
+                      ],
+                    ),
                   ),
                 ),
                 Container(

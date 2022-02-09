@@ -1,11 +1,11 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/strings.dart';
+// packages
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 // component
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/components/notifications/components/reply_notifications/components/reply_notification_card.dart';
-// packages
-import 'package:cloud_firestore/cloud_firestore.dart';
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // model
@@ -18,37 +18,42 @@ class ReplyNotifications extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.notificationsModel,
-    required this.notifications
   }) : super(key: key);
 
   final MainModel mainModel;
   final NotificationsModel notificationsModel;
-  final List<DocumentSnapshot<Map<String,dynamic>>> notifications;
 
   @override 
   Widget build(BuildContext context) {
-    // return StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
-    //   stream: notificationsModel.notificationStream,
-    //   builder: (context, snapshot) {
-       
-    //   }
-    // );
-    final List<ReplyNotification> replyNotifications = notifications.isEmpty ? [] : notifications.where((element) => ReplyNotification.fromJson(element.data()!).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()!) ).toList();
-        final content = ListView.builder(
+    
+    final List<ReplyNotification> replyNotifications = notificationsModel.notifications.where((element) => ReplyNotification.fromJson(element.data()!).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()!) ).toList();
+        final reload = () async {
+      await notificationsModel.onReload();
+    };
+    return notificationsModel.isLoading ?
+    SizedBox.shrink()
+    : Container(
+      child: replyNotifications.isEmpty ?
+      Nothing(reload: reload)
+      : SmartRefresher(
+        controller: notificationsModel.replyRefreshController,
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropHeader(),
+        onRefresh: () async {
+          notificationsModel.onRefresh();
+        },
+        onLoading: () async {
+          notificationsModel.onLoading();
+        },
+        child: ListView.builder(
           itemCount: replyNotifications.length,
           itemBuilder: (BuildContext context, int i) {
-            final ReplyNotification notification = replyNotifications[i];
-            return ReplyNotificationCard(replyNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel,  );
+            final ReplyNotification replyNotification = replyNotifications[i];
+            return ReplyNotificationCard(mainModel: mainModel, replyNotification: replyNotification, notificationsModel: notificationsModel);
           }
-        );
-        final reload = () {
-        };
-        return notificationsModel.isLoading ?
-        SizedBox.shrink()
-        : Container(
-          child: replyNotifications.isEmpty ?
-          Nothing(reload: reload)
-          : content,
-        );
+        ),
+      ),
+    );
   }
 }
