@@ -2,6 +2,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'timeline.g.dart';
+// cloud_functions/functions/index.js
 
 @JsonSerializable()
 class Timeline {

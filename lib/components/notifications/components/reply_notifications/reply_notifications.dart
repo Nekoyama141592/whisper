@@ -16,34 +16,39 @@ class ReplyNotifications extends StatelessWidget {
 
   const ReplyNotifications({
     Key? key,
-    required this.isLoading,
     required this.mainModel,
     required this.notificationsModel,
-    required this.snapshot
+    required this.notifications
   }) : super(key: key);
 
-  final bool isLoading;
   final MainModel mainModel;
   final NotificationsModel notificationsModel;
-  final AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot;
+  final List<DocumentSnapshot<Map<String,dynamic>>> notifications;
 
   @override 
   Widget build(BuildContext context) {
-    final List<ReplyNotification> notifications = snapshot.data == null ? [] : snapshot.data!.docs.where((element) => ReplyNotification.fromJson(element.data()).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()) ).toList();
-    final content = ListView.builder(
-      itemCount: notifications.length,
-      itemBuilder: (BuildContext context, int i) {
-        final ReplyNotification notification = notifications[i];
-        return ReplyNotificationCard(replyNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel,  );
-      }
-    );
-    final reload = () {};
-    return isLoading ?
-    SizedBox.shrink()
-    : Container(
-      child: notifications.isEmpty ?
-      Nothing(reload: reload)
-      : content,
-    );
+    // return StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
+    //   stream: notificationsModel.notificationStream,
+    //   builder: (context, snapshot) {
+       
+    //   }
+    // );
+    final List<ReplyNotification> replyNotifications = notifications.isEmpty ? [] : notifications.where((element) => ReplyNotification.fromJson(element.data()!).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()!) ).toList();
+        final content = ListView.builder(
+          itemCount: replyNotifications.length,
+          itemBuilder: (BuildContext context, int i) {
+            final ReplyNotification notification = replyNotifications[i];
+            return ReplyNotificationCard(replyNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel,  );
+          }
+        );
+        final reload = () {
+        };
+        return notificationsModel.isLoading ?
+        SizedBox.shrink()
+        : Container(
+          child: replyNotifications.isEmpty ?
+          Nothing(reload: reload)
+          : content,
+        );
   }
 }

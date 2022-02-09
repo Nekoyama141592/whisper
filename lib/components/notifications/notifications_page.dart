@@ -58,13 +58,15 @@ class NotificationsPage extends StatelessWidget {
           
         ),
         drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel,),
+        
         body: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
           stream: notificationsModel.notificationStream,
           builder: (context, snapshot) {
+            List<DocumentSnapshot<Map<String,dynamic>>> notifications = snapshot.data == null ? [] :  snapshot.data!.docs;
             return TabBarView(
               children: [
-                CommentNotifications(isLoading: notificationsModel.isLoading, mainModel: mainModel, snapshot: snapshot,notificationsModel: notificationsModel, ),
-                ReplyNotifications(isLoading: notificationsModel.isLoading ,mainModel: mainModel, snapshot: snapshot,notificationsModel: notificationsModel, )
+                CommentNotifications( mainModel: mainModel,notificationsModel: notificationsModel,notifications: notifications, ),
+                ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel,notifications: notifications )
               ]
             );
           }

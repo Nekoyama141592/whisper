@@ -16,32 +16,54 @@ class CommentNotifications extends StatelessWidget {
 
   const CommentNotifications({
     Key? key,
-    required this.isLoading,
     required this.mainModel,
     required this.notificationsModel,
-    required this.snapshot
+    required this.notifications
   }) : super(key: key);
 
-  final bool isLoading;
   final MainModel mainModel;
   final NotificationsModel notificationsModel;
-  final AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot;
+  final List<DocumentSnapshot<Map<String,dynamic>>> notifications;
 
   @override
   Widget build(BuildContext context) {
-    final List<CommentNotification> notifications = snapshot.data == null ? [] :  snapshot.data!.docs.where((element) => CommentNotification.fromJson(element.data()).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()) ).toList();
+  //   return StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
+  //     stream: notificationsModel.notificationStream,
+  //     builder: (context, snapshot) {
+  //       final List<CommentNotification> commentNotifications = snapshot.data == null ? [] :  snapshot.data!.docs.where((element) => CommentNotification.fromJson(element.data()).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()) ).toList();
+  //       final content = ListView.builder(
+  //         itemCount: commentNotifications.length,
+  //         itemBuilder: (BuildContext context, int i) {
+  //           final CommentNotification notification = commentNotifications[i];
+  //           return CommentNotificationCard(commentNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel, );
+  //         }
+  //       );
+  //       final reload = () {};
+  //       return isLoading ?
+  //       SizedBox.shrink()
+  //       : Container(
+  //         child: commentNotifications.isEmpty ?
+  //         Nothing(reload: reload)
+  //         : content,
+  //       );
+  //     }
+  //   );
+  // }
+    final List<CommentNotification> commentNotifications = notifications.isEmpty ? [] :  notifications.where((element) => CommentNotification.fromJson(element.data()!).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()!) ).toList();
     final content = ListView.builder(
-      itemCount: notifications.length,
+      itemCount: commentNotifications.length,
       itemBuilder: (BuildContext context, int i) {
-        final CommentNotification notification = notifications[i];
+        final CommentNotification notification = commentNotifications[i];
         return CommentNotificationCard(commentNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel, );
       }
     );
-    final reload = () {};
-    return isLoading ?
+    final reload = () {
+      print(notifications.isEmpty);
+    };
+    return notificationsModel.isLoading ?
     SizedBox.shrink()
     : Container(
-      child: notifications.isEmpty ?
+      child: commentNotifications.isEmpty ?
       Nothing(reload: reload)
       : content,
     );
