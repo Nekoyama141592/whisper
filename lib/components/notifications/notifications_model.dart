@@ -28,7 +28,7 @@ class NotificationsModel extends ChangeNotifier {
   // notifications
   List<DocumentSnapshot<Map<String,dynamic>>> notifications = [];
   Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
-  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(2);
+  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false);
   // refresh
   RefreshController commentRefreshController = RefreshController(initialRefresh: false);
   RefreshController replyRefreshController = RefreshController(initialRefresh: false);

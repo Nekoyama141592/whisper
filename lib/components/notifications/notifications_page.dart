@@ -31,6 +31,9 @@ class NotificationsPage extends StatelessWidget {
     return DefaultTabController(
       length: tabBarElements.length,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          print(notificationsModel.notifications.length);
+        },),
         appBar: AppBar(
           title: Text('Whisper'),
           shape: RoundedRectangleBorder(
