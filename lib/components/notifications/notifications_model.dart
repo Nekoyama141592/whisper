@@ -28,7 +28,7 @@ class NotificationsModel extends ChangeNotifier {
   // notifications
   List<DocumentSnapshot<Map<String,dynamic>>> notifications = [];
   Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
-  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount);
+  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(2);
   // refresh
   RefreshController commentRefreshController = RefreshController(initialRefresh: false);
   RefreshController replyRefreshController = RefreshController(initialRefresh: false);
@@ -83,6 +83,9 @@ class NotificationsModel extends ChangeNotifier {
 
   Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {
     commentNotification.isRead = true;
+    final thisElement = notifications.where((element) => element.id == commentNotification.notificationId ).toList().first;
+    final i = notifications.indexOf(thisElement);
+    notifications[i].data()![isReadMapKey] = true;
     bool postExists = await onePostModel.init(postId: commentNotification.postId, postDocRef: commentNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
     if (postExists) {
       bool commentExists = await oneCommentModel.init(postCommentId: commentNotification.postCommentId, postCommentDocRef: commentNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
@@ -95,10 +98,14 @@ class NotificationsModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
     }
     notifyListeners();
+    await returnNotificationDocRef(uid: firebaseAuthCurrentUser!.uid, notificationId: commentNotification.notificationId ).update(commentNotification.toJson());
   }
 
   Future<void> onReplyNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  ReplyNotification replyNotification }) async {
     replyNotification.isRead = true;
+    final thisElement = notifications.where((element) => element.id == replyNotification.notificationId ).toList().first;
+    final i = notifications.indexOf(thisElement);
+    notifications[i].data()![isReadMapKey] = true;
     bool postExists = await onePostModel.init(postId: replyNotification.postId, postDocRef: replyNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
     if (postExists) {
       bool commentExists = await oneCommentModel.init(postCommentId: replyNotification.postCommentId, postCommentDocRef: replyNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
@@ -111,5 +118,7 @@ class NotificationsModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
     }
     notifyListeners();
+    await returnNotificationDocRef(uid: firebaseAuthCurrentUser!.uid, notificationId: replyNotification.notificationId ).update(replyNotification.toJson());
   }
+
 }
