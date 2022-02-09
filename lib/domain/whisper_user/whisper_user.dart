@@ -27,7 +27,8 @@ class WhisperUser {
     required this.userName,
     required this.uid,
     required this.updatedAt,
-    required this.walletAddress
+    required this.walletAddress,
+    required this.walletConnected
   });
   String accountName;
   dynamic createdAt;
@@ -51,6 +52,7 @@ class WhisperUser {
   final String uid;
   dynamic updatedAt;
   String walletAddress;
+  bool walletConnected;
 
   factory WhisperUser.fromJson(Map<String,dynamic> json) => _$WhisperUserFromJson(json);
 

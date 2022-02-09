@@ -144,6 +144,7 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
       userName: userName,
       walletAddress: '',
+      walletConnected: false
     ).toJson();
     await FirebaseFirestore.instance.collection(usersFieldKey).doc(uid).set(whisperUserMap);
   }
