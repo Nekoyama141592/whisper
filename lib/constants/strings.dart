@@ -57,7 +57,7 @@ const String speedPrefsKey = 'speed';
 const String isDarkThemePrefsKey = 'isDarkTheme';
 // tokenTypes
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
-final String bookmarkPostLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPostLabel);
+final String bookmarkPostCategoryTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPostCategory);
 final String bookmarkPostTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPost);
 final String followingTokenType = returnTokenTypeString(tokenType: TokenType.following);
 final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);

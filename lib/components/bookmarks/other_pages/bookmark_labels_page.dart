@@ -9,7 +9,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/details/gradient_screen.dart';
 // domain
-import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
@@ -79,9 +79,9 @@ class BookmarkLabelsPage extends ConsumerWidget {
         ),
         circular: height/32.0,
         content: ListView.builder(
-          itemCount: mainModel.bookmarkPostLabels.length,
+          itemCount: mainModel.bookmarkPostCategories.length,
           itemBuilder: (BuildContext context, int i) {
-            final BookmarkPostLabel bookmarkLabel = mainModel.bookmarkPostLabels[i];
+            final BookmarkPostCategory bookmarkLabel = mainModel.bookmarkPostCategories[i];
             return ListTile(
               leading: Icon(Icons.list),
               trailing: InkWell(
@@ -91,7 +91,7 @@ class BookmarkLabelsPage extends ConsumerWidget {
                   final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
                     return TextButton(
                       onPressed: () async {
-                        await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostLabel: bookmarkLabel, userMeta: mainModel.userMeta );
+                        await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostCategory: bookmarkLabel, userMeta: mainModel.userMeta );
                       }, 
                       child: Text('OK',style: textStyle(context: context),)
                     );

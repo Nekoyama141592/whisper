@@ -18,7 +18,7 @@ import 'package:whisper/domain/like_post/like_post.dart';
 import 'package:whisper/domain/post_like/post_like.dart';
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
-import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
@@ -55,7 +55,7 @@ class PostFutures extends ChangeNotifier {
   }
 
 
-  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostLabel> bookmarkPostLabels }) async {
+  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkPostLabels }) async {
     final Widget content = SizedBox(
       height: MediaQuery.of(context).size.height * 0.70,
       child: ValueListenableBuilder<String>(
@@ -64,7 +64,7 @@ class PostFutures extends ChangeNotifier {
           return ListView.builder(
             itemCount: bookmarkPostLabels.length,
             itemBuilder: (BuildContext context, int i) {
-              final BookmarkPostLabel bookmarkPostLabel = bookmarkPostLabels[i];
+              final BookmarkPostCategory bookmarkPostLabel = bookmarkPostLabels[i];
               return ListTile(
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
                 title: Text(bookmarkPostLabel.label),
@@ -106,7 +106,7 @@ class PostFutures extends ChangeNotifier {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 
-  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostLabel> bookmarkLabels }) async {
+  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkCategories }) async {
     final postId = whisperPost.postId;
     final indexDeleteToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
     // processUI

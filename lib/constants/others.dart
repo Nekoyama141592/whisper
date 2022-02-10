@@ -12,7 +12,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/nft_owner/nft_owner.dart';
@@ -146,8 +146,8 @@ WhisperLink fromMapToWhisperLink({ required Map<String,dynamic> whisperLink }) {
   return WhisperLink.fromJson(whisperLink);
 }
 
-BookmarkPostLabel fromMapToBookmarkLabel({ required Map<String,dynamic> map }) {
-  return BookmarkPostLabel.fromJson(map);
+BookmarkPostCategory fromMapToBookmarkLabel({ required Map<String,dynamic> map }) {
+  return BookmarkPostCategory.fromJson(map);
 }
 MuteUser fromMapToMutesIpv6AndUid({ required Map<String,dynamic> map }) {
   return MuteUser.fromJson(map);

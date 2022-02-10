@@ -15,11 +15,11 @@ dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
     return NotificationType.postCommentReplyNotification;
   }
 }
-enum TokenType { bookmarkPostLabel,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
+enum TokenType { bookmarkPostCategory,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
 dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
-  if (tokenTypeString == bookmarkPostLabelTokenType) {
-    return TokenType.bookmarkPostLabel;
+  if (tokenTypeString == bookmarkPostCategoryTokenType) {
+    return TokenType.bookmarkPostCategory;
   } else if(tokenTypeString == followingTokenType) {
     return TokenType.following;
   } else if (tokenTypeString == likePostTokenType) {

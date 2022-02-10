@@ -15,7 +15,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 // domain
-import 'package:whisper/domain/bookmark_post_label/bookmark_post_label.dart';
+import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 // notifiers
@@ -63,7 +63,7 @@ class BookmarksModel extends ChangeNotifier {
   // new
   String newLabel = '';
   
-  Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkPostLabel bookmarkLabel }) async {
+  Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkPostCategory bookmarkLabel }) async {
     isBookmarkMode = true;
     notifyListeners();
     if (indexBookmarkPostLabelId != bookmarkLabel.tokenId) {
@@ -152,19 +152,19 @@ class BookmarksModel extends ChangeNotifier {
     }
   }
 
-  Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostLabel bookmarkPostLabel,required UserMeta userMeta}) async {
+  Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostCategory bookmarkPostCategory,required UserMeta userMeta}) async {
     if (editLabel.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('空欄は不適です')));
     } else if (editLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
       // process set
-      bookmarkPostLabel.label = editLabel;
+      bookmarkPostCategory.label = editLabel;
       // process UI
       flashController.dismiss();
       notifyListeners();
       // process backend
-      await returnTokenDocRef(uid: userMeta.uid, tokenId: bookmarkPostLabel.tokenId ).update(bookmarkPostLabel.toJson());
+      await returnTokenDocRef(uid: userMeta.uid, tokenId: bookmarkPostCategory.tokenId ).update(bookmarkPostCategory.toJson());
       editLabel = '';
     }
   }
@@ -177,15 +177,15 @@ class BookmarksModel extends ChangeNotifier {
     } else {
       // process set
       final now = Timestamp.now();
-      final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPostLabel );
-      final BookmarkPostLabel bookmarkPostLabel = BookmarkPostLabel(createdAt: now,updatedAt: now,tokenType: bookmarkPostLabelTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,label: newLabel);
-      bookmarkPostLabel.label = newLabel;
+      final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPostCategory );
+      final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(createdAt: now,updatedAt: now,tokenType: bookmarkPostCategoryTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,label: newLabel);
+      bookmarkPostCategory.label = newLabel;
       // process Ui
-      mainModel.bookmarkPostLabels.add(bookmarkPostLabel);
+      mainModel.bookmarkPostCategories.add(bookmarkPostCategory);
       flashController.dismiss();
       notifyListeners();
       // process backend
-      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: bookmarkPostLabel.tokenId ).set(bookmarkPostLabel.toJson());
+      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: bookmarkPostCategory.tokenId ).set(bookmarkPostCategory.toJson());
       newLabel = '';
     }
   }
