@@ -16,6 +16,7 @@ class ReplyNotification {
     required this.isNFTicon,
     required this.isOfficial,
     required this.isRead,
+    required this.masterReplyed,
     required this.notificationId,
     required this.passiveUid,
     required this.postId,
@@ -39,6 +40,7 @@ class ReplyNotification {
   final bool isNFTicon;
   final bool isOfficial;
   bool isRead;
+  final bool masterReplyed;
   final String notificationId;
   final String passiveUid;
   final String postId;
