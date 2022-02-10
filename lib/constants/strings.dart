@@ -54,6 +54,7 @@ String generateUserUpdateLogId() {
 }
 // prefs
 const String speedPrefsKey = 'speed';
+const String isDarkThemePrefsKey = 'isDarkTheme';
 // tokenTypes
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
 final String bookmarkPostLabelTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPostLabel);

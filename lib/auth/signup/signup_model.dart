@@ -92,7 +92,7 @@ class SignupModel extends ChangeNotifier {
 
   Future<void> signup(BuildContext context) async {
     if (commonPasswords.contains(password)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ありふれたパスワードです。変更してください')));
+      voids.showSnackBar(context: context, text: 'ありふれたパスワードです。変更してください' );
     } else if (userName.length > maxSearchLength ) {
        voids.maxSearchLengthAlert(context: context,isUserName: true);
     }else {
@@ -106,13 +106,23 @@ class SignupModel extends ChangeNotifier {
         await createUserMeta(uid: uid);
         routes.toVerifyPage(context);
       } on FirebaseAuthException catch(e) {
-        print(e.code);
-        if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが弱いです')));
-        } else if (e.code == 'email-already-in-use') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスはすでに使われています')));
-        } else {
-          print(e.toString());
+        final String errorCode = e.code;
+        switch(errorCode) {
+          case 'invalid-email':
+          voids.showSnackBar(context: context, text: 'そのemailは相応しくありません');
+          break;
+          case 'user-disabled':
+          voids.showSnackBar(context: context, text: 'そのemailは無効化されています');
+          break;
+          case 'user-not-found':
+          voids.showSnackBar(context: context, text: 'そのemailに対するユーザーが見つかりません' );
+          break;
+          case 'wrong-password':
+          voids.showSnackBar(context: context, text: 'passwordが違います');
+          break;
+          case 'too-many-requests':
+          voids.showSnackBar(context: context, text: 'ログインの試行回数が制限を超えました' );
+          break;
         }
       }
     }

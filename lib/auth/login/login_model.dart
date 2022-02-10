@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/voids.dart';
 final loginProvider = ChangeNotifierProvider(
   (ref) => LoginModel()
 );
@@ -36,16 +37,16 @@ class LoginModel extends ChangeNotifier {
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
         case 'invalid-email':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスは不適です')));
+        showSnackBar(context: context, text: 'そのメールアドレスは不適です' );
         break;
         case 'user-disabled':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスは無効化されています')));
+        showSnackBar(context: context, text: 'そのメールアドレスは無効化されています' );
         break;
         case 'user-not-found':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスを持つユーザーが見つかりません')));
+        showSnackBar(context: context, text: 'そのメールアドレスを持つユーザーが見つかりません');
         break;
         case 'wrong-password':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが違います')));
+        showSnackBar(context: context, text: 'パスワードが違います' );
         break;
       }
     } 

@@ -1,0 +1,2 @@
+speed: double,
+isDarkTheme: bool,
