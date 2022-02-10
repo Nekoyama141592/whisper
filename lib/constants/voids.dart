@@ -438,7 +438,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () async {
                     await FlutterClipboard.copy(link).then((_) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
+                      showSnackBar(context: context, text: '固有のユーザー名をコピーしました');
                     });
                   },
                 ),
@@ -473,7 +473,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
       }
     );
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
+    showSnackBar(context: context, text: 'このURLは無効です' );
   }
 }
 
@@ -514,8 +514,19 @@ void onDeleteLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisp
 
 void maxSearchLengthAlert ({ required BuildContext context,required bool isUserName }) {
   if (isUserName == true) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください')));
+    showSnackBar(context: context, text: 'ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください' );
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字以内にしてください')));
+    showSnackBar(context: context, text: maxSearchLength.toString() + '文字以内にしてください' );
   }
 } 
+void showSnackBar({ required BuildContext context,required String text}) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+}
+
+void alertMaxDescriptionLength({ required BuildContext context, }) {
+  showSnackBar(context: context, text: 'Descriptionは' + maxDescriptionLength.toString() + '文字以内にしてください' );
+}
+
+void alertMaxLinksLength({ required BuildContext context, }) {
+  showSnackBar(context: context, text: 'リンクは' + maxDescriptionLength.toString() + '個以内にしてください' );
+}

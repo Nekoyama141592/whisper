@@ -66,7 +66,11 @@ class EditPostInfoModel extends ChangeNotifier {
   }
 
   Future<void> updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context }) async {
-    if (title.length <= maxSearchLength ) {
+    if (title.length > maxSearchLength ) {
+      maxSearchLengthAlert(context: context, isUserName: false );
+    } else if (whisperLinksNotifier.value.length > maxLinksLength) {
+      alertMaxLinksLength(context: context);
+    } else {
       // final String imageURL = croppedFile == null ? whisperPost.imageURLs.first : await uploadImage(mainModel: mainModel,postId: whisperPost.postId );
       if (croppedFile != null) {
         whisperPost.imageURLs = [await uploadImage(mainModel: mainModel,postId: whisperPost.postId )];
@@ -91,8 +95,6 @@ class EditPostInfoModel extends ChangeNotifier {
       } catch(e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
       }
-    } else {
-      maxSearchLengthAlert(context: context, isUserName: false );
     }
   }
 
