@@ -13,6 +13,6 @@ const int tenCount = 10;
 const int tokenTypeStartIndex = 10;
 const int notificationTypeStartIndex = 17;
 // length
-const int maxSearchLength = 64;
+const int maxSearchLength = 32;
 const int maxDescriptionLength = 1000;
 const int maxLinksLength = 10;

@@ -129,22 +129,6 @@ void toIsFinishedPage({ required BuildContext context, required String title, re
   Navigator.push(context, MaterialPageRoute(builder: (context) => IsFinishedPage(title: title, text: text,) ));
 }
 
-void toCompliancePage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => CompliancePage() ));
-}
-
-void toPrivacyPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPage() ));
-}
-
-void toTosPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => TosPage() ));
-}
-
-void toImportantMattersPage(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => ImportantMattersPage() ));
-}
-
 void toNFTownersPage(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => NFTownersPage() ));
 }

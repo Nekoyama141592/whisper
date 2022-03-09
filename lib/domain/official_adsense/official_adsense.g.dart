@@ -9,7 +9,7 @@ part of 'official_adsense.dart';
 OfficialAdsense _$OfficialAdsenseFromJson(Map<String, dynamic> json) =>
     OfficialAdsense(
       createdAt: json['createdAt'],
-      displayCount: json['displayCount'] as int,
+      impression: json['impression'] as int,
       displaySeconds: json['displaySeconds'] as int,
       intervalSeconds: json['intervalSeconds'] as int,
       link: json['link'] as String,
@@ -22,7 +22,7 @@ OfficialAdsense _$OfficialAdsenseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$OfficialAdsenseToJson(OfficialAdsense instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
-      'displayCount': instance.displayCount,
+      'impression': instance.impression,
       'displaySeconds': instance.displaySeconds,
       'intervalSeconds': instance.intervalSeconds,
       'link': instance.link,

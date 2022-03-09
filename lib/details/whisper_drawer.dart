@@ -44,12 +44,7 @@ class WhisperDrawer extends StatelessWidget {
               routes.toNFTownersPage(context);
             },
           ),
-          ListTile(
-            title: Text('Whisperについて'),
-            onTap: () {
-              routes.toImportantMattersPage(context);
-            },
-          ),
+          
         ],
       ),
     );

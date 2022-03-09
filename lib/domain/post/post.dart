@@ -21,6 +21,7 @@ class Post{
     required this.isNFTicon,
     required this.isOfficial,
     required this.isPinned,
+    required this.language,
     required this.likeCount,
     required this.links,
     required this.negativeScore,
@@ -52,6 +53,7 @@ class Post{
   bool isNFTicon;
   bool isOfficial;
   bool isPinned;
+  final String language;
   int likeCount;
   List<Map<String,dynamic>> links;
   num negativeScore;

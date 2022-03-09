@@ -37,42 +37,22 @@ class NFTownersPage extends ConsumerWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(defaultPadding(context: context)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RoundedButton(
-                text: '購入ページのリンクをコピー', 
-                widthRate: 0.90, 
-                fontSize: defaultHeaderTextSize(context: context),
-                press: () async {
-                  await FlutterClipboard.copy(openSeaLink)
-                  .then((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('NFTページのリンクをコピーしました')));
-                  } );
-                }, 
-                textColor: Colors.white, 
-                buttonColor: Theme.of(context).highlightColor
-              ),
-              Expanded(
-                child: StreamBuilder(
-                  stream: nftOwnersModel.nftOwnersStream,
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) Text('something went wrong');
-                    if (snapshot.connectionState == ConnectionState.waiting) Loading();
-                    return !snapshot.hasData || snapshot.data == null  ?
-                    SizedBox.shrink()
-                    : Center(
-                      child: ListView(
-                        children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                          Map<String, dynamic> nftOwner = doc.data()! as Map<String, dynamic>;
-                          return NFTownerCard(map: nftOwner);
-                        }).toList(),
-                      ),
-                    );
-                  }
+          child: StreamBuilder(
+            stream: nftOwnersModel.nftOwnersStream,
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) Text('something went wrong');
+              if (snapshot.connectionState == ConnectionState.waiting) Loading();
+              return !snapshot.hasData || snapshot.data == null  ?
+              SizedBox.shrink()
+              : Center(
+                child: ListView(
+                  children: snapshot.data!.docs.map((DocumentSnapshot doc) {
+                    Map<String, dynamic> nftOwner = doc.data()! as Map<String, dynamic>;
+                    return NFTownerCard(map: nftOwner);
+                  }).toList(),
                 ),
-              )
-            ],
+              );
+            }
           ),
         ),
       ),

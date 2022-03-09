@@ -24,6 +24,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       isNFTicon: json['isNFTicon'] as bool,
       isOfficial: json['isOfficial'] as bool,
       isPinned: json['isPinned'] as bool,
+      language: json['language'] as String,
       likeCount: json['likeCount'] as int,
       links: (json['links'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
@@ -61,6 +62,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'isNFTicon': instance.isNFTicon,
       'isOfficial': instance.isOfficial,
       'isPinned': instance.isPinned,
+      'language': instance.language,
       'likeCount': instance.likeCount,
       'links': instance.links,
       'negativeScore': instance.negativeScore,

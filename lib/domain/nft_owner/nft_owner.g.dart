@@ -8,7 +8,8 @@ part of 'nft_owner.dart';
 
 NFTOwner _$NFTOwnerFromJson(Map<String, dynamic> json) => NFTOwner(
       createdAt: json['createdAt'],
-      ethPrice: (json['ethPrice'] as num).toDouble(),
+      lastEthPrice: (json['lastEthPrice'] as num).toDouble(),
+      lastUsdPrice: (json['lastUsdPrice'] as num).toDouble(),
       link: json['link'] as String,
       number: json['number'] as int,
       uid: json['uid'] as String,
@@ -19,7 +20,8 @@ NFTOwner _$NFTOwnerFromJson(Map<String, dynamic> json) => NFTOwner(
 
 Map<String, dynamic> _$NFTOwnerToJson(NFTOwner instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
-      'ethPrice': instance.ethPrice,
+      'lastEthPrice': instance.lastEthPrice,
+      'lastUsdPrice': instance.lastUsdPrice,
       'link': instance.link,
       'number': instance.number,
       'uid': instance.uid,

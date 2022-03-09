@@ -7,7 +7,7 @@ part 'official_adsense.g.dart';
 class OfficialAdsense {
   OfficialAdsense({
     required this.createdAt,
-    required this.displayCount,
+    required this.impression,
     required this.displaySeconds,
     required this.intervalSeconds,
     required this.link,
@@ -17,7 +17,7 @@ class OfficialAdsense {
     required this.updatedAt
   });
   final dynamic createdAt;
-  final int displayCount;
+  final int impression;
   final int displaySeconds;
   final int intervalSeconds;
   final String link;

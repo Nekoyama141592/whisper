@@ -50,7 +50,7 @@ class NFTownerCard extends StatelessWidget {
                       ),
                       SizedBox(width: defaultPadding(context: context)/2.0),
                       Text(
-                        nftOwner.ethPrice.toString(),
+                        nftOwner.lastEthPrice.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: defaultPadding(context: context)/2.0 ),

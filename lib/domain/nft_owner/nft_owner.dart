@@ -7,7 +7,8 @@ part 'nft_owner.g.dart';
 class NFTOwner {
   NFTOwner({
     required this.createdAt,
-    required this.ethPrice,
+    required this.lastEthPrice,
+    required this.lastUsdPrice,
     required this.link,
     required this.number,
     required this.uid,
@@ -16,7 +17,8 @@ class NFTOwner {
     required this.userImageURL
   });
   final dynamic createdAt;
-  final double ethPrice;
+  final double lastEthPrice;
+  final double lastUsdPrice;
   final String link;
   final int number;
   final String uid;
