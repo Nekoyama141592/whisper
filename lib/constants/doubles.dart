@@ -11,3 +11,7 @@ double defaultPadding({ required BuildContext context  }) {
 double defaultHeaderTextSize({ required BuildContext context  }) {
   return MediaQuery.of(context).size.height/32.0;
 }
+
+const double cardOpacity = 0.5;
+const double cardTextDiv = 1.1;
+const double cardTextDiv2 = 1.25;

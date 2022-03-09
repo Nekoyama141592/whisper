@@ -45,8 +45,7 @@ class CommentCard extends ConsumerWidget {
     final fontSize = defaultHeaderTextSize(context: context);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: fontSize,
-      // overflow: TextOverflow.ellipsis
+      fontSize: fontSize/cardTextDiv2,
     );
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) ?
 
@@ -82,53 +81,49 @@ class CommentCard extends ConsumerWidget {
         ),
       ]: [],
       child: InkWell(
-        onLongPress: mainModel.userMeta.isAdmin? () async {
+        onLongPress: mainModel.userMeta.isAdmin ? () async {
           await FlutterClipboard.copy(whisperComment.uid);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).highlightColor.withOpacity(cardOpacity),
+            ),
+            borderRadius: BorderRadius.all(Radius.circular( defaultPadding(context: context) ))
+          ),
+          child: Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(4.0))
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: defaultPadding(context: context)
                 ),
-                child: Row(
+                child: RedirectUserImage(userImageURL: whisperComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUserDocId: whisperComment.uid, mainModel: mainModel),
+              ),
+              Expanded(
+                child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0
-                      ),
-                      child: RedirectUserImage(userImageURL: whisperComment.userImageURL, length: 60.0, padding: 0.0, passiveUserDocId: whisperComment.uid, mainModel: mainModel),
+                    Text(
+                      whisperComment.userName,
+                      style: whisperTextStyle,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            whisperComment.userName,
-                            style: whisperTextStyle,
-                          ),
-                          SizedBox(height: 10.0,),
-                          Text(
-                            whisperComment.comment,
-                            style: whisperTextStyle,
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
-                        ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost)
-                      ],
+                    SizedBox(height: defaultPadding(context: context),),
+                    Text(
+                      whisperComment.comment,
+                      style: whisperTextStyle,
                     )
-                  ]
+                  ],
                 ),
               ),
-            ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
+                  ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost)
+                ],
+              )
+            ]
           ),
         ),
       ),

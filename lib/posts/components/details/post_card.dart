@@ -43,63 +43,57 @@ class PostCard extends StatelessWidget {
       ),
     ];
     final whisperPost = fromMapToPost(postMap: post);
-    return InkWell(
-      onTap: initAudioPlayer,
-      child: Slidable(
-        actionPane: SlidableDrawerActionPane(),
-        actionExtentRatio: 0.25,
-        actions: mainModel.currentWhisperUser.uid!= whisperPost.uid ? 
-        [
-          IconSlideAction(
-            caption: 'Mute User',
-            color: Colors.transparent,
-            icon: Icons.person_off,
-            onTap: muteUser
-          ),
-          IconSlideAction(
-            caption: 'Mute Post',
-            color: Colors.transparent,
-            icon: Icons.visibility_off,
-            onTap: mutePost
-          ),
-          IconSlideAction(
-            caption: 'Block User',
-            color: Colors.transparent,
-            icon: Icons.block,
-            onTap: blockUser
-          ),
-        ] : deleteIcon,
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).highlightColor.withOpacity(0.1),
-                blurRadius: defaultPadding(context: context)
-              )
-            ]
-          ),
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
-                  title: Text(
-                    whisperPost.userName,
-                    style: TextStyle(
-                      fontSize: defaultHeaderTextSize(context: context)
-                    ),
-                  ),
-                  subtitle: Text(
-                    whisperPost.title,
-                    style: TextStyle(
-                      color: Theme.of(context).focusColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: defaultHeaderTextSize(context: context)
-                    ),
-                  ),
-                )
-              ],
+    return Padding(
+      padding: EdgeInsets.all( defaultPadding(context: context)/4.0 ),
+      child: InkWell(
+        onTap: initAudioPlayer,
+        child: Slidable(
+          actionPane: SlidableDrawerActionPane(),
+          actionExtentRatio: 0.25,
+          actions: mainModel.currentWhisperUser.uid!= whisperPost.uid ? 
+          [
+            IconSlideAction(
+              caption: 'Mute User',
+              color: Colors.transparent,
+              icon: Icons.person_off,
+              onTap: muteUser
+            ),
+            IconSlideAction(
+              caption: 'Mute Post',
+              color: Colors.transparent,
+              icon: Icons.visibility_off,
+              onTap: mutePost
+            ),
+            IconSlideAction(
+              caption: 'Block User',
+              color: Colors.transparent,
+              icon: Icons.block,
+              onTap: blockUser
+            ),
+          ] : deleteIcon,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).focusColor.withOpacity(cardOpacity),
+              ),
+              borderRadius: BorderRadius.circular( defaultPadding(context: context) )
+            ),
+            child: ListTile(
+              leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
+              title: Text(
+                whisperPost.userName,
+                style: TextStyle(
+                  fontSize: defaultHeaderTextSize(context: context)/cardTextDiv
+                ),
+              ),
+              subtitle: Text(
+                whisperPost.title,
+                style: TextStyle(
+                  color: Theme.of(context).focusColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: defaultHeaderTextSize(context: context)
+                ),
+              ),
             ),
           ),
         ),

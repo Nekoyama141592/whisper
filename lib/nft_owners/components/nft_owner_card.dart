@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/others.dart';
 // domain
 import 'package:whisper/domain/nft_owner/nft_owner.dart';
@@ -21,57 +22,52 @@ class NFTownerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final NFTOwner nftOwner = fromMapToNFTOwner(nftOwner: map);
     
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
-              borderRadius: BorderRadius.all(Radius.circular( defaultPadding(context: context) ))
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: kTertiaryColor.withOpacity(cardOpacity),
+        ),
+        borderRadius: BorderRadius.all(Radius.circular( defaultPadding(context: context) ))
+      ),
+      child: Padding(
+        padding: EdgeInsets.all( defaultPadding(context: context) ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              nftOwner.userName,
+              style: TextStyle(fontWeight: FontWeight.bold,fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ),
+              overflow: TextOverflow.ellipsis,
             ),
-            child: Padding(
-              padding: EdgeInsets.all( defaultPadding(context: context) ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    nftOwner.userName,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: defaultPadding(context: context)/2.0 ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        'number' + nftOwner.number.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(width: defaultPadding(context: context)/2.0),
-                      Text(
-                        nftOwner.lastEthPrice.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(width: defaultPadding(context: context)/2.0 ),
-                      InkWell(
-                        child: Icon(Icons.link),
-                        onTap: () async {
-                          final String link = nftOwner.link;
-                          if ( await canLaunch(link) ) {
-                            await launch(link);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                ],
-              ),
+            SizedBox(height: defaultPadding(context: context)/2.0 ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'number' + nftOwner.number.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: defaultPadding(context: context)/2.0),
+                Text(
+                  nftOwner.lastEthPrice.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: defaultPadding(context: context)/2.0 ),
+                InkWell(
+                  child: Icon(Icons.link),
+                  onTap: () async {
+                    final String link = nftOwner.link;
+                    if ( await canLaunch(link) ) {
+                      await launch(link);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
+                    }
+                  },
+                )
+              ],
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

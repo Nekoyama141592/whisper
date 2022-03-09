@@ -39,6 +39,7 @@ class ReplysPage extends StatelessWidget {
     
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Icon(Icons.add_comment),
         onPressed: () {
           replysModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel);

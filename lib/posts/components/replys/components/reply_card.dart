@@ -39,7 +39,7 @@ class ReplyCard extends ConsumerWidget {
     final fontSize = defaultHeaderTextSize(context: context);
     final whisperTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: fontSize,
+      fontSize: fontSize/cardTextDiv2,
     );
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.mutePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     
@@ -79,51 +79,47 @@ class ReplyCard extends ConsumerWidget {
           await FlutterClipboard.copy(whisperReply.uid);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
         } : null,
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.secondary.withOpacity(cardOpacity),
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(defaultPadding(context: context)/4.0))
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.all(Radius.circular(defaultPadding(context: context)/4.0))
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: defaultPadding(context: context)
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: defaultPadding(context: context)
+                child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: whisperReply.uid, mainModel: mainModel),
+              ),
+              Expanded(
+                child: SizedBox(
+                  child: Column(
+                    children: [
+                      Text(
+                        whisperReply.userName,
+                        style: whisperTextStyle,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: whisperReply.uid, mainModel: mainModel),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        child: Column(
-                          children: [
-                            Text(
-                              whisperReply.userName,
-                              style: whisperTextStyle
-                            ),
-                            SizedBox(height: defaultPadding(context: context),),
-                            Text(
-                              whisperReply.reply,
-                              style: whisperTextStyle
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: replysModel)
-                      ],
-                    )
-                  ]
+                      SizedBox(height: defaultPadding(context: context),),
+                      Text(
+                        whisperReply.reply,
+                        style: whisperTextStyle
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: replysModel)
+                ],
+              )
+            ]
           ),
         ),
       ),
