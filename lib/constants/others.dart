@@ -23,7 +23,7 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
-import 'package:whisper/domain/official_adsense/official_adsense.dart';
+import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
@@ -110,6 +110,8 @@ DocumentReference<Map<String, dynamic>> returnPostCommentReplyDocRef({ required 
 CollectionReference<Map<String, dynamic>> returnPostCommentReplyLikesColRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId }) { return returnPostCommentReplyDocRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplyLikesColRefName); }
 DocumentReference<Map<String, dynamic>> returnPostCommentReplyLikeDocRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId ,required String activeUid }) { return returnPostCommentReplyLikesColRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).doc(activeUid); }
 
+
+
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
   return WhisperUser.fromJson(userMap);
 }
@@ -136,10 +138,6 @@ CommentNotification fromMapToCommentNotification({ required Map<String,dynamic> 
 
 NFTOwner fromMapToNFTOwner({ required Map<String,dynamic> nftOwner }) {
   return NFTOwner.fromJson(nftOwner);
-}
-
-OfficialAdsense fromMapToOfficialAdsense({ required Map<String,dynamic> officialAdsenseMap }) {
-  return OfficialAdsense.fromJson(officialAdsenseMap);
 }
 
 WhisperLink fromMapToWhisperLink({ required Map<String,dynamic> whisperLink }) {

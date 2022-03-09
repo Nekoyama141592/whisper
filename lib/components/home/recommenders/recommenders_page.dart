@@ -15,7 +15,7 @@ import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
-import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class RecommendersPage extends ConsumerWidget {
@@ -31,7 +31,7 @@ class RecommendersPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recommendersModel = ref.watch(recommendersProvider);
     final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);

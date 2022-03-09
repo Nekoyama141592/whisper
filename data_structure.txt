@@ -2,7 +2,7 @@ db: {
     users(WhisperUser) {
         posts(Post) {
             postComments(WhisperComment) {
-                postCommentReplys(WhisperReply) {
+                postCommentReplies(WhisperReply) {
                     postCommentReplyLikes(ReplyLike) {
 
                     }
@@ -40,6 +40,13 @@ db: {
 
         }
     }
-    nftOwners {}
-    officialAdsenses {}
+    nftOwners(nftOwner) {}
+    officialAdvertisements(officialAdvertisement) {
+        officialAdvertisementImpressions {
+
+        }
+        officialAdvertisementTaps {
+            
+        }
+    }
 }

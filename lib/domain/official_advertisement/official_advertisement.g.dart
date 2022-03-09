@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'official_adsense.dart';
+part of 'official_advertisement.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-OfficialAdsense _$OfficialAdsenseFromJson(Map<String, dynamic> json) =>
-    OfficialAdsense(
+OfficialAdvertisement _$OfficialAdvertisementFromJson(
+        Map<String, dynamic> json) =>
+    OfficialAdvertisement(
       createdAt: json['createdAt'],
       impression: json['impression'] as int,
       displaySeconds: json['displaySeconds'] as int,
@@ -19,7 +20,8 @@ OfficialAdsense _$OfficialAdsenseFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'],
     );
 
-Map<String, dynamic> _$OfficialAdsenseToJson(OfficialAdsense instance) =>
+Map<String, dynamic> _$OfficialAdvertisementToJson(
+        OfficialAdvertisement instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
       'impression': instance.impression,

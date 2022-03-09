@@ -12,7 +12,7 @@ import 'package:whisper/components/home/feeds/components/post_cards.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
-import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
@@ -31,7 +31,7 @@ class FeedsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
     final editPostInfoModel = ref.watch(editPostInfoProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);

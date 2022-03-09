@@ -14,7 +14,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/posts/components/comments/comments_model.dart';
-import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
@@ -35,7 +35,7 @@ class PostScreen extends ConsumerWidget {
 
     final editPostInfoModel = ref.watch(editPostInfoProvider); 
     final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdsensesProvider); 
+    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
 

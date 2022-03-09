@@ -1,11 +1,11 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'official_adsense.g.dart';
+part 'official_advertisement.g.dart';
 
 @JsonSerializable()
-class OfficialAdsense {
-  OfficialAdsense({
+class OfficialAdvertisement {
+  OfficialAdvertisement({
     required this.createdAt,
     required this.impression,
     required this.displaySeconds,
@@ -26,7 +26,7 @@ class OfficialAdsense {
   final String title;
   final dynamic updatedAt;
 
-  factory OfficialAdsense.fromJson(Map<String,dynamic> json) => _$OfficialAdsenseFromJson(json);
+  factory OfficialAdvertisement.fromJson(Map<String,dynamic> json) => _$OfficialAdvertisementFromJson(json);
 
-  Map<String,dynamic> toJson() => _$OfficialAdsenseToJson(this);
+  Map<String,dynamic> toJson() => _$OfficialAdvertisementToJson(this);
 }

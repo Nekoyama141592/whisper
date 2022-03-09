@@ -33,7 +33,7 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/official_adsenses/official_adsenses_model.dart';
+import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
  
@@ -201,7 +201,7 @@ void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
   audioPlayer.seekToNext();
 }
 
-Future<void> play({ required BuildContext context ,required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId ,required OfficialAdsensesModel officialAdsensesModel })  async {
+Future<void> play({ required BuildContext context ,required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId ,required OfficialAdvertisementsModel officialAdsensesModel })  async {
     audioPlayer.play();
     await officialAdsensesModel.onPlayButtonPressed(context);
   }
@@ -355,7 +355,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     updateWhisperUser.imageURL = downloadURL;
   }
   final UserUpdateLog updateUserLog = UserUpdateLog(
-    description: updateWhisperUser.bio,
+    bio: updateWhisperUser.bio,
     imageURL: updateWhisperUser.imageURL,
     links: updateWhisperUser.links,
     searchToken: updateWhisperUser.searchToken,
