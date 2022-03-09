@@ -336,7 +336,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   return getDownloadURL;
 }
 
-Future<void> updateUserInfo({ required BuildContext context ,required List<WhisperLink> links, required WhisperUser updateWhisperUser, required String userName , required String description,required File? croppedFile,required MainModel mainModel }) async {
+Future<void> updateUserInfo({ required BuildContext context ,required List<WhisperLink> links, required WhisperUser updateWhisperUser, required String userName , required String bio,required File? croppedFile,required MainModel mainModel }) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
@@ -346,8 +346,8 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     updateWhisperUser.userName = userName;
     updateWhisperUser.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: userName) );
   }
-  if (description.isNotEmpty) {
-    updateWhisperUser.description = description;
+  if (bio.isNotEmpty) {
+    updateWhisperUser.bio = bio;
   }
   if (croppedFile != null) {
     final String storageImageName = returnStorageUserImageName();
@@ -355,7 +355,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     updateWhisperUser.imageURL = downloadURL;
   }
   final UserUpdateLog updateUserLog = UserUpdateLog(
-    description: updateWhisperUser.description,
+    description: updateWhisperUser.bio,
     imageURL: updateWhisperUser.imageURL,
     links: updateWhisperUser.links,
     searchToken: updateWhisperUser.searchToken,

@@ -59,7 +59,7 @@ class MyProfileModel extends ChangeNotifier {
   // Edit profile
   bool isEditing = false;
   String userName = '';
-  String description = '';
+  String bio = '';
   final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
   // post
   bool isCropped = false;
@@ -154,17 +154,17 @@ class MyProfileModel extends ChangeNotifier {
   Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,required List<WhisperLink> links }) async {
     if (userName.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context,isUserName: true);
-    } else if (description.length > maxDescriptionLength) {
+    } else if (bio.length > maxDescriptionLength) {
       voids.alertMaxDescriptionLength(context: context);
     } else if (links.length > maxLinksLength ) {
       voids.alertMaxLinksLength(context: context);
     }
     else {
       startLoading();
-      await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,description: description,croppedFile: croppedFile, mainModel: mainModel);
+      await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,bio: bio,croppedFile: croppedFile, mainModel: mainModel);
       isEditing = false;
       userName = '';
-      description = '';
+      bio = '';
       whisperLinksNotifier.value = [];
       endLoading();
     }

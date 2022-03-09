@@ -8,8 +8,8 @@ part of 'whisper_user.dart';
 
 WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       accountName: json['accountName'] as String,
+      bio: json['bio'] as String,
       createdAt: json['createdAt'],
-      description: json['description'] as String,
       dmState: json['dmState'] as String,
       followerCount: json['followerCount'] as int,
       followingCount: json['followingCount'] as int,
@@ -37,8 +37,8 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
 Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
+      'bio': instance.bio,
       'createdAt': instance.createdAt,
-      'description': instance.description,
       'dmState': instance.dmState,
       'followerCount': instance.followerCount,
       'followingCount': instance.followingCount,

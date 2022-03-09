@@ -7,8 +7,8 @@ part 'whisper_user.g.dart';
 class WhisperUser {
   WhisperUser({
     required this.accountName,
+    required this.bio,
     required this.createdAt,
-    required this.description,
     required this.dmState,
     required this.followerCount,
     required this.followingCount,
@@ -31,8 +31,8 @@ class WhisperUser {
     required this.walletConnected
   });
   String accountName;
+  String bio;
   dynamic createdAt;
-  String description;
   String dmState;
   int followerCount;
   int followingCount;

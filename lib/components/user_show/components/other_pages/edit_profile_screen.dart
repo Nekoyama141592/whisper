@@ -19,10 +19,10 @@ class EditProfileScreen extends StatelessWidget {
     required this.onSaveButtonPressed,
     required this.showImagePicker,
     required this.onUserNameChanged,
-    required this.onDescriptionChanged,
+    required this.onBioChanged,
     required this.onEditLinkButtonPressed,
     required this.userNameController,
-    required this.descriptionController,
+    required this.bioController,
     required this.croppedFile,
     required this.isLoading,
     required this.isCropped,
@@ -34,9 +34,9 @@ class EditProfileScreen extends StatelessWidget {
   final void Function()? showImagePicker;
   final void Function()? onEditLinkButtonPressed;
   final void Function(String)? onUserNameChanged;
-  final void Function(String)? onDescriptionChanged;
+  final void Function(String)? onBioChanged;
   final TextEditingController userNameController;
-  final TextEditingController descriptionController;
+  final TextEditingController bioController;
   final File? croppedFile;
   final bool isLoading;
   final bool isCropped;
@@ -109,8 +109,8 @@ class EditProfileScreen extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.multiline,
               maxLines: 10,
-              controller: descriptionController,
-              onChanged: onDescriptionChanged,
+              controller: bioController,
+              onChanged: onBioChanged,
               style: textStyle
             ),
           ],

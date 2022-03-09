@@ -44,7 +44,7 @@ class UserCard extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            passiveWhisperUser.description,
+            passiveWhisperUser.bio,
             style: TextStyle(
               color: Theme.of(context).focusColor,
               fontWeight: FontWeight.bold,

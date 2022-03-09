@@ -123,7 +123,6 @@ const String titleFieldKey = 'title';
 const String linksFieldKey = '';
 const String followingCountFieldKey = '';
 const String userNameFieldKey = 'userName';
-const String descriptionFieldKey = 'description';
 const String postCountFieldKey = 'postCount';
 // path
 const String postImagesPathKey = 'postImages';

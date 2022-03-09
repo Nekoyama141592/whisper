@@ -134,7 +134,7 @@ class SignupModel extends ChangeNotifier {
     Map<String,dynamic> whisperUserMap = WhisperUser(
       accountName: uid,
       createdAt: now,
-      description: '',
+      bio: '',
       dmState: onlyFollowingAndFollowedString,
       followerCount: 0,
       followingCount: 0,

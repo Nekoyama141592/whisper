@@ -39,13 +39,13 @@ class MyProfilePage extends ConsumerWidget {
         onUserNameChanged: (text) {
           myProfileModel.userName = text;
         }, 
-        onDescriptionChanged: (text) {
-          myProfileModel.description = text;
+        onBioChanged: (text) {
+          myProfileModel.bio = text;
         }, 
         onEditLinkButtonPressed: () {
           myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links, );
         },
-        descriptionController: TextEditingController(text:  currentWhisperUser.description),
+        bioController: TextEditingController(text:  currentWhisperUser.bio),
         userNameController: TextEditingController(text: currentWhisperUser.userName),
         croppedFile: myProfileModel.croppedFile,
         isLoading: myProfileModel.isLoading,

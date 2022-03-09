@@ -75,12 +75,12 @@ class UserShowHeader extends ConsumerWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage(description: passiveWhisperUser.description ) ));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage(description: passiveWhisperUser.bio ) ));
                   },
                   child: Padding(
                     padding: EdgeInsets.all(defaultPadding(context: context)),
                     child: Text(
-                      passiveWhisperUser.description,
+                      passiveWhisperUser.bio,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
