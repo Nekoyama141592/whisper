@@ -35,7 +35,13 @@ class RecommendersModel extends ChangeNotifier {
   // user
   User? currentUser;
   Query<Map<String, dynamic>> getQuery() {
-    final x = returnPostsColGroupQuery.orderBy(scoreFieldKey, descending: true).limit(oneTimeReadCount);
+    // five days ago
+    final range = DateTime.now().subtract(Duration(days: 5));
+    final x = returnPostsColGroupQuery
+    .where(createdAtFieldKey,isGreaterThanOrEqualTo: range)
+    .orderBy(createdAtFieldKey,descending: true)
+    .orderBy(scoreFieldKey, descending: true)
+    .limit(oneTimeReadCount);
     return x;
   }
   // notifiers
@@ -145,14 +151,25 @@ class RecommendersModel extends ChangeNotifier {
 
   Future<void> getNewRecommenders() async {
     await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
+    postDocDescending();
   }
 
   Future<void> getRecommenders() async {
     await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
+    postDocDescending();
   }
 
   Future<void> getOldRecommenders() async {
     await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
+    postDocDescending();
+  }
+
+  void postDocDescending() {
+    posts.sort((a,b) {
+      final Timestamp aCreatedAt = Post.fromJson(a.data()!).createdAt as Timestamp;
+      final Timestamp bCreatedAt = Post.fromJson(b.data()!).createdAt as Timestamp;
+      return aCreatedAt.compareTo(bCreatedAt);
+    });
   }
 
 }
