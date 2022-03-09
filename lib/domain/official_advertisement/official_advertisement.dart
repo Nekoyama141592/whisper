@@ -7,7 +7,7 @@ part 'official_advertisement.g.dart';
 class OfficialAdvertisement {
   OfficialAdvertisement({
     required this.createdAt,
-    required this.impression,
+    required this.impressionCount,
     required this.displaySeconds,
     required this.intervalSeconds,
     required this.link,
@@ -17,7 +17,7 @@ class OfficialAdvertisement {
     required this.updatedAt
   });
   final dynamic createdAt;
-  final int impression;
+  final int impressionCount;
   final int displaySeconds;
   final int intervalSeconds;
   final String link;

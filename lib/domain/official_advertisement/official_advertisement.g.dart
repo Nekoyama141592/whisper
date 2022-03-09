@@ -10,7 +10,7 @@ OfficialAdvertisement _$OfficialAdvertisementFromJson(
         Map<String, dynamic> json) =>
     OfficialAdvertisement(
       createdAt: json['createdAt'],
-      impression: json['impression'] as int,
+      impressionCount: json['impressionCount'] as int,
       displaySeconds: json['displaySeconds'] as int,
       intervalSeconds: json['intervalSeconds'] as int,
       link: json['link'] as String,
@@ -24,7 +24,7 @@ Map<String, dynamic> _$OfficialAdvertisementToJson(
         OfficialAdvertisement instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
-      'impression': instance.impression,
+      'impressionCount': instance.impressionCount,
       'displaySeconds': instance.displaySeconds,
       'intervalSeconds': instance.intervalSeconds,
       'link': instance.link,

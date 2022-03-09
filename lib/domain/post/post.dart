@@ -16,7 +16,7 @@ class Post{
     required this.genre,
     required this.hashTags,
     required this.imageURLs,
-    required this.impression,
+    required this.impressionCount,
     required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
@@ -48,7 +48,7 @@ class Post{
   String genre;
   List<String> hashTags;
   List<String> imageURLs;
-  int impression;
+  int impressionCount;
   bool isDelete;
   bool isNFTicon;
   bool isOfficial;

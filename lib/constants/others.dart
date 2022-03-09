@@ -23,7 +23,6 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
-import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
@@ -110,6 +109,12 @@ DocumentReference<Map<String, dynamic>> returnPostCommentReplyDocRef({ required 
 CollectionReference<Map<String, dynamic>> returnPostCommentReplyLikesColRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId }) { return returnPostCommentReplyDocRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).collection(postCommentReplyLikesColRefName); }
 DocumentReference<Map<String, dynamic>> returnPostCommentReplyLikeDocRef({ required String postCreatorUid,required String postId,required String postCommentId, required String postCommentReplyId ,required String activeUid }) { return returnPostCommentReplyLikesColRef(postCreatorUid: postCreatorUid, postId: postId, postCommentId: postCommentId, postCommentReplyId: postCommentReplyId).doc(activeUid); }
 
+CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementsColRef() { return FirebaseFirestore.instance.collection(officialAdvertisementsColRefName); }
+DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementDocRef ({ required String officialAdvertisementId }) { return returnOfficialAdvertisementsColRef().doc(officialAdvertisementId); }
+CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementImpressionsColRef ({ required String officialAdvertisementId }) { return returnOfficialAdvertisementDocRef(officialAdvertisementId: officialAdvertisementId).collection(officialAdvertisementImperssionsColRefName); }
+DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementImpressionDocRef ({ required String officialAdvertisementId ,required String officialAdvertisementImpressionId }) { return returnOfficialAdvertisementImpressionsColRef(officialAdvertisementId: officialAdvertisementId).doc(officialAdvertisementImpressionId); }
+CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementTapsColRef ({ required String officialAdvertisementId }) { return returnOfficialAdvertisementDocRef(officialAdvertisementId: officialAdvertisementId).collection(officialAdvertisementTapsColRefName); }
+DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementTapDocRef ({ required String officialAdvertisementId ,required String officialAdvertisementTapId }) { return returnOfficialAdvertisementTapsColRef(officialAdvertisementId: officialAdvertisementId).doc(officialAdvertisementTapId); }
 
 
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {

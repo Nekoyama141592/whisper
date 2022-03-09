@@ -88,6 +88,9 @@ const String postCommentsColRefName = 'postComments';
 const String postCommentLikesColRefName = 'postCommentLikes';
 const String postCommentRepliesColRefName = 'postCommentReplies';
 const String postCommentReplyLikesColRefName = 'postCommentReplyLikes';
+const String officialAdvertisementsColRefName = 'officialAdvertisements';
+const String officialAdvertisementImperssionsColRefName = 'officialAdvertisementImpressions';
+const String officialAdvertisementTapsColRefName = 'officialAdvertisementTaps';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String createdAtFieldKey = 'createdAt';
