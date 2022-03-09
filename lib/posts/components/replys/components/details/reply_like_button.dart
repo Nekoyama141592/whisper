@@ -19,7 +19,7 @@ class ReplyLikeButton extends StatelessWidget {
 
   final WhisperReply whisperReply;
   final MainModel mainModel;
-  final ReplysModel replysModel;
+  final RepliesModel replysModel;
   @override 
   Widget build(BuildContext context) {
 

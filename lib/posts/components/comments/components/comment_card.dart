@@ -35,7 +35,7 @@ class CommentCard extends ConsumerWidget {
   final WhisperPostComment whisperComment;
   final Post whisperPost;
   final CommentsModel commentsModel;
-  final ReplysModel replysModel;
+  final RepliesModel replysModel;
   final MainModel mainModel;
   final CommentsOrReplysModel commentsOrReplysModel;
 

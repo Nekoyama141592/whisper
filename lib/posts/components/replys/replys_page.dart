@@ -27,7 +27,7 @@ class ReplysPage extends StatelessWidget {
     required this.commentsOrReplysModel
   }) : super(key: key);
 
-  final ReplysModel replysModel;
+  final RepliesModel replysModel;
   final Post whisperPost;
   final WhisperPostComment whisperPostComment;
   final MainModel mainModel;

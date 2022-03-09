@@ -113,7 +113,7 @@ void toCommentsPage({ required BuildContext context, required AudioPlayer audioP
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, whisperPost: currentWhisperPostNotifier.value!, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) ));
 }
 
-void toReplysPage({ required BuildContext context, required ReplysModel replysModel, required Post whisperPost,required WhisperPostComment whisperComment, required MainModel mainModel,required CommentsOrReplysModel commentsOrReplysModel}) {
+void toReplysPage({ required BuildContext context, required RepliesModel replysModel, required Post whisperPost,required WhisperPostComment whisperComment, required MainModel mainModel,required CommentsOrReplysModel commentsOrReplysModel}) {
  Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage(replysModel: replysModel, whisperPost: whisperPost, whisperPostComment: whisperComment, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) )); 
 }
 

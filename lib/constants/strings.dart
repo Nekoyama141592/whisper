@@ -86,7 +86,7 @@ const String postLikesColRefName = 'postLikes';
 const String postBookmarksColRefName = 'postBookmarks';
 const String postCommentsColRefName = 'postComments';
 const String postCommentLikesColRefName = 'postCommentLikes';
-const String postCommentReplysColRefName = 'postCommentReplys';
+const String postCommentRepliesColRefName = 'postCommentReplies';
 const String postCommentReplyLikesColRefName = 'postCommentReplyLikes';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';

@@ -35,7 +35,7 @@ class CommentsPage extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
     final commentsModel = ref.watch(commentsProvider);
-    final replysModel = ref.watch(replysProvider);
+    final replysModel = ref.watch(repliesProvider);
     final commentEditingController = TextEditingController();
     
     return Scaffold(

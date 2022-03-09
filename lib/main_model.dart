@@ -59,7 +59,7 @@ class MainModel extends ChangeNotifier {
   List<String> followingUids = [];
   List<LikeComment> likePostComments = [];
   List<String> likePostCommentIds = [];
-  List<LikeReply> likePostCommentReplys = [];
+  List<LikeReply> likePostCommentReplies = [];
   List<String> likePostCommentReplyIds = [];
   // bookmark
   List<BookmarkPost> bookmarkPosts = [];
@@ -186,7 +186,7 @@ class MainModel extends ChangeNotifier {
         break;
         case TokenType.likePostCommentReply:
           final LikeReply likeReply = LikeReply.fromJson(tokenMap);
-          likePostCommentReplys.add(likeReply);
+          likePostCommentReplies.add(likeReply);
           likePostCommentReplyIds.add(likeReply.postCommentReplyId);
         break;
         case TokenType.mutePostComment:

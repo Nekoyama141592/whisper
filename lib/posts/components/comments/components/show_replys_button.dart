@@ -18,7 +18,7 @@ class ShowReplyButton extends StatelessWidget {
   }) : super(key: key);
 
   final MainModel mainModel;
-  final ReplysModel replysModel;
+  final RepliesModel replysModel;
   final WhisperPostComment whisperPostComment;
   final Post whisperPost;
 

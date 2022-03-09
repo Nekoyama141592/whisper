@@ -34,7 +34,7 @@ class OneCommentPage extends ConsumerWidget {
     final editPostInfoModel = ref.watch(editPostInfoProvider); 
     final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
     final CommentsModel commentsModel = ref.watch(commentsProvider);
-    final ReplysModel replysModel = ref.watch(replysProvider);
+    final RepliesModel replysModel = ref.watch(repliesProvider);
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final officialAdsensesModel = ref.watch(officialAdsensesProvider); 

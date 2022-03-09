@@ -25,11 +25,11 @@ import 'package:whisper/constants/enums.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-final replysProvider = ChangeNotifierProvider(
-  (ref) => ReplysModel()
+final repliesProvider = ChangeNotifierProvider(
+  (ref) => RepliesModel()
 );
 
-class ReplysModel extends ChangeNotifier {
+class RepliesModel extends ChangeNotifier {
 
   String reply = "";
   bool isLoading = false;
@@ -334,9 +334,9 @@ class ReplysModel extends ChangeNotifier {
     // process UI
     final userMeta = mainModel.userMeta;
     final postCommentReplyId = whisperReply.postCommentReplyId;
-    final LikeReply likeReply = LikeReply(activeUid: userMeta.uid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likePostCommentReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentReplysColRefName).doc(whisperReply.postCommentReplyId)  );
+    final LikeReply likeReply = LikeReply(activeUid: userMeta.uid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likePostCommentReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentRepliesColRefName).doc(whisperReply.postCommentReplyId)  );
     mainModel.likePostCommentReplyIds.add(postCommentReplyId);
-    mainModel.likePostCommentReplys.add(likeReply);
+    mainModel.likePostCommentReplies.add(likeReply);
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
@@ -354,10 +354,10 @@ class ReplysModel extends ChangeNotifier {
   Future<void> unlike({ required WhisperReply whisperReply, required MainModel mainModel }) async {
     // process set
     final postCommentReplyId = whisperReply.postCommentReplyId;
-    final deleteLikeReply = mainModel.likePostCommentReplys.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
+    final deleteLikeReply = mainModel.likePostCommentReplies.where((element) => element.postCommentReplyId == whisperReply.postCommentReplyId).toList().first;
     // processUI
     mainModel.likePostCommentReplyIds.remove(postCommentReplyId);
-    mainModel.likePostCommentReplys.remove(deleteLikeReply);
+    mainModel.likePostCommentReplies.remove(deleteLikeReply);
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeReply.tokenId ).delete();

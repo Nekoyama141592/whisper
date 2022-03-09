@@ -27,7 +27,7 @@ class ReplyCard extends ConsumerWidget {
   }) : super(key: key);
 
   final WhisperReply whisperReply;
-  final ReplysModel replysModel;
+  final RepliesModel replysModel;
   final MainModel mainModel;
   final CommentsOrReplysModel commentsOrReplysModel;
 
