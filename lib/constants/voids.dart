@@ -530,3 +530,11 @@ void alertMaxDescriptionLength({ required BuildContext context, }) {
 void alertMaxLinksLength({ required BuildContext context, }) {
   showSnackBar(context: context, text: 'リンクは' + maxDescriptionLength.toString() + '個以内にしてください' );
 }
+
+Future<void> defaultLaungh({ required BuildContext context,required String url }) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    showSnackBar(context: context, text: '無効なURLです' );
+  }
+}

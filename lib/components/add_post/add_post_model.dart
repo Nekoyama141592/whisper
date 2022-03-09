@@ -224,6 +224,7 @@ class AddPostModel extends ChangeNotifier {
       isNFTicon: currentWhiseprUser.isNFTicon,
       isOfficial: currentWhiseprUser.isOfficial,
       isPinned: false,
+      language: mainModel.userMeta.language,
       likeCount: 0,
       links: whisperLinksNotifier.value.map((e) => e.toJson() ).toList(), 
       negativeScore: 0,

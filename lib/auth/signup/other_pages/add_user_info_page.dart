@@ -1,7 +1,9 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/doubles.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/auth/signup/signup_model.dart';
@@ -21,8 +23,7 @@ class AddUserInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final userNameController = TextEditingController(text: signupModel.userName);
     final buttonWidthRate = 0.30;
-    final buttonVerticalPadding = 20.0;
-    final buttonHorizontalPadding = 0.0;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -55,7 +56,7 @@ class AddUserInfoPage extends StatelessWidget {
               },
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(defaultPadding(context: context) ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -74,7 +75,7 @@ class AddUserInfoPage extends StatelessWidget {
                             textColor: Colors.white, 
                             buttonColor: Theme.of(context).primaryColor
                           ),
-                          SizedBox(height: 8.0),
+                          SizedBox(height: defaultPadding(context: context) ),
                           if (birthDay != DateTime(1900,10,10)) Text(
                             birthDay.year.toString() + '年' + birthDay.month.toString() + '月' + birthDay.day.toString() + '日'
                           )
@@ -97,7 +98,7 @@ class AddUserInfoPage extends StatelessWidget {
                             textColor: Colors.white, 
                             buttonColor: Theme.of(context).primaryColor
                           ),
-                          SizedBox(height: 8.0),
+                          SizedBox(height: defaultPadding(context: context) ),
                           if(language.isNotEmpty) Text(language,style: TextStyle(fontWeight: FontWeight.bold),)
                         ],
                       );
@@ -118,7 +119,7 @@ class AddUserInfoPage extends StatelessWidget {
                             textColor: Colors.white, 
                             buttonColor: Theme.of(context).primaryColor
                           ),
-                          SizedBox(height: 8.0),
+                          SizedBox(height: defaultPadding(context: context) ),
                           if(gender.isNotEmpty) Text(gender,style: TextStyle(fontWeight: FontWeight.bold),)
                         ],
                       );
@@ -143,7 +144,7 @@ class AddUserInfoPage extends StatelessWidget {
                   }
                 ),
                 TextButton(onPressed: () {
-                  routes.toTosPage(context);
+                  voids.defaultLaungh(context: context, url: tosURL );
                 }, child: Text(
                   '利用規約',
                   style: TextStyle(
@@ -153,7 +154,7 @@ class AddUserInfoPage extends StatelessWidget {
                 )),
                 Text('と'),
                 TextButton(onPressed: () {
-                  routes.toPrivacyPage(context);
+                  voids.defaultLaungh(context: context, url: privacyURL );
                 }, child: Text(
                   'プライバシーポリシー',
                   style: TextStyle(

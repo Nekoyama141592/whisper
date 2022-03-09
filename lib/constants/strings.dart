@@ -132,3 +132,7 @@ const String postPathKey = 'posts';
 const String isReadMapKey = 'isRead';
 const String tokenTypeMapKey = 'tokenType'; // lib/constants/enums.dart
 const String notificationTypeMapKey = 'notificationType'; // lib/constants/enums.dart
+// urls
+const String privacyURL = 'https://whisper-web.herokuapp.com/privacy';
+const String complianceURL = 'https://whisper-web.herokuapp.com/compliance';
+const String tosURL = 'https://whisper-web.herokuapp.com/tos';
