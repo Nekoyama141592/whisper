@@ -15,6 +15,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
+import 'package:whisper/domain/official_advertisement_config/official_advertisement_config.dart';
 import 'package:whisper/domain/official_advertisement_impression/official_advertisement_impression.dart';
 import 'package:whisper/domain/official_advertisement_tap/official_advertisement_tap.dart';
 
@@ -26,7 +27,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   bool isPlayed = false;
   final Random rand = Random();
   int randIndex = 0;
-  late OfficialAdvertisement first;
+  late OfficialAdvertisementConfig config;
   List<DocumentSnapshot<Map<String,dynamic>>> officialAdvertisementDocs = [];
 
   Future<void> onPlayButtonPressed(BuildContext context) async {
@@ -34,30 +35,30 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       isPlayed = true;
       final qshot = await returnOfficialAdvertisementConfigColRef.get();
       if (qshot.docs.isNotEmpty) {
-        first = OfficialAdvertisement.fromJson(qshot.docs.first.data());
+        config = OfficialAdvertisementConfig.fromJson(qshot.docs.first.data());
       }
       await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
       });
       if (officialAdvertisementDocs.isNotEmpty) {
         
-        Timer.periodic(Duration(seconds: first.intervalSeconds), (_) async {
+        Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
           randIndex = rand.nextInt(officialAdvertisementDocs.length);
           final resultDoc = officialAdvertisementDocs[randIndex];
           final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
           final String officialAdvertisementId = resultDoc.id;
-          showTopFlash(context: context, officialAdvertisementId: officialAdvertisementId,result: result, firstAdvertisement: first,margin: EdgeInsets.all(8.0));
+          showTopFlash(context: context, officialAdvertisementId: officialAdvertisementId,result: result, config: config,margin: EdgeInsets.all(8.0));
           await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
         });
       }
     }
   }
 
-  void showTopFlash({ required BuildContext context, required String officialAdvertisementId ,required OfficialAdvertisement result, required OfficialAdvertisement firstAdvertisement,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
+  void showTopFlash({ required BuildContext context, required String officialAdvertisementId ,required OfficialAdvertisement result, required OfficialAdvertisementConfig config,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
     showFlash(
       context: context, 
       persistent: persistent,
-      duration: Duration(seconds: firstAdvertisement.displaySeconds),
+      duration: Duration(seconds: config.displaySeconds),
       builder: (_, controller) {
         return Flash(
           controller: controller, 

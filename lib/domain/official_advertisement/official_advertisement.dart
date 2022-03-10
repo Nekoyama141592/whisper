@@ -8,8 +8,6 @@ class OfficialAdvertisement {
   OfficialAdvertisement({
     required this.createdAt,
     required this.impressionCount,
-    required this.displaySeconds,
-    required this.intervalSeconds,
     required this.link,
     required this.subTitle,
     required this.tapCount,
@@ -18,8 +16,6 @@ class OfficialAdvertisement {
   });
   final dynamic createdAt;
   final int impressionCount;
-  final int displaySeconds;
-  final int intervalSeconds;
   final String link;
   final String subTitle;
   final int tapCount;

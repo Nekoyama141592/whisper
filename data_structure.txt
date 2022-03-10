@@ -42,11 +42,12 @@ db: {
     }
     nftOwners(nftOwner) {}
     officialAdvertisements(officialAdvertisement) {
-        officialAdvertisementImpressions {
+        officialAdvertisementImpressions(officialAdvertisementImpression) {
 
         }
-        officialAdvertisementTaps {
+        officialAdvertisementTaps(officialAdvertisementTap) {
             
         }
     }
+    officialAdvertisementConfig(officialAdvertisementConfig) {}
 }
