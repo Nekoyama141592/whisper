@@ -1,15 +1,11 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
-// constants
-import 'package:whisper/constants/links.dart';
 // components
 import 'package:whisper/details/loading.dart';
-import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/nft_owners/components/nft_owner_card.dart';
 // model
 import 'package:whisper/nft_owners/nft_owners_model.dart';
