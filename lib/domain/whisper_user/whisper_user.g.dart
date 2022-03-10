@@ -31,6 +31,9 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
       walletAddress: json['walletAddress'] as String,
+      walletAddresses: (json['walletAddresses'] as List<dynamic>)
+          .map((e) => e as Map<String, dynamic>)
+          .toList(),
       walletConnected: json['walletConnected'] as bool,
     );
 
@@ -58,5 +61,6 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
       'walletAddress': instance.walletAddress,
+      'walletAddresses': instance.walletAddresses,
       'walletConnected': instance.walletConnected,
     };
