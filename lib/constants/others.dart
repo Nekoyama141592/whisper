@@ -115,7 +115,7 @@ CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementImpressions
 DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementImpressionDocRef ({ required String officialAdvertisementId ,required String officialAdvertisementImpressionId }) { return returnOfficialAdvertisementImpressionsColRef(officialAdvertisementId: officialAdvertisementId).doc(officialAdvertisementImpressionId); }
 CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementTapsColRef ({ required String officialAdvertisementId }) { return returnOfficialAdvertisementDocRef(officialAdvertisementId: officialAdvertisementId).collection(officialAdvertisementTapsColRefName); }
 DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementTapDocRef ({ required String officialAdvertisementId ,required String officialAdvertisementTapId }) { return returnOfficialAdvertisementTapsColRef(officialAdvertisementId: officialAdvertisementId).doc(officialAdvertisementTapId); }
-
+final CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementConfigColRef = FirebaseFirestore.instance.collection(officialAdvertisementConfigColRefName);
 
 WhisperUser fromMapToWhisperUser({ required Map<String,dynamic> userMap }) {
   return WhisperUser.fromJson(userMap);

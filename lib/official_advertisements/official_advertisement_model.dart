@@ -11,9 +11,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
+import 'package:whisper/domain/official_advertisement_impression/official_advertisement_impression.dart';
+import 'package:whisper/domain/official_advertisement_tap/official_advertisement_tap.dart';
 
 final officialAdvertisementsProvider = ChangeNotifierProvider(
   (ref) => OfficialAdvertisementsModel()
@@ -23,26 +26,34 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   bool isPlayed = false;
   final Random rand = Random();
   int randIndex = 0;
+  late OfficialAdvertisement first;
   List<DocumentSnapshot<Map<String,dynamic>>> officialAdvertisementDocs = [];
 
   Future<void> onPlayButtonPressed(BuildContext context) async {
     if (!isPlayed) {
       isPlayed = true;
-      await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: false).limit(oneTimeReadCount).get().then((qshot) {
+      final qshot = await returnOfficialAdvertisementConfigColRef.get();
+      if (qshot.docs.isNotEmpty) {
+        first = OfficialAdvertisement.fromJson(qshot.docs.first.data());
+      }
+      await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
       });
       if (officialAdvertisementDocs.isNotEmpty) {
-        final OfficialAdvertisement first = OfficialAdvertisement.fromJson(officialAdvertisementDocs.first.data()!);
+        
         Timer.periodic(Duration(seconds: first.intervalSeconds), (_) async {
           randIndex = rand.nextInt(officialAdvertisementDocs.length);
-          final OfficialAdvertisement result = OfficialAdvertisement.fromJson(officialAdvertisementDocs[randIndex].data()!);
-          showTopFlash(context: context, result: result, firstAdvertisement: first,margin: EdgeInsets.all(8.0));
+          final resultDoc = officialAdvertisementDocs[randIndex];
+          final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
+          final String officialAdvertisementId = resultDoc.id;
+          showTopFlash(context: context, officialAdvertisementId: officialAdvertisementId,result: result, firstAdvertisement: first,margin: EdgeInsets.all(8.0));
+          await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
         });
       }
     }
   }
 
-  void showTopFlash({ required BuildContext context, required OfficialAdvertisement result, required OfficialAdvertisement firstAdvertisement,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
+  void showTopFlash({ required BuildContext context, required String officialAdvertisementId ,required OfficialAdvertisement result, required OfficialAdvertisement firstAdvertisement,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
     showFlash(
       context: context, 
       persistent: persistent,
@@ -71,6 +82,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
             } else {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは不適切です')));
             }
+            await makeTapDoc(officialAdvertisementId: officialAdvertisementId);
           },
           child: DefaultTextStyle(
             style: TextStyle(fontWeight: FontWeight.bold), 
@@ -105,5 +117,18 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
         );
       }
     );
+  }
+
+  Future<void> makeImpressionDoc({ required String officialAdvertisementId }) async {
+    final String uid = firebaseAuthCurrentUser!.uid;
+    final OfficialAdvertisementImpression officialAdvertisementImpression = OfficialAdvertisementImpression(createdAt: Timestamp.now(), uid: uid,officialAdvertisementId: officialAdvertisementId );
+    final String officialAdvertisementImpressionId = returnOfficialAdvertisementImpressionId(uid: uid );
+    await returnOfficialAdvertisementImpressionDocRef(officialAdvertisementId: officialAdvertisementId, officialAdvertisementImpressionId: officialAdvertisementImpressionId).set(officialAdvertisementImpression.toJson());
+  }
+  Future<void> makeTapDoc({ required String officialAdvertisementId }) async {
+    final String uid = firebaseAuthCurrentUser!.uid;
+    final OfficialAdvertisementTap officialAdvertisementTap = OfficialAdvertisementTap(createdAt: Timestamp.now(), uid: uid,officialAdvertisementId: officialAdvertisementId );
+    final String officialAdvertisementTapId = returnOfficialAdvertisementTapId(uid: uid);
+    await returnOfficialAdvertisementTapDocRef(officialAdvertisementId: officialAdvertisementId, officialAdvertisementTapId: officialAdvertisementTapId).set(officialAdvertisementTap.toJson());
   }
 }
