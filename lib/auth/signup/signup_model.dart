@@ -153,7 +153,7 @@ class SignupModel extends ChangeNotifier {
       uid : uid,
       updatedAt: now,
       userName: userName,
-      walletAddress: '',
+      mainWalletAddress: '',
       walletAddresses: [],
       walletConnected: false
     ).toJson();

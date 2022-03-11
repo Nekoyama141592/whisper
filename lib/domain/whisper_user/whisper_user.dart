@@ -27,7 +27,7 @@ class WhisperUser {
     required this.userName,
     required this.uid,
     required this.updatedAt,
-    required this.walletAddress,
+    required this.mainWalletAddress,
     required this.walletAddresses,
     required this.walletConnected
   });
@@ -44,6 +44,7 @@ class WhisperUser {
   bool isOfficial;
   final bool isSuspended;
   List<Map<String,dynamic>> links;
+  String mainWalletAddress;
   int postCount;
   String recommendState;
   num score;
@@ -52,7 +53,6 @@ class WhisperUser {
   final String uid;
   dynamic updatedAt;
   String userName;
-  String walletAddress;
   List<Map<String,dynamic>> walletAddresses;
   bool walletConnected;
 
