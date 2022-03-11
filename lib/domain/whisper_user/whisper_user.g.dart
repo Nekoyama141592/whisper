@@ -52,6 +52,7 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'isOfficial': instance.isOfficial,
       'isSuspended': instance.isSuspended,
       'links': instance.links,
+      'mainWalletAddress': instance.mainWalletAddress,
       'postCount': instance.postCount,
       'recommendState': instance.recommendState,
       'score': instance.score,
@@ -60,7 +61,6 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
       'userName': instance.userName,
-      'mainWalletAddress': instance.mainWalletAddress,
       'walletAddresses': instance.walletAddresses,
       'walletConnected': instance.walletConnected,
     };

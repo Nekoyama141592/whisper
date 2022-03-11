@@ -132,7 +132,7 @@ class CommentsModel extends ChangeNotifier {
       isOfficial: currentWhisperUser.isOfficial,
       likeCount: 0,
       negativeScore: 0,
-      masterReplyed: false,
+      masterReplied: false,
       passiveUid: whisperPost.uid,
       positiveScore: 0, 
       postId: whisperPost.postId, 
