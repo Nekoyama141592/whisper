@@ -31,8 +31,7 @@ class ShowReplyButton extends ConsumerWidget {
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     return IconButton(
       onPressed: () async {
-        toReplysPage(context: context, replysModel: replysModel, whisperPost: whisperPost, whisperPostComment: whisperPostComment, mainModel: mainModel, commentsOrReplysModel: commentsOrReplysModel);
-        await replysModel.init(context: context, mainModel: mainModel, whisperPostComment: whisperPostComment);
+        await replysModel.init(context: context, mainModel: mainModel, whisperPost: whisperPost, whisperPostComment: whisperPostComment, commentsOrReplysModel: commentsOrReplysModel);
       }, 
       icon: Icon(Icons.mode_comment)
     );

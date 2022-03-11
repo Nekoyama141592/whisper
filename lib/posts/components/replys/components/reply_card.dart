@@ -21,13 +21,13 @@ class ReplyCard extends ConsumerWidget {
   const ReplyCard({
     Key? key,
     required this.whisperReply,
-    required this.replysModel,
+    required this.repliesModel,
     required this.mainModel,
     required this.commentsOrReplysModel
   }) : super(key: key);
 
   final WhisperReply whisperReply;
-  final RepliesModel replysModel;
+  final RepliesModel repliesModel;
   final MainModel mainModel;
   final CommentsOrReplysModel commentsOrReplysModel;
 
@@ -116,7 +116,7 @@ class ReplyCard extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: replysModel)
+                  ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel)
                 ],
               )
             ]

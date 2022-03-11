@@ -11,6 +11,7 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -24,6 +25,7 @@ import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/constants/enums.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 final repliesProvider = ChangeNotifierProvider(
   (ref) => RepliesModel()
@@ -42,8 +44,9 @@ class RepliesModel extends ChangeNotifier {
   // indexDB
   String indexPostCommentId = '';
 
-  Future<void> init({ required BuildContext context, required MainModel mainModel, required WhisperPostComment whisperPostComment}) async {
+  Future<void> init({ required BuildContext context, required MainModel mainModel, required Post whisperPost,required WhisperPostComment whisperPostComment,required CommentsOrReplysModel commentsOrReplysModel }) async {
     refreshController = RefreshController(initialRefresh: false);
+    routes.toReplysPage(context: context,whisperPost: whisperPost, whisperPostComment: whisperPostComment, mainModel: mainModel, commentsOrReplysModel: commentsOrReplysModel);
     final postCommentId = whisperPostComment.postCommentId;
     if (indexPostCommentId != postCommentId ) {
       indexPostCommentId = postCommentId ;
