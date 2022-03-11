@@ -168,7 +168,6 @@ class SignupModel extends ChangeNotifier {
       birthDay: timestampBirthDay,
       createdAt: now,
       gender: gender, 
-      isAdmin: false,
       isDelete: false,
       isSuspended: false,
       ipv6: ipv6,

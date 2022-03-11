@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/others.dart';
-// domain
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // components
 import 'user_image.dart';
 // constants
@@ -50,10 +47,10 @@ class RedirectUserImage extends ConsumerWidget {
           userShowModel.theSameUser(context: context, mainModel: mainModel);
         }
       },
-      onLongPress: mainModel.userMeta.isAdmin? () async {
+      onLongPress: () async {
         await FlutterClipboard.copy(passiveUserDocId);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
-      } : null,
+      } ,
       child: UserImage(padding: padding, length: length, userImageURL: userImageURL)
     );
   }

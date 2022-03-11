@@ -75,10 +75,10 @@ class ReplyCard extends ConsumerWidget {
         ),
       ] : [],
       child: InkWell(
-        onLongPress: mainModel.userMeta.isAdmin ? () async {
+        onLongPress: () async {
           await FlutterClipboard.copy(whisperReply.uid);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
-        } : null,
+        } ,
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(

@@ -81,10 +81,10 @@ class CommentCard extends ConsumerWidget {
         ),
       ]: [],
       child: InkWell(
-        onLongPress: mainModel.userMeta.isAdmin ? () async {
+        onLongPress:  () async {
           await FlutterClipboard.copy(whisperComment.uid);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
-        } : null,
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーのIDをコピーしました')));
+        },
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
