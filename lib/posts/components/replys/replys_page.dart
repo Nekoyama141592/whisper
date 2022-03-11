@@ -6,6 +6,7 @@ import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
+import 'package:whisper/details/nothing.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // domain
@@ -42,7 +43,8 @@ class ReplysPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Icon(Icons.add_comment),
         onPressed: () {
-          replysModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel);
+          replysModel.reset();
+          // replysModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel);
         },
       ),
       body: SafeArea(
@@ -54,8 +56,8 @@ class ReplysPage extends StatelessWidget {
               onMenuPressed: () { replysModel.showSortDialogue(context, whisperPostComment); }
             ),
             Expanded(
-              child: replysModel.isLoading ?
-              SizedBox.shrink() : 
+              child: replysModel.postCommentReplyDocs.isEmpty ?
+              Nothing(reload: () async { await replysModel.onReload(whisperPostComment: whisperPostComment); }) : 
               SmartRefresher(
                 enablePullUp: true,
                 enablePullDown: true,

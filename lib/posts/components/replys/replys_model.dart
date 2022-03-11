@@ -42,16 +42,13 @@ class RepliesModel extends ChangeNotifier {
   // indexDB
   String indexPostCommentId = '';
 
-  void reload() {
-    notifyListeners();
-  }
-
   Future<void> init({ required BuildContext context, required MainModel mainModel, required WhisperPostComment whisperPostComment}) async {
     refreshController = RefreshController(initialRefresh: false);
     final postCommentId = whisperPostComment.postCommentId;
     if (indexPostCommentId != postCommentId ) {
       indexPostCommentId = postCommentId ;
       await getReplyDocs( whisperPostComment: whisperPostComment );
+      notifyListeners();
     }
   }
 
@@ -111,7 +108,7 @@ class RepliesModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                final qshot = await returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
+                final qshot = await returnPostCommentRepliesColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
                 .orderBy(likeCountFieldKey,descending: true )
                 .limit(oneTimeReadCount)
                 .get();
@@ -130,7 +127,7 @@ class RepliesModel extends ChangeNotifier {
               onPressed: () async {
                 Navigator.pop(innerContext);
                 sortState = SortState.byNewestFirst;
-                final qshot = await returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
+                final qshot = await returnPostCommentRepliesColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
                 .orderBy(createdAtFieldKey,descending: true)
                 .limit(oneTimeReadCount)
                 .get();
@@ -149,7 +146,7 @@ class RepliesModel extends ChangeNotifier {
               onPressed: () async {
                 Navigator.pop(innerContext);
                 sortState = SortState.byOldestFirst;
-                final qshot = await returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
+                final qshot = await returnPostCommentRepliesColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
                 .orderBy(createdAtFieldKey,descending: false)
                 .limit(oneTimeReadCount)
                 .get();
@@ -183,9 +180,14 @@ class RepliesModel extends ChangeNotifier {
   }
 
   Future<void> getReplyDocs({ required WhisperPostComment whisperPostComment }) async {
-    final qshot = await returnPostCommentReplysColRef(postCreatorUid: whisperPostComment.passiveUid, postId: whisperPostComment.postId, postCommentId: whisperPostComment.postCommentId ).get();
+    final qshot = await returnPostCommentRepliesColRef(postCreatorUid: whisperPostComment.passiveUid, postId: whisperPostComment.postId, postCommentId: whisperPostComment.postCommentId ).get();
     postCommentReplyDocs = qshot.docs;
-    notifyListeners();
+  }
+
+  Future<void> onReload({ required WhisperPostComment whisperPostComment }) async {
+    startLoading();
+    await getReplyDocs(whisperPostComment: whisperPostComment);
+    endLoading();
   }
 
   Future<void> onRefresh({ required WhisperPostComment whisperPostComment}) async {
@@ -194,7 +196,7 @@ class RepliesModel extends ChangeNotifier {
       break;
       case SortState.byNewestFirst:
       // QuerySnapshot<Map<String, dynamic>> newSnapshots = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(postCommentReplyDocs.first).limit(oneTimeReadCount).get();
-      final qshot = await returnPostCommentReplysColRef(postCreatorUid: whisperPostComment.passiveUid, postId: whisperPostComment.postId, postCommentId: whisperPostComment.postCommentId )
+      final qshot = await returnPostCommentRepliesColRef(postCreatorUid: whisperPostComment.passiveUid, postId: whisperPostComment.postId, postCommentId: whisperPostComment.postCommentId )
       .orderBy(createdAtFieldKey,descending: true)
       .endBeforeDocument(postCommentReplyDocs.first)
       .limit(oneTimeReadCount)
@@ -217,7 +219,7 @@ class RepliesModel extends ChangeNotifier {
   Future<void> onLoading({ required WhisperPostComment whisperComment}) async {
     switch(sortState) {
       case SortState.byLikedUidCount:
-      await returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
+      await returnPostCommentRepliesColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
       .orderBy(likeCountFieldKey,descending: true )
       .startAfterDocument(postCommentReplyDocs.last)
       .limit(oneTimeReadCount)
@@ -228,7 +230,7 @@ class RepliesModel extends ChangeNotifier {
       });
       break;
       case SortState.byNewestFirst:
-      await returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
+      await returnPostCommentRepliesColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
       .orderBy(createdAtFieldKey,descending: true)
       .startAfterDocument(postCommentReplyDocs.last)
       .limit(oneTimeReadCount)
@@ -239,7 +241,7 @@ class RepliesModel extends ChangeNotifier {
       });
       break;
       case SortState.byOldestFirst:
-      await returnPostCommentReplysColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
+      await returnPostCommentRepliesColRef(postCommentId: whisperComment.postCommentId,postCreatorUid: whisperComment.passiveUid,postId: whisperComment.postId )
       .orderBy(createdAtFieldKey,descending: false)
       .startAfterDocument(postCommentReplyDocs.last)
       .limit(oneTimeReadCount)
@@ -364,4 +366,11 @@ class RepliesModel extends ChangeNotifier {
     await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: postCommentReplyId, userMeta: mainModel.userMeta ).delete();
   }
   
+  void reset() async {
+    // postCommentReplyDocs = [];
+    // notifyListeners();
+    startLoading();
+    Future.delayed(Duration(seconds: 3));
+    endLoading();
+  }
 }
