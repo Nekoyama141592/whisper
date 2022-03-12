@@ -21,9 +21,9 @@ class UserMeta {
   dynamic birthDay;
   dynamic createdAt;
   String gender;
+  String ipv6;
   bool isDelete;
   final bool isSuspended;
-  String ipv6;
   String language;
   num totalAsset;
   final String uid;
