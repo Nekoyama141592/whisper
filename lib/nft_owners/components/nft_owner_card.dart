@@ -21,7 +21,11 @@ class NFTownerCard extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final NFTOwner nftOwner = fromMapToNFTOwner(nftOwner: map);
-    
+    final text2Size = defaultHeaderTextSize(context: context) / cardTextDiv2;
+    final text2 = TextStyle(
+      fontSize: text2Size,
+      fontWeight: FontWeight.bold
+    );
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -45,16 +49,16 @@ class NFTownerCard extends StatelessWidget {
               children: [
                 Text(
                   'number' + nftOwner.number.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: text2
                 ),
                 SizedBox(width: defaultPadding(context: context)/2.0),
                 Text(
                   nftOwner.lastEthPrice.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: text2,
                 ),
                 SizedBox(width: defaultPadding(context: context)/2.0 ),
                 InkWell(
-                  child: Icon(Icons.link),
+                  child: Icon(Icons.link,size: text2Size* 1.5,),
                   onTap: () async {
                     final String link = nftOwner.link;
                     if ( await canLaunch(link) ) {

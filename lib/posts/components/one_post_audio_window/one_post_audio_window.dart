@@ -52,7 +52,7 @@ class OnePostAudioWindow extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: size.width * 0.03,
                   ),
-                  child: UserImage(userImageURL: currentWhisperUser.imageURL,length: height/12.0,padding: height/64.0,)
+                  child: UserImage(userImageURL: currentWhisperUser.imageURL,length: defaultHeaderTextSize(context: context) * 1.5 ,padding: 0,)
                 ),
                 Expanded(
                   child: Container(

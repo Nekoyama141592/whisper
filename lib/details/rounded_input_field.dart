@@ -55,7 +55,7 @@ class RoundedInputField extends StatelessWidget {
               onTap: onCloseButtonPressed,
             ),
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
+            hintStyle: TextStyle(color: Colors.black.withOpacity(0.6),fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ),
             border: InputBorder.none
           ),
         ),

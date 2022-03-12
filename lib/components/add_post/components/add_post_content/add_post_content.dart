@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
@@ -56,7 +57,7 @@ class AddPostContent extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20.0
+              fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2
             ),
           );
         }

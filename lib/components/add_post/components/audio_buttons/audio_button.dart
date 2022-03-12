@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
 
 class AudioButton extends StatelessWidget {
 
@@ -32,7 +33,7 @@ class AudioButton extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.ellipsis,
-              fontSize: MediaQuery.of(context).size.height/32.0
+              fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2/cardTextDiv2
             ),
           ),
         )
