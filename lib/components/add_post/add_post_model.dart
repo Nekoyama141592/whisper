@@ -214,7 +214,7 @@ class AddPostModel extends ChangeNotifier {
       audioURL: audioURL, 
       bookmarkCount: 0,
       commentsState: commentsState, 
-      country: 'w', 
+      country: '', 
       createdAt: now,
       description: '', 
       genre: '', 

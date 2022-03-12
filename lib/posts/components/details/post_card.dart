@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_slidable/flutter_slidable.dart';
+// constants
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 // components
+import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -35,12 +37,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final List<Widget>? deleteIcon = [
-      IconSlideAction(
-        caption: 'Delete',
-        color: Colors.transparent,
-        icon: Icons.delete,
-        onTap: onDeleteButtonPressed
-      ),
+      SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: onDeleteButtonPressed )
     ];
     final whisperPost = fromMapToPost(postMap: post);
     return Padding(
@@ -52,24 +49,9 @@ class PostCard extends StatelessWidget {
           actionExtentRatio: 0.25,
           actions: mainModel.currentWhisperUser.uid!= whisperPost.uid ? 
           [
-            IconSlideAction(
-              caption: 'Mute User',
-              color: Colors.transparent,
-              icon: Icons.person_off,
-              onTap: muteUser
-            ),
-            IconSlideAction(
-              caption: 'Mute Post',
-              color: Colors.transparent,
-              icon: Icons.visibility_off,
-              onTap: mutePost
-            ),
-            IconSlideAction(
-              caption: 'Block User',
-              color: Colors.transparent,
-              icon: Icons.block,
-              onTap: blockUser
-            ),
+            SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: muteUser ),
+            SlideIcon(caption: 'Mute Post', iconData: Icons.visibility_off, onTap: mutePost ),
+            SlideIcon(caption: 'Block User', iconData: Icons.block, onTap: blockUser ),
           ] : deleteIcon,
           child: Container(
             decoration: BoxDecoration(
