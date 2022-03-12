@@ -6,7 +6,7 @@ part 'bookmark_post_category.g.dart';
 class BookmarkPostCategory {
   BookmarkPostCategory({
     required this.createdAt,
-    required this.label,
+    required this.categoryName,
     required this.tokenId,
     required this.tokenType,
     required this.imageURL,
@@ -15,7 +15,7 @@ class BookmarkPostCategory {
   });
   
   final dynamic createdAt;
-  String label;
+  String categoryName;
   final String tokenId;
   final String tokenType;
   String imageURL;

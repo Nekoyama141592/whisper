@@ -159,7 +159,7 @@ class BookmarksModel extends ChangeNotifier {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
       // process set
-      bookmarkPostCategory.label = editLabel;
+      bookmarkPostCategory.categoryName = editLabel;
       // process UI
       flashController.dismiss();
       notifyListeners();
@@ -178,8 +178,8 @@ class BookmarksModel extends ChangeNotifier {
       // process set
       final now = Timestamp.now();
       final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPostCategory );
-      final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(createdAt: now,updatedAt: now,tokenType: bookmarkPostCategoryTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,label: newLabel);
-      bookmarkPostCategory.label = newLabel;
+      final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(createdAt: now,updatedAt: now,tokenType: bookmarkPostCategoryTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,categoryName: newLabel);
+      bookmarkPostCategory.categoryName = newLabel;
       // process Ui
       mainModel.bookmarkPostCategories.add(bookmarkPostCategory);
       flashController.dismiss();

@@ -87,7 +87,7 @@ class BookmarkLabelsPage extends ConsumerWidget {
               trailing: InkWell(
                 child: Icon(Icons.edit),
                 onTap: () {
-                  final TextEditingController labelEditingController = TextEditingController(text: bookmarkLabel.label);
+                  final TextEditingController labelEditingController = TextEditingController(text: bookmarkLabel.categoryName);
                   final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
                     return TextButton(
                       onPressed: () async {
@@ -115,7 +115,7 @@ class BookmarkLabelsPage extends ConsumerWidget {
                   voids.showFlashDialogue(context: context, content: content, titleText: 'ラベルを編集', positiveActionBuilder: positiveActionBuilder);
                 },
               ),
-              title: Text(bookmarkLabel.label,style: TextStyle(fontSize: height/32.0,),),
+              title: Text(bookmarkLabel.categoryName,style: TextStyle(fontSize: height/32.0,),),
               onTap: () async {
                 await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
               },

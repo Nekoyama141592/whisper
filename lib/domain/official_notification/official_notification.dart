@@ -8,11 +8,13 @@ class OfficialNotification{
   OfficialNotification({
     required this.createdAt,
     required this.notificationId,
-    required this.notificationType
+    required this.notificationType,
+    required this.text
   });
   final dynamic createdAt;
   final String notificationId;
   final String notificationType;
+  final String text;
   
   factory OfficialNotification.fromJson(Map<String,dynamic> json) => _$OfficialNotificationFromJson(json);
 

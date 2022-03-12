@@ -10,7 +10,7 @@ BookmarkPostCategory _$BookmarkPostCategoryFromJson(
         Map<String, dynamic> json) =>
     BookmarkPostCategory(
       createdAt: json['createdAt'],
-      label: json['label'] as String,
+      categoryName: json['categoryName'] as String,
       tokenId: json['tokenId'] as String,
       tokenType: json['tokenType'] as String,
       imageURL: json['imageURL'] as String,
@@ -22,7 +22,7 @@ Map<String, dynamic> _$BookmarkPostCategoryToJson(
         BookmarkPostCategory instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
-      'label': instance.label,
+      'categoryName': instance.categoryName,
       'tokenId': instance.tokenId,
       'tokenType': instance.tokenType,
       'imageURL': instance.imageURL,

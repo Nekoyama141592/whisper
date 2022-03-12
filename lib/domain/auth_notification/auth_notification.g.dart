@@ -11,6 +11,7 @@ AuthNotification _$AuthNotificationFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'],
       notificationId: json['notificationId'] as String,
       notificationType: json['notificationType'] as String,
+      text: json['text'] as String,
     );
 
 Map<String, dynamic> _$AuthNotificationToJson(AuthNotification instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$AuthNotificationToJson(AuthNotification instance) =>
       'createdAt': instance.createdAt,
       'notificationId': instance.notificationId,
       'notificationType': instance.notificationType,
+      'text': instance.text,
     };

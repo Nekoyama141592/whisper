@@ -67,7 +67,7 @@ class PostFutures extends ChangeNotifier {
               final BookmarkPostCategory bookmarkPostLabel = bookmarkPostLabels[i];
               return ListTile(
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
-                title: Text(bookmarkPostLabel.label),
+                title: Text(bookmarkPostLabel.categoryName),
                 onTap: () {
                   mainModel.bookmarkPostLabelTokenIdNotifier.value = bookmarkPostLabel.tokenId;
                 },

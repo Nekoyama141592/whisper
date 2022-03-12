@@ -8,11 +8,13 @@ class AuthNotification{
   AuthNotification({
     required this.createdAt,
     required this.notificationId,
-    required this.notificationType
+    required this.notificationType,
+    required this.text,
   });
   final dynamic createdAt;
   final String notificationId;
   final String notificationType;
+  final String text;
   
   factory AuthNotification.fromJson(Map<String,dynamic> json) => _$AuthNotificationFromJson(json);
 
