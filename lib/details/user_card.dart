@@ -24,33 +24,28 @@ class UserCard extends StatelessWidget {
     final passiveWhisperUser = fromMapToWhisperUser(userMap: result);
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).focusColor.withOpacity(0.3),
-            blurRadius: defaultPadding(context: context),
-            offset: Offset(0, 5)
-          )
-        ]
+        border: Border.all(
+          color: Theme.of(context).primaryColor.withOpacity(cardOpacity),
+        ),
+        borderRadius: BorderRadius.circular( defaultPadding(context: context) )
       ),
-      child: Card(
-        child: ListTile(
-          leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
-          trailing: Text(passiveWhisperUser.followerCount.toString() ,style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),),
-          title: Text(
-            passiveWhisperUser.userName,
-            style: TextStyle(
-              overflow: TextOverflow.ellipsis,
-              fontSize: defaultHeaderTextSize(context: context)
-            ),
+      child: ListTile(
+        leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
+        trailing: Text(passiveWhisperUser.followerCount.toString() ,style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),),
+        title: Text(
+          passiveWhisperUser.userName,
+          style: TextStyle(
+            overflow: TextOverflow.ellipsis,
+            fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2
           ),
-          subtitle: Text(
-            passiveWhisperUser.bio,
-            style: TextStyle(
-              color: Theme.of(context).focusColor,
-              fontWeight: FontWeight.bold,
-              fontSize: defaultHeaderTextSize(context: context),
-              overflow: TextOverflow.ellipsis,
-            ),
+        ),
+        subtitle: Text(
+          passiveWhisperUser.bio,
+          style: TextStyle(
+            color: Theme.of(context).focusColor,
+            fontWeight: FontWeight.bold,
+            fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),

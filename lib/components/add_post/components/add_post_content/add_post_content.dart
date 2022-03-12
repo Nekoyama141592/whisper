@@ -119,7 +119,6 @@ class AddPostContent extends StatelessWidget {
                 ],
               )
               : RetryButton(addPostModel,'次の投稿を行う'),
-            
               RecordingTime(addPostModel,value != AddPostState.recorded ? height/12.0 : height/24.0 ),
             
               value == AddPostState.recorded ?

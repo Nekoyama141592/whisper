@@ -115,7 +115,7 @@ class BookmarkLabelsPage extends ConsumerWidget {
                   voids.showFlashDialogue(context: context, content: content, titleText: 'ラベルを編集', positiveActionBuilder: positiveActionBuilder);
                 },
               ),
-              title: Text(bookmarkLabel.categoryName,style: TextStyle(fontSize: height/32.0,),),
+              title: Text(bookmarkLabel.categoryName,style: TextStyle(fontSize: height/32.0,fontWeight: FontWeight.bold ),),
               onTap: () async {
                 await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
               },

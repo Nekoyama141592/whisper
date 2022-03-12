@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/details/judge_screen.dart';
 // components
 import 'components/post_cards.dart';

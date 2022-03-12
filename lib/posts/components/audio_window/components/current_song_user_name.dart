@@ -20,7 +20,7 @@ class CurrentSongUserName extends StatelessWidget {
     return Text(
       whisperPost.userName,
       style: TextStyle(
-        fontSize: defaultHeaderTextSize(context: context)
+        fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2
       ),
       overflow: TextOverflow.ellipsis,
     );

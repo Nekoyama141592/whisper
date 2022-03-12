@@ -18,7 +18,7 @@ class CurrentSongTitle extends StatelessWidget {
    return Text(
     whisperPost.title,
     style: TextStyle(
-      fontSize: defaultHeaderTextSize(context: context),
+      fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2,
       fontWeight: FontWeight.bold
     ),
     overflow: TextOverflow.ellipsis,

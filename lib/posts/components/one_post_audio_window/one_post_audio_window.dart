@@ -37,7 +37,6 @@ class OnePostAudioWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final size = MediaQuery.of(context).size;
-    final height = size.height;
     final fontSize = defaultHeaderTextSize(context: context);
 
     return Container(
