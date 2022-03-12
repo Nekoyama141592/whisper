@@ -136,7 +136,7 @@ class AddPostModel extends ChangeNotifier {
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
       Directory directory = await getApplicationDocumentsDirectory();
-      filePath = directory.path + '/' + returnStoragePostName;
+      filePath = directory.path + '/' + returnStoragePostName();
       await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
@@ -185,7 +185,7 @@ class AddPostModel extends ChangeNotifier {
       final String storageImageName = (croppedFile == null) ? '' : returnStoragePostImageName();
       final String imageURL = (croppedFile == null) ? '' : await getPostImageURL(postImageName: storageImageName, mainModel: mainModel,postId: postId);
       // post
-      final String storagePostName = returnStoragePostName;
+      final String storagePostName = returnStoragePostName();
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
       // post firestore
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId);

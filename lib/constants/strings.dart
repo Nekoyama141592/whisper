@@ -21,8 +21,9 @@ String returnStorageUserImageName() {
 String returnStoragePostImageName() {
   return 'postImageStorage' + hyphenString + returnUuid4()+ hyphenString + imageExtension;
 }
-final String returnStoragePostName = 'postStorage' + hyphenString + returnUuid4()+ hyphenString + postExtension;
-
+String returnStoragePostName() {
+  return 'postStorage' + hyphenString + returnUuid4()+ hyphenString + postExtension;
+} 
 String returnPostId({ required UserMeta userMeta }) {
   return 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
 }
