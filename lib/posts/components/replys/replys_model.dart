@@ -314,7 +314,7 @@ class RepliesModel extends ChangeNotifier {
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,
       isRead: false,
-      masterReplyed: whisperComment.passiveUid == currentWhisperUser.uid,
+      masterReplied: whisperComment.passiveUid == currentWhisperUser.uid,
       notificationId: notificationId, 
       passiveUid: whisperComment.uid,
       postId: whisperComment.postId,

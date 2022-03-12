@@ -123,7 +123,7 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   void setBookmarksPostIds({ required MainModel mainModel, }){
-    final x = mainModel.bookmarkPosts.where((element) => element.bookmarkLabelId == indexBookmarkPostLabelId ).toList();
+    final x = mainModel.bookmarkPosts.where((element) => element.bookmarkPostCategoryId == indexBookmarkPostLabelId ).toList();
     x.sort((a,b)=> (b.createdAt as Timestamp ).compareTo(a.createdAt) );
     bookmarkPostIds = x.map((e) => e.postId ).toList();
     notifyListeners();

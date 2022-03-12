@@ -12,7 +12,7 @@ class BookmarkPost {
     required this.postId,
     required this.tokenId,
     required this.tokenType,
-    required this.bookmarkLabelId
+    required this.bookmarkPostCategoryId
   });
   
   final String activeUid;
@@ -21,7 +21,7 @@ class BookmarkPost {
   final String postId;
   final String tokenId;
   final String tokenType;
-  final String bookmarkLabelId;
+  final String bookmarkPostCategoryId;
 
   factory BookmarkPost.fromJson(Map<String,dynamic> json) => _$BookmarkPostFromJson(json);
 

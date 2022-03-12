@@ -83,7 +83,7 @@ class PostFutures extends ChangeNotifier {
         // process UI
         final Timestamp now = Timestamp.now();
         final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
-        final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkLabelId: mainModel.bookmarkPostLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
+        final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkPostCategoryId: mainModel.bookmarkPostLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
         final String uid = mainModel.userMeta.uid;
         mainModel.bookmarksPostIds.add(bookmarkPost.postId);
         mainModel.bookmarkPosts.add(bookmarkPost);
