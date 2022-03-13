@@ -66,16 +66,6 @@ class AccountPage extends ConsumerWidget {
             },
           ),
           ListTile(
-            title: Text('ブロックしているユーザー'),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              voids.showCupertinoDialogue(context: context, title: '注意', content: 'ブロックしているユーザーが表示されます', action: () {
-                Navigator.pop(context);
-                routes.toBlocksUsersPage(context, mainModel);
-              });
-            },
-          ),
-          ListTile(
             title: Text('固有のユーザー名'),
             subtitle: Text(
               mainModel.currentWhisperUser.uid,

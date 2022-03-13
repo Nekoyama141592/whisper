@@ -117,10 +117,6 @@ void toReplysPage({ required BuildContext context, required Post whisperPost,req
  Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage( whisperPost: whisperPost, whisperPostComment: whisperPostComment, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) )); 
 }
 
-void toBlocksUsersPage(context, MainModel mainModel) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BlocksUsersPage(mainModel: mainModel,) ));
-}
-
 void toMutesUsersPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => MutesUsersPage(mainModel: mainModel,) ));
 }
