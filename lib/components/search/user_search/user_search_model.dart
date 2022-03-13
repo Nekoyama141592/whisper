@@ -30,12 +30,18 @@ class UserSearchModel extends ChangeNotifier {
 
   Future<void> operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
     if (searchTerm.length > maxSearchLength ) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字未満で検索してください')));
+      showSnackBar(context: context, text: maxSearchLength.toString() + '文字未満で検索してください' );
     } else if (searchTerm.isNotEmpty) {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
       final Query<Map<String,dynamic>> query = returnUserSearchQuery(searchWords: searchWords);
       await processBasicDocs(query: query, docs: results);
+      if (searchTerm.length == uidLength) {
+        final x = await returnUserDocRef(uid: searchTerm ).get();
+        if (x.exists == true) {
+          results.insert(0, x);
+        }
+      }
       endLoading();
     }
   }
