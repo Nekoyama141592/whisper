@@ -55,9 +55,6 @@ class ReplyCard extends ConsumerWidget {
         SlideIcon(caption: 'Mute Reply',iconData: Icons.visibility_off, onTap: () async {
           await commentsOrReplysModel.muteReply(context: context,mainModel: mainModel,whisperReply: whisperReply);
         } , ),
-        SlideIcon(caption: 'Block User', iconData: Icons.block, onTap: () async {
-          await commentsOrReplysModel.blockUser(context: context,mainModel: mainModel,passiveUid: whisperReply.uid,);
-        }, ),
       ] : [],
       child: InkWell(
         onLongPress: () async {

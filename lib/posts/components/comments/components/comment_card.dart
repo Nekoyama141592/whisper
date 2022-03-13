@@ -61,9 +61,6 @@ class CommentCard extends ConsumerWidget {
         SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async {
           await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperComment);
         } , ),
-        SlideIcon(caption: 'Block User', iconData: Icons.block, onTap: () async {
-          await commentsOrReplysModel.blockUser(context: context,mainModel: mainModel,passiveUid: whisperComment.uid, );
-        }, ),
       ]: [],
       child: InkWell(
         onLongPress:  () async {

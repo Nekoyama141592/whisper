@@ -70,9 +70,6 @@ class PostCards extends ConsumerWidget {
                   mutePost: () async {
                     await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results, );
                   },
-                  blockUser: () async {
-                    await postFutures.blockUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: postSearchModel.results, post: post, mainModel: mainModel);
-                  },
                   mainModel: mainModel,
                 );
               }

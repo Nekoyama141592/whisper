@@ -163,21 +163,21 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
   }
 
-  Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
-    // process set
-    final whisperPost = fromMapToPost(postMap: post);
-    final String passiveUid = whisperPost.uid;
-    final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-    final BlockUser blockUser = BlockUser(createdAt: now,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
-    // process UI
-    blockUsers.add(blockUser);
-    blocksUids.add(passiveUid);
-    await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-    notifyListeners();
-    // process Backend
-    await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
-  }
+  // Future<void> blockUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> blocksUids, required List<BlockUser> blockUsers, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results, required Map<String,dynamic> post, required MainModel mainModel}) async {
+  //   // process set
+  //   final whisperPost = fromMapToPost(postMap: post);
+  //   final String passiveUid = whisperPost.uid;
+  //   final Timestamp now = Timestamp.now();
+  //   final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
+  //   final BlockUser blockUser = BlockUser(createdAt: now,activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId, tokenType: blockUserTokenType );
+  //   // process UI
+  //   blockUsers.add(blockUser);
+  //   blocksUids.add(passiveUid);
+  //   await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+  //   notifyListeners();
+  //   // process Backend
+  //   await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
+  // }
 
   Future<void> removeTheUsersPost({ required List<DocumentSnapshot<Map<String,dynamic>>> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
     results.removeWhere((result) => fromMapToPost(postMap: result.data()!).uid == passiveUid);

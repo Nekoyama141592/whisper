@@ -40,22 +40,22 @@ class CommentsOrReplysModel extends ChangeNotifier {
     }
   }
 
-  Future<void> blockUser({ required BuildContext context,required MainModel mainModel, required String passiveUid,}) async {
-    if (mainModel.blockUids.contains(passiveUid) == false) {
-      // process set
-      final Timestamp now = Timestamp.now();
-      final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
-      final BlockUser blockUser = BlockUser(createdAt: now, activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
-      // process UI
-      mainModel.blockUsers.add(blockUser);
-      mainModel.blockUids.add(blockUser.passiveUid);
-      showSnackBar(context: context, text: blockUserMsg ); // notifyListeners() not working
-      // process Backend
-      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
-    } else {
-      notifyListeners();
-    }
-  }
+  // Future<void> blockUser({ required BuildContext context,required MainModel mainModel, required String passiveUid,}) async {
+  //   if (mainModel.blockUids.contains(passiveUid) == false) {
+  //     // process set
+  //     final Timestamp now = Timestamp.now();
+  //     final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.blockUser );
+  //     final BlockUser blockUser = BlockUser(createdAt: now, activeUid: mainModel.userMeta.uid,passiveUid: passiveUid,tokenId: tokenId,tokenType: blockUserTokenType );
+  //     // process UI
+  //     mainModel.blockUsers.add(blockUser);
+  //     mainModel.blockUids.add(blockUser.passiveUid);
+  //     showSnackBar(context: context, text: blockUserMsg ); // notifyListeners() not working
+  //     // process Backend
+  //     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(blockUser.toJson());
+  //   } else {
+  //     notifyListeners();
+  //   }
+  // }
 
   Future<void> muteComment({ required BuildContext context,required MainModel mainModel, required WhisperPostComment whisperComment }) async {
     if (mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) == false) {

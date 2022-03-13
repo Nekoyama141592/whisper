@@ -71,9 +71,6 @@ class MyProfilePostScreen extends ConsumerWidget {
               mutePost: () async {
                 await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.posts );
               },
-              blockUser: () async {
-                await postFutures.blockUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, blocksUids: mainModel.blockUids, blockUsers: mainModel.blockUsers, i: i, results: myProfileModel.posts, post: post, mainModel: mainModel);
-              },
               mainModel: mainModel,
             );
           }
