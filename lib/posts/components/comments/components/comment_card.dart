@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
+import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
@@ -54,31 +55,15 @@ class CommentCard extends ConsumerWidget {
       actionExtentRatio: 0.25,
       actions: !(whisperComment.uid == mainModel.currentWhisperUser.uid) ?
       [
-        IconSlideAction(
-          caption: 'Mute User',
-          color: Colors.transparent,
-          icon: Icons.person_off,
-          onTap: () async {
-            await commentsOrReplysModel.muteUser(mainModel: mainModel,passiveUid: whisperComment.uid, );
-          } ,
-        ),
-        IconSlideAction(
-          caption: 'Mute Comment',
-          color: Colors.transparent,
-          icon: Icons.person_off,
-          onTap: () async {
-            await commentsOrReplysModel.muteComment(mainModel: mainModel,whisperComment: whisperComment);
-          } ,
-        ),
-
-        IconSlideAction(
-          caption: 'Block User',
-          color: Colors.transparent,
-          icon: Icons.block,
-          onTap: () async {
-            await commentsOrReplysModel.blockUser(mainModel: mainModel,passiveUid: whisperComment.uid, );
-          },
-        ),
+        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async {
+          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperComment.uid, );
+        } , ),
+        SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async {
+          await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperComment);
+        } , ),
+        SlideIcon(caption: 'Block User', iconData: Icons.block, onTap: () async {
+          await commentsOrReplysModel.blockUser(context: context,mainModel: mainModel,passiveUid: whisperComment.uid, );
+        }, ),
       ]: [],
       child: InkWell(
         onLongPress:  () async {

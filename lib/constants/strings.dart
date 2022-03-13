@@ -149,3 +149,8 @@ const String notificationTypeMapKey = 'notificationType'; // lib/constants/enums
 const String privacyURL = 'https://whisper-web.herokuapp.com/privacy';
 const String complianceURL = 'https://whisper-web.herokuapp.com/compliance';
 const String tosURL = 'https://whisper-web.herokuapp.com/tos';
+// msg
+const String muteUserMsg = 'ユーザーをミュートしました';
+const String blockUserMsg = 'ユーザーをブロックしました';
+const String mutePostCommentMsg = 'このコメントをミュートしました';
+const String mutePostCommentReplyMsg = 'このリプライをミュートしました';

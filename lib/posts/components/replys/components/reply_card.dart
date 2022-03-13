@@ -9,8 +9,9 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // components
-import 'package:whisper/posts/components/replys/components/details/reply_like_button.dart';
+import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
+import 'package:whisper/posts/components/replys/components/details/reply_like_button.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';
@@ -48,31 +49,15 @@ class ReplyCard extends ConsumerWidget {
       actionExtentRatio: 0.25,
       actions: !(whisperReply.uid == currentWhisperUser.uid) ?
       [
-        IconSlideAction(
-          caption: 'Mute User',
-          color: Colors.transparent,
-          icon: Icons.person_off,
-          onTap: () async {
-            await commentsOrReplysModel.muteUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
-          } ,
-        ),
-        IconSlideAction(
-          caption: 'Mute User',
-          color: Colors.transparent,
-          icon: Icons.person_off,
-          onTap: () async {
-            await commentsOrReplysModel.muteReply(mainModel: mainModel,whisperReply: whisperReply);
-          } ,
-        ),
-
-        IconSlideAction(
-          caption: 'Block User',
-          color: Colors.transparent,
-          icon: Icons.block,
-          onTap: () async {
-            await commentsOrReplysModel.blockUser(mainModel: mainModel,passiveUid: whisperReply.uid,);
-          },
-        ),
+        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async {
+          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperReply.uid,);
+        } , ),
+        SlideIcon(caption: 'Mute Reply',iconData: Icons.visibility_off, onTap: () async {
+          await commentsOrReplysModel.muteReply(context: context,mainModel: mainModel,whisperReply: whisperReply);
+        } , ),
+        SlideIcon(caption: 'Block User', iconData: Icons.block, onTap: () async {
+          await commentsOrReplysModel.blockUser(context: context,mainModel: mainModel,passiveUid: whisperReply.uid,);
+        }, ),
       ] : [],
       child: InkWell(
         onLongPress: () async {
