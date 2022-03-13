@@ -47,8 +47,8 @@ class NotificationIcon extends ConsumerWidget {
                 right: 0,
                 top: 0,
                 child: Container(
-                  height: defaultPadding(context: context),
-                  width: defaultPadding(context: context),
+                  height: defaultPadding(context: context)/notificationDiv,
+                  width: defaultPadding(context: context)/notificationDiv,
                   decoration: BoxDecoration(
                     color: kErrorColor,
                     shape: BoxShape.circle

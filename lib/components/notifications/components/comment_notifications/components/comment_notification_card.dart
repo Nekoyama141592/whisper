@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
+// constants
+import 'package:whisper/constants/bools.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -31,41 +33,43 @@ class CommentNotificationCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final length = defaultPadding(context: context) * 4.0;
+    final length = defaultPadding(context: context) * 3.0;
     final padding = 0.0;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
     final userImageURL = commentNotification.userImageURL;
     
-    return Padding(
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: commentNotification.activeUid, ) && !mainModel.mutePostCommentIds.contains(commentNotification.postCommentId) ?
+    Padding(
       padding: EdgeInsets.all(defaultPadding(context: context)),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(defaultPadding(context: context)),
-          color: Theme.of(context).focusColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(defaultPadding(context: context))
+              ),
+            ),
+            child: ListTile(
               tileColor: Theme.of(context).scaffoldBackgroundColor,
               leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.imageURL ),
-              title: Text(currentWhisperUser.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
               subtitle: Text(commentNotification.postTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
             ),
-            ListTile(
-              tileColor: commentNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
-              leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: commentNotification.activeUid,mainModel: mainModel,),
-              subtitle: Text(commentNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
-              onTap: () async {
-                await notificationsModel.onCommentNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, commentNotification: commentNotification);
-              },
-            )
-          ],
-        ),
+          ),
+          ListTile(
+            title: Text(commentNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
+            tileColor: commentNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
+            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: commentNotification.activeUid,mainModel: mainModel,),
+            subtitle: Text(commentNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
+            onTap: () async {
+              await notificationsModel.onCommentNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, commentNotification: commentNotification);
+            },
+          )
+        ],
       ),
-    );
+    ) : SizedBox.shrink();
   }
 }

@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/details/redirect_user_image.dart';
-// constants
-import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 // model
@@ -15,7 +15,6 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
 import 'package:whisper/components/notifications/notifications_model.dart';
-import 'package:whisper/themes/themes_model.dart';
 
 class ReplyNotificationCard extends ConsumerWidget {
 
@@ -40,34 +39,36 @@ class ReplyNotificationCard extends ConsumerWidget {
     final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
     final userImageURL = replyNotification.userImageURL;
 
-    return Padding(
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: replyNotification.activeUid, ) && !mainModel.mutePostCommentReplyIds.contains(replyNotification.postCommentReplyId) ?
+    Padding(
       padding: EdgeInsets.all(defaultPadding(context: context)),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(defaultPadding(context: context)),
-          color: Theme.of(context).focusColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(defaultPadding(context: context))
+              ),
+            ),
+            child: ListTile(
               tileColor: Theme.of(context).scaffoldBackgroundColor,
               leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.imageURL ),
-              title: Text(currentWhisperUser.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
               subtitle: Text(replyNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
             ),
-            ListTile(
-              tileColor: replyNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
-              leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: replyNotification.activeUid,mainModel: mainModel,),
-              subtitle: Text(replyNotification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
-              onTap: () async {
-                await notificationsModel.onReplyNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification);
-              },
-            )
-          ],
-        ),
+          ),
+          ListTile(
+            title: Text(replyNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
+            tileColor: replyNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
+            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: replyNotification.activeUid,mainModel: mainModel,),
+            subtitle: Text(replyNotification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
+            onTap: () async {
+              await notificationsModel.onReplyNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification);
+            },
+          )
+        ],
       ),
-    );
+    ) : SizedBox.shrink();
   }
 }
