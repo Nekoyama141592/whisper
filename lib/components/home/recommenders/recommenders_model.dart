@@ -168,7 +168,7 @@ class RecommendersModel extends ChangeNotifier {
     posts.sort((a,b) {
       final Timestamp aCreatedAt = Post.fromJson(a.data()!).createdAt as Timestamp;
       final Timestamp bCreatedAt = Post.fromJson(b.data()!).createdAt as Timestamp;
-      return aCreatedAt.compareTo(bCreatedAt);
+      return bCreatedAt.compareTo(aCreatedAt);
     });
   }
 

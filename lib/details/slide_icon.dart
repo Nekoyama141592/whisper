@@ -26,7 +26,7 @@ class SlideIcon extends StatelessWidget {
       child: IconSlideAction(
         caption: caption,
         icon: iconData,
-        color: Theme.of(context).highlightColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         onTap: onTap,
       ),
     );

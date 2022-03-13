@@ -16,13 +16,13 @@ const String recommendableString = 'recommendable';
 const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 
 String returnStorageUserImageName() {
-  return 'userImageStorage' + hyphenString + returnUuid4()+ hyphenString + imageExtension;
+  return 'userImageStorage' + hyphenString + returnUuid4()+ imageExtension;
 }
 String returnStoragePostImageName() {
-  return 'postImageStorage' + hyphenString + returnUuid4()+ hyphenString + imageExtension;
+  return 'postImageStorage' + hyphenString + returnUuid4() + imageExtension;
 }
 String returnStoragePostName() {
-  return 'postStorage' + hyphenString + returnUuid4()+ hyphenString + postExtension;
+  return 'postStorage' + hyphenString + returnUuid4()+ postExtension;
 } 
 String returnPostId({ required UserMeta userMeta }) {
   return 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
