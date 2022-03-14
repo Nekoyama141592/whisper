@@ -89,6 +89,7 @@ CollectionReference<Map<String,dynamic>> returnTimelinesColRef({ required String
 CollectionReference<Map<String, dynamic>> returnFollowersColRef({ required String uid }) { return returnUserDocRef(uid: uid).collection(followersColRefName); }
 DocumentReference<Map<String, dynamic>> returnFollowerDocRef({ required String uid, required String followerUid }) { return returnFollowersColRef(uid: uid).doc(followerUid); }
 DocumentReference<Map<String,dynamic>> returnUserUpdateLogDocRef({ required String uid,required String userUpdateLogId }) { return returnUserDocRef(uid: uid).collection(userUpdateLogsColRefName).doc(userUpdateLogId); }
+DocumentReference<Map<String,dynamic>> returnUserUpdateLogNoBatchDocRef({ required String uid,required String userUpdateLogNoBatchId }) { return returnUserDocRef(uid: uid).collection(userUpdateLogNoBatchesColRefName).doc(userUpdateLogNoBatchId); }
 CollectionReference<Map<String, dynamic>>  returnTokensColRef({ required String uid }) { return returnUserMetaDocRef(uid: uid).collection(tokensColRefName); }
 DocumentReference<Map<String, dynamic>>  returnTokenDocRef({ required String uid , required String tokenId }) { return returnTokensColRef(uid: uid).doc(tokenId); }
 CollectionReference<Map<String, dynamic>>  returnNotificationsColRef ({ required String uid }) { return returnUserMetaDocRef(uid: uid).collection(notificationsColRefName); }

@@ -6,22 +6,25 @@ part 'user_update_log.g.dart';
 @JsonSerializable()
 class UserUpdateLog {
   UserUpdateLog({
+    required this.accountName,
     required this.bio,
-    required this.links,
     required this.imageURL,
+    required this.mainWalletAddress,
+    required this.recommendState,
     required this.searchToken,
     required this.uid,
     required this.userName,
     required this.updatedAt
   });
-  
-  final String bio;
-  final String imageURL;
-  final List<Map<String,dynamic>> links;
-  final Map<String,dynamic> searchToken;
+  String accountName;
+  String bio;
+  String imageURL;
+  String mainWalletAddress;
+  String recommendState;
+  Map<String,dynamic> searchToken;
   final String uid;
-  final String userName;
-  final dynamic updatedAt;
+  dynamic updatedAt;
+  String userName;
   
   factory UserUpdateLog.fromJson(Map<String,dynamic> json) => _$UserUpdateLogFromJson(json);
 

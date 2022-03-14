@@ -8,11 +8,11 @@ part of 'user_update_log.dart';
 
 UserUpdateLog _$UserUpdateLogFromJson(Map<String, dynamic> json) =>
     UserUpdateLog(
+      accountName: json['accountName'] as String,
       bio: json['bio'] as String,
-      links: (json['links'] as List<dynamic>)
-          .map((e) => e as Map<String, dynamic>)
-          .toList(),
       imageURL: json['imageURL'] as String,
+      mainWalletAddress: json['mainWalletAddress'] as String,
+      recommendState: json['recommendState'] as String,
       searchToken: json['searchToken'] as Map<String, dynamic>,
       uid: json['uid'] as String,
       userName: json['userName'] as String,
@@ -21,11 +21,13 @@ UserUpdateLog _$UserUpdateLogFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UserUpdateLogToJson(UserUpdateLog instance) =>
     <String, dynamic>{
+      'accountName': instance.accountName,
       'bio': instance.bio,
       'imageURL': instance.imageURL,
-      'links': instance.links,
+      'mainWalletAddress': instance.mainWalletAddress,
+      'recommendState': instance.recommendState,
       'searchToken': instance.searchToken,
       'uid': instance.uid,
-      'userName': instance.userName,
       'updatedAt': instance.updatedAt,
+      'userName': instance.userName,
     };

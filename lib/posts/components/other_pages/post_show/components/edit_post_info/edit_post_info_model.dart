@@ -82,7 +82,7 @@ class EditPostInfoModel extends ChangeNotifier {
       }
       whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
       try{
-        final PostUpdateLog postUpdateLog = PostUpdateLog(imageURLs: whisperPost.imageURLs, postId: whisperPost.postId, title: title, searchToken: whisperPost.searchToken, links: whisperPost.links, updatedAt: Timestamp.now(), uid: whisperPost.uid);
+        final PostUpdateLog postUpdateLog = PostUpdateLog(commentsState: whisperPost.commentsState, country: whisperPost.country, description: whisperPost.description, genre: whisperPost.genre, hashTags: whisperPost.hashTags, imageURLs: whisperPost.imageURLs, isPinned: whisperPost.isPinned, language: whisperPost.language, links: whisperPost.links, postState: whisperPost.postState, postId: whisperPost.postId, tagAccountNames: whisperPost.tagAccountNames, searchToken: whisperPost.searchToken, title: whisperPost.title, uid: whisperPost.uid, updatedAt: Timestamp.now() );
         await returnPostUpdateLogDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postUpdateLogId: generatePostUpdateLogId() ).set(postUpdateLog.toJson());
         isEditing = false;
         notifyListeners();
