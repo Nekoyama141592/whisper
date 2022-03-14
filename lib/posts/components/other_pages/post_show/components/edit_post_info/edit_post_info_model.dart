@@ -13,6 +13,7 @@ import 'package:whisper/constants/maps.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart';
+import 'package:whisper/domain/post_update_log/post_update_log.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -81,13 +82,8 @@ class EditPostInfoModel extends ChangeNotifier {
       }
       whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
       try{
-        await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).update({
-          imageURLsFieldKey: whisperPost.imageURLs,
-          titleFieldKey: whisperPost.title,
-          searchTokenFieldKey: whisperPost.searchToken,
-          linksFieldKey: whisperPost.links,
-          updatedAtFieldKey: Timestamp.now(),
-        });
+        final PostUpdateLog postUpdateLog = PostUpdateLog(imageURLs: whisperPost.imageURLs, postId: whisperPost.postId, title: title, searchToken: whisperPost.searchToken, links: whisperPost.links, updatedAt: Timestamp.now(), uid: whisperPost.uid);
+        await returnPostUpdateLogDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postUpdateLogId: generatePostUpdateLogId() ).set(postUpdateLog.toJson());
         isEditing = false;
         notifyListeners();
         title = '';

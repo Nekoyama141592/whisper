@@ -11,7 +11,8 @@ class UserUpdateLog {
     required this.imageURL,
     required this.searchToken,
     required this.uid,
-    required this.userName
+    required this.userName,
+    required this.updatedAt
   });
   
   final String bio;
@@ -20,6 +21,7 @@ class UserUpdateLog {
   final Map<String,dynamic> searchToken;
   final String uid;
   final String userName;
+  final dynamic updatedAt;
   
   factory UserUpdateLog.fromJson(Map<String,dynamic> json) => _$UserUpdateLogFromJson(json);
 

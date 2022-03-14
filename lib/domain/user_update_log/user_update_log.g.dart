@@ -16,6 +16,7 @@ UserUpdateLog _$UserUpdateLogFromJson(Map<String, dynamic> json) =>
       searchToken: json['searchToken'] as Map<String, dynamic>,
       uid: json['uid'] as String,
       userName: json['userName'] as String,
+      updatedAt: json['updatedAt'],
     );
 
 Map<String, dynamic> _$UserUpdateLogToJson(UserUpdateLog instance) =>
@@ -26,4 +27,5 @@ Map<String, dynamic> _$UserUpdateLogToJson(UserUpdateLog instance) =>
       'searchToken': instance.searchToken,
       'uid': instance.uid,
       'userName': instance.userName,
+      'updatedAt': instance.updatedAt,
     };

@@ -61,6 +61,9 @@ String generatePostCommentReplyId({ required String uid }) {
 String generateUserUpdateLogId() {
   return 'userUpdateLog' + hyphenString + returnUuid4();
 }
+String generatePostUpdateLogId() {
+  return 'postUpdateLog' + hyphenString + returnUuid4();
+}
 // prefs
 const String speedPrefsKey = 'speed';
 const String isDarkThemePrefsKey = 'isDarkTheme';
@@ -86,11 +89,13 @@ final String commentNotificationType = returnNotificationTypeString(notification
 final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentReplyNotification );
 // colRefName
 const String usersColRefName = 'users';
+const String userUpdateLogsColRefName = 'userUpdateLogs';
 const String userMetaColRefName = 'userMeta';
 const String followersColRefName = 'followers';
 const String tokensColRefName = 'tokens';
 const String notificationsColRefName = 'notifications';
 const String postsColRefName = 'posts';
+const String postUpdateLogsColRefName = 'postUpdateLogs';
 const String postLikesColRefName = 'postLikes';
 const String postBookmarksColRefName = 'postBookmarks';
 const String postCommentsColRefName = 'postComments';
@@ -128,7 +133,6 @@ const String updatedAtFieldKey = 'updatedAt';
 const String passiveUidFieldKey = 'passiveUid';
 const String notificationsFieldKey = 'notifications';
 const String notificationTypeFieldKey = 'notificationType';
-const String userUpdateLogsFieldKey = 'userUpdateLogs';
 // updateFieldKey
 const String imageURLsFieldKey = 'imageURLs';
 const String imageURLFieldKey = 'imageURL';

@@ -354,16 +354,16 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
     updateWhisperUser.imageURL = downloadURL;
   }
-  final UserUpdateLog updateUserLog = UserUpdateLog(
+  final UserUpdateLog userUpdateLog = UserUpdateLog(
     bio: updateWhisperUser.bio,
     imageURL: updateWhisperUser.imageURL,
     links: updateWhisperUser.links,
     searchToken: updateWhisperUser.searchToken,
     uid: updateWhisperUser.uid,
-    userName: updateWhisperUser.userName
+    userName: updateWhisperUser.userName,
+    updatedAt: Timestamp.now()
   );
-  await returnUserDocRef(uid: updateWhisperUser.uid).update(updateUserLog.toJson());
-  await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(updateUserLog.toJson());
+  await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(userUpdateLog.toJson());
 }
 
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {
