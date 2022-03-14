@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/strings.dart';
@@ -231,6 +232,7 @@ class AddPostModel extends ChangeNotifier {
       negativeScore: 0,
       playCount: 0,
       postId: postId, 
+      postState: returnPostStateString(postState: PostState.basic ),
       postCommentCount: 0,
       positiveScore: 0,
       score: defaultScore.toDouble(),

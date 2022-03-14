@@ -13,6 +13,7 @@ class WhisperUser {
     required this.followerCount,
     required this.followingCount,
     required this.imageURL,
+    required this.isAdmin,
     required this.isSuspended,
     required this.isDelete,
     required this.isKeyAccount,
@@ -38,6 +39,7 @@ class WhisperUser {
   int followerCount;
   int followingCount;
   String imageURL;
+  bool isAdmin;
   bool isDelete;
   bool isKeyAccount;
   bool isNFTicon;

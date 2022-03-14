@@ -1,6 +1,11 @@
 import 'package:whisper/constants/strings.dart';
 
 enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
+// use on firestore
+enum PostState { basic, repost}
+enum DmState {onlyFollowingAndFollowed}
+enum RecommendState {isRecommendable}
+// use on front
 enum PostType { bookmarks, feeds, myProfile, postSearch, recommenders, userShow ,onePost} 
 enum NotificationType { authNotification, postCommentNotification, postCommentReplyNotification,officialNotification, }
 dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {

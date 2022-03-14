@@ -12,8 +12,6 @@ const String postExtension = '.aac';
 const String imageExtension = '.jpeg';
 const String unNamedString = 'unNamed';
 const String notificationString = 'notification';
-const String recommendableString = 'recommendable';
-const String onlyFollowingAndFollowedString = 'onlyFollowingAndFollowed';
 
 String returnStorageUserImageName() {
   return 'userImageStorage' + hyphenString + returnUuid4()+ imageExtension;
@@ -51,6 +49,15 @@ String returnNotificationId({ required NotificationType notificationType}) {
 }
 String returnNotificationTypeString({ required NotificationType notificationType }) {
   return notificationType.toString().substring(notificationTypeStartIndex);
+}
+String returnDmStateString({ required DmState dmState }) {
+  return dmState.toString().substring(dmStateStartIndex);
+}
+String returnRecommendStateString ({ required RecommendState recommendState }) {
+  return recommendState.toString().substring(recommendStateStartIndex);
+}
+String returnPostStateString ({ required PostState postState }) {
+  return postState.toString().substring(postStateStartIndex);
 }
 String generatePostCommentId({ required String uid }) {
   return 'postComment' + hyphenString + uid + hyphenString + returnUuid4();

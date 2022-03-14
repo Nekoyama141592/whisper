@@ -26,6 +26,7 @@ class Post{
     required this.links,
     required this.negativeScore,
     required this.playCount,
+    required this.postState,
     required this.postId,
     required this.positiveScore,
     required this.postCommentCount,
@@ -58,6 +59,7 @@ class Post{
   List<Map<String,dynamic>> links;
   num negativeScore;
   int playCount;
+  String postState;
   int postCommentCount;
   String postId;
   num positiveScore;
