@@ -7,7 +7,6 @@ part 'user_update_log.g.dart';
 class UserUpdateLog {
   UserUpdateLog({
     required this.accountName,
-    required this.bio,
     required this.imageURL,
     required this.mainWalletAddress,
     required this.recommendState,
@@ -16,15 +15,14 @@ class UserUpdateLog {
     required this.userName,
     required this.updatedAt
   });
-  String accountName;
-  String bio;
-  String imageURL;
-  String mainWalletAddress;
-  String recommendState;
-  Map<String,dynamic> searchToken;
+  final String accountName;
+  final String imageURL;
+  final String mainWalletAddress;
+  final String recommendState;
+  final Map<String,dynamic> searchToken;
   final String uid;
-  dynamic updatedAt;
-  String userName;
+  final dynamic updatedAt;
+  final String userName;
   
   factory UserUpdateLog.fromJson(Map<String,dynamic> json) => _$UserUpdateLogFromJson(json);
 

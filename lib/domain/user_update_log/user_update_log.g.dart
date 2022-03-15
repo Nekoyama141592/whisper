@@ -9,7 +9,6 @@ part of 'user_update_log.dart';
 UserUpdateLog _$UserUpdateLogFromJson(Map<String, dynamic> json) =>
     UserUpdateLog(
       accountName: json['accountName'] as String,
-      bio: json['bio'] as String,
       imageURL: json['imageURL'] as String,
       mainWalletAddress: json['mainWalletAddress'] as String,
       recommendState: json['recommendState'] as String,
@@ -22,7 +21,6 @@ UserUpdateLog _$UserUpdateLogFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$UserUpdateLogToJson(UserUpdateLog instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
-      'bio': instance.bio,
       'imageURL': instance.imageURL,
       'mainWalletAddress': instance.mainWalletAddress,
       'recommendState': instance.recommendState,

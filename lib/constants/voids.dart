@@ -355,7 +355,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
     updateWhisperUser.imageURL = downloadURL;
   }
   final Timestamp now = Timestamp.now();
-  final UserUpdateLog userUpdateLog = UserUpdateLog(accountName: updateWhisperUser.accountName, bio: updateWhisperUser.bio, imageURL: updateWhisperUser.imageURL, mainWalletAddress: updateWhisperUser.mainWalletAddress, recommendState: updateWhisperUser.recommendState, searchToken: updateWhisperUser.searchToken, uid: updateWhisperUser.uid, userName: userName, updatedAt: now );
+  final UserUpdateLog userUpdateLog = UserUpdateLog(accountName: updateWhisperUser.accountName,imageURL: updateWhisperUser.imageURL, mainWalletAddress: updateWhisperUser.mainWalletAddress, recommendState: updateWhisperUser.recommendState, searchToken: updateWhisperUser.searchToken, uid: updateWhisperUser.uid, userName: userName, updatedAt: now );
   await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(userUpdateLog.toJson());
 }
 

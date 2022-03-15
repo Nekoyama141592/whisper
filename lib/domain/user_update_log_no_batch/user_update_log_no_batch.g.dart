@@ -9,6 +9,7 @@ part of 'user_update_log_no_batch.dart';
 UserUpdateLogNoBatch _$UserUpdateLogNoBatchFromJson(
         Map<String, dynamic> json) =>
     UserUpdateLogNoBatch(
+      bio: json['bio'] as String,
       dmState: json['dmState'] as String,
       isKeyAccount: json['isKeyAccount'] as bool,
       links: (json['links'] as List<dynamic>)
@@ -23,6 +24,7 @@ UserUpdateLogNoBatch _$UserUpdateLogNoBatchFromJson(
 Map<String, dynamic> _$UserUpdateLogNoBatchToJson(
         UserUpdateLogNoBatch instance) =>
     <String, dynamic>{
+      'bio': instance.bio,
       'dmState': instance.dmState,
       'isKeyAccount': instance.isKeyAccount,
       'links': instance.links,

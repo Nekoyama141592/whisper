@@ -26,7 +26,7 @@ class UserLinksModel extends ChangeNotifier {
   }
 
   Future<void> updateUserLink ({ required WhisperUser updateWhisperUser }) async {
-    final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: updateWhisperUser.updatedAt, walletAddresses: updateWhisperUser.walletAddresses);
+    final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: updateWhisperUser.updatedAt, walletAddresses: updateWhisperUser.walletAddresses);
     await returnUserUpdateLogNoBatchDocRef(uid: updateWhisperUser.uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());
   }
 }
