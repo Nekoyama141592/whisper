@@ -33,7 +33,7 @@ class WhisperReply {
   final bool isDelete;
   final bool isNFTicon;
   final bool isOfficial;
-  final int likeCount;
+  int likeCount;
   final num negativeScore;
   final String passiveUid;
   final String postId;

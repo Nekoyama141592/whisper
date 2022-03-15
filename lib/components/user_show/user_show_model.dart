@@ -18,7 +18,6 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/follower/follower.dart';
@@ -30,8 +29,6 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
-// pages
-import 'package:whisper/links/post_links/links_page.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
@@ -258,7 +255,7 @@ class UserShowModel extends ChangeNotifier {
     );
   } 
 
-  Future<void> follow({ required BuildContext context,required MainModel mainModel, required String passiveUid }) async {
+  Future<void> follow({ required BuildContext context,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
   if (mainModel.followingUids.length >= maxFollowCount) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Limit' + maxFollowCount.toString() + 'Following' )));
   } else {
@@ -266,12 +263,14 @@ class UserShowModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final userMeta = mainModel.userMeta;
     final String activeUid = userMeta.uid;
+    final String passiveUid = passiveWhisperUser.uid;
     final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.following );
     final Following following = Following(myUid: activeUid, createdAt: now, passiveUid: passiveUid,tokenId: tokenId, tokenType: followingTokenType );
     // processUI
     mainModel.following.add(following);
     mainModel.followingUids.add(passiveUid);
     mainModel.currentWhisperUser.followingCount += plusOne;
+    passiveWhisperUser.followerCount += plusOne;
     notifyListeners();
     // process backend
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
@@ -292,15 +291,17 @@ Future<void> createFollower({ required UserMeta userMeta,required Timestamp now,
   await returnFollowerDocRef(uid: passiveUid, followerUid: userMeta.uid ).set(follower.toJson());
 }
 
-Future<void> unfollow({ required MainModel mainModel,required String passiveUid }) async {
+Future<void> unfollow({ required MainModel mainModel,required WhisperUser passiveWhisperUser }) async {
   // process set
   final userMeta = mainModel.userMeta;
   final activeUid = userMeta.uid;
+  final passiveUid = passiveWhisperUser.uid;
   final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
   // processUI
   mainModel.following.remove(deleteFollowingToken);
   mainModel.followingUids.remove(passiveUid);
   mainModel.currentWhisperUser.followingCount += minusOne;
+  passiveWhisperUser.followerCount += minusOne;
   notifyListeners();
   // process backend
   await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();

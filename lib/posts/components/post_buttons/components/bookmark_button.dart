@@ -29,7 +29,6 @@ class BookmarkButton extends ConsumerWidget {
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (postType != PostType.postSearch ) {
       final bookmarksCount = whisperPost.bookmarkCount;
-      final plusOneCount = bookmarksCount + 1;
       return 
       mainModel.bookmarksPostIds.contains(whisperPost.postId) ?
       Row(
@@ -44,7 +43,7 @@ class BookmarkButton extends ConsumerWidget {
             }),
           SizedBox(width: 5.0),
           if(currentWhisperUser.uid == whisperPost.uid) Text(
-            plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+            bookmarksCount >= 10000 ? (bookmarksCount/1000.floor()/10).toString() + '万' :  bookmarksCount.toString(),
             style: TextStyle(color: Theme.of(context).highlightColor)
           )
         ],

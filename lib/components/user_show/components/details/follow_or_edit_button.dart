@@ -50,7 +50,7 @@ class FollowOrEditButton extends ConsumerWidget {
       fontSize: fontSize, 
       widthRate: withRate,
       press: () async {
-        await userShowModel.follow(context: context, mainModel: mainModel, passiveUid: passiveUid);
+        await userShowModel.follow(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser );
       }, 
       textColor: Colors.white, 
       buttonColor: Theme.of(context).highlightColor
@@ -60,7 +60,7 @@ class FollowOrEditButton extends ConsumerWidget {
       fontSize: fontSize, 
       widthRate: withRate,
       press: () async {
-        await userShowModel.unfollow(mainModel: mainModel, passiveUid: passiveUid);
+        await userShowModel.unfollow(mainModel: mainModel, passiveWhisperUser: passiveWhisperUser );
       },  
       textColor: Colors.white, 
       buttonColor: Theme.of(context).colorScheme.secondary

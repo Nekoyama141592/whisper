@@ -201,7 +201,6 @@ class AddPostModel extends ChangeNotifier {
     final String downloadURL = await storageRef.getDownloadURL();
     return downloadURL;
   }
-
   
   Future<void> addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId }) async {
     // process set

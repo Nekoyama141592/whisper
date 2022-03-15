@@ -24,7 +24,6 @@ class ReplyLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final likeCount = whisperReply.likeCount;
-    final plusOneCount = likeCount + plusOne;
 
     return mainModel.likePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
@@ -44,7 +43,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
             style: TextStyle(color: Colors.red)
           )
         ],

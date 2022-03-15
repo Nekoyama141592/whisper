@@ -30,7 +30,6 @@ class LikeButton extends ConsumerWidget {
     if (postType != PostType.postSearch) {
 
       final likeCount = whisperPost.likeCount;
-      final plusOneCount = likeCount + plusOne;
       return
       Container(
         child: mainModel.likePostIds.contains(whisperPost.postId) ?
@@ -47,7 +46,7 @@ class LikeButton extends ConsumerWidget {
             ),
             SizedBox(width: defaultPadding(context: context)/2.0),
             Text(
-              plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万' :  plusOneCount.toString(),
+              likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
               style: TextStyle(color: Colors.red)
             )
           ],

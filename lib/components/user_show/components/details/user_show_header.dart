@@ -36,7 +36,6 @@ class UserShowHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref ) {
 
     final followerCount = passiveWhisperUser.followerCount;
-    final plusOneCount = followerCount + 1;
     final PostSearchModel postSearchModel = ref.watch(postSearchProvider);
 
     return Padding(
@@ -113,9 +112,7 @@ class UserShowHeader extends ConsumerWidget {
                 ),
                 SizedBox(width: defaultPadding(context: context),),
                 Text(
-                  mainModel.followingUids.contains(passiveWhisperUser.uid) ?
-                  plusOneCount >= 10000 ? (plusOneCount/1000.floor()/10).toString() + '万follower' : plusOneCount.toString() + 'follower'
-                  : followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
+                  followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

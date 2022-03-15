@@ -342,6 +342,7 @@ class RepliesModel extends ChangeNotifier {
     final LikeReply likeReply = LikeReply(activeUid: userMeta.uid, createdAt: now,postCommentReplyId: whisperReply.postCommentReplyId,tokenId: tokenId, tokenType: likePostCommentReplyTokenType, postCommentReplyDocRef: (whisperReply.postDocRef as DocumentReference<Map<String,dynamic>> ).collection(postCommentsColRefName).doc(whisperReply.postCommentId).collection(postCommentRepliesColRefName).doc(whisperReply.postCommentReplyId)  );
     mainModel.likePostCommentReplyIds.add(postCommentReplyId);
     mainModel.likePostCommentReplies.add(likeReply);
+    whisperReply.likeCount += plusOne;
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(likeReply.toJson());
@@ -363,6 +364,7 @@ class RepliesModel extends ChangeNotifier {
     // processUI
     mainModel.likePostCommentReplyIds.remove(postCommentReplyId);
     mainModel.likePostCommentReplies.remove(deleteLikeReply);
+    whisperReply.likeCount += minusOne;
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeReply.tokenId ).delete();

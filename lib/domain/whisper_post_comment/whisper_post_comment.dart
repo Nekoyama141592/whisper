@@ -34,7 +34,7 @@ class WhisperPostComment {
   final bool isDelete;
   final bool isNFTicon;
   final bool isOfficial;
-  final int likeCount;
+  int likeCount;
   final bool masterReplied;
   final num negativeScore;
   final String passiveUid;
