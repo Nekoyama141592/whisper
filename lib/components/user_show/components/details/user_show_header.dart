@@ -68,7 +68,7 @@ class UserShowHeader extends ConsumerWidget {
           Row(
             children: [
               UserImage(
-                userImageURL: passiveWhisperUser.imageURL,
+                userImageURL: passiveWhisperUser.userImageURL,
                 length: defaultPadding(context: context) * 4.0,
                 padding: defaultPadding(context: context),
               ),

@@ -55,7 +55,7 @@ class CommentNotificationCard extends ConsumerWidget {
             ),
             child: ListTile(
               tileColor: Theme.of(context).scaffoldBackgroundColor,
-              leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.imageURL ),
+              leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.userImageURL ),
               subtitle: Text(commentNotification.postTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
             ),
           ),

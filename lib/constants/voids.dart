@@ -352,10 +352,10 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
   if (croppedFile != null) {
     final String storageImageName = returnStorageUserImageName();
     final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
-    updateWhisperUser.imageURL = downloadURL;
+    updateWhisperUser.userImageURL = downloadURL;
   }
   final Timestamp now = Timestamp.now();
-  final UserUpdateLog userUpdateLog = UserUpdateLog(accountName: updateWhisperUser.accountName,imageURL: updateWhisperUser.imageURL, mainWalletAddress: updateWhisperUser.mainWalletAddress, recommendState: updateWhisperUser.recommendState, searchToken: updateWhisperUser.searchToken, uid: updateWhisperUser.uid, userName: userName, updatedAt: now );
+  final UserUpdateLog userUpdateLog = UserUpdateLog(accountName: updateWhisperUser.accountName,imageURL: updateWhisperUser.userImageURL, mainWalletAddress: updateWhisperUser.mainWalletAddress, recommendState: updateWhisperUser.recommendState, searchToken: updateWhisperUser.searchToken, uid: updateWhisperUser.uid, userName: userName, updatedAt: now );
   await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(userUpdateLog.toJson());
 }
 

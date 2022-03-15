@@ -293,7 +293,7 @@ class RepliesModel extends ChangeNotifier {
       uid: currentWhisperUser.uid,
       updatedAt: now,
       userName: currentWhisperUser.userName,
-      userImageURL: currentWhisperUser.imageURL
+      userImageURL: currentWhisperUser.userImageURL
     );
     return whisperReply;
   }
@@ -326,7 +326,7 @@ class RepliesModel extends ChangeNotifier {
       notificationType: replyNotificationType,
       activeUid: currentWhisperUser.uid,
       updatedAt: now,
-      userImageURL: currentWhisperUser.imageURL,
+      userImageURL: currentWhisperUser.userImageURL,
       userName: currentWhisperUser.userName
     );
     await returnNotificationDocRef(uid: whisperComment.uid,notificationId: notificationId).set(replyNotification.toJson());

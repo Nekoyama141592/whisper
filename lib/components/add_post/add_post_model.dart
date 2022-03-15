@@ -243,7 +243,7 @@ class AddPostModel extends ChangeNotifier {
       title: title,
       uid: currentWhiseprUser.uid,
       updatedAt: now,
-      userImageURL: currentWhiseprUser.imageURL,
+      userImageURL: currentWhiseprUser.userImageURL,
       userName: currentWhiseprUser.userName
       ).toJson();
       // process UI

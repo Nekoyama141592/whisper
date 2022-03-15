@@ -30,7 +30,7 @@ class UserCard extends StatelessWidget {
         borderRadius: BorderRadius.circular( defaultPadding(context: context) )
       ),
       child: ListTile(
-        leading: RedirectUserImage(userImageURL: passiveWhisperUser.imageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
+        leading: RedirectUserImage(userImageURL: passiveWhisperUser.userImageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
         trailing: Text(passiveWhisperUser.followerCount.toString() ,style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),),
         title: Text(
           passiveWhisperUser.userName,

@@ -49,7 +49,7 @@ class PickPostImagePage extends StatelessWidget {
                         color: Theme.of(context).highlightColor
                       ),
                     ),
-                    child: value ? Image.file(addPostModel.croppedFile!) : Image.network(mainModel.currentWhisperUser.imageURL),
+                    child: value ? Image.file(addPostModel.croppedFile!) : Image.network(mainModel.currentWhisperUser.userImageURL),
                   ),
                   SizedBox(
                     height: size.height * 0.05,

@@ -138,7 +138,7 @@ class SignupModel extends ChangeNotifier {
       dmState: returnDmStateString(dmState: DmState.onlyFollowingAndFollowed),
       followerCount: 0,
       followingCount: 0,
-      imageURL: imageURL,
+      userImageURL: imageURL,
       isAdmin: false,
       isDelete: false,
       isKeyAccount: false,
