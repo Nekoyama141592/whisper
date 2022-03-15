@@ -34,17 +34,20 @@ class LinksPage extends StatelessWidget {
         valueListenable: whisperLinksNotifier,
         builder: (_,whisperLinks,__) {
           return Padding(
-            padding: EdgeInsets.all(defaultPadding(context: context)),
+            padding: EdgeInsets.all(defaultPadding(context: context))/2.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                RoundedButton(
-                  text: roundedButtonText, 
-                  widthRate: 0.3, 
-                  fontSize: defaultHeaderTextSize(context: context),
-                  press: onRoundedButtonPressed,
-                  textColor: Colors.white, 
-                  buttonColor: Theme.of(context).highlightColor
+                Padding(
+                  padding: EdgeInsets.all(defaultPadding(context: context)),
+                  child: RoundedButton(
+                    text: roundedButtonText, 
+                    widthRate: 0.3, 
+                    fontSize: defaultHeaderTextSize(context: context),
+                    press: onRoundedButtonPressed,
+                    textColor: Colors.white, 
+                    buttonColor: Theme.of(context).highlightColor
+                  ),
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -54,7 +57,9 @@ class LinksPage extends StatelessWidget {
                       final TextEditingController labelEditingController = TextEditingController(text: whisperLink.label );
                       final TextEditingController linkEditingController = TextEditingController(text: whisperLink.link);
                       return Padding(
-                        padding: EdgeInsets.all(defaultPadding(context: context)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: defaultPadding(context: context)
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

@@ -69,10 +69,10 @@ class EditProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: size.width * 0.4,),
+                Expanded(child: SizedBox()),
                 RoundedButton(
                   text: '保存', 
-                  widthRate: 0.25, 
+                  widthRate: 0.30, 
                   fontSize: defaultHeaderTextSize(context: context),
                   press: onSaveButtonPressed,
                   textColor: Colors.white, 

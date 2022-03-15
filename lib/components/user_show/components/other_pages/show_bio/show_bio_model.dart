@@ -27,7 +27,7 @@ class ShowBioModel extends ChangeNotifier {
     } else {
       updateWhisperUser.bio = bio;
       voids.showSnackBar(context: context, text: '更新しました!!!');
-      await Future.delayed(Duration(milliseconds: 1000));
+      await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
       Navigator.pop(context);
       final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);
       await returnUserUpdateLogNoBatchDocRef(uid: updateWhisperUser.uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());

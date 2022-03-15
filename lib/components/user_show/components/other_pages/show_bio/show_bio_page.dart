@@ -52,7 +52,7 @@ class ShowDescriptionPage extends ConsumerWidget {
               maxLines: 10,
               controller: bioController,
               onChanged: (text) {
-                showBioModel.bio = '';
+                showBioModel.bio = text;
               },
               style: textStyle
             ),
