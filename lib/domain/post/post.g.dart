@@ -29,12 +29,14 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       links: (json['links'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList(),
+      mainWalletAddress: json['mainWalletAddress'] as String,
       negativeScore: json['negativeScore'] as num,
       playCount: json['playCount'] as int,
       postState: json['postState'] as String,
       postId: json['postId'] as String,
       positiveScore: json['positiveScore'] as num,
       postCommentCount: json['postCommentCount'] as int,
+      recommendState: json['recommendState'] as String,
       score: json['score'] as num,
       tagAccountNames: (json['tagAccountNames'] as List<dynamic>)
           .map((e) => e as String)
@@ -66,12 +68,14 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'language': instance.language,
       'likeCount': instance.likeCount,
       'links': instance.links,
+      'mainWalletAddress': instance.mainWalletAddress,
       'negativeScore': instance.negativeScore,
       'playCount': instance.playCount,
       'postState': instance.postState,
       'postCommentCount': instance.postCommentCount,
       'postId': instance.postId,
       'positiveScore': instance.positiveScore,
+      'recommendState': instance.recommendState,
       'score': instance.score,
       'tagAccountNames': instance.tagAccountNames,
       'searchToken': instance.searchToken,

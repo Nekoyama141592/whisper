@@ -24,12 +24,14 @@ class Post{
     required this.language,
     required this.likeCount,
     required this.links,
+    required this.mainWalletAddress,
     required this.negativeScore,
     required this.playCount,
     required this.postState,
     required this.postId,
     required this.positiveScore,
     required this.postCommentCount,
+    required this.recommendState,
     required this.score,
     required this.tagAccountNames,
     required this.title,
@@ -57,12 +59,14 @@ class Post{
   final String language;
   int likeCount;
   List<Map<String,dynamic>> links;
+  String mainWalletAddress;
   num negativeScore;
   int playCount;
   String postState;
   int postCommentCount;
   String postId;
   num positiveScore;
+  String recommendState;
   num score;
   List<String> tagAccountNames;
   Map<String,dynamic> searchToken;
