@@ -59,6 +59,9 @@ String returnRecommendStateString ({ required RecommendState recommendState }) {
 String returnPostStateString ({ required PostState postState }) {
   return postState.toString().substring(postStateStartIndex);
 }
+String returnCommentsStateString ({ required CommentsState commentsState }) {
+  return commentsState.toString().substring(commentsStateStartIndex);
+}
 String generatePostCommentId({ required String uid }) {
   return 'postComment' + hyphenString + uid + hyphenString + returnUuid4();
 }

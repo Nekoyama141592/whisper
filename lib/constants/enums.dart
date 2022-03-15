@@ -1,5 +1,6 @@
 import 'package:whisper/constants/strings.dart';
 
+enum CommentsState {isOpen, isLocked}
 enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
 // use on firestore
 enum PostState { basic, repost}

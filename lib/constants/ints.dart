@@ -15,6 +15,7 @@ const int notificationTypeStartIndex = 17;
 const int dmStateStartIndex = 8;
 const int recommendStateStartIndex = 15;
 const int postStateStartIndex = 10;
+const int commentsStateStartIndex = 14;
 // length
 const int maxSearchLength = 32;
 const int maxDescriptionLength = 1000;

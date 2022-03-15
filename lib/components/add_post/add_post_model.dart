@@ -60,7 +60,7 @@ class AddPostModel extends ChangeNotifier {
   File? croppedFile;
   // commentsState
   final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
-  String commentsState = 'open';
+  CommentsState commentsState = CommentsState.isOpen;
   // link 
   final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
   AddPostModel() {
@@ -214,7 +214,7 @@ class AddPostModel extends ChangeNotifier {
       accountName: currentWhiseprUser.accountName,
       audioURL: audioURL, 
       bookmarkCount: 0,
-      commentsState: commentsState, 
+      commentsState: returnCommentsStateString(commentsState: commentsState), 
       country: '', 
       createdAt: now,
       description: '', 
@@ -275,7 +275,7 @@ class AddPostModel extends ChangeNotifier {
                 ),
               ),
               onPressed: () {
-                commentsState = 'open';
+                commentsState = CommentsState.isOpen;
                 commentsStateDisplayNameNotifier.value = '誰でもコメント可能';
                 Navigator.pop(context);
               },
@@ -289,7 +289,7 @@ class AddPostModel extends ChangeNotifier {
                 ),
               ),
               onPressed: () {
-                commentsState = 'isLocked';
+                commentsState = CommentsState.isLocked;
                 commentsStateDisplayNameNotifier.value = '自分以外コメント不可能';
                 Navigator.pop(context);
               },
