@@ -186,29 +186,23 @@ class PostFutures extends ChangeNotifier {
     results.removeWhere((result) => fromMapToPost(postMap: result.data()!).uid == passiveUid);
     await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   }
-    Future<void> deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
+
+  Future<void> deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
     Navigator.pop(context);
     final whisperPost = fromMapToPost(postMap: postMap);
     if (mainModel.currentUser!.uid != whisperPost.uid) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたにはその権限がありません')));
+      voids.showSnackBar(context: context, text: 'あなたにはその権限がありません');
     } else {
-      try {
-        // process UI
-        posts.remove(posts[i]);
-        mainModel.currentWhisperUser.postCount += minusOne;
-        await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-        notifyListeners();
-        // process backend
-        await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
-        await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
-        await returnRefFromPost(post: whisperPost).delete();
-        if (isImageExist(post: whisperPost) == true) {
-          await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
-        }
-
-      } catch(e) {
-        print(e.toString());
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('何らかのエラーが発生しました')));
+      // process UI
+      posts.remove(posts[i]);
+      mainModel.currentWhisperUser.postCount += minusOne;
+      await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+      notifyListeners();
+      // process backend
+      await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
+      await returnRefFromPost(post: whisperPost).delete();
+      if (isImageExist(post: whisperPost) == true) {
+        await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
       }
     }
   }
