@@ -11,6 +11,7 @@ class UserUpdateLogNoBatch {
     required this.isKeyAccount,
     required this.links,
     required this.updatedAt,
+    required this.uid,
     required this.walletAddresses,
   });
   final String bio;
@@ -18,6 +19,7 @@ class UserUpdateLogNoBatch {
   final bool isKeyAccount;
   final List<Map<String,dynamic>> links;
   final dynamic updatedAt;
+  final String uid;
   final List<Map<String,dynamic>> walletAddresses;
   
   factory UserUpdateLogNoBatch.fromJson(Map<String,dynamic> json) => _$UserUpdateLogNoBatchFromJson(json);

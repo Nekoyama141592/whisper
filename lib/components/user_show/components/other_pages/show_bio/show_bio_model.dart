@@ -20,15 +20,16 @@ class ShowBioModel extends ChangeNotifier {
 
   String bio = '';
   Future<void> updateBio({ required BuildContext context, required WhisperUser updateWhisperUser }) async {
-    if (bio.isNotEmpty) {
-      updateWhisperUser.bio = bio;
+    if (bio.isEmpty) {
+      voids.showSnackBar(context: context, text: '0文字以上にしてください' );
     } else if (bio.length > maxBioOrDescriptionLength) {
       voids.alertMaxBioLength(context: context);
     } else {
+      updateWhisperUser.bio = bio;
       voids.showSnackBar(context: context, text: '更新しました!!!');
       await Future.delayed(Duration(milliseconds: 1000));
       Navigator.pop(context);
-      final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), walletAddresses: updateWhisperUser.walletAddresses);
+      final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);
       await returnUserUpdateLogNoBatchDocRef(uid: updateWhisperUser.uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());
     }
   }

@@ -16,6 +16,7 @@ UserUpdateLogNoBatch _$UserUpdateLogNoBatchFromJson(
           .map((e) => e as Map<String, dynamic>)
           .toList(),
       updatedAt: json['updatedAt'],
+      uid: json['uid'] as String,
       walletAddresses: (json['walletAddresses'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList(),
@@ -29,5 +30,6 @@ Map<String, dynamic> _$UserUpdateLogNoBatchToJson(
       'isKeyAccount': instance.isKeyAccount,
       'links': instance.links,
       'updatedAt': instance.updatedAt,
+      'uid': instance.uid,
       'walletAddresses': instance.walletAddresses,
     };
