@@ -197,13 +197,13 @@ class PostFutures extends ChangeNotifier {
       posts.remove(posts[i]);
       mainModel.currentWhisperUser.postCount += minusOne;
       await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
-      notifyListeners();
       // process backend
       await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
       await returnRefFromPost(post: whisperPost).delete();
       if (isImageExist(post: whisperPost) == true) {
         await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();
       }
+      notifyListeners();
     }
   }
 
