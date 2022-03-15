@@ -15,8 +15,14 @@ db: {
             postBookmarks(PostBookmark) {
 
             }
-            postReads {
+            postReads(not created) {
                 
+            }
+            postPlays(Not created) {
+                
+            }
+            postUpdateLogs {
+
             }
         }
         
@@ -24,6 +30,9 @@ db: {
 
         }
         userUpdateLogs {
+
+        }
+        userUpdateLogNoBatches {
 
         }
     }
