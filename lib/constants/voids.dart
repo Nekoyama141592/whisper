@@ -336,19 +336,16 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
   return getDownloadURL;
 }
 
-Future<void> updateUserInfo({ required BuildContext context ,required List<WhisperLink> links, required WhisperUser updateWhisperUser, required String userName , required String bio,required File? croppedFile,required MainModel mainModel }) async {
+Future<void> updateUserInfo({ required BuildContext context , required WhisperUser updateWhisperUser, required String userName ,required File? croppedFile,required MainModel mainModel }) async {
   // if delete, can`t load old posts. My all post should be updated too.
   // if (croppedFile != null) {
   //   await userImageRef(uid: mainModel.currentUser!.uid, storageImageName: mainModel.currentWhisperUser.storageImageName).delete();
   // }
-  updateWhisperUser.links = links.map((e) => e.toJson()).toList();
   if (userName.isNotEmpty) {
     updateWhisperUser.userName = userName;
     updateWhisperUser.searchToken = returnSearchToken(searchWords: returnSearchWords(searchTerm: userName) );
   }
-  if (bio.isNotEmpty) {
-    updateWhisperUser.bio = bio;
-  }
+  
   if (croppedFile != null) {
     final String storageImageName = returnStorageUserImageName();
     final String downloadURL = await uploadUserImageAndGetURL(uid: updateWhisperUser.uid, croppedFile: croppedFile, storageImageName: storageImageName );
@@ -516,12 +513,11 @@ void showSnackBar({ required BuildContext context,required String text}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
 }
 
-void alertMaxDescriptionLength({ required BuildContext context, }) {
-  showSnackBar(context: context, text: 'Descriptionは' + maxDescriptionLength.toString() + '文字以内にしてください' );
-}
-
 void alertMaxLinksLength({ required BuildContext context, }) {
-  showSnackBar(context: context, text: 'リンクは' + maxDescriptionLength.toString() + '個以内にしてください' );
+  showSnackBar(context: context, text: 'リンクは' + maxLinksLength.toString() + '個以内にしてください' );
+}
+void alertMaxBioLength({ required BuildContext context, }) {
+  showSnackBar(context: context, text: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
 }
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {

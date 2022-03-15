@@ -18,6 +18,6 @@ const int postStateStartIndex = 10;
 const int commentsStateStartIndex = 14;
 // length
 const int maxSearchLength = 32;
-const int maxDescriptionLength = 1000;
+const int maxBioOrDescriptionLength = 1000;
 const int maxLinksLength = 10;
 const int uidLength = 28;

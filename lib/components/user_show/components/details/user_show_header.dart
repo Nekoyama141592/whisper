@@ -13,7 +13,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // other_pages
-import 'package:whisper/components/user_show/components/other_pages/show_description_page.dart';
+import 'package:whisper/components/user_show/components/other_pages/show_bio/show_bio_page.dart';
 // models
 import 'package:whisper/main_model.dart';
 
@@ -75,7 +75,7 @@ class UserShowHeader extends ConsumerWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage(description: passiveWhisperUser.bio ) ));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDescriptionPage( mainModel: mainModel,passiveWhisperUser: passiveWhisperUser, ) ));
                   },
                   child: Padding(
                     padding: EdgeInsets.all(defaultPadding(context: context)),

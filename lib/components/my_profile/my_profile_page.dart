@@ -31,16 +31,13 @@ class MyProfilePage extends ConsumerWidget {
       EditProfileScreen(
         onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
         onSaveButtonPressed: () async {
-          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, links: myProfileModel.whisperLinksNotifier.value );
+          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, );
         }, 
         showImagePicker: () async {
           await myProfileModel.showImagePicker();
         },
         onUserNameChanged: (text) {
           myProfileModel.userName = text;
-        }, 
-        onBioChanged: (text) {
-          myProfileModel.bio = text;
         }, 
         bioController: TextEditingController(text:  currentWhisperUser.bio),
         userNameController: TextEditingController(text: currentWhisperUser.userName),

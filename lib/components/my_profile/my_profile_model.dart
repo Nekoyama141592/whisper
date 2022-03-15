@@ -21,8 +21,6 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // domain
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
-// pages
-import 'package:whisper/links/post_links/links_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -59,8 +57,6 @@ class MyProfileModel extends ChangeNotifier {
   // Edit profile
   bool isEditing = false;
   String userName = '';
-  String bio = '';
-  final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -151,21 +147,14 @@ class MyProfileModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,required List<WhisperLink> links }) async {
+  Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser ,required MainModel mainModel,}) async {
     if (userName.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context,isUserName: true);
-    } else if (bio.length > maxDescriptionLength) {
-      voids.alertMaxDescriptionLength(context: context);
-    } else if (links.length > maxLinksLength ) {
-      voids.alertMaxLinksLength(context: context);
-    }
-    else {
+    } else {
       startLoading();
-      await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,bio: bio,croppedFile: croppedFile, mainModel: mainModel);
+      await voids.updateUserInfo(context: context, updateWhisperUser: updateWhisperUser, userName: userName,croppedFile: croppedFile, mainModel: mainModel);
       isEditing = false;
       userName = '';
-      bio = '';
-      whisperLinksNotifier.value = [];
       endLoading();
     }
   }

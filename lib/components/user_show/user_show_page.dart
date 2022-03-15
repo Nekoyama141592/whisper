@@ -50,14 +50,11 @@ class UserShowPage extends ConsumerWidget {
           child: EditProfileScreen(
             onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
             onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel, links: userShowModel.whisperLinksNotifier.value );
+              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel,);
             },
             showImagePicker: () async { await userShowModel.showImagePicker(); },
             onUserNameChanged: (text) {
               userShowModel.userName = text;
-            },
-            onBioChanged: (text) {
-              userShowModel.bio = text;
             },
             bioController: TextEditingController(text: userShowModel.passiveWhisperUser.bio ),
             userNameController: TextEditingController(text: userShowModel.passiveWhisperUser.userName ),

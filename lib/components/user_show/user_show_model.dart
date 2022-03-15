@@ -64,8 +64,6 @@ class UserShowModel extends ChangeNotifier {
   // Edit profile
   bool isEditing = false;
   String userName = '';
-  String bio = '';
-  final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
   // post
   bool isCropped = false;
   XFile? xFile;
@@ -174,21 +172,14 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser,required MainModel mainModel, required List<WhisperLink> links }) async {
+  Future<void> onSaveButtonPressed({ required BuildContext context, required WhisperUser updateWhisperUser,required MainModel mainModel,}) async {
     if (userName.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context,isUserName: true);
-    } else if (bio.length > maxDescriptionLength) {
-      voids.alertMaxDescriptionLength(context: context);
-    } else if (links.length > maxLinksLength ) {
-      voids.alertMaxLinksLength(context: context);
-    }
-    else {
+    } else {
       startLoading();
-      await voids.updateUserInfo(context: context, links: links, updateWhisperUser: updateWhisperUser, userName: userName,bio: bio,croppedFile: croppedFile, mainModel: mainModel);
+      await voids.updateUserInfo(context: context, updateWhisperUser: updateWhisperUser, userName: userName,croppedFile: croppedFile, mainModel: mainModel);
       isEditing = false;
       userName = '';
-      bio = '';
-      whisperLinksNotifier.value = [];
       endLoading();
     }
   }

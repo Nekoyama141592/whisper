@@ -19,7 +19,6 @@ class EditProfileScreen extends StatelessWidget {
     required this.onSaveButtonPressed,
     required this.showImagePicker,
     required this.onUserNameChanged,
-    required this.onBioChanged,
     required this.userNameController,
     required this.bioController,
     required this.croppedFile,
@@ -32,7 +31,6 @@ class EditProfileScreen extends StatelessWidget {
   final void Function()? onSaveButtonPressed;
   final void Function()? showImagePicker;
   final void Function(String)? onUserNameChanged;
-  final void Function(String)? onBioChanged;
   final TextEditingController userNameController;
   final TextEditingController bioController;
   final File? croppedFile;
@@ -84,7 +82,7 @@ class EditProfileScreen extends StatelessWidget {
             ),
             
             InkWell(
-              child: isCropped ?  CircleImage(length: height/12.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.userImageURL, length: 80.0, padding: 10.0),
+              child: isCropped ?  CircleImage(length: height/12.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.userImageURL, length: defaultPadding(context: context) * 3.0, padding: defaultPadding(context: context) ),
               onTap: showImagePicker,
             ),
             Text('名前',style: textStyle,),
@@ -92,14 +90,6 @@ class EditProfileScreen extends StatelessWidget {
               keyboardType: TextInputType.text,
               controller: userNameController,
               onChanged: onUserNameChanged,
-              style: textStyle
-            ),
-            Text('自己紹介',style: textStyle,),
-            TextFormField(
-              keyboardType: TextInputType.multiline,
-              maxLines: 10,
-              controller: bioController,
-              onChanged: onBioChanged,
               style: textStyle
             ),
           ],
