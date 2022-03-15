@@ -83,6 +83,8 @@ class RepliesModel extends ChangeNotifier {
         onPressed: () async {
           if (reply.isEmpty) {
             controller.dismiss();
+          } else if (reply.length > maxCommentOrReplyLength) {
+            controller.dismiss();
           } else {
             await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
             reply = '';

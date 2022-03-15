@@ -371,7 +371,9 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
         onChanged: onChanged,
         maxLines: maxLine,
         decoration: InputDecoration(
-          suffixIcon: IconButton(onPressed: oncloseButtonPressed, icon: Icon(Icons.close))
+          suffixIcon: IconButton(onPressed: oncloseButtonPressed, icon: Icon(Icons.close)),
+          hintText: '最大' + maxCommentOrReplyLength.toString() + '文字',
+          hintStyle: TextStyle(fontWeight: FontWeight.bold)
         ),
       )
     ),
@@ -518,6 +520,9 @@ void alertMaxLinksLength({ required BuildContext context, }) {
 }
 void alertMaxBioLength({ required BuildContext context, }) {
   showSnackBar(context: context, text: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
+}
+void alertMaxCommentOrReplyLength({ required BuildContext context }) {
+  showSnackBar(context: context, text: maxCommentOrReplyLength.toString() + '以内にしてください');
 }
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {

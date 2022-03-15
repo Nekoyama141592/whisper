@@ -22,4 +22,5 @@ const int commentsStateStartIndex = 14;
 const int maxSearchLength = 32;
 const int maxBioOrDescriptionLength = 1000;
 const int maxLinksLength = 10;
+const int maxCommentOrReplyLength = 10000;
 const int uidLength = 28;

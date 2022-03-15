@@ -68,17 +68,19 @@ class CommentsModel extends ChangeNotifier {
   void onFloatingActionButtonPressed({ required BuildContext context, required Post whisperPost, required TextEditingController commentEditingController, required AudioPlayer audioPlayer, required MainModel mainModel }) {
     final String commentsState = whisperPost.commentsState;
     audioPlayer.pause();
-    switch(commentsState){
-      case 'open':
+    if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
       showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
-      break;
-      case 'isLocked':
+    } else {
+      voids.showSnackBar(context: context, text: 'コメントは投稿主しかできません');
+    }
+    if (commentsState == returnCommentsStateString(commentsState: CommentsState.isOpen) ) {
+      showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
+    } else {
       if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
         showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('コメントは投稿主しかできません')));
+        voids.showSnackBar(context: context, text: 'コメントは投稿主しかできません');
       }
-      break;
     }
   }
 
@@ -87,6 +89,8 @@ class CommentsModel extends ChangeNotifier {
       return IconButton(
         onPressed: () async {
           if (commentEditingController.text.isEmpty) {
+            controller.dismiss();
+          } else if (commentEditingController.text.length > maxCommentOrReplyLength){
             controller.dismiss();
           } else {
             await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
