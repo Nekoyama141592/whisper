@@ -31,7 +31,7 @@ import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
 // pages
-import 'package:whisper/links/links_page.dart';
+import 'package:whisper/links/post_links/links_page.dart';
 
 final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
@@ -266,13 +266,6 @@ class UserShowModel extends ChangeNotifier {
       }
     );
   } 
-
-  void initLinks({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps,}) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier, ) ));
-    whisperLinksNotifier.value = [];
-    whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
-    notifyListeners();
-  }
 
   Future<void> follow({ required BuildContext context,required MainModel mainModel, required String passiveUid }) async {
   if (mainModel.followingUids.length >= maxFollowCount) {

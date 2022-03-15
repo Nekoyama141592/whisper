@@ -32,7 +32,7 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
 // pages
-import 'package:whisper/links/links_page.dart';
+import 'package:whisper/links/post_links/links_page.dart';
 
 final addPostProvider = ChangeNotifierProvider(
   (ref) => AddPostModel()
@@ -299,7 +299,7 @@ class AddPostModel extends ChangeNotifier {
   }
 
   void initLinks({ required BuildContext context }) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier, ) ));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier,roundedButtonText: '決定',onRoundedButtonPressed: () { Navigator.pop(context); }, ) ));
     whisperLinksNotifier.value = [];
     notifyListeners();
   }

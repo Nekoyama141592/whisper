@@ -12,9 +12,13 @@ class LinksPage extends StatelessWidget {
   const LinksPage({
     Key? key,
     required this.whisperLinksNotifier,
+    required this.onRoundedButtonPressed,
+    required this.roundedButtonText
   }) : super(key: key);
 
   final ValueNotifier<List<WhisperLink>> whisperLinksNotifier;
+  final void Function()? onRoundedButtonPressed;
+  final String roundedButtonText;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +39,10 @@ class LinksPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 RoundedButton(
-                  text: '決定', 
+                  text: roundedButtonText, 
                   widthRate: 0.3, 
                   fontSize: defaultHeaderTextSize(context: context),
-                  press: () { Navigator.pop(context); },
+                  press: onRoundedButtonPressed,
                   textColor: Colors.white, 
                   buttonColor: Theme.of(context).highlightColor
                 ),

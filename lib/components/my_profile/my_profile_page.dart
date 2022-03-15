@@ -42,9 +42,6 @@ class MyProfilePage extends ConsumerWidget {
         onBioChanged: (text) {
           myProfileModel.bio = text;
         }, 
-        onEditLinkButtonPressed: () {
-          myProfileModel.initLinks(context: context, linkMaps: currentWhisperUser.links, );
-        },
         bioController: TextEditingController(text:  currentWhisperUser.bio),
         userNameController: TextEditingController(text: currentWhisperUser.userName),
         croppedFile: myProfileModel.croppedFile,

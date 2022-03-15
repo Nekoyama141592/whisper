@@ -25,7 +25,6 @@ import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/user_update_log/user_update_log.dart';
-import 'package:whisper/domain/user_update_log_no_batch/user_update_log_no_batch.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // notifiers
@@ -357,9 +356,7 @@ Future<void> updateUserInfo({ required BuildContext context ,required List<Whisp
   }
   final Timestamp now = Timestamp.now();
   final UserUpdateLog userUpdateLog = UserUpdateLog(accountName: updateWhisperUser.accountName, bio: updateWhisperUser.bio, imageURL: updateWhisperUser.imageURL, mainWalletAddress: updateWhisperUser.mainWalletAddress, recommendState: updateWhisperUser.recommendState, searchToken: updateWhisperUser.searchToken, uid: updateWhisperUser.uid, userName: userName, updatedAt: now );
-  final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: updateWhisperUser.updatedAt, walletAddresses: updateWhisperUser.walletAddresses);
   await returnUserUpdateLogDocRef(uid: updateWhisperUser.uid, userUpdateLogId: generateUserUpdateLogId() ).set(userUpdateLog.toJson());
-  await returnUserUpdateLogNoBatchDocRef(uid: uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());
 }
 
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {

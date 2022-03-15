@@ -22,7 +22,7 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // domain
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // pages
-import 'package:whisper/links/links_page.dart';
+import 'package:whisper/links/post_links/links_page.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -256,12 +256,5 @@ class MyProfileModel extends ChangeNotifier {
       }
     );
   } 
-
-  void initLinks({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps}) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier, ) ));
-    whisperLinksNotifier.value = [];
-    whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
-    notifyListeners();
-  }
 
 }

@@ -59,9 +59,6 @@ class UserShowPage extends ConsumerWidget {
             onBioChanged: (text) {
               userShowModel.bio = text;
             },
-            onEditLinkButtonPressed: () {
-              userShowModel.initLinks(context: context, linkMaps: userShowModel.passiveWhisperUser.links );
-            },
             bioController: TextEditingController(text: userShowModel.passiveWhisperUser.bio ),
             userNameController: TextEditingController(text: userShowModel.passiveWhisperUser.userName ),
             croppedFile: userShowModel.croppedFile,

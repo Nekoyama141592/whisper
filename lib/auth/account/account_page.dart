@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/links/user_links/user_links_model.dart';
 // model
 import 'account_model.dart';
 import 'package:whisper/main_model.dart';
@@ -24,6 +25,8 @@ class AccountPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final accountModel = ref.watch(accountProvider);
+    final UserLinksModel userLinksModel = ref.watch(userLinksProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Account'),
@@ -63,6 +66,13 @@ class AccountPage extends ConsumerWidget {
                 await Future.delayed(Duration(milliseconds: dialogueMilliSeconds));
                 routes.toMutesUsersPage(context, mainModel);
               });
+            },
+          ),
+          ListTile(
+            title: Text('ユーザーのリンクを編集'),
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () {
+              userLinksModel.initLinks(context: context, currentWhisperUser: mainModel.currentWhisperUser );
             },
           ),
           ListTile(

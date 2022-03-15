@@ -19,7 +19,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // pagas
-import 'package:whisper/links/links_page.dart';
+import 'package:whisper/links/post_links/links_page.dart';
 
 final editPostInfoProvider = ChangeNotifierProvider(
   (ref) => EditPostInfoModel()
@@ -97,6 +97,8 @@ class EditPostInfoModel extends ChangeNotifier {
   void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps  }) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(
       whisperLinksNotifier: whisperLinksNotifier,
+      onRoundedButtonPressed: () { Navigator.pop(context); },
+      roundedButtonText: '決定',
     ) ));
     whisperLinksNotifier.value = [];
     whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();
