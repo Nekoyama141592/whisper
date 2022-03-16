@@ -23,6 +23,6 @@ class UserSearchPage extends ConsumerWidget {
     final results = userSearchModel.results;
     
     return userSearchModel.isLoading ?
-    Loading() : UserList(results: results, mainModel: mainModel,userSearchModel: userSearchModel,);
+    SizedBox.shrink() : UserList(results: results, mainModel: mainModel,userSearchModel: userSearchModel,);
   }
 }

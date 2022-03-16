@@ -358,6 +358,7 @@ Future<void> updateUserInfo({ required BuildContext context , required WhisperUs
 
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {
   context.showFlashBar(
+    
     persistent: true,
     borderWidth: 3.0,
     behavior: FlashBehavior.fixed,
