@@ -108,7 +108,7 @@ class PostShowPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SquarePostImage(whisperPost: whisperPost),
-                          CurrentSongUserName(whisperPost: whisperPost),
+                          CurrentSongUserName(whisperPost: whisperPost,mainModel: mainModel, ),
                           SizedBox(height: height/64.0),
                           CurrentSongTitle(whisperPost: whisperPost,),
                           SizedBox(height: height/64.0),

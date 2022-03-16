@@ -64,7 +64,7 @@ class AudioWindow extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        CurrentSongUserName(whisperPost: whisperPost),
+                        CurrentSongUserName(whisperPost: whisperPost,mainModel: mainModel, ),
                         CurrentSongTitle(whisperPost: whisperPost)
                       ],
                     ),
