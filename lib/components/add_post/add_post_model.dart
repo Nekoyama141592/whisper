@@ -141,9 +141,7 @@ class AddPostModel extends ChangeNotifier {
       await audioRecorder.start( path: filePath, encoder: AudioEncoder.AAC);
       startMeasure();
       notifyListeners();
-    } else {
-      await Future.delayed(Duration(milliseconds: 1500));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Center(child: Text('マイクの許可をお願いします')))); }
+    }
   }
 
   Future onRecordButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
