@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/back_arrow_button.dart';
+import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
 import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_window.dart';
 // constants
@@ -51,7 +52,46 @@ class OneCommentPage extends ConsumerWidget {
             children: [
               BackArrowButton(),
               CommentCard(whisperComment: oneCommentModel.oneWhisperComment, commentsModel: commentsModel, replysModel: replysModel, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel, ),
-              OnePostAudioWindow(
+              // OnePostAudioWindow(
+                // route: () {
+                //   routes.toPostShowPage(
+                //     context: context,
+                //     speedNotifier: onePostModel.speedNotifier,
+                //     speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
+                //     currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, 
+                //     progressNotifier: onePostModel.progressNotifier, 
+                //     seek: onePostModel.seek, 
+                //     repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
+                //     onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: onePostModel.audioPlayer, repeatButtonNotifier: onePostModel.repeatButtonNotifier); }, 
+                //     isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
+                //     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
+                //     playButtonNotifier: onePostModel.playButtonNotifier, 
+                //     play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel); }, 
+                //     pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
+                //     isLastSongNotifier: onePostModel.isLastSongNotifier, 
+                //     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
+                //     toCommentsPage:  () async {
+                //       await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
+                //     },
+                //     toEditingMode:  () {
+                //       voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);
+                //     },
+                //     postType: onePostModel.postType,
+                //     mainModel: mainModel
+                //   ); 
+                // }, 
+              //   progressNotifier: onePostModel.progressNotifier, 
+              //   playButtonNotifier: onePostModel.playButtonNotifier, 
+              //   seek: onePostModel.seek, 
+              //   play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel); }, 
+              //   pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
+              //   title: Text(
+              //     onePostModel.currentWhisperPostNotifier.value!.title,
+              //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: defaultHeaderTextSize(context: context) ),
+              //   ), 
+              //   currentWhisperUser: mainModel.currentWhisperUser,
+              // )
+              AudioWindow(
                 route: () {
                   routes.toPostShowPage(
                     context: context,
@@ -80,15 +120,16 @@ class OneCommentPage extends ConsumerWidget {
                   ); 
                 }, 
                 progressNotifier: onePostModel.progressNotifier, 
-                playButtonNotifier: onePostModel.playButtonNotifier, 
                 seek: onePostModel.seek, 
+                whisperPost: onePostModel.currentWhisperPostNotifier.value!, 
+                playButtonNotifier: onePostModel.playButtonNotifier, 
                 play: () async { await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel); }, 
                 pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
-                title: Text(
-                  onePostModel.currentWhisperPostNotifier.value!.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: defaultHeaderTextSize(context: context) ),
-                ), 
-                currentWhisperUser: mainModel.currentWhisperUser,
+                isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
+                onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
+                isLastSongNotifier: onePostModel.isLastSongNotifier, 
+                onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
+                mainModel: mainModel
               )
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/user_image.dart';
+import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
 // domain
@@ -21,7 +22,7 @@ class OnePostAudioWindow extends StatelessWidget {
     required this.play,
     required this.pause,
     required this.title,
-    required this.currentWhisperUser,
+    required this.mainModel,
     required this.route
   }) : super(key: key);
   
@@ -31,7 +32,7 @@ class OnePostAudioWindow extends StatelessWidget {
   final void Function()? play;
   final void Function()? pause;
   final Widget title;
-  final WhisperUser currentWhisperUser;
+  final MainModel mainModel;
   final void Function()? route;
 
   Widget build(BuildContext context) {
@@ -51,14 +52,14 @@ class OnePostAudioWindow extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: size.width * 0.03,
                   ),
-                  child: UserImage(userImageURL: currentWhisperUser.userImageURL,length: defaultHeaderTextSize(context: context) * 1.5 ,padding: 0,)
+                  child: UserImage(userImageURL: mainModel.currentWhisperUser.userImageURL,length: defaultHeaderTextSize(context: context) * 1.5 ,padding: 0,uid: mainModel.currentWhisperUser.uid,mainModel: mainModel, )
                 ),
                 Expanded(
                   child: Container(
                     child: Column(
                       children: [
                         Text(
-                          currentWhisperUser.userName,
+                          mainModel.currentWhisperUser.userName,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontSize

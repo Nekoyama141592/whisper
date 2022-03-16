@@ -75,14 +75,16 @@ class ReplyCard extends ConsumerWidget {
                 padding: EdgeInsets.symmetric(
                   horizontal: defaultPadding(context: context)
                 ),
-                child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUserDocId: whisperReply.uid, mainModel: mainModel),
+                child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUid: whisperReply.uid, mainModel: mainModel),
               ),
               Expanded(
                 child: SizedBox(
                   child: Column(
                     children: [
                       Text(
-                        whisperReply.userName,
+                        mainModel.currentWhisperUser.uid == whisperReply.uid ?
+                        mainModel.currentWhisperUser.userName 
+                        : whisperReply.userName,
                         style: whisperTextStyle,
                         overflow: TextOverflow.ellipsis,
                       ),

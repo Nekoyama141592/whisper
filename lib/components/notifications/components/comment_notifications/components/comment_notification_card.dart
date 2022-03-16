@@ -55,14 +55,14 @@ class CommentNotificationCard extends ConsumerWidget {
             ),
             child: ListTile(
               tileColor: Theme.of(context).scaffoldBackgroundColor,
-              leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.userImageURL ),
+              leading:  UserImage(padding: padding, length: length ,userImageURL: currentWhisperUser.userImageURL,uid: commentNotification.activeUid,mainModel: mainModel, ),
               subtitle: Text(commentNotification.postTitle,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
             ),
           ),
           ListTile(
             title: Text(commentNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
             tileColor: commentNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
-            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUserDocId: commentNotification.activeUid,mainModel: mainModel,),
+            leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUid: commentNotification.activeUid,mainModel: mainModel,),
             subtitle: Text(commentNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
             onTap: () async {
               await notificationsModel.onCommentNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, commentNotification: commentNotification);

@@ -82,7 +82,7 @@ class EditProfileScreen extends StatelessWidget {
             ),
             
             InkWell(
-              child: isCropped ?  CircleImage(length: height/12.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.userImageURL, length: defaultPadding(context: context) * 3.0, padding: defaultPadding(context: context) ),
+              child: isCropped ?  CircleImage(length: height/12.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.userImageURL, length: defaultPadding(context: context) * 3.0, padding: defaultPadding(context: context),uid: mainModel.currentWhisperUser.uid,mainModel: mainModel, ),
               onTap: showImagePicker,
             ),
             Text('名前',style: textStyle,),

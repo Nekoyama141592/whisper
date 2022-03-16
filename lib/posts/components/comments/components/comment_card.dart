@@ -80,12 +80,14 @@ class CommentCard extends ConsumerWidget {
                 padding: EdgeInsets.symmetric(
                   horizontal: defaultPadding(context: context)
                 ),
-                child: RedirectUserImage(userImageURL: whisperComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUserDocId: whisperComment.uid, mainModel: mainModel),
+                child: RedirectUserImage(userImageURL: whisperComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUid: whisperComment.uid, mainModel: mainModel),
               ),
               Expanded(
                 child: Column(
                   children: [
                     Text(
+                      mainModel.currentWhisperUser.uid == whisperComment.uid ?
+                      mainModel.currentWhisperUser.userName : 
                       whisperComment.userName,
                       style: whisperTextStyle,
                       overflow: TextOverflow.ellipsis,

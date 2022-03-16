@@ -70,6 +70,8 @@ class UserShowHeader extends ConsumerWidget {
                 userImageURL: passiveWhisperUser.userImageURL,
                 length: defaultPadding(context: context) * 4.0,
                 padding: defaultPadding(context: context),
+                uid: passiveWhisperUser.uid,
+                mainModel: mainModel,
               ),
               Expanded(
                 child: InkWell(

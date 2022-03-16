@@ -92,10 +92,10 @@ class NotificationsModel extends ChangeNotifier {
       if (commentExists) {
         routes.toOneCommentPage(context: context, mainModel: mainModel);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
+        voids.showSnackBar(context: context, text: 'そのコメントは削除されています');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
+      voids.showSnackBar(context: context, text: '元の投稿が削除されています');
     }
     notifyListeners();
     await returnNotificationDocRef(uid: firebaseAuthCurrentUser!.uid, notificationId: commentNotification.notificationId ).update(commentNotification.toJson());
@@ -112,10 +112,10 @@ class NotificationsModel extends ChangeNotifier {
       if (commentExists) {
         routes.toOneCommentPage(context: context, mainModel: mainModel);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのコメントは削除されています')));
+        voids.showSnackBar(context: context, text: 'そのコメントは削除されています');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('元の投稿が削除されています')));
+      voids.showSnackBar(context: context, text: '元の投稿が削除されています');
     }
     notifyListeners();
     await returnNotificationDocRef(uid: firebaseAuthCurrentUser!.uid, notificationId: replyNotification.notificationId ).update(replyNotification.toJson());

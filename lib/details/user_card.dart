@@ -30,9 +30,14 @@ class UserCard extends StatelessWidget {
         borderRadius: BorderRadius.circular( defaultPadding(context: context) )
       ),
       child: ListTile(
-        leading: RedirectUserImage(userImageURL: passiveWhisperUser.userImageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUserDocId: passiveWhisperUser.uid,mainModel: mainModel,),
-        trailing: Text(passiveWhisperUser.followerCount.toString() ,style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),),
+        leading: RedirectUserImage(userImageURL: passiveWhisperUser.userImageURL, length: defaultPadding(context: context) * 4.0, padding: 0.0,passiveUid: passiveWhisperUser.uid,mainModel: mainModel,),
+        trailing: Text(
+          passiveWhisperUser.followerCount.toString() ,
+          style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),
+        ),
         title: Text(
+          passiveWhisperUser.uid == mainModel.currentWhisperUser.uid ?
+          mainModel.currentWhisperUser.userName :
           passiveWhisperUser.userName,
           style: TextStyle(
             overflow: TextOverflow.ellipsis,
@@ -40,7 +45,9 @@ class UserCard extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          passiveWhisperUser.bio,
+          mainModel.currentWhisperUser.uid == passiveWhisperUser.uid ?
+          mainModel.currentWhisperUser.bio
+          : passiveWhisperUser.bio,
           style: TextStyle(
             color: Theme.of(context).focusColor,
             fontWeight: FontWeight.bold,

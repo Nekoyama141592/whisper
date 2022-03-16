@@ -58,9 +58,11 @@ class PostCard extends StatelessWidget {
               borderRadius: BorderRadius.circular( defaultPadding(context: context) )
             ),
             child: ListTile(
-              leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) *3.0, padding: 0.0, passiveUserDocId: whisperPost.uid, mainModel: mainModel),
+              leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) *3.0, padding: 0.0, passiveUid: whisperPost.uid, mainModel: mainModel),
               title: Text(
-                whisperPost.userName,
+                mainModel.currentWhisperUser.uid == whisperPost.uid ?
+                mainModel.currentWhisperUser.userName
+                : whisperPost.userName,
                 style: TextStyle(
                   fontSize: defaultHeaderTextSize(context: context)/cardTextDiv
                 ),

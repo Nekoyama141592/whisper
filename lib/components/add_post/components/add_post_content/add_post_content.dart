@@ -62,7 +62,7 @@ class AddPostContent extends StatelessWidget {
           );
         }
       ),
-      currentWhisperUser: mainModel.currentWhisperUser
+      mainModel: mainModel,
     );
     return 
     ValueListenableBuilder<AddPostState>(
