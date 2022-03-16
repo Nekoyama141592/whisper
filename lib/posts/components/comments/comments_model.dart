@@ -70,11 +70,6 @@ class CommentsModel extends ChangeNotifier {
   void onFloatingActionButtonPressed({ required BuildContext context, required Post whisperPost, required TextEditingController commentEditingController, required AudioPlayer audioPlayer, required MainModel mainModel }) {
     final String commentsState = whisperPost.commentsState;
     audioPlayer.pause();
-    if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
-      showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
-    } else {
-      voids.showSnackBar(context: context, text: 'コメントは投稿主しかできません');
-    }
     if (commentsState == returnCommentsStateString(commentsState: CommentsState.isOpen) ) {
       showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
     } else {

@@ -75,7 +75,7 @@ class RepliesModel extends ChangeNotifier {
     if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
       showMakeReplyInputFlashBar(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, mainModel: mainModel, whisperComment: whisperComment);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('あなたはこのコメントに返信できません')));
+      voids.showSnackBar(context: context, text: 'あなたはこのコメントに返信できません');
     }
   }
 

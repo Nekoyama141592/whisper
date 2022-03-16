@@ -56,7 +56,7 @@ class PostFutures extends ChangeNotifier {
 
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkPostLabels }) async {
-    final Widget content = SizedBox(
+    final Widget content = Container(
       height: MediaQuery.of(context).size.height * 0.70,
       child: ValueListenableBuilder<String>(
         valueListenable: mainModel.bookmarkPostLabelTokenIdNotifier,
