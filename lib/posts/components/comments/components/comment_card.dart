@@ -100,7 +100,7 @@ class CommentCard extends ConsumerWidget {
                     SizedBox(height: defaultPadding(context: context),),
                     Text(
                       whisperComment.comment,
-                      style: whisperComment.isHidden ? hiddenStyle : whisperTextStyle,
+                      style: commentsModel.isUnHiddenPostCommentIds.contains(whisperComment.postCommentId) ? whisperTextStyle : hiddenStyle
                     )
                   ],
                 ),
@@ -111,7 +111,7 @@ class CommentCard extends ConsumerWidget {
                   CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
                   ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost),
                   InkWell(
-                    child: Icon(whisperComment.isHidden ? Icons.visibility : Icons.visibility_off ),
+                    child: Icon(commentsModel.isUnHiddenPostCommentIds.contains(whisperComment.postCommentId) ? Icons.visibility : Icons.visibility_off ),
                     onTap: () { commentsModel.toggleIsHidden(whisperPostComment: whisperComment); },
                   )
                 ],

@@ -96,7 +96,7 @@ class ReplyCard extends ConsumerWidget {
                       SizedBox(height: defaultPadding(context: context),),
                       Text(
                         whisperReply.reply,
-                        style: whisperReply.isHidden ? hiddenStyle : whisperTextStyle
+                        style: repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? whisperTextStyle : hiddenStyle
                       )
                     ],
                   ),
@@ -107,7 +107,7 @@ class ReplyCard extends ConsumerWidget {
                 children: [
                   ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel),
                   InkWell(
-                    child: Icon(whisperReply.isHidden ? Icons.visibility : Icons.visibility_off ),
+                    child: Icon(repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? Icons.visibility : Icons.visibility_off ),
                     onTap: () { repliesModel.toggleIsHidden(whisperReply: whisperReply); },
                   )
                 ],

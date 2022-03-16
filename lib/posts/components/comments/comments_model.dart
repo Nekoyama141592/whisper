@@ -42,6 +42,8 @@ class CommentsModel extends ChangeNotifier {
   late RefreshController refreshController;
   // DB index
   String indexPostId = '';
+  // hidden
+  List<String> isUnHiddenPostCommentIds = [];
 
   void reload() {
     notifyListeners();
@@ -375,7 +377,12 @@ class CommentsModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
   void toggleIsHidden({ required WhisperPostComment whisperPostComment }) {
-    whisperPostComment.isHidden = !whisperPostComment.isHidden;
+    final String id = whisperPostComment.postCommentId;
+    if (isUnHiddenPostCommentIds.contains(id)) {
+      isUnHiddenPostCommentIds.remove(id);
+    } else {
+      isUnHiddenPostCommentIds.add(id);
+    }
     notifyListeners();
   }
 }

@@ -43,6 +43,8 @@ class RepliesModel extends ChangeNotifier {
   late RefreshController refreshController;
   // indexDB
   String indexPostCommentId = '';
+  // hide
+  List<String> isUnHiddenPostCommentReplyIds = [];
 
   Future<void> init({ required BuildContext context, required MainModel mainModel, required Post whisperPost,required WhisperPostComment whisperPostComment,required CommentsOrReplysModel commentsOrReplysModel }) async {
     refreshController = RefreshController(initialRefresh: false);
@@ -376,7 +378,12 @@ class RepliesModel extends ChangeNotifier {
   }
   
   void toggleIsHidden({ required WhisperReply whisperReply }) {
-    whisperReply.isHidden = !whisperReply.isHidden;
+    final String id = whisperReply.postCommentReplyId;
+    if (isUnHiddenPostCommentReplyIds.contains(id)) {
+      isUnHiddenPostCommentReplyIds.remove(id);
+    } else {
+      isUnHiddenPostCommentReplyIds.add(id);
+    }
     notifyListeners();
   }
 }
