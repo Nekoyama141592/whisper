@@ -60,7 +60,7 @@ class ReplyNotificationCard extends ConsumerWidget {
           ),
           ListTile(
             title: Text(replyNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
-            tileColor: replyNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
+            tileColor: notificationsModel.readPostCommentReplyNotificationIds.contains(replyNotification.notificationId) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
             leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUid: replyNotification.activeUid,mainModel: mainModel,),
             subtitle: Text(replyNotification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
             onTap: () async {

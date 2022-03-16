@@ -61,7 +61,7 @@ class CommentNotificationCard extends ConsumerWidget {
           ),
           ListTile(
             title: Text(commentNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
-            tileColor: commentNotification.isRead == true ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
+            tileColor: notificationsModel.readPostCommentNotificationIds.contains(commentNotification.notificationId) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
             leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUid: commentNotification.activeUid,mainModel: mainModel,),
             subtitle: Text(commentNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
             onTap: () async {

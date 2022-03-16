@@ -32,6 +32,9 @@ class NotificationsModel extends ChangeNotifier {
   // refresh
   RefreshController commentRefreshController = RefreshController(initialRefresh: false);
   RefreshController replyRefreshController = RefreshController(initialRefresh: false);
+  // read
+  List<String> readPostCommentNotificationIds = [];
+  List<String> readPostCommentReplyNotificationIds = [];
   
   NotificationsModel() {
     init();
@@ -83,6 +86,7 @@ class NotificationsModel extends ChangeNotifier {
 
   Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {
     commentNotification.isRead = true;
+    readPostCommentNotificationIds.add(commentNotification.notificationId);
     final thisElement = notifications.where((element) => element.id == commentNotification.notificationId ).toList().first;
     final i = notifications.indexOf(thisElement);
     notifications[i].data()![isReadMapKey] = true;
@@ -103,6 +107,7 @@ class NotificationsModel extends ChangeNotifier {
 
   Future<void> onReplyNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  ReplyNotification replyNotification }) async {
     replyNotification.isRead = true;
+    readPostCommentReplyNotificationIds.add(replyNotification.notificationId);
     final thisElement = notifications.where((element) => element.id == replyNotification.notificationId ).toList().first;
     final i = notifications.indexOf(thisElement);
     notifications[i].data()![isReadMapKey] = true;
