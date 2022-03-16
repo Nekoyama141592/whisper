@@ -20,10 +20,9 @@ dependencies:
   flutter_riverpod: ^1.0.3
   firebase_core: ^1.13.1
   firebase_auth: ^3.3.11
-  cloud_firestore: ^2.5.1
-  firebase_analytics: ^8.3.1
+  cloud_firestore: ^3.1.10
+  firebase_analytics: ^9.1.2
   google_fonts: ^2.1.0
-  firebase_storage: ^10.0.3
   pull_to_refresh: ^2.0.0
   dotenv: ^3.0.0
   flutter_dotenv: ^5.0.2
@@ -41,10 +40,11 @@ dependencies:
   uuid: ^3.0.5
   dart_ipify: ^1.1.1
   record: ^3.0.2
-  image_picker: ^0.8.4+5
+  image_picker: ^0.8.4+11
   just_audio: ^0.9.18
   flutter_svg: ^1.0.3
   audio_video_progress_bar: ^0.10.0
+  firebase_storage: ^10.2.9
 
 
 dev_dependencies:
