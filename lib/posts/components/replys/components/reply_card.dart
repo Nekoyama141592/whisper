@@ -61,58 +61,63 @@ class ReplyCard extends ConsumerWidget {
           await commentsOrReplysModel.muteReply(context: context,mainModel: mainModel,whisperReply: whisperReply);
         } , ),
       ] : [],
-      child: InkWell(
-        onLongPress: () async {
-          await FlutterClipboard.copy(whisperReply.uid);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
-        } ,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.secondary.withOpacity(cardOpacity),
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(defaultPadding(context: context)/4.0))
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: defaultPadding(context: context)
-                ),
-                child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUid: whisperReply.uid, mainModel: mainModel),
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: defaultPadding(context: context)/2.0
+        ),
+        child: InkWell(
+          onLongPress: () async {
+            await FlutterClipboard.copy(whisperReply.uid);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Uidをコピーしました')));
+          } ,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).colorScheme.secondary.withOpacity(cardOpacity),
               ),
-              Expanded(
-                child: SizedBox(
-                  child: Column(
-                    children: [
-                      Text(
-                        mainModel.currentWhisperUser.uid == whisperReply.uid ?
-                        mainModel.currentWhisperUser.userName 
-                        : whisperReply.userName,
-                        style: whisperTextStyle,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: defaultPadding(context: context),),
-                      Text(
-                        whisperReply.reply,
-                        style: repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? whisperTextStyle : hiddenStyle
-                      )
-                    ],
+              borderRadius: BorderRadius.all(Radius.circular(defaultPadding(context: context)/4.0))
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: defaultPadding(context: context)
+                  ),
+                  child: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding, passiveUid: whisperReply.uid, mainModel: mainModel),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    child: Column(
+                      children: [
+                        Text(
+                          mainModel.currentWhisperUser.uid == whisperReply.uid ?
+                          mainModel.currentWhisperUser.userName 
+                          : whisperReply.userName,
+                          style: whisperTextStyle,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: defaultPadding(context: context),),
+                        Text(
+                          whisperReply.reply,
+                          style: repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? whisperTextStyle : hiddenStyle
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel),
-                  InkWell(
-                    child: Icon(repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? Icons.visibility : Icons.visibility_off ),
-                    onTap: () { repliesModel.toggleIsHidden(whisperReply: whisperReply); },
-                  )
-                ],
-              )
-            ]
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel),
+                    InkWell(
+                      child: Icon(repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? Icons.visibility : Icons.visibility_off ),
+                      onTap: () { repliesModel.toggleIsHidden(whisperReply: whisperReply); },
+                    )
+                  ],
+                )
+              ]
+            ),
           ),
         ),
       ),
