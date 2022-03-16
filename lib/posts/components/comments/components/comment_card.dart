@@ -48,6 +48,11 @@ class CommentCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize/cardTextDiv2,
     );
+    final hiddenStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize/cardTextDiv2,
+      overflow: TextOverflow.ellipsis
+    );
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) ?
 
     Slidable(
@@ -95,7 +100,7 @@ class CommentCard extends ConsumerWidget {
                     SizedBox(height: defaultPadding(context: context),),
                     Text(
                       whisperComment.comment,
-                      style: whisperTextStyle,
+                      style: whisperComment.isHidden ? hiddenStyle : whisperTextStyle,
                     )
                   ],
                 ),
@@ -104,7 +109,11 @@ class CommentCard extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
-                  ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost)
+                  ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost),
+                  InkWell(
+                    child: Icon(whisperComment.isHidden ? Icons.visibility : Icons.visibility_off ),
+                    onTap: () { commentsModel.toggleIsHidden(whisperPostComment: whisperComment); },
+                  )
                 ],
               )
             ]

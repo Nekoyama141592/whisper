@@ -374,4 +374,8 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
     refreshController.loadComplete();
   }
+  void toggleIsHidden({ required WhisperPostComment whisperPostComment }) {
+    whisperPostComment.isHidden = !whisperPostComment.isHidden;
+    notifyListeners();
+  }
 }

@@ -51,12 +51,9 @@ class RoundedPasswordField extends ConsumerWidget {
               Icons.lock,
               color: Colors.black,
             ),
-            suffixIcon: IconButton(
-              color: Colors.black,
-              onPressed: (){model.toggleIsObscure();}, 
-              icon: model.isObscure ?
-              Icon(Icons.visibility)
-              : Icon(Icons.visibility_off)
+            suffixIcon: InkWell(
+              onTap: () { model.toggleIsObscure(); }, 
+              child: Icon(model.isObscure ? Icons.visibility : Icons.visibility_off,color: Colors.black, )
             ),
             border: InputBorder.none
           ),

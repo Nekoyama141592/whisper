@@ -32,6 +32,7 @@ class WhisperReply {
   final dynamic createdAt;
   final int followerCount;
   final bool isDelete;
+  bool isHidden = true;
   final bool isNFTicon;
   final bool isOfficial;
   int likeCount;

@@ -375,11 +375,8 @@ class RepliesModel extends ChangeNotifier {
     await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: postCommentReplyId, userMeta: mainModel.userMeta ).delete();
   }
   
-  void reset() async {
-    // postCommentReplyDocs = [];
-    // notifyListeners();
-    startLoading();
-    Future.delayed(Duration(seconds: 3));
-    endLoading();
+  void toggleIsHidden({ required WhisperReply whisperReply }) {
+    whisperReply.isHidden = !whisperReply.isHidden;
+    notifyListeners();
   }
 }

@@ -28,7 +28,7 @@ WhisperReply _$WhisperReplyFromJson(Map<String, dynamic> json) => WhisperReply(
       updatedAt: json['updatedAt'],
       userName: json['userName'] as String,
       userImageURL: json['userImageURL'] as String,
-    );
+    )..isHidden = json['isHidden'] as bool;
 
 Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>
     <String, dynamic>{
@@ -36,6 +36,7 @@ Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>
       'createdAt': instance.createdAt,
       'followerCount': instance.followerCount,
       'isDelete': instance.isDelete,
+      'isHidden': instance.isHidden,
       'isNFTicon': instance.isNFTicon,
       'isOfficial': instance.isOfficial,
       'likeCount': instance.likeCount,

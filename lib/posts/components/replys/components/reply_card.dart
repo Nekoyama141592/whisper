@@ -42,6 +42,11 @@ class ReplyCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
       fontSize: fontSize/cardTextDiv2,
     );
+    final hiddenStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: fontSize/cardTextDiv2,
+      overflow: TextOverflow.ellipsis
+    );
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.mutePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     
     Slidable(
@@ -91,7 +96,7 @@ class ReplyCard extends ConsumerWidget {
                       SizedBox(height: defaultPadding(context: context),),
                       Text(
                         whisperReply.reply,
-                        style: whisperTextStyle
+                        style: whisperReply.isHidden ? hiddenStyle : whisperTextStyle
                       )
                     ],
                   ),
@@ -100,7 +105,11 @@ class ReplyCard extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel)
+                  ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel),
+                  InkWell(
+                    child: Icon(whisperReply.isHidden ? Icons.visibility : Icons.visibility_off ),
+                    onTap: () { repliesModel.toggleIsHidden(whisperReply: whisperReply); },
+                  )
                 ],
               )
             ]
