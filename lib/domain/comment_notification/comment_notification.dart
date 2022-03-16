@@ -16,6 +16,7 @@ class CommentNotification {
     required this.isNFTicon,
     required this.isOfficial,
     required this.isRead,
+    required this.mainWalletAddress,
     required this.notificationId,
     required this.passiveUid,
     required this.postId,
@@ -39,6 +40,7 @@ class CommentNotification {
   final bool isNFTicon;
   final bool isOfficial;
   bool isRead;
+  final String mainWalletAddress;
   final String notificationId;
   final String passiveUid;
   final String postId;

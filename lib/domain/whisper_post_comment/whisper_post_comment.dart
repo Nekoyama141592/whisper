@@ -16,6 +16,7 @@ class WhisperPostComment {
     required this.isOfficial,
     required this.likeCount,
     required this.masterReplied,
+    required this.mainWalletAddress,
     required this.negativeScore,
     required this.passiveUid,
     required this.positiveScore,
@@ -36,6 +37,7 @@ class WhisperPostComment {
   final bool isOfficial;
   int likeCount;
   final bool masterReplied;
+  final String mainWalletAddress;
   final num negativeScore;
   final String passiveUid;
   final num positiveScore;
