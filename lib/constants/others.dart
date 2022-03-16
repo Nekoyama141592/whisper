@@ -29,7 +29,8 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 import 'package:whisper/main_model.dart';
 
 Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
-  final File? result = await ImageCropper.cropImage(
+  final instance = ImageCropper();
+  final File? result = await instance.cropImage(
     sourcePath: xFile!.path,
     aspectRatioPresets: Platform.isAndroid ? [ CropAspectRatioPreset.square ] : [ CropAspectRatioPreset.square ],
     androidUiSettings: const AndroidUiSettings(

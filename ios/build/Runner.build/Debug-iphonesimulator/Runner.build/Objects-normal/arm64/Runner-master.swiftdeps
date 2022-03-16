@@ -1,6 +1,6 @@
-version: "Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)"
-options: "f42a185b4188dff4c2e749a779108580ae3306ec256e58e691f4afb4648ae2ec"
-build_start_time: [1644223203, 36183834]
-build_end_time: [1644223203, 80911159]
+version: "Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)"
+options: "3f1fb66e8f011b0bfa3de27af7933c30691d172d1f5c58d5d544d07c39161386"
+build_start_time: [1647424992, 498936176]
+build_end_time: [1647424992, 788117885]
 inputs:
-  "/Users/a81807/Desktop/flutter_application/whisper/ios/Runner/AppDelegate.swift": !private [1633855857, 278351306]
+  "/Users/a81807/Desktop/flutter_application/whisper/ios/Runner/AppDelegate.swift": [1633855857, 278351306]
