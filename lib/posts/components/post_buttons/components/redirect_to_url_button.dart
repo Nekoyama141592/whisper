@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';

@@ -1,6 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/posts/components/audio_controll_buttons/components/next_song_button.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';

@@ -9,7 +9,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // domain
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 // model
 import 'package:whisper/main_model.dart';

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/auth/signup/signup_model.dart';
 import 'package:whisper/details/rounded_button.dart';

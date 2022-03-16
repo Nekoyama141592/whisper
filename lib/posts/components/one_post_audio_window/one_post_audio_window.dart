@@ -6,8 +6,6 @@ import 'package:whisper/details/user_image.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/audio_window/components/audio_progress_bar.dart';
 import 'package:whisper/posts/components/audio_controll_buttons/components/play_button.dart';
-// domain
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';

@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
-// constants
-import 'package:whisper/constants/ints.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/replys/replys_model.dart';

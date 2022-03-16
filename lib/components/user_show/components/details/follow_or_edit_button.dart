@@ -29,7 +29,6 @@ class FollowOrEditButton extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,WidgetRef ref ) {
     
-    final String passiveUid = passiveWhisperUser.uid;
     final userShowModel = ref.watch(userShowProvider);
     final double withRate = 0.4;
     final fontSize = defaultHeaderTextSize(context: context)/1.25;

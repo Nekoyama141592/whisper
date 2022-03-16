@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // components
 import 'package:whisper/posts/components/audio_controll_buttons/audio_controll_buttons.dart';
 import 'audio_progress_bar.dart';
-import 'current_song_title.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';

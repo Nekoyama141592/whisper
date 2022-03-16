@@ -19,8 +19,6 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-// domain
-import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';

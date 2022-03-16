@@ -10,7 +10,6 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart';
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
-import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/mute_reply/mute_reply.dart';
 import 'package:whisper/domain/mute_comment/mute_comment.dart';

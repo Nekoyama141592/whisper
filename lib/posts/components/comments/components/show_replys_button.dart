@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/routes.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';

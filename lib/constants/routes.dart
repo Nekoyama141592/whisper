@@ -18,19 +18,14 @@ import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/posts/components/replys/replys_page.dart';
 import 'package:whisper/components/user_show/user_show_page.dart';
 import 'package:whisper/one_post/one_comment/one_comment_page.dart';
-import 'package:whisper/important_matters/other_pages/tos_page.dart';
 import 'package:whisper/posts/components/comments/comments_page.dart';
-import 'package:whisper/important_matters/important_matters_page.dart';
 import 'package:whisper/auth/update_password/update_password_page.dart';
-import 'package:whisper/important_matters/other_pages/privacy_page.dart';
 import 'package:whisper/auth/signup/other_pages/add_user_info_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/components/notifications/notifications_page.dart';
-import 'package:whisper/important_matters/other_pages/compliance_page.dart';
 import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
 import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
-import 'package:whisper/auth/account/other_pages/blocks_users/blocks_users_page.dart';
 import 'package:whisper/auth/login/verify_password_reset/verify_password_reset_page.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_page.dart';
 // constants
@@ -48,7 +43,6 @@ import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/auth/signup/signup_model.dart';
 import 'package:whisper/auth/account/account_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
 import 'package:whisper/components/notifications/notifications_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 

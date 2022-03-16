@@ -7,7 +7,6 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/details/back_arrow_button.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 import 'package:whisper/posts/components/comments/components/comment_card.dart';
-import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_window.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
