@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -85,7 +86,7 @@ class AccountModel extends ChangeNotifier {
   }
 
   Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {
-    await FirebaseFirestore.instance.collection(usersFieldKey).doc(currentWhisperUser.uid).delete().then((_) async {
+    await returnUserMetaDocRef(uid: currentWhisperUser.uid).delete().then((_) async {
       await currentUser!.delete();  
     });
   }
