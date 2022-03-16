@@ -48,7 +48,7 @@ class NFTownersPage extends ConsumerWidget {
       //     ),
       //   ),
       body: Center(
-        child: Text('Coming Soon',style: TextStyle(fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold ), ),
+        child: Text('Coming Soon!!',style: TextStyle(fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold ), ),
       ),
     );
   }
