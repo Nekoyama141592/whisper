@@ -1,15 +1,12 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
+// packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
 
 final nftownersProvider = ChangeNotifierProvider(
   (ref) => NFTownersModel()
 );
 
 class NFTownersModel extends ChangeNotifier {
-  Stream<QuerySnapshot> nftOwnersStream = FirebaseFirestore.instance.collection(nftOwnersFieldKey).orderBy(numberFieldKey,descending: false).snapshots();
+  // Stream<QuerySnapshot> nftOwnersStream = FirebaseFirestore.instance.collection(nftOwnersFieldKey).orderBy(numberFieldKey,descending: false).snapshots();
 }
