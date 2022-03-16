@@ -158,6 +158,7 @@ class CommentsModel extends ChangeNotifier {
     try{
       final CommentNotification commentNotification = CommentNotification(
         accountName: currentWhisperUser.accountName,
+        activeUid: currentWhisperUser.uid,
         comment: comment, 
         postCommentId: whisperComment.comment,
         commentScore: whisperComment.score,
@@ -175,7 +176,6 @@ class CommentsModel extends ChangeNotifier {
         postDocRef: returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ),
         postTitle: whisperPost.title,
         notificationType: commentNotificationType,
-        activeUid: currentWhisperUser.uid,
         updatedAt: now,
         userImageURL: currentWhisperUser.userImageURL,
         userName: currentWhisperUser.userName

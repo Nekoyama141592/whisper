@@ -309,6 +309,7 @@ class RepliesModel extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final ReplyNotification replyNotification = ReplyNotification(
       accountName: currentWhisperUser.accountName,
+      activeUid: currentWhisperUser.uid,
       comment: comment, 
       createdAt: now,
       postCommentId: elementId, 
@@ -328,7 +329,6 @@ class RepliesModel extends ChangeNotifier {
       replyScore: newWhisperReply.score,
       postCommentReplyId: newWhisperReply.postCommentReplyId,
       notificationType: replyNotificationType,
-      activeUid: currentWhisperUser.uid,
       updatedAt: now,
       userImageURL: currentWhisperUser.userImageURL,
       userName: currentWhisperUser.userName
