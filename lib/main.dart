@@ -1,10 +1,13 @@
+// dart
+import 'dart:async';
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:whisper/components/bookmarks/other_pages/bookmark_labels_page.dart';
 // constants
 import 'themes/themes.dart';
@@ -23,17 +26,23 @@ import 'package:whisper/components/my_profile/my_profile_page.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 
-
 Future<void> main() async {
-  await dotenv.load(fileName: '.env',);
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  // await JustAudioBackground.init(
-  //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
-  //   androidNotificationChannelName: 'Audio playback',
-  //   androidNotificationOngoing: true,
-  // );
-  runApp(ProviderScope(child: MyApp()));
+  // // await dotenv.load(fileName: '.env',);
+  // // await JustAudioBackground.init(
+  // //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+  // //   androidNotificationChannelName: 'Audio playback',
+  // //   androidNotificationOngoing: true,
+  // // );
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    // Crashlytics
+    // DartのエラーをCrashlyticsに報告する
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    runApp(ProviderScope(child: MyApp()));
+  }, (error, stackTrace) {
+    FirebaseCrashlytics.instance.recordError(error, stackTrace);
+  });
 }
 
 class MyApp extends ConsumerWidget {
