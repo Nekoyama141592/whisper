@@ -141,6 +141,7 @@ class SignupModel extends ChangeNotifier {
       userImageURL: imageURL,
       isAdmin: false,
       isDelete: false,
+      isGovernmentOfficial: false,
       isKeyAccount: false,
       isNFTicon: false,
       isOfficial: false,

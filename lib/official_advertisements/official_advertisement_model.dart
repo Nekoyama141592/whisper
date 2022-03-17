@@ -37,7 +37,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       if (qshot.docs.isNotEmpty) {
         config = OfficialAdvertisementConfig.fromJson(qshot.docs.first.data());
       }
-      await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
+      await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
       });
       if (officialAdvertisementDocs.isNotEmpty) {
