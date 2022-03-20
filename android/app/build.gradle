@@ -51,7 +51,6 @@ android {
     
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        // applicationId "com.example.whisper"
         applicationId "com.firebaseapp.whisper_a0319"
         minSdkVersion 23
         targetSdkVersion 30
@@ -74,7 +73,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            applicationIdSuffix ".dev"
+            applicationIdSuffix ""
             resValue "string", "app_name", "Debug StartApp"
         }
         release {
