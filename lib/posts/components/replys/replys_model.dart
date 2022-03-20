@@ -283,6 +283,7 @@ class RepliesModel extends ChangeNotifier {
       postCommentId: postCommentId,
       followerCount: currentWhisperUser.followerCount,
       isDelete: false,
+      isHidden: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,
       likeCount: 0,

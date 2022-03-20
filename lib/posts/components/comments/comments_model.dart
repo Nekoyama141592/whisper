@@ -129,6 +129,7 @@ class CommentsModel extends ChangeNotifier {
       createdAt: now,
       followerCount: currentWhisperUser.followerCount,
       isDelete: false,
+      isHidden: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,
       likeCount: 0,
