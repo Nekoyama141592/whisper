@@ -1,4 +1,4 @@
-package com.example.whisper
+package com.firebaseapp.whisper_a0319
 
 import io.flutter.embedding.android.FlutterActivity
 
