@@ -1,5 +1,6 @@
 db: {
     users(WhisperUser) {
+        deleteUsers{}
         posts(Post) {
             postComments(WhisperComment) {
                 postCommentReplies(WhisperReply) {
@@ -49,6 +50,7 @@ db: {
 
         }
     }
+    deleteUserMeta {}
     nftOwners(nftOwner) {}
     officialAdvertisements(officialAdvertisement) {
         officialAdvertisementImpressions(officialAdvertisementImpression) {
