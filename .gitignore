@@ -8,6 +8,7 @@
 *.rules
 *.js
 *.jks
+*.txt
 ios/Runner/GoogleService-Info-dev.plist
 ios/Runner/GoogleService-Info-prod.plist
 android/app/src/debug/google-services.json
