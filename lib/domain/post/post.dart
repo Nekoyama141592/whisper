@@ -26,6 +26,7 @@ class Post{
     required this.links,
     required this.mainWalletAddress,
     required this.negativeScore,
+    required this.nftIconInfo,
     required this.playCount,
     required this.postState,
     required this.postId,
@@ -61,6 +62,7 @@ class Post{
   List<Map<String,dynamic>> links;
   String mainWalletAddress;
   num negativeScore;
+  Map<String,dynamic> nftIconInfo;
   int playCount;
   String postState;
   int postCommentCount;

@@ -228,6 +228,7 @@ class AddPostModel extends ChangeNotifier {
       links: whisperLinksNotifier.value.map((e) => e.toJson() ).toList(), 
       mainWalletAddress: currentWhiseprUser.mainWalletAddress,
       negativeScore: 0,
+      nftIconInfo: {},
       playCount: 0,
       postId: postId, 
       postState: returnPostStateString(postState: PostState.basic ),

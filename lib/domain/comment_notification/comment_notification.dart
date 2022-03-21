@@ -17,6 +17,7 @@ class CommentNotification {
     required this.isOfficial,
     required this.isRead,
     required this.mainWalletAddress,
+    required this.nftIconInfo,
     required this.notificationId,
     required this.passiveUid,
     required this.postId,
@@ -41,6 +42,7 @@ class CommentNotification {
   final bool isOfficial;
   bool isRead;
   final String mainWalletAddress;
+  final Map<String,dynamic> nftIconInfo;
   final String notificationId;
   final String passiveUid;
   final String postId;

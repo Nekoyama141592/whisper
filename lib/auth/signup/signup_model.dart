@@ -148,6 +148,7 @@ class SignupModel extends ChangeNotifier {
       isSuspended: false,
       postCount: 0,
       links: [],
+      nftIconInfo: {},
       recommendState: returnRecommendStateString(recommendState: RecommendState.isRecommendable ),
       score: defaultScore,
       searchToken: returnSearchToken(searchWords: searchWords),

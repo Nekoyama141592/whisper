@@ -21,6 +21,8 @@ class WhisperUser {
     required this.isNFTicon,
     required this.isOfficial,
     required this.links,
+    required this.mainWalletAddress,
+    required this.nftIconInfo,
     required this.postCount,
     required this.recommendState,
     required this.score,
@@ -29,7 +31,6 @@ class WhisperUser {
     required this.userName,
     required this.uid,
     required this.updatedAt,
-    required this.mainWalletAddress,
     required this.walletAddresses,
     required this.walletConnected
   });
@@ -49,6 +50,7 @@ class WhisperUser {
   final bool isSuspended;
   List<Map<String,dynamic>> links;
   String mainWalletAddress;
+  Map<String,dynamic> nftIconInfo;
   int postCount;
   String recommendState;
   num score;

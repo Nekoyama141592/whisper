@@ -17,6 +17,7 @@ class WhisperReply {
     required this.likeCount,
     required this.mainWalletAddress,
     required this.negativeScore,
+    required this.nftIconInfo,
     required this.passiveUid,
     required this.postId,
     required this.positiveScore,
@@ -39,6 +40,7 @@ class WhisperReply {
   int likeCount;
   final String mainWalletAddress;
   final num negativeScore;
+  final Map<String,dynamic> nftIconInfo;
   final String passiveUid;
   final String postId;
   final num positiveScore;

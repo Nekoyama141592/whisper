@@ -24,6 +24,8 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       links: (json['links'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList(),
+      mainWalletAddress: json['mainWalletAddress'] as String,
+      nftIconInfo: json['nftIconInfo'] as Map<String, dynamic>,
       postCount: json['postCount'] as int,
       recommendState: json['recommendState'] as String,
       score: json['score'] as num,
@@ -32,7 +34,6 @@ WhisperUser _$WhisperUserFromJson(Map<String, dynamic> json) => WhisperUser(
       userName: json['userName'] as String,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
-      mainWalletAddress: json['mainWalletAddress'] as String,
       walletAddresses: (json['walletAddresses'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList(),
@@ -57,6 +58,7 @@ Map<String, dynamic> _$WhisperUserToJson(WhisperUser instance) =>
       'isSuspended': instance.isSuspended,
       'links': instance.links,
       'mainWalletAddress': instance.mainWalletAddress,
+      'nftIconInfo': instance.nftIconInfo,
       'postCount': instance.postCount,
       'recommendState': instance.recommendState,
       'score': instance.score,

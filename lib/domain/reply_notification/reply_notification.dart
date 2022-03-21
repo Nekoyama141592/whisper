@@ -18,6 +18,7 @@ class ReplyNotification {
     required this.isRead,
     required this.mainWalletAddress,
     required this.masterReplied,
+    required this.nftIconInfo,
     required this.notificationId,
     required this.passiveUid,
     required this.postId,
@@ -43,6 +44,7 @@ class ReplyNotification {
   bool isRead;
   final String mainWalletAddress;
   final bool masterReplied;
+  final Map<String,dynamic> nftIconInfo;
   final String notificationId;
   final String passiveUid;
   final String postId;
