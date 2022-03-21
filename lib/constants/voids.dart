@@ -37,34 +37,17 @@ import 'package:whisper/official_advertisements/official_advertisement_model.dar
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
  
-Future<void> signOut(BuildContext context) async {
+Future<void> signOut({required BuildContext context, required BuildContext innerContext }) async {
   await FirebaseAuth.instance.signOut();
-  Navigator.pop(context);
+  Navigator.pop(innerContext);
   routes.toIsFinishedPage(context: context, title: 'ログアウトしました', text: 'お疲れ様でした');
 }
 
-void showCupertinoDialogue({required BuildContext context, required String title, required String content, required void Function()? action}) {
+void showCupertinoDialogue({required BuildContext context, required Widget Function(BuildContext) builder }) {
   showCupertinoDialog(
     context: context, 
-    builder: (innerContext) {
-    return CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(content),
-      actions: [
-        CupertinoDialogAction(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.pop(innerContext);
-          },
-        ),
-        CupertinoDialogAction(
-          child: const Text('OK'),
-          isDestructiveAction: true,
-          onPressed: action,
-        )
-      ],
-    );
-  });
+    builder: builder
+  );
 }
 
 void toEditPostInfoMode({ required AudioPlayer audioPlayer,required EditPostInfoModel editPostInfoModel}) {

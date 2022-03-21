@@ -1,4 +1,5 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flash/flash.dart';
@@ -187,11 +188,11 @@ class PostFutures extends ChangeNotifier {
     await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   }
 
-  Future<void> deletePost({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
-    Navigator.pop(context);
+  Future<void> deletePost({ required BuildContext innerContext, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
+    Navigator.pop(innerContext);
     final whisperPost = fromMapToPost(postMap: postMap);
     if (mainModel.currentUser!.uid != whisperPost.uid) {
-      voids.showSnackBar(context: context, text: 'あなたにはその権限がありません');
+      voids.showSnackBar(context: innerContext, text: 'あなたにはその権限がありません');
     } else {
       // process UI
       posts.remove(posts[i]);
@@ -208,7 +209,28 @@ class PostFutures extends ChangeNotifier {
   }
 
   void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) {
-    voids.showCupertinoDialogue(context: context, title: '投稿削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async { await deletePost(context: context, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;});
+    final title = '投稿削除';
+    final content = '一度削除したら、復元はできません。本当に削除しますか？';
+    final builder = (innerContext) {
+      return CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text(cancelMsg),
+            onPressed: () {
+              Navigator.pop(innerContext);
+            },
+          ),
+          CupertinoDialogAction(
+            child: const Text(okMsg),
+            isDestructiveAction: true,
+            onPressed: () async { await deletePost(innerContext: innerContext, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;},
+          ),
+        ],
+      );
+    };
+    voids.showCupertinoDialogue(context: context, builder: builder );
   } 
 }
 

@@ -1,8 +1,8 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
 // constants
@@ -76,13 +76,34 @@ class AccountModel extends ChangeNotifier {
 
   void showDeleteUserDialog({ required BuildContext context, required MainModel mainModel }) {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    voids.showCupertinoDialogue(context: context, title: 'ユーザー削除', content: '一度削除したら、復元はできません。本当に削除しますか？', action: () async {
-      if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
-        Navigator.pop(context);
-        routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
-        await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
-      }
-    });
+    final String title = 'ユーザー削除';
+    final String content = '一度削除したら、復元はできません。本当に削除しますか？';
+    final builder = (innerContext) {
+      return CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text(cancelMsg),
+            onPressed: () {
+              Navigator.pop(innerContext);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text(okMsg),
+            isDestructiveAction: true,
+            onPressed: () async {
+              if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
+                Navigator.pop(innerContext);
+                routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
+                await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
+              }
+            },
+          ),
+        ],
+      );
+    };
+    voids.showCupertinoDialogue(context: context,builder: builder );
   }
 
   Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {
@@ -91,8 +112,29 @@ class AccountModel extends ChangeNotifier {
     });
   }
 
-  void showSignOutDialog(BuildContext context) {
-    voids.showCupertinoDialogue(context: context, title: 'ログアウト', content: 'ログアウトしますか?', action: () async { voids.signOut(context); });
+  void showSignOutDialog({required BuildContext context}) {
+    final String title = 'ログアウト';
+    final String content = 'ログアウトしますか?';
+    final builder = (innerContext) {
+      return CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text(cancelMsg),
+            onPressed: () {
+              Navigator.pop(innerContext);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text(okMsg),
+            isDestructiveAction: true,
+            onPressed: () async { voids.signOut(context: context,innerContext: innerContext ); }
+          )
+        ],
+      );
+    };
+    voids.showCupertinoDialogue(context: context, builder: builder );
   }
 
 }

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 
 final updateEmailProvider = ChangeNotifierProvider(
@@ -27,7 +28,28 @@ class UpdateEmailModel extends ChangeNotifier {
   }
 
   void showSignOutDialog(BuildContext context) {
-    voids.showCupertinoDialogue(context: context, title: 'ログアウト', content: 'ログアウトしますか?', action: () async { await voids.signOut(context); });
+    final String title = 'ログアウト';
+    final String content = 'ログアウトしますか?';
+    final builder = (innerContext) {
+      return CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text(cancelMsg),
+            onPressed: () {
+              Navigator.pop(innerContext);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text(okMsg),
+            isDestructiveAction: true,
+            onPressed: () async { await voids.signOut(context: context, innerContext: innerContext); }
+          ),
+        ],
+      );
+    };
+    voids.showCupertinoDialogue(context: context,builder: builder );
   }
 
   

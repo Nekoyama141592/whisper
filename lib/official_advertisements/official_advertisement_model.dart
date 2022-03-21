@@ -9,6 +9,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/bools.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
@@ -41,14 +42,15 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
         qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
       });
       if (officialAdvertisementDocs.isNotEmpty) {
-        
         Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
           randIndex = rand.nextInt(officialAdvertisementDocs.length);
           final resultDoc = officialAdvertisementDocs[randIndex];
           final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
-          final String officialAdvertisementId = resultDoc.id;
-          showTopFlash(context: context, officialAdvertisementId: officialAdvertisementId,result: result, config: config,margin: EdgeInsets.all(8.0));
-          await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+          if (canShowAdvertisement(officialAdvertisement: result)) {
+            final String officialAdvertisementId = resultDoc.id;
+            showTopFlash(context: context, officialAdvertisementId: officialAdvertisementId,result: result, config: config,margin: EdgeInsets.all(8.0));
+            await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+          }
         });
       }
     }

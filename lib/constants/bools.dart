@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -69,4 +70,30 @@ bool isImageExist({ required Post post }) {
   });
   return isImageExist;
 }
-
+bool canShowAdvertisement({ required OfficialAdvertisement officialAdvertisement }) {
+  if (officialAdvertisement.tapCountLimit == 0 && officialAdvertisement.impressionCountLimit == 0) {
+    // no limit
+    return true;
+  } else if (officialAdvertisement.tapCountLimit >= 0 && officialAdvertisement.impressionCountLimit >= 0) {
+    // strange
+    return false;
+  } else if (officialAdvertisement.tapCountLimit == 0 && officialAdvertisement.impressionCountLimit >= 0 ) {
+    // there is imperssionCountLimit
+    if (officialAdvertisement.tapCount < officialAdvertisement.tapCountLimit) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (officialAdvertisement.tapCountLimit >= 0 && officialAdvertisement.impressionCountLimit == 0 ) {
+    // there is tapCountLimit
+    if (officialAdvertisement.impressionCount < officialAdvertisement.impressionCountLimit ) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    // officialAdvertisement.tapCountLimit <= 0 && officialAdvertisement.impressionCountLimit <= 0 
+    // strange
+    return false;
+  }
+}

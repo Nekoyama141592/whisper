@@ -172,3 +172,5 @@ const String muteUserMsg = 'ユーザーをミュートしました';
 const String blockUserMsg = 'ユーザーをブロックしました';
 const String mutePostCommentMsg = 'このコメントをミュートしました';
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';
+const String okMsg = 'OK';
+const String cancelMsg = 'Cancel';

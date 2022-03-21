@@ -1,10 +1,12 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/links/user_links/user_links_model.dart';
@@ -61,11 +63,32 @@ class AccountPage extends ConsumerWidget {
             title: Text('ミュートしているユーザー'),
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
-              voids.showCupertinoDialogue(context: context, title: '注意', content: 'ミュートしているユーザーが表示されます', action: () async {
-                Navigator.pop(context);
-                await Future.delayed(Duration(milliseconds: dialogueMilliSeconds));
-                routes.toMutesUsersPage(context, mainModel);
-              });
+              final String title = '注意';
+              final String content = 'ミュートしているユーザーが表示されます';
+              final builder = (innerContext) {
+                return CupertinoAlertDialog(
+                  title: Text(title),
+                  content: Text(content),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text(cancelMsg),
+                      onPressed: () {
+                        Navigator.pop(innerContext);
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(okMsg),
+                      isDestructiveAction: true,
+                      onPressed: () async {
+                        Navigator.pop(innerContext);
+                        await Future.delayed(Duration(milliseconds: dialogueMilliSeconds));
+                        routes.toMutesUsersPage(context, mainModel);
+                      }
+                    )
+                  ],
+                );
+              };
+              voids.showCupertinoDialogue(context: context, builder: builder );
             },
           ),
           ListTile(
@@ -93,7 +116,7 @@ class AccountPage extends ConsumerWidget {
           ListTile(
             title: Text('ログアウト'),
             onTap: () {
-              accountModel.showSignOutDialog(context);
+              accountModel.showSignOutDialog(context: context);
             },
           ),
         ],
