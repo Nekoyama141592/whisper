@@ -1,6 +1,0 @@
-version: "Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)"
-options: "3f1fb66e8f011b0bfa3de27af7933c30691d172d1f5c58d5d544d07c39161386"
-build_start_time: [1647424992, 498936176]
-build_end_time: [1647424992, 788117885]
-inputs:
-  "/Users/a81807/Desktop/flutter_application/whisper/ios/Runner/AppDelegate.swift": [1633855857, 278351306]
