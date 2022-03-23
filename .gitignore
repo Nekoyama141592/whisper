@@ -11,6 +11,7 @@
 *.txt
 ios/Runner/GoogleService-Info-dev.plist
 ios/Runner/GoogleService-Info-prod.plist
+ios/Runner/GoogleService-Info.plist
 android/app/src/debug/google-services.json
 android/app/src/release/google-services.json
 
