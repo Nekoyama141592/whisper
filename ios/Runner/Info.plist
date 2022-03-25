@@ -21,7 +21,6 @@
 	<string>Caputure image</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Can We Use Your Microphone Please</string>
-
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
