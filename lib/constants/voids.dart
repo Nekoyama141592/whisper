@@ -261,7 +261,6 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
   await query.startAfterDocument(posts.last).get().then((qshot) async {
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-    print(docs.length.toString() + 'docsの長さ');
     if (docs.isNotEmpty) {
       docs.sort((a,b) => (fromMapToPost(postMap: b.data()).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()).createdAt ));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {

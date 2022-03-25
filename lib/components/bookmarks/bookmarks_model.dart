@@ -44,7 +44,6 @@ class BookmarksModel extends ChangeNotifier {
   late AudioPlayer audioPlayer;
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  int lastIndex = 0;
   List<String> bookmarkPostIds = [];
   List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
@@ -73,7 +72,7 @@ class BookmarksModel extends ChangeNotifier {
       startLoading();
       audioPlayer = AudioPlayer();
       setBookmarksPostIds(mainModel: mainModel, );
-      await getBookmarks();
+      await processBookmark();
       prefs = mainModel.prefs;
       await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
       if (isInitFinished == false) {
@@ -106,46 +105,34 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> onReload({ required MainModel mainModel }) async {
     startLoading();
     setBookmarksPostIds(mainModel: mainModel);
-    await getBookmarks();
+    await processBookmark();
     endLoading();
   }
 
   Future<void> onLoading() async {
-    await getOldBookmarks();
+    await processBookmark();
     refreshController.loadComplete();
     notifyListeners();
   }
 
   void setBookmarksPostIds({ required MainModel mainModel, }){
-    final x = mainModel.bookmarkPosts.where((element) => element.bookmarkPostCategoryId == indexBookmarkPostLabelId ).toList();
+    List<BookmarkPost> x = mainModel.bookmarkPosts.where((element) => element.bookmarkPostCategoryId == indexBookmarkPostLabelId ).toList();
     x.sort((a,b)=> (b.createdAt as Timestamp ).compareTo(a.createdAt) );
     bookmarkPostIds = x.map((e) => e.postId ).toList();
     notifyListeners();
   }
 
-  Future<void> getBookmarks() async {
-    await processBookmark();
-  }
-
   Future<void> processBookmark() async {
-    if (bookmarkPostIds.isNotEmpty) {
-      List<String> max10 = bookmarkPostIds.length > (lastIndex + tenCount) ? bookmarkPostIds.sublist(lastIndex,tenCount) : bookmarkPostIds.sublist( lastIndex,bookmarkPostIds.length );
-      if (max10.isEmpty) {
-        max10.add('');
-      }
+    if (bookmarkPostIds.length > posts.length) {
+      final bool = (bookmarkPostIds.length - posts.length) > 10;
+      List<String> max10BookmarkPostIds = bool ? bookmarkPostIds.sublist(posts.length,posts.length + tenCount ) : bookmarkPostIds.sublist(posts.length,bookmarkPostIds.length);
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
-      docs.sort((a,b)=> (BookmarkPost.fromJson(b.data()!).createdAt as Timestamp ).compareTo((BookmarkPost.fromJson(a.data()!).createdAt) ));
-      await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).limit(tenCount).get().then((qshot) {
-        docs = qshot.docs;
-      });
+      if (max10BookmarkPostIds.isNotEmpty) {
+        final qhost = await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount).get();
+        docs = qhost.docs;
+      }
+      docs.sort((a,b) => (Post.fromJson(b.data()!).createdAt as Timestamp).compareTo( Post.fromJson(a.data()!).createdAt as Timestamp ) );
       await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
-      lastIndex = posts.length;
-    }
-  }
-
-  Future<void> getOldBookmarks() async {
-    if (bookmarkPostIds.length > (lastIndex + tenCount)) {
-      await processBookmark();
     }
   }
 

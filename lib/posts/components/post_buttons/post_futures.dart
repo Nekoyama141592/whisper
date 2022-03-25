@@ -60,7 +60,7 @@ class PostFutures extends ChangeNotifier {
     final Widget content = Container(
       height: MediaQuery.of(context).size.height * 0.70,
       child: ValueListenableBuilder<String>(
-        valueListenable: mainModel.bookmarkPostLabelTokenIdNotifier,
+        valueListenable: mainModel.bookmarkPostCategoryTokenIdNotifier,
         builder: (_,bookmarkPostLabelId,__) {
           return ListView.builder(
             itemCount: bookmarkPostLabels.length,
@@ -70,7 +70,7 @@ class PostFutures extends ChangeNotifier {
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
                 title: Text(bookmarkPostLabel.categoryName),
                 onTap: () {
-                  mainModel.bookmarkPostLabelTokenIdNotifier.value = bookmarkPostLabel.tokenId;
+                  mainModel.bookmarkPostCategoryTokenIdNotifier.value = bookmarkPostLabel.tokenId;
                 },
               );
             }
@@ -81,19 +81,23 @@ class PostFutures extends ChangeNotifier {
   final positiveActionBuilder = (_, controller, __) {
     return TextButton(
       onPressed: () async {
-        // process UI
-        final Timestamp now = Timestamp.now();
-        final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
-        final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkPostCategoryId: mainModel.bookmarkPostLabelTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
-        final String uid = mainModel.userMeta.uid;
-        mainModel.bookmarksPostIds.add(bookmarkPost.postId);
-        mainModel.bookmarkPosts.add(bookmarkPost);
-        whisperPost.bookmarkCount += plusOne;
-        notifyListeners();
-        (controller as FlashController ).dismiss();
-        // backend
-        await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
-        await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+        if (mainModel.bookmarkPostCategoryTokenIdNotifier.value.isEmpty) {
+          voids.showSnackBar(context: context, text: 'カテゴリーを選択して下さい');
+        } else {
+          // process UI
+          final Timestamp now = Timestamp.now();
+          final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPost );
+          final BookmarkPost bookmarkPost = BookmarkPost(activeUid: mainModel.userMeta.uid,createdAt: now,postId: whisperPost.postId,bookmarkPostCategoryId: mainModel.bookmarkPostCategoryTokenIdNotifier.value,tokenId: tokenId ,passiveUid: whisperPost.uid, tokenType: bookmarkPostTokenType );
+          final String uid = mainModel.userMeta.uid;
+          mainModel.bookmarksPostIds.add(bookmarkPost.postId);
+          mainModel.bookmarkPosts.add(bookmarkPost);
+          whisperPost.bookmarkCount += plusOne;
+          notifyListeners();
+          (controller as FlashController ).dismiss();
+          // backend
+          await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
+          await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+        }
       }, 
       child: Text('OK', style: textStyle(context: context), )
     );

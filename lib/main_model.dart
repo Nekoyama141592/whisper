@@ -85,15 +85,15 @@ class MainModel extends ChangeNotifier {
   // following
   List<Following> following = [];
   // bookmarkLabel
-  final bookmarkPostLabelTokenIdNotifier = ValueNotifier<String>('');
+  final bookmarkPostCategoryTokenIdNotifier = ValueNotifier<String>('');
   // feeds
   bool isFeedLoading = false;
   Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {
-    final List<String> max10 = timelinesQshot.docs.map((e) => Timeline.fromJson(e.data()).postId ).toList();
-    if (max10.isEmpty) {
-      max10.add('');
+    final List<String> max10TimelinePostIds = timelinesQshot.docs.map((e) => Timeline.fromJson(e.data()).postId ).toList();
+    if (max10TimelinePostIds.isEmpty) {
+      max10TimelinePostIds.add('');
     }
-    return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10);
+    return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10TimelinePostIds);
   }
   // notifiers
   final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
