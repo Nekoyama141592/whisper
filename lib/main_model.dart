@@ -90,6 +90,9 @@ class MainModel extends ChangeNotifier {
   bool isFeedLoading = false;
   Query<Map<String,dynamic>> getQuery({ required QuerySnapshot<Map<String,dynamic>> timelinesQshot })  {
     final List<String> max10 = timelinesQshot.docs.map((e) => Timeline.fromJson(e.data()).postId ).toList();
+    if (max10.isEmpty) {
+      max10.add('');
+    }
     return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10);
   }
   // notifiers
@@ -127,6 +130,7 @@ class MainModel extends ChangeNotifier {
     final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
     await getFeeds(followingUids: followingUids);
+    await voids.setSpeed(speedNotifier: speedNotifier, prefs: prefs, audioPlayer: audioPlayer);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
   }

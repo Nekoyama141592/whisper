@@ -136,6 +136,9 @@ class BookmarksModel extends ChangeNotifier {
   Future<void> processBookmark() async {
     if (bookmarkPostIds.isNotEmpty) {
       List<String> max10 = bookmarkPostIds.length > (lastIndex + tenCount) ? bookmarkPostIds.sublist(lastIndex,tenCount) : bookmarkPostIds.sublist( lastIndex,bookmarkPostIds.length );
+      if (max10.isEmpty) {
+        max10.add('');
+      }
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
       docs.sort((a,b)=> (BookmarkPost.fromJson(b.data()!).createdAt as Timestamp ).compareTo((BookmarkPost.fromJson(a.data()!).createdAt) ));
       await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
