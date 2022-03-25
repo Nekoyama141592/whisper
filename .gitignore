@@ -14,7 +14,7 @@ ios/Runner/GoogleService-Info-prod.plist
 ios/Runner/GoogleService-Info.plist
 android/app/src/debug/google-services.json
 android/app/src/release/google-services.json
-
+android/app/google-services.json
 .DS_Store
 .atom/
 .buildlog/
