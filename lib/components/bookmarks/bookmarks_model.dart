@@ -103,12 +103,6 @@ class BookmarksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> onRefresh() async {
-  //   await getNewBookmarks(bookmarkPostIds: bookmarkPostIds);
-  //   refreshController.refreshCompleted();
-  //   notifyListeners();
-  // }
-
   Future<void> onReload({ required MainModel mainModel }) async {
     startLoading();
     setBookmarksPostIds(mainModel: mainModel);
@@ -141,7 +135,7 @@ class BookmarksModel extends ChangeNotifier {
       }
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
       docs.sort((a,b)=> (BookmarkPost.fromJson(b.data()!).createdAt as Timestamp ).compareTo((BookmarkPost.fromJson(a.data()!).createdAt) ));
-      await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).get().then((qshot) {
+      await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10).limit(tenCount).get().then((qshot) {
         docs = qshot.docs;
       });
       await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
@@ -157,7 +151,7 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostCategory bookmarkPostCategory,required UserMeta userMeta}) async {
     if (editLabel.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('空欄は不適です')));
+      voids.showSnackBar(context: context, text: '空欄は不適です');
     } else if (editLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
@@ -174,7 +168,7 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> addBookmarkPostLabel({ required MainModel mainModel, required BuildContext context,required FlashController flashController, }) async {
     if (newLabel.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('空欄は不適です')));
+      voids.showSnackBar(context: context, text: '空欄は不適です');
     } else if (newLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {

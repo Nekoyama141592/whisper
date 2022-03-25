@@ -232,5 +232,9 @@ class PostFutures extends ChangeNotifier {
     };
     voids.showCupertinoDialogue(context: context, builder: builder );
   } 
+  Future<void> initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
 }
 

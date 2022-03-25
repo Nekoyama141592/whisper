@@ -129,7 +129,7 @@ class MainModel extends ChangeNotifier {
     followingUids.add(userMeta.uid);
     final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
     distributeTokens(tokensQshot: tokensQshot);
-    await getFeeds(followingUids: followingUids);
+    await getFeeds();
     await voids.setSpeed(speedNotifier: speedNotifier, prefs: prefs, audioPlayer: audioPlayer);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
     endLoading();
@@ -245,25 +245,25 @@ class MainModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  Future<void> onRefresh({ required List<String> followingUids }) async {
-    await getNewFeeds(followingUids: followingUids);
+  Future<void> onRefresh() async {
+    await getNewFeeds();
     refreshController.refreshCompleted();
     notifyListeners();
   }
 
-  Future<void> onReload({ required List<String> followingUids }) async {
+  Future<void> onReload() async {
     startFeedLoading();
-    await getFeeds(followingUids: followingUids);
+    await getFeeds();
     endFeedLoading();
   }
 
-  Future<void> onLoading({ required List<String> followingUids }) async {
-    await getOldFeeds(followingUids: followingUids);
+  Future<void> onLoading() async {
+    await getOldFeeds();
     refreshController.loadComplete();
     notifyListeners();
   }
 
-  Future<void> getNewFeeds({ required List<String> followingUids }) async {
+  Future<void> getNewFeeds() async {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
     timelinesQshot.docs.reversed.forEach((element) { timelineDocs.insert(0, element); });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
@@ -272,7 +272,7 @@ class MainModel extends ChangeNotifier {
   }
 
   // getFeeds
-  Future<void> getFeeds({ required List<String> followingUids }) async {
+  Future<void> getFeeds() async {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).limit(tenCount).get();
     timelineDocs = timelinesQshot.docs;
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
@@ -280,11 +280,14 @@ class MainModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getOldFeeds({ required List<String> followingUids }) async {
+  Future<void> getOldFeeds() async {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
-    timelinesQshot.docs.forEach((element) { timelineDocs.add(element); });
+    timelinesQshot.docs.forEach((element) { 
+      timelineDocs.add(element); 
+    });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutesPostIds: mutePostIds);
+      // not old
+      voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutePostIds: mutePostIds);
     }
   }
 

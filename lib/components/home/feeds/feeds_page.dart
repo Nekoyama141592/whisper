@@ -44,7 +44,7 @@ class FeedsPage extends ConsumerWidget {
     : JudgeScreen(
       list: postDocs,
       reload: () async {
-        await mainModel.onReload(followingUids: mainModel.followingUids);
+        await mainModel.onReload();
       },
       content: PostCards(
         postDocs: postDocs, 
@@ -89,8 +89,8 @@ class FeedsPage extends ConsumerWidget {
           voids.pause(audioPlayer: mainModel.audioPlayer);
         }, 
         refreshController: mainModel.refreshController,
-        onRefresh: () async { await mainModel.onRefresh(followingUids: mainModel.followingUids); },
-        onLoading: () async { await mainModel.onLoading(followingUids: mainModel.followingUids ); },
+        onRefresh: () async { await mainModel.onRefresh(); },
+        onLoading: () async { await mainModel.onLoading(); },
         isFirstSongNotifier: mainModel.isFirstSongNotifier,
         onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
         isLastSongNotifier: mainModel.isLastSongNotifier,

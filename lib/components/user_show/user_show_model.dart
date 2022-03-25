@@ -142,7 +142,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> getOldUserShowPosts() async {
     try {
-      await voids.processOldPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      await voids.processOldPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
     } catch(e) { print(e.toString()); }
   }
 

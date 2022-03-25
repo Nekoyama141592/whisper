@@ -84,7 +84,7 @@ class PostCards extends StatelessWidget {
                   post: post,
                   onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async {
-                    await voids.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i);
+                    await postFutures.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i);
                   },
                   muteUser: () async {
                     await postFutures.muteUser(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);

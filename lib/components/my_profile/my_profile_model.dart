@@ -136,7 +136,7 @@ class MyProfileModel extends ChangeNotifier {
 
   Future<void> getOldMyProfilePosts() async {
     try {
-      voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
     } catch(e) { print(e.toString()); }
   }
 

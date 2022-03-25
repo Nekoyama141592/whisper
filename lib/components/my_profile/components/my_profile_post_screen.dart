@@ -63,7 +63,7 @@ class MyProfilePostScreen extends ConsumerWidget {
               post: post,
               onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: myProfileModel.afterUris, posts: myProfileModel.posts, mainModel: mainModel, i: i); },
               initAudioPlayer: () async {
-                await voids.initAudioPlayer(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, i: i);
+                await postFutures.initAudioPlayer(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, i: i);
               },
               muteUser: () async {
                 await postFutures.muteUser(audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: myProfileModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);

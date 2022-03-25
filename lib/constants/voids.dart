@@ -203,11 +203,6 @@ Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required A
   } 
 }
 
-Future<void> initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
-  ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-  await audioPlayer.setAudioSource(playlist,initialIndex: i);
-}
-
 Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
   await query.endBeforeDocument(posts.first).get().then((qshot) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
@@ -262,17 +257,17 @@ Future<void> basicProcessContent({ required List<DocumentSnapshot<Map<String, dy
   }
 }
 
-Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
+Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutePostIds }) async {
   await query.startAfterDocument(posts.last).get().then((qshot) async {
     final int lastIndex = posts.lastIndexOf(posts.last);
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+    print(docs.length.toString() + 'docsの長さ');
     if (docs.isNotEmpty) {
       docs.sort((a,b) => (fromMapToPost(postMap: b.data()).createdAt as Timestamp).compareTo( fromMapToPost(postMap: a.data()).createdAt ));
       docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
         final whisperPost = fromMapToPost(postMap: doc.data()! );
         final String uid = whisperPost.uid;
-  
-        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc);
+        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc);
         if (x) {
           posts.add(doc);
           Uri song = Uri.parse(whisperPost.audioURL);
