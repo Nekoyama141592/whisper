@@ -129,10 +129,8 @@ class BookmarksModel extends ChangeNotifier {
       List<String> max10BookmarkPostIds = bool ? bookmarkPostIds.sublist(postsLength,postsLength + tenCount ) : bookmarkPostIds.sublist(postsLength,bookmarkPostIds.length);
       List<DocumentSnapshot<Map<String,dynamic>>> docs = [];
       if (max10BookmarkPostIds.isNotEmpty) {
-        final qhost = await returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount).get();
-        docs = qhost.docs;
-        docs.sort((a,b) => (Post.fromJson(b.data()!).createdAt as Timestamp).compareTo( Post.fromJson(a.data()!).createdAt as Timestamp ) );
-        await voids.basicProcessContent(docs: docs, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+        final query = returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount);
+        await voids.processBasicPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
       }
     }
   }

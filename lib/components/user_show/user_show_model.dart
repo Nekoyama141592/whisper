@@ -226,7 +226,6 @@ class UserShowModel extends ChangeNotifier {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byLikedUidCount) {
                   sortState = SortState.byLikedUidCount;
-                  print(sortState.toString());
                   await onReload();
                 }
               }, 
@@ -243,7 +242,6 @@ class UserShowModel extends ChangeNotifier {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byNewestFirst) {
                   sortState = SortState.byNewestFirst;
-                  print(sortState.toString());
                   await onReload();
                 }
               }, 
@@ -260,7 +258,6 @@ class UserShowModel extends ChangeNotifier {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byOldestFirst) {
                   sortState = SortState.byOldestFirst;
-                  print(sortState.toString());
                   await onReload();
                 }
               }, 

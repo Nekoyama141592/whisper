@@ -37,11 +37,11 @@ class UserShowPage extends ConsumerWidget {
       body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
       Column(
         children: [
-            Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: height/16.0 ),),
-            SizedBox(height: height/10.0,),
-            Text('あなたはこのユーザーをミュート、ブロック'),
-            SizedBox(height: height/10.0,),
-            Text('もしくは相手にブロックされています')
+          Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: height/16.0 ),),
+          SizedBox(height: height/10.0,),
+          Text('あなたはこのユーザーをミュート、ブロック'),
+          SizedBox(height: height/10.0,),
+          Text('もしくは相手にブロックされています')
         ],
       )
       : userShowModel.isLoading ?

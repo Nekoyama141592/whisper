@@ -33,26 +33,26 @@ bool newNotificationExists({ required List<CommentNotification> commentNotificat
   return x;
 }
 
-bool isValidReadPost({ required PostType postType ,required List<dynamic> muteUids, required List<dynamic> blockUids, required String uid, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
+bool isValidReadPost({ required PostType postType ,required List<dynamic> muteUids, required List<dynamic> blockUids, required String uid, required List<dynamic> mutePostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   // post is DocumentSnapshot<Map<String,dynamic>> or Map<String,dynamic>
   switch(postType) {
     case PostType.bookmarks:
     return true;
 
     case PostType.feeds:
-    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc );
+    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc );
 
     case PostType.myProfile:
     return true;
 
     case PostType.postSearch:
-    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc );
+    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc );
 
     case PostType.recommenders:
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
     final Post post = fromMapToPost(postMap: doc.data()!);
-    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutesPostIds, doc: doc ) && !mutesPostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
+    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc ) && !mutePostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
 
     case PostType.userShow:
     return true;
