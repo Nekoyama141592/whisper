@@ -253,8 +253,10 @@ class CommentsModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byLikedUidCount;
-                await getCommentDocs(whisperPost: whisperPost);
+                if (sortState != SortState.byLikedUidCount) {
+                  sortState = SortState.byLikedUidCount;
+                  await getCommentDocs(whisperPost: whisperPost);
+                }
               }, 
               child: Text(
                 'いいね順',
@@ -267,8 +269,10 @@ class CommentsModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byNewestFirst;
-                await getCommentDocs(whisperPost: whisperPost);
+                if (sortState != SortState.byNewestFirst) {
+                  sortState = SortState.byNewestFirst;
+                  await getCommentDocs(whisperPost: whisperPost);
+                }
               }, 
               child: Text(
                 '新しい順',
@@ -281,8 +285,10 @@ class CommentsModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byOldestFirst;
-                await getCommentDocs(whisperPost: whisperPost);
+                if (sortState != SortState.byOldestFirst) {
+                  sortState = SortState.byOldestFirst;
+                  await getCommentDocs(whisperPost: whisperPost);
+                }
               }, 
               child: Text(
                 '古い順',

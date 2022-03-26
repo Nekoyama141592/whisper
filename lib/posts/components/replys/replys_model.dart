@@ -129,8 +129,10 @@ class RepliesModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byLikedUidCount;
-                await onReload(whisperPostComment: whisperPostComment);
+                if (sortState != SortState.byLikedUidCount) {
+                  sortState = SortState.byLikedUidCount;
+                  await getReplyDocs(whisperPostComment: whisperPostComment);
+                }
               }, 
               child: Text(
                 'いいね順',
@@ -143,8 +145,10 @@ class RepliesModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byNewestFirst;
-                await onReload(whisperPostComment: whisperPostComment);
+                if (sortState != SortState.byNewestFirst) {
+                  sortState = SortState.byNewestFirst;
+                  await getReplyDocs(whisperPostComment: whisperPostComment);
+                }
               }, 
               child: Text(
                 '新しい順',
@@ -157,8 +161,10 @@ class RepliesModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byOldestFirst;
-                await onReload(whisperPostComment: whisperPostComment);
+                if (sortState != SortState.byOldestFirst) {
+                  sortState = SortState.byOldestFirst;
+                  await getReplyDocs(whisperPostComment: whisperPostComment);
+                }
               }, 
               child: Text(
                 '古い順',

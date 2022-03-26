@@ -215,8 +215,11 @@ class MyProfileModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byLikedUidCount;
-                await onReload();
+                if (sortState != SortState.byLikedUidCount) {
+                  sortState = SortState.byLikedUidCount;
+                  print(sortState.toString());
+                  await onReload();
+                }
               }, 
               child: Text(
                 'いいね順に並び替え',
@@ -229,8 +232,11 @@ class MyProfileModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byNewestFirst;
-                await onReload();
+                if (sortState != SortState.byNewestFirst) {
+                  sortState = SortState.byNewestFirst;
+                  print(sortState.toString());
+                  await onReload();
+                }
               }, 
               child: Text(
                 '新しい順に並び替え',
@@ -243,8 +249,11 @@ class MyProfileModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                sortState = SortState.byOldestFirst;
-                await onReload();
+                if (sortState != SortState.byOldestFirst) {
+                  sortState = SortState.byOldestFirst;
+                  print(sortState.toString());
+                  await onReload();
+                }
               }, 
               child: Text(
                 '古い順に並び替え',
