@@ -255,6 +255,7 @@ class RepliesModel extends ChangeNotifier {
       positiveScore: 0,
       reply: reply, 
       postCommentReplyId: replyId,
+      postCreatorUid: whisperPost.uid,
       postDocRef: returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ),
       score: defaultScore,
       uid: currentWhisperUser.uid,

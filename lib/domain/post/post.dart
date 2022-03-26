@@ -34,6 +34,7 @@ class Post{
     required this.postCommentCount,
     required this.recommendState,
     required this.score,
+    required this.storagePostName,
     required this.tagAccountNames,
     required this.title,
     required this.searchToken,
@@ -70,6 +71,7 @@ class Post{
   num positiveScore;
   String recommendState;
   num score;
+  final String storagePostName;
   List<String> tagAccountNames;
   Map<String,dynamic> searchToken;
   String title;

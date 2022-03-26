@@ -39,6 +39,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       postCommentCount: json['postCommentCount'] as int,
       recommendState: json['recommendState'] as String,
       score: json['score'] as num,
+      storagePostName: json['storagePostName'] as String,
       tagAccountNames: (json['tagAccountNames'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -79,6 +80,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'positiveScore': instance.positiveScore,
       'recommendState': instance.recommendState,
       'score': instance.score,
+      'storagePostName': instance.storagePostName,
       'tagAccountNames': instance.tagAccountNames,
       'searchToken': instance.searchToken,
       'title': instance.title,

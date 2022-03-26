@@ -187,7 +187,7 @@ class AddPostModel extends ChangeNotifier {
       final String storagePostName = returnStoragePostName();
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
       // post firestore
-      await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId);
+      await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId,storagePostName: storagePostName );
       postTitleNotifier.value = '';
       endLoading();
     }
@@ -200,7 +200,7 @@ class AddPostModel extends ChangeNotifier {
     return downloadURL;
   }
   
-  Future<void> addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId }) async {
+  Future<void> addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId,required String storagePostName}) async {
     // process set
     final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
@@ -235,6 +235,7 @@ class AddPostModel extends ChangeNotifier {
       postCommentCount: 0,
       positiveScore: 0,
       score: defaultScore.toDouble(),
+      storagePostName: storagePostName,
       tagAccountNames: [],
       recommendState: currentWhiseprUser.recommendState,
       searchToken: returnSearchToken(searchWords: searchWords),
