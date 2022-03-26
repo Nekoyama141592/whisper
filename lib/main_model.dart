@@ -93,7 +93,7 @@ class MainModel extends ChangeNotifier {
     if (max10TimelinePostIds.isEmpty) {
       max10TimelinePostIds.add('');
     }
-    return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10TimelinePostIds);
+    return returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10TimelinePostIds).limit(tenCount);
   }
   // notifiers
   final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
