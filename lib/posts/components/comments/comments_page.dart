@@ -82,6 +82,7 @@ class CommentsPage extends ConsumerWidget {
                     final Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
                     final WhisperPostComment whisperComment = WhisperPostComment.fromJson(comment);
                     return CommentCard(
+                      i: i,
                       whisperComment: whisperComment,
                       whisperPost: whisperPost,
                       commentsModel: commentsModel,

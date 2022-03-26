@@ -340,6 +340,17 @@ class RepliesModel extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeReply.tokenId ).delete();
     await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: postCommentReplyId, userMeta: mainModel.userMeta ).delete();
   }
+
+  Future<void> deleteMyReply({ required BuildContext context,required int i,required MainModel mainModel,}) async {
+    final x = postCommentReplyDocs[i];
+    if (WhisperReply.fromJson(x.data()!).uid == mainModel.currentWhisperUser.uid) {
+      postCommentReplyDocs.remove(x);
+      notifyListeners();
+      await x.reference.delete();
+    } else {
+      voids.showSnackBar(context: context, text: 'あなたにはその権限がありません');
+    }
+  }
   
   void toggleIsHidden({ required WhisperReply whisperReply }) {
     final String id = whisperReply.postCommentReplyId;

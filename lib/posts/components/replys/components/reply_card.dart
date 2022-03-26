@@ -21,12 +21,14 @@ class ReplyCard extends ConsumerWidget {
 
   const ReplyCard({
     Key? key,
+    required this.i,
     required this.whisperReply,
     required this.repliesModel,
     required this.mainModel,
     required this.commentsOrReplysModel
   }) : super(key: key);
 
+  final int i;
   final WhisperReply whisperReply;
   final RepliesModel repliesModel;
   final MainModel mainModel;
@@ -47,6 +49,7 @@ class ReplyCard extends ConsumerWidget {
       fontSize: fontSize/cardTextDiv2,
       overflow: TextOverflow.ellipsis
     );
+    final deleteIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async { await repliesModel.deleteMyReply(context: context, i: i, mainModel: mainModel); } );
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.mutePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     
     Slidable(
@@ -60,7 +63,9 @@ class ReplyCard extends ConsumerWidget {
         SlideIcon(caption: 'Mute Reply',iconData: Icons.visibility_off, onTap: () async {
           await commentsOrReplysModel.muteReply(context: context,mainModel: mainModel,whisperReply: whisperReply);
         } , ),
-      ] : [],
+      ] : [
+        deleteIcon
+      ],
       child: Padding(
         padding: EdgeInsets.only(
           bottom: defaultPadding(context: context)/2.0

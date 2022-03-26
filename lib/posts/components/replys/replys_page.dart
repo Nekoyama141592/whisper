@@ -73,7 +73,7 @@ class ReplysPage extends ConsumerWidget {
                   itemCount: repliesModel.postCommentReplyDocs.length,
                   itemBuilder: (BuildContext context,int i) {
                     final WhisperReply whisperReply  = fromMapToWhisperReply(replyMap: repliesModel.postCommentReplyDocs[i].data()! );
-                    return ReplyCard(whisperReply: whisperReply, repliesModel: repliesModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
+                    return ReplyCard(i: i,whisperReply: whisperReply, repliesModel: repliesModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
                   }
                 ),
               )

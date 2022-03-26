@@ -335,6 +335,16 @@ class CommentsModel extends ChangeNotifier {
     notifyListeners();
     refreshController.loadComplete();
   }
+  Future<void> deleteMyComment({ required BuildContext context,required int i,required MainModel mainModel,}) async {
+    final x = commentDocs[i];
+    if (WhisperPostComment.fromJson(x.data()!).uid == mainModel.currentWhisperUser.uid ) {
+      commentDocs.remove(x);
+      notifyListeners();
+      await x.reference.delete();
+    } else {
+      voids.showSnackBar(context: context, text: 'あなたにはその権限がありません');
+    }
+  }
   void toggleIsHidden({ required WhisperPostComment whisperPostComment }) {
     final String id = whisperPostComment.postCommentId;
     if (isUnHiddenPostCommentIds.contains(id)) {

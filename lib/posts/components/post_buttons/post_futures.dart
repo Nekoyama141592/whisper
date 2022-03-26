@@ -199,11 +199,12 @@ class PostFutures extends ChangeNotifier {
       voids.showSnackBar(context: innerContext, text: 'あなたにはその権限がありません');
     } else {
       // process UI
-      posts.remove(posts[i]);
+      final x = posts[i];
+      posts.remove(x);
       mainModel.currentWhisperUser.postCount += minusOne;
       await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       // process backend
-      await returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId ).delete();
+      await x.reference.delete();
       await returnRefFromPost(post: whisperPost).delete();
       if (isImageExist(post: whisperPost) == true) {
         await returnPostImagePostRef(mainModel: mainModel, postId: whisperPost.postId).delete();

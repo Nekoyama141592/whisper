@@ -25,6 +25,7 @@ class CommentCard extends ConsumerWidget {
 
   const CommentCard({
     Key? key,
+    required this.i,
     required this.whisperComment,
     required this.whisperPost,
     required this.commentsModel,
@@ -33,6 +34,7 @@ class CommentCard extends ConsumerWidget {
     required this.commentsOrReplysModel
   }): super(key: key);
   
+  final int i;
   final WhisperPostComment whisperComment;
   final Post whisperPost;
   final CommentsModel commentsModel;
@@ -53,6 +55,7 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize/cardTextDiv2,
       overflow: TextOverflow.ellipsis
     );
+    final deleteSlideIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async { await commentsModel.deleteMyComment(context: context, i: i, mainModel: mainModel); });
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) ?
 
     Slidable(
@@ -66,7 +69,9 @@ class CommentCard extends ConsumerWidget {
         SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async {
           await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperComment);
         } , ),
-      ]: [],
+      ]: [
+        deleteSlideIcon
+      ],
       child: Padding(
         padding: EdgeInsets.only(
           bottom: defaultPadding(context: context)/2.0
