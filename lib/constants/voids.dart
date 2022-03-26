@@ -204,85 +204,83 @@ Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required A
 }
 
 Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
-  await query.endBeforeDocument(posts.first).get().then((qshot) async {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-    if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
-      docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
-    }
-    if (docs.isNotEmpty) {
-      // because of insert
-      docs.reversed;
-      // Insert at the top
-      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-        final whisperPost = fromMapToPost(postMap: doc.data()!);
-        final String uid = whisperPost.uid;
-        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc);
-        if (x) {
-          posts.insert(0, doc);
-          Uri song = Uri.parse(whisperPost.audioURL);
-          UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
-          afterUris.insert(0, source);
-        }
-      });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
+  final qshot = await query.endBeforeDocument(posts.first).get();
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
+    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
+  }
+  if (docs.isNotEmpty) {
+    // because of insert
+    docs.reversed;
+    // Insert at the top
+    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+      final whisperPost = fromMapToPost(postMap: doc.data()!);
+      final String uid = whisperPost.uid;
+      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc);
+      if (x) {
+        posts.insert(0, doc);
+        Uri song = Uri.parse(whisperPost.audioURL);
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
+        afterUris.insert(0, source);
       }
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist);
     }
-  });
+  }
 }
 
 Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> muteUids, required List<String> blockUids, required List<String> mutePostIds }) async {
-  await query.get().then((qshot) async {
-    final docs = qshot.docs;
-    if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
-      docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
-    }
-    if (docs.isNotEmpty) {
-      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-        final whisperPost = fromMapToPost(postMap: doc.data()! );
-        final String uid = whisperPost.uid;
-        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc);
-        if (x) {
-          posts.add(doc);
-          Uri song = Uri.parse(whisperPost.audioURL);
-          UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
-          afterUris.add(source);
-        }
-      });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist);
+  final qshot = await query.get();
+  final docs = qshot.docs;
+  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
+    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
+  }
+  if (docs.isNotEmpty) {
+    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+      final whisperPost = fromMapToPost(postMap: doc.data()! );
+      final String uid = whisperPost.uid;
+      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc);
+      if (x) {
+        posts.add(doc);
+        Uri song = Uri.parse(whisperPost.audioURL);
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
+        afterUris.add(source);
       }
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist);
     }
-  });
+  }
 }
 
 Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutePostIds }) async {
-  await query.startAfterDocument(posts.last).get().then((qshot) async {
-    final int lastIndex = posts.lastIndexOf(posts.last);
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-    if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
-      docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
-    }
-    if (docs.isNotEmpty) {
-      docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-        final whisperPost = fromMapToPost(postMap: doc.data()! );
-        final String uid = whisperPost.uid;
-        bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc);
-        if (x) {
-          posts.add(doc);
-          Uri song = Uri.parse(whisperPost.audioURL);
-          UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
-          afterUris.add(source);
-        }
-      });
-      if (afterUris.isNotEmpty) {
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-        await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
+  final bool useWhereIn = (postType == PostType.feeds || postType == PostType.bookmarks);
+  final qshot = useWhereIn ? await query.get() : await query.startAfterDocument(posts.last).get();
+  final int lastIndex = posts.lastIndexOf(posts.last);
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
+    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
+  }
+  if (docs.isNotEmpty) {
+    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+      final whisperPost = fromMapToPost(postMap: doc.data()! );
+      final String uid = whisperPost.uid;
+      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc);
+      if (x) {
+        posts.add(doc);
+        Uri song = Uri.parse(whisperPost.audioURL);
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
+        afterUris.add(source);
       }
+    });
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
     }
-  });
+  }
 }
 
 Future<void> processNewDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {

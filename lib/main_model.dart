@@ -286,8 +286,7 @@ class MainModel extends ChangeNotifier {
       timelineDocs.add(element); 
     });
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      // not old
-      voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutePostIds: mutePostIds);
+      await voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutePostIds: mutePostIds);
     }
   }
 

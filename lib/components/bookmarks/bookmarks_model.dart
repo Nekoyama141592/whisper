@@ -110,7 +110,7 @@ class BookmarksModel extends ChangeNotifier {
   }
 
   Future<void> onLoading() async {
-    await processBookmark();
+    await processOldBookmark();
     refreshController.loadComplete();
     notifyListeners();
   }
@@ -130,6 +130,17 @@ class BookmarksModel extends ChangeNotifier {
       if (max10BookmarkPostIds.isNotEmpty) {
         final query = returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount);
         await voids.processBasicPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+      }
+    }
+  }
+  Future<void> processOldBookmark() async {
+    if (bookmarkPostIds.length > posts.length) {
+      final bool = (bookmarkPostIds.length - posts.length) > 10;
+      final int postsLength = posts.length;
+      List<String> max10BookmarkPostIds = bool ? bookmarkPostIds.sublist(postsLength,postsLength + tenCount ) : bookmarkPostIds.sublist(postsLength,bookmarkPostIds.length);
+      if (max10BookmarkPostIds.isNotEmpty) {
+        final query = returnPostsColGroupQuery.where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount);
+        await voids.processOldPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
       }
     }
   }
