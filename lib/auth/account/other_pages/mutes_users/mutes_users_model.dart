@@ -6,8 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-// constants
 import 'package:whisper/constants/strings.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
 // model
@@ -22,7 +23,6 @@ class MutesUsersModel extends ChangeNotifier {
   // basic
   bool isLoading = false;
   List<DocumentSnapshot<Map<String,dynamic>>> userDocs = [];
-  int lastIndex = 0;
   List<String> muteUids = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -31,7 +31,7 @@ class MutesUsersModel extends ChangeNotifier {
     startLoading();
     final List<MuteUser> muteUsers = mainModel.muteUsers;
     muteUids = muteUsers.map((muteUser) => muteUser.passiveUid).toList();
-    await getMutesUserDocs();
+    await processMuteUsers();
     endLoading();
   }
 
@@ -46,28 +46,26 @@ class MutesUsersModel extends ChangeNotifier {
   }
 
   Future<void> onLoading() async {
-    await getOldMuteUsers();
+    await processMuteUsers();
     refreshController.loadComplete();
     notifyListeners();
   }
 
-  Future<void> getMutesUserDocs() async {
+  Future<void> onReload() async {
+    startLoading();
     await processMuteUsers();
-  }
-
-  Future<void> getOldMuteUsers() async {
-    if (muteUids.length > (lastIndex + tenCount)) {
-      await processMuteUsers();
-    }
+    endLoading();
   }
 
   Future<void> processMuteUsers() async {
-    if (muteUids.isNotEmpty) {
-      List<String> max10 = muteUids.length > (lastIndex + tenCount) ? muteUids.sublist(0,tenCount) : muteUids.sublist( 0,muteUids.length );
-      await FirebaseFirestore.instance.collection(usersFieldKey).where(uidFieldKey,whereIn: max10 ).get().then((qshot) {
-        userDocs = qshot.docs;
-      });
-      lastIndex = userDocs.length;
+    if (muteUids.length > userDocs.length) {
+      final bool = (muteUids.length - userDocs.length) > 10;
+      final userDocsLength = userDocs.length;
+      List<String> max10MuteUids = bool ? muteUids.sublist(userDocsLength,userDocsLength + tenCount) : muteUids.sublist(userDocsLength,muteUids.length);
+      final query = returnUsersColRef().where(uidFieldKey,whereIn: max10MuteUids);
+      if (max10MuteUids.isNotEmpty) {
+        voids.processBasicDocs(query: query, docs: userDocs );
+      }
     }
   }
 

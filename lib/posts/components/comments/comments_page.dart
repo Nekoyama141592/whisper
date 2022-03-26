@@ -55,7 +55,7 @@ class CommentsPage extends ConsumerWidget {
           children: [
             CommentsOrReplysHeader(
               onMenuPressed: (){
-                commentsModel.showSortDialogue(context, whisperPost);
+                commentsModel.showSortDialogue( context :context, whisperPost :whisperPost);
               },
             ),
             commentsModel.commentDocs.isEmpty ?
@@ -69,10 +69,10 @@ class CommentsPage extends ConsumerWidget {
                 enablePullUp: true,
                 enablePullDown: true,
                 onLoading: () async {
-                  await commentsModel.onLoading(whisperPost);
+                  await commentsModel.onLoading(whisperPost :whisperPost);
                 },
                 onRefresh: () {
-                  commentsModel.onRefresh(context, whisperPost);
+                  commentsModel.onRefresh( context: context, whisperPost: whisperPost);
                 },
                 header: WaterDropHeader(),
                 controller: commentsModel.refreshController,

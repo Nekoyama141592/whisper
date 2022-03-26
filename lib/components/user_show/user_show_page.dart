@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 // components
@@ -27,6 +28,7 @@ class UserShowPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final userShowModel = ref.watch(userShowProvider);
+    final PostSearchModel postSearchModel = ref.watch(postSearchProvider);
     final size = MediaQuery.of(context).size;
     final height = size.height;
 
@@ -69,6 +71,9 @@ class UserShowPage extends ConsumerWidget {
           header: UserShowHeader(
             onEditButtonPressed: () {
               userShowModel.onEditButtonPressed();
+            },
+            onMenuPressed: () {
+              userShowModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel );
             },
             passiveWhisperUser: userShowModel.passiveWhisperUser,
             backArrow: InkWell(

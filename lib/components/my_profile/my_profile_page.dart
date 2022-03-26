@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -25,6 +26,7 @@ class MyProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final myProfileModel = ref.watch(myProfileProvider);
     final currentWhisperUser = mainModel.currentWhisperUser;
+    final PostSearchModel postSearchModel = ref.watch(postSearchProvider);
 
     return SafeArea(
       child: myProfileModel.isEditing ?
@@ -52,6 +54,7 @@ class MyProfilePage extends ConsumerWidget {
           onEditButtonPressed: () {
             myProfileModel.onEditButtonPressed();
           },
+          onMenuPressed: () { myProfileModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel); },
           passiveWhisperUser: mainModel.currentWhisperUser,
           backArrow: SizedBox.shrink(), 
           mainModel: mainModel, 

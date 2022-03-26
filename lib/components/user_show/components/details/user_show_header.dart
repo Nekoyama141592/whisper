@@ -23,12 +23,14 @@ class UserShowHeader extends ConsumerWidget {
     Key? key,
     required this.passiveWhisperUser,
     required this.onEditButtonPressed,
+    required this.onMenuPressed,
     required this.backArrow,
     required this.mainModel,
   }) : super(key: key);
 
   final WhisperUser passiveWhisperUser;
   final void Function()? onEditButtonPressed;
+  final void Function()? onMenuPressed;
   final Widget backArrow;
   final MainModel mainModel;
 
@@ -124,10 +126,8 @@ class UserShowHeader extends ConsumerWidget {
                 ),
                 SizedBox(width: defaultPadding(context: context) ),
                 InkWell(
-                  child: Icon(Icons.search),
-                  onTap: () {
-                    routes.toPostSearchPage(context: context, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
-                  },
+                  child: Icon(Icons.menu),
+                  onTap: onMenuPressed,
                 ),
                 if (passiveWhisperUser.links.isNotEmpty) LinkButton(passiveWhisperUser: passiveWhisperUser)
               ],

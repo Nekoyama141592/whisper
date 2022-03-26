@@ -41,7 +41,7 @@ class RedirectUserImage extends ConsumerWidget {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーが取得できませんでした')));
           } else {
             routes.toUserShowPage(context: context, mainModel: mainModel );
-            await userShowModel.init(givePassiveUserDoc,mainModel.prefs);
+            await userShowModel.init( passiveUserDoc:givePassiveUserDoc,givePrefs: mainModel.prefs);
           }
         } else {
           userShowModel.theSameUser(context: context, mainModel: mainModel);

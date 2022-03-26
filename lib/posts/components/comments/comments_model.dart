@@ -40,6 +40,20 @@ class CommentsModel extends ChangeNotifier {
   // refresh
   SortState sortState = SortState.byNewestFirst;
   late RefreshController refreshController;
+  Query<Map<String, dynamic>> getQuery ({ required Post whisperPost }) {
+    final basicQuery = returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,).limit(oneTimeReadCount);
+    switch(sortState) {
+      case SortState.byLikedUidCount:
+        final x = basicQuery.orderBy(likeCountFieldKey,descending: true);
+      return x;
+      case SortState.byNewestFirst:
+        final x = basicQuery.orderBy(createdAtFieldKey,descending: true);
+      return x;
+      case SortState.byOldestFirst:
+        final x = basicQuery.orderBy(createdAtFieldKey,descending: false);
+      return x;
+    }
+  }
   // DB index
   String indexPostId = '';
   // hidden
@@ -61,9 +75,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> getCommentDocs({ required Post whisperPost }) async {
     commentDocs = [];
-    await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount).get().then((qshot) {
-      qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
-    });
+    await voids.processBasicDocs(docs: commentDocs,query: getQuery(whisperPost: whisperPost));
     notifyListeners();
   }
 
@@ -230,11 +242,10 @@ class CommentsModel extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikeComment.tokenId ).delete();
   }
 
-  void showSortDialogue(BuildContext context,Post whisperPost) {
+  void showSortDialogue({ required BuildContext context, required Post whisperPost}) {
     showCupertinoDialog(
       context: context, 
       builder: (innerContext) {
-        final postId = whisperPost.postId;
         return CupertinoActionSheet(
           title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
           message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
@@ -243,12 +254,7 @@ class CommentsModel extends ChangeNotifier {
               onPressed: () async {
                 Navigator.pop(innerContext);
                 sortState = SortState.byLikedUidCount;
-                final qshot = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
-                .orderBy(likeCountFieldKey,descending: true )
-                .limit(oneTimeReadCount)
-                .get();
-                commentDocs = qshot.docs;
-                notifyListeners();
+                await getCommentDocs(whisperPost: whisperPost);
               }, 
               child: Text(
                 'いいね順',
@@ -262,12 +268,7 @@ class CommentsModel extends ChangeNotifier {
               onPressed: () async {
                 Navigator.pop(innerContext);
                 sortState = SortState.byNewestFirst;
-                final qshot = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
-                .orderBy(createdAtFieldKey,descending: true)
-                .limit(oneTimeReadCount)
-                .get();
-                commentDocs = qshot.docs;
-                notifyListeners();
+                await getCommentDocs(whisperPost: whisperPost);
               }, 
               child: Text(
                 '新しい順',
@@ -281,12 +282,7 @@ class CommentsModel extends ChangeNotifier {
               onPressed: () async {
                 Navigator.pop(innerContext);
                 sortState = SortState.byOldestFirst;
-                final qshot = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: postId,)
-                .orderBy(createdAtFieldKey,descending: false)
-                .limit(oneTimeReadCount)
-                .get();
-                commentDocs = qshot.docs;
-                notifyListeners();
+                await getCommentDocs(whisperPost: whisperPost);
               }, 
               child: Text(
                 '古い順',
@@ -298,10 +294,10 @@ class CommentsModel extends ChangeNotifier {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(innerContext);
               }, 
               child: Text(
-                'キャンセル',
+                'Cancel',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor,
@@ -314,23 +310,12 @@ class CommentsModel extends ChangeNotifier {
     );
   }
 
-  Future<void> onRefresh(BuildContext context,Post whisperPost) async {
+  Future<void> onRefresh({ required BuildContext context, required Post whisperPost}) async {
     switch(sortState) {
       case SortState.byLikedUidCount:
       break;
       case SortState.byNewestFirst:
-      QuerySnapshot<Map<String, dynamic>> newSnapshots = await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .orderBy(createdAtFieldKey,descending: true)
-      .endBeforeDocument(commentDocs.first)
-      .limit(oneTimeReadCount)
-      .get();
-      // Sort by oldest first
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = newSnapshots.docs;
-      docs.sort((a,b) => (a[createdAtFieldKey] as Timestamp ).compareTo(b[createdAtFieldKey]));
-      // Insert at the top
-      docs.forEach((doc) {
-        commentDocs.insert(0, doc);
-      });
+      await voids.processNewDocs(query: getQuery(whisperPost: whisperPost), docs: commentDocs );
       break;
       case SortState.byOldestFirst:
       break;
@@ -339,38 +324,8 @@ class CommentsModel extends ChangeNotifier {
     refreshController.refreshCompleted();
   }
 
-  Future<void> onLoading(Post whisperPost) async {
-    switch(sortState) {
-      case SortState.byLikedUidCount:
-      await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .orderBy(likeCountFieldKey,descending: true )
-      .startAfterDocument(commentDocs.last)
-      .limit(oneTimeReadCount)
-      .get().then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { 
-          commentDocs.add(doc); 
-        });
-      });
-      break;
-      case SortState.byNewestFirst:
-      await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .orderBy(createdAtFieldKey,descending: true)
-      .startAfterDocument(commentDocs.last)
-      .limit(oneTimeReadCount)
-      .get().then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
-      });
-      break;
-      case SortState.byOldestFirst:
-      await returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,)
-      .orderBy(createdAtFieldKey,descending: false)
-      .startAfterDocument(commentDocs.last)
-      .limit(oneTimeReadCount)
-      .get().then((qshot) {
-        qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { commentDocs.add(doc); });
-      });
-      break;
-    }
+  Future<void> onLoading({ required Post whisperPost}) async {
+    await voids.processOldDocs(query: getQuery(whisperPost: whisperPost), docs: commentDocs );
     notifyListeners();
     refreshController.loadComplete();
   }

@@ -16,8 +16,9 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -25,6 +26,8 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
+
 final myProfileProvider = ChangeNotifierProvider(
   (ref) => MyProfileModel()
 );
@@ -33,9 +36,22 @@ class MyProfileModel extends ChangeNotifier {
 
   bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
-  Query<Map<String, dynamic>> getQuery() {
-    final x = returnPostsColRef(postCreatorUid: currentUserDoc.id ).orderBy(createdAtFieldKey,descending: true).limit(oneTimeReadCount);
-    return x;
+  // enums
+  final PostType postType = PostType.myProfile;
+  SortState sortState = SortState.byNewestFirst;
+  Query<Map<String, dynamic>> getQuery () {
+    final basicQuery = returnPostsColRef(postCreatorUid: firebaseAuthCurrentUser!.uid).limit(oneTimeReadCount);
+    switch(sortState) {
+      case SortState.byLikedUidCount:
+        final x = basicQuery.orderBy(likeCountFieldKey,descending: true);
+      return x;
+      case SortState.byNewestFirst:
+        final x = basicQuery.orderBy(createdAtFieldKey,descending: true);
+      return x;
+      case SortState.byOldestFirst:
+        final x = basicQuery.orderBy(createdAtFieldKey,descending: false);
+      return x;
+    }
   }
   // notifiers
   final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
@@ -62,9 +78,6 @@ class MyProfileModel extends ChangeNotifier {
   // speed
   late SharedPreferences prefs;
   final speedNotifier = ValueNotifier<double>(1.0);
-  // enums
-  final PostType postType = PostType.myProfile;
-  SortState sortState = SortState.byNewestFirst;
 
   MyProfileModel() {
     init();
@@ -121,23 +134,27 @@ class MyProfileModel extends ChangeNotifier {
     refreshController.loadComplete();
     notifyListeners();
   }
-
-
-  Future getNewMyProfilePosts() async {
-    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+  Future<void> getNewMyProfilePosts() async {
+    switch(sortState) {
+      case SortState.byLikedUidCount:
+      break;
+      case SortState.byNewestFirst:
+      await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      break;
+      case SortState.byOldestFirst:
+      break;
+    }
+    
   }
 
-  Future getPosts() async {
-    try {
-      posts = [];
-      await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
-    } catch(e) { print(e.toString()); }
+  Future<void> getPosts() async {
+    posts = [];
+    afterUris = [];
+    await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
   }
 
   Future<void> getOldMyProfilePosts() async {
-    try {
-      voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
-    } catch(e) { print(e.toString()); }
+    await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
   }
 
   void onEditButtonPressed() {
@@ -175,23 +192,34 @@ class MyProfileModel extends ChangeNotifier {
     isEditing = false;
     notifyListeners();
   }
-  void showSortPostDocsDialogue(BuildContext context,String uid) {
-    showCupertinoDialog(
+  void onMenuPressed({ required BuildContext context,required MainModel mainModel,required PostSearchModel postSearchModel }) {
+    showCupertinoModalPopup(
       context: context, 
-      builder: (context) {
+      builder: (innerContext) {
         return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('投稿を新たに取得します',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: Text('行う操作を選択',style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(innerContext);
+                routes.toPostSearchPage(context: context, passiveWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
+              }, 
+              child: Text(
+                '検索',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor,
+                ) 
+              )
+            ),
+            CupertinoActionSheetAction(
               onPressed: () async {
-                posts = [];
-                afterUris = [];
-                // getDocsFromFirestore
-                // makeQuery
+                Navigator.pop(innerContext);
+                sortState = SortState.byLikedUidCount;
+                await onReload();
               }, 
               child: Text(
-                'いいね順',
+                'いいね順に並び替え',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor,
@@ -199,14 +227,13 @@ class MyProfileModel extends ChangeNotifier {
               )
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
-                posts = [];
-                afterUris = [];
-                // getDocsFromFirestore
-                // makeQuery
+              onPressed: () async {
+                Navigator.pop(innerContext);
+                sortState = SortState.byNewestFirst;
+                await onReload();
               }, 
               child: Text(
-                '新しい順',
+                '新しい順に並び替え',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor,
@@ -214,14 +241,13 @@ class MyProfileModel extends ChangeNotifier {
               )
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
-                posts = [];
-                afterUris = [];
-                // getDocsFromFirestore
-                // makeQuery
+              onPressed: () async {
+                Navigator.pop(innerContext);
+                sortState = SortState.byOldestFirst;
+                await onReload();
               }, 
               child: Text(
-                '古い順',
+                '古い順に並び替え',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor,
@@ -229,9 +255,9 @@ class MyProfileModel extends ChangeNotifier {
               )
             ),
             CupertinoActionSheetAction(
-              onPressed: () { Navigator.pop(context); }, 
+              onPressed: () { Navigator.pop(innerContext); }, 
               child: Text(
-                'キャンセル',
+                'Cancel',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor,

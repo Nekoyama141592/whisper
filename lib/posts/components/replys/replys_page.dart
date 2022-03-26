@@ -53,7 +53,7 @@ class ReplysPage extends ConsumerWidget {
         : Column(
           children: [
             CommentsOrReplysHeader(
-              onMenuPressed: () { repliesModel.showSortDialogue(context, whisperPostComment); }
+              onMenuPressed: () { repliesModel.showSortDialogue(context: context,whisperPostComment: whisperPostComment); }
             ),
             Expanded(
               child: repliesModel.postCommentReplyDocs.isEmpty ?
@@ -64,7 +64,7 @@ class ReplysPage extends ConsumerWidget {
                 header: WaterDropHeader(),
                 controller: repliesModel.refreshController,
                 onLoading: () async {
-                  await repliesModel.onLoading(whisperComment: whisperPostComment);
+                  await repliesModel.onLoading( whisperPostComment: whisperPostComment);
                 },
                 onRefresh: () async {
                   await repliesModel.onRefresh(whisperPostComment: whisperPostComment);
