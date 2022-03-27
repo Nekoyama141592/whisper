@@ -33,19 +33,14 @@ class UserLinksModel extends ChangeNotifier {
       alertMaxLinksLength(context: context);
     } else {
       final result = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
-      if (updateWhisperUser.links != result) {
-        updateWhisperUser.links = result;
-        showSnackBar(context: context, text: '更新しました!!!');
-        await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
-        Navigator.pop(context);
-        final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);
-        await returnUserUpdateLogNoBatchDocRef(uid: updateWhisperUser.uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());
-      } else {
-        showSnackBar(context: context, text: '変更が検知されませんでした');
-        await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
-        Navigator.pop(context);
-      }
-      
+      // (updateWhisperUser.links != result) always return true
+      updateWhisperUser.links = result;
+      showSnackBar(context: context, text: '更新しました!!!');
+      await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
+      Navigator.pop(context);
+      final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);
+      await returnUserUpdateLogNoBatchDocRef(uid: updateWhisperUser.uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());
+    
     }
   }
 }
