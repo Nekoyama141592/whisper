@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
@@ -16,8 +17,6 @@ import 'package:whisper/domain/official_advertisement/official_advertisement.dar
 import 'package:whisper/domain/official_advertisement_config/official_advertisement_config.dart';
 import 'package:whisper/domain/official_advertisement_impression/official_advertisement_impression.dart';
 import 'package:whisper/domain/official_advertisement_tap/official_advertisement_tap.dart';
-import 'package:whisper/themes/themes.dart';
-import 'package:whisper/themes/themes_model.dart';
 
 final officialAdvertisementsProvider = ChangeNotifierProvider(
   (ref) => OfficialAdvertisementsModel()
@@ -51,7 +50,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
           if (canShowAdvertisement(officialAdvertisement: result)) {
             final String officialAdvertisementId = resultDoc.id;
             showTopToast(officialAdvertisement: result);
-            await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+            // await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
           }
         });
       }
@@ -63,8 +62,8 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       msg: officialAdvertisement.title,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
-      backgroundColor: Theme.of(context).focusColor,
-      textColor: Theme.of(context).primaryColor,
+      backgroundColor: kPrimaryColor,
+      textColor: Colors.white
     );
   }
 
