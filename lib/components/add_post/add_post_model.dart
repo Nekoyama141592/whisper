@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:just_audio/just_audio.dart';
@@ -25,8 +26,10 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
+import 'package:whisper/domain/user_meta_update_log/user_meta_update_log.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -190,7 +193,22 @@ class AddPostModel extends ChangeNotifier {
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId,storagePostName: storagePostName );
       postTitleNotifier.value = '';
       endLoading();
+      await createUserMetaUpdateLog(mainModel: mainModel);
     }
+  }
+
+  Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
+    final UserMeta userMeta = mainModel.userMeta;
+    final ipv6 =  await Ipify.ipv64();
+    final UserMetaUpdateLog userMetaUpdateLog = UserMetaUpdateLog(
+      birthDay: userMeta.birthDay, 
+      gender: userMeta.gender, 
+      ipv6: ipv6, 
+      language: userMeta.language,
+      uid: userMeta.uid, 
+      updatedAt: Timestamp.now()
+    );
+    await returnUserMetaUpdateLogDocRef(uid: userMeta.uid, userMetaUpdateLogId: generateUserMetaUpdateLogId() ).set(userMetaUpdateLog.toJson());
   }
 
   Future<String> getPostImageURL({ required String postImageName , required MainModel mainModel,required String postId }) async {

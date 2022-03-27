@@ -14,6 +14,7 @@ class WhisperReply {
     required this.isHidden,
     required this.isNFTicon,
     required this.isOfficial,
+    required this.isPinned,
     required this.likeCount,
     required this.mainWalletAddress,
     required this.negativeScore,
@@ -38,6 +39,7 @@ class WhisperReply {
   final bool isHidden;
   final bool isNFTicon;
   final bool isOfficial;
+  bool isPinned;
   int likeCount;
   final String mainWalletAddress;
   final num negativeScore;

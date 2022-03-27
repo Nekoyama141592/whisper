@@ -71,11 +71,14 @@ String generatePostCommentReplyId({ required String uid }) {
 String generateUserUpdateLogId() {
   return 'userUpdateLog' + hyphenString + returnUuid4();
 }
-String generateUserUpdateLogNoBatchId() {
-  return 'userUpdateLogNoBatch' + hyphenString + returnUuid4();
+String generateUserMetaUpdateLogId() {
+  return 'userMetaUpdateLog' + hyphenString + returnUuid4();
 }
 String generatePostUpdateLogId() {
   return 'postUpdateLog' + hyphenString + returnUuid4();
+}
+String generateUserUpdateLogNoBatchId() {
+  return 'userUpdateLogNoBatch' + hyphenString + returnUuid4();
 }
 // prefs
 const String speedPrefsKey = 'speed';
@@ -104,6 +107,7 @@ final String replyNotificationType = returnNotificationTypeString(notificationTy
 const String usersColRefName = 'users';
 const String userUpdateLogsColRefName = 'userUpdateLogs';
 const String userUpdateLogNoBatchesColRefName = 'userUpdateLogNoBatches';
+const String userMetaUpdateLogsColRefName = 'userMetaUpdateLogs';
 const String userMetaColRefName = 'userMeta';
 const String followersColRefName = 'followers';
 const String tokensColRefName = 'tokens';

@@ -246,6 +246,7 @@ class RepliesModel extends ChangeNotifier {
       isHidden: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,
+      isPinned: false,
       likeCount: 0,
       mainWalletAddress: currentWhisperUser.mainWalletAddress,
       negativeScore: 0,

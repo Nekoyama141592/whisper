@@ -15,6 +15,7 @@ class WhisperPostComment {
     required this.isHidden,
     required this.isNFTicon,
     required this.isOfficial,
+    required this.isPinned,
     required this.likeCount,
     required this.masterReplied,
     required this.mainWalletAddress,
@@ -38,6 +39,7 @@ class WhisperPostComment {
   final bool isHidden;
   final bool isNFTicon;
   final bool isOfficial;
+  bool isPinned;
   int likeCount;
   final bool masterReplied;
   final String mainWalletAddress;

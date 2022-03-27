@@ -144,6 +144,7 @@ class CommentsModel extends ChangeNotifier {
       isHidden: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,
+      isPinned: false,
       likeCount: 0,
       negativeScore: 0,
       mainWalletAddress: currentWhisperUser.mainWalletAddress,
