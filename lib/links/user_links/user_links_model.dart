@@ -40,7 +40,6 @@ class UserLinksModel extends ChangeNotifier {
       Navigator.pop(context);
       final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);
       await returnUserUpdateLogNoBatchDocRef(uid: updateWhisperUser.uid, userUpdateLogNoBatchId: generateUserUpdateLogNoBatchId() ).set(userUpdateLogNoBatch.toJson());
-    
     }
   }
 }
