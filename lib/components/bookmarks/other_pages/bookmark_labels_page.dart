@@ -13,6 +13,8 @@ import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dar
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
+// main.dart
+import 'package:whisper/main.dart';
 
 class BookmarkLabelsPage extends ConsumerWidget {
   
@@ -31,97 +33,100 @@ class BookmarkLabelsPage extends ConsumerWidget {
 
     return bookmarksModel.isBookmarkMode ?
     BookmarksPage(mainModel: mainModel, bookmarksModel: bookmarksModel) : 
-    Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.new_label,color: Colors.white,),
-        onPressed: () async {
-          final TextEditingController textEditingController = TextEditingController(text: bookmarksModel.newLabel);
-          final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
-            return TextButton(
-              onPressed: () async {
-                await bookmarksModel.addBookmarkPostLabel(mainModel: mainModel, context: context, flashController: controller);
-              }, 
-              child: Text('OK',style: textStyle(context: context),)
-            );
-          };
-          final Widget content = TextFormField(
-            controller: textEditingController,
-            decoration: InputDecoration(
-              hintText: '例)面白い人',
-              suffixIcon: InkWell(
-                child: Icon(Icons.close),
-                onTap: () {
-                  textEditingController.text = '';
-                  bookmarksModel.newLabel = '';
-                },
-              )
-            ),
-            onChanged: (text) {
-              bookmarksModel.newLabel = text;
-            },
-          );
-          voids.showFlashDialogue(context: context, content: content, titleText: '新規追加', positiveActionBuilder: positiveActionBuilder);
-        },
-      ),
-      body: GradientScreen(
-          top: SizedBox.shrink(), 
-          header: Padding(
-          padding: EdgeInsets.all(height/32.0),
-          child: Text(
-            'リストを選択',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: height/32.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        circular: height/32.0,
-        content: ListView.builder(
-          itemCount: mainModel.bookmarkPostCategories.length,
-          itemBuilder: (BuildContext context, int i) {
-            final BookmarkPostCategory bookmarkLabel = mainModel.bookmarkPostCategories[i];
-            return ListTile(
-              leading: Icon(Icons.list),
-              trailing: InkWell(
-                child: Icon(Icons.edit),
-                onTap: () {
-                  final TextEditingController labelEditingController = TextEditingController(text: bookmarkLabel.categoryName);
-                  final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
-                    return TextButton(
-                      onPressed: () async {
-                        await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostCategory: bookmarkLabel, userMeta: mainModel.userMeta );
-                      }, 
-                      child: Text('OK',style: textStyle(context: context),)
-                    );
-                  };
-                  final Widget content = TextFormField(
-                    controller: labelEditingController,
-                    decoration: InputDecoration(
-                      hintText: '例)面白い人',
-                      suffixIcon: InkWell(
-                        child: Icon(Icons.close),
-                        onTap: () {
-                          labelEditingController.text = '';
-                          bookmarksModel.editLabel = '';
-                        },
-                      )
-                    ),
-                    onChanged: (text) {
-                      bookmarksModel.editLabel = text;
-                    },
-                  );
-                  voids.showFlashDialogue(context: context, content: content, titleText: 'ラベルを編集', positiveActionBuilder: positiveActionBuilder);
-                },
+    ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Icon(Icons.new_label,color: Colors.white,),
+          onPressed: () async {
+            final TextEditingController textEditingController = TextEditingController(text: bookmarksModel.newLabel);
+            final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
+              return TextButton(
+                onPressed: () async {
+                  await bookmarksModel.addBookmarkPostLabel(mainModel: mainModel, context: context, flashController: controller);
+                }, 
+                child: Text('OK',style: textStyle(context: context),)
+              );
+            };
+            final Widget content = TextFormField(
+              controller: textEditingController,
+              decoration: InputDecoration(
+                hintText: '例)面白い人',
+                suffixIcon: InkWell(
+                  child: Icon(Icons.close),
+                  onTap: () {
+                    textEditingController.text = '';
+                    bookmarksModel.newLabel = '';
+                  },
+                )
               ),
-              title: Text(bookmarkLabel.categoryName,style: TextStyle(fontSize: height/32.0,fontWeight: FontWeight.bold ),),
-              onTap: () async {
-                await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
+              onChanged: (text) {
+                bookmarksModel.newLabel = text;
               },
             );
-          }
-        ) 
+            voids.showFlashDialogue(context: context, content: content, titleText: '新規追加', positiveActionBuilder: positiveActionBuilder);
+          },
+        ),
+        body: GradientScreen(
+            top: SizedBox.shrink(), 
+            header: Padding(
+            padding: EdgeInsets.all(height/32.0),
+            child: Text(
+              'リストを選択',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: height/32.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          circular: height/32.0,
+          content: ListView.builder(
+            itemCount: mainModel.bookmarkPostCategories.length,
+            itemBuilder: (BuildContext context, int i) {
+              final BookmarkPostCategory bookmarkLabel = mainModel.bookmarkPostCategories[i];
+              return ListTile(
+                leading: Icon(Icons.list),
+                trailing: InkWell(
+                  child: Icon(Icons.edit),
+                  onTap: () {
+                    final TextEditingController labelEditingController = TextEditingController(text: bookmarkLabel.categoryName);
+                    final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
+                      return TextButton(
+                        onPressed: () async {
+                          await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostCategory: bookmarkLabel, userMeta: mainModel.userMeta );
+                        }, 
+                        child: Text('OK',style: textStyle(context: context),)
+                      );
+                    };
+                    final Widget content = TextFormField(
+                      controller: labelEditingController,
+                      decoration: InputDecoration(
+                        hintText: '例)面白い人',
+                        suffixIcon: InkWell(
+                          child: Icon(Icons.close),
+                          onTap: () {
+                            labelEditingController.text = '';
+                            bookmarksModel.editLabel = '';
+                          },
+                        )
+                      ),
+                      onChanged: (text) {
+                        bookmarksModel.editLabel = text;
+                      },
+                    );
+                    voids.showFlashDialogue(context: context, content: content, titleText: 'ラベルを編集', positiveActionBuilder: positiveActionBuilder);
+                  },
+                ),
+                title: Text(bookmarkLabel.categoryName,style: TextStyle(fontSize: height/32.0,fontWeight: FontWeight.bold ),),
+                onTap: () async {
+                  await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
+                },
+              );
+            }
+          ) 
+        ),
       ),
     );
   }

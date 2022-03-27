@@ -21,7 +21,7 @@ import 'package:whisper/domain/official_advertisement/official_advertisement.dar
 import 'package:whisper/domain/official_advertisement_config/official_advertisement_config.dart';
 import 'package:whisper/domain/official_advertisement_impression/official_advertisement_impression.dart';
 import 'package:whisper/domain/official_advertisement_tap/official_advertisement_tap.dart';
-// main
+// main.dart
 import 'package:whisper/main.dart';
 
 final officialAdvertisementsProvider = ChangeNotifierProvider(
@@ -30,11 +30,12 @@ final officialAdvertisementsProvider = ChangeNotifierProvider(
 
 class OfficialAdvertisementsModel extends ChangeNotifier {
   bool isPlayed = false;
+  bool isShowing = false;
   final Random rand = Random();
   int randIndex = 0;
   late OfficialAdvertisementConfig config;
   List<DocumentSnapshot<Map<String,dynamic>>> officialAdvertisementDocs = [];
-
+  
   Future<void> onPlayButtonPressed() async {
     if (!isPlayed) {
       isPlayed = true;
@@ -42,9 +43,11 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       if (qshot.docs.isNotEmpty) {
         config = OfficialAdvertisementConfig.fromJson(qshot.docs.first.data());
       }
+      // config = OfficialAdvertisementConfig(createdAt: Timestamp.now(), displaySeconds: 15, intervalSeconds: 20, updatedAt: Timestamp.now() );
       await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
       });
+
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (officialAdvertisementDocs.isNotEmpty) {
           Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
@@ -93,7 +96,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
             } else {
               showSnackBar(context: innerContext, text: 'このURLは不適切です');
             }
-            await makeTapDoc(officialAdvertisementId: officialAdvertisementId);
+            // await makeTapDoc(officialAdvertisementId: officialAdvertisementId);
           },
           child: DefaultTextStyle(
             style: TextStyle(fontWeight: FontWeight.bold), 

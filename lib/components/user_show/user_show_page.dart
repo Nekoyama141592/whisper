@@ -14,6 +14,8 @@ import 'package:whisper/details/loading.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
+// main.dart
+import 'package:whisper/main.dart';
 
 class UserShowPage extends ConsumerWidget {
   
@@ -32,62 +34,65 @@ class UserShowPage extends ConsumerWidget {
     final size = MediaQuery.of(context).size;
     final height = size.height;
 
-    return Scaffold(
-      extendBodyBehindAppBar: false,
-      body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
-      Column(
-        children: [
-          Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: height/16.0 ),),
-          SizedBox(height: height/10.0,),
-          Text('あなたはこのユーザーをミュート、ブロック'),
-          SizedBox(height: height/10.0,),
-          Text('もしくは相手にブロックされています')
-        ],
-      )
-      : userShowModel.isLoading ?
-      Loading() : 
-      Container(
-        child: userShowModel.isEditing ?
-        SafeArea(
-          child: EditProfileScreen(
-            onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
-            onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel,);
-            },
-            showImagePicker: () async { await userShowModel.showImagePicker(); },
-            onUserNameChanged: (text) {
-              userShowModel.userName = text;
-            },
-            bioController: TextEditingController(text: userShowModel.passiveWhisperUser.bio ),
-            userNameController: TextEditingController(text: userShowModel.passiveWhisperUser.userName ),
-            croppedFile: userShowModel.croppedFile,
-            isLoading: userShowModel.isLoading,
-            isCropped: userShowModel.isCropped,
-            mainModel: mainModel,
-          )
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        extendBodyBehindAppBar: false,
+        body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
+        Column(
+          children: [
+            Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: height/16.0 ),),
+            SizedBox(height: height/10.0,),
+            Text('あなたはこのユーザーをミュート、ブロック'),
+            SizedBox(height: height/10.0,),
+            Text('もしくは相手にブロックされています')
+          ],
         )
-        : GradientScreen(
-          top: SizedBox.shrink(), 
-          header: UserShowHeader(
-            onEditButtonPressed: () {
-              userShowModel.onEditButtonPressed();
-            },
-            onMenuPressed: () {
-              userShowModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel );
-            },
-            passiveWhisperUser: userShowModel.passiveWhisperUser,
-            backArrow: InkWell(
-              child: Icon(Icons.arrow_back),
-              onTap: () {
-                Navigator.pop(context);
+        : userShowModel.isLoading ?
+        Loading() : 
+        Container(
+          child: userShowModel.isEditing ?
+          SafeArea(
+            child: EditProfileScreen(
+              onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
+              onSaveButtonPressed: () async {
+                await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel,);
               },
+              showImagePicker: () async { await userShowModel.showImagePicker(); },
+              onUserNameChanged: (text) {
+                userShowModel.userName = text;
+              },
+              bioController: TextEditingController(text: userShowModel.passiveWhisperUser.bio ),
+              userNameController: TextEditingController(text: userShowModel.passiveWhisperUser.userName ),
+              croppedFile: userShowModel.croppedFile,
+              isLoading: userShowModel.isLoading,
+              isCropped: userShowModel.isCropped,
+              mainModel: mainModel,
+            )
+          )
+          : GradientScreen(
+            top: SizedBox.shrink(), 
+            header: UserShowHeader(
+              onEditButtonPressed: () {
+                userShowModel.onEditButtonPressed();
+              },
+              onMenuPressed: () {
+                userShowModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel );
+              },
+              passiveWhisperUser: userShowModel.passiveWhisperUser,
+              backArrow: InkWell(
+                child: Icon(Icons.arrow_back),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              mainModel: mainModel, 
             ),
-            mainModel: mainModel, 
+            content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
+            circular: height/16.0
           ),
-          content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
-          circular: height/16.0
-        ),
-      )
+        )
+      ),
     );
   }
 }

@@ -12,6 +12,8 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'post_search_model.dart';
 import 'package:whisper/main_model.dart';
+// main.dart
+import 'package:whisper/main.dart';
 
 class PostSearchPage extends ConsumerWidget {
 
@@ -39,52 +41,55 @@ class PostSearchPage extends ConsumerWidget {
       )
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(passiveWhisperUser.userName,),
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(size.height/32.0),
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(passiveWhisperUser.userName,),
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(size.height/32.0),
+          ),
         ),
-      ),
-      ),
-      body: SafeArea(
-        child: searchModel.isLoading ?
-        Loading() 
-        : Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              child: SearchInputField(
-                onCloseButtonPressed: () {
-                  searchController.text = '';
-                  postSearchModel.searchTerm = '';
-                },
-                onLongPress: () async { await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }); },
-                onChanged: (text) {
-                  postSearchModel.searchTerm = text;
-                },
-                controller: searchController, 
-                search: () async {
-                  await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
+        ),
+        body: SafeArea(
+          child: searchModel.isLoading ?
+          Loading() 
+          : Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: SearchInputField(
+                  onCloseButtonPressed: () {
+                    searchController.text = '';
+                    postSearchModel.searchTerm = '';
+                  },
+                  onLongPress: () async { await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }); },
+                  onChanged: (text) {
+                    postSearchModel.searchTerm = text;
+                  },
+                  controller: searchController, 
+                  search: () async {
+                    await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
+                  }
+                ),
+              ),
+              if (searchModel.results.isEmpty) SizedBox(height: size.height * 0.16,),
+              JudgeScreen(
+                list: postSearchModel.results, 
+                content: PostCards(
+                  passiveWhisperUser: passiveWhisperUser,
+                  results: searchModel.results,
+                  mainModel: mainModel,
+                  postSearchModel: postSearchModel,
+                ), 
+                reload: () async {
+                  await postSearchModel.onReload(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
                 }
               ),
-            ),
-            if (searchModel.results.isEmpty) SizedBox(height: size.height * 0.16,),
-            JudgeScreen(
-              list: postSearchModel.results, 
-              content: PostCards(
-                passiveWhisperUser: passiveWhisperUser,
-                results: searchModel.results,
-                mainModel: mainModel,
-                postSearchModel: postSearchModel,
-              ), 
-              reload: () async {
-                await postSearchModel.onReload(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
-              }
-            ),
-          ],
-        )
+            ],
+          )
+        ),
       ),
     );
   }

@@ -11,10 +11,10 @@ import 'package:whisper/domain/reply/whipser_reply.dart';
 // components
 import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
-import 'package:whisper/posts/components/replys/components/details/reply_like_button.dart';
+import 'package:whisper/replies/components/details/reply_like_button.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/replies/replys_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class ReplyCard extends ConsumerWidget {

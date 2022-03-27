@@ -5,7 +5,7 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/comments/comments_model.dart';
+import 'package:whisper/comments/comments_model.dart';
 
 class CommentLikeButton extends StatelessWidget {
 

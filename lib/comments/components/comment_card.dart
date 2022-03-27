@@ -11,14 +11,14 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
-import 'package:whisper/posts/components/comments/components/comment_like_button.dart';
-import 'package:whisper/posts/components/comments/components/show_replys_button.dart';
+import 'package:whisper/comments/components/comment_like_button.dart';
+import 'package:whisper/comments/components/show_replys_button.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/comments/comments_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/comments/comments_model.dart';
+import 'package:whisper/replies/replys_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class CommentCard extends ConsumerWidget {

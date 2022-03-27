@@ -12,6 +12,8 @@ import 'package:whisper/components/notifications/components/comment_notification
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/components/notifications/notifications_model.dart';
+// main.dart
+import 'package:whisper/main.dart';
 
 class NotificationsPage extends StatelessWidget {
 
@@ -30,41 +32,44 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: tabBarElements.length,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Whisper'),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular( defaultPadding(context: context) )
-            )
+      child: ScaffoldMessenger(
+        key: scaffoldMessengerKey,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Whisper'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular( defaultPadding(context: context) )
+              )
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.keyboard_arrow_down),
+                onPressed: (){
+                  Navigator.pop(context);
+                }, 
+              )
+            ],
+            bottom: TabBar(
+              indicatorSize: TabBarIndicatorSize.label,
+              tabs: tabBarElements.map((tabBarElement) {
+                return Tab(
+                  text: tabBarElement.title
+                );
+              }).toList()
+            ),
+            
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.keyboard_arrow_down),
-              onPressed: (){
-                Navigator.pop(context);
-              }, 
-            )
-          ],
-          bottom: TabBar(
-            indicatorSize: TabBarIndicatorSize.label,
-            tabs: tabBarElements.map((tabBarElement) {
-              return Tab(
-                text: tabBarElement.title
-              );
-            }).toList()
-          ),
+          drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel,),
           
+          body: 
+          TabBarView(
+            children: [
+              CommentNotifications( mainModel: mainModel,notificationsModel: notificationsModel, ),
+              ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel, )
+            ]
+          )
         ),
-        drawer: WhisperDrawer(mainModel: mainModel, themeModel: themeModel,),
-        
-        body: 
-        TabBarView(
-          children: [
-            CommentNotifications( mainModel: mainModel,notificationsModel: notificationsModel, ),
-            ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel, )
-          ]
-        )
       ),
     );
   }

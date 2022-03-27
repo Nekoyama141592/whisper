@@ -8,7 +8,7 @@ import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/replies/replys_model.dart';
 
 class ShowReplyButton extends ConsumerWidget {
 

@@ -4,7 +4,7 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/replys/replys_model.dart';
+import 'package:whisper/replies/replys_model.dart';
 
 class ReplyLikeButton extends StatelessWidget {
 

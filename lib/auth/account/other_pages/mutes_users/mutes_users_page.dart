@@ -9,6 +9,8 @@ import 'package:whisper/auth/account/other_pages/mutes_users/components/user_car
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_model.dart';
+// main.dart
+import 'package:whisper/main.dart';
 
 class MutesUsersPage extends ConsumerWidget {
 
@@ -23,19 +25,22 @@ class MutesUsersPage extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
 
     final mutesUsersModel = ref.watch(mutesUsersProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ミュートしているユーザー'),
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('ミュートしているユーザー'),
+        ),
+        body: mutesUsersModel.isLoading ?
+        Loading()
+        : JudgeScreen(
+          list: mutesUsersModel.userDocs,
+          reload: () async {
+            await mutesUsersModel.onReload();
+          },
+          content: UserCards(userDocs: mutesUsersModel.userDocs, mainModel: mainModel),
+        )
       ),
-      body: mutesUsersModel.isLoading ?
-      Loading()
-      : JudgeScreen(
-        list: mutesUsersModel.userDocs,
-        reload: () async {
-          await mutesUsersModel.onReload();
-        },
-        content: UserCards(userDocs: mutesUsersModel.userDocs, mainModel: mainModel),
-      )
     );
   }
 }
