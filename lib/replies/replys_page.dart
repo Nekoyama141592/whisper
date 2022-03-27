@@ -18,8 +18,6 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/replies/components/reply_card.dart';
 import 'package:whisper/replies/replys_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class ReplysPage extends ConsumerWidget {
 
@@ -40,51 +38,48 @@ class ReplysPage extends ConsumerWidget {
 
     final replyEditingController = TextEditingController();
     final RepliesModel repliesModel = ref.watch(repliesProvider);
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: Icon(Icons.add_comment),
-          onPressed: () {
-            // repliesModel.reset();
-            repliesModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel);
-          },
-        ),
-        body: SafeArea(
-          child: repliesModel.isLoading ?
-          Loading()
-          : Column(
-            children: [
-              CommentsOrReplysHeader(
-                onMenuPressed: () { repliesModel.showSortDialogue(context: context,whisperPostComment: whisperPostComment); }
-              ),
-              Expanded(
-                child: repliesModel.postCommentReplyDocs.isEmpty ?
-                Nothing(reload: () async { await repliesModel.onReload(whisperPostComment: whisperPostComment); }) : 
-                SmartRefresher(
-                  enablePullUp: true,
-                  enablePullDown: true,
-                  header: WaterDropHeader(),
-                  controller: repliesModel.refreshController,
-                  onLoading: () async {
-                    await repliesModel.onLoading( whisperPostComment: whisperPostComment);
-                  },
-                  onRefresh: () async {
-                    await repliesModel.onRefresh(whisperPostComment: whisperPostComment);
-                  },
-                  child: ListView.builder(
-                    itemCount: repliesModel.postCommentReplyDocs.length,
-                    itemBuilder: (BuildContext context,int i) {
-                      final WhisperReply whisperReply  = fromMapToWhisperReply(replyMap: repliesModel.postCommentReplyDocs[i].data()! );
-                      return ReplyCard(i: i,whisperReply: whisperReply, repliesModel: repliesModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
-                    }
-                  ),
-                )
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: Icon(Icons.add_comment),
+        onPressed: () {
+          // repliesModel.reset();
+          repliesModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel);
+        },
+      ),
+      body: SafeArea(
+        child: repliesModel.isLoading ?
+        Loading()
+        : Column(
+          children: [
+            CommentsOrReplysHeader(
+              onMenuPressed: () { repliesModel.showSortDialogue(context: context,whisperPostComment: whisperPostComment); }
+            ),
+            Expanded(
+              child: repliesModel.postCommentReplyDocs.isEmpty ?
+              Nothing(reload: () async { await repliesModel.onReload(whisperPostComment: whisperPostComment); }) : 
+              SmartRefresher(
+                enablePullUp: true,
+                enablePullDown: true,
+                header: WaterDropHeader(),
+                controller: repliesModel.refreshController,
+                onLoading: () async {
+                  await repliesModel.onLoading( whisperPostComment: whisperPostComment);
+                },
+                onRefresh: () async {
+                  await repliesModel.onRefresh(whisperPostComment: whisperPostComment);
+                },
+                child: ListView.builder(
+                  itemCount: repliesModel.postCommentReplyDocs.length,
+                  itemBuilder: (BuildContext context,int i) {
+                    final WhisperReply whisperReply  = fromMapToWhisperReply(replyMap: repliesModel.postCommentReplyDocs[i].data()! );
+                    return ReplyCard(i: i,whisperReply: whisperReply, repliesModel: repliesModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
+                  }
+                ),
               )
-            ]  
-          )
-        ),
+            )
+          ]  
+        )
       ),
     );
   }

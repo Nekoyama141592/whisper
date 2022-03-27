@@ -10,8 +10,6 @@ import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'package:whisper/main_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class ShowDescriptionPage extends ConsumerWidget {
 
@@ -34,47 +32,44 @@ class ShowDescriptionPage extends ConsumerWidget {
     final bioController = TextEditingController(text: passiveWhisperUser.bio);
     final ShowBioModel showBioModel = ref.watch(showBioProvider);
 
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('自己紹介'),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(defaultPadding(context: context) )
-            )
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('自己紹介'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(defaultPadding(context: context) )
+          )
         ),
-        body: Padding(
-          padding: EdgeInsets.all(defaultPadding(context: context)),
-          child: mainModel.userMeta.uid == passiveWhisperUser.uid ?
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: 10,
-                controller: bioController,
-                onChanged: (text) {
-                  showBioModel.bio = text;
-                },
-                style: textStyle
-              ),
-              Center(
-                child: RoundedButton(text: '更新', fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, press: () async {
-                  await showBioModel.updateBio(context: context, updateWhisperUser: mainModel.currentWhisperUser);
-                }, textColor: Colors.white, buttonColor: Theme.of(context).highlightColor ),
-              ),
-              SizedBox()
-            ],
-          ) :
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(passiveWhisperUser.bio,style: textStyle)
-              ],
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(defaultPadding(context: context)),
+        child: mainModel.userMeta.uid == passiveWhisperUser.uid ?
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextFormField(
+              keyboardType: TextInputType.multiline,
+              maxLines: 10,
+              controller: bioController,
+              onChanged: (text) {
+                showBioModel.bio = text;
+              },
+              style: textStyle
             ),
+            Center(
+              child: RoundedButton(text: '更新', fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, press: () async {
+                await showBioModel.updateBio(context: context, updateWhisperUser: mainModel.currentWhisperUser);
+              }, textColor: Colors.white, buttonColor: Theme.of(context).highlightColor ),
+            ),
+            SizedBox()
+          ],
+        ) :
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(passiveWhisperUser.bio,style: textStyle)
+            ],
           ),
         ),
       ),

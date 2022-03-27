@@ -9,8 +9,6 @@ import 'package:whisper/auth/account/other_pages/mutes_users/components/user_car
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class MutesUsersPage extends ConsumerWidget {
 
@@ -26,7 +24,6 @@ class MutesUsersPage extends ConsumerWidget {
 
     final mutesUsersModel = ref.watch(mutesUsersProvider);
     return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
       child: Scaffold(
         appBar: AppBar(
           title: Text('ミュートしているユーザー'),

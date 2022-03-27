@@ -13,8 +13,6 @@ import 'package:whisper/links/user_links/user_links_model.dart';
 // model
 import 'account_model.dart';
 import 'package:whisper/main_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class AccountPage extends ConsumerWidget {
 
@@ -32,7 +30,6 @@ class AccountPage extends ConsumerWidget {
     final UserLinksModel userLinksModel = ref.watch(userLinksProvider);
 
     return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Account'),

@@ -511,7 +511,3 @@ Future<void> defaultLaungh({ required BuildContext context,required String url }
     showSnackBar(context: context, text: '無効なURLです' );
   }
 }
-
-void removeCurrentSnackBar ({ required GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey }) {
-  scaffoldMessengerKey.currentState!.removeCurrentSnackBar();
-}

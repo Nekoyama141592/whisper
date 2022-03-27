@@ -13,8 +13,6 @@ import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class OnePostPage extends ConsumerWidget {
 
@@ -33,31 +31,28 @@ class OnePostPage extends ConsumerWidget {
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
 
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        body: PostShowPage(
-          speedNotifier: onePostModel.speedNotifier, 
-          speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
-          currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, 
-          progressNotifier: onePostModel.progressNotifier, 
-          seek: onePostModel.seek, 
-          repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
-          onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: onePostModel.audioPlayer, repeatButtonNotifier: onePostModel.repeatButtonNotifier); }, 
-          isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
-          onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
-          playButtonNotifier: onePostModel.playButtonNotifier, 
-          play: () { voids.play(audioPlayer: onePostModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
-          pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); },
-          isLastSongNotifier: onePostModel.isLastSongNotifier, 
-          onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
-          toCommentsPage: () {
-            routes.toCommentsPage(context: context, audioPlayer: onePostModel.audioPlayer, currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel  );
-          },
-          toEditingMode: () { voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel); },
-          postType: onePostModel.postType,
-          mainModel: mainModel
-        ),
+    return Scaffold(
+      body: PostShowPage(
+        speedNotifier: onePostModel.speedNotifier, 
+        speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
+        currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, 
+        progressNotifier: onePostModel.progressNotifier, 
+        seek: onePostModel.seek, 
+        repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
+        onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: onePostModel.audioPlayer, repeatButtonNotifier: onePostModel.repeatButtonNotifier); }, 
+        isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
+        onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
+        playButtonNotifier: onePostModel.playButtonNotifier, 
+        play: () { voids.play(audioPlayer: onePostModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+        pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); },
+        isLastSongNotifier: onePostModel.isLastSongNotifier, 
+        onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
+        toCommentsPage: () {
+          routes.toCommentsPage(context: context, audioPlayer: onePostModel.audioPlayer, currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel  );
+        },
+        toEditingMode: () { voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel); },
+        postType: onePostModel.postType,
+        mainModel: mainModel
       ),
     );
   }

@@ -48,109 +48,87 @@ import 'package:whisper/components/notifications/notifications_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 void toMyApp(context) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
 }
 void toLoginpage(context) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
 }
 
 void toSignupPage(context) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
 }
 
 void toAddUserInfoPage(context,SignupModel signupModel) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => AddUserInfoPage(signupModel: signupModel)));
 }
 
 void toVerifyPage(context) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPage()));
 }
 void toVerifyPasswordResetPage(context) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPasswordResetPage()));
 }
 
 void toUpdateEmailPage(context,User? currentUser) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateEmailPage(currentUser: currentUser,)));
 }
 void toUpdatePassword({ required BuildContext context,required User? currentUser}) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePasswordPage(currentUser: currentUser )));
 }
 void toReauthenticationPage({required context, required User? currentUser, required AccountModel accountModel, required MainModel mainModel }) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => ReauthenticationPage(currentUser: currentUser,accountModel: accountModel,mainModel: mainModel,)));
 }
 
 
 void toPostShowPage({ required BuildContext context, required ValueNotifier<double> speedNotifier, required void Function()? speedControll, required ValueNotifier<Post?> currentWhisperPostNotifier, required ProgressNotifier progressNotifier, required void Function(Duration)? seek, required RepeatButtonNotifier repeatButtonNotifier, required void Function()? onRepeatButtonPressed, required ValueNotifier<bool> isFirstSongNotifier, required void Function()? onPreviousSongButtonPressed, required PlayButtonNotifier playButtonNotifier, required void Function()? play, required void Function()? pause, required ValueNotifier<bool> isLastSongNotifier,void Function()? onNextSongButtonPressed,void Function()? toCommentsPage,void Function()? toEditingMode, required PostType postType,required MainModel mainModel}) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => PostShowPage(speedNotifier: speedNotifier, speedControll: speedControll, currentWhisperPostNotifier: currentWhisperPostNotifier, progressNotifier: progressNotifier, seek: seek, repeatButtonNotifier: repeatButtonNotifier, onRepeatButtonPressed: onRepeatButtonPressed, isFirstSongNotifier: isFirstSongNotifier, onPreviousSongButtonPressed: onPreviousSongButtonPressed, playButtonNotifier: playButtonNotifier, play: play, pause: pause, isLastSongNotifier: isLastSongNotifier, onNextSongButtonPressed: onNextSongButtonPressed, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, postType: postType,mainModel: mainModel) ));
 }
 
 void toUserShowPage({ required BuildContext context, required MainModel mainModel}) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => UserShowPage( mainModel: mainModel) ));
 }
 
 void toAccountPage(context,MainModel mainModel) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(mainModel: mainModel,)));
 }
 
 void toNotificationsPage({ required BuildContext context, required MainModel mainModel, required ThemeModel themeModel, required NotificationsModel notificationsModel,}) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel,notificationsModel: notificationsModel,) ));
 }
 
 void toAddPostPage ({ required BuildContext context, required AddPostModel addPostModel, required MainModel mainModel }) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage(mainModel: mainModel, addPostModel: addPostModel) ));
 }
 
 void toPickPostImagePage({ required BuildContext context, required AddPostModel addPostModel, required MainModel mainModel }) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, mainModel: mainModel,) ));
 }
 
 void toCommentsPage({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> currentWhisperPostNotifier, required MainModel mainModel,required CommentsOrReplysModel commentsOrReplysModel }) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage(audioPlayer: audioPlayer, whisperPost: currentWhisperPostNotifier.value!, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) ));
 }
 
 void toReplysPage({ required BuildContext context, required Post whisperPost,required WhisperPostComment whisperPostComment, required MainModel mainModel,required CommentsOrReplysModel commentsOrReplysModel}) {
- voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
  Navigator.push(context, MaterialPageRoute(builder: (context) => ReplysPage( whisperPost: whisperPost, whisperPostComment: whisperPostComment, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  ) )); 
 }
 
 void toMutesUsersPage(context,MainModel mainModel) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => MutesUsersPage(mainModel: mainModel,) ));
 }
 
 void toIsFinishedPage({ required BuildContext context, required String title, required String text}) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => IsFinishedPage(title: title, text: text,) ));
 }
 
 void toNFTownersPage(context) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => NFTownersPage() ));
 }
 
 void toOneCommentPage ({ required BuildContext context, required MainModel mainModel} ) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => OneCommentPage(mainModel: mainModel,) ));
 }
 
 void toPostSearchPage ({ required BuildContext context,required WhisperUser passiveWhisperUser,required MainModel mainModel, required PostSearchModel postSearchModel }) {
-  voids.removeCurrentSnackBar(scaffoldMessengerKey: scaffoldMessengerKey);
   Navigator.push(context, MaterialPageRoute(builder: (context) => PostSearchPage(passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel) ) );
 }
 

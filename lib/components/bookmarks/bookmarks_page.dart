@@ -6,8 +6,6 @@ import 'package:whisper/details/loading.dart';
 import 'package:whisper/components/bookmarks/components/post_screen.dart';
 // model
 import 'package:whisper/main_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class BookmarksPage extends StatelessWidget {
   
@@ -23,11 +21,8 @@ class BookmarksPage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        body: bookmarksModel.isLoading ? Loading() : PostScreen(bookmarksModel: bookmarksModel, mainModel: mainModel, ),
-      ),
+    return Scaffold(
+      body: bookmarksModel.isLoading ? Loading() : PostScreen(bookmarksModel: bookmarksModel, mainModel: mainModel, ),
     );
   }
 }

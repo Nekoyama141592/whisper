@@ -16,8 +16,6 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
 import 'package:whisper/replies/replys_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class CommentsPage extends ConsumerWidget {
   
@@ -40,68 +38,65 @@ class CommentsPage extends ConsumerWidget {
     final replysModel = ref.watch(repliesProvider);
     final commentEditingController = TextEditingController();
     
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.new_label,
-            color: Colors.white,
-          ),
-          backgroundColor: Theme.of(context).highlightColor,
-          onPressed: ()  {
-            commentsModel.onFloatingActionButtonPressed(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel);
-          },
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.new_label,
+          color: Colors.white,
         ),
-        body: SafeArea(
-          child: Column(
-    
-            children: [
-              CommentsOrReplysHeader(
-                onMenuPressed: (){
-                  commentsModel.showSortDialogue( context :context, whisperPost :whisperPost);
-                },
-              ),
-              commentsModel.commentDocs.isEmpty ?
-              Expanded(
-                child: Nothing(reload: () async {
-                  await commentsModel.getCommentDocs(whisperPost: whisperPost);
-                }),
-              )
-              : Expanded(
-                child: SmartRefresher(
-                  enablePullUp: true,
-                  enablePullDown: true,
-                  onLoading: () async {
-                    await commentsModel.onLoading(whisperPost :whisperPost);
-                  },
-                  onRefresh: () {
-                    commentsModel.onRefresh( context: context, whisperPost: whisperPost);
-                  },
-                  header: WaterDropHeader(),
-                  controller: commentsModel.refreshController,
-                  child: ListView.builder(
-                    itemCount: commentsModel.commentDocs.length,
-                    itemBuilder: (BuildContext context,int i) {
-                      final Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
-                      final WhisperPostComment whisperComment = WhisperPostComment.fromJson(comment);
-                      return CommentCard(
-                        i: i,
-                        whisperComment: whisperComment,
-                        whisperPost: whisperPost,
-                        commentsModel: commentsModel,
-                        replysModel: replysModel,
-                        mainModel: mainModel,
-                        commentsOrReplysModel: commentsOrReplysModel,
-                      );
-                    }
-                  ),
-                )
-              )
-            ],
-          ),
-        )
+        backgroundColor: Theme.of(context).highlightColor,
+        onPressed: ()  {
+          commentsModel.onFloatingActionButtonPressed(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel);
+        },
       ),
+      body: SafeArea(
+        child: Column(
+    
+          children: [
+            CommentsOrReplysHeader(
+              onMenuPressed: (){
+                commentsModel.showSortDialogue( context :context, whisperPost :whisperPost);
+              },
+            ),
+            commentsModel.commentDocs.isEmpty ?
+            Expanded(
+              child: Nothing(reload: () async {
+                await commentsModel.getCommentDocs(whisperPost: whisperPost);
+              }),
+            )
+            : Expanded(
+              child: SmartRefresher(
+                enablePullUp: true,
+                enablePullDown: true,
+                onLoading: () async {
+                  await commentsModel.onLoading(whisperPost :whisperPost);
+                },
+                onRefresh: () {
+                  commentsModel.onRefresh( context: context, whisperPost: whisperPost);
+                },
+                header: WaterDropHeader(),
+                controller: commentsModel.refreshController,
+                child: ListView.builder(
+                  itemCount: commentsModel.commentDocs.length,
+                  itemBuilder: (BuildContext context,int i) {
+                    final Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
+                    final WhisperPostComment whisperComment = WhisperPostComment.fromJson(comment);
+                    return CommentCard(
+                      i: i,
+                      whisperComment: whisperComment,
+                      whisperPost: whisperPost,
+                      commentsModel: commentsModel,
+                      replysModel: replysModel,
+                      mainModel: mainModel,
+                      commentsOrReplysModel: commentsOrReplysModel,
+                    );
+                  }
+                ),
+              )
+            )
+          ],
+        ),
+      )
     );
   }
 }

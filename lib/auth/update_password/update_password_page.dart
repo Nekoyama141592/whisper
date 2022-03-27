@@ -11,8 +11,6 @@ import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_password_field.dart';
 // model
 import 'update_password_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class UpdatePasswordPage extends ConsumerWidget {
 
@@ -30,53 +28,50 @@ class UpdatePasswordPage extends ConsumerWidget {
     final newPasswordInputController = TextEditingController(text: updatePasswordModel.newPassword);
     final confirmPasswordInputController = TextEditingController(text: updatePasswordModel.confirmPassword);
     
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('update password'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: RoundedPasswordField(
-                hintText: '新しいパスワード', 
-                controller: newPasswordInputController, 
-                onChanged:  (text) {
-                  updatePasswordModel.newPassword = text;
-                },
-                paste: (value) {
-                  updatePasswordModel.newPassword = value;
-                },
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('update password'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: RoundedPasswordField(
+              hintText: '新しいパスワード', 
+              controller: newPasswordInputController, 
+              onChanged:  (text) {
+                updatePasswordModel.newPassword = text;
+              },
+              paste: (value) {
+                updatePasswordModel.newPassword = value;
+              },
             ),
-            Center(
-              child: RoundedPasswordField(
-                hintText: 'パスワード(確認)', 
-                controller: confirmPasswordInputController, 
-                onChanged:  (text) {
-                  updatePasswordModel.confirmPassword = text;
-                },
-                paste: (value) {
-                  updatePasswordModel.confirmPassword = value;
-                },
-              ),
+          ),
+          Center(
+            child: RoundedPasswordField(
+              hintText: 'パスワード(確認)', 
+              controller: confirmPasswordInputController, 
+              onChanged:  (text) {
+                updatePasswordModel.confirmPassword = text;
+              },
+              paste: (value) {
+                updatePasswordModel.confirmPassword = value;
+              },
             ),
-            Center(
-              child: RoundedButton(
-                text: 'パスワードを更新', 
-                widthRate: 0.95,
-                fontSize: defaultHeaderTextSize(context: context),
-                press:  () async {
-                  await updatePasswordModel.onUpdateButtonPressed(context: context);
-                }, 
-                textColor: Colors.white, 
-                buttonColor: kSecondaryColor
-              ),
-            )
-          ],
-        ),
+          ),
+          Center(
+            child: RoundedButton(
+              text: 'パスワードを更新', 
+              widthRate: 0.95,
+              fontSize: defaultHeaderTextSize(context: context),
+              press:  () async {
+                await updatePasswordModel.onUpdateButtonPressed(context: context);
+              }, 
+              textColor: Colors.white, 
+              buttonColor: kSecondaryColor
+            ),
+          )
+        ],
       ),
     );
   }

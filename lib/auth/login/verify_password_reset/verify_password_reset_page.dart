@@ -8,8 +8,6 @@ import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/details/rounded_button.dart';
 // model
 import 'verify_password_reset_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class VerifyPasswordResetPage extends ConsumerWidget {
   @override 
@@ -17,47 +15,44 @@ class VerifyPasswordResetPage extends ConsumerWidget {
     
     final verifyPasswordResetModel = ref.watch(verifyPasswordResetProvider);
     final emailInputController = TextEditingController(text: verifyPasswordResetModel.email);
-    return ScaffoldMessenger(
-      key: scaffoldMessengerKey,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('verifyPasswordReset'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: RoundedInputField(
-                hintText: 'email', 
-                icon: Icons.email, 
-                controller: emailInputController, 
-                onChanged:  (text) {
-                  verifyPasswordResetModel.email = text;
-                },
-                onCloseButtonPressed: () {
-                  emailInputController.text = '';
-                  verifyPasswordResetModel.email = '';
-                },
-                paste: (value) {
-                  verifyPasswordResetModel.email = value;
-                },
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('verifyPasswordReset'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: RoundedInputField(
+              hintText: 'email', 
+              icon: Icons.email, 
+              controller: emailInputController, 
+              onChanged:  (text) {
+                verifyPasswordResetModel.email = text;
+              },
+              onCloseButtonPressed: () {
+                emailInputController.text = '';
+                verifyPasswordResetModel.email = '';
+              },
+              paste: (value) {
+                verifyPasswordResetModel.email = value;
+              },
             ),
-            SizedBox(height: 25.0,),
-            Center(
-              child: RoundedButton(
-                text: 'リセットメールを受け取る', 
-                widthRate: 0.95, 
-                fontSize: defaultHeaderTextSize(context: context),
-                press: () async {
-                  await verifyPasswordResetModel.sendPasswordResetEmail(context);
-                }, 
-                textColor: Colors.white, 
-                buttonColor: Theme.of(context).highlightColor
-              ),
+          ),
+          SizedBox(height: 25.0,),
+          Center(
+            child: RoundedButton(
+              text: 'リセットメールを受け取る', 
+              widthRate: 0.95, 
+              fontSize: defaultHeaderTextSize(context: context),
+              press: () async {
+                await verifyPasswordResetModel.sendPasswordResetEmail(context);
+              }, 
+              textColor: Colors.white, 
+              buttonColor: Theme.of(context).highlightColor
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
