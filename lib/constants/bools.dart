@@ -71,28 +71,20 @@ bool isImageExist({ required Post post }) {
   return isImageExist;
 }
 bool canShowAdvertisement({ required OfficialAdvertisement officialAdvertisement }) {
-  if (officialAdvertisement.tapCountLimit == 0 && officialAdvertisement.impressionCountLimit == 0) {
-    // no limit
-    return true;
-  } else if (officialAdvertisement.tapCountLimit >= 0 && officialAdvertisement.impressionCountLimit >= 0) {
-    // strange
-    return false;
-  } else if (officialAdvertisement.tapCountLimit == 0 && officialAdvertisement.impressionCountLimit >= 0 ) {
-    // there is imperssionCountLimit
-    if (officialAdvertisement.tapCount < officialAdvertisement.tapCountLimit) {
+  final iCount = officialAdvertisement.impressionCount;
+  final iLimit = officialAdvertisement.impressionCountLimit;
+  if (iCount >= 0 && iLimit >= 0) {
+    if (iLimit == 0) {
+      // there is no limit
+      return true;
+    } else if (iLimit > iCount) {
+      // basic
       return true;
     } else {
-      return false;
-    }
-  } else if (officialAdvertisement.tapCountLimit >= 0 && officialAdvertisement.impressionCountLimit == 0 ) {
-    // there is tapCountLimit
-    if (officialAdvertisement.impressionCount < officialAdvertisement.impressionCountLimit ) {
-      return true;
-    } else {
+      // iCount >= 0
       return false;
     }
   } else {
-    // officialAdvertisement.tapCountLimit <= 0 && officialAdvertisement.impressionCountLimit <= 0 
     // strange
     return false;
   }
