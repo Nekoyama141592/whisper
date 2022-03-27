@@ -186,7 +186,7 @@ void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
 
 Future<void> play({ required BuildContext context ,required AudioPlayer audioPlayer, required MainModel mainModel ,required String postId ,required OfficialAdvertisementsModel officialAdsensesModel })  async {
     audioPlayer.play();
-    await officialAdsensesModel.onPlayButtonPressed(context);
+    await officialAdsensesModel.onPlayButtonPressed(context: context);
   }
 
 void pause({ required AudioPlayer audioPlayer}) {

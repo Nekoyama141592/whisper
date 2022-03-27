@@ -10,10 +10,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/voids.dart';
 // domain
 import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 import 'package:whisper/domain/official_advertisement_config/official_advertisement_config.dart';
@@ -31,7 +33,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   late OfficialAdvertisementConfig config;
   List<DocumentSnapshot<Map<String,dynamic>>> officialAdvertisementDocs = [];
 
-  Future<void> onPlayButtonPressed(BuildContext context) async {
+  Future<void> onPlayButtonPressed({ required BuildContext context}) async {
     if (!isPlayed) {
       isPlayed = true;
       final qshot = await returnOfficialAdvertisementConfigColRef.get();
@@ -61,15 +63,15 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       context: context, 
       persistent: persistent,
       duration: Duration(seconds: config.displaySeconds),
-      builder: (_, controller) {
+      builder: (innerContext, controller) {
         return Flash(
           controller: controller, 
           margin: margin,
-          backgroundColor: Theme.of(context).focusColor,
+          backgroundColor: Theme.of(innerContext).focusColor,
           behavior: FlashBehavior.fixed,
           position: FlashPosition.top,
-          borderRadius: BorderRadius.circular(8.0),
-          borderColor: Theme.of(context).highlightColor,
+          borderRadius: BorderRadius.circular(defaultPadding(context: context) / 4.0),
+          borderColor: Theme.of(innerContext).highlightColor,
           boxShadows: kElevationToShadow[8],
           forwardAnimationCurve: Curves.easeInCirc,
           reverseAnimationCurve: Curves.bounceIn,
@@ -77,13 +79,13 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
             final String link = result.link;
             await controller.dismiss();
             await FlutterClipboard.copy(link).then((_) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('リンクをコピーしました')));
+              showSnackBar(context: innerContext, text: 'リンクをコピーしました');
             });
-            await Future.delayed(Duration(milliseconds: 500));
+            await Future.delayed(Duration(milliseconds: dialogueMilliSeconds ));
             if (await canLaunch(link)) {
               await launch(link);
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは不適切です')));
+              showSnackBar(context: innerContext, text: 'このURLは不適切です');
             }
             await makeTapDoc(officialAdvertisementId: officialAdvertisementId);
           },
@@ -93,24 +95,24 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
               title: Text(
                 result.title,
                 style: TextStyle(
-                  color: Theme.of(context).scaffoldBackgroundColor
+                  color: Theme.of(innerContext).scaffoldBackgroundColor
                 ),
               ),
               content: Text(
                 result.subTitle,
                 style: TextStyle(
-                  color: Theme.of(context).scaffoldBackgroundColor
+                  color: Theme.of(innerContext).scaffoldBackgroundColor
                 ),
               ),
-              indicatorColor: Theme.of(context).primaryColor,
-              icon: Icon(Icons.info,color: Theme.of(context).primaryColor,),
+              indicatorColor: Theme.of(innerContext).primaryColor,
+              icon: Icon(Icons.info,color: Theme.of(innerContext).primaryColor,),
               primaryAction: TextButton(
                 onPressed: () => controller.dismiss(),
                 child: Text(
                   'DISMISS',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor
+                    color: Theme.of(innerContext).primaryColor
                   ),
                 ),
               ),

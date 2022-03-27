@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/components/home/constants/tab_bar_elements.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/notification_icon.dart';
 import 'package:whisper/details/whisper_drawer.dart';
@@ -32,7 +33,7 @@ class Home extends StatelessWidget {
           title: Text('Whisper'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30)
+              bottom: Radius.circular(defaultPadding(context: context))
             )
           ),
           actions: [
