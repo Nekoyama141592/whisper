@@ -4,6 +4,7 @@ import 'dart:async';
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:clipboard/clipboard.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,10 +38,10 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       if (qshot.docs.isNotEmpty) {
         config = OfficialAdvertisementConfig.fromJson(qshot.docs.first.data());
       }
-      // config = OfficialAdvertisementConfig(createdAt: Timestamp.now(), displaySeconds: 15, intervalSeconds: 20, updatedAt: Timestamp.now() );
-      await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).get().then((qshot) {
-        qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
-      });
+      config = OfficialAdvertisementConfig(createdAt: Timestamp.now(), displaySeconds: 15, intervalSeconds: 20, updatedAt: Timestamp.now() );
+      // await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).get().then((qshot) {
+      //   qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
+      // });
 
       if (officialAdvertisementDocs.isNotEmpty) {
         Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
@@ -50,7 +51,8 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
           if (canShowAdvertisement(officialAdvertisement: result)) {
             final String officialAdvertisementId = resultDoc.id;
             showTopToast(officialAdvertisement: result);
-            // await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+            await FlutterClipboard.copy(result.url);
+            await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
           }
         });
       }
@@ -62,7 +64,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       msg: officialAdvertisement.title,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kContentColorLightTheme,
       textColor: Colors.white
     );
   }
