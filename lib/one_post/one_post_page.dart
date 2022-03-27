@@ -43,9 +43,7 @@ class OnePostPage extends ConsumerWidget {
         isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
         onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
         playButtonNotifier: onePostModel.playButtonNotifier, 
-        play: () async { 
-          await voids.play(context: context, audioPlayer: onePostModel.audioPlayer, mainModel: mainModel, postId: onePostModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-        }, 
+        play: () { voids.play(audioPlayer: onePostModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
         pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); },
         isLastSongNotifier: onePostModel.isLastSongNotifier, 
         onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },

@@ -62,9 +62,7 @@ class FeedsPage extends ConsumerWidget {
             isFirstSongNotifier: mainModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); }, 
             playButtonNotifier: mainModel.playButtonNotifier, 
-            play: () async { 
-              await voids.play(context: context, audioPlayer: mainModel.audioPlayer, mainModel: mainModel, postId: mainModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-            }, 
+            play: () { voids.play(audioPlayer: mainModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
             pause: () { voids.pause(audioPlayer: mainModel.audioPlayer); }, 
             isLastSongNotifier: mainModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
@@ -82,9 +80,7 @@ class FeedsPage extends ConsumerWidget {
         seek: mainModel.seek,
         currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
         playButtonNotifier: mainModel.playButtonNotifier,
-        play: () async {
-          await voids.play(context: context, audioPlayer: mainModel.audioPlayer, mainModel: mainModel, postId: mainModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-        },
+        play: () { voids.play(audioPlayer: mainModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
         pause: () {
           voids.pause(audioPlayer: mainModel.audioPlayer);
         }, 

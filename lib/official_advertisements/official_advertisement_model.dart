@@ -21,6 +21,8 @@ import 'package:whisper/domain/official_advertisement/official_advertisement.dar
 import 'package:whisper/domain/official_advertisement_config/official_advertisement_config.dart';
 import 'package:whisper/domain/official_advertisement_impression/official_advertisement_impression.dart';
 import 'package:whisper/domain/official_advertisement_tap/official_advertisement_tap.dart';
+// main
+import 'package:whisper/main.dart';
 
 final officialAdvertisementsProvider = ChangeNotifierProvider(
   (ref) => OfficialAdvertisementsModel()
@@ -33,7 +35,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   late OfficialAdvertisementConfig config;
   List<DocumentSnapshot<Map<String,dynamic>>> officialAdvertisementDocs = [];
 
-  Future<void> onPlayButtonPressed({ required BuildContext context}) async {
+  Future<void> onPlayButtonPressed() async {
     if (!isPlayed) {
       isPlayed = true;
       final qshot = await returnOfficialAdvertisementConfigColRef.get();
@@ -43,22 +45,26 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
       await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).get().then((qshot) {
         qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
       });
-      if (officialAdvertisementDocs.isNotEmpty) {
-        Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
-          randIndex = rand.nextInt(officialAdvertisementDocs.length);
-          final resultDoc = officialAdvertisementDocs[randIndex];
-          final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
-          if (canShowAdvertisement(officialAdvertisement: result)) {
-            final String officialAdvertisementId = resultDoc.id;
-            showTopFlash(context: context, officialAdvertisementId: officialAdvertisementId,result: result, config: config,margin: EdgeInsets.all(8.0));
-            await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
-          }
-        });
-      }
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (officialAdvertisementDocs.isNotEmpty) {
+          Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
+            randIndex = rand.nextInt(officialAdvertisementDocs.length);
+            final resultDoc = officialAdvertisementDocs[randIndex];
+            final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
+            if (canShowAdvertisement(officialAdvertisement: result)) {
+              final String officialAdvertisementId = resultDoc.id;
+              showTopFlash(officialAdvertisementId: officialAdvertisementId,result: result, config: config,margin: EdgeInsets.all(8.0));
+              await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+            }
+          });
+        }
+      });
     }
   }
 
-  void showTopFlash({ required BuildContext context, required String officialAdvertisementId ,required OfficialAdvertisement result, required OfficialAdvertisementConfig config,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
+  void showTopFlash({required String officialAdvertisementId ,required OfficialAdvertisement result, required OfficialAdvertisementConfig config,bool persistent = true,EdgeInsets margin = EdgeInsets.zero}) {
+    scaffoldMessengerKey.currentState!.removeCurrentSnackBar();
+    final BuildContext context = scaffoldMessengerKey.currentContext!;
     showFlash(
       context: context, 
       persistent: persistent,

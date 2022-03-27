@@ -59,9 +59,7 @@ class RecommendersPage extends ConsumerWidget {
             isFirstSongNotifier: recommendersModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); }, 
             playButtonNotifier: recommendersModel.playButtonNotifier, 
-            play: () async { 
-              await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-            }, 
+            play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
             pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
@@ -79,9 +77,7 @@ class RecommendersPage extends ConsumerWidget {
         seek: recommendersModel.seek,
         currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier,
         playButtonNotifier: recommendersModel.playButtonNotifier,
-        play: () async {
-          await voids.play(context: context, audioPlayer: recommendersModel.audioPlayer, mainModel: mainModel, postId: recommendersModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-        },
+        play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
         pause: () {
           voids.pause(audioPlayer: recommendersModel.audioPlayer);
         }, 

@@ -44,7 +44,7 @@ Future<void> main() async {
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
 }
-
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 class MyApp extends ConsumerWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
   @override
@@ -76,30 +76,32 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mainModel = ref.watch(mainProvider);
     final whisperBottomNavigationbarModel = ref.watch(whisperBottomNavigationbarProvider);
-
-    return Scaffold(
-      body: mainModel.isLoading ?
-      Loading()
-      : PageView(
-        controller: whisperBottomNavigationbarModel.pageController,
-        onPageChanged: (index){
-          whisperBottomNavigationbarModel.onPageChanged(index);
-        },
-        children: [
-          Home(
-            mainModel: mainModel, 
-            themeModel: themeModel,
-          ),
-          SearchPage(
-            mainModel: mainModel,
-            themeModel: themeModel,
-          ),
-          WhichType(mainModel: mainModel),
-          BookmarkLabelsPage(mainModel: mainModel),
-          MyProfilePage(mainModel: mainModel),
-        ],
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        body: mainModel.isLoading ?
+        Loading()
+        : PageView(
+          controller: whisperBottomNavigationbarModel.pageController,
+          onPageChanged: (index){
+            whisperBottomNavigationbarModel.onPageChanged(index);
+          },
+          children: [
+            Home(
+              mainModel: mainModel, 
+              themeModel: themeModel,
+            ),
+            SearchPage(
+              mainModel: mainModel,
+              themeModel: themeModel,
+            ),
+            WhichType(mainModel: mainModel),
+            BookmarkLabelsPage(mainModel: mainModel),
+            MyProfilePage(mainModel: mainModel),
+          ],
+        ),
+        bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),
       ),
-      bottomNavigationBar: WhisperBottomNavigationbar(model: whisperBottomNavigationbarModel),
     );
   }
 }

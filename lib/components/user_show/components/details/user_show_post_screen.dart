@@ -92,9 +92,7 @@ class UserShowPostScreen extends ConsumerWidget {
             isFirstSongNotifier: userShowModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: userShowModel.audioPlayer); }, 
             playButtonNotifier: userShowModel.playButtonNotifier, 
-            play: () async { 
-              await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: userShowModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-            }, 
+            play: () { voids.play(audioPlayer: userShowModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
             pause: () { voids.pause(audioPlayer: userShowModel.audioPlayer); }, 
             isLastSongNotifier: userShowModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
@@ -112,9 +110,7 @@ class UserShowPostScreen extends ConsumerWidget {
         seek: userShowModel.seek,
         currentWhisperPostNotifier: userShowModel.currentWhisperPostNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
-        play: () async {
-          await voids.play(context: context, audioPlayer: userShowModel.audioPlayer, mainModel: mainModel, postId: userShowModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-        },
+        play: () { voids.play(audioPlayer: userShowModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
         pause: () {
           voids.pause(audioPlayer: userShowModel.audioPlayer);
         }, 

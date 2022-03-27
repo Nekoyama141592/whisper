@@ -93,9 +93,7 @@ class PostCards extends ConsumerWidget {
                     isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
-                    play: () async { 
-                      await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-                    }, 
+                    play: () { voids.play(audioPlayer: postSearchModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
                     pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
@@ -112,9 +110,7 @@ class PostCards extends ConsumerWidget {
                 seek: postSearchModel.seek,
                 whisperPost: whisperPost!,
                 playButtonNotifier: postSearchModel.playButtonNotifier,
-                play: () async {
-                  await voids.play(context: context, audioPlayer: postSearchModel.audioPlayer, mainModel: mainModel, postId: postSearchModel.currentWhisperPostNotifier.value!.postId, officialAdsensesModel: officialAdsensesModel);
-                },
+                play: () { voids.play(audioPlayer: postSearchModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
                 pause: () {
                   voids.pause(audioPlayer: postSearchModel.audioPlayer);
                 }, 
