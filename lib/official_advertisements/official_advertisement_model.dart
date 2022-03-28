@@ -23,7 +23,7 @@ final officialAdvertisementsProvider = ChangeNotifierProvider(
 );
 
 class OfficialAdvertisementsModel extends ChangeNotifier {
-  bool isPlayed = false;
+
   final Random rand = Random();
   int randIndex = 0;
   late OfficialAdvertisementConfig config;
@@ -32,25 +32,24 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   OfficialAdvertisementsModel() {
     init();
   }
+  
   Future<void> init() async {
-    if (!isPlayed) {
-      final configDoc = await returnOfficialAdvertisementConfigDocRef.get();
-      config = OfficialAdvertisementConfig.fromJson(configDoc.data()!);
-      final qshot = await returnOfficialAdvertisementsColRef().get();
-      officialAdvertisementDocs = qshot.docs;
-      if (officialAdvertisementDocs.isNotEmpty) {
-        Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
-          randIndex = rand.nextInt(officialAdvertisementDocs.length);
-          final resultDoc = officialAdvertisementDocs[randIndex];
-          final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
-          if (canShowAdvertisement(officialAdvertisement: result)) {
-            final String officialAdvertisementId = resultDoc.id;
-            await showTopToast(officialAdvertisement: result);
-            await FlutterClipboard.copy(result.url);
-            await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
-          }
-        });
-      }
+    final configDoc = await returnOfficialAdvertisementConfigDocRef.get();
+    config = OfficialAdvertisementConfig.fromJson(configDoc.data()!);
+    final qshot = await returnOfficialAdvertisementsColRef().get();
+    officialAdvertisementDocs = qshot.docs;
+    if (officialAdvertisementDocs.isNotEmpty) {
+      Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
+        randIndex = rand.nextInt(officialAdvertisementDocs.length);
+        final resultDoc = officialAdvertisementDocs[randIndex];
+        final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
+        if (canShowAdvertisement(officialAdvertisement: result)) {
+          final String officialAdvertisementId = resultDoc.id;
+          await showTopToast(officialAdvertisement: result);
+          await FlutterClipboard.copy(result.url);
+          await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+        }
+      });
     }
   }
 
