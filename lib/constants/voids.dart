@@ -456,7 +456,7 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
         whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
           child: Text(whisperLink.label,style: textStyle(context: context),),
           onPressed: () {
-            showLinkDialogue(context: context, link: whisperLink.link );
+            showLinkDialogue(context: context, link: whisperLink.url );
           }, 
         ) ).toList();
         actions.add(CupertinoActionSheetAction(
@@ -471,7 +471,7 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
 }
 
 void onAddLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisperLinksNotifier }) async {
-  final WhisperLink whisperLink = WhisperLink(description: '',imageURL: '',label: '',link: '');
+  final WhisperLink whisperLink = WhisperLink(description: '',imageURL: '',label: '',url: '');
   List<WhisperLink> x = whisperLinksNotifier.value;
   x.add(whisperLink);
   whisperLinksNotifier.value = x.map((e) => e).toList();

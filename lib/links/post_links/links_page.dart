@@ -55,7 +55,7 @@ class LinksPage extends StatelessWidget {
                     itemBuilder: (BuildContext context, int i) {
                       final whisperLink = whisperLinks[i];
                       final TextEditingController labelEditingController = TextEditingController(text: whisperLink.label );
-                      final TextEditingController linkEditingController = TextEditingController(text: whisperLink.link);
+                      final TextEditingController linkEditingController = TextEditingController(text: whisperLink.url);
                       return Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: defaultPadding(context: context)
@@ -86,7 +86,7 @@ class LinksPage extends StatelessWidget {
                               ),
                               controller: linkEditingController,
                               onChanged: (text) {
-                                whisperLink.link = text;
+                                whisperLink.url = text;
                               },
                             ),
                           ],
