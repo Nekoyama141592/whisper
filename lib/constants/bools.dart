@@ -73,19 +73,23 @@ bool isImageExist({ required Post post }) {
 bool canShowAdvertisement({ required OfficialAdvertisement officialAdvertisement }) {
   final iCount = officialAdvertisement.impressionCount;
   final iLimit = officialAdvertisement.impressionCountLimit;
-  if (iCount >= 0 && iLimit >= 0) {
-    if (iLimit == 0) {
-      // there is no limit
-      return true;
-    } else if (iLimit > iCount) {
-      // basic
-      return true;
+  if (firebaseAuthCurrentUser == null) {
+    return false;
+  } else {
+    if (iCount >= 0 && iLimit >= 0) {
+      if (iLimit == 0) {
+        // there is no limit
+        return true;
+      } else if (iLimit > iCount) {
+        // basic
+        return true;
+      } else {
+        // iCount >= 0
+        return false;
+      }
     } else {
-      // iCount >= 0
+      // strange
       return false;
     }
-  } else {
-    // strange
-    return false;
   }
 }
