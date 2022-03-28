@@ -66,7 +66,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   }
 
   Future<void> makeImpressionDoc({ required String officialAdvertisementId }) async {
-    final String uid = firebaseAuthCurrentUser!.uid;
+    final String uid = firebaseAuthCurrentUser()!.uid;
     final OfficialAdvertisementImpression officialAdvertisementImpression = OfficialAdvertisementImpression(createdAt: Timestamp.now(), uid: uid,officialAdvertisementId: officialAdvertisementId );
     final String officialAdvertisementImpressionId = returnOfficialAdvertisementImpressionId(uid: uid );
     await returnOfficialAdvertisementImpressionDocRef(officialAdvertisementId: officialAdvertisementId, officialAdvertisementImpressionId: officialAdvertisementImpressionId).set(officialAdvertisementImpression.toJson());

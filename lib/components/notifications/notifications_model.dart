@@ -27,8 +27,8 @@ class NotificationsModel extends ChangeNotifier {
   bool isLoading = false;
   // notifications
   List<DocumentSnapshot<Map<String,dynamic>>> notifications = [];
-  Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
-  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser!.uid).where(isReadFieldKey,isEqualTo: false);
+  Stream<QuerySnapshot<Map<String, dynamic>>> notificationStream = returnNotificationsColRef(uid: firebaseAuthCurrentUser()!.uid).where(isReadFieldKey,isEqualTo: false).limit(oneTimeReadCount).snapshots();
+  final query = returnNotificationsColRef(uid: firebaseAuthCurrentUser()!.uid).where(isReadFieldKey,isEqualTo: false);
   // refresh
   RefreshController commentRefreshController = RefreshController(initialRefresh: false);
   RefreshController replyRefreshController = RefreshController(initialRefresh: false);
@@ -102,7 +102,7 @@ class NotificationsModel extends ChangeNotifier {
       voids.showSnackBar(context: context, text: '元の投稿が削除されています');
     }
     notifyListeners();
-    await returnNotificationDocRef(uid: firebaseAuthCurrentUser!.uid, notificationId: commentNotification.notificationId ).update(commentNotification.toJson());
+    await returnNotificationDocRef(uid: firebaseAuthCurrentUser()!.uid, notificationId: commentNotification.notificationId ).update(commentNotification.toJson());
   }
 
   Future<void> onReplyNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  ReplyNotification replyNotification }) async {
@@ -123,7 +123,7 @@ class NotificationsModel extends ChangeNotifier {
       voids.showSnackBar(context: context, text: '元の投稿が削除されています');
     }
     notifyListeners();
-    await returnNotificationDocRef(uid: firebaseAuthCurrentUser!.uid, notificationId: replyNotification.notificationId ).update(replyNotification.toJson());
+    await returnNotificationDocRef(uid: firebaseAuthCurrentUser()!.uid, notificationId: replyNotification.notificationId ).update(replyNotification.toJson());
   }
 
 }

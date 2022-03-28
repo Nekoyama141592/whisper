@@ -40,7 +40,7 @@ class MyProfileModel extends ChangeNotifier {
   final PostType postType = PostType.myProfile;
   SortState sortState = SortState.byNewestFirst;
   Query<Map<String, dynamic>> getQuery () {
-    final basicQuery = returnPostsColRef(postCreatorUid: firebaseAuthCurrentUser!.uid).limit(oneTimeReadCount);
+    final basicQuery = returnPostsColRef(postCreatorUid: firebaseAuthCurrentUser()!.uid).limit(oneTimeReadCount);
     switch(sortState) {
       case SortState.byLikedUidCount:
         final x = basicQuery.orderBy(likeCountFieldKey,descending: true);

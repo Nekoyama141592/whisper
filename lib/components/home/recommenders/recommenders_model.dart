@@ -109,7 +109,7 @@ class RecommendersModel extends ChangeNotifier {
   Future<void> distributeTokens() async {
     final List<TokenType> userTokenTypes = [TokenType.readPost,TokenType.blockUser,TokenType.muteUser,TokenType.mutePost];
     final List<String> tokenTypeStrings = userTokenTypes.map((e) => returnTokenTypeString(tokenType: e) ).toList();
-    final qshot = await returnTokensColRef(uid: firebaseAuthCurrentUser!.uid).where(tokenTypeFieldKey,whereIn: tokenTypeStrings).get();
+    final qshot = await returnTokensColRef(uid: firebaseAuthCurrentUser()!.uid).where(tokenTypeFieldKey,whereIn: tokenTypeStrings).get();
     qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final Map<String,dynamic> tokenMap = doc.data()!;
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap );
