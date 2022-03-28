@@ -52,12 +52,13 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   }
 
   void showTopToast({ required OfficialAdvertisement officialAdvertisement }) {
+    final bColor = Color.fromRGBO(officialAdvertisement.backgroundRed, officialAdvertisement.backgroundGreen, officialAdvertisement.backgroundBlue, officialAdvertisement.backgroundOpacity);
     Fluttertoast.showToast(
       msg: officialAdvertisement.title,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
-      backgroundColor: kContentColorLightTheme,
-      textColor: Colors.white
+      backgroundColor: bColor,
+      textColor: officialAdvertisement.isWhiteText ? Colors.white : Colors.black
     );
   }
 
