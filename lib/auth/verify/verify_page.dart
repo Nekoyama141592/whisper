@@ -51,8 +51,7 @@ class VerifyPage extends ConsumerWidget {
                 widthRate: 0.95, 
                 fontSize: defaultHeaderTextSize(context: context),
                 press: () async {
-                  await verifyModel.setTimer(context);
-                  await verifyModel.checkEmailVerified(context);
+                  await verifyModel.onButtonPressed(context: context);
                 }, 
                 textColor: Colors.white,
                 buttonColor: Theme.of(context).highlightColor,
