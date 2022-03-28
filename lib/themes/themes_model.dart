@@ -19,6 +19,7 @@ class ThemeModel extends ChangeNotifier {
   }
 
   void init() async {
+    // theme
     preferences = await SharedPreferences.getInstance();
     isDarkTheme = preferences.getBool(isDarkThemePrefsKey) ?? true;
     notifyListeners();

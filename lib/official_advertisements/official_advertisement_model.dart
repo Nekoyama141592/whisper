@@ -34,7 +34,6 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   }
   Future<void> init() async {
     if (!isPlayed) {
-      isPlayed = true;
       final configDoc = await returnOfficialAdvertisementConfigDocRef.get();
       config = OfficialAdvertisementConfig.fromJson(configDoc.data()!);
       final qshot = await returnOfficialAdvertisementsColRef().get();

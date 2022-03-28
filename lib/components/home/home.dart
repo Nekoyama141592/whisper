@@ -29,7 +29,7 @@ class Home extends ConsumerWidget {
 
   @override  
   Widget build(BuildContext context,WidgetRef ref ) {
-    final OfficialAdvertisementsModel officialAdvertisementsModel = ref.watch(officialAdvertisementsProvider);
+    ref.watch(officialAdvertisementsProvider);
     return DefaultTabController(
       length: tabBarElements.length, 
       child: Scaffold(
