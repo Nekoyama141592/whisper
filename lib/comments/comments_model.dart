@@ -123,6 +123,7 @@ class CommentsModel extends ChangeNotifier {
     final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final WhisperPostComment whisperComment = WhisperPostComment.fromJson(commentMap);
     await returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
+    await voids.createUserMetaUpdateLog(mainModel: mainModel);
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
       final Timestamp now = Timestamp.now();

@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 // packages
 import 'package:flash/flash.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,9 +25,11 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/user_update_log/user_update_log.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
+import 'package:whisper/domain/user_update_log/user_update_log.dart';
+import 'package:whisper/domain/user_meta_update_log/user_meta_update_log.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -511,3 +514,17 @@ Future<void> defaultLaungh({ required BuildContext context,required String url }
     showSnackBar(context: context, text: '無効なURLです' );
   }
 }
+
+Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
+    final UserMeta userMeta = mainModel.userMeta;
+    final ipv6 =  await Ipify.ipv64();
+    final UserMetaUpdateLog userMetaUpdateLog = UserMetaUpdateLog(
+      birthDay: userMeta.birthDay, 
+      gender: userMeta.gender, 
+      ipv6: ipv6, 
+      language: userMeta.language,
+      uid: userMeta.uid, 
+      updatedAt: Timestamp.now()
+    );
+    await returnUserMetaUpdateLogDocRef(uid: userMeta.uid, userMetaUpdateLogId: generateUserMetaUpdateLogId() ).set(userMetaUpdateLog.toJson());
+  }

@@ -230,6 +230,7 @@ class RepliesModel extends ChangeNotifier {
     final String postCommentReplyId = generatePostCommentReplyId(uid: mainModel.userMeta.uid);
     final WhisperReply newWhisperReply = makeWhisperReply(postCommentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
     await returnPostCommentReplyDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: postCommentReplyId ).set(newWhisperReply.toJson());
+    await voids.createUserMetaUpdateLog(mainModel: mainModel);
     // notification
     if (whisperComment.uid != currentWhisperUser.uid) {
       await makeReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
