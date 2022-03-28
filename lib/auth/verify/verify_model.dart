@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 
@@ -26,7 +27,7 @@ class VerifyModel extends ChangeNotifier {
   }
 
   void setCurrentUser() {
-    currentUser = FirebaseAuth.instance.currentUser;
+    currentUser = firebaseAuthCurrentUser();
   }
 
   Future  setTimer(context) async {
