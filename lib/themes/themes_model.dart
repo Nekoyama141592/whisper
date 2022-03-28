@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 // domain
@@ -68,13 +69,16 @@ class ThemeModel extends ChangeNotifier {
   }
   // ad
   Future<void> showTopToast({ required OfficialAdvertisement officialAdvertisement }) async {
-    final bColor = Color.fromRGBO(officialAdvertisement.backgroundRed, officialAdvertisement.backgroundGreen, officialAdvertisement.backgroundBlue, officialAdvertisement.backgroundOpacity);
+    final backGroundColorLightTheme = hexStringToColor(hexString: officialAdvertisement.backGroundHex16LightTheme).withOpacity(officialAdvertisement.backGroundOpacity);
+    final textColorLightTheme = hexStringToColor(hexString: officialAdvertisement.textHex16LightTheme).withOpacity(officialAdvertisement.textOpacity);
+    final backGroundColorDarkTheme = hexStringToColor(hexString: officialAdvertisement.backGroundHex16DarkTheme).withOpacity(officialAdvertisement.backGroundOpacity);
+    final textColorDarkTheme = hexStringToColor(hexString: officialAdvertisement.textHex16DarkTheme).withOpacity(officialAdvertisement.textOpacity);
     await Fluttertoast.showToast(
       msg: officialAdvertisement.title,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
-      backgroundColor: bColor,
-      textColor: officialAdvertisement.isWhiteText ? Colors.white : Colors.black
+      backgroundColor: isDarkTheme ? backGroundColorDarkTheme : backGroundColorLightTheme,
+      textColor: isDarkTheme ? textColorDarkTheme : textColorLightTheme
     );
   }
 
