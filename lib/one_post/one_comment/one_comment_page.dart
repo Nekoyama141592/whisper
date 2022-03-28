@@ -16,7 +16,6 @@ import 'package:whisper/one_post/one_post_model.dart';
 import 'package:whisper/replies/replys_model.dart';
 import 'package:whisper/comments/comments_model.dart';
 import 'package:whisper/one_post/one_comment/one_comment_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
@@ -32,13 +31,12 @@ class OneCommentPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     
-    final editPostInfoModel = ref.watch(editPostInfoProvider); 
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider); 
     final OneCommentModel oneCommentModel = ref.watch(oneCommentProvider);
     final CommentsModel commentsModel = ref.watch(commentsProvider);
     final RepliesModel replysModel = ref.watch(repliesProvider);
     final OnePostModel onePostModel = ref.watch(onePostProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
-    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
 
     return Scaffold(
       body: oneCommentModel.isLoading ?
@@ -66,7 +64,7 @@ class OneCommentPage extends ConsumerWidget {
                     isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
                     playButtonNotifier: onePostModel.playButtonNotifier, 
-                    play: () { voids.play(audioPlayer: onePostModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+                    play: () { voids.play(audioPlayer: onePostModel.audioPlayer); }, 
                     pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                     isLastSongNotifier: onePostModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
@@ -84,7 +82,7 @@ class OneCommentPage extends ConsumerWidget {
                 seek: onePostModel.seek, 
                 whisperPost: onePostModel.currentWhisperPostNotifier.value!, 
                 playButtonNotifier: onePostModel.playButtonNotifier, 
-                play: () { voids.play(audioPlayer: onePostModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+                play: () { voids.play(audioPlayer: onePostModel.audioPlayer); }, 
                 pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
                 isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
                 onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 

@@ -16,7 +16,6 @@ import 'package:whisper/components/user_show/components/details/post_cards.dart'
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/user_show_model.dart';
 import 'package:whisper/comments/comments_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 class UserShowPostScreen extends ConsumerWidget {
@@ -33,9 +32,8 @@ class UserShowPostScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {
 
-    final editPostInfoModel = ref.watch(editPostInfoProvider);
-    final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
+    final CommentsModel commentsModel = ref.watch(commentsProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
 
@@ -92,7 +90,7 @@ class UserShowPostScreen extends ConsumerWidget {
             isFirstSongNotifier: userShowModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: userShowModel.audioPlayer); }, 
             playButtonNotifier: userShowModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: userShowModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+            play: () { voids.play(audioPlayer: userShowModel.audioPlayer); }, 
             pause: () { voids.pause(audioPlayer: userShowModel.audioPlayer); }, 
             isLastSongNotifier: userShowModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: userShowModel.audioPlayer); },
@@ -110,7 +108,7 @@ class UserShowPostScreen extends ConsumerWidget {
         seek: userShowModel.seek,
         currentWhisperPostNotifier: userShowModel.currentWhisperPostNotifier,
         playButtonNotifier: userShowModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: userShowModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+        play: () { voids.play(audioPlayer: userShowModel.audioPlayer); }, 
         pause: () {
           voids.pause(audioPlayer: userShowModel.audioPlayer);
         }, 

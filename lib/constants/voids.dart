@@ -36,7 +36,6 @@ import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
  
@@ -187,9 +186,8 @@ void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
   audioPlayer.seekToNext();
 }
 
-void play({required AudioPlayer audioPlayer,required OfficialAdvertisementsModel officialAdvertisement })  async {
+void play({required AudioPlayer audioPlayer})  async {
     audioPlayer.play();
-    await officialAdvertisement.onPlayButtonPressed();
   }
 
 void pause({ required AudioPlayer audioPlayer}) {

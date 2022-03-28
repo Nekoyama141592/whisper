@@ -16,7 +16,6 @@ import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
@@ -39,9 +38,8 @@ class PostCards extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, WidgetRef ref) {
     
-    final editPostInfoModel = ref.watch(editPostInfoProvider);
-    final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider);
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
+    final CommentsModel commentsModel = ref.watch(commentsProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
 
@@ -93,7 +91,7 @@ class PostCards extends ConsumerWidget {
                     isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
                     onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
-                    play: () { voids.play(audioPlayer: postSearchModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+                    play: () { voids.play(audioPlayer: postSearchModel.audioPlayer); }, 
                     pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
                     onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
@@ -110,7 +108,7 @@ class PostCards extends ConsumerWidget {
                 seek: postSearchModel.seek,
                 whisperPost: whisperPost!,
                 playButtonNotifier: postSearchModel.playButtonNotifier,
-                play: () { voids.play(audioPlayer: postSearchModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+                play: () { voids.play(audioPlayer: postSearchModel.audioPlayer); }, 
                 pause: () {
                   voids.pause(audioPlayer: postSearchModel.audioPlayer);
                 }, 

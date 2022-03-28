@@ -29,7 +29,10 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   late OfficialAdvertisementConfig config;
   List<DocumentSnapshot<Map<String,dynamic>>> officialAdvertisementDocs = [];
   
-  Future<void> onPlayButtonPressed() async {
+  OfficialAdvertisementsModel() {
+    init();
+  }
+  Future<void> init() async {
     if (!isPlayed) {
       isPlayed = true;
       final configDoc = await returnOfficialAdvertisementConfigDocRef.get();

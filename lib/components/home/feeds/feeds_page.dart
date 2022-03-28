@@ -13,7 +13,6 @@ import 'package:whisper/components/home/feeds/components/post_cards.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
@@ -22,11 +21,9 @@ class FeedsPage extends ConsumerWidget {
   const FeedsPage({
     Key? key,
     required this.mainModel,
-    required this.officialAdvertisementsModel
   }) : super(key: key);
 
   final MainModel mainModel;
-  final OfficialAdvertisementsModel officialAdvertisementsModel;
 
   @override
   
@@ -63,7 +60,7 @@ class FeedsPage extends ConsumerWidget {
             isFirstSongNotifier: mainModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); }, 
             playButtonNotifier: mainModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: mainModel.audioPlayer,officialAdvertisement: officialAdvertisementsModel ); }, 
+            play: () { voids.play(audioPlayer: mainModel.audioPlayer); }, 
             pause: () { voids.pause(audioPlayer: mainModel.audioPlayer); }, 
             isLastSongNotifier: mainModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
@@ -81,7 +78,7 @@ class FeedsPage extends ConsumerWidget {
         seek: mainModel.seek,
         currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
         playButtonNotifier: mainModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: mainModel.audioPlayer,officialAdvertisement: officialAdvertisementsModel ); }, 
+        play: () { voids.play(audioPlayer: mainModel.audioPlayer); }, 
         pause: () {
           voids.pause(audioPlayer: mainModel.audioPlayer);
         }, 

@@ -15,7 +15,6 @@ import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class RecommendersPage extends ConsumerWidget {
@@ -23,11 +22,9 @@ class RecommendersPage extends ConsumerWidget {
   const RecommendersPage({
     Key? key,
     required this.mainModel,
-    required this.officialAdvertisementsModel
   }) : super(key: key);
   
   final MainModel mainModel;
-  final OfficialAdvertisementsModel officialAdvertisementsModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,7 +57,7 @@ class RecommendersPage extends ConsumerWidget {
             isFirstSongNotifier: recommendersModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); }, 
             playButtonNotifier: recommendersModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdvertisementsModel ); }, 
+            play: () { voids.play(audioPlayer: recommendersModel.audioPlayer); }, 
             pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
@@ -78,7 +75,7 @@ class RecommendersPage extends ConsumerWidget {
         seek: recommendersModel.seek,
         currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier,
         playButtonNotifier: recommendersModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdvertisementsModel ); }, 
+        play: () { voids.play(audioPlayer: recommendersModel.audioPlayer); }, 
         pause: () {
           voids.pause(audioPlayer: recommendersModel.audioPlayer);
         }, 

@@ -14,7 +14,6 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 import 'package:whisper/comments/comments_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
@@ -33,9 +32,8 @@ class PostScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {
 
-    final editPostInfoModel = ref.watch(editPostInfoProvider); 
-    final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider); 
+    final CommentsModel commentsModel = ref.watch(commentsProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
 
@@ -88,7 +86,7 @@ class PostScreen extends ConsumerWidget {
             isFirstSongNotifier: bookmarksModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); }, 
             playButtonNotifier: bookmarksModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: bookmarksModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+            play: () { voids.play(audioPlayer: bookmarksModel.audioPlayer); }, 
             pause: () { voids.pause(audioPlayer: bookmarksModel.audioPlayer); }, 
             isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
@@ -106,7 +104,7 @@ class PostScreen extends ConsumerWidget {
         seek: bookmarksModel.seek,
         currentWhisperPostNotifier: bookmarksModel.currentWhisperPostNotifier,
         playButtonNotifier: bookmarksModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: bookmarksModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+        play: () { voids.play(audioPlayer: bookmarksModel.audioPlayer); }, 
         pause: () {
           voids.pause(audioPlayer: bookmarksModel.audioPlayer);
         }, 

@@ -14,12 +14,11 @@ import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/components/user_show/components/details/post_cards.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/my_profile/my_profile_model.dart';
 import 'package:whisper/comments/comments_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
+import 'package:whisper/components/my_profile/my_profile_model.dart';
 import 'package:whisper/posts/components/post_buttons/post_futures.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
+import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
 class MyProfilePostScreen extends ConsumerWidget {
   
@@ -34,11 +33,11 @@ class MyProfilePostScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
-    final editPostInfoModel = ref.watch(editPostInfoProvider);
-    final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
+    final CommentsModel commentsModel = ref.watch(commentsProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
+    
     final isLoading = myProfileModel.isLoading;
     final postDocs = myProfileModel.posts;
 
@@ -94,7 +93,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             isFirstSongNotifier: myProfileModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); }, 
             playButtonNotifier: myProfileModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: myProfileModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+            play: () { voids.play(audioPlayer: myProfileModel.audioPlayer); }, 
             pause: () { voids.pause(audioPlayer: myProfileModel.audioPlayer); }, 
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer); },
@@ -112,7 +111,7 @@ class MyProfilePostScreen extends ConsumerWidget {
         seek: myProfileModel.seek,
         currentWhisperPostNotifier: myProfileModel.currentWhisperPostNotifier,
         playButtonNotifier: myProfileModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: myProfileModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+        play: () { voids.play(audioPlayer: myProfileModel.audioPlayer); }, 
         pause: () {
           voids.pause(audioPlayer: myProfileModel.audioPlayer);
         }, 
