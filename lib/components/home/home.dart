@@ -14,7 +14,6 @@ import 'package:whisper/components/home/recommenders/recommenders_page.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
-import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 
 class Home extends ConsumerWidget {
 
@@ -27,9 +26,9 @@ class Home extends ConsumerWidget {
   final MainModel mainModel;
   final ThemeModel themeModel;
 
-  @override  
+  @override
   Widget build(BuildContext context,WidgetRef ref ) {
-    ref.watch(officialAdvertisementsProvider);
+
     return DefaultTabController(
       length: tabBarElements.length, 
       child: Scaffold(
