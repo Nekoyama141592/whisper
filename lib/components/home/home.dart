@@ -1,8 +1,10 @@
 // material
 import 'package:flutter/material.dart';
+// packages
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/components/home/constants/tab_bar_elements.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/components/home/constants/tab_bar_elements.dart';
 // components
 import 'package:whisper/details/notification_icon.dart';
 import 'package:whisper/details/whisper_drawer.dart';
@@ -12,8 +14,9 @@ import 'package:whisper/components/home/recommenders/recommenders_page.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
+import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 
-class Home extends StatelessWidget {
+class Home extends ConsumerWidget {
 
   const Home({
     Key? key,
@@ -25,7 +28,8 @@ class Home extends StatelessWidget {
   final ThemeModel themeModel;
 
   @override  
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref ) {
+    final OfficialAdvertisementsModel officialAdvertisementsModel = ref.watch(officialAdvertisementsProvider);
     return DefaultTabController(
       length: tabBarElements.length, 
       child: Scaffold(
@@ -58,8 +62,8 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FeedsPage(mainModel: mainModel),
-            RecommendersPage(mainModel: mainModel)
+            FeedsPage(mainModel: mainModel,officialAdvertisementsModel: officialAdvertisementsModel, ),
+            RecommendersPage(mainModel: mainModel,officialAdvertisementsModel: officialAdvertisementsModel, )
           ],
         ),
         

@@ -10,11 +10,11 @@ import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/components/home/recommenders/components/post_cards.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
-import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 // model
 import 'recommenders_model.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 import 'package:whisper/official_advertisements/official_advertisement_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
 
@@ -22,17 +22,18 @@ class RecommendersPage extends ConsumerWidget {
   
   const RecommendersPage({
     Key? key,
-    required this.mainModel
+    required this.mainModel,
+    required this.officialAdvertisementsModel
   }) : super(key: key);
   
   final MainModel mainModel;
+  final OfficialAdvertisementsModel officialAdvertisementsModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recommendersModel = ref.watch(recommendersProvider);
-    final commentsModel = ref.watch(commentsProvider);
-    final officialAdsensesModel = ref.watch(officialAdvertisementsProvider); 
-    final editPostInfoModel = ref.watch(editPostInfoProvider);
+    final RecommendersModel recommendersModel = ref.watch(recommendersProvider);
+    final CommentsModel commentsModel = ref.watch(commentsProvider);
+    final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
     final PostFutures postFutures = ref.watch(postsFeaturesProvider);
 
@@ -59,7 +60,7 @@ class RecommendersPage extends ConsumerWidget {
             isFirstSongNotifier: recommendersModel.isFirstSongNotifier, 
             onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); }, 
             playButtonNotifier: recommendersModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+            play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdvertisementsModel ); }, 
             pause: () { voids.pause(audioPlayer: recommendersModel.audioPlayer); }, 
             isLastSongNotifier: recommendersModel.isLastSongNotifier, 
             onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer); },
@@ -77,7 +78,7 @@ class RecommendersPage extends ConsumerWidget {
         seek: recommendersModel.seek,
         currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier,
         playButtonNotifier: recommendersModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdsensesModel); }, 
+        play: () { voids.play(audioPlayer: recommendersModel.audioPlayer,officialAdvertisement: officialAdvertisementsModel ); }, 
         pause: () {
           voids.pause(audioPlayer: recommendersModel.audioPlayer);
         }, 
