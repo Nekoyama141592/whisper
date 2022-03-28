@@ -30,10 +30,6 @@ String returnOfficialAdvertisementImpressionId({ required String uid }) {
   return 'officialAdvertisementImpression' + hyphenString + uid + hyphenString + returnUuid4();
 }
 
-String returnOfficialAdvertisementTapId({ required String uid }) {
-  return 'officialAdvertisementTap' + hyphenString + uid + hyphenString + returnUuid4();
-}
-
 String returnUuid4() {
   return Uuid().v4();
 }
@@ -122,7 +118,6 @@ const String postCommentRepliesColRefName = 'postCommentReplies';
 const String postCommentReplyLikesColRefName = 'postCommentReplyLikes';
 const String officialAdvertisementsColRefName = 'officialAdvertisements';
 const String officialAdvertisementImperssionsColRefName = 'officialAdvertisementImpressions';
-const String officialAdvertisementTapsColRefName = 'officialAdvertisementTaps';
 const String officialAdvertisementConfigColRefName = 'officialAdvertisementConfig';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';

@@ -17,7 +17,6 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 import 'package:whisper/domain/official_advertisement_config/official_advertisement_config.dart';
 import 'package:whisper/domain/official_advertisement_impression/official_advertisement_impression.dart';
-import 'package:whisper/domain/official_advertisement_tap/official_advertisement_tap.dart';
 
 final officialAdvertisementsProvider = ChangeNotifierProvider(
   (ref) => OfficialAdvertisementsModel()
@@ -74,11 +73,5 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
     final OfficialAdvertisementImpression officialAdvertisementImpression = OfficialAdvertisementImpression(createdAt: Timestamp.now(), uid: uid,officialAdvertisementId: officialAdvertisementId );
     final String officialAdvertisementImpressionId = returnOfficialAdvertisementImpressionId(uid: uid );
     await returnOfficialAdvertisementImpressionDocRef(officialAdvertisementId: officialAdvertisementId, officialAdvertisementImpressionId: officialAdvertisementImpressionId).set(officialAdvertisementImpression.toJson());
-  }
-  Future<void> makeTapDoc({ required String officialAdvertisementId }) async {
-    final String uid = firebaseAuthCurrentUser!.uid;
-    final OfficialAdvertisementTap officialAdvertisementTap = OfficialAdvertisementTap(createdAt: Timestamp.now(), uid: uid,officialAdvertisementId: officialAdvertisementId );
-    final String officialAdvertisementTapId = returnOfficialAdvertisementTapId(uid: uid);
-    await returnOfficialAdvertisementTapDocRef(officialAdvertisementId: officialAdvertisementId, officialAdvertisementTapId: officialAdvertisementTapId).set(officialAdvertisementTap.toJson());
   }
 }
