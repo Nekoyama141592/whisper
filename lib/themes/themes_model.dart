@@ -88,4 +88,5 @@ class ThemeModel extends ChangeNotifier {
     final String officialAdvertisementImpressionId = returnOfficialAdvertisementImpressionId(uid: uid );
     await returnOfficialAdvertisementImpressionDocRef(officialAdvertisementId: officialAdvertisementId, officialAdvertisementImpressionId: officialAdvertisementImpressionId).set(officialAdvertisementImpression.toJson());
   }
+
 }
