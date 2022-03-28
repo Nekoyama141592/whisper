@@ -73,7 +73,7 @@ bool isImageExist({ required Post post }) {
 bool canShowAdvertisement({ required OfficialAdvertisement officialAdvertisement }) {
   final iCount = officialAdvertisement.impressionCount;
   final iLimit = officialAdvertisement.impressionCountLimit;
-  if (firebaseAuthCurrentUser == null) {
+  if (firebaseAuthCurrentUser() == null) {
     return false;
   } else {
     if (iCount >= 0 && iLimit >= 0) {

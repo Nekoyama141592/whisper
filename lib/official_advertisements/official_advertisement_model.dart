@@ -45,7 +45,7 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
           final OfficialAdvertisement result = OfficialAdvertisement.fromJson(resultDoc.data()!);
           if (canShowAdvertisement(officialAdvertisement: result)) {
             final String officialAdvertisementId = resultDoc.id;
-            showTopToast(officialAdvertisement: result);
+            await showTopToast(officialAdvertisement: result);
             await FlutterClipboard.copy(result.url);
             await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
           }
@@ -54,9 +54,9 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
     }
   }
 
-  void showTopToast({ required OfficialAdvertisement officialAdvertisement }) {
+  Future<void> showTopToast({ required OfficialAdvertisement officialAdvertisement }) async {
     final bColor = Color.fromRGBO(officialAdvertisement.backgroundRed, officialAdvertisement.backgroundGreen, officialAdvertisement.backgroundBlue, officialAdvertisement.backgroundOpacity);
-    Fluttertoast.showToast(
+    await Fluttertoast.showToast(
       msg: officialAdvertisement.title,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
