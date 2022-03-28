@@ -24,7 +24,6 @@ final officialAdvertisementsProvider = ChangeNotifierProvider(
 
 class OfficialAdvertisementsModel extends ChangeNotifier {
   bool isPlayed = false;
-  bool isShowing = false;
   final Random rand = Random();
   int randIndex = 0;
   late OfficialAdvertisementConfig config;
