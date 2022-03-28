@@ -173,3 +173,5 @@ const String mutePostCommentMsg = 'このコメントをミュートしました
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';
 const String okMsg = 'OK';
 const String cancelMsg = 'Cancel';
+// Id
+const String configIdString = 'config';

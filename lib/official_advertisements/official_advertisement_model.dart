@@ -33,15 +33,8 @@ class OfficialAdvertisementsModel extends ChangeNotifier {
   Future<void> onPlayButtonPressed() async {
     if (!isPlayed) {
       isPlayed = true;
-      final qshot = await returnOfficialAdvertisementConfigColRef.get();
-      if (qshot.docs.isNotEmpty) {
-        config = OfficialAdvertisementConfig.fromJson(qshot.docs.first.data());
-      }
-      config = OfficialAdvertisementConfig(createdAt: Timestamp.now(), displaySeconds: 15, intervalSeconds: 20, updatedAt: Timestamp.now() );
-      // await FirebaseFirestore.instance.collection(officialAdvertisementsFieldKey).orderBy(createdAtFieldKey,descending: true).get().then((qshot) {
-      //   qshot.docs.forEach((doc) { officialAdvertisementDocs.add(doc); } );
-      // });
-
+      final configDoc = await returnOfficialAdvertisementConfigDocRef.get();
+      config = OfficialAdvertisementConfig.fromJson(configDoc.data()!);
       if (officialAdvertisementDocs.isNotEmpty) {
         Timer.periodic(Duration(seconds: config.intervalSeconds), (_) async {
           randIndex = rand.nextInt(officialAdvertisementDocs.length);
