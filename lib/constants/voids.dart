@@ -516,8 +516,10 @@ Future<void> defaultLaungh({ required BuildContext context,required String url }
 Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
     final UserMeta userMeta = mainModel.userMeta;
     final ipv6 =  await Ipify.ipv64();
+    final currentUser = firebaseAuthCurrentUser();
     final UserMetaUpdateLog userMetaUpdateLog = UserMetaUpdateLog(
-      birthDay: userMeta.birthDay, 
+      birthDay: userMeta.birthDay,
+      email: currentUser == null ? userMeta.email : currentUser.email! ,
       gender: userMeta.gender, 
       ipv6: ipv6, 
       language: userMeta.language,

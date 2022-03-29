@@ -7,6 +7,7 @@ part 'user_meta_update_log.g.dart';
 class UserMetaUpdateLog {
   UserMetaUpdateLog({
     required this.birthDay,
+    required this.email,
     required this.gender,
     required this.ipv6,
     required this.language,
@@ -14,6 +15,7 @@ class UserMetaUpdateLog {
     required this.updatedAt,
   });
   final dynamic birthDay;
+  final String email;
   final String gender;
   final String ipv6;
   final String language;

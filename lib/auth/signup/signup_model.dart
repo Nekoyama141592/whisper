@@ -170,6 +170,7 @@ class SignupModel extends ChangeNotifier {
     final UserMeta userMeta = UserMeta(
       birthDay: timestampBirthDay,
       createdAt: now,
+      email: email,
       gender: gender, 
       isDelete: false,
       isSuspended: false,

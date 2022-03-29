@@ -8,6 +8,7 @@ class UserMeta {
   UserMeta({
     required this.birthDay,
     required this.createdAt,
+    required this.email,
     required this.gender,
     required this.isDelete,
     required this.isSuspended,
@@ -20,6 +21,7 @@ class UserMeta {
 
   dynamic birthDay;
   dynamic createdAt;
+  final String email;
   String gender;
   String ipv6;
   bool isDelete;
