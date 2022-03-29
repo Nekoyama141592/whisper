@@ -37,12 +37,12 @@ ThemeData lightThemeData(BuildContext context) {
 
 ThemeData darkThemeData(BuildContext context){
   return ThemeData.dark().copyWith(
-    primaryColor: kTertiaryColor,
-    highlightColor: kPrimaryColor,
+    primaryColor: kTertiaryColor.withOpacity(0.87),
+    highlightColor: kPrimaryColor.withOpacity(0.87),
     focusColor: Colors.white,
-    scaffoldBackgroundColor: kContentColorLightTheme,
+    scaffoldBackgroundColor: kContentColorLightTheme.withOpacity(0.87),
     // appBarTheme: AppBar
-    appBarTheme: AppBarTheme(color: kTertiaryColor),
+    appBarTheme: AppBarTheme(color: kTertiaryColor.withOpacity(0.87)),
     iconTheme: IconThemeData(color: kContentColorDarkTheme),
     // textTheme: GoogleFonts.inconsolataTextTheme(
     //   Theme.of(context).textTheme
@@ -51,7 +51,7 @@ ThemeData darkThemeData(BuildContext context){
       Theme.of(context).textTheme
     ).apply(bodyColor: kContentColorDarkTheme),
     colorScheme: ColorScheme.dark().copyWith(
-      primary: kTertiaryColor,
+      primary: kTertiaryColor.withOpacity(0.87),
       secondary: kQuaternaryColor,
       error: kErrorColor,
     ),
