@@ -7,10 +7,12 @@ part 'official_advertisement_impression.g.dart';
 class OfficialAdvertisementImpression{
   OfficialAdvertisementImpression({
     required this.createdAt,
+    required this.isDarkTheme,
     required this.officialAdvertisementId,
     required this.uid
   });
   final dynamic createdAt;
+  final bool isDarkTheme;
   final String officialAdvertisementId;
   final String uid;
   
