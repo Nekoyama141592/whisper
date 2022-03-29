@@ -10,8 +10,8 @@ OfficialAdvertisementConfig _$OfficialAdvertisementConfigFromJson(
         Map<String, dynamic> json) =>
     OfficialAdvertisementConfig(
       createdAt: json['createdAt'],
-      displaySeconds: json['displaySeconds'] as int,
       intervalSeconds: json['intervalSeconds'] as int,
+      timeInSecForIosWeb: json['timeInSecForIosWeb'] as int,
       updatedAt: json['updatedAt'],
     );
 
@@ -19,7 +19,7 @@ Map<String, dynamic> _$OfficialAdvertisementConfigToJson(
         OfficialAdvertisementConfig instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
-      'displaySeconds': instance.displaySeconds,
       'intervalSeconds': instance.intervalSeconds,
+      'timeInSecForIosWeb': instance.timeInSecForIosWeb,
       'updatedAt': instance.updatedAt,
     };

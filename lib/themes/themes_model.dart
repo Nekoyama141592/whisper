@@ -76,7 +76,7 @@ class ThemeModel extends ChangeNotifier {
     await Fluttertoast.showToast(
       msg: officialAdvertisement.title,
       gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 1,
+      timeInSecForIosWeb: config.timeInSecForIosWeb,
       backgroundColor: isDarkTheme ? backGroundColorDarkTheme : backGroundColorLightTheme,
       textColor: isDarkTheme ? textColorDarkTheme : textColorLightTheme
     );

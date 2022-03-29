@@ -7,13 +7,13 @@ part 'official_advertisement_config.g.dart';
 class OfficialAdvertisementConfig {
   OfficialAdvertisementConfig({
     required this.createdAt,
-    required this.displaySeconds,
     required this.intervalSeconds,
+    required this.timeInSecForIosWeb,
     required this.updatedAt
   });
   final dynamic createdAt;
-  final int displaySeconds;
   final int intervalSeconds;
+  final int timeInSecForIosWeb;
   final dynamic updatedAt;
 
   factory OfficialAdvertisementConfig.fromJson(Map<String,dynamic> json) => _$OfficialAdvertisementConfigFromJson(json);
