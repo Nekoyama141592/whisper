@@ -379,7 +379,7 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
         onPressed: () {
           controller.dismiss();
         },
-        child: Text('Cancel',style: cancelStyle(context: context)),
+        child: Text('キャンセル',style: cancelStyle(context: context)),
       );
     },
     positiveActionBuilder: positiveActionBuilder,
@@ -426,13 +426,13 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
           ),
           actions: [
             CupertinoDialogAction(
-              child: const Text('Cancel'),
+              child: const Text('キャンセル'),
               onPressed: () {
                 Navigator.pop(innerContext);
               },
             ),
             CupertinoDialogAction(
-              child: const Text('Ok'),
+              child: const Text('実行'),
               isDestructiveAction: true,
               onPressed: () async {
                 Navigator.pop(innerContext);
@@ -461,7 +461,7 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
           }, 
         ) ).toList();
         actions.add(CupertinoActionSheetAction(
-          child: Text('Cancel',style: textStyle(context: context),),
+          child: Text('キャンセル',style: textStyle(context: context),),
           onPressed: () { Navigator.pop(innerContext); },
         ));
         return CupertinoActionSheet(

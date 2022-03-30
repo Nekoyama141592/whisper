@@ -30,11 +30,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Caputure image</string>
+	<string>カメラで撮影した画像をアイコンで使用します</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Can We Use Your Microphone Please</string>
+	<string>録音した音声は投稿に使用します</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Choose image</string>
+	<string>画像をアイコンで使用します</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

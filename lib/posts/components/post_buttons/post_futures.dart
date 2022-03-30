@@ -99,7 +99,7 @@ class PostFutures extends ChangeNotifier {
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
-      child: Text('OK', style: textStyle(context: context), )
+      child: Text('選択', style: textStyle(context: context), )
     );
   };
   voids.showFlashDialogue(context: context, content: content, titleText: 'どのリストにブックマークしますか？',positiveActionBuilder: positiveActionBuilder);
