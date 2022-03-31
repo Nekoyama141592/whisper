@@ -7,7 +7,6 @@ part of 'user_meta.dart';
 // **************************************************************************
 
 UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
-      birthDay: json['birthDay'],
       createdAt: json['createdAt'],
       email: json['email'] as String,
       gender: json['gender'] as String,
@@ -21,7 +20,6 @@ UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
     );
 
 Map<String, dynamic> _$UserMetaToJson(UserMeta instance) => <String, dynamic>{
-      'birthDay': instance.birthDay,
       'createdAt': instance.createdAt,
       'email': instance.email,
       'gender': instance.gender,

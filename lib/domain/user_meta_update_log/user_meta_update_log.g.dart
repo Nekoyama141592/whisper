@@ -8,7 +8,6 @@ part of 'user_meta_update_log.dart';
 
 UserMetaUpdateLog _$UserMetaUpdateLogFromJson(Map<String, dynamic> json) =>
     UserMetaUpdateLog(
-      birthDay: json['birthDay'],
       email: json['email'] as String,
       gender: json['gender'] as String,
       ipv6: json['ipv6'] as String,
@@ -19,7 +18,6 @@ UserMetaUpdateLog _$UserMetaUpdateLogFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UserMetaUpdateLogToJson(UserMetaUpdateLog instance) =>
     <String, dynamic>{
-      'birthDay': instance.birthDay,
       'email': instance.email,
       'gender': instance.gender,
       'ipv6': instance.ipv6,
