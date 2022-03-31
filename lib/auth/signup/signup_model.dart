@@ -41,8 +41,6 @@ class SignupModel extends ChangeNotifier {
   bool isObscure = true;
   String gender = "";
   final displayGenderNotifier = ValueNotifier<String>('');
-  DateTime birthDay = DateTime(1900,10,10);
-  final displayBirthDayNotifier = ValueNotifier<DateTime>(DateTime(1900,10,10));
   String language = '';
   final displayLanguageNotifier = ValueNotifier<String>('');
   // Checkbox
@@ -164,11 +162,9 @@ class SignupModel extends ChangeNotifier {
   }
 
   Future<void> createUserMeta({ required String uid }) async {
-    final timestampBirthDay = Timestamp.fromDate(birthDay);
     final Timestamp now = Timestamp.now();
     final ipv6 =  await Ipify.ipv64();
     final UserMeta userMeta = UserMeta(
-      birthDay: timestampBirthDay,
       createdAt: now,
       email: email,
       gender: gender, 
@@ -184,29 +180,6 @@ class SignupModel extends ChangeNotifier {
     final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(uid: uid,categoryName: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostCategoryId, tokenType: bookmarkPostCategoryTokenType,imageURL: '' );
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkPostCategoryId ).set(bookmarkPostCategory.toJson());
-  }
-
-  void showCupertinoDatePicker(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context, 
-      builder: (context) {
-        final now = DateTime.now();
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.3,
-          child: CupertinoDatePicker(
-            backgroundColor: Theme.of(context).focusColor,
-            initialDateTime: DateTime(now.year - 18,12,31),
-            minimumDate: DateTime(1900,12,31),
-            maximumDate: DateTime(now.year - 6,12,31),
-            mode: CupertinoDatePickerMode.date,
-            onDateTimeChanged: (value){
-              birthDay = value;
-              displayBirthDayNotifier.value = value;
-            }
-          ),
-        );
-      }
-    );
   }
 
   void showLanguageCupertinoActionSheet(BuildContext context) {

@@ -6,7 +6,6 @@ part 'user_meta.g.dart';
 @JsonSerializable()
 class UserMeta {
   UserMeta({
-    required this.birthDay,
     required this.createdAt,
     required this.email,
     required this.gender,
@@ -19,7 +18,6 @@ class UserMeta {
     required this.updatedAt,
   });
 
-  dynamic birthDay;
   dynamic createdAt;
   final String email;
   String gender;

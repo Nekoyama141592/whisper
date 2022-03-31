@@ -518,7 +518,6 @@ Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
     final ipv6 =  await Ipify.ipv64();
     final currentUser = firebaseAuthCurrentUser();
     final UserMetaUpdateLog userMetaUpdateLog = UserMetaUpdateLog(
-      birthDay: userMeta.birthDay,
       email: currentUser == null ? userMeta.email : currentUser.email! ,
       gender: userMeta.gender, 
       ipv6: ipv6, 

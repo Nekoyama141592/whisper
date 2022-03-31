@@ -6,7 +6,6 @@ part 'user_meta_update_log.g.dart';
 @JsonSerializable()
 class UserMetaUpdateLog {
   UserMetaUpdateLog({
-    required this.birthDay,
     required this.email,
     required this.gender,
     required this.ipv6,
@@ -14,7 +13,6 @@ class UserMetaUpdateLog {
     required this.uid,
     required this.updatedAt,
   });
-  final dynamic birthDay;
   final String email;
   final String gender;
   final String ipv6;

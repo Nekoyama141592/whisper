@@ -59,29 +59,6 @@ class AddUserInfoPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ValueListenableBuilder<DateTime>(
-                    valueListenable: signupModel.displayBirthDayNotifier,
-                    builder: (_,birthDay,__) {
-                      return Column(
-                        children: [
-                          RoundedButton(
-                            text: '生年月日', 
-                            widthRate: buttonWidthRate, 
-                            fontSize: defaultHeaderTextSize(context: context),
-                            press: () {
-                             signupModel.showCupertinoDatePicker(context);
-                            }, 
-                            textColor: Colors.white, 
-                            buttonColor: Theme.of(context).primaryColor
-                          ),
-                          SizedBox(height: defaultPadding(context: context) ),
-                          if (birthDay != DateTime(1900,10,10)) Text(
-                            birthDay.year.toString() + '年' + birthDay.month.toString() + '月' + birthDay.day.toString() + '日'
-                          )
-                        ],
-                      );
-                    }
-                  ),
                   ValueListenableBuilder<String>(
                     valueListenable: signupModel.displayLanguageNotifier,
                     builder: (_,language,__) {
@@ -169,7 +146,7 @@ class AddUserInfoPage extends StatelessWidget {
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
               press: () async {
-                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || signupModel.birthDay == DateTime(1900,10,10) || !signupModel.isCheckedNotifier.value || signupModel.language.isEmpty) {
+                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || !signupModel.isCheckedNotifier.value || signupModel.language.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
                 } else {
                   await signupModel.signup(context);
