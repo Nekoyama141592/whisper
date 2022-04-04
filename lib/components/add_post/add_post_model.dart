@@ -203,19 +203,20 @@ class AddPostModel extends ChangeNotifier {
   
   Future<void> addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId,required String storagePostName}) async {
     // process set
-    final WhisperUser currentWhiseprUser = mainModel.currentWhisperUser;
+    final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final String title = postTitleNotifier.value;
     final List<String> searchWords = returnSearchWords(searchTerm: title);
 
     Map<String,dynamic> postMap = Post(
-      accountName: currentWhiseprUser.accountName,
+      accountName: currentWhisperUser.accountName,
       audioURL: audioURL, 
       bookmarkCount: 0,
       commentsState: returnCommentsStateString(commentsState: commentsState), 
       country: '', 
       createdAt: now,
       description: '', 
+      descriptionLanguageCode: '',
       descriptionNegativeScore: 0,
       descriptionPositiveScore: 0,
       descriptionSentiment: '',
@@ -223,12 +224,12 @@ class AddPostModel extends ChangeNotifier {
       hashTags: [],
       imageURLs: [imageURL], 
       impressionCount: 0,
-      isNFTicon: currentWhiseprUser.isNFTicon,
-      isOfficial: currentWhiseprUser.isOfficial,
+      isNFTicon: currentWhisperUser.isNFTicon,
+      isOfficial: currentWhisperUser.isOfficial,
       isPinned: false,
       likeCount: 0,
       links: whisperLinksNotifier.value.map((e) => e.toJson() ).toList(), 
-      mainWalletAddress: currentWhiseprUser.mainWalletAddress,
+      mainWalletAddress: currentWhisperUser.mainWalletAddress,
       muteCount: 0,
       nftIconInfo: {},
       playCount: 0,
@@ -239,22 +240,27 @@ class AddPostModel extends ChangeNotifier {
       score: defaultScore.toDouble(),
       storagePostName: storagePostName,
       tagAccountNames: [],
-      recommendState: currentWhiseprUser.recommendState,
+      recommendState: currentWhisperUser.recommendState,
       searchToken: returnSearchToken(searchWords: searchWords),
       title: title,
+      titleLanguageCode: '',
       titleNegativeScore: 0,
       titlePositiveScore: 0,
       titleSentiment: '',
-      uid: currentWhiseprUser.uid,
+      uid: currentWhisperUser.uid,
       updatedAt: now,
-      userImageURL: currentWhiseprUser.userImageURL,
-      userName: currentWhiseprUser.userName
+      userImageURL: currentWhisperUser.userImageURL,
+      userName: currentWhisperUser.userName,
+      userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
+      userNameNegativeScore: currentWhisperUser.userNameNegativeScore,
+      userNamePositiveScore: currentWhisperUser.userNamePositiveScore,
+      userNameSentiment: currentWhisperUser.userNameSentiment
       ).toJson();
       // process UI
       mainModel.currentWhisperUser.postCount += plusOne;
       try {
         // await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).set(postMap);
-        await returnPostDocRef(postCreatorUid: currentWhiseprUser.uid, postId: postId).set(postMap);
+        await returnPostDocRef(postCreatorUid: currentWhisperUser.uid, postId: postId).set(postMap);
         addPostStateNotifier.value = AddPostState.uploaded;
         await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
       } catch(e) {

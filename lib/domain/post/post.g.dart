@@ -14,6 +14,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       country: json['country'] as String,
       createdAt: json['createdAt'],
       description: json['description'] as String,
+      descriptionLanguageCode: json['descriptionLanguageCode'] as String,
       descriptionNegativeScore: json['descriptionNegativeScore'] as num,
       descriptionPositiveScore: json['descriptionPositiveScore'] as num,
       descriptionSentiment: json['descriptionSentiment'] as String,
@@ -46,6 +47,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
           .map((e) => e as String)
           .toList(),
       title: json['title'] as String,
+      titleLanguageCode: json['titleLanguageCode'],
       titleNegativeScore: json['titleNegativeScore'] as num,
       titlePositiveScore: json['titlePositiveScore'] as num,
       titleSentiment: json['titleSentiment'] as String,
@@ -53,6 +55,10 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
+      userNameLanguageCode: json['userNameLanguageCode'] as String,
+      userNameNegativeScore: json['userNameNegativeScore'] as num,
+      userNamePositiveScore: json['userNamePositiveScore'] as num,
+      userNameSentiment: json['userNameSentiment'] as String,
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
@@ -63,6 +69,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'country': instance.country,
       'createdAt': instance.createdAt,
       'description': instance.description,
+      'descriptionLanguageCode': instance.descriptionLanguageCode,
       'descriptionNegativeScore': instance.descriptionNegativeScore,
       'descriptionPositiveScore': instance.descriptionPositiveScore,
       'descriptionSentiment': instance.descriptionSentiment,
@@ -89,6 +96,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'searchToken': instance.searchToken,
       'tagAccountNames': instance.tagAccountNames,
       'title': instance.title,
+      'titleLanguageCode': instance.titleLanguageCode,
       'titleNegativeScore': instance.titleNegativeScore,
       'titlePositiveScore': instance.titlePositiveScore,
       'titleSentiment': instance.titleSentiment,
@@ -96,4 +104,8 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,
+      'userNameLanguageCode': instance.userNameLanguageCode,
+      'userNameNegativeScore': instance.userNameNegativeScore,
+      'userNamePositiveScore': instance.userNamePositiveScore,
+      'userNameSentiment': instance.userNameSentiment,
     };

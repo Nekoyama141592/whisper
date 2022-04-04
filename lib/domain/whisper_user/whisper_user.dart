@@ -9,6 +9,7 @@ class WhisperUser {
     required this.accountName,
     required this.blockCount,
     required this.bio,
+    required this.bioLanguageCode,
     required this.bioNegativeScore,
     required this.bioPositiveScore,
     required this.bioSentiment,
@@ -33,11 +34,12 @@ class WhisperUser {
     required this.score,
     required this.searchToken,
     required this.totalAsset,
+    required this.uid,
     required this.userName,
+    required this.userNameLanguageCode,
     required this.userNameNegativeScore,
     required this.userNamePositiveScore,
     required this.userNameSentiment,
-    required this.uid,
     required this.updatedAt,
     required this.walletAddresses,
     required this.walletConnected
@@ -45,6 +47,7 @@ class WhisperUser {
   
   String accountName;
   String bio;
+  final String bioLanguageCode;
   final num bioNegativeScore;
   final num bioPositiveScore; 
   final String bioSentiment;
@@ -71,8 +74,9 @@ class WhisperUser {
   final num totalAsset;
   final String uid;
   dynamic updatedAt;
-  String userName;
   String userImageURL;
+  String userName;
+  final String userNameLanguageCode;
   final num userNameNegativeScore;
   final num userNamePositiveScore;
   final String userNameSentiment;

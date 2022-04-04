@@ -17,21 +17,26 @@ class WhisperReply {
     required this.likeCount,
     required this.mainWalletAddress,
     required this.muteCount,
-    required this.negativeScore,
     required this.nftIconInfo,
     required this.passiveUid,
     required this.postId,
-    required this.positiveScore,
     required this.reply,
+    required this.replyLanguageCode,
+    required this.replyNegativeScore,
+    required this.replyPositiveScore,
+    required this.replySentiment,
     required this.postCommentReplyId,
     required this.postCreatorUid,
     required this.postDocRef,
     required this.reportCount,
     required this.score,
-    required this.sentiment,
     required this.uid,
     required this.updatedAt,
     required this.userName,
+    required this.userNameLanguageCode,
+    required this.userNameNegativeScore,
+    required this.userNamePositiveScore,
+    required this.userNameSentiment,
     required this.userImageURL
   });
   final String accountName;
@@ -44,23 +49,28 @@ class WhisperReply {
   int likeCount;
   final String mainWalletAddress;
   final int muteCount;
-  final num negativeScore;
   final Map<String,dynamic> nftIconInfo;
   final String passiveUid;
   final String postId;
-  final num positiveScore;
   final String reply;
+  final String replyLanguageCode;
+  final num replyNegativeScore;
+  final num replyPositiveScore;
+  final String replySentiment;
   final String postCommentId;
   final String postCommentReplyId;
   final String postCreatorUid;
   final dynamic postDocRef;
   final int reportCount;
   final num score;
-  final String sentiment;
   final String uid;
   final dynamic updatedAt;
-  final String userName;
   final String userImageURL;
+  final String userName;
+  final String userNameLanguageCode;
+  final num userNameNegativeScore;
+  final num userNamePositiveScore;
+  final String userNameSentiment;
 
   factory WhisperReply.fromJson(Map<String,dynamic> json) => _$WhisperReplyFromJson(json);
 

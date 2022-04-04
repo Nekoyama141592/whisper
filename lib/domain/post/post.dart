@@ -13,6 +13,7 @@ class Post{
     required this.country,
     required this.createdAt,
     required this.description,
+    required this.descriptionLanguageCode,
     required this.descriptionNegativeScore,
     required this.descriptionPositiveScore,
     required this.descriptionSentiment,
@@ -39,13 +40,18 @@ class Post{
     required this.searchToken,
     required this.tagAccountNames,
     required this.title,
+    required this.titleLanguageCode,
     required this.titleNegativeScore,
     required this.titlePositiveScore,
     required this.titleSentiment,
     required this.uid,
     required this.updatedAt,
     required this.userImageURL,
-    required this.userName
+    required this.userName,
+    required this.userNameLanguageCode,
+    required this.userNameNegativeScore,
+    required this.userNamePositiveScore,
+    required this.userNameSentiment,
   });
   String accountName;
   String audioURL;
@@ -54,6 +60,7 @@ class Post{
   String country;
   dynamic createdAt;
   String description;
+  final String descriptionLanguageCode;
   final num descriptionNegativeScore;
   final num descriptionPositiveScore;
   final String descriptionSentiment;
@@ -80,6 +87,7 @@ class Post{
   Map<String,dynamic> searchToken;
   List<String> tagAccountNames;
   String title;
+  final titleLanguageCode;
   final num titleNegativeScore;
   final num titlePositiveScore;
   final String titleSentiment;
@@ -87,6 +95,10 @@ class Post{
   dynamic updatedAt;
   String userImageURL;
   String userName;
+  final String userNameLanguageCode;
+  final num userNameNegativeScore;
+  final num userNamePositiveScore;
+  final String userNameSentiment;
   
   factory Post.fromJson(Map<String,dynamic> json) => _$PostFromJson(json);
 
