@@ -5,6 +5,7 @@ const int maxLine = 1;
 const int maxFollowCount = 500;
 // seconds
 const int verifyMailIntervalSeconds = 5;
+const int toastSeconds = 4;
 const int dialogueMilliSeconds = 500;
 const int updateDelayMilliSeconds = 1000;
 // Do not change

@@ -94,18 +94,24 @@ class RepliesModel extends ChangeNotifier {
   }
 
   void showMakeReplyInputFlashBar({ required BuildContext context, required Post whisperPost, required TextEditingController replyEditingController,required MainModel mainModel , required WhisperPostComment whisperComment}) {
+    final toastColor = Theme.of(context).colorScheme.secondary;
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
           if (reply.isEmpty) {
+            voids.showFlutterToast(backgroundColor: toastColor, msg: emptyMsg );
             controller.dismiss();
           } else if (reply.length > maxCommentOrReplyLength) {
+            voids.showFlutterToast(backgroundColor: toastColor, msg: maxCommentOrReplyMsg );
             controller.dismiss();
           } else {
-            await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
             reply = '';
             replyEditingController.text = '';
+            if (postCommentReplyDocs.isNotEmpty) {
+              voids.showFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg );
+            }
             controller.dismiss();
+            await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
           }
         },
         icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),

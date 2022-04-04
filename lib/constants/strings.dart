@@ -130,6 +130,9 @@ const String blockUserMsg = 'ユーザーをブロックしました';
 const String mutePostCommentMsg = 'このコメントをミュートしました';
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';
 const String okMsg = 'OK';
-const String cancelMsg = 'Cancel';
+const String cancelMsg = 'キャンセル';
+const String emptyMsg = 'キャンセルされました';
+const String pleaseScrollMsg = '上にスクロールすると表示されます';
+final String maxCommentOrReplyMsg = maxCommentOrReplyLength.toString() + '以下でお願いします'; 
 // Id
 const String configIdString = 'config';

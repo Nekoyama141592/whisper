@@ -10,6 +10,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -525,4 +526,14 @@ Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
       updatedAt: Timestamp.now()
     );
     await returnUserMetaUpdateLogDocRef(uid: userMeta.uid, userMetaUpdateLogId: generateUserMetaUpdateLogId() ).set(userMetaUpdateLog.toJson());
-  }
+}
+
+Future<void> showFlutterToast({ required Color backgroundColor,required String msg }) async {
+  await Fluttertoast.showToast(
+      msg: msg,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: toastSeconds,
+      backgroundColor: backgroundColor,
+      textColor: Colors.white
+  );
+}

@@ -94,18 +94,24 @@ class CommentsModel extends ChangeNotifier {
   }
 
   void showMakeCommentInputFlashBar({ required BuildContext context, required Post whisperPost, required TextEditingController commentEditingController, required MainModel mainModel }) {
+    final toastColor = Theme.of(context).highlightColor;
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
           if (commentEditingController.text.isEmpty) {
+            voids.showFlutterToast(backgroundColor: toastColor, msg: emptyMsg );
             controller.dismiss();
           } else if (commentEditingController.text.length > maxCommentOrReplyLength){
+            voids.showFlutterToast(backgroundColor: toastColor, msg: maxCommentOrReplyMsg );
             controller.dismiss();
           } else {
-            await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
             comment = '';
             commentEditingController.text = '';
+            if (commentDocs.isNotEmpty) {
+              voids.showFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg );
+            }
             controller.dismiss();
+            await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
           }
         },
         icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
