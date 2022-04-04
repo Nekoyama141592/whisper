@@ -13,6 +13,9 @@ class Post{
     required this.country,
     required this.createdAt,
     required this.description,
+    required this.descriptionNegativeScore,
+    required this.descriptionPostiveScore,
+    required this.descriptionSentiment,
     required this.genre,
     required this.hashTags,
     required this.imageURLs,
@@ -53,6 +56,9 @@ class Post{
   String country;
   dynamic createdAt;
   String description;
+  final num descriptionNegativeScore;
+  final num descriptionPostiveScore;
+  final String descriptionSentiment;
   String genre;
   List<String> hashTags;
   List<String> imageURLs;
