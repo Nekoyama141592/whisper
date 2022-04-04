@@ -20,7 +20,6 @@ class Post{
     required this.hashTags,
     required this.imageURLs,
     required this.impressionCount,
-    required this.isDelete,
     required this.isNFTicon,
     required this.isOfficial,
     required this.isPinned,
@@ -62,7 +61,6 @@ class Post{
   List<String> hashTags;
   List<String> imageURLs;
   int impressionCount;
-  bool isDelete;
   bool isNFTicon;
   bool isOfficial;
   bool isPinned;

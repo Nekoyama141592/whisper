@@ -223,7 +223,6 @@ class AddPostModel extends ChangeNotifier {
       hashTags: [],
       imageURLs: [imageURL], 
       impressionCount: 0,
-      isDelete: false,
       isNFTicon: currentWhiseprUser.isNFTicon,
       isOfficial: currentWhiseprUser.isOfficial,
       isPinned: false,

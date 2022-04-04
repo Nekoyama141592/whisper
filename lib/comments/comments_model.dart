@@ -141,7 +141,6 @@ class CommentsModel extends ChangeNotifier {
       postCommentId: generatePostCommentId(uid: currentWhisperUser.uid ),
       createdAt: now,
       followerCount: currentWhisperUser.followerCount,
-      isDelete: false,
       isHidden: false,
       isNFTicon: currentWhisperUser.isNFTicon,
       isOfficial: currentWhisperUser.isOfficial,

@@ -11,7 +11,6 @@ class WhisperPostComment {
     required this.postCommentId,
     required this.createdAt,
     required this.followerCount,
-    required this.isDelete,
     required this.isHidden,
     required this.isNFTicon,
     required this.isOfficial,
@@ -38,7 +37,6 @@ class WhisperPostComment {
   final String comment;
   final dynamic createdAt;
   final int followerCount;
-  final bool isDelete;
   final bool isHidden;
   final bool isNFTicon;
   final bool isOfficial;

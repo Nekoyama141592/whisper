@@ -140,7 +140,6 @@ class SignupModel extends ChangeNotifier {
       followingCount: 0,
       userImageURL: imageURL,
       isAdmin: false,
-      isDelete: false,
       isGovernmentOfficial: false,
       isKeyAccount: false,
       isNFTicon: false,
@@ -174,9 +173,7 @@ class SignupModel extends ChangeNotifier {
     final UserMeta userMeta = UserMeta(
       createdAt: now,
       email: email,
-      gender: gender, 
-      isDelete: false,
-      isSuspended: false,
+      gender: gender,
       ipv6: ipv6,
       totalAsset: 0,
       uid: uid,

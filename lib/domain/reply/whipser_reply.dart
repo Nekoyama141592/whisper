@@ -10,7 +10,6 @@ class WhisperReply {
     required this.createdAt,
     required this.postCommentId,
     required this.followerCount,
-    required this.isDelete,
     required this.isHidden,
     required this.isNFTicon,
     required this.isOfficial,
@@ -38,7 +37,6 @@ class WhisperReply {
   final String accountName;
   final dynamic createdAt;
   final int followerCount;
-  final bool isDelete;
   final bool isHidden;
   final bool isNFTicon;
   final bool isOfficial;

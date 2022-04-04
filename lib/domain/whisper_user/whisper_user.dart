@@ -19,7 +19,6 @@ class WhisperUser {
     required this.userImageURL,
     required this.isAdmin,
     required this.isSuspended,
-    required this.isDelete,
     required this.isGovernmentOfficial,
     required this.isKeyAccount,
     required this.isNFTicon,
@@ -56,7 +55,6 @@ class WhisperUser {
   int followingCount;
   String userImageURL;
   final bool isAdmin;
-  final bool isDelete;
   final bool isGovernmentOfficial;
   bool isKeyAccount;
   bool isNFTicon;

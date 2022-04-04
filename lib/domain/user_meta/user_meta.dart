@@ -9,21 +9,17 @@ class UserMeta {
     required this.createdAt,
     required this.email,
     required this.gender,
-    required this.isDelete,
-    required this.isSuspended,
     required this.ipv6,
     required this.totalAsset,
     required this.uid,
     required this.updatedAt,
   });
 
-  dynamic createdAt;
+  final dynamic createdAt;
   final String email;
   String gender;
-  String ipv6;
-  bool isDelete;
-  final bool isSuspended;
-  num totalAsset;
+  final String ipv6;
+  final num totalAsset;
   final String uid;
   dynamic updatedAt;
 
