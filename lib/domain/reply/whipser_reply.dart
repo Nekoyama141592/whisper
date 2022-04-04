@@ -32,12 +32,12 @@ class WhisperReply {
     required this.score,
     required this.uid,
     required this.updatedAt,
+    required this.userImageURL,
     required this.userName,
     required this.userNameLanguageCode,
     required this.userNameNegativeScore,
     required this.userNamePositiveScore,
     required this.userNameSentiment,
-    required this.userImageURL
   });
   final String accountName;
   final dynamic createdAt;

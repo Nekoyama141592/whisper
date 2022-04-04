@@ -33,12 +33,12 @@ WhisperReply _$WhisperReplyFromJson(Map<String, dynamic> json) => WhisperReply(
       score: json['score'] as num,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
+      userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
       userNameLanguageCode: json['userNameLanguageCode'] as String,
       userNameNegativeScore: json['userNameNegativeScore'] as num,
       userNamePositiveScore: json['userNamePositiveScore'] as num,
       userNameSentiment: json['userNameSentiment'] as String,
-      userImageURL: json['userImageURL'] as String,
     );
 
 Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>

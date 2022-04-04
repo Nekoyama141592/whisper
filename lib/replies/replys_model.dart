@@ -265,12 +265,12 @@ class RepliesModel extends ChangeNotifier {
       score: defaultScore,
       uid: currentWhisperUser.uid,
       updatedAt: now,
+      userImageURL: currentWhisperUser.userImageURL,
       userName: currentWhisperUser.userName,
       userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
       userNameNegativeScore: currentWhisperUser.userNameNegativeScore,
       userNamePositiveScore: currentWhisperUser.userNamePositiveScore,
       userNameSentiment: currentWhisperUser.userNameSentiment,
-      userImageURL: currentWhisperUser.userImageURL
     );
     return whisperReply;
   }
@@ -301,12 +301,20 @@ class RepliesModel extends ChangeNotifier {
       postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId , postCommentId: whisperComment.postCommentId ) ,
       postDocRef: returnPostDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId ),
       reply: reply, 
+      replyLanguageCode: '',
+      replyNegativeScore: 0,
+      replyPositiveScore: 0,
+      replySentiment: '',
       replyScore: newWhisperReply.score,
       postCommentReplyId: newWhisperReply.postCommentReplyId,
       notificationType: replyNotificationType,
       updatedAt: now,
       userImageURL: currentWhisperUser.userImageURL,
-      userName: currentWhisperUser.userName
+      userName: currentWhisperUser.userName,
+      userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
+      userNameNegativeScore: currentWhisperUser.userNameNegativeScore,
+      userNamePositiveScore: currentWhisperUser.userNamePositiveScore,
+      userNameSentiment: currentWhisperUser.userNameSentiment,
     );
     await returnNotificationDocRef(uid: whisperComment.uid,notificationId: notificationId).set(replyNotification.toJson());
   }

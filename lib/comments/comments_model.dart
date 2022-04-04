@@ -180,6 +180,10 @@ class CommentsModel extends ChangeNotifier {
         accountName: currentWhisperUser.accountName,
         activeUid: currentWhisperUser.uid,
         comment: comment, 
+        commentLanguageCode: '',
+        commentSentiment: '',
+        commentNegativeScore: 0,
+        commentPositiveScore: 0, 
         postCommentId: whisperComment.comment,
         commentScore: whisperComment.score,
         createdAt: now,
@@ -199,7 +203,11 @@ class CommentsModel extends ChangeNotifier {
         notificationType: commentNotificationType,
         updatedAt: now,
         userImageURL: currentWhisperUser.userImageURL,
-        userName: currentWhisperUser.userName
+        userName: currentWhisperUser.userName,
+        userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
+        userNameNegativeScore: currentWhisperUser.userNameNegativeScore,
+        userNamePositiveScore: currentWhisperUser.userNamePositiveScore,
+        userNameSentiment: currentWhisperUser.userNameSentiment,
       );
       await returnNotificationDocRef(uid: whisperPost.uid, notificationId: notificationId).set(commentNotification.toJson());
     } catch(e) {

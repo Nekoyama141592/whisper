@@ -27,10 +27,18 @@ class ReplyNotification {
     required this.postDocRef,
     required this.notificationType,
     required this.reply,
+    required this.replyLanguageCode,
+    required this.replyNegativeScore,
+    required this.replyPositiveScore,
+    required this.replySentiment,
     required this.replyScore,
     required this.updatedAt,
     required this.userImageURL,
-    required this.userName
+    required this.userName,
+    required this.userNameLanguageCode,
+    required this.userNameNegativeScore,
+    required this.userNamePositiveScore,
+    required this.userNameSentiment,
   });
   final String accountName;
   final String activeUid;
@@ -49,6 +57,10 @@ class ReplyNotification {
   final String passiveUid;
   final String postId;
   final String reply;
+  final String replyLanguageCode;
+  final num replyNegativeScore;
+  final num replyPositiveScore;
+  final String replySentiment;
   final num replyScore;
   final String postCommentReplyId;
   final dynamic postCommentDocRef;
@@ -57,6 +69,10 @@ class ReplyNotification {
   final dynamic updatedAt;
   final String userImageURL;
   final String userName;
+  final String userNameLanguageCode;
+  final num userNameNegativeScore;
+  final num userNamePositiveScore;
+  final String userNameSentiment;
 
   factory ReplyNotification.fromJson(Map<String,dynamic> json) => _$ReplyNotificationFromJson(json);
 

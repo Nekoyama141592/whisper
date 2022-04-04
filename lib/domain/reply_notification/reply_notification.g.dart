@@ -29,10 +29,18 @@ ReplyNotification _$ReplyNotificationFromJson(Map<String, dynamic> json) =>
       postDocRef: json['postDocRef'],
       notificationType: json['notificationType'] as String,
       reply: json['reply'] as String,
+      replyLanguageCode: json['replyLanguageCode'] as String,
+      replyNegativeScore: json['replyNegativeScore'] as num,
+      replyPositiveScore: json['replyPositiveScore'] as num,
+      replySentiment: json['replySentiment'] as String,
       replyScore: json['replyScore'] as num,
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
+      userNameLanguageCode: json['userNameLanguageCode'] as String,
+      userNameNegativeScore: json['userNameNegativeScore'] as num,
+      userNamePositiveScore: json['userNamePositiveScore'] as num,
+      userNameSentiment: json['userNameSentiment'] as String,
     );
 
 Map<String, dynamic> _$ReplyNotificationToJson(ReplyNotification instance) =>
@@ -54,6 +62,10 @@ Map<String, dynamic> _$ReplyNotificationToJson(ReplyNotification instance) =>
       'passiveUid': instance.passiveUid,
       'postId': instance.postId,
       'reply': instance.reply,
+      'replyLanguageCode': instance.replyLanguageCode,
+      'replyNegativeScore': instance.replyNegativeScore,
+      'replyPositiveScore': instance.replyPositiveScore,
+      'replySentiment': instance.replySentiment,
       'replyScore': instance.replyScore,
       'postCommentReplyId': instance.postCommentReplyId,
       'postCommentDocRef': instance.postCommentDocRef,
@@ -62,4 +74,8 @@ Map<String, dynamic> _$ReplyNotificationToJson(ReplyNotification instance) =>
       'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,
+      'userNameLanguageCode': instance.userNameLanguageCode,
+      'userNameNegativeScore': instance.userNameNegativeScore,
+      'userNamePositiveScore': instance.userNamePositiveScore,
+      'userNameSentiment': instance.userNameSentiment,
     };

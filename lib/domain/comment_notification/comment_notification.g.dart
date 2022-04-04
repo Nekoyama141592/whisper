@@ -10,6 +10,10 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
     CommentNotification(
       accountName: json['accountName'] as String,
       comment: json['comment'] as String,
+      commentLanguageCode: json['commentLanguageCode'] as String,
+      commentNegativeScore: json['commentNegativeScore'] as num,
+      commentPositiveScore: json['commentPositiveScore'] as num,
+      commentSentiment: json['commentSentiment'] as String,
       postCommentId: json['postCommentId'] as String,
       commentScore: json['commentScore'] as num,
       createdAt: json['createdAt'],
@@ -31,6 +35,10 @@ CommentNotification _$CommentNotificationFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
       userName: json['userName'] as String,
+      userNameLanguageCode: json['userNameLanguageCode'] as String,
+      userNameNegativeScore: json['userNameNegativeScore'] as num,
+      userNamePositiveScore: json['userNamePositiveScore'] as num,
+      userNameSentiment: json['userNameSentiment'] as String,
     );
 
 Map<String, dynamic> _$CommentNotificationToJson(
@@ -39,6 +47,10 @@ Map<String, dynamic> _$CommentNotificationToJson(
       'accountName': instance.accountName,
       'activeUid': instance.activeUid,
       'comment': instance.comment,
+      'commentLanguageCode': instance.commentLanguageCode,
+      'commentPositiveScore': instance.commentPositiveScore,
+      'commentNegativeScore': instance.commentNegativeScore,
+      'commentSentiment': instance.commentSentiment,
       'postCommentId': instance.postCommentId,
       'commentScore': instance.commentScore,
       'createdAt': instance.createdAt,
@@ -59,4 +71,8 @@ Map<String, dynamic> _$CommentNotificationToJson(
       'updatedAt': instance.updatedAt,
       'userImageURL': instance.userImageURL,
       'userName': instance.userName,
+      'userNameLanguageCode': instance.userNameLanguageCode,
+      'userNameNegativeScore': instance.userNameNegativeScore,
+      'userNamePositiveScore': instance.userNamePositiveScore,
+      'userNameSentiment': instance.userNameSentiment,
     };
