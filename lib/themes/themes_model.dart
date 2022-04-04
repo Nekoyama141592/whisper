@@ -43,7 +43,7 @@ class ThemeModel extends ChangeNotifier {
     isDarkTheme = preferences.getBool(isDarkThemePrefsKey) ?? true;
     notifyListeners();
     // ad
-    final configDoc = await returnOfficialAdvertisementConfigDocRef.get();
+    final configDoc = await returnOfficialAdvertisementConfigDocRef().get();
     config = OfficialAdvertisementConfig.fromJson(configDoc.data()!);
     final qshot = await returnOfficialAdvertisementsColRef().get();
     officialAdvertisementDocs = qshot.docs;

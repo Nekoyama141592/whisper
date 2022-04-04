@@ -11,9 +11,7 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid,}) {
-  return ( !mutesUids.contains(uid) && !blocksUids.contains(uid) ) ;
-}
+bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid,}) => ( !mutesUids.contains(uid) && !blocksUids.contains(uid) );
 
 bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   final Post post = fromMapToPost(postMap: doc.data()!);

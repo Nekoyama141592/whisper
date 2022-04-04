@@ -13,70 +13,27 @@ const String imageExtension = '.jpeg';
 const String unNamedString = 'unNamed';
 const String notificationString = 'notification';
 
-String returnStorageUserImageName() {
-  return 'userImageStorage' + hyphenString + returnUuid4()+ imageExtension;
-}
-String returnStoragePostImageName() {
-  return 'postImageStorage' + hyphenString + returnUuid4() + imageExtension;
-}
-String returnStoragePostName() {
-  return 'postStorage' + hyphenString + returnUuid4()+ postExtension;
-} 
-String returnPostId({ required UserMeta userMeta }) {
-  return 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
-}
-
-String returnOfficialAdvertisementImpressionId({ required String uid }) {
-  return 'officialAdvertisementImpression' + hyphenString + uid + hyphenString + returnUuid4();
-}
-
-String returnUuid4() {
-  return Uuid().v4();
-}
-
-String returnTokenId({required UserMeta userMeta,required TokenType tokenType }) {
-  return returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + returnUuid4();
-}
-String returnTokenTypeString({ required TokenType tokenType } ) {
-  return tokenType.toString().substring(tokenTypeStartIndex);
-}
-String returnNotificationId({ required NotificationType notificationType}) {
-  return returnNotificationTypeString(notificationType: notificationType) + hyphenString + returnUuid4();
-}
-String returnNotificationTypeString({ required NotificationType notificationType }) {
-  return notificationType.toString().substring(notificationTypeStartIndex);
-}
-String returnDmStateString({ required DmState dmState }) {
-  return dmState.toString().substring(dmStateStartIndex);
-}
-String returnRecommendStateString ({ required RecommendState recommendState }) {
-  return recommendState.toString().substring(recommendStateStartIndex);
-}
-String returnPostStateString ({ required PostState postState }) {
-  return postState.toString().substring(postStateStartIndex);
-}
-String returnCommentsStateString ({ required CommentsState commentsState }) {
-  return commentsState.toString().substring(commentsStateStartIndex);
-}
+String returnStorageUserImageName() => 'userImageStorage' + hyphenString + returnUuid4()+ imageExtension;
+String returnStoragePostImageName() => 'postImageStorage' + hyphenString + returnUuid4() + imageExtension;
+String returnStoragePostName() => 'postStorage' + hyphenString + returnUuid4()+ postExtension;
+String returnPostId({ required UserMeta userMeta }) => 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
+String returnOfficialAdvertisementImpressionId({ required String uid }) => 'officialAdvertisementImpression' + hyphenString + uid + hyphenString + returnUuid4();
+String returnUuid4() => Uuid().v4();
+String returnTokenId({required UserMeta userMeta,required TokenType tokenType }) => returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + returnUuid4();
+String returnTokenTypeString({ required TokenType tokenType } ) => tokenType.toString().substring(tokenTypeStartIndex);
+String returnNotificationId({ required NotificationType notificationType}) => returnNotificationTypeString(notificationType: notificationType) + hyphenString + returnUuid4();
+String returnNotificationTypeString({ required NotificationType notificationType }) => notificationType.toString().substring(notificationTypeStartIndex);
+String returnDmStateString({ required DmState dmState }) => dmState.toString().substring(dmStateStartIndex);
+String returnRecommendStateString ({ required RecommendState recommendState }) => recommendState.toString().substring(recommendStateStartIndex);
+String returnPostStateString ({ required PostState postState }) => postState.toString().substring(postStateStartIndex);
+String returnCommentsStateString ({ required CommentsState commentsState }) => commentsState.toString().substring(commentsStateStartIndex);
 String returnGenderString({ required Gender gender }) => gender.toString().substring(genderStartIndex);
-String generatePostCommentId({ required String uid }) {
-  return 'postComment' + hyphenString + uid + hyphenString + returnUuid4();
-}
-String generatePostCommentReplyId({ required String uid }) {
-  return 'postCommentReply' + hyphenString + uid + hyphenString + returnUuid4();
-}
-String generateUserUpdateLogId() {
-  return 'userUpdateLog' + hyphenString + returnUuid4();
-}
-String generateUserMetaUpdateLogId() {
-  return 'userMetaUpdateLog' + hyphenString + returnUuid4();
-}
-String generatePostUpdateLogId() {
-  return 'postUpdateLog' + hyphenString + returnUuid4();
-}
-String generateUserUpdateLogNoBatchId() {
-  return 'userUpdateLogNoBatch' + hyphenString + returnUuid4();
-}
+String generatePostCommentId({ required String uid }) => 'postComment' + hyphenString + uid + hyphenString + returnUuid4();
+String generatePostCommentReplyId({ required String uid }) => 'postCommentReply' + hyphenString + uid + hyphenString + returnUuid4();
+String generateUserUpdateLogId() => 'userUpdateLog' + hyphenString + returnUuid4();
+String generateUserMetaUpdateLogId() => 'userMetaUpdateLog' + hyphenString + returnUuid4();
+String generatePostUpdateLogId() => 'postUpdateLog' + hyphenString + returnUuid4();
+String generateUserUpdateLogNoBatchId() => 'userUpdateLogNoBatch' + hyphenString + returnUuid4();
 // prefs
 const String speedPrefsKey = 'speed';
 const String isDarkThemePrefsKey = 'isDarkTheme';

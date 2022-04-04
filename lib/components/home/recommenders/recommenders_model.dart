@@ -37,7 +37,7 @@ class RecommendersModel extends ChangeNotifier {
   Query<Map<String, dynamic>> getQuery() {
     // five days ago
     final range = DateTime.now().subtract(Duration(days: 5));
-    final x = returnPostsColGroupQuery
+    final x = returnPostsColGroupQuery()
     .where(createdAtFieldKey,isGreaterThanOrEqualTo: range)
     .orderBy(createdAtFieldKey,descending: true)
     .orderBy(scoreFieldKey, descending: true)
