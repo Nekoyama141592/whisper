@@ -7,7 +7,11 @@ part 'whisper_user.g.dart';
 class WhisperUser {
   WhisperUser({
     required this.accountName,
+    required this.blockCount,
     required this.bio,
+    required this.bioNegativeScore,
+    required this.bioPostiveScore,
+    required this.bioSentiment,
     required this.createdAt,
     required this.dmState,
     required this.followerCount,
@@ -22,43 +26,58 @@ class WhisperUser {
     required this.isOfficial,
     required this.links,
     required this.mainWalletAddress,
+    required this.muteCount,
     required this.nftIconInfo,
     required this.postCount,
     required this.recommendState,
+    required this.reportCount,
     required this.score,
     required this.searchToken,
     required this.totalAsset,
     required this.userName,
+    required this.userNameNegativeScore,
+    required this.userNamePostiveScore,
+    required this.userNameSentiment,
     required this.uid,
     required this.updatedAt,
     required this.walletAddresses,
     required this.walletConnected
   });
+  
   String accountName;
   String bio;
-  dynamic createdAt;
+  final num bioNegativeScore;
+  final num bioPostiveScore; 
+  final String bioSentiment;
+  final int blockCount;
+  final dynamic createdAt;
   String dmState;
   int followerCount;
   int followingCount;
   String userImageURL;
-  bool isAdmin;
-  bool isDelete;
-  bool isGovernmentOfficial;
+  final bool isAdmin;
+  final bool isDelete;
+  final bool isGovernmentOfficial;
   bool isKeyAccount;
   bool isNFTicon;
-  bool isOfficial;
+  final bool isOfficial;
   final bool isSuspended;
   List<Map<String,dynamic>> links;
-  String mainWalletAddress;
-  Map<String,dynamic> nftIconInfo;
+  final String mainWalletAddress;
+  final int muteCount;
+  final Map<String,dynamic> nftIconInfo;
   int postCount;
   String recommendState;
-  num score;
+  final int reportCount;
+  final num score;
   Map<String,dynamic> searchToken;
-  num totalAsset;
+  final num totalAsset;
   final String uid;
   dynamic updatedAt;
   String userName;
+  final num userNameNegativeScore;
+  final num userNamePostiveScore;
+  final String userNameSentiment;
   List<Map<String,dynamic>> walletAddresses;
   bool walletConnected;
 

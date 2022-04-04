@@ -17,6 +17,7 @@ class WhisperReply {
     required this.isPinned,
     required this.likeCount,
     required this.mainWalletAddress,
+    required this.muteCount,
     required this.negativeScore,
     required this.nftIconInfo,
     required this.passiveUid,
@@ -26,7 +27,9 @@ class WhisperReply {
     required this.postCommentReplyId,
     required this.postCreatorUid,
     required this.postDocRef,
+    required this.reportCount,
     required this.score,
+    required this.sentiment,
     required this.uid,
     required this.updatedAt,
     required this.userName,
@@ -42,6 +45,7 @@ class WhisperReply {
   bool isPinned;
   int likeCount;
   final String mainWalletAddress;
+  final int muteCount;
   final num negativeScore;
   final Map<String,dynamic> nftIconInfo;
   final String passiveUid;
@@ -52,7 +56,9 @@ class WhisperReply {
   final String postCommentReplyId;
   final String postCreatorUid;
   final dynamic postDocRef;
+  final int reportCount;
   final num score;
+  final String sentiment;
   final String uid;
   final dynamic updatedAt;
   final String userName;

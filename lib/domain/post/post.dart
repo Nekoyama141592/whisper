@@ -25,6 +25,7 @@ class Post{
     required this.likeCount,
     required this.links,
     required this.mainWalletAddress,
+    required this.muteCount,
     required this.negativeScore,
     required this.nftIconInfo,
     required this.playCount,
@@ -33,11 +34,13 @@ class Post{
     required this.positiveScore,
     required this.postCommentCount,
     required this.recommendState,
+    required this.reportCount,
     required this.score,
     required this.storagePostName,
+    required this.searchToken,
+    required this.sentiment,
     required this.tagAccountNames,
     required this.title,
-    required this.searchToken,
     required this.uid,
     required this.updatedAt,
     required this.userImageURL,
@@ -62,6 +65,7 @@ class Post{
   int likeCount;
   List<Map<String,dynamic>> links;
   String mainWalletAddress;
+  final int muteCount;
   num negativeScore;
   Map<String,dynamic> nftIconInfo;
   int playCount;
@@ -70,10 +74,12 @@ class Post{
   String postId;
   num positiveScore;
   String recommendState;
+  final int reportCount;
   num score;
   final String storagePostName;
-  List<String> tagAccountNames;
   Map<String,dynamic> searchToken;
+  final String sentiment;
+  List<String> tagAccountNames;
   String title;
   final String uid;
   dynamic updatedAt;

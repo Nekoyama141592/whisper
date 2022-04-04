@@ -19,13 +19,16 @@ class WhisperPostComment {
     required this.likeCount,
     required this.masterReplied,
     required this.mainWalletAddress,
+    required this.muteCount,
     required this.negativeScore,
     required this.nftIconInfo,
     required this.passiveUid,
     required this.positiveScore,
     required this.postId,
     required this.postCommentReplyCount,
+    required this.reportCount,
     required this.score,
+    required this.sentiment,
     required this.uid,
     required this.updatedAt,
     required this.userName,
@@ -43,6 +46,7 @@ class WhisperPostComment {
   int likeCount;
   final bool masterReplied;
   final String mainWalletAddress;
+  final int muteCount;
   final num negativeScore;
   final Map<String,dynamic> nftIconInfo;
   final String passiveUid;
@@ -50,7 +54,9 @@ class WhisperPostComment {
   final String postCommentId;
   final String postId;
   final int postCommentReplyCount;
+  final int reportCount;
   final num score;
+  final String sentiment;
   final String uid;
   final dynamic updatedAt;
   final String userName;
