@@ -60,6 +60,7 @@ class Post{
   String country;
   dynamic createdAt;
   String description;
+  // un used
   final String descriptionLanguageCode;
   final num descriptionNegativeScore;
   final num descriptionPositiveScore;

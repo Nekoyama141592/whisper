@@ -47,6 +47,7 @@ class WhisperUser {
   
   String accountName;
   String bio;
+  // un used
   final String bioLanguageCode;
   final num bioNegativeScore;
   final num bioPositiveScore; 

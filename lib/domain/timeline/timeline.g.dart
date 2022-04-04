@@ -11,8 +11,6 @@ Timeline _$TimelineFromJson(Map<String, dynamic> json) => Timeline(
       isRead: json['isRead'] as bool,
       postCreatorUid: json['postCreatorUid'] as String,
       postId: json['postId'] as String,
-      userImageURL: json['userImageURL'] as String,
-      userName: json['userName'] as String,
     );
 
 Map<String, dynamic> _$TimelineToJson(Timeline instance) => <String, dynamic>{
@@ -20,6 +18,4 @@ Map<String, dynamic> _$TimelineToJson(Timeline instance) => <String, dynamic>{
       'isRead': instance.isRead,
       'postCreatorUid': instance.postCreatorUid,
       'postId': instance.postId,
-      'userImageURL': instance.userImageURL,
-      'userName': instance.userName,
     };
