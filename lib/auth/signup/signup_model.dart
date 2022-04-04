@@ -202,7 +202,7 @@ class SignupModel extends ChangeNotifier {
                 ),
               ),
               onPressed: () {
-                gender = 'male';
+                gender = returnGenderString(gender: Gender.male);
                 displayGenderNotifier.value = '男性';
                 Navigator.pop(context);
               }, 
@@ -216,7 +216,7 @@ class SignupModel extends ChangeNotifier {
                 ),
               ),
               onPressed: () {
-                gender = 'female';
+                gender = returnGenderString(gender: Gender.female);
                 displayGenderNotifier.value = '女性';
                 Navigator.pop(context);
               }, 
@@ -230,7 +230,7 @@ class SignupModel extends ChangeNotifier {
                 ),
               ),
               onPressed: () {
-                gender = 'others';
+                gender = returnGenderString(gender: Gender.others);
                 displayGenderNotifier.value = 'その他';
                 Navigator.pop(context);
               }, 
@@ -244,7 +244,7 @@ class SignupModel extends ChangeNotifier {
                 ),
               ),
               onPressed: () {
-                gender = 'noAnswer';
+                gender = returnGenderString(gender: Gender.noAnswer);
                 displayGenderNotifier.value = '無回答';
                 Navigator.pop(context);
               }, 

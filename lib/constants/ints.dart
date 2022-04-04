@@ -18,6 +18,7 @@ const int dmStateStartIndex = 8;
 const int recommendStateStartIndex = 15;
 const int postStateStartIndex = 10;
 const int commentsStateStartIndex = 14;
+const int genderStartIndex = 7;
 // length
 const int maxSearchLength = 32;
 const int maxBioOrDescriptionLength = 1000;

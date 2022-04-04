@@ -58,6 +58,7 @@ String returnPostStateString ({ required PostState postState }) {
 String returnCommentsStateString ({ required CommentsState commentsState }) {
   return commentsState.toString().substring(commentsStateStartIndex);
 }
+String returnGenderString({ required Gender gender }) => gender.toString().substring(genderStartIndex);
 String generatePostCommentId({ required String uid }) {
   return 'postComment' + hyphenString + uid + hyphenString + returnUuid4();
 }
