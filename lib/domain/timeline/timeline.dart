@@ -9,7 +9,6 @@ class Timeline {
   Timeline({
     required this.createdAt,
     required this.isRead,
-    required this.isDelete,
     required this.postCreatorUid,
     required this.postId,
     required this.userImageURL,
@@ -18,7 +17,6 @@ class Timeline {
   
   final dynamic createdAt;
   bool isRead;
-  bool isDelete;
   final String postCreatorUid;
   final String postId;
   final String userImageURL;
