@@ -60,27 +60,6 @@ class AddUserInfoPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ValueListenableBuilder<String>(
-                    valueListenable: signupModel.displayLanguageNotifier,
-                    builder: (_,language,__) {
-                      return Column(
-                        children: [
-                          RoundedButton(
-                            text: '言語', 
-                            widthRate: buttonWidthRate, 
-                            fontSize: defaultHeaderTextSize(context: context),
-                            press: () {
-                              signupModel.showLanguageCupertinoActionSheet(context);
-                            }, 
-                            textColor: Colors.white, 
-                            buttonColor: Theme.of(context).primaryColor
-                          ),
-                          SizedBox(height: defaultPadding(context: context) ),
-                          if(language.isNotEmpty) Text(language,style: TextStyle(fontWeight: FontWeight.bold),)
-                        ],
-                      );
-                    }
-                  ),
-                  ValueListenableBuilder<String>(
                     valueListenable: signupModel.displayGenderNotifier,
                     builder: (_,gender,__) {
                       return Column(
@@ -146,7 +125,7 @@ class AddUserInfoPage extends StatelessWidget {
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
               press: () async {
-                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || !signupModel.isCheckedNotifier.value || signupModel.language.isEmpty) {
+                if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || !signupModel.isCheckedNotifier.value) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
                 } else {
                   await signupModel.signup(context);

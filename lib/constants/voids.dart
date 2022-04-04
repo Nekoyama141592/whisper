@@ -521,7 +521,6 @@ Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
       email: currentUser == null ? userMeta.email : currentUser.email! ,
       gender: userMeta.gender, 
       ipv6: ipv6, 
-      language: userMeta.language,
       uid: userMeta.uid, 
       updatedAt: Timestamp.now()
     );

@@ -17,7 +17,6 @@ PostUpdateLog _$PostUpdateLogFromJson(Map<String, dynamic> json) =>
       imageURLs:
           (json['imageURLs'] as List<dynamic>).map((e) => e as String).toList(),
       isPinned: json['isPinned'] as bool,
-      language: json['language'] as String,
       links: (json['links'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .toList(),
@@ -41,7 +40,6 @@ Map<String, dynamic> _$PostUpdateLogToJson(PostUpdateLog instance) =>
       'hashTags': instance.hashTags,
       'imageURLs': instance.imageURLs,
       'isPinned': instance.isPinned,
-      'language': instance.language,
       'links': instance.links,
       'postState': instance.postState,
       'postId': instance.postId,

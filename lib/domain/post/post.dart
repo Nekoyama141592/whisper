@@ -14,7 +14,7 @@ class Post{
     required this.createdAt,
     required this.description,
     required this.descriptionNegativeScore,
-    required this.descriptionPostiveScore,
+    required this.descriptionPositiveScore,
     required this.descriptionSentiment,
     required this.genre,
     required this.hashTags,
@@ -24,26 +24,25 @@ class Post{
     required this.isNFTicon,
     required this.isOfficial,
     required this.isPinned,
-    required this.language,
     required this.likeCount,
     required this.links,
     required this.mainWalletAddress,
     required this.muteCount,
-    required this.negativeScore,
     required this.nftIconInfo,
     required this.playCount,
     required this.postState,
     required this.postId,
-    required this.positiveScore,
     required this.postCommentCount,
     required this.recommendState,
     required this.reportCount,
     required this.score,
     required this.storagePostName,
     required this.searchToken,
-    required this.sentiment,
     required this.tagAccountNames,
     required this.title,
+    required this.titleNegativeScore,
+    required this.titlePositiveScore,
+    required this.titleSentiment,
     required this.uid,
     required this.updatedAt,
     required this.userImageURL,
@@ -57,7 +56,7 @@ class Post{
   dynamic createdAt;
   String description;
   final num descriptionNegativeScore;
-  final num descriptionPostiveScore;
+  final num descriptionPositiveScore;
   final String descriptionSentiment;
   String genre;
   List<String> hashTags;
@@ -67,26 +66,25 @@ class Post{
   bool isNFTicon;
   bool isOfficial;
   bool isPinned;
-  final String language;
   int likeCount;
   List<Map<String,dynamic>> links;
   String mainWalletAddress;
   final int muteCount;
-  num negativeScore;
   Map<String,dynamic> nftIconInfo;
   int playCount;
   String postState;
   int postCommentCount;
   String postId;
-  num positiveScore;
   String recommendState;
   final int reportCount;
   num score;
   final String storagePostName;
   Map<String,dynamic> searchToken;
-  final String sentiment;
   List<String> tagAccountNames;
   String title;
+  final num titleNegativeScore;
+  final num titlePositiveScore;
+  final String titleSentiment;
   final String uid;
   dynamic updatedAt;
   String userImageURL;

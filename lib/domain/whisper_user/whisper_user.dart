@@ -10,7 +10,7 @@ class WhisperUser {
     required this.blockCount,
     required this.bio,
     required this.bioNegativeScore,
-    required this.bioPostiveScore,
+    required this.bioPositiveScore,
     required this.bioSentiment,
     required this.createdAt,
     required this.dmState,
@@ -36,7 +36,7 @@ class WhisperUser {
     required this.totalAsset,
     required this.userName,
     required this.userNameNegativeScore,
-    required this.userNamePostiveScore,
+    required this.userNamePositiveScore,
     required this.userNameSentiment,
     required this.uid,
     required this.updatedAt,
@@ -47,7 +47,7 @@ class WhisperUser {
   String accountName;
   String bio;
   final num bioNegativeScore;
-  final num bioPostiveScore; 
+  final num bioPositiveScore; 
   final String bioSentiment;
   final int blockCount;
   final dynamic createdAt;
@@ -76,7 +76,7 @@ class WhisperUser {
   dynamic updatedAt;
   String userName;
   final num userNameNegativeScore;
-  final num userNamePostiveScore;
+  final num userNamePositiveScore;
   final String userNameSentiment;
   List<Map<String,dynamic>> walletAddresses;
   bool walletConnected;

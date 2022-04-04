@@ -41,8 +41,6 @@ class SignupModel extends ChangeNotifier {
   bool isObscure = true;
   String gender = "";
   final displayGenderNotifier = ValueNotifier<String>('');
-  String language = '';
-  final displayLanguageNotifier = ValueNotifier<String>('');
   // Checkbox
   final isCheckedNotifier = ValueNotifier<bool>(false);
   // image
@@ -134,7 +132,7 @@ class SignupModel extends ChangeNotifier {
       createdAt: now,
       bio: '',
       bioNegativeScore: 0,
-      bioPostiveScore: 0,
+      bioPositiveScore: 0,
       bioSentiment: '',
       blockCount: 0,
       dmState: returnDmStateString(dmState: DmState.onlyFollowingAndFollowed),
@@ -161,7 +159,7 @@ class SignupModel extends ChangeNotifier {
       updatedAt: now,
       userName: userName,
       userNameNegativeScore: 0,
-      userNamePostiveScore: 0,
+      userNamePositiveScore: 0,
       userNameSentiment: '',
       mainWalletAddress: '',
       walletAddresses: [],
@@ -180,7 +178,6 @@ class SignupModel extends ChangeNotifier {
       isDelete: false,
       isSuspended: false,
       ipv6: ipv6,
-      language: language, 
       totalAsset: 0,
       uid: uid,
       updatedAt: now,
@@ -189,46 +186,6 @@ class SignupModel extends ChangeNotifier {
     final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(uid: uid,categoryName: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostCategoryId, tokenType: bookmarkPostCategoryTokenType,imageURL: '' );
     await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkPostCategoryId ).set(bookmarkPostCategory.toJson());
-  }
-
-  void showLanguageCupertinoActionSheet(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context, 
-      builder: (context) {
-        return CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              child: Text(
-                '日本語',
-                style: TextStyle(
-                  color: Theme.of(context).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              onPressed: () {
-                language = 'ja';
-                displayLanguageNotifier.value = '日本語';
-                Navigator.pop(context);
-              }, 
-            ),
-            CupertinoActionSheetAction(
-              child: Text(
-                'English',
-                style: TextStyle(
-                  color: Theme.of(context).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              onPressed: () {
-                language = 'en';
-                displayLanguageNotifier.value = '英語';
-                Navigator.pop(context);
-              }, 
-            ),
-          ],
-        );
-      }
-    );
   }
 
   void showGenderCupertinoActionSheet(BuildContext context) {

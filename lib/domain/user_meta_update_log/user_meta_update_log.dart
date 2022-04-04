@@ -9,14 +9,12 @@ class UserMetaUpdateLog {
     required this.email,
     required this.gender,
     required this.ipv6,
-    required this.language,
     required this.uid,
     required this.updatedAt,
   });
   final String email;
   final String gender;
   final String ipv6;
-  final String language;
   final String uid;
   final dynamic updatedAt;
   

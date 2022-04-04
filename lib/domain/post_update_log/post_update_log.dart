@@ -13,7 +13,6 @@ class PostUpdateLog {
     required this.hashTags,
     required this.imageURLs,
     required this.isPinned,
-    required this.language,
     required this.links,
     required this.postState,
     required this.postId,
@@ -31,7 +30,6 @@ class PostUpdateLog {
   List<String> hashTags;
   List<String> imageURLs;
   bool isPinned;
-  final String language;
   List<Map<String,dynamic>> links;
   String postState;
   String postId;

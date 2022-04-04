@@ -12,7 +12,6 @@ class UserMeta {
     required this.isDelete,
     required this.isSuspended,
     required this.ipv6,
-    required this.language,
     required this.totalAsset,
     required this.uid,
     required this.updatedAt,
@@ -24,7 +23,6 @@ class UserMeta {
   String ipv6;
   bool isDelete;
   final bool isSuspended;
-  String language;
   num totalAsset;
   final String uid;
   dynamic updatedAt;

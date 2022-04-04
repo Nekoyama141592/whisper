@@ -82,19 +82,19 @@ class EditPostInfoModel extends ChangeNotifier {
       }
       whisperPost.links = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
       try{
-        final PostUpdateLog postUpdateLog = PostUpdateLog(commentsState: whisperPost.commentsState, country: whisperPost.country, description: whisperPost.description, genre: whisperPost.genre, hashTags: whisperPost.hashTags, imageURLs: whisperPost.imageURLs, isPinned: whisperPost.isPinned, language: whisperPost.language, links: whisperPost.links, postState: whisperPost.postState, postId: whisperPost.postId, tagAccountNames: whisperPost.tagAccountNames, searchToken: whisperPost.searchToken, title: whisperPost.title, uid: whisperPost.uid, updatedAt: Timestamp.now() );
+        final PostUpdateLog postUpdateLog = PostUpdateLog(commentsState: whisperPost.commentsState, country: whisperPost.country, description: whisperPost.description, genre: whisperPost.genre, hashTags: whisperPost.hashTags, imageURLs: whisperPost.imageURLs, isPinned: whisperPost.isPinned,links: whisperPost.links, postState: whisperPost.postState, postId: whisperPost.postId, tagAccountNames: whisperPost.tagAccountNames, searchToken: whisperPost.searchToken, title: whisperPost.title, uid: whisperPost.uid, updatedAt: Timestamp.now() );
         await returnPostUpdateLogDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postUpdateLogId: generatePostUpdateLogId() ).set(postUpdateLog.toJson());
         isEditing = false;
         notifyListeners();
         title = '';
         whisperLinksNotifier.value = [];
       } catch(e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('なんらかのエラーが発生しました')));
+        showSnackBar(context: context, text: 'なんらかのエラーが発生しました');
       }
     }
   }
 
-  void init({ required BuildContext context  ,required List<Map<String,dynamic>> linkMaps  }) {
+  void init({ required BuildContext context ,required List<Map<String,dynamic>> linkMaps  }) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(
       whisperLinksNotifier: whisperLinksNotifier,
       onRoundedButtonPressed: () { Navigator.pop(context); },

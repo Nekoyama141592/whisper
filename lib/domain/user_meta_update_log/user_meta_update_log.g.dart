@@ -11,7 +11,6 @@ UserMetaUpdateLog _$UserMetaUpdateLogFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       gender: json['gender'] as String,
       ipv6: json['ipv6'] as String,
-      language: json['language'] as String,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
     );
@@ -21,7 +20,6 @@ Map<String, dynamic> _$UserMetaUpdateLogToJson(UserMetaUpdateLog instance) =>
       'email': instance.email,
       'gender': instance.gender,
       'ipv6': instance.ipv6,
-      'language': instance.language,
       'uid': instance.uid,
       'updatedAt': instance.updatedAt,
     };
