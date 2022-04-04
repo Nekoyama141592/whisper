@@ -53,7 +53,6 @@ class WhisperUser {
   String dmState;
   int followerCount;
   int followingCount;
-  String userImageURL;
   final bool isAdmin;
   final bool isGovernmentOfficial;
   bool isKeyAccount;
@@ -73,6 +72,7 @@ class WhisperUser {
   final String uid;
   dynamic updatedAt;
   String userName;
+  String userImageURL;
   final num userNameNegativeScore;
   final num userNamePositiveScore;
   final String userNameSentiment;
