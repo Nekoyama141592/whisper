@@ -14,48 +14,97 @@ const String unNamedString = 'unNamed';
 const String notificationString = 'notification';
 
 String returnStorageUserImageName() => 'userImageStorage' + hyphenString + returnUuid4()+ imageExtension;
+
 String returnStoragePostImageName() => 'postImageStorage' + hyphenString + returnUuid4() + imageExtension;
+
 String returnStoragePostName() => 'postStorage' + hyphenString + returnUuid4()+ postExtension;
+
 String returnPostId({ required UserMeta userMeta }) => 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
+
 String returnOfficialAdvertisementImpressionId({ required String uid }) => 'officialAdvertisementImpression' + hyphenString + uid + hyphenString + returnUuid4();
+
 String returnUuid4() => Uuid().v4();
+
 String returnTokenId({required UserMeta userMeta,required TokenType tokenType }) => returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + returnUuid4();
+
 String returnTokenTypeString({ required TokenType tokenType } ) => tokenType.toString().substring(tokenTypeStartIndex);
+
 String returnNotificationId({ required NotificationType notificationType}) => returnNotificationTypeString(notificationType: notificationType) + hyphenString + returnUuid4();
+
 String returnNotificationTypeString({ required NotificationType notificationType }) => notificationType.toString().substring(notificationTypeStartIndex);
+
 String returnDmStateString({ required DmState dmState }) => dmState.toString().substring(dmStateStartIndex);
+
 String returnRecommendStateString ({ required RecommendState recommendState }) => recommendState.toString().substring(recommendStateStartIndex);
+
 String returnPostStateString ({ required PostState postState }) => postState.toString().substring(postStateStartIndex);
+
 String returnCommentsStateString ({ required CommentsState commentsState }) => commentsState.toString().substring(commentsStateStartIndex);
+
 String returnGenderString({ required Gender gender }) => gender.toString().substring(genderStartIndex);
+
+String returnReportContentString({ required List<String> selectedReportContents }) {
+  String reportContentString = '';
+  for (final i in selectedReportContents) {
+    reportContentString += '・';
+    reportContentString += i;
+    reportContentString += '\n';
+  }
+  return reportContentString;
+}
+
 String generatePostCommentId({ required String uid }) => 'postComment' + hyphenString + uid + hyphenString + returnUuid4();
+
 String generatePostCommentReplyId({ required String uid }) => 'postCommentReply' + hyphenString + uid + hyphenString + returnUuid4();
+
 String generateUserUpdateLogId() => 'userUpdateLog' + hyphenString + returnUuid4();
+
 String generateUserMetaUpdateLogId() => 'userMetaUpdateLog' + hyphenString + returnUuid4();
+
 String generatePostUpdateLogId() => 'postUpdateLog' + hyphenString + returnUuid4();
+
 String generateUserUpdateLogNoBatchId() => 'userUpdateLogNoBatch' + hyphenString + returnUuid4();
+
+String generatePostReportId() => 'postReport' + hyphenString + returnUuid4();
+
 // prefs
 const String speedPrefsKey = 'speed';
 const String isDarkThemePrefsKey = 'isDarkTheme';
 // tokenTypes
 final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
+
 final String bookmarkPostCategoryTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPostCategory);
+
 final String bookmarkPostTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPost);
+
 final String followingTokenType = returnTokenTypeString(tokenType: TokenType.following);
+
 final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);
+
 final String likePostCommentTokenType = returnTokenTypeString(tokenType: TokenType.likePostComment);
+
 final String watchlistTokenType = returnTokenTypeString(tokenType: TokenType.watchlist);
+
 final String mutePostCommentTokenType = returnTokenTypeString(tokenType: TokenType.mutePostComment);
+
 final String mutePostTokenType = returnTokenTypeString(tokenType: TokenType.mutePost);
+
 final String mutePostCommentReplyTokenType = returnTokenTypeString(tokenType: TokenType.mutePostCommentReply);
+
 final String muteUserTokenType = returnTokenTypeString(tokenType: TokenType.muteUser);
+
 final String likePostCommentReplyTokenType = returnTokenTypeString(tokenType: TokenType.likePostCommentReply);
+
 final String searchHistoryTokenType = returnTokenTypeString(tokenType: TokenType.searchHistory);
+
 final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.readPost);
 // tokenType(notification)
 final String authNotificationType = returnNotificationTypeString(notificationType: NotificationType.authNotification);
+
 final String officialNotificationType = returnNotificationTypeString(notificationType: NotificationType.officialNotification);
+
 final String commentNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentNotification);
+
 final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentReplyNotification );
 // colRefName
 const String usersColRefName = 'users';
@@ -77,6 +126,7 @@ const String postCommentReplyLikesColRefName = 'postCommentReplyLikes';
 const String officialAdvertisementsColRefName = 'officialAdvertisements';
 const String officialAdvertisementImperssionsColRefName = 'officialAdvertisementImpressions';
 const String officialAdvertisementConfigColRefName = 'officialAdvertisementConfig';
+const String postReportsColRefName = 'postReports';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String createdAtFieldKey = 'createdAt';
@@ -136,3 +186,5 @@ const String pleaseScrollMsg = '上にスクロールすると表示されます
 final String maxCommentOrReplyMsg = maxCommentOrReplyLength.toString() + '以下でお願いします'; 
 // Id
 const String configIdString = 'config';
+// title
+const String reportTitle = '問題を報告してください';

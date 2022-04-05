@@ -14,9 +14,9 @@ import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dar
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
 
-class BookmarkLabelsPage extends ConsumerWidget {
+class BookmarkCategoriesPage extends ConsumerWidget {
   
-  const BookmarkLabelsPage({
+  const BookmarkCategoriesPage({
     Key? key,
     required this.mainModel,
   }) : super(key: key);

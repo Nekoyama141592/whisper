@@ -156,6 +156,8 @@ CollectionReference<Map<String, dynamic>> returnOfficialAdvertisementConfigColRe
 
 DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementConfigDocRef() => returnOfficialAdvertisementConfigColRef().doc(configIdString);
 
+DocumentReference<Map<String,dynamic>> returnPostReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postDoc,required String postReportId }) => postDoc.reference.collection(postReportsColRefName).doc(postReportId) ;
+
 Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   final instance = ImageCropper();
   final File? result = await instance.cropImage(

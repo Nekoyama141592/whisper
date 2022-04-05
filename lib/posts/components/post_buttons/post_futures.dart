@@ -6,10 +6,12 @@ import 'package:flash/flash.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -17,11 +19,12 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/like_post/like_post.dart';
 import 'package:whisper/domain/post_like/post_like.dart';
+import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/mute_post/mute_post.dart';
+import 'package:whisper/domain/post_report/post_report.dart';
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
-import 'package:whisper/domain/mute_user/mute_user.dart';
-import 'package:whisper/domain/mute_post/mute_post.dart';
 // model 
 import 'package:whisper/main_model.dart';
 
@@ -58,7 +61,7 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkPostLabels }) async {
     final Widget content = Container(
-      height: MediaQuery.of(context).size.height * 0.70,
+      height: flashDialogueHeight(context: context),
       child: ValueListenableBuilder<String>(
         valueListenable: mainModel.bookmarkPostCategoryTokenIdNotifier,
         builder: (_,bookmarkPostLabelId,__) {
@@ -69,16 +72,14 @@ class PostFutures extends ChangeNotifier {
               return ListTile(
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
                 title: Text(bookmarkPostLabel.categoryName),
-                onTap: () {
-                  mainModel.bookmarkPostCategoryTokenIdNotifier.value = bookmarkPostLabel.tokenId;
-                },
+                onTap: () => mainModel.bookmarkPostCategoryTokenIdNotifier.value = bookmarkPostLabel.tokenId,
               );
             }
           );
         }
       ),
     );
-  final positiveActionBuilder = (_, controller, __) {
+    final positiveActionBuilder = (_, controller, __) {
     return TextButton(
       onPressed: () async {
         if (mainModel.bookmarkPostCategoryTokenIdNotifier.value.isEmpty) {
@@ -93,7 +94,7 @@ class PostFutures extends ChangeNotifier {
           mainModel.bookmarkPosts.add(bookmarkPost);
           whisperPost.bookmarkCount += plusOne;
           notifyListeners();
-          (controller as FlashController ).dismiss();
+          await (controller as FlashController ).dismiss();
           // backend
           await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
@@ -207,14 +208,12 @@ class PostFutures extends ChangeNotifier {
         actions: [
           CupertinoDialogAction(
             child: const Text(cancelMsg),
-            onPressed: () {
-              Navigator.pop(innerContext);
-            },
+            onPressed: () => Navigator.pop(innerContext),
           ),
           CupertinoDialogAction(
             child: const Text(okMsg),
             isDestructiveAction: true,
-            onPressed: () async { await deletePost(innerContext: innerContext, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i) ;},
+            onPressed: () async => await deletePost(innerContext: innerContext, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i)
           ),
         ],
       );
@@ -224,6 +223,68 @@ class PostFutures extends ChangeNotifier {
   Future<void> initAudioPlayer({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris ,required int i}) async {
     ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
+  }
+
+  void reportPost({ required BuildContext context, required MainModel mainModel, required int i, required Post post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) {
+    final postDoc = results[i];
+    final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
+    final String postReportId = generatePostReportId();
+    final TextEditingController othersEditingController = TextEditingController();
+    final Widget content = Container(
+      height: flashDialogueHeight(context: context),
+      child: ValueListenableBuilder<List<String>>(
+        valueListenable: selectedReportContentsNotifier,
+        builder: (_,selectedReportContents,__) {
+          return ListView.builder(
+            itemCount: reportContents.length,
+            itemBuilder: (BuildContext context, int i) {
+              final String reportContent = reportContents[i];
+              return ListTile(
+                leading: selectedReportContents.contains(reportContent) ? Icon(Icons.check) : SizedBox.shrink(),
+                title: Text(reportContent),
+                onTap: () {
+                  if (selectedReportContentsNotifier.value.contains(reportContent) == false) {
+                    List<String> x = selectedReportContentsNotifier.value;
+                    x.add(reportContent);
+                    selectedReportContentsNotifier.value = x.map((e) => e).toList();
+                  }
+                },
+              );
+            }
+          );
+        }
+      ),
+    );
+    
+    final positiveActionBuilder = (_, controller, __) {
+      return TextButton(
+        onPressed: () async {
+          final PostReport postReport = PostReport(
+            activeUid: mainModel.userMeta.uid,
+            createdAt: Timestamp.now(), 
+            others: othersEditingController.text, 
+            passiveUid: post.uid, 
+            passiveUserImageURL: post.userImageURL, 
+            passiveUserName: post.userName, 
+            postRef: postDoc.reference, 
+            postId: postDoc.id, 
+            postReportId: postReportId,
+            postTitle: post.title, 
+            postTitleLanguageCode: post.titleLanguageCode,
+            postTitleNegativeScore: post.titleNegativeScore, 
+            postTitlePositiveScore: post.titlePositiveScore, 
+            postTitleSentiment: post.titleSentiment,
+            reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value),
+          );
+          othersEditingController.text = '';
+          await (controller as FlashController).dismiss();
+          await mutePost(mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
+          await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
+        }, 
+        child: Text('選択', style: textStyle(context: context), )
+      );
+    };
+    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
   }
 }
 

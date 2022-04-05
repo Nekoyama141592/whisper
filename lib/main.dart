@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:whisper/components/bookmarks/other_pages/bookmark_labels_page.dart';
+import 'package:whisper/components/bookmarks/other_pages/bookmark_categories_page.dart';
 // constants
 import 'themes/themes.dart';
 //components
@@ -81,9 +81,7 @@ class MyHomePage extends ConsumerWidget {
       Loading()
       : PageView(
         controller: whisperBottomNavigationbarModel.pageController,
-        onPageChanged: (index){
-          whisperBottomNavigationbarModel.onPageChanged(index);
-        },
+        onPageChanged: (index) => whisperBottomNavigationbarModel.onPageChanged(index),
         children: [
           Home(
             mainModel: mainModel, 
@@ -94,7 +92,7 @@ class MyHomePage extends ConsumerWidget {
             themeModel: themeModel,
           ),
           WhichType(mainModel: mainModel),
-          BookmarkLabelsPage(mainModel: mainModel),
+          BookmarkCategoriesPage(mainModel: mainModel),
           MyProfilePage(mainModel: mainModel),
         ],
       ),

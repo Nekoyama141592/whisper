@@ -20,6 +20,7 @@ class PostCard extends StatelessWidget {
     required this.initAudioPlayer,
     required this.muteUser,
     required this.mutePost,
+    required this.reportPost,
     required this.mainModel
   }) : super(key: key);
 
@@ -28,6 +29,7 @@ class PostCard extends StatelessWidget {
   final void Function()? initAudioPlayer;
   final void Function()? muteUser;
   final void Function()? mutePost;
+  final void Function()? reportPost;
   final MainModel mainModel;
 
   @override 
@@ -49,6 +51,7 @@ class PostCard extends StatelessWidget {
           [
             SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: muteUser ),
             SlideIcon(caption: 'Mute Post', iconData: Icons.visibility_off, onTap: mutePost ),
+            SlideIcon(caption: 'Report Post', iconData: Icons.report, onTap: reportPost, )
           ] : deleteIcon,
           child: Container(
             decoration: BoxDecoration(
