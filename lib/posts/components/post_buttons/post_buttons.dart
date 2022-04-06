@@ -41,7 +41,7 @@ class PostButtons extends StatelessWidget {
         BookmarkButton(postType: postType, whisperPost: whisperPost, mainModel: mainModel),
         CommentButton(mainModel: mainModel,toCommentsPage: toCommentsPage),
         if (mainModel.currentWhisperUser.uid == whisperPost.uid) EditButton(toEditingMode: toEditingMode,),
-        if (whisperPost.links.isNotEmpty) RedirectToUrlButton(whisperPost: whisperPost,)
+        if (whisperPost.links.isNotEmpty) RedirectToUrlButton(whisperPost: whisperPost,),
       ],
     );
   }

@@ -112,7 +112,7 @@ class PostShowPage extends ConsumerWidget {
                           SizedBox(height: height/64.0),
                           CurrentSongTitle(whisperPost: whisperPost,),
                           SizedBox(height: height/64.0),
-                          PostButtons(whisperPost: whisperPost, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode, mainModel: mainModel, editPostInfoModel: editPostInfoModel),
+                          PostButtons(whisperPost: whisperPost, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
                           SizedBox(height: height/64.0),
                           AudioStateDesign(
                             speedNotifier: speedNotifier,

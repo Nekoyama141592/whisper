@@ -36,13 +36,13 @@ class UpdateEmailModel extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelMsg),
+            child: const Text(cancelText),
             onPressed: () {
               Navigator.pop(innerContext);
             },
           ),
           CupertinoDialogAction(
-            child: Text(okMsg),
+            child: Text(okText),
             isDestructiveAction: true,
             onPressed: () async { await voids.signOut(context: context, innerContext: innerContext); }
           ),

@@ -84,13 +84,13 @@ class AccountModel extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelMsg),
+            child: const Text(cancelText),
             onPressed: () {
               Navigator.pop(innerContext);
             },
           ),
           CupertinoDialogAction(
-            child: Text(okMsg),
+            child: Text(okText),
             isDestructiveAction: true,
             onPressed: () async {
               if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
@@ -121,13 +121,13 @@ class AccountModel extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelMsg),
+            child: const Text(cancelText),
             onPressed: () {
               Navigator.pop(innerContext);
             },
           ),
           CupertinoDialogAction(
-            child: Text(okMsg),
+            child: Text(okText),
             isDestructiveAction: true,
             onPressed: () async { voids.signOut(context: context,innerContext: innerContext ); }
           )

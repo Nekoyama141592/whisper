@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 // packages
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/colors.dart';
@@ -73,9 +74,9 @@ MuteUser fromMapToMutesIpv6AndUid({ required Map<String,dynamic> map }) => MuteU
 
 BlockUser fromMapToBlocksIpv6AndUid({ required Map<String,dynamic> map }) => BlockUser.fromJson(map);
 
-TextStyle textStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: MediaQuery.of(context).size.height/32.0 ,overflow: TextOverflow.ellipsis);
+TextStyle textStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
 
-TextStyle cancelStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: MediaQuery.of(context).size.height/32.0 ,overflow: TextOverflow.ellipsis);
+TextStyle cancelStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
 
 User? firebaseAuthCurrentUser() => FirebaseAuth.instance.currentUser;
 

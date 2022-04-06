@@ -35,6 +35,8 @@ import 'package:whisper/domain/user_meta_update_log/user_meta_update_log.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// components
+import 'package:whisper/details/positive_text.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
@@ -368,7 +370,7 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
     negativeActionBuilder: (context, controller, _) {
       return TextButton(
         onPressed: () async => await controller.dismiss(),
-        child: Text(cancelMsg,style: cancelStyle(context: context)),
+        child: Text(cancelText,style: cancelStyle(context: context)),
       );
     },
     positiveActionBuilder: positiveActionBuilder,
@@ -396,7 +398,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () async {
                     await FlutterClipboard.copy(link).then((_) {
-                      showSnackBar(context: context, text: '固有のユーザー名をコピーしました');
+                      showSnackBar(context: context, text: 'リンクをコピーしました');
                     });
                   },
                 ),
@@ -412,7 +414,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
           ),
           actions: [
             CupertinoDialogAction(
-              child: const Text(cancelMsg),
+              child: const Text(cancelText),
               onPressed: () => Navigator.pop(innerContext)
             ),
             CupertinoDialogAction(
@@ -443,7 +445,7 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
           onPressed: () => showLinkDialogue(context: context, link: whisperLink.url )
         ) ).toList();
         actions.add(CupertinoActionSheetAction(
-          child: Text(cancelMsg,style: textStyle(context: context),),
+          child: PositiveText(text: cancelText),
           onPressed: () => Navigator.pop(innerContext),
         ));
         return CupertinoActionSheet(

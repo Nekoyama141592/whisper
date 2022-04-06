@@ -185,8 +185,6 @@ const String muteUserMsg = 'ユーザーをミュートしました';
 const String mutePostMsg = 'この投稿をミュートしました';
 const String mutePostCommentMsg = 'このコメントをミュートしました';
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';
-const String okMsg = 'OK';
-const String cancelMsg = 'キャンセル';
 const String emptyMsg = 'キャンセルされました';
 const String pleaseScrollMsg = '上にスクロールすると表示されます';
 final String maxCommentOrReplyMsg = maxCommentOrReplyLength.toString() + '以下でお願いします'; 
@@ -199,3 +197,13 @@ const String choiceModalMsg = '選択';
 const String configIdString = 'config';
 // title
 const String reportTitle = '問題を報告してください';
+// text
+const String okText = 'OK';
+const String cancelText = 'キャンセル';
+const String muteUserJaText = 'ユーザーをミュート';
+const String mutePostJaText = '投稿をミュート';
+const String muteCommentJaText = 'コメントをミュート';
+const String muteReplyJaText = 'リプライをミュート';
+const String reportPostJaText = '投稿を報告';
+const String reportCommentJaText = 'コメントを報告';
+const String reportReplyJaText = 'リプライを報告';

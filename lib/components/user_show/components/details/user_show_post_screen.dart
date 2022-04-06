@@ -1,17 +1,19 @@
 // material
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/judge_screen.dart';
-import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
+import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/components/user_show/components/details/post_cards.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // model
@@ -46,24 +48,48 @@ class UserShowPostScreen extends ConsumerWidget {
         enablePullUp: true,
         header: WaterDropHeader(),
         controller: userShowModel.refreshController,
-        onRefresh: () async {
-          await userShowModel.onRefresh();
-        },
-        onLoading: () async {
-          await userShowModel.onLoading();
-        },
+        onRefresh: () async => await userShowModel.onRefresh(),
+        onLoading: () async => userShowModel.onLoading(),
         child: ListView.builder(
           itemCount: postDocs.length,
           itemBuilder: (BuildContext context, int i) {
             final Map<String,dynamic> post = postDocs[i].data() as Map<String,dynamic>;
+            final Post whisperPost = Post.fromJson(post);
             return 
             PostCard(
               post: post,
-              onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: userShowModel.afterUris, posts: userShowModel.posts, mainModel: mainModel, i: i); },
+              onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: post, afterUris: userShowModel.afterUris, posts: userShowModel.posts, mainModel: mainModel, i: i); },
               initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, i: i),
-              muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: userShowModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
+              muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, muteUids: mainModel.muteUids, i: i, results: userShowModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
               mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, post: post, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts ),
               reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts ),
+              reportPostButtonBuilder:  (innerContext) {
+                return CupertinoActionSheet(
+                  actions: whisperPost.uid == mainModel.userMeta.uid ?
+                  [  
+                    CupertinoActionSheetAction(onPressed: () {
+                      Navigator.pop(innerContext);
+                      postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: userShowModel.audioPlayer, postMap: post, afterUris: userShowModel.afterUris, posts: userShowModel.posts, mainModel: mainModel, i: i);
+                    }, child: PositiveText(text: cancelText) ),
+                    CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                  ]
+                  : [
+                    CupertinoActionSheetAction(onPressed: () async {
+                      Navigator.pop(innerContext);
+                      await postFutures.muteUser(context: context, audioPlayer: userShowModel.audioPlayer, afterUris: userShowModel.afterUris, muteUids: mainModel.muteUids, i: i, results: userShowModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                    }, child: PositiveText(text: muteUserJaText) ),
+                    CupertinoActionSheetAction(onPressed: () async {
+                      Navigator.pop(innerContext);
+                      await postFutures.mutePost(context: context, mainModel: mainModel, i: i, post: post, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts);
+                    }, child: PositiveText(text: mutePostJaText) ),
+                    CupertinoActionSheetAction(onPressed: () {
+                      Navigator.pop(innerContext);
+                      postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: userShowModel.afterUris, audioPlayer: userShowModel.audioPlayer, results: userShowModel.posts);
+                    }, child: PositiveText(text: reportPostJaText) ),
+                    CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                  ],
+                );
+              },
               mainModel: mainModel,
             );
           }

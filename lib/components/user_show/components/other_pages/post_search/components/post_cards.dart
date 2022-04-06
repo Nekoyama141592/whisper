@@ -1,24 +1,26 @@
 // material
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
+import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
+import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
+import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
-import 'package:whisper/posts/components/post_buttons/post_futures.dart';
 
 class PostCards extends ConsumerWidget {
 
@@ -55,14 +57,42 @@ class PostCards extends ConsumerWidget {
               itemCount: results.length,
               itemBuilder: (BuildContext context, int i) {
                 final Map<String,dynamic> post = results[i].data()!;
+                final Post whisperPost = Post.fromJson(post);
                 return 
                 PostCard(
                   post: post,
-                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
+                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: post, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i),
-                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
+                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
                   mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
                   reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
+                  reportPostButtonBuilder:  (innerContext) {
+                    return CupertinoActionSheet(
+                      actions: whisperPost.uid == mainModel.userMeta.uid ?
+                        [  
+                          CupertinoActionSheetAction(onPressed: () {
+                            Navigator.pop(innerContext);
+                            postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: post, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i);
+                          }, child: PositiveText(text: cancelText) ),
+                          CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        ]
+                        : [
+                        CupertinoActionSheetAction(onPressed: () async {
+                          Navigator.pop(innerContext);
+                          await postFutures.muteUser(context: context, audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                        }, child: PositiveText(text: muteUserJaText) ),
+                        CupertinoActionSheetAction(onPressed: () async {
+                          Navigator.pop(innerContext);
+                          await postFutures.mutePost(context: context, mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
+                        }, child: PositiveText(text: mutePostJaText) ),
+                        CupertinoActionSheetAction(onPressed: () {
+                          Navigator.pop(innerContext);
+                          postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
+                        }, child: PositiveText(text: reportPostJaText) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                      ],
+                    );
+                  },
                   mainModel: mainModel,
                 );
               }

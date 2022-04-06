@@ -14,6 +14,7 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/details/positive_text.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/like_post/like_post.dart';
@@ -101,7 +102,7 @@ class PostFutures extends ChangeNotifier {
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
-      child: Text('選択', style: textStyle(context: context), )
+      child: PositiveText(text: choiceModalMsg)
     );
   };
   voids.showFlashDialogue(context: context, content: content, titleText: 'どのリストにブックマークしますか？',positiveActionBuilder: positiveActionBuilder);
@@ -158,7 +159,7 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
   }
 
-  Future<void> muteUser({ required BuildContext context ,required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
+  Future<void> muteUser({ required BuildContext context ,required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> muteUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
     // process set
     final whisperPost = fromMapToPost(postMap: post);
     final String passiveUid = whisperPost.uid;
@@ -210,11 +211,11 @@ class PostFutures extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelMsg),
+            child: const Text(cancelText),
             onPressed: () => Navigator.pop(innerContext),
           ),
           CupertinoDialogAction(
-            child: const Text(okMsg),
+            child: const Text(okText),
             isDestructiveAction: true,
             onPressed: () async => await deletePost(innerContext: innerContext, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i)
           ),

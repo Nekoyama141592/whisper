@@ -10,6 +10,7 @@ import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/posts/components/post_buttons/components/report_post_button.dart';
 
 class PostCard extends StatelessWidget {
 
@@ -21,6 +22,7 @@ class PostCard extends StatelessWidget {
     required this.muteUser,
     required this.mutePost,
     required this.reportPost,
+    required this.reportPostButtonBuilder,
     required this.mainModel
   }) : super(key: key);
 
@@ -30,6 +32,7 @@ class PostCard extends StatelessWidget {
   final void Function()? muteUser;
   final void Function()? mutePost;
   final void Function()? reportPost;
+  final Widget Function(BuildContext) reportPostButtonBuilder;
   final MainModel mainModel;
 
   @override 
@@ -62,6 +65,7 @@ class PostCard extends StatelessWidget {
             ),
             child: ListTile(
               leading: RedirectUserImage(userImageURL: whisperPost.userImageURL, length: defaultPadding(context: context) *3.0, padding: 0.0, passiveUid: whisperPost.uid, mainModel: mainModel),
+              trailing: ReportPostButton(builder: reportPostButtonBuilder),
               title: Text(
                 mainModel.currentWhisperUser.uid == whisperPost.uid ?
                 mainModel.currentWhisperUser.userName
