@@ -11,3 +11,7 @@ const double notificationCardOpacity = 0.85;
 const double cardTextDiv = 1.1;
 const double cardTextDiv2 = 1.30;
 const double notificationDiv = 1.30;
+// score
+const double defaultScore = 10000.0;
+const double likeScore = 100.0;
+const double bookmarkScore = 150.0;

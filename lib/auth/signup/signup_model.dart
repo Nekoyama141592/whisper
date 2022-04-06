@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/nums.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

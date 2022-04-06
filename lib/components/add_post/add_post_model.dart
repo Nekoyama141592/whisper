@@ -5,24 +5,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/nums.dart';
-import 'package:whisper/constants/strings.dart';
 // constants
-import 'package:whisper/constants/lists.dart';
-import 'package:whisper/constants/maps.dart';
-import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/constants/others.dart';
 import 'package:whisper/main_model.dart';
+import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/maps.dart';
+import 'package:whisper/constants/lists.dart';
+import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
@@ -42,7 +42,6 @@ final addPostProvider = ChangeNotifierProvider(
 class AddPostModel extends ChangeNotifier {
   
   final postTitleNotifier = ValueNotifier<String>('');
-  
   late AudioPlayer audioPlayer;
   String filePath = "";
   late File audioFile;
