@@ -42,8 +42,8 @@ class WhisperPostComment {
   final String accountName;
   final String comment;
   final String commentLanguageCode;
-  final num commentPositiveScore;
-  final num commentNegativeScore;
+  final double commentPositiveScore;
+  final double commentNegativeScore;
   final String commentSentiment;
   final dynamic createdAt;
   final int followerCount;
@@ -61,15 +61,15 @@ class WhisperPostComment {
   final String postId;
   final int postCommentReplyCount;
   final int reportCount;
-  final num score;
+  final double score;
   final String uid;
   final dynamic updatedAt;
   final String userImageURL;
-  final num userImageNegativeScore;
+  final double userImageNegativeScore;
   final String userName;
   final String userNameLanguageCode;
-  final num userNameNegativeScore;
-  final num userNamePositiveScore;
+  final double userNameNegativeScore;
+  final double userNamePositiveScore;
   final String userNameSentiment;
 
   factory WhisperPostComment.fromJson(Map<String,dynamic> json) => _$WhisperPostCommentFromJson(json);

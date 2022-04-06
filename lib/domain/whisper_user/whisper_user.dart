@@ -50,8 +50,8 @@ class WhisperUser {
   String bio;
   // un used
   final String bioLanguageCode;
-  final num bioNegativeScore;
-  final num bioPositiveScore; 
+  final double bioNegativeScore;
+  final double bioPositiveScore; 
   final String bioSentiment;
   final int blockCount;
   final dynamic createdAt;
@@ -71,17 +71,17 @@ class WhisperUser {
   int postCount;
   String recommendState;
   final int reportCount;
-  final num score;
+  final double score;
   Map<String,dynamic> searchToken;
-  final num totalAsset;
+  final double totalAsset;
   final String uid;
   dynamic updatedAt;
   String userImageURL;
-  final num userImageNegativeScore;
+  final double userImageNegativeScore;
   String userName;
   final String userNameLanguageCode;
-  final num userNameNegativeScore;
-  final num userNamePositiveScore;
+  final double userNameNegativeScore;
+  final double userNamePositiveScore;
   final String userNameSentiment;
   List<Map<String,dynamic>> walletAddresses;
   bool walletConnected;

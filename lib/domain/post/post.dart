@@ -63,8 +63,8 @@ class Post{
   String description;
   // un used
   final String descriptionLanguageCode;
-  final num descriptionNegativeScore;
-  final num descriptionPositiveScore;
+  final double descriptionNegativeScore;
+  final double descriptionPositiveScore;
   final String descriptionSentiment;
   String genre;
   List<String> hashTags;
@@ -84,23 +84,23 @@ class Post{
   String postId;
   String recommendState;
   final int reportCount;
-  num score;
+  double score;
   final String storagePostName;
   Map<String,dynamic> searchToken;
   List<String> tagAccountNames;
   String title;
   final titleLanguageCode;
-  final num titleNegativeScore;
-  final num titlePositiveScore;
+  final double titleNegativeScore;
+  final double titlePositiveScore;
   final String titleSentiment;
   final String uid;
   dynamic updatedAt;
   String userImageURL;
-  final num userImageNegativeScore;
+  final double userImageNegativeScore;
   String userName;
   final String userNameLanguageCode;
-  final num userNameNegativeScore;
-  final num userNamePositiveScore;
+  final double userNameNegativeScore;
+  final double userNamePositiveScore;
   final String userNameSentiment;
   
   factory Post.fromJson(Map<String,dynamic> json) => _$PostFromJson(json);

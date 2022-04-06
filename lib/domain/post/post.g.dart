@@ -15,8 +15,10 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       createdAt: json['createdAt'],
       description: json['description'] as String,
       descriptionLanguageCode: json['descriptionLanguageCode'] as String,
-      descriptionNegativeScore: json['descriptionNegativeScore'] as num,
-      descriptionPositiveScore: json['descriptionPositiveScore'] as num,
+      descriptionNegativeScore:
+          (json['descriptionNegativeScore'] as num).toDouble(),
+      descriptionPositiveScore:
+          (json['descriptionPositiveScore'] as num).toDouble(),
       descriptionSentiment: json['descriptionSentiment'] as String,
       genre: json['genre'] as String,
       hashTags:
@@ -40,7 +42,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       postCommentCount: json['postCommentCount'] as int,
       recommendState: json['recommendState'] as String,
       reportCount: json['reportCount'] as int,
-      score: json['score'] as num,
+      score: (json['score'] as num).toDouble(),
       storagePostName: json['storagePostName'] as String,
       searchToken: json['searchToken'] as Map<String, dynamic>,
       tagAccountNames: (json['tagAccountNames'] as List<dynamic>)
@@ -48,17 +50,18 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
           .toList(),
       title: json['title'] as String,
       titleLanguageCode: json['titleLanguageCode'],
-      titleNegativeScore: json['titleNegativeScore'] as num,
-      titlePositiveScore: json['titlePositiveScore'] as num,
+      titleNegativeScore: (json['titleNegativeScore'] as num).toDouble(),
+      titlePositiveScore: (json['titlePositiveScore'] as num).toDouble(),
       titleSentiment: json['titleSentiment'] as String,
       uid: json['uid'] as String,
       updatedAt: json['updatedAt'],
       userImageURL: json['userImageURL'] as String,
-      userImageNegativeScore: json['userImageNegativeScore'] as num,
+      userImageNegativeScore:
+          (json['userImageNegativeScore'] as num).toDouble(),
       userName: json['userName'] as String,
       userNameLanguageCode: json['userNameLanguageCode'] as String,
-      userNameNegativeScore: json['userNameNegativeScore'] as num,
-      userNamePositiveScore: json['userNamePositiveScore'] as num,
+      userNameNegativeScore: (json['userNameNegativeScore'] as num).toDouble(),
+      userNamePositiveScore: (json['userNamePositiveScore'] as num).toDouble(),
       userNameSentiment: json['userNameSentiment'] as String,
     );
 
