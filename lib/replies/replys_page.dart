@@ -42,10 +42,7 @@ class ReplysPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Icon(Icons.add_comment),
-        onPressed: () {
-          // repliesModel.reset();
-          repliesModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel);
-        },
+        onPressed: () => repliesModel.onAddReplyButtonPressed(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, whisperComment: whisperPostComment, mainModel: mainModel),
       ),
       body: SafeArea(
         child: repliesModel.isLoading ?
@@ -53,22 +50,18 @@ class ReplysPage extends ConsumerWidget {
         : Column(
           children: [
             CommentsOrReplysHeader(
-              onMenuPressed: () { repliesModel.showSortDialogue(context: context,whisperPostComment: whisperPostComment); }
+              onMenuPressed: () => repliesModel.showSortDialogue(context: context,whisperPostComment: whisperPostComment),
             ),
             Expanded(
               child: repliesModel.postCommentReplyDocs.isEmpty ?
-              Nothing(reload: () async { await repliesModel.onReload(whisperPostComment: whisperPostComment); }) : 
-              SmartRefresher(
+              Nothing(reload: () async => await repliesModel.onReload(whisperPostComment: whisperPostComment),)
+              : SmartRefresher(
                 enablePullUp: true,
                 enablePullDown: true,
                 header: WaterDropHeader(),
                 controller: repliesModel.refreshController,
-                onLoading: () async {
-                  await repliesModel.onLoading( whisperPostComment: whisperPostComment);
-                },
-                onRefresh: () async {
-                  await repliesModel.onRefresh(whisperPostComment: whisperPostComment);
-                },
+                onLoading: () async => await repliesModel.onLoading( whisperPostComment: whisperPostComment),
+                onRefresh: () async => await repliesModel.onRefresh(whisperPostComment: whisperPostComment),
                 child: ListView.builder(
                   itemCount: repliesModel.postCommentReplyDocs.length,
                   itemBuilder: (BuildContext context,int i) {

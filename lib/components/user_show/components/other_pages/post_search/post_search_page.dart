@@ -12,8 +12,6 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'post_search_model.dart';
 import 'package:whisper/main_model.dart';
-// main.dart
-import 'package:whisper/main.dart';
 
 class PostSearchPage extends ConsumerWidget {
 
@@ -62,14 +60,10 @@ class PostSearchPage extends ConsumerWidget {
                   searchController.text = '';
                   postSearchModel.searchTerm = '';
                 },
-                onLongPress: () async { await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }); },
-                onChanged: (text) {
-                  postSearchModel.searchTerm = text;
-                },
+                onLongPress: () async => await FlutterClipboard.paste().then((value) { postSearchModel.searchTerm = value; }),
+                onChanged: (text) => postSearchModel.searchTerm = text,
                 controller: searchController, 
-                search: () async {
-                  await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
-                }
+                search: () async => await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser),
               ),
             ),
             if (searchModel.results.isEmpty) SizedBox(height: size.height * 0.16,),
@@ -81,9 +75,7 @@ class PostSearchPage extends ConsumerWidget {
                 mainModel: mainModel,
                 postSearchModel: postSearchModel,
               ), 
-              reload: () async {
-                await postSearchModel.onReload(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
-              }
+              reload: () async => await postSearchModel.onReload(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser),
             ),
           ],
         )

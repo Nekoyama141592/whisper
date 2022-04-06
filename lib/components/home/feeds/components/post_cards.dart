@@ -79,8 +79,8 @@ class PostCards extends StatelessWidget {
                   post: post,
                   onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, postMap: postDocs[i].data() as Map<String,dynamic>, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, i: i),
-                  muteUser: () async => await postFutures.muteUser(audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
-                  mutePost: () async => await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts ),
+                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
+                  mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, post: post, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts ),
                   reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts ),
                   mainModel: mainModel,
                 );

@@ -21,7 +21,7 @@ class OnePostAudioWindow extends StatelessWidget {
     required this.pause,
     required this.title,
     required this.mainModel,
-    required this.route
+    required this.route,
   }) : super(key: key);
   
   final ProgressNotifier progressNotifier;

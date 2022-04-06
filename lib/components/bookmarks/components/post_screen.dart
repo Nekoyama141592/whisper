@@ -77,25 +77,21 @@ class PostScreen extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: bookmarksModel.speedNotifier,
-            speedControll:  () async { await voids.speedControll(audioPlayer: bookmarksModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: bookmarksModel.speedNotifier); },
+            speedControll:  () async => await voids.speedControll(audioPlayer: bookmarksModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: bookmarksModel.speedNotifier),
             currentWhisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, 
             progressNotifier: bookmarksModel.progressNotifier, 
             seek: bookmarksModel.seek, 
             repeatButtonNotifier: bookmarksModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: bookmarksModel.audioPlayer, repeatButtonNotifier: bookmarksModel.repeatButtonNotifier); }, 
+            onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: bookmarksModel.audioPlayer, repeatButtonNotifier: bookmarksModel.repeatButtonNotifier),
             isFirstSongNotifier: bookmarksModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); }, 
+            onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
             playButtonNotifier: bookmarksModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: bookmarksModel.audioPlayer); }, 
-            pause: () { voids.pause(audioPlayer: bookmarksModel.audioPlayer); }, 
+            play: () => voids.play(audioPlayer: bookmarksModel.audioPlayer),
+            pause: () => voids.pause(audioPlayer: bookmarksModel.audioPlayer),
             isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
-            toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: bookmarksModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
-            },
-            toEditingMode:  () {
-              voids.toEditPostInfoMode(audioPlayer: bookmarksModel.audioPlayer, editPostInfoModel: editPostInfoModel);
-            },
+            onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
+            toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: bookmarksModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
+            toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: bookmarksModel.audioPlayer, editPostInfoModel: editPostInfoModel),
             postType: bookmarksModel.postType,
             mainModel: mainModel
           ); 
@@ -104,16 +100,14 @@ class PostScreen extends ConsumerWidget {
         seek: bookmarksModel.seek,
         currentWhisperPostNotifier: bookmarksModel.currentWhisperPostNotifier,
         playButtonNotifier: bookmarksModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: bookmarksModel.audioPlayer); }, 
-        pause: () {
-          voids.pause(audioPlayer: bookmarksModel.audioPlayer);
-        }, 
+        play: () => voids.play(audioPlayer: bookmarksModel.audioPlayer),
+        pause: () => voids.pause(audioPlayer: bookmarksModel.audioPlayer),
         refreshController: bookmarksModel.refreshController,
-        onLoading: () async { await bookmarksModel.onLoading(); },
+        onLoading: () async => await bookmarksModel.onLoading(),
         isFirstSongNotifier: bookmarksModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
+        onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
         isLastSongNotifier: bookmarksModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer); },
+        onNextSongButtonPressed: () => voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
           mainModel: mainModel,
           bookmarksModel: bookmarksModel,
         ),

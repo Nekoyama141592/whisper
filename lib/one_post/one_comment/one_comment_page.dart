@@ -55,25 +55,21 @@ class OneCommentPage extends ConsumerWidget {
                   routes.toPostShowPage(
                     context: context,
                     speedNotifier: onePostModel.speedNotifier,
-                    speedControll:  () async { await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier); },
+                    speedControll:  () async => await voids.setSpeed(audioPlayer: onePostModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: onePostModel.speedNotifier),
                     currentWhisperPostNotifier: onePostModel.currentWhisperPostNotifier, 
                     progressNotifier: onePostModel.progressNotifier, 
                     seek: onePostModel.seek, 
                     repeatButtonNotifier: onePostModel.repeatButtonNotifier, 
-                    onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: onePostModel.audioPlayer, repeatButtonNotifier: onePostModel.repeatButtonNotifier); }, 
+                    onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: onePostModel.audioPlayer, repeatButtonNotifier: onePostModel.repeatButtonNotifier),
                     isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
-                    onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
+                    onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer),
                     playButtonNotifier: onePostModel.playButtonNotifier, 
-                    play: () { voids.play(audioPlayer: onePostModel.audioPlayer); }, 
-                    pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
+                    play: () => voids.play(audioPlayer: onePostModel.audioPlayer),
+                    pause: () => voids.pause(audioPlayer: onePostModel.audioPlayer),
                     isLastSongNotifier: onePostModel.isLastSongNotifier, 
-                    onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
-                    toCommentsPage:  () async {
-                      await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
-                    },
-                    toEditingMode:  () {
-                      voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel);
-                    },
+                    onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer),
+                    toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: onePostModel.audioPlayer, whisperPostNotifier: onePostModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: onePostModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
+                    toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: onePostModel.audioPlayer, editPostInfoModel: editPostInfoModel),
                     postType: onePostModel.postType,
                     mainModel: mainModel
                   ); 
@@ -82,12 +78,12 @@ class OneCommentPage extends ConsumerWidget {
                 seek: onePostModel.seek, 
                 whisperPost: onePostModel.currentWhisperPostNotifier.value!, 
                 playButtonNotifier: onePostModel.playButtonNotifier, 
-                play: () { voids.play(audioPlayer: onePostModel.audioPlayer); }, 
-                pause: () { voids.pause(audioPlayer: onePostModel.audioPlayer); }, 
+                play: () => voids.play(audioPlayer: onePostModel.audioPlayer),
+                pause: () => voids.pause(audioPlayer: onePostModel.audioPlayer),
                 isFirstSongNotifier: onePostModel.isFirstSongNotifier, 
-                onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer); }, 
+                onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: onePostModel.audioPlayer),
                 isLastSongNotifier: onePostModel.isLastSongNotifier, 
-                onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer); },
+                onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: onePostModel.audioPlayer),
                 mainModel: mainModel
               )
             ],

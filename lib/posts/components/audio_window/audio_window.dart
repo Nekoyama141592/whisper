@@ -31,7 +31,7 @@ class AudioWindow extends StatelessWidget {
     required this.onPreviousSongButtonPressed,
     required this.isLastSongNotifier,
     required this.onNextSongButtonPressed,
-    required this.mainModel
+    required this.mainModel,
   }) : super(key: key);
   
   final void Function()? route;

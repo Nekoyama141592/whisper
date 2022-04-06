@@ -22,6 +22,7 @@ final commentsOrReplysProvider = ChangeNotifierProvider(
 );
 
 class CommentsOrReplysModel extends ChangeNotifier {
+  
   Future<void> muteUser({ required BuildContext context,required MainModel mainModel, required String passiveUid,}) async {
     if (mainModel.muteUids.contains(passiveUid) == false) {
       // process set
@@ -31,7 +32,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       // processUI
       mainModel.muteUsers.add(muteUser);
       mainModel.muteUids.add(muteUser.passiveUid);
-      showSnackBar(context: context, text: muteUserMsg ); // notifyListeners() not working
+      notifyListeners();
+      await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: muteUserMsg);
       // process backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
     } else {
@@ -66,7 +68,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       // process UI
       mainModel.mutePostCommentIds.add(postCommentId);
       mainModel.mutePostComments.add(muteComment);
-      showSnackBar(context: context, text: mutePostCommentMsg ); // notifyListeners() not working
+      notifyListeners();
+      await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: mutePostCommentMsg);
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
     } else {
@@ -83,7 +86,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       // process UI
       mainModel.mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
       mainModel.mutePostCommentReplys.add(muteReply);
-      showSnackBar(context: context, text: mutePostCommentReplyMsg ); // notifyListeners() not working
+      notifyListeners();
+      await showFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg);
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
     } else {

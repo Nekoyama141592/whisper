@@ -46,8 +46,8 @@ class AddPostContent extends StatelessWidget {
       progressNotifier: addPostModel.progressNotifier, 
       playButtonNotifier: addPostModel.playButtonNotifier, 
       seek: addPostModel.seek, 
-      play: () { addPostModel.play(); }, 
-      pause: () { addPostModel.pause(); },
+      play: () => addPostModel.play(),
+      pause: () => addPostModel.pause(),
       title: ValueListenableBuilder<String>(
         valueListenable: addPostModel.postTitleNotifier,
         builder: (_,postTitle,__) {
@@ -128,16 +128,12 @@ class AddPostContent extends StatelessWidget {
                     hintText: "タイトル", 
                     icon: Icons.graphic_eq, 
                     controller: postTitleController, 
-                    onChanged:  (text) {
-                      addPostModel.postTitleNotifier.value = text;
-                    },
+                    onChanged:  (text) => addPostModel.postTitleNotifier.value = text,
                     onCloseButtonPressed: () {
                       postTitleController.text = '';
                       addPostModel.postTitleNotifier.value = '';
                     },
-                    paste: (value) {
-                      addPostModel.postTitleNotifier.value = value;
-                    },
+                    paste: (value) => addPostModel.postTitleNotifier.value = value,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(

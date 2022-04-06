@@ -60,8 +60,8 @@ class PostCards extends ConsumerWidget {
                   post: post,
                   onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: results[i].data()!, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i),
-                  muteUser: () async => await postFutures.muteUser(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
-                  mutePost: () async => await postFutures.mutePost(mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
+                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, mutesUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
+                  mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, post: post, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
                   reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
                   mainModel: mainModel,
                 );
@@ -77,25 +77,21 @@ class PostCards extends ConsumerWidget {
                     postType: postSearchModel.postType,
                     context: context,
                     speedNotifier: postSearchModel.speedNotifier,
-                    speedControll:  () async { await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier); },
+                    speedControll:  () async => await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier),
                     currentWhisperPostNotifier: postSearchModel.currentWhisperPostNotifier, 
                     progressNotifier: postSearchModel.progressNotifier, 
                     seek: postSearchModel.seek, 
                     repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
-                    onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: postSearchModel.audioPlayer, repeatButtonNotifier: postSearchModel.repeatButtonNotifier); }, 
+                    onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: postSearchModel.audioPlayer, repeatButtonNotifier: postSearchModel.repeatButtonNotifier),
                     isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
-                    onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); }, 
+                    onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
-                    play: () { voids.play(audioPlayer: postSearchModel.audioPlayer); }, 
-                    pause: () { voids.pause(audioPlayer: postSearchModel.audioPlayer); }, 
+                    play: () => voids.play(audioPlayer: postSearchModel.audioPlayer),
+                    pause: () => voids.pause(audioPlayer: postSearchModel.audioPlayer),
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
-                    onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
-                    toCommentsPage:  () async {
-                      await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
-                    },
-                    toEditingMode:  () {
-                      voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel);
-                    },
+                    onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
+                    toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
+                    toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel),
                     mainModel: mainModel
                   ); 
                 }, 
@@ -103,14 +99,12 @@ class PostCards extends ConsumerWidget {
                 seek: postSearchModel.seek,
                 whisperPost: whisperPost!,
                 playButtonNotifier: postSearchModel.playButtonNotifier,
-                play: () { voids.play(audioPlayer: postSearchModel.audioPlayer); }, 
-                pause: () {
-                  voids.pause(audioPlayer: postSearchModel.audioPlayer);
-                }, 
+                play: () => voids.play(audioPlayer: postSearchModel.audioPlayer),
+                pause: () => voids.pause(audioPlayer: postSearchModel.audioPlayer),
                 isFirstSongNotifier: postSearchModel.isFirstSongNotifier,
-                onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
+                onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
                 isLastSongNotifier: postSearchModel.isLastSongNotifier,
-                onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer); },
+                onNextSongButtonPressed: () => voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
                 mainModel: mainModel,
               );
             }

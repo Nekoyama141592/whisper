@@ -139,7 +139,7 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
 
-    Future<void> mutePost({required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
+    Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
     // process set
     final Post whisperPost = fromMapToPost(postMap: post);
     final String postId = whisperPost.postId;
@@ -152,11 +152,12 @@ class PostFutures extends ChangeNotifier {
     results.removeWhere((result) => fromMapToPost(postMap: result.data()!).postId == whisperPost.postId );
     await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
+    await voids.showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: mutePostMsg);
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
   }
 
-  Future<void> muteUser({ required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
+  Future<void> muteUser({ required BuildContext context ,required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> mutesUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
     // process set
     final whisperPost = fromMapToPost(postMap: post);
     final String passiveUid = whisperPost.uid;
@@ -168,6 +169,7 @@ class PostFutures extends ChangeNotifier {
     mainModel.muteUids.add(whisperPost.uid);
     await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
+    await voids.showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: muteUserMsg);
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
   }
@@ -279,7 +281,7 @@ class PostFutures extends ChangeNotifier {
           othersEditingController.text = '';
           await (controller as FlashController).dismiss();
           await voids.showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostMsg);
-          await mutePost(mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
+          await mutePost(context: context,mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
         child: Text('選択', style: textStyle(context: context), )

@@ -45,35 +45,25 @@ class CommentsPage extends ConsumerWidget {
           color: Colors.white,
         ),
         backgroundColor: Theme.of(context).highlightColor,
-        onPressed: ()  {
-          commentsModel.onFloatingActionButtonPressed(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel);
-        },
+        onPressed: ()  => commentsModel.onFloatingActionButtonPressed(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, audioPlayer: audioPlayer, mainModel: mainModel),
       ),
       body: SafeArea(
         child: Column(
     
           children: [
             CommentsOrReplysHeader(
-              onMenuPressed: (){
-                commentsModel.showSortDialogue( context :context, whisperPost :whisperPost);
-              },
+              onMenuPressed: () => commentsModel.showSortDialogue( context :context, whisperPost :whisperPost),
             ),
             commentsModel.commentDocs.isEmpty ?
             Expanded(
-              child: Nothing(reload: () async {
-                await commentsModel.getCommentDocs(whisperPost: whisperPost);
-              }),
+              child: Nothing(reload: () async => await commentsModel.getCommentDocs(whisperPost: whisperPost)),
             )
             : Expanded(
               child: SmartRefresher(
                 enablePullUp: true,
                 enablePullDown: true,
-                onLoading: () async {
-                  await commentsModel.onLoading(whisperPost :whisperPost);
-                },
-                onRefresh: () {
-                  commentsModel.onRefresh( context: context, whisperPost: whisperPost);
-                },
+                onLoading: () async => await commentsModel.onLoading(whisperPost :whisperPost),
+                onRefresh: () => commentsModel.onRefresh( context: context, whisperPost: whisperPost),
                 header: WaterDropHeader(),
                 controller: commentsModel.refreshController,
                 child: ListView.builder(

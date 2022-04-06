@@ -41,9 +41,7 @@ class FeedsPage extends ConsumerWidget {
     Loading()
     : JudgeScreen(
       list: postDocs,
-      reload: () async {
-        await mainModel.onReload();
-      },
+      reload: () async => await mainModel.onReload(),
       content: PostCards(
         postDocs: postDocs, 
         postFutures: postFutures,
@@ -51,25 +49,21 @@ class FeedsPage extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: mainModel.speedNotifier,
-            speedControll:  () async { await voids.speedControll(audioPlayer: mainModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: mainModel.speedNotifier); },
+            speedControll:  () async => await voids.speedControll(audioPlayer: mainModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: mainModel.speedNotifier),
             currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
             progressNotifier: mainModel.progressNotifier, 
             seek: mainModel.seek, 
             repeatButtonNotifier: mainModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () { voids.onRepeatButtonPressed(audioPlayer: mainModel.audioPlayer, repeatButtonNotifier: mainModel.repeatButtonNotifier); }, 
+            onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: mainModel.audioPlayer, repeatButtonNotifier: mainModel.repeatButtonNotifier),
             isFirstSongNotifier: mainModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); }, 
+            onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer),
             playButtonNotifier: mainModel.playButtonNotifier, 
-            play: () { voids.play(audioPlayer: mainModel.audioPlayer); }, 
-            pause: () { voids.pause(audioPlayer: mainModel.audioPlayer); }, 
+            play: () => voids.play(audioPlayer: mainModel.audioPlayer),
+            pause: () => voids.pause(audioPlayer: mainModel.audioPlayer),
             isLastSongNotifier: mainModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
-            toCommentsPage:  () async {
-              await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: mainModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel );
-            },
-            toEditingMode:  () {
-              voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel);
-            },
+            onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer),
+            toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: mainModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
+            toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel),
             postType: mainModel.postType,
             mainModel: mainModel
           ); 
@@ -78,17 +72,15 @@ class FeedsPage extends ConsumerWidget {
         seek: mainModel.seek,
         currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
         playButtonNotifier: mainModel.playButtonNotifier,
-        play: () { voids.play(audioPlayer: mainModel.audioPlayer); }, 
-        pause: () {
-          voids.pause(audioPlayer: mainModel.audioPlayer);
-        }, 
+        play: () => voids.play(audioPlayer: mainModel.audioPlayer),
+        pause: () => voids.pause(audioPlayer: mainModel.audioPlayer),
         refreshController: mainModel.refreshController,
-        onRefresh: () async { await mainModel.onRefresh(); },
-        onLoading: () async { await mainModel.onLoading(); },
+        onRefresh: () async => await mainModel.onRefresh(),
+        onLoading: () async => await mainModel.onLoading(),
         isFirstSongNotifier: mainModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () { voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
+        onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer),
         isLastSongNotifier: mainModel.isLastSongNotifier,
-        onNextSongButtonPressed: () { voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer); },
+        onNextSongButtonPressed: () =>voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer),
         mainModel: mainModel,
       )
     );
