@@ -73,7 +73,7 @@ class PostCards extends ConsumerWidget {
                           CupertinoActionSheetAction(onPressed: () {
                             Navigator.pop(innerContext);
                             postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, postMap: post, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i);
-                          }, child: PositiveText(text: cancelText) ),
+                          }, child: PositiveText(text: deletePostText) ),
                           CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                         ]
                         : [

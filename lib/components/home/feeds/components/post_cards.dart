@@ -93,7 +93,7 @@ class PostCards extends StatelessWidget {
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
                           postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, postMap: post, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i);
-                        }, child: PositiveText(text: cancelText) ),
+                        }, child: PositiveText(text: deletePostText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ]
                       : [

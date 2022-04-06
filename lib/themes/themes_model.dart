@@ -56,7 +56,7 @@ class ThemeModel extends ChangeNotifier {
           final String officialAdvertisementId = resultDoc.id;
           await showTopToast(officialAdvertisement: result);
           await FlutterClipboard.copy(result.url);
-          await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
+          // await makeImpressionDoc(officialAdvertisementId: officialAdvertisementId);
         }
       });
     }

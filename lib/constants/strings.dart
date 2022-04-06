@@ -208,3 +208,4 @@ const String muteReplyJaText = 'リプライをミュート';
 const String reportPostJaText = '投稿を報告';
 const String reportCommentJaText = 'コメントを報告';
 const String reportReplyJaText = 'リプライを報告';
+const String deletePostText = '投稿を削除';

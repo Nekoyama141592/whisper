@@ -73,7 +73,7 @@ class MyProfilePostScreen extends ConsumerWidget {
                     CupertinoActionSheetAction(onPressed: () {
                       Navigator.pop(innerContext);
                       postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: myProfileModel.audioPlayer, postMap: post, afterUris: myProfileModel.afterUris, posts: myProfileModel.posts, mainModel: mainModel, i: i);
-                    }, child: PositiveText(text: cancelText) ),
+                    }, child: PositiveText(text: deletePostText) ),
                     CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                   ]
                   : [
