@@ -1,26 +1,26 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
-import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
-import 'package:whisper/comments/components/comment_like_button.dart';
 import 'package:whisper/comments/components/show_replys_button.dart';
+import 'package:whisper/comments/components/comment_like_button.dart';
+import 'package:whisper/comments/components/comment_hidden_button.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/comments/comments_model.dart';
 import 'package:whisper/replies/replys_model.dart';
+import 'package:whisper/comments/comments_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 class CommentCard extends ConsumerWidget {
@@ -28,7 +28,7 @@ class CommentCard extends ConsumerWidget {
   const CommentCard({
     Key? key,
     required this.i,
-    required this.whisperComment,
+    required this.whisperPostComment,
     required this.commentDoc,
     required this.whisperPost,
     required this.commentsModel,
@@ -38,7 +38,7 @@ class CommentCard extends ConsumerWidget {
   }): super(key: key);
   
   final int i;
-  final WhisperPostComment whisperComment;
+  final WhisperPostComment whisperPostComment;
   final DocumentSnapshot<Map<String,dynamic>> commentDoc;
   final Post whisperPost;
   final CommentsModel commentsModel;
@@ -60,16 +60,16 @@ class CommentCard extends ConsumerWidget {
       overflow: TextOverflow.ellipsis
     );
     final deleteSlideIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async=> await commentsModel.deleteMyComment(context: context, i: i, mainModel: mainModel));
-    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) ?
+    return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperPostComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperPostComment.postCommentId) ?
 
     Slidable(
       actionPane: SlidableBehindActionPane(),
       actionExtentRatio: 0.25,
-      actions: !(whisperComment.uid == mainModel.currentWhisperUser.uid) ?
+      actions: !(whisperPostComment.uid == mainModel.currentWhisperUser.uid) ?
       [
-        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async => await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperComment.uid, ), ),
-        SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async => await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperComment)  , ),
-        SlideIcon(caption: 'Report Comment', iconData: Icons.flag_circle, onTap: () => commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperComment, commentDoc: commentDoc))
+        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async => await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid, ), ),
+        SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async => await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment)  , ),
+        SlideIcon(caption: 'Report Comment', iconData: Icons.flag_circle, onTap: () => commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc))
       ]: [
         deleteSlideIcon
       ],
@@ -79,7 +79,7 @@ class CommentCard extends ConsumerWidget {
         ),
         child: InkWell(
           onLongPress:  () async {
-            await FlutterClipboard.copy(whisperComment.uid);
+            await FlutterClipboard.copy(whisperPostComment.uid);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('ユーザーのIDをコピーしました')));
           },
           child: Container(
@@ -95,22 +95,22 @@ class CommentCard extends ConsumerWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: defaultPadding(context: context)
                   ),
-                  child: RedirectUserImage(userImageURL: whisperComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUid: whisperComment.uid, mainModel: mainModel),
+                  child: RedirectUserImage(userImageURL: whisperPostComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUid: whisperPostComment.uid, mainModel: mainModel),
                 ),
                 Expanded(
                   child: Column(
                     children: [
                       Text(
-                        mainModel.currentWhisperUser.uid == whisperComment.uid ?
+                        mainModel.currentWhisperUser.uid == whisperPostComment.uid ?
                         mainModel.currentWhisperUser.userName : 
-                        whisperComment.userName,
+                        whisperPostComment.userName,
                         style: whisperTextStyle,
                         overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: defaultPadding(context: context),),
                       Text(
-                        whisperComment.comment,
-                        style: commentsModel.isUnHiddenPostCommentIds.contains(whisperComment.postCommentId) ? whisperTextStyle : hiddenStyle
+                        whisperPostComment.comment,
+                        style: commentsModel.isUnHiddenPostCommentIds.contains(whisperPostComment.postCommentId) ? whisperTextStyle : hiddenStyle
                       )
                     ],
                   ),
@@ -118,12 +118,9 @@ class CommentCard extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperComment, mainModel: mainModel),
-                    ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperComment, whisperPost: whisperPost),
-                    InkWell(
-                      child: Icon(commentsModel.isUnHiddenPostCommentIds.contains(whisperComment.postCommentId) ? Icons.visibility : Icons.visibility_off ),
-                      onTap: () { commentsModel.toggleIsHidden(whisperPostComment: whisperComment); },
-                    )
+                    CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperPostComment, mainModel: mainModel),
+                    ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperPostComment, whisperPost: whisperPost),
+                    CommentHiddenButton(whisperPostComment: whisperPostComment, commentsModel: commentsModel)
                   ],
                 )
               ]

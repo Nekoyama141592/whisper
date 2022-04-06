@@ -1,17 +1,19 @@
 // material
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
+// domain
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // components
 import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
+import 'package:whisper/replies/components/details/reply_hidden_button.dart';
 import 'package:whisper/replies/components/details/reply_like_button.dart';
 // models
 import 'package:whisper/main_model.dart';
@@ -115,10 +117,7 @@ class ReplyCard extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ReplyLikeButton(whisperReply: whisperReply, mainModel: mainModel, replysModel: repliesModel),
-                    InkWell(
-                      child: Icon(repliesModel.isUnHiddenPostCommentReplyIds.contains(whisperReply.postCommentReplyId) ? Icons.visibility : Icons.visibility_off ),
-                      onTap: () { repliesModel.toggleIsHidden(whisperReply: whisperReply); },
-                    )
+                    ReplyHiddenButton(whisperReply: whisperReply, repliesModel: repliesModel)
                   ],
                 )
               ]

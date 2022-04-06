@@ -74,7 +74,7 @@ class CommentsPage extends ConsumerWidget {
                     final WhisperPostComment whisperComment = WhisperPostComment.fromJson(comment);
                     return CommentCard(
                       i: i,
-                      whisperComment: whisperComment,
+                      whisperPostComment: whisperComment,
                       commentDoc: commentDoc,
                       whisperPost: whisperPost,
                       commentsModel: commentsModel,
