@@ -15,7 +15,7 @@ class PostCommentReplyReport {
     required this.passiveUserName,
     required this.postCommentId,
     required this.postCommentReplyId,
-    required this.postCommentReplyRef,
+    required this.postCommentReplyDocRef,
     required this.postCreatorUid,
     required this.postId,
     required this.reply,
@@ -34,7 +34,7 @@ class PostCommentReplyReport {
   final String passiveUserName;
   final String postCommentId;
   final String postCommentReplyId;
-  final dynamic postCommentReplyRef;
+  final dynamic postCommentReplyDocRef;
   final String postCreatorUid;
   final String postId;
   final String reply;

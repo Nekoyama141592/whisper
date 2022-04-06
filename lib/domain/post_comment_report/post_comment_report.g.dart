@@ -20,7 +20,7 @@ PostCommentReport _$PostCommentReportFromJson(Map<String, dynamic> json) =>
       passiveUid: json['passiveUid'] as String,
       passiveUserImageURL: json['passiveUserImageURL'] as String,
       passiveUserName: json['passiveUserName'] as String,
-      postCommentRef: json['postCommentRef'],
+      postCommentDocRef: json['postCommentDocRef'],
       postCreatorUid: json['postCreatorUid'] as String,
       postId: json['postId'] as String,
     );
@@ -39,7 +39,7 @@ Map<String, dynamic> _$PostCommentReportToJson(PostCommentReport instance) =>
       'passiveUid': instance.passiveUid,
       'passiveUserImageURL': instance.passiveUserImageURL,
       'passiveUserName': instance.passiveUserName,
-      'postCommentRef': instance.postCommentRef,
+      'postCommentDocRef': instance.postCommentDocRef,
       'postCreatorUid': instance.postCreatorUid,
       'postId': instance.postId,
     };

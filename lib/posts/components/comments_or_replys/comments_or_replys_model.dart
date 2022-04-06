@@ -119,7 +119,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
             passiveUid: whisperComment.uid,
             passiveUserImageURL: whisperComment.userImageURL,
             passiveUserName: whisperComment.userName,
-            postCommentRef: commentDoc.reference,
+            postCommentDocRef: commentDoc.reference,
             postCreatorUid: whisperComment.passiveUid,
             postId: whisperComment.postId,
           );
@@ -150,7 +150,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
             passiveUserName: whisperReply.userName, 
             postCommentId: whisperReply.postCommentId, 
             postCommentReplyId: whisperReply.postCommentReplyId, 
-            postCommentReplyRef: postCommentReplyDoc.reference, 
+            postCommentReplyDocRef: postCommentReplyDoc.reference, 
             postCreatorUid: whisperReply.postCreatorUid, 
             postId: whisperReply.postId, 
             reply: whisperReply.reply, 

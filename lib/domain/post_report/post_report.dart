@@ -10,10 +10,10 @@ class PostReport {
     required this.createdAt,
     required this.others,
     required this.reportContent,
-    required this.passiveUid,
+    required this.postCreatorUid,
     required this.passiveUserImageURL,
     required this.passiveUserName,
-    required this.postRef,
+    required this.postDocRef,
     required this.postId,
     required this.postReportId,
     required this.postTitle,
@@ -27,10 +27,10 @@ class PostReport {
   final dynamic createdAt;
   final String others;
   final String reportContent;
-  final String passiveUid;
+  final String postCreatorUid;
   final String passiveUserImageURL;
   final String passiveUserName;
-  final dynamic postRef;
+  final dynamic postDocRef;
   final String postId;
   final String postReportId;
   String postTitle;
