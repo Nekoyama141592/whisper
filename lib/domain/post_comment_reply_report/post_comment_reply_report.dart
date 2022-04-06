@@ -11,7 +11,6 @@ class PostCommentReplyReport {
     required this.others,
     required this.reportContent,
     required this.passiveUid,
-    required this.passiveUserImageURL,
     required this.passiveUserName,
     required this.postCommentId,
     required this.postCommentReplyId,
@@ -30,7 +29,6 @@ class PostCommentReplyReport {
   final String others;
   final String reportContent;
   final String passiveUid;
-  final String passiveUserImageURL;
   final String passiveUserName;
   final String postCommentId;
   final String postCommentReplyId;

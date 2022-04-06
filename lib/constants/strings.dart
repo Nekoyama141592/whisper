@@ -48,7 +48,7 @@ String returnReportContentString({ required List<String> selectedReportContents 
   for (final i in selectedReportContents) {
     reportContentString += '・';
     reportContentString += i;
-    reportContentString += '\n';
+    reportContentString += ',';
   }
   return reportContentString;
 }

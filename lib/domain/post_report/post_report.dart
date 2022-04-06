@@ -11,7 +11,6 @@ class PostReport {
     required this.others,
     required this.reportContent,
     required this.postCreatorUid,
-    required this.passiveUserImageURL,
     required this.passiveUserName,
     required this.postDocRef,
     required this.postId,
@@ -28,7 +27,6 @@ class PostReport {
   final String others;
   final String reportContent;
   final String postCreatorUid;
-  final String passiveUserImageURL;
   final String passiveUserName;
   final dynamic postDocRef;
   final String postId;

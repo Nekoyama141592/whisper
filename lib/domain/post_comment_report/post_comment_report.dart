@@ -16,7 +16,6 @@ class PostCommentReport {
     required this.others,
     required this.reportContent,
     required this.passiveUid,
-    required this.passiveUserImageURL,
     required this.passiveUserName,
     required this.postCommentDocRef,
     required this.postCreatorUid,
@@ -33,7 +32,6 @@ class PostCommentReport {
   final String others;
   final String reportContent;
   final String passiveUid;
-  final String passiveUserImageURL;
   final String passiveUserName;
   final dynamic postCommentDocRef;
   final String postCreatorUid;
