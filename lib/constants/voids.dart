@@ -179,21 +179,13 @@ void onRepeatButtonPressed({ required AudioPlayer audioPlayer, required RepeatBu
   }
 }
 
-void onPreviousSongButtonPressed({ required AudioPlayer audioPlayer}) {
-  audioPlayer.seekToPrevious();
-}
+void onPreviousSongButtonPressed({ required AudioPlayer audioPlayer}) => audioPlayer.seekToPrevious();
 
-void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) {
-  audioPlayer.seekToNext();
-}
+void onNextSongButtonPressed({ required AudioPlayer audioPlayer}) => audioPlayer.seekToNext();
 
-void play({required AudioPlayer audioPlayer})  async {
-    audioPlayer.play();
-  }
+void play({required AudioPlayer audioPlayer}) => audioPlayer.play();
 
-void pause({ required AudioPlayer audioPlayer}) {
-  audioPlayer.pause();
-}
+void pause({ required AudioPlayer audioPlayer}) => audioPlayer.pause();
 
 Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required AudioPlayer audioPlayer, required int i }) async {
   // Abstractions in post_futures.dart cause Range errors.
@@ -361,9 +353,7 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
     negativeActionBuilder: (context,controller,__) {
       return InkWell(
         child: Icon(Icons.close),
-        onTap: () {
-          controller.dismiss();
-        },
+        onTap: () async => await controller.dismiss()
       );
     }
   );
@@ -377,21 +367,16 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
     content: content,
     negativeActionBuilder: (context, controller, _) {
       return TextButton(
-        onPressed: () {
-          controller.dismiss();
-        },
-        child: Text('キャンセル',style: cancelStyle(context: context)),
+        onPressed: () async => await controller.dismiss(),
+        child: Text(cancelMsg,style: cancelStyle(context: context)),
       );
     },
     positiveActionBuilder: positiveActionBuilder,
   );
 }
-Future<void> putImage({ required Reference imageRef,required File file }) async {
-  await imageRef.putFile(file,imageMetadata);
-}
-Future<void> putPost({ required Reference postRef,required File postFile }) async {
-  await postRef.putFile(postFile,postMetadata);
-}
+Future<void> putImage({ required Reference imageRef,required File file }) async => await imageRef.putFile(file,imageMetadata);
+
+Future<void> putPost({ required Reference postRef,required File postFile }) async => await postRef.putFile(postFile,postMetadata);
 
 Future<void> showLinkDialogue({ required BuildContext context, required String link }) async {
   if ( await canLaunch(link)) {
@@ -427,10 +412,8 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
           ),
           actions: [
             CupertinoDialogAction(
-              child: const Text('キャンセル'),
-              onPressed: () {
-                Navigator.pop(innerContext);
-              },
+              child: const Text(cancelMsg),
+              onPressed: () => Navigator.pop(innerContext)
             ),
             CupertinoDialogAction(
               child: const Text('実行'),
@@ -457,13 +440,11 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
         final List<Widget> actions = 
         whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
           child: Text(whisperLink.label,style: textStyle(context: context),),
-          onPressed: () {
-            showLinkDialogue(context: context, link: whisperLink.url );
-          }, 
+          onPressed: () => showLinkDialogue(context: context, link: whisperLink.url )
         ) ).toList();
         actions.add(CupertinoActionSheetAction(
-          child: Text('キャンセル',style: textStyle(context: context),),
-          onPressed: () { Navigator.pop(innerContext); },
+          child: Text(cancelMsg,style: textStyle(context: context),),
+          onPressed: () => Navigator.pop(innerContext),
         ));
         return CupertinoActionSheet(
           actions: actions
@@ -492,19 +473,13 @@ void maxSearchLengthAlert ({ required BuildContext context,required bool isUserN
     showSnackBar(context: context, text: maxSearchLength.toString() + '文字以内にしてください' );
   }
 } 
-void showSnackBar({ required BuildContext context,required String text}) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
-}
+void showSnackBar({ required BuildContext context,required String text}) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
 
-void alertMaxLinksLength({ required BuildContext context, }) {
-  showSnackBar(context: context, text: 'リンクは' + maxLinksLength.toString() + '個以内にしてください' );
-}
-void alertMaxBioLength({ required BuildContext context, }) {
-  showSnackBar(context: context, text: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
-}
-void alertMaxCommentOrReplyLength({ required BuildContext context }) {
-  showSnackBar(context: context, text: maxCommentOrReplyLength.toString() + '以内にしてください');
-}
+void alertMaxLinksLength({ required BuildContext context, }) => showSnackBar(context: context, text: 'リンクは' + maxLinksLength.toString() + '個以内にしてください' );
+
+void alertMaxBioLength({ required BuildContext context, }) => showSnackBar(context: context, text: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
+
+void alertMaxCommentOrReplyLength({ required BuildContext context }) => showSnackBar(context: context, text: maxCommentOrReplyLength.toString() + '以内にしてください');
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {
   if (await canLaunch(url)) {
