@@ -1,11 +1,11 @@
 // packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'post_bookmark.g.dart';
+part 'post_mute.g.dart';
 
 @JsonSerializable()
-class PostBookmark {
-  PostBookmark({
+class PostMute {
+  PostMute({
     required this.activeUid,
     required this.createdAt,
     required this.postCreatorUid,
@@ -19,7 +19,7 @@ class PostBookmark {
   final dynamic postDocRef;
   final String postId;
 
-  factory PostBookmark.fromJson(Map<String,dynamic> json) => _$PostBookmarkFromJson(json);
+  factory PostMute.fromJson(Map<String,dynamic> json) => _$PostMuteFromJson(json);
 
-  Map<String,dynamic> toJson() => _$PostBookmarkToJson(this);
+  Map<String,dynamic> toJson() => _$PostMuteToJson(this);
 }
