@@ -176,7 +176,7 @@ const String complianceURL = 'https://whisper-web.herokuapp.com/compliance';
 const String tosURL = 'https://whisper-web.herokuapp.com/tos';
 // msg
 const String muteUserMsg = 'ユーザーをミュートしました';
-const String blockUserMsg = 'ユーザーをブロックしました';
+const String mutePostMsg = 'この投稿をミュートしました';
 const String mutePostCommentMsg = 'このコメントをミュートしました';
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';
 const String okMsg = 'OK';
@@ -184,6 +184,9 @@ const String cancelMsg = 'キャンセル';
 const String emptyMsg = 'キャンセルされました';
 const String pleaseScrollMsg = '上にスクロールすると表示されます';
 final String maxCommentOrReplyMsg = maxCommentOrReplyLength.toString() + '以下でお願いします'; 
+const String reportPostMsg = '投稿をを報告しました';
+const String reportUserMsg = 'ユーザーを報告しました';
+
 // Id
 const String configIdString = 'config';
 // title

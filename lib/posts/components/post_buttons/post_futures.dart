@@ -139,7 +139,7 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
 
-    Future<void> mutePost({ required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
+    Future<void> mutePost({required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
     // process set
     final Post whisperPost = fromMapToPost(postMap: post);
     final String postId = whisperPost.postId;
@@ -278,6 +278,7 @@ class PostFutures extends ChangeNotifier {
           );
           othersEditingController.text = '';
           await (controller as FlashController).dismiss();
+          await voids.showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostMsg);
           await mutePost(mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
