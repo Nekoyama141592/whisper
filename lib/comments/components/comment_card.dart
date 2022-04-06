@@ -1,4 +1,5 @@
 // material
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/redirect_user_image.dart';
@@ -27,6 +29,7 @@ class CommentCard extends ConsumerWidget {
     Key? key,
     required this.i,
     required this.whisperComment,
+    required this.commentDoc,
     required this.whisperPost,
     required this.commentsModel,
     required this.replysModel,
@@ -36,6 +39,7 @@ class CommentCard extends ConsumerWidget {
   
   final int i;
   final WhisperPostComment whisperComment;
+  final DocumentSnapshot<Map<String,dynamic>> commentDoc;
   final Post whisperPost;
   final CommentsModel commentsModel;
   final RepliesModel replysModel;
@@ -55,7 +59,7 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize/cardTextDiv2,
       overflow: TextOverflow.ellipsis
     );
-    final deleteSlideIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async { await commentsModel.deleteMyComment(context: context, i: i, mainModel: mainModel); });
+    final deleteSlideIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async=> await commentsModel.deleteMyComment(context: context, i: i, mainModel: mainModel));
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) ?
 
     Slidable(
@@ -63,12 +67,9 @@ class CommentCard extends ConsumerWidget {
       actionExtentRatio: 0.25,
       actions: !(whisperComment.uid == mainModel.currentWhisperUser.uid) ?
       [
-        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async {
-          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperComment.uid, );
-        } , ),
-        SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async {
-          await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperComment);
-        } , ),
+        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async => await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperComment.uid, ), ),
+        SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async => await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperComment)  , ),
+        SlideIcon(caption: 'Report Comment', iconData: Icons.flag_circle, onTap: () => commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperComment, commentDoc: commentDoc))
       ]: [
         deleteSlideIcon
       ],

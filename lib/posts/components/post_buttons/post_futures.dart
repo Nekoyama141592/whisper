@@ -11,7 +11,6 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
@@ -25,6 +24,8 @@ import 'package:whisper/domain/post_report/post_report.dart';
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
+// components
+import 'package:whisper/details/report_contents_list_view.dart';
 // model 
 import 'package:whisper/main_model.dart';
 
@@ -231,40 +232,14 @@ class PostFutures extends ChangeNotifier {
     final postDoc = results[i];
     final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
     final String postReportId = generatePostReportId();
-    final TextEditingController othersEditingController = TextEditingController();
-    final Widget content = Container(
-      height: flashDialogueHeight(context: context),
-      child: ValueListenableBuilder<List<String>>(
-        valueListenable: selectedReportContentsNotifier,
-        builder: (_,selectedReportContents,__) {
-          return ListView.builder(
-            itemCount: reportContents.length,
-            itemBuilder: (BuildContext context, int i) {
-              final String reportContent = reportContents[i];
-              return ListTile(
-                leading: selectedReportContents.contains(reportContent) ? Icon(Icons.check) : SizedBox.shrink(),
-                title: Text(reportContent),
-                onTap: () {
-                  if (selectedReportContentsNotifier.value.contains(reportContent) == false) {
-                    List<String> x = selectedReportContentsNotifier.value;
-                    x.add(reportContent);
-                    selectedReportContentsNotifier.value = x.map((e) => e).toList();
-                  }
-                },
-              );
-            }
-          );
-        }
-      ),
-    );
-    
+    final content = ReportContentsListView(selectedReportContentsNotifier: selectedReportContentsNotifier);
     final positiveActionBuilder = (_, controller, __) {
       return TextButton(
         onPressed: () async {
           final PostReport postReport = PostReport(
             activeUid: mainModel.userMeta.uid,
             createdAt: Timestamp.now(), 
-            others: othersEditingController.text, 
+            others: '', 
             passiveUid: post.uid, 
             passiveUserImageURL: post.userImageURL, 
             passiveUserName: post.userName, 
@@ -278,13 +253,12 @@ class PostFutures extends ChangeNotifier {
             postTitleSentiment: post.titleSentiment,
             reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value),
           );
-          othersEditingController.text = '';
           await (controller as FlashController).dismiss();
           await voids.showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostMsg);
           await mutePost(context: context,mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
-        child: Text('選択', style: textStyle(context: context), )
+        child: Text(choiceModalMsg, style: textStyle(context: context), )
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

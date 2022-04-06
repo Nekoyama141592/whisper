@@ -69,11 +69,13 @@ class CommentsPage extends ConsumerWidget {
                 child: ListView.builder(
                   itemCount: commentsModel.commentDocs.length,
                   itemBuilder: (BuildContext context,int i) {
-                    final Map<String, dynamic> comment = commentsModel.commentDocs[i].data() as Map<String,dynamic>;
+                    final commentDoc = commentsModel.commentDocs[i];
+                    final Map<String, dynamic> comment = commentDoc.data() as Map<String,dynamic>;
                     final WhisperPostComment whisperComment = WhisperPostComment.fromJson(comment);
                     return CommentCard(
                       i: i,
                       whisperComment: whisperComment,
+                      commentDoc: commentDoc,
                       whisperPost: whisperPost,
                       commentsModel: commentsModel,
                       replysModel: replysModel,

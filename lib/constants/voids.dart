@@ -531,7 +531,7 @@ Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
 Future<void> showFlutterToast({ required Color backgroundColor,required String msg }) async {
   await Fluttertoast.showToast(
       msg: msg,
-      gravity: ToastGravity.TOP,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: toastSeconds,
       backgroundColor: backgroundColor,
       textColor: Colors.white

@@ -1,19 +1,24 @@
 // material
 import 'package:flutter/material.dart';
 // packages
+import 'package:flash/flash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/constants/voids.dart';
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/domain/post_comment_reply_report/post_comment_reply_report.dart';
+import 'package:whisper/domain/post_comment_report/post_comment_report.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/mute_reply/mute_reply.dart';
 import 'package:whisper/domain/mute_comment/mute_comment.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
+// components
+import 'package:whisper/details/report_contents_list_view.dart';
 // model 
 import 'package:whisper/main_model.dart';
 
@@ -93,5 +98,75 @@ class CommentsOrReplysModel extends ChangeNotifier {
     } else {
       notifyListeners();
     }
+  }
+  void reportComment({ required BuildContext context,required MainModel mainModel, required WhisperPostComment whisperComment ,required DocumentSnapshot<Map<String,dynamic>> commentDoc }) {
+    final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
+    final String postCommentReportId = generatePostCommentReportId();
+    final content = ReportContentsListView(selectedReportContentsNotifier: selectedReportContentsNotifier);
+    final positiveActionBuilder = (_, controller, __) {
+      return TextButton(
+        onPressed: () async {
+          final PostCommentReport postCommentReport = PostCommentReport(
+            activeUid: mainModel.userMeta.uid, 
+            comment: whisperComment.comment, 
+            commentLanguageCode: whisperComment.commentLanguageCode,
+            commentNegativeScore: whisperComment.commentNegativeScore,
+            commentPositiveScore: whisperComment.commentPositiveScore,
+            commentSentiment: whisperComment.commentSentiment,
+            createdAt: Timestamp.now(), 
+            others: '', 
+            reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value), 
+            passiveUid: whisperComment.uid,
+            passiveUserImageURL: whisperComment.userImageURL,
+            passiveUserName: whisperComment.userName,
+            postCommentRef: commentDoc.reference,
+            postCreatorUid: whisperComment.passiveUid,
+            postId: whisperComment.postId,
+          );
+          await (controller as FlashController).dismiss();
+          await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentMsg );
+          await muteComment(context: context, mainModel: mainModel, whisperComment: whisperComment);
+          await returnPostCommentReportDocRef(postCommentDoc: commentDoc, postCommentReportId: postCommentReportId).set(postCommentReport.toJson());
+        }, 
+        child: Text(choiceModalMsg, style: textStyle(context: context), )
+      );
+    };
+    showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+  }
+  void reportReply({ required BuildContext context,required MainModel mainModel, required WhisperReply whisperReply,required DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc }) {
+    final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
+    final postCommentReplyReportId = generatePostCommentReplyReportId();
+    final content = ReportContentsListView(selectedReportContentsNotifier: selectedReportContentsNotifier);
+    final positiveActionBuilder = (_, controller, __) {
+      return TextButton(
+        onPressed: () async {
+          final PostCommentReplyReport postCommentReplyReport = PostCommentReplyReport(
+            activeUid: mainModel.userMeta.uid,
+            createdAt: Timestamp.now(),
+            others: '',
+            reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value), 
+            passiveUid: whisperReply.uid,
+            passiveUserImageURL: whisperReply.userImageURL, 
+            passiveUserName: whisperReply.userName, 
+            postCommentId: whisperReply.postCommentId, 
+            postCommentReplyId: whisperReply.postCommentReplyId, 
+            postCommentReplyRef: postCommentReplyDoc.reference, 
+            postCreatorUid: whisperReply.postCreatorUid, 
+            postId: whisperReply.postId, 
+            reply: whisperReply.reply, 
+            replyLanguageCode: whisperReply.replyLanguageCode, 
+            replyNegativeScore: whisperReply.replyNegativeScore, 
+            replyPositiveScore: whisperReply.replyPositiveScore, 
+            replySentiment: whisperReply.replySentiment
+          );
+          await (controller as FlashController).dismiss();
+          await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentReplyMsg );
+          await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply);
+          await returnPostCommentReplyReportDocRef(postCommentReplyDoc: postCommentReplyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
+        }, 
+        child: Text(choiceModalMsg, style: textStyle(context: context), )
+      );
+    };
+    showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
   }
 }

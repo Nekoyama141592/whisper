@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';
@@ -65,8 +66,9 @@ class ReplysPage extends ConsumerWidget {
                 child: ListView.builder(
                   itemCount: repliesModel.postCommentReplyDocs.length,
                   itemBuilder: (BuildContext context,int i) {
-                    final WhisperReply whisperReply  = fromMapToWhisperReply(replyMap: repliesModel.postCommentReplyDocs[i].data()! );
-                    return ReplyCard(i: i,whisperReply: whisperReply, repliesModel: repliesModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
+                    final postCommentReplyDoc = repliesModel.postCommentReplyDocs[i];
+                    final WhisperReply whisperReply  = fromMapToWhisperReply(replyMap: postCommentReplyDoc.data()! );
+                    return ReplyCard(i: i,whisperReply: whisperReply, postCommentReplyDoc: postCommentReplyDoc,repliesModel: repliesModel, mainModel: mainModel,commentsOrReplysModel: commentsOrReplysModel,  );
                   }
                 ),
               )

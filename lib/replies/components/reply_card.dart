@@ -1,4 +1,5 @@
 // material
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
@@ -23,6 +24,7 @@ class ReplyCard extends ConsumerWidget {
     Key? key,
     required this.i,
     required this.whisperReply,
+    required this.postCommentReplyDoc,
     required this.repliesModel,
     required this.mainModel,
     required this.commentsOrReplysModel
@@ -30,6 +32,7 @@ class ReplyCard extends ConsumerWidget {
 
   final int i;
   final WhisperReply whisperReply;
+  final DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc;
   final RepliesModel repliesModel;
   final MainModel mainModel;
   final CommentsOrReplysModel commentsOrReplysModel;
@@ -49,7 +52,7 @@ class ReplyCard extends ConsumerWidget {
       fontSize: fontSize/cardTextDiv2,
       overflow: TextOverflow.ellipsis
     );
-    final deleteIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async { await repliesModel.deleteMyReply(context: context, i: i, mainModel: mainModel); } );
+    final deleteIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async => await repliesModel.deleteMyReply(context: context, i: i, mainModel: mainModel) );
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperReply.uid ) && !mainModel.mutePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     
     Slidable(
@@ -57,12 +60,9 @@ class ReplyCard extends ConsumerWidget {
       actionExtentRatio: 0.25,
       actions: !(whisperReply.uid == currentWhisperUser.uid) ?
       [
-        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async {
-          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperReply.uid,);
-        } , ),
-        SlideIcon(caption: 'Mute Reply',iconData: Icons.visibility_off, onTap: () async {
-          await commentsOrReplysModel.muteReply(context: context,mainModel: mainModel,whisperReply: whisperReply);
-        } , ),
+        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async => await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperReply.uid,) , ),
+        SlideIcon(caption: 'Mute Reply',iconData: Icons.visibility_off, onTap: () async => await commentsOrReplysModel.muteReply(context: context,mainModel: mainModel,whisperReply: whisperReply) , ),
+        SlideIcon(caption: 'Report Reply', iconData: Icons.flag_circle, onTap: () => commentsOrReplysModel.reportReply(context: context, mainModel: mainModel, whisperReply: whisperReply, postCommentReplyDoc: postCommentReplyDoc))
       ] : [
         deleteIcon
       ],

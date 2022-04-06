@@ -158,6 +158,10 @@ DocumentReference<Map<String, dynamic>> returnOfficialAdvertisementConfigDocRef(
 
 DocumentReference<Map<String,dynamic>> returnPostReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postDoc,required String postReportId }) => postDoc.reference.collection(postReportsColRefName).doc(postReportId) ;
 
+DocumentReference<Map<String,dynamic>> returnPostCommentReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postCommentDoc,required String postCommentReportId }) => postCommentDoc.reference.collection(postCommentReportsColRefName).doc(postCommentReportId);
+
+DocumentReference<Map<String,dynamic>> returnPostCommentReplyReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc,required String postCommentReplyReportId }) => postCommentReplyDoc.reference.collection(postCommentReportsColRefName).doc(postCommentReplyReportId);
+
 Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   final instance = ImageCropper();
   final File? result = await instance.cropImage(

@@ -67,6 +67,10 @@ String generateUserUpdateLogNoBatchId() => 'userUpdateLogNoBatch' + hyphenString
 
 String generatePostReportId() => 'postReport' + hyphenString + returnUuid4();
 
+String generatePostCommentReportId() => 'postCommentReport'  + hyphenString + returnUuid4();
+
+String generatePostCommentReplyReportId() => 'postCommentReplyReport' + hyphenString + returnUuid4();
+
 // prefs
 const String speedPrefsKey = 'speed';
 const String isDarkThemePrefsKey = 'isDarkTheme';
@@ -127,6 +131,8 @@ const String officialAdvertisementsColRefName = 'officialAdvertisements';
 const String officialAdvertisementImperssionsColRefName = 'officialAdvertisementImpressions';
 const String officialAdvertisementConfigColRefName = 'officialAdvertisementConfig';
 const String postReportsColRefName = 'postReports';
+const String postCommentReportsColRefName = 'postCommentReports';
+const String postCommentReplyReportsColRefName = 'postCommentReplyReports';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String createdAtFieldKey = 'createdAt';
@@ -186,7 +192,9 @@ const String pleaseScrollMsg = '上にスクロールすると表示されます
 final String maxCommentOrReplyMsg = maxCommentOrReplyLength.toString() + '以下でお願いします'; 
 const String reportPostMsg = '投稿をを報告しました';
 const String reportUserMsg = 'ユーザーを報告しました';
-
+const String reportPostCommentMsg = 'コメントを報告しました';
+const String reportPostCommentReplyMsg = 'リプライを報告しました';
+const String choiceModalMsg = '選択';
 // Id
 const String configIdString = 'config';
 // title

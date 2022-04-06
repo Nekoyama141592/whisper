@@ -51,7 +51,7 @@ class PostCard extends StatelessWidget {
           [
             SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: muteUser ),
             SlideIcon(caption: 'Mute Post', iconData: Icons.visibility_off, onTap: mutePost ),
-            SlideIcon(caption: 'Report Post', iconData: Icons.report, onTap: reportPost, )
+            SlideIcon(caption: 'Report Post', iconData: Icons.flag_circle, onTap: reportPost, )
           ] : deleteIcon,
           child: Container(
             decoration: BoxDecoration(
