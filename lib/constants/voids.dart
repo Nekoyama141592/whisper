@@ -505,7 +505,17 @@ Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {
     await returnUserMetaUpdateLogDocRef(uid: userMeta.uid, userMetaUpdateLogId: generateUserMetaUpdateLogId() ).set(userMetaUpdateLog.toJson());
 }
 
-Future<void> showFlutterToast({ required Color backgroundColor,required String msg }) async {
+Future<void> showBasicFlutterToast({ required BuildContext context,required String msg }) async {
+  final backgroundColor = Theme.of(context).highlightColor;
+  await Fluttertoast.showToast(
+      msg: msg,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: toastSeconds,
+      backgroundColor: backgroundColor,
+      textColor: Colors.white
+  );
+}
+Future<void> showCustomFlutterToast({ required Color backgroundColor,required String msg }) async {
   await Fluttertoast.showToast(
       msg: msg,
       gravity: ToastGravity.BOTTOM,

@@ -38,7 +38,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
       mainModel.muteUsers.add(muteUser);
       mainModel.muteUids.add(muteUser.passiveUid);
       notifyListeners();
-      await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: muteUserMsg);
+      await showBasicFlutterToast(context: context,msg: muteUserMsg);
       // process backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
     } else {
@@ -74,7 +74,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
       mainModel.mutePostCommentIds.add(postCommentId);
       mainModel.mutePostComments.add(muteComment);
       notifyListeners();
-      await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: mutePostCommentMsg);
+      await showBasicFlutterToast(context: context,msg: mutePostCommentMsg);
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
     } else {
@@ -92,7 +92,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
       mainModel.mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
       mainModel.mutePostCommentReplys.add(muteReply);
       notifyListeners();
-      await showFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg);
+      await showCustomFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg);
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
     } else {
@@ -124,7 +124,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
             postId: whisperComment.postId,
           );
           await (controller as FlashController).dismiss();
-          await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentMsg );
+          await showBasicFlutterToast(context: context,msg: reportPostCommentMsg );
           await muteComment(context: context, mainModel: mainModel, whisperComment: whisperComment);
           await returnPostCommentReportDocRef(postCommentDoc: commentDoc, postCommentReportId: postCommentReportId).set(postCommentReport.toJson());
         }, 
@@ -160,7 +160,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
             replySentiment: whisperReply.replySentiment
           );
           await (controller as FlashController).dismiss();
-          await showFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentReplyMsg );
+          await showCustomFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentReplyMsg );
           await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply);
           await returnPostCommentReplyReportDocRef(postCommentReplyDoc: postCommentReplyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
         }, 

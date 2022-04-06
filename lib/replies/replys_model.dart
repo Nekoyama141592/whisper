@@ -99,16 +99,16 @@ class RepliesModel extends ChangeNotifier {
       return IconButton(
         onPressed: () async {
           if (reply.isEmpty) {
-            voids.showFlutterToast(backgroundColor: toastColor, msg: emptyMsg );
+            voids.showCustomFlutterToast(backgroundColor: toastColor, msg: emptyMsg );
             controller.dismiss();
           } else if (reply.length > maxCommentOrReplyLength) {
-            voids.showFlutterToast(backgroundColor: toastColor, msg: maxCommentOrReplyMsg );
+            voids.showCustomFlutterToast(backgroundColor: toastColor, msg: maxCommentOrReplyMsg );
             controller.dismiss();
           } else {
             reply = '';
             replyEditingController.text = '';
             if (postCommentReplyDocs.isNotEmpty) {
-              voids.showFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg );
+              voids.showCustomFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg );
             }
             controller.dismiss();
             await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
