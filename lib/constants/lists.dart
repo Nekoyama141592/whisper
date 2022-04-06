@@ -61,7 +61,8 @@ const List<String> reportContents = [
   '商標権侵害',
   '名誉毀損',
   '偽造品',
-  'その他の法的問題'
+  'その他の法的問題',
+  'アイコンが性的または暴力的'
 ];
 List<String> returnSearchWords({ required String searchTerm }) {
   List<String> afterSplit =  searchTerm.split('');
