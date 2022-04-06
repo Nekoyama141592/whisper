@@ -42,7 +42,7 @@ class PostCards extends StatelessWidget {
   }) : super(key: key);
 
  
-  final List<DocumentSnapshot> postDocs;
+  final List<DocumentSnapshot<Map<String,dynamic>>> postDocs;
   final void Function()? route;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
@@ -76,15 +76,16 @@ class PostCards extends StatelessWidget {
             child: ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: (BuildContext context, int i) {
-                final Map<String,dynamic> post = postDocs[i].data() as Map<String,dynamic>;
+                final postDoc = postDocs[i];
+                final Map<String,dynamic> post = postDoc.data() as Map<String,dynamic>;
                 final Post whisperPost = Post.fromJson(post);
                 return 
                 PostCard(
-                  post: post,
-                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, postMap: post, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i); },
+                  postDoc: postDoc,
+                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, whisperPost: whisperPost, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i); },
                   initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, i: i),
-                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, muteUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel),
-                  mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, post: post, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts ),
+                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, muteUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel),
+                  mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, postDoc:postDoc, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts ),
                   reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts ),
                   reportPostButtonBuilder: (innerContext) {
                     return CupertinoActionSheet(
@@ -92,18 +93,18 @@ class PostCards extends StatelessWidget {
                       [  
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
-                          postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, postMap: post, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i);
+                          postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: mainModel.audioPlayer, whisperPost: whisperPost, afterUris: mainModel.afterUris, posts: mainModel.posts, mainModel: mainModel, i: i);
                         }, child: PositiveText(text: deletePostText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ]
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await postFutures.muteUser(context: context, audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, muteUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, post: post, mainModel: mainModel);
+                          await postFutures.muteUser(context: context, audioPlayer: mainModel.audioPlayer, afterUris: mainModel.afterUris, muteUids: mainModel.muteUids, i: i, results: mainModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
                         }, child: PositiveText(text: muteUserJaText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await postFutures.mutePost(context: context, mainModel: mainModel, i: i, post: post, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts);
+                          await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc:postDoc, afterUris: mainModel.afterUris, audioPlayer: mainModel.audioPlayer, results: mainModel.posts);
                         }, child: PositiveText(text: mutePostJaText) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);

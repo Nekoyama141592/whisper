@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
+// packages
+import 'package:cloud_firestore/cloud_firestore.dart';
 // components
 import 'package:whisper/details/redirect_user_image.dart';
 // model
@@ -13,7 +15,7 @@ class PostCard extends StatelessWidget {
 
   const PostCard({
     Key? key,
-    required this.post,
+    required this.postDoc,
     required this.onDeleteButtonPressed,
     required this.initAudioPlayer,
     required this.muteUser,
@@ -23,7 +25,7 @@ class PostCard extends StatelessWidget {
     required this.mainModel
   }) : super(key: key);
 
-  final Map<String,dynamic> post;
+  final DocumentSnapshot<Map<String,dynamic>> postDoc;
   final void Function()? onDeleteButtonPressed;
   final void Function()? initAudioPlayer;
   final void Function()? muteUser;
@@ -36,7 +38,7 @@ class PostCard extends StatelessWidget {
   
   Widget build(BuildContext context) {
 
-    final whisperPost = fromMapToPost(postMap: post);
+    final whisperPost = fromMapToPost(postMap: postDoc.data()!);
     return Padding(
       padding: EdgeInsets.all( defaultPadding(context: context)/4.0 ),
       child: InkWell(

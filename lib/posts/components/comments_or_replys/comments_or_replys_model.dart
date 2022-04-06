@@ -9,6 +9,7 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/domain/comment_mute/comment_mute.dart';
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/post_comment_reply_report/post_comment_reply_report.dart';
@@ -16,6 +17,7 @@ import 'package:whisper/domain/post_comment_report/post_comment_report.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/mute_reply/mute_reply.dart';
 import 'package:whisper/domain/mute_comment/mute_comment.dart';
+import 'package:whisper/domain/reply_mute/reply_mute.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // components
 import 'package:whisper/details/report_contents_list_view.dart';
@@ -69,7 +71,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.mutePostComment );
       final String postCommentId = whisperComment.postCommentId;
-      final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: mutePostCommentTokenType,postCommentDocRef: returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, ), );
+      final postCommentDocRef = returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, );
+      final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: mutePostCommentTokenType,postCommentDocRef: postCommentDocRef, );
       // process UI
       mainModel.mutePostCommentIds.add(postCommentId);
       mainModel.mutePostComments.add(muteComment);
@@ -77,6 +80,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       await showBasicFlutterToast(context: context,msg: mutePostCommentMsg);
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
+      final CommentMute commentMute = CommentMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentId: postCommentId, postId: whisperComment.postId, postCommentCreatorUid: whisperComment.uid, postCommentDocRef: postCommentDocRef);
+      await returnPostCommentMuteDocRef(postCommentDocRef: postCommentDocRef, userMeta: mainModel.userMeta).set(commentMute.toJson());
     } else {
       notifyListeners();
     }
@@ -87,7 +92,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       // process set
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePostCommentReply );
-      final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: mutePostCommentReplyTokenType, postCommentReplyDocRef: postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId ) );
+      final postCommentReplyDocRef = postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId );
+      final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: mutePostCommentReplyTokenType, postCommentReplyDocRef: postCommentReplyDocRef );
       // process UI
       mainModel.mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
       mainModel.mutePostCommentReplys.add(muteReply);
@@ -95,6 +101,8 @@ class CommentsOrReplysModel extends ChangeNotifier {
       await showCustomFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg);
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
+      final ReplyMute replyMute = ReplyMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyCreatorUid: whisperReply.uid, postCommentReplyId: whisperReply.postCommentReplyId, postCommentReplyDocRef: postCommentReplyDocRef);
+      await returnPostCommentReplyMuteDocRef(postCommentReplyDocRef: postCommentReplyDocRef, userMeta: mainModel.userMeta).set(replyMute.toJson());
     } else {
       notifyListeners();
     }

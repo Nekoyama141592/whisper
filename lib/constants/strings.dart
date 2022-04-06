@@ -133,6 +133,9 @@ const String officialAdvertisementConfigColRefName = 'officialAdvertisementConfi
 const String postReportsColRefName = 'postReports';
 const String postCommentReportsColRefName = 'postCommentReports';
 const String postCommentReplyReportsColRefName = 'postCommentReplyReports';
+const String postMutesColRefName = 'postMutes';
+const String postCommentMutesColRefName = 'postCommentMutes';
+const String postCommentReplyMutesColRefName = 'postCommentReplyMutes';
 // fieldKey
 const String bookmarksFieldKey = 'bookmarks';
 const String createdAtFieldKey = 'createdAt';

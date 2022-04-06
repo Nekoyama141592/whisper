@@ -163,6 +163,12 @@ DocumentReference<Map<String,dynamic>> returnPostCommentReportDocRef({ required 
 
 DocumentReference<Map<String,dynamic>> returnPostCommentReplyReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc,required String postCommentReplyReportId }) => postCommentReplyDoc.reference.collection(postCommentReportsColRefName).doc(postCommentReplyReportId);
 
+DocumentReference<Map<String,dynamic>> returnPostMuteDocRef({ required DocumentSnapshot<Map<String,dynamic>> postDoc,required UserMeta userMeta }) => postDoc.reference.collection(postMutesColRefName).doc(userMeta.uid) ;
+
+DocumentReference<Map<String,dynamic>> returnPostCommentMuteDocRef({ required DocumentReference<Map<String,dynamic>> postCommentDocRef,required UserMeta userMeta  }) => postCommentDocRef.collection(postCommentMutesColRefName).doc(userMeta.uid);
+
+DocumentReference<Map<String,dynamic>> returnPostCommentReplyMuteDocRef({ required DocumentReference<Map<String,dynamic>> postCommentReplyDocRef,required UserMeta userMeta }) => postCommentReplyDocRef.collection(postCommentReplyMutesColRefName).doc(userMeta.uid);
+
 Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   final instance = ImageCropper();
   final File? result = await instance.cropImage(

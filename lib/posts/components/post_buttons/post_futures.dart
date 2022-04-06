@@ -21,6 +21,7 @@ import 'package:whisper/domain/like_post/like_post.dart';
 import 'package:whisper/domain/post_like/post_like.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
+import 'package:whisper/domain/post_mute/post_mute.dart';
 import 'package:whisper/domain/post_report/post_report.dart';
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
@@ -143,9 +144,9 @@ class PostFutures extends ChangeNotifier {
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: deleteLikePostToken.tokenId ).delete();
   }
 
-    Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required Map<String,dynamic> post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
+    Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required DocumentSnapshot<Map<String,dynamic>> postDoc, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
     // process set
-    final Post whisperPost = fromMapToPost(postMap: post);
+    final Post whisperPost = fromMapToPost(postMap: postDoc.data()!);
     final String postId = whisperPost.postId;
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
@@ -159,11 +160,12 @@ class PostFutures extends ChangeNotifier {
     await voids.showBasicFlutterToast(context: context,msg: mutePostMsg);
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
+    final PostMute postMute = PostMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCreatorUid: whisperPost.postId, postDocRef: postDoc.reference, postId: postId);
+    await returnPostMuteDocRef(postDoc: postDoc, userMeta: mainModel.userMeta).set(postMute.toJson());
   }
 
-  Future<void> muteUser({ required BuildContext context ,required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> muteUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Map<String,dynamic> post, required MainModel mainModel}) async {
+  Future<void> muteUser({ required BuildContext context ,required AudioPlayer audioPlayer, required List<AudioSource> afterUris, required List<String> muteUids, required int i, required List<DocumentSnapshot<Map<String,dynamic>>> results,required List<MuteUser> muteUsers, required Post whisperPost, required MainModel mainModel}) async {
     // process set
-    final whisperPost = fromMapToPost(postMap: post);
     final String passiveUid = whisperPost.uid;
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
@@ -183,9 +185,8 @@ class PostFutures extends ChangeNotifier {
     await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   }
 
-  Future<void> deletePost({ required BuildContext innerContext, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
+  Future<void> deletePost({ required BuildContext innerContext, required AudioPlayer audioPlayer,required Post whisperPost,required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
     Navigator.pop(innerContext);
-    final whisperPost = fromMapToPost(postMap: postMap);
     if (mainModel.currentUser!.uid != whisperPost.uid) {
       voids.showBasicFlutterToast(context: innerContext, msg: 'あなたにはその権限がありません');
     } else {
@@ -204,7 +205,7 @@ class PostFutures extends ChangeNotifier {
     }
   }
 
-  void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Map<String,dynamic> postMap, required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) {
+  void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Post whisperPost,required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) {
     final title = '投稿削除';
     final content = '一度削除したら、復元はできません。本当に削除しますか？';
     final builder = (innerContext) {
@@ -219,7 +220,7 @@ class PostFutures extends ChangeNotifier {
           CupertinoDialogAction(
             child: const Text(okText),
             isDestructiveAction: true,
-            onPressed: () async => await deletePost(innerContext: innerContext, audioPlayer: audioPlayer, postMap: postMap, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i)
+            onPressed: () async => await deletePost(innerContext: innerContext, audioPlayer: audioPlayer, whisperPost: whisperPost, afterUris: afterUris, posts: posts, mainModel: mainModel, i: i)
           ),
         ],
       );
@@ -257,7 +258,7 @@ class PostFutures extends ChangeNotifier {
           );
           await (controller as FlashController).dismiss();
           await voids.showBasicFlutterToast(context: context,msg: reportPostMsg);
-          await mutePost(context: context,mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
+          await mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
         child: Text(choiceModalText, style: textStyle(context: context), )

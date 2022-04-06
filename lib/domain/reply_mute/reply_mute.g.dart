@@ -6,7 +6,7 @@ part of 'reply_mute.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReplyLike _$ReplyLikeFromJson(Map<String, dynamic> json) => ReplyLike(
+ReplyMute _$ReplyMuteFromJson(Map<String, dynamic> json) => ReplyMute(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postCommentReplyCreatorUid: json['postCommentReplyCreatorUid'] as String,
@@ -14,7 +14,7 @@ ReplyLike _$ReplyLikeFromJson(Map<String, dynamic> json) => ReplyLike(
       postCommentReplyDocRef: json['postCommentReplyDocRef'],
     );
 
-Map<String, dynamic> _$ReplyLikeToJson(ReplyLike instance) => <String, dynamic>{
+Map<String, dynamic> _$ReplyMuteToJson(ReplyMute instance) => <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
       'postCommentReplyCreatorUid': instance.postCommentReplyCreatorUid,
