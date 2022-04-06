@@ -32,6 +32,7 @@ class CommentNotification {
     required this.activeUid,
     required this.updatedAt,
     required this.userImageURL,
+    required this.userImageNegativeScore,
     required this.userName,
     required this.userNameLanguageCode,
     required this.userNameNegativeScore,
@@ -64,6 +65,7 @@ class CommentNotification {
   final String notificationType;
   final dynamic updatedAt;
   final String userImageURL;
+  final num userImageNegativeScore;
   final String userName;
   final String userNameLanguageCode;
   final num userNameNegativeScore;

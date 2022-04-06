@@ -47,6 +47,7 @@ class Post{
     required this.uid,
     required this.updatedAt,
     required this.userImageURL,
+    required this.userImageNegativeScore,
     required this.userName,
     required this.userNameLanguageCode,
     required this.userNameNegativeScore,
@@ -95,6 +96,7 @@ class Post{
   final String uid;
   dynamic updatedAt;
   String userImageURL;
+  final num userImageNegativeScore;
   String userName;
   final String userNameLanguageCode;
   final num userNameNegativeScore;

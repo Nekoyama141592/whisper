@@ -17,7 +17,6 @@ class WhisperUser {
     required this.dmState,
     required this.followerCount,
     required this.followingCount,
-    required this.userImageURL,
     required this.isAdmin,
     required this.isSuspended,
     required this.isGovernmentOfficial,
@@ -35,6 +34,8 @@ class WhisperUser {
     required this.searchToken,
     required this.totalAsset,
     required this.uid,
+    required this.userImageURL,
+    required this.userImageNegativeScore,
     required this.userName,
     required this.userNameLanguageCode,
     required this.userNameNegativeScore,
@@ -76,6 +77,7 @@ class WhisperUser {
   final String uid;
   dynamic updatedAt;
   String userImageURL;
+  final num userImageNegativeScore;
   String userName;
   final String userNameLanguageCode;
   final num userNameNegativeScore;

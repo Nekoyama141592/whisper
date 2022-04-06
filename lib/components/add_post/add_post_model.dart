@@ -250,6 +250,7 @@ class AddPostModel extends ChangeNotifier {
       uid: currentWhisperUser.uid,
       updatedAt: now,
       userImageURL: currentWhisperUser.userImageURL,
+      userImageNegativeScore: 0,
       userName: currentWhisperUser.userName,
       userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
       userNameNegativeScore: currentWhisperUser.userNameNegativeScore,

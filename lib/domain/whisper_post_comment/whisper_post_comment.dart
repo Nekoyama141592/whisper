@@ -32,6 +32,7 @@ class WhisperPostComment {
     required this.uid,
     required this.updatedAt,
     required this.userImageURL,
+    required this.userImageNegativeScore,
     required this.userName,
     required this.userNameLanguageCode,
     required this.userNameNegativeScore,
@@ -64,6 +65,7 @@ class WhisperPostComment {
   final String uid;
   final dynamic updatedAt;
   final String userImageURL;
+  final num userImageNegativeScore;
   final String userName;
   final String userNameLanguageCode;
   final num userNameNegativeScore;

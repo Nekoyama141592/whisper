@@ -167,11 +167,12 @@ class CommentsModel extends ChangeNotifier {
       uid: currentWhisperUser.uid,
       updatedAt: now,
       userName: currentWhisperUser.userName,
+      userImageURL: currentWhisperUser.userImageURL,
+      userImageNegativeScore: 0,
       userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
       userNameNegativeScore: currentWhisperUser.userNameNegativeScore,
       userNamePositiveScore: currentWhisperUser.userNamePositiveScore,
       userNameSentiment: currentWhisperUser.userNameSentiment,
-      userImageURL: currentWhisperUser.userImageURL
     );
     Map<String,dynamic> commentMap = whisperComment.toJson();
     return commentMap;
@@ -208,6 +209,7 @@ class CommentsModel extends ChangeNotifier {
         notificationType: commentNotificationType,
         updatedAt: now,
         userImageURL: currentWhisperUser.userImageURL,
+        userImageNegativeScore: 0,
         userName: currentWhisperUser.userName,
         userNameLanguageCode: currentWhisperUser.userNameLanguageCode,
         userNameNegativeScore: currentWhisperUser.userNameNegativeScore,
