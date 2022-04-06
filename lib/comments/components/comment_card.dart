@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/comments/components/report_comment_button.dart';
 // constants
@@ -11,7 +10,6 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
-import 'package:whisper/details/slide_icon.dart';
 import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/details/redirect_user_image.dart';
 import 'package:whisper/comments/components/show_replys_button.dart';
@@ -62,89 +60,76 @@ class CommentCard extends ConsumerWidget {
       fontSize: fontSize/cardTextDiv2,
       overflow: TextOverflow.ellipsis
     );
-    final deleteSlideIcon = SlideIcon(caption: 'Delete', iconData: Icons.delete, onTap: () async=> await commentsModel.deleteMyComment(context: context, i: i, mainModel: mainModel));
     return isDisplayUidFromMap(mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids,uid: whisperPostComment.uid, ) && !mainModel.mutePostCommentIds.contains(whisperPostComment.postCommentId) ?
 
-    Slidable(
-      actionPane: SlidableBehindActionPane(),
-      actionExtentRatio: 0.25,
-      actions: !(whisperPostComment.uid == mainModel.currentWhisperUser.uid) ?
-      [
-        SlideIcon(caption: 'Mute User', iconData: Icons.person_off, onTap: () async => await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid, ), ),
-        SlideIcon(caption: 'Mute Comment',iconData: Icons.visibility_off, onTap: () async => await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment)  , ),
-        SlideIcon(caption: 'Report Comment', iconData: Icons.flag_circle, onTap: () => commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc))
-      ]: [
-        deleteSlideIcon
-      ],
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: defaultPadding(context: context)/2.0
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).highlightColor.withOpacity(cardOpacity),
-            ),
-            borderRadius: BorderRadius.all(Radius.circular( defaultPadding(context: context) ))
+    Padding(
+      padding: EdgeInsets.only(
+        bottom: defaultPadding(context: context)/2.0
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).highlightColor.withOpacity(cardOpacity),
           ),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: defaultPadding(context: context)
-                ),
-                child: RedirectUserImage(userImageURL: whisperPostComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUid: whisperPostComment.uid, mainModel: mainModel),
+          borderRadius: BorderRadius.all(Radius.circular( defaultPadding(context: context) ))
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: defaultPadding(context: context)
               ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      mainModel.currentWhisperUser.uid == whisperPostComment.uid ?
-                      mainModel.currentWhisperUser.userName : 
-                      whisperPostComment.userName,
-                      style: whisperTextStyle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: defaultPadding(context: context),),
-                    Text(
-                      whisperPostComment.comment,
-                      style: commentsModel.isUnHiddenPostCommentIds.contains(whisperPostComment.postCommentId) ? whisperTextStyle : hiddenStyle
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: RedirectUserImage(userImageURL: whisperPostComment.userImageURL, length: defaultPadding(context: context) * 3.8, padding: 0.0, passiveUid: whisperPostComment.uid, mainModel: mainModel),
+            ),
+            Expanded(
+              child: Column(
                 children: [
-                  CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperPostComment, mainModel: mainModel),
-                  ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperPostComment, whisperPost: whisperPost),
-                  CommentHiddenButton(whisperPostComment: whisperPostComment, commentsModel: commentsModel),
-                  ReportCommentButton(
-                    builder: (innerContext) {
-                      return CupertinoActionSheet(
-                        actions: [
-                          CupertinoActionSheetAction(onPressed: () async {
-                            Navigator.pop(innerContext);
-                            await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid, );
-                          }, child: PositiveText(text: muteUserJaText) ),
-                          CupertinoActionSheetAction(onPressed: () async {
-                            Navigator.pop(innerContext);
-                            await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment);
-                          }, child: PositiveText(text: muteCommentJaText) ),
-                          CupertinoActionSheetAction(onPressed: () async {
-                            Navigator.pop(innerContext);
-                            commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc);
-                          }, child: PositiveText(text: reportCommentJaText) ),
-                          CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
-                        ],
-                      );
-                    },
-                    commentsOrReplysModel: commentsOrReplysModel
+                  Text(
+                    mainModel.currentWhisperUser.uid == whisperPostComment.uid ?
+                    mainModel.currentWhisperUser.userName : 
+                    whisperPostComment.userName,
+                    style: whisperTextStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: defaultPadding(context: context),),
+                  Text(
+                    whisperPostComment.comment,
+                    style: commentsModel.isUnHiddenPostCommentIds.contains(whisperPostComment.postCommentId) ? whisperTextStyle : hiddenStyle
                   )
                 ],
-              )
-            ]
-          ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CommentLikeButton(commentsModel: commentsModel, whisperComment: whisperPostComment, mainModel: mainModel),
+                ShowReplyButton(mainModel: mainModel, replysModel: replysModel,whisperPostComment: whisperPostComment, whisperPost: whisperPost),
+                CommentHiddenButton(whisperPostComment: whisperPostComment, commentsModel: commentsModel),
+                ReportCommentButton(
+                  builder: (innerContext) {
+                    return CupertinoActionSheet(
+                      actions: [
+                        CupertinoActionSheetAction(onPressed: () async {
+                          Navigator.pop(innerContext);
+                          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid, );
+                        }, child: PositiveText(text: muteUserJaText) ),
+                        CupertinoActionSheetAction(onPressed: () async {
+                          Navigator.pop(innerContext);
+                          await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment);
+                        }, child: PositiveText(text: muteCommentJaText) ),
+                        CupertinoActionSheetAction(onPressed: () async {
+                          Navigator.pop(innerContext);
+                          commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc);
+                        }, child: PositiveText(text: reportCommentJaText) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                      ],
+                    );
+                  },
+                  commentsOrReplysModel: commentsOrReplysModel
+                )
+              ],
+            )
+          ]
         ),
       ),
     ) : SizedBox.shrink();
