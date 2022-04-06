@@ -281,13 +281,13 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
 
 Future<void> processNewDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
   await query.limit(oneTimeReadCount).endBeforeDocument(docs.first).get().then((qshot) {
-    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.insert(0, doc); });
+    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) => docs.insert(0, doc) );
   });
 }
 
 Future<void> processBasicDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
   await query.limit(oneTimeReadCount).get().then((qshot) {
-    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
+    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) => docs.add(doc) );
   });
 }
 
@@ -295,7 +295,7 @@ Future<void> processOldDocs({ required Query<Map<String,dynamic>> query , requir
   await query.limit(oneTimeReadCount).startAfterDocument(docs.last).get().then((qshot) {
     final queryDocs = qshot.docs;
     queryDocs.reversed;
-    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) { docs.add(doc); });
+    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) => docs.add(doc));
   });
 }
 
