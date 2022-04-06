@@ -88,7 +88,7 @@ class CommentsModel extends ChangeNotifier {
       if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
         showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
       } else {
-        voids.showSnackBar(context: context, text: 'コメントは投稿主しかできません');
+        voids.showBasicFlutterToast(context: context, msg: 'コメントは投稿主しかできません');
       }
     }
   }
@@ -364,7 +364,7 @@ class CommentsModel extends ChangeNotifier {
       notifyListeners();
       await x.reference.delete();
     } else {
-      voids.showSnackBar(context: context, text: 'あなたにはその権限がありません');
+      voids.showBasicFlutterToast(context: context, msg: 'あなたにはその権限がありません');
     }
   }
   void toggleIsHidden({ required WhisperPostComment whisperPostComment }) {

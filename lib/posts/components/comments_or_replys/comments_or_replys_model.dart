@@ -128,7 +128,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
           await muteComment(context: context, mainModel: mainModel, whisperComment: whisperComment);
           await returnPostCommentReportDocRef(postCommentDoc: commentDoc, postCommentReportId: postCommentReportId).set(postCommentReport.toJson());
         }, 
-        child: Text(choiceModalMsg, style: textStyle(context: context), )
+        child: Text(choiceModalText, style: textStyle(context: context), )
       );
     };
     showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
@@ -164,7 +164,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
           await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply);
           await returnPostCommentReplyReportDocRef(postCommentReplyDoc: postCommentReplyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
         }, 
-        child: Text(choiceModalMsg, style: textStyle(context: context), )
+        child: Text(choiceModalText, style: textStyle(context: context), )
       );
     };
     showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

@@ -89,7 +89,7 @@ class EditPostInfoModel extends ChangeNotifier {
         title = '';
         whisperLinksNotifier.value = [];
       } catch(e) {
-        showSnackBar(context: context, text: 'なんらかのエラーが発生しました');
+        showBasicFlutterToast(context: context, msg: 'なんらかのエラーが発生しました');
       }
     }
   }

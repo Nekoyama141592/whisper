@@ -21,12 +21,12 @@ class ShowBioModel extends ChangeNotifier {
   String bio = '';
   Future<void> updateBio({ required BuildContext context, required WhisperUser updateWhisperUser }) async {
     if (bio.isEmpty) {
-      voids.showSnackBar(context: context, text: '0文字以上にしてください' );
+      voids.showBasicFlutterToast(context: context, msg: '0文字以上にしてください' );
     } else if (bio.length > maxBioOrDescriptionLength) {
       voids.alertMaxBioLength(context: context);
     } else {
       updateWhisperUser.bio = bio;
-      voids.showSnackBar(context: context, text: '更新しました!!!');
+      voids.showBasicFlutterToast(context: context, msg: '更新しました!!!');
       await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
       Navigator.pop(context);
       final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);

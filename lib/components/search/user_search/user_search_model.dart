@@ -30,7 +30,7 @@ class UserSearchModel extends ChangeNotifier {
 
   Future<void> operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
     if (searchTerm.length > maxSearchLength ) {
-      showSnackBar(context: context, text: maxSearchLength.toString() + '文字未満で検索してください' );
+      showBasicFlutterToast(context: context, msg: maxSearchLength.toString() + '文字未満で検索してください' );
     } else if (searchTerm.isNotEmpty) {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);

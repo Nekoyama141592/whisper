@@ -47,7 +47,7 @@ class EditPostInfoScreen extends StatelessWidget {
                       onPressed: () {
                         editPostInfoModel.isEditing = false;
                         editPostInfoModel.reload();
-                        showSnackBar(context: context, text: '投稿の編集がキャンセルされました');
+                        showBasicFlutterToast(context: context, msg: '投稿の編集がキャンセルされました');
                       }, 
                       child: Text(
                         'Cancel',

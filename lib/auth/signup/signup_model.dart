@@ -88,7 +88,7 @@ class SignupModel extends ChangeNotifier {
 
   Future<void> signup(BuildContext context) async {
     if (commonPasswords.contains(password)) {
-      voids.showSnackBar(context: context, text: 'ありふれたパスワードです。変更してください' );
+      voids.showBasicFlutterToast(context: context, msg: 'ありふれたパスワードです。変更してください' );
     } else if (userName.length > maxSearchLength ) {
        voids.maxSearchLengthAlert(context: context,isUserName: true);
     }else {
@@ -105,19 +105,19 @@ class SignupModel extends ChangeNotifier {
         final String errorCode = e.code;
         switch(errorCode) {
           case 'invalid-email':
-          voids.showSnackBar(context: context, text: 'そのemailは相応しくありません');
+          voids.showBasicFlutterToast(context: context, msg: 'そのemailは相応しくありません');
           break;
           case 'user-disabled':
-          voids.showSnackBar(context: context, text: 'そのemailは無効化されています');
+          voids.showBasicFlutterToast(context: context, msg: 'そのemailは無効化されています');
           break;
           case 'user-not-found':
-          voids.showSnackBar(context: context, text: 'そのemailに対するユーザーが見つかりません' );
+          voids.showBasicFlutterToast(context: context, msg: 'そのemailに対するユーザーが見つかりません' );
           break;
           case 'wrong-password':
-          voids.showSnackBar(context: context, text: 'passwordが違います');
+          voids.showBasicFlutterToast(context: context, msg: 'passwordが違います');
           break;
           case 'too-many-requests':
-          voids.showSnackBar(context: context, text: 'ログインの試行回数が制限を超えました' );
+          voids.showBasicFlutterToast(context: context, msg: 'ログインの試行回数が制限を超えました' );
           break;
         }
       }

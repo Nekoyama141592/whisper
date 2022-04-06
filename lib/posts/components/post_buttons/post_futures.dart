@@ -85,7 +85,7 @@ class PostFutures extends ChangeNotifier {
     return TextButton(
       onPressed: () async {
         if (mainModel.bookmarkPostCategoryTokenIdNotifier.value.isEmpty) {
-          voids.showSnackBar(context: context, text: 'カテゴリーを選択して下さい');
+          voids.showBasicFlutterToast(context: context, msg: 'カテゴリーを選択して下さい');
         } else {
           // process UI
           final Timestamp now = Timestamp.now();
@@ -102,7 +102,7 @@ class PostFutures extends ChangeNotifier {
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
-      child: PositiveText(text: choiceModalMsg)
+      child: PositiveText(text: choiceModalText)
     );
   };
   voids.showFlashDialogue(context: context, content: content, titleText: 'どのリストにブックマークしますか？',positiveActionBuilder: positiveActionBuilder);
@@ -185,7 +185,7 @@ class PostFutures extends ChangeNotifier {
     Navigator.pop(innerContext);
     final whisperPost = fromMapToPost(postMap: postMap);
     if (mainModel.currentUser!.uid != whisperPost.uid) {
-      voids.showSnackBar(context: innerContext, text: 'あなたにはその権限がありません');
+      voids.showBasicFlutterToast(context: innerContext, msg: 'あなたにはその権限がありません');
     } else {
       // process UI
       final x = posts[i];
@@ -259,7 +259,7 @@ class PostFutures extends ChangeNotifier {
           await mutePost(context: context,mainModel: mainModel, i: i, post: post.toJson(), afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
-        child: Text(choiceModalMsg, style: textStyle(context: context), )
+        child: Text(choiceModalText, style: textStyle(context: context), )
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

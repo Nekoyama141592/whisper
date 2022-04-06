@@ -35,7 +35,7 @@ class UserLinksModel extends ChangeNotifier {
       final result = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
       // (updateWhisperUser.links != result) always return true
       updateWhisperUser.links = result;
-      showSnackBar(context: context, text: '更新しました!!!');
+      showBasicFlutterToast(context: context, msg: '更新しました!!!');
       await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
       Navigator.pop(context);
       final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);

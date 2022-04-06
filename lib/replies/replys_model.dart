@@ -89,7 +89,7 @@ class RepliesModel extends ChangeNotifier {
     if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
       showMakeReplyInputFlashBar(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, mainModel: mainModel, whisperComment: whisperComment);
     } else {
-      voids.showSnackBar(context: context, text: 'あなたはこのコメントに返信できません');
+      voids.showBasicFlutterToast(context: context, msg: 'あなたはこのコメントに返信できません');
     }
   }
 
@@ -371,7 +371,7 @@ class RepliesModel extends ChangeNotifier {
       notifyListeners();
       await x.reference.delete();
     } else {
-      voids.showSnackBar(context: context, text: 'あなたにはその権限がありません');
+      voids.showBasicFlutterToast(context: context, msg: 'あなたにはその権限がありません');
     }
   }
   

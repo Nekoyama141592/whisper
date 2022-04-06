@@ -398,7 +398,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () async {
                     await FlutterClipboard.copy(link).then((_) {
-                      showSnackBar(context: context, text: 'リンクをコピーしました');
+                      showBasicFlutterToast(context: context, msg: 'リンクをコピーしました');
                     });
                   },
                 ),
@@ -431,7 +431,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
       }
     );
   } else {
-    showSnackBar(context: context, text: 'このURLは無効です' );
+    showBasicFlutterToast(context: context, msg: 'このURLは無効です' );
   }
 }
 
@@ -470,24 +470,23 @@ void onDeleteLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisp
 
 void maxSearchLengthAlert ({ required BuildContext context,required bool isUserName }) {
   if (isUserName == true) {
-    showSnackBar(context: context, text: 'ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください' );
+    showBasicFlutterToast(context: context, msg: 'ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください' );
   } else {
-    showSnackBar(context: context, text: maxSearchLength.toString() + '文字以内にしてください' );
+    showBasicFlutterToast(context: context, msg: maxSearchLength.toString() + '文字以内にしてください' );
   }
 } 
-void showSnackBar({ required BuildContext context,required String text}) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
 
-void alertMaxLinksLength({ required BuildContext context, }) => showSnackBar(context: context, text: 'リンクは' + maxLinksLength.toString() + '個以内にしてください' );
+void alertMaxLinksLength({ required BuildContext context, }) => showBasicFlutterToast(context: context, msg: 'リンクは' + maxLinksLength.toString() + '個以内にしてください' );
 
-void alertMaxBioLength({ required BuildContext context, }) => showSnackBar(context: context, text: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
+void alertMaxBioLength({ required BuildContext context, }) => showBasicFlutterToast(context: context, msg: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
 
-void alertMaxCommentOrReplyLength({ required BuildContext context }) => showSnackBar(context: context, text: maxCommentOrReplyLength.toString() + '以内にしてください');
+void alertMaxCommentOrReplyLength({ required BuildContext context }) => showBasicFlutterToast(context: context, msg: maxCommentOrReplyLength.toString() + '以内にしてください');
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {
   if (await canLaunch(url)) {
     await launch(url);
   } else {
-    showSnackBar(context: context, text: '無効なURLです' );
+    showBasicFlutterToast(context: context, msg: '無効なURLです' );
   }
 }
 
@@ -515,6 +514,7 @@ Future<void> showBasicFlutterToast({ required BuildContext context,required Stri
       textColor: Colors.white
   );
 }
+
 Future<void> showCustomFlutterToast({ required Color backgroundColor,required String msg }) async {
   await Fluttertoast.showToast(
       msg: msg,

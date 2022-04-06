@@ -37,16 +37,16 @@ class LoginModel extends ChangeNotifier {
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
         case 'invalid-email':
-        showSnackBar(context: context, text: 'そのメールアドレスは不適です' );
+        showBasicFlutterToast(context: context, msg: 'そのメールアドレスは不適です' );
         break;
         case 'user-disabled':
-        showSnackBar(context: context, text: 'そのメールアドレスは無効化されています' );
+        showBasicFlutterToast(context: context, msg: 'そのメールアドレスは無効化されています' );
         break;
         case 'user-not-found':
-        showSnackBar(context: context, text: 'そのメールアドレスを持つユーザーが見つかりません');
+        showBasicFlutterToast(context: context, msg: 'そのメールアドレスを持つユーザーが見つかりません');
         break;
         case 'wrong-password':
-        showSnackBar(context: context, text: 'パスワードが違います' );
+        showBasicFlutterToast(context: context, msg: 'パスワードが違います' );
         break;
       }
     } 

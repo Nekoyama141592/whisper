@@ -147,7 +147,7 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostCategory bookmarkPostCategory,required UserMeta userMeta}) async {
     if (editLabel.isEmpty) {
-      voids.showSnackBar(context: context, text: '空欄は不適です');
+      voids.showBasicFlutterToast(context: context, msg: '空欄は不適です');
     } else if (editLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
@@ -164,7 +164,7 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> addBookmarkPostLabel({ required MainModel mainModel, required BuildContext context,required FlashController flashController, }) async {
     if (newLabel.isEmpty) {
-      voids.showSnackBar(context: context, text: '空欄は不適です');
+      voids.showBasicFlutterToast(context: context, msg: '空欄は不適です');
     } else if (newLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {

@@ -192,13 +192,14 @@ const String reportPostMsg = '投稿をを報告しました';
 const String reportUserMsg = 'ユーザーを報告しました';
 const String reportPostCommentMsg = 'コメントを報告しました';
 const String reportPostCommentReplyMsg = 'リプライを報告しました';
-const String choiceModalMsg = '選択';
+
 // Id
 const String configIdString = 'config';
 // title
 const String reportTitle = '問題を報告してください';
 // text
 const String okText = 'OK';
+const String choiceModalText = '選択';
 const String cancelText = 'キャンセル';
 const String muteUserJaText = 'ユーザーをミュート';
 const String mutePostJaText = '投稿をミュート';
