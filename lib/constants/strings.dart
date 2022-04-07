@@ -199,7 +199,7 @@ const String reportPostMsg = '投稿をを報告しました';
 const String reportUserMsg = 'ユーザーを報告しました';
 const String reportPostCommentMsg = 'コメントを報告しました';
 const String reportPostCommentReplyMsg = 'リプライを報告しました';
-
+const String pleaseInputTitleMsg = 'タイトルを入力してください';
 // Id
 const String configIdString = 'config';
 // title

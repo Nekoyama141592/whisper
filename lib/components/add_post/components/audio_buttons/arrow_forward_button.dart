@@ -5,6 +5,8 @@ import 'package:whisper/components/add_post/components/audio_buttons/audio_butto
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/voids.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
@@ -33,7 +35,7 @@ class ArrowForwardButton extends StatelessWidget {
       ),
       press: (){
         if (addPostModel.postTitleNotifier.value.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Post titleを入力してください')));
+          showBasicFlutterToast(context: context, msg:pleaseInputTitleMsg );
         } else {
           routes.toPickPostImagePage(context: context, addPostModel: addPostModel, mainModel: mainModel);
         }

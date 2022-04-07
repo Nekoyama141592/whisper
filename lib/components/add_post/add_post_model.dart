@@ -66,23 +66,13 @@ class AddPostModel extends ChangeNotifier {
     init();
   }
 
-  void init() {
-    audioPlayer = AudioPlayer();
-  }
+  void init() => audioPlayer = AudioPlayer();
 
-  void startLoading() {
-    addPostStateNotifier.value = AddPostState.uploading;
-  }
+  void startLoading() => addPostStateNotifier.value = AddPostState.uploading;
 
-  void endLoading() {
-    addPostStateNotifier.value = AddPostState.uploaded;
-  }
+  void endLoading() => addPostStateNotifier.value = AddPostState.uploaded;
 
-  void reload() {
-    notifyListeners();
-  }
-
-  Future showImagePicker() async {
+  Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     xFile = await _picker.pickImage(source: ImageSource.gallery);
     if (xFile != null) {
@@ -91,7 +81,7 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future cropImage() async {
+  Future<void> cropImage() async {
     isCroppedNotifier.value = false;
     croppedFile = null;
     croppedFile = await returnCroppedFile(xFile: xFile);
@@ -101,21 +91,13 @@ class AddPostModel extends ChangeNotifier {
     }
   }
 
-  void startMeasure() {
-    stopWatchTimer.onExecute.add(StopWatchExecute.start);
-  }
+  void startMeasure() => stopWatchTimer.onExecute.add(StopWatchExecute.start);
 
-  void stopMeasure() {
-    stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-  }
+  void stopMeasure() => stopWatchTimer.onExecute.add(StopWatchExecute.stop);
 
-  void resetMeasure() {
-    stopWatchTimer.onExecute.add(StopWatchExecute.reset);
-  }
+  void resetMeasure() => stopWatchTimer.onExecute.add(StopWatchExecute.reset);
   
-  Future setAudio(String filepath) async {
-    await audioPlayer.setFilePath(filePath);
-  }
+  Future setAudio({ required String filePath}) async => await audioPlayer.setFilePath(filePath);
 
   void play() {
     audioPlayer.play();
@@ -127,9 +109,7 @@ class AddPostModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void seek(Duration position) {
-    audioPlayer.seek(position);
-  }
+  void seek(Duration position) => audioPlayer.seek(position);
 
   Future startRecording({ required BuildContext context, required MainModel mainModel }) async {
     audioRecorder = Record();
@@ -143,14 +123,14 @@ class AddPostModel extends ChangeNotifier {
     }
   }
 
-  Future onRecordButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
+  Future<void> onRecordButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     if (!(addPostStateNotifier.value == AddPostState.recording)) {
       await startRecording(context: context,mainModel: mainModel);
       addPostStateNotifier.value = AddPostState.recording;
     } else {
       audioRecorder.stop();
       stopMeasure();
-      await setAudio(filePath);
+      await setAudio( filePath:filePath);
       audioFile = File(filePath);
       addPostStateNotifier.value = AddPostState.recorded;
       voids.listenForStatesForAddPostModel(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier);
@@ -170,9 +150,9 @@ class AddPostModel extends ChangeNotifier {
     addPostStateNotifier.value = AddPostState.initialValue;
   }
 
-  Future onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
+  Future<void> onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     if (postTitleNotifier.value.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('タイトルを入力してください')));
+      voids.showBasicFlutterToast(context: context, msg: pleaseInputTitleMsg );
     } else if (postTitleNotifier.value.length > maxSearchLength ) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
@@ -188,6 +168,8 @@ class AddPostModel extends ChangeNotifier {
       // post firestore
       await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId,storagePostName: storagePostName );
       postTitleNotifier.value = '';
+      croppedFile = null;
+      isCroppedNotifier.value = false;
       endLoading();
       await voids.createUserMetaUpdateLog(mainModel: mainModel);
     }

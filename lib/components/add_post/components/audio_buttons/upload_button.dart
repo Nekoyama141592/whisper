@@ -28,9 +28,7 @@ class UploadButton extends StatelessWidget {
         color: Theme.of(context).highlightColor,
         size: addPostIconSize(context: context),
       ),
-      press: () async {
-        await addPostModel.onUploadButtonPressed(context: context, mainModel: mainModel);
-      }
+      press: () async => await addPostModel.onUploadButtonPressed(context: context, mainModel: mainModel)
     );
   }
 }
