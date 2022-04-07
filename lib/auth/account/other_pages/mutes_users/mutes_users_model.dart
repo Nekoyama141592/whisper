@@ -1,4 +1,5 @@
 // material
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,16 +11,17 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/constants/widgets.dart';
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
 // model
 import 'package:whisper/main_model.dart';
 
-final mutesUsersProvider = ChangeNotifierProvider(
-  (ref) => MutesUsersModel()
+final muteUsersProvider = ChangeNotifierProvider(
+  (ref) => MuteUsersModel()
 );
 
-class MutesUsersModel extends ChangeNotifier {
+class MuteUsersModel extends ChangeNotifier {
 
   // basic
   bool isLoading = false;
@@ -72,19 +74,41 @@ class MutesUsersModel extends ChangeNotifier {
     }
   }
 
-  Future<void> unMuteUser({ required String passiveUid, required MainModel mainModel }) async {
-    final currentWhisperUser = mainModel.currentWhisperUser;
-    final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.passiveUid == passiveUid ).toList().first;
-    // front mute_users_model
-    muteUids.remove(passiveUid);
-    userDocs.removeWhere((element) => element.id == passiveUid );
-    // front main_model
-    mainModel.muteUids.remove(passiveUid);
-    mainModel.muteUsers.remove(deleteMuteUserToken);
-    notifyListeners();
-    // back
-    await returnTokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
-    await returnUserMuteDocRef(passiveUid: passiveUid, activeUid: currentWhisperUser.uid ).delete();
+  void unMuteUser({ required BuildContext context,required String passiveUid, required MainModel mainModel }) {
+    voids.showCupertinoDialogue(
+      context: context, 
+      builder: (innerContext) {
+        return CupertinoAlertDialog(
+          title: boldText(text: '警告'),
+          content: Text('このユーザーのミュートを解除しますか？'),
+          actions: [
+          CupertinoDialogAction(
+            child: const Text(cancelText),
+            onPressed: () => Navigator.pop(innerContext),
+          ),
+          CupertinoDialogAction(
+            child: const Text(okText),
+            isDestructiveAction: true,
+            onPressed: () async {
+              Navigator.pop(innerContext);
+              final currentWhisperUser = mainModel.currentWhisperUser;
+              final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.passiveUid == passiveUid ).toList().first;
+              // front mute_users_model
+              muteUids.remove(passiveUid);
+              userDocs.removeWhere((element) => element.id == passiveUid );
+              // front main_model
+              mainModel.muteUids.remove(passiveUid);
+              mainModel.muteUsers.remove(deleteMuteUserToken);
+              notifyListeners();
+              // back
+              await returnTokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
+              await returnUserMuteDocRef(passiveUid: passiveUid, activeUid: currentWhisperUser.uid ).delete();
+            }
+          ),
+        ],
+        );
+      }
+    );
   }
 
 }

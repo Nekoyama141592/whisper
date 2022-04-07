@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/judge_screen.dart';
@@ -22,20 +23,18 @@ class MutesUsersPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,WidgetRef ref) {
 
-    final mutesUsersModel = ref.watch(mutesUsersProvider);
-    return ScaffoldMessenger(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('ミュートしているユーザー'),
-        ),
-        body: mutesUsersModel.isLoading ?
-        Loading()
-        : JudgeScreen(
-          list: mutesUsersModel.userDocs,
-          reload: () async => await mutesUsersModel.onReload(),
-          content: UserCards(userDocs: mutesUsersModel.userDocs, mainModel: mainModel),
-        )
+    final mutesUsersModel = ref.watch(muteUsersProvider);
+    return Scaffold(
+      appBar: AppBar(
+        title: whiteBoldText(text: 'ミュートしているユーザー')
       ),
+      body: mutesUsersModel.isLoading ?
+      Loading()
+      : JudgeScreen(
+        list: mutesUsersModel.userDocs,
+        reload: () async => await mutesUsersModel.onReload(),
+        content: UserCards(userDocs: mutesUsersModel.userDocs, mainModel: mainModel,muteUsersModel: mutesUsersModel,),
+      )
     );
   }
 }

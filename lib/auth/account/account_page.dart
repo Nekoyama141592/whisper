@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_model.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
@@ -29,6 +30,7 @@ class AccountPage extends ConsumerWidget {
 
     final accountModel = ref.watch(accountProvider);
     final UserLinksModel userLinksModel = ref.watch(userLinksProvider);
+    final MuteUsersModel muteUsersModel  = ref.watch(muteUsersProvider);
 
     return ScaffoldMessenger(
       child: Scaffold(
@@ -83,6 +85,7 @@ class AccountPage extends ConsumerWidget {
                           Navigator.pop(innerContext);
                           await Future.delayed(Duration(milliseconds: dialogueMilliSeconds));
                           routes.toMutesUsersPage(context, mainModel);
+                          await muteUsersModel.init(mainModel: mainModel);
                         }
                       )
                     ],
