@@ -27,7 +27,7 @@ class ReplyCard extends ConsumerWidget {
     Key? key,
     required this.i,
     required this.whisperReply,
-    required this.postCommentReplyDoc,
+    required this.replyDoc,
     required this.repliesModel,
     required this.mainModel,
     required this.commentsOrReplysModel
@@ -35,7 +35,7 @@ class ReplyCard extends ConsumerWidget {
 
   final int i;
   final WhisperReply whisperReply;
-  final DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc;
+  final DocumentSnapshot<Map<String,dynamic>> replyDoc;
   final RepliesModel repliesModel;
   final MainModel mainModel;
   final CommentsOrReplysModel commentsOrReplysModel;
@@ -104,18 +104,26 @@ class ReplyCard extends ConsumerWidget {
                 ReportReplyButton(
                   builder: (innerContext) {
                     return CupertinoActionSheet(
-                      actions: [
+                      actions: whisperReply.uid == mainModel.userMeta.uid ?
+                      [
+                        CupertinoActionSheetAction(onPressed: () async {
+                          Navigator.pop(innerContext);
+                          await repliesModel.deleteMyReply(context: context, replyDoc: replyDoc, mainModel: mainModel) ;
+                        }, child: PositiveText(text: deleteReplyJaText) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                      ]
+                      : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsOrReplysModel.muteUser(context: context, mainModel: mainModel, passiveUid: whisperReply.uid);
                         }, child: PositiveText(text: muteUserJaText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await commentsOrReplysModel.muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply);
+                          await repliesModel.muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply,replyDoc: replyDoc );
                         }, child: PositiveText(text: muteReplyJaText) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
-                          commentsOrReplysModel.reportReply(context: context, mainModel: mainModel, whisperReply: whisperReply, postCommentReplyDoc: postCommentReplyDoc);
+                          repliesModel.reportReply(context: context, mainModel: mainModel, whisperReply: whisperReply, replyDoc: replyDoc);
                         }, child: PositiveText(text: reportReplyJaText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ],

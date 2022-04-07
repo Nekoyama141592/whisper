@@ -212,3 +212,5 @@ const String reportPostJaText = '投稿を報告';
 const String reportCommentJaText = 'コメントを報告';
 const String reportReplyJaText = 'リプライを報告';
 const String deletePostText = '自分の投稿を完全に削除';
+const String deleteCommentJaText = '自分のコメントを完全に削除';
+const String deleteReplyJaText = '自分のリプライを完全に削除';

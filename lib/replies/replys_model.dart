@@ -13,14 +13,19 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/voids.dart' as voids;
+// components
+import 'package:whisper/details/report_contents_list_view.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
-import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/reply_like/reply_like.dart';
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/likeReply/like_reply.dart';
+import 'package:whisper/domain/mute_reply/mute_reply.dart';
+import 'package:whisper/domain/reply_mute/reply_mute.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
+import 'package:whisper/domain/post_comment_reply_report/post_comment_reply_report.dart';
 // states
 import 'package:whisper/constants/enums.dart';
 // model
@@ -369,12 +374,11 @@ class RepliesModel extends ChangeNotifier {
     await postDocRefToPostCommentReplyLikeRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: postCommentReplyId, userMeta: mainModel.userMeta ).delete();
   }
 
-  Future<void> deleteMyReply({ required BuildContext context,required int i,required MainModel mainModel,}) async {
-    final x = postCommentReplyDocs[i];
-    if (WhisperReply.fromJson(x.data()!).uid == mainModel.currentWhisperUser.uid) {
-      postCommentReplyDocs.remove(x);
+  Future<void> deleteMyReply({ required BuildContext context,required DocumentSnapshot<Map<String,dynamic>> replyDoc,required MainModel mainModel,}) async {
+    if (WhisperReply.fromJson(replyDoc.data()!).uid == mainModel.currentWhisperUser.uid) {
+      postCommentReplyDocs.remove(replyDoc);
       notifyListeners();
-      await x.reference.delete();
+      await replyDoc.reference.delete();
     } else {
       voids.showBasicFlutterToast(context: context, msg: 'あなたにはその権限がありません');
     }
@@ -389,4 +393,63 @@ class RepliesModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> muteReply({ required BuildContext context,required MainModel mainModel, required WhisperReply whisperReply,required DocumentSnapshot<Map<String,dynamic>> replyDoc }) async {
+    if (mainModel.mutePostCommentReplyIds.contains(whisperReply.postCommentReplyId) == false) {
+      // process set
+      final Timestamp now = Timestamp.now();
+      final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePostCommentReply );
+      final postCommentReplyDocRef = postDocRefToPostCommentReplyDocRef(postDocRef: whisperReply.postDocRef, postCommentId: whisperReply.postCommentId, postCommentReplyId: whisperReply.postCommentReplyId );
+      final MuteReply muteReply = MuteReply(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyId: whisperReply.postCommentReplyId, tokenType: mutePostCommentReplyTokenType, postCommentReplyDocRef: postCommentReplyDocRef );
+      // process UI
+      mainModel.mutePostCommentReplyIds.add(muteReply.postCommentReplyId);
+      mainModel.mutePostCommentReplys.add(muteReply);
+      postCommentReplyDocs.remove(replyDoc);
+      notifyListeners();
+      await voids.showCustomFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg);
+      // process Backend
+      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
+      final ReplyMute replyMute = ReplyMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyCreatorUid: whisperReply.uid, postCommentReplyId: whisperReply.postCommentReplyId, postCommentReplyDocRef: postCommentReplyDocRef);
+      await returnPostCommentReplyMuteDocRef(postCommentReplyDocRef: postCommentReplyDocRef, userMeta: mainModel.userMeta).set(replyMute.toJson());
+    } else {
+      notifyListeners();
+    }
+  }
+  
+  void reportReply({ required BuildContext context,required MainModel mainModel, required WhisperReply whisperReply,required DocumentSnapshot<Map<String,dynamic>> replyDoc }) {
+    final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
+    final postCommentReplyReportId = generatePostCommentReplyReportId();
+    final content = ReportContentsListView(selectedReportContentsNotifier: selectedReportContentsNotifier);
+    final positiveActionBuilder = (_, controller, __) {
+      return TextButton(
+        onPressed: () async {
+          final PostCommentReplyReport postCommentReplyReport = PostCommentReplyReport(
+            activeUid: mainModel.userMeta.uid,
+            createdAt: Timestamp.now(),
+            others: '',
+            reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value), 
+            passiveUid: whisperReply.uid,
+            passiveUserName: whisperReply.userName, 
+            postCommentId: whisperReply.postCommentId, 
+            postCommentReplyId: whisperReply.postCommentReplyId, 
+            postCommentReplyDocRef: replyDoc.reference, 
+            postCreatorUid: whisperReply.postCreatorUid, 
+            postId: whisperReply.postId, 
+            reply: whisperReply.reply, 
+            replyLanguageCode: whisperReply.replyLanguageCode, 
+            replyNegativeScore: whisperReply.replyNegativeScore, 
+            replyPositiveScore: whisperReply.replyPositiveScore, 
+            replySentiment: whisperReply.replySentiment
+          );
+          await (controller as FlashController).dismiss();
+          await voids.showCustomFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentReplyMsg );
+          await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply,replyDoc: replyDoc,);
+          await returnPostCommentReplyReportDocRef(postCommentReplyDoc: replyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
+        }, 
+        child: Text(choiceModalText, style: textStyle(context: context), )
+      );
+    };
+    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+  }
+
 }

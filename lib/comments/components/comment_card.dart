@@ -108,18 +108,26 @@ class CommentCard extends ConsumerWidget {
                 ReportCommentButton(
                   builder: (innerContext) {
                     return CupertinoActionSheet(
-                      actions: [
+                      actions: whisperPostComment.uid == mainModel.userMeta.uid ?
+                        [
+                          CupertinoActionSheetAction(onPressed: () async {
+                            Navigator.pop(innerContext);
+                            await commentsModel.deleteMyComment(context: context, commentDoc: commentDoc, mainModel: mainModel);
+                          }, child: PositiveText(text: deleteCommentJaText )),
+                          CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        ]
+                      : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid, );
                         }, child: PositiveText(text: muteUserJaText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await commentsOrReplysModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment);
+                          await commentsModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment,commentDoc: commentDoc );
                         }, child: PositiveText(text: muteCommentJaText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          commentsOrReplysModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc);
+                          commentsModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc);
                         }, child: PositiveText(text: reportCommentJaText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ],

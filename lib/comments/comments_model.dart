@@ -15,12 +15,17 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/comment_like/comment_like.dart';
+// components
+import 'package:whisper/details/report_contents_list_view.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/likeComment/like_comment.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
+import 'package:whisper/domain/mute_comment/mute_comment.dart';
+import 'package:whisper/domain/comment_mute/comment_mute.dart';
+import 'package:whisper/domain/post_comment_report/post_comment_report.dart';
 // states
 import 'package:whisper/constants/enums.dart';
 // models
@@ -359,12 +364,11 @@ class CommentsModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future<void> deleteMyComment({ required BuildContext context,required int i,required MainModel mainModel,}) async {
-    final x = commentDocs[i];
-    if (WhisperPostComment.fromJson(x.data()!).uid == mainModel.currentWhisperUser.uid ) {
-      commentDocs.remove(x);
+  Future<void> deleteMyComment({ required BuildContext context,required DocumentSnapshot<Map<String,dynamic>> commentDoc,required MainModel mainModel,}) async {
+    if (WhisperPostComment.fromJson(commentDoc.data()!).uid == mainModel.currentWhisperUser.uid ) {
+      commentDocs.remove(commentDoc);
       notifyListeners();
-      await x.reference.delete();
+      await commentDoc.reference.delete();
     } else {
       voids.showBasicFlutterToast(context: context, msg: 'あなたにはその権限がありません');
     }
@@ -378,4 +382,62 @@ class CommentsModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> muteComment({ required BuildContext context,required MainModel mainModel, required WhisperPostComment whisperComment,required DocumentSnapshot<Map<String,dynamic>> commentDoc }) async {
+    if (mainModel.mutePostCommentIds.contains(whisperComment.postCommentId) == false) {
+        // process set
+      final Timestamp now = Timestamp.now();
+      final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.mutePostComment );
+      final String postCommentId = whisperComment.postCommentId;
+      final postCommentDocRef = returnPostCommentDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, postCommentId: postCommentId, );
+      final MuteComment muteComment = MuteComment(activeUid: mainModel.userMeta.uid,postCommentId: postCommentId,createdAt: now, tokenId: tokenId, tokenType: mutePostCommentTokenType,postCommentDocRef: postCommentDocRef, );
+      // process UI
+      mainModel.mutePostCommentIds.add(postCommentId);
+      mainModel.mutePostComments.add(muteComment);
+      commentDocs.remove(commentDoc);
+      notifyListeners();
+      await voids.showBasicFlutterToast(context: context,msg: mutePostCommentMsg);
+      // process Backend
+      await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
+      final CommentMute commentMute = CommentMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentId: postCommentId, postId: whisperComment.postId, postCommentCreatorUid: whisperComment.uid, postCommentDocRef: postCommentDocRef);
+      await returnPostCommentMuteDocRef(postCommentDocRef: postCommentDocRef, userMeta: mainModel.userMeta).set(commentMute.toJson());
+    } else {
+      notifyListeners();
+    }
+  }
+
+  void reportComment({ required BuildContext context,required MainModel mainModel, required WhisperPostComment whisperComment ,required DocumentSnapshot<Map<String,dynamic>> commentDoc }) {
+    final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
+    final String postCommentReportId = generatePostCommentReportId();
+    final content = ReportContentsListView(selectedReportContentsNotifier: selectedReportContentsNotifier);
+    final positiveActionBuilder = (_, controller, __) {
+      return TextButton(
+        onPressed: () async {
+          final PostCommentReport postCommentReport = PostCommentReport(
+            activeUid: mainModel.userMeta.uid, 
+            comment: whisperComment.comment, 
+            commentLanguageCode: whisperComment.commentLanguageCode,
+            commentNegativeScore: whisperComment.commentNegativeScore,
+            commentPositiveScore: whisperComment.commentPositiveScore,
+            commentSentiment: whisperComment.commentSentiment,
+            createdAt: Timestamp.now(), 
+            others: '', 
+            reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value), 
+            passiveUid: whisperComment.uid,
+            passiveUserName: whisperComment.userName,
+            postCommentDocRef: commentDoc.reference,
+            postCreatorUid: whisperComment.passiveUid,
+            postId: whisperComment.postId,
+          );
+          await (controller as FlashController).dismiss();
+          await voids.showBasicFlutterToast(context: context,msg: reportPostCommentMsg );
+          await muteComment(context: context, mainModel: mainModel, whisperComment: whisperComment,commentDoc: commentDoc );
+          await returnPostCommentReportDocRef(postCommentDoc: commentDoc, postCommentReportId: postCommentReportId).set(postCommentReport.toJson());
+        }, 
+        child: Text(choiceModalText, style: textStyle(context: context), )
+      );
+    };
+    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+  }
+
 }
