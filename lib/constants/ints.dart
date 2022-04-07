@@ -26,3 +26,5 @@ const int maxBioOrDescriptionLength = 1000;
 const int maxLinksLength = 10;
 const int maxCommentOrReplyLength = 299;
 const int uidLength = 28;
+// initial value
+const int initialCount = 0;

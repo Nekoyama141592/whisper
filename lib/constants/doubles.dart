@@ -16,3 +16,7 @@ const double defaultScore = 10000.0;
 const double likeScore = 100.0;
 const double bookmarkScore = 150.0;
 const double negativeScoreLimit = 80.0;
+// initial value
+const double initialNegativeScore = 0.0;
+const double initialPositiveScore = 100.0;
+const double initialAsset = 0.0;
