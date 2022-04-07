@@ -84,6 +84,7 @@ class MutesUsersModel extends ChangeNotifier {
     notifyListeners();
     // back
     await returnTokenDocRef(uid: currentWhisperUser.uid,tokenId: deleteMuteUserToken.tokenId).delete();
+    await returnUserMuteDocRef(passiveUid: passiveUid, activeUid: currentWhisperUser.uid ).delete();
   }
 
 }

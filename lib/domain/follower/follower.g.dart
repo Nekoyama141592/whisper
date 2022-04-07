@@ -13,7 +13,7 @@ Follower _$FollowerFromJson(Map<String, dynamic> json) => Follower(
     );
 
 Map<String, dynamic> _$FollowerToJson(Follower instance) => <String, dynamic>{
-      'followerUid': instance.followerUid,
       'createdAt': instance.createdAt,
       'followedUid': instance.followedUid,
+      'followerUid': instance.followerUid,
     };

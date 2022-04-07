@@ -10,9 +10,9 @@ class Follower{
     required this.followedUid,
     required this.createdAt,
   });
-  final String followerUid;
   final dynamic createdAt;
   final String followedUid;
+  final String followerUid;
   
   factory Follower.fromJson(Map<String,dynamic> json) => _$FollowerFromJson(json);
 

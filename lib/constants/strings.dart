@@ -112,6 +112,7 @@ final String commentNotificationType = returnNotificationTypeString(notification
 final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentReplyNotification );
 // colRefName
 const String usersColRefName = 'users';
+const String userMutesColRefName = 'userMutes';
 const String userUpdateLogsColRefName = 'userUpdateLogs';
 const String userUpdateLogNoBatchesColRefName = 'userUpdateLogNoBatches';
 const String userMetaUpdateLogsColRefName = 'userMetaUpdateLogs';

@@ -93,6 +93,8 @@ CollectionReference<Map<String, dynamic>> returnUserMetaColRef() => FirebaseFire
 
 DocumentReference<Map<String, dynamic>> returnUserMetaDocRef({ required String uid }) => returnUserMetaColRef().doc(uid);
 
+DocumentReference<Map<String, dynamic>> returnUserMuteDocRef({ required String passiveUid , required String activeUid }) =>  returnUserDocRef(uid: passiveUid).collection(userMutesColRefName).doc(activeUid) ;
+
 CollectionReference<Map<String,dynamic>> returnTimelinesColRef({ required String uid }) => returnUserMetaDocRef(uid: uid).collection(timelinesFieldKey);
 
 CollectionReference<Map<String, dynamic>> returnFollowersColRef({ required String uid }) => returnUserDocRef(uid: uid).collection(followersColRefName);

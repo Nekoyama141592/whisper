@@ -28,6 +28,8 @@ import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 // components
 import 'package:whisper/details/report_contents_list_view.dart';
+import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/user_mute/user_mute.dart';
 // model 
 import 'package:whisper/main_model.dart';
 
@@ -168,7 +170,8 @@ class PostFutures extends ChangeNotifier {
     // process set
     final String passiveUid = whisperPost.uid;
     final Timestamp now = Timestamp.now();
-    final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
+    final UserMeta userMeta = mainModel.userMeta;
+    final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.muteUser );
     final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser()!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
     // process Ui
     mainModel.muteUsers.add(muteUser);
@@ -178,6 +181,8 @@ class PostFutures extends ChangeNotifier {
     await voids.showBasicFlutterToast(context: context,msg: muteUserMsg);
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
+    final UserMute userMute = UserMute(createdAt: now, muterUid: userMeta.uid, mutedUid: passiveUid );
+    await returnUserMuteDocRef(passiveUid: passiveUid, activeUid: mainModel.userMeta.uid ).set(userMute.toJson());
   }
 
   Future<void> removeTheUsersPost({ required List<DocumentSnapshot<Map<String,dynamic>>> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
