@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // model
@@ -23,6 +24,7 @@ class ReplyLikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final likeCount = whisperReply.likeCount;
+    final plusOneCount = likeCount + plusOne;
 
     return mainModel.likePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
@@ -40,7 +42,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            returnJaInt(count: likeCount),
+            returnJaInt(count: plusOneCount),
             style: TextStyle(color: Colors.red)
           )
         ],
