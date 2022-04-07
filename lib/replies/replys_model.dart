@@ -13,6 +13,7 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/details/positive_text.dart';
 // components
 import 'package:whisper/details/report_contents_list_view.dart';
 // domain
@@ -49,7 +50,7 @@ class RepliesModel extends ChangeNotifier {
   Query<Map<String, dynamic>> getQuery ({ required WhisperPostComment whisperPostComment }) {
     final basicQuery = returnPostCommentRepliesColRef(postCommentId: whisperPostComment.postCommentId,postCreatorUid: whisperPostComment.passiveUid,postId: whisperPostComment.postId ).limit(oneTimeReadCount);
     switch(sortState) {
-      case SortState.byLikedUidCount:
+      case SortState.byLikeUidCount:
         final x = basicQuery.orderBy(likeCountFieldKey,descending: true);
       return x;
       case SortState.byNewestFirst:
@@ -96,7 +97,7 @@ class RepliesModel extends ChangeNotifier {
     if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
       showMakeReplyInputFlashBar(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, mainModel: mainModel, whisperComment: whisperComment);
     } else {
-      voids.showBasicFlutterToast(context: context, msg: 'あなたはこのコメントに返信できません');
+      voids.showBasicFlutterToast(context: context, msg: cannotReplyMsg);
     }
   }
 
@@ -129,7 +130,7 @@ class RepliesModel extends ChangeNotifier {
       reply = '';
       replyEditingController.text = '';
     };
-    voids.showCommentOrReplyDialogue(context: context, title: 'リプライを入力', textEditingController: replyEditingController, onChanged: (text) { reply = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
+    voids.showCommentOrReplyDialogue(context: context, title: inputReplyText, textEditingController: replyEditingController, onChanged: (text) { reply = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
   void showSortDialogue({ required BuildContext context, required WhisperPostComment whisperPostComment}) {
@@ -137,24 +138,18 @@ class RepliesModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('リプライを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          title: PositiveText(text: sortJaText),
+          message: PositiveText(text: sortReplyJaText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                if (sortState != SortState.byLikedUidCount) {
-                  sortState = SortState.byLikedUidCount;
+                if (sortState != SortState.byLikeUidCount) {
+                  sortState = SortState.byLikeUidCount;
                   await getReplyDocs(whisperPostComment: whisperPostComment);
                 }
               }, 
-              child: Text(
-                'いいね順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByLikeUidCountText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -164,13 +159,7 @@ class RepliesModel extends ChangeNotifier {
                   await getReplyDocs(whisperPostComment: whisperPostComment);
                 }
               }, 
-              child: Text(
-                '新しい順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByNewestFirstText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -180,25 +169,11 @@ class RepliesModel extends ChangeNotifier {
                   await getReplyDocs(whisperPostComment: whisperPostComment);
                 }
               }, 
-              child: Text(
-                '古い順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByOldestFirstText),
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(innerContext);
-              }, 
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              onPressed: () => Navigator.pop(innerContext),
+              child: PositiveText(text: cancelText),
             ),
           ],
         );
@@ -219,7 +194,7 @@ class RepliesModel extends ChangeNotifier {
 
   Future<void> onRefresh({ required WhisperPostComment whisperPostComment }) async {
     switch(sortState) {
-      case SortState.byLikedUidCount:
+      case SortState.byLikeUidCount:
       break;
       case SortState.byNewestFirst:
       await voids.processNewDocs(basicDocType: basicDocType,query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
@@ -291,7 +266,6 @@ class RepliesModel extends ChangeNotifier {
   }
 
   Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperPostComment whisperComment, required WhisperReply newWhisperReply }) async {
-
     final currentWhisperUser = mainModel.currentWhisperUser;
     final String notificationId = returnNotificationId(notificationType: NotificationType.postCommentReplyNotification );
     final comment = whisperComment.comment;
@@ -380,7 +354,7 @@ class RepliesModel extends ChangeNotifier {
       notifyListeners();
       await replyDoc.reference.delete();
     } else {
-      voids.showBasicFlutterToast(context: context, msg: 'あなたにはその権限がありません');
+      voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg );
     }
   }
   

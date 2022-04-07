@@ -42,7 +42,7 @@ class MyProfileModel extends ChangeNotifier {
   Query<Map<String, dynamic>> getQuery () {
     final basicQuery = returnPostsColRef(postCreatorUid: firebaseAuthCurrentUser()!.uid).limit(oneTimeReadCount);
     switch(sortState) {
-      case SortState.byLikedUidCount:
+      case SortState.byLikeUidCount:
         final x = basicQuery.orderBy(likeCountFieldKey,descending: true);
       return x;
       case SortState.byNewestFirst:
@@ -136,7 +136,7 @@ class MyProfileModel extends ChangeNotifier {
   }
   Future<void> getNewMyProfilePosts() async {
     switch(sortState) {
-      case SortState.byLikedUidCount:
+      case SortState.byLikeUidCount:
       break;
       case SortState.byNewestFirst:
       await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
@@ -215,8 +215,8 @@ class MyProfileModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                if (sortState != SortState.byLikedUidCount) {
-                  sortState = SortState.byLikedUidCount;
+                if (sortState != SortState.byLikeUidCount) {
+                  sortState = SortState.byLikeUidCount;
                   print(sortState.toString());
                   await onReload();
                 }

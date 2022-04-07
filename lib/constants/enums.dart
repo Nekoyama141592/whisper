@@ -2,7 +2,7 @@ import 'package:whisper/constants/strings.dart';
 
 enum CommentsState {isOpen, isLocked}
 
-enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
+enum SortState { byLikeUidCount, byNewestFirst,byOldestFirst }
 
 enum Gender { male, female, others, noAnswer }
 

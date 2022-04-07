@@ -200,6 +200,9 @@ const String reportUserMsg = 'ユーザーを報告しました';
 const String reportPostCommentMsg = 'コメントを報告しました';
 const String reportPostCommentReplyMsg = 'リプライを報告しました';
 const String pleaseInputTitleMsg = 'タイトルを入力してください';
+const String cannotCommentMsg = 'コメントは投稿主しかできません';
+const String cannotReplyMsg = 'あなたはこのコメントに返信できません';
+const String dontHaveRightMsg = 'あなたにその権限はありません';
 // Id
 const String configIdString = 'config';
 // title
@@ -218,3 +221,11 @@ const String reportReplyJaText = 'リプライを報告';
 const String deletePostText = '自分の投稿を完全に削除';
 const String deleteCommentJaText = '自分のコメントを完全に削除';
 const String deleteReplyJaText = '自分のリプライを完全に削除';
+const String sortJaText = '並び替え';
+const String sortCommentJaText = 'コメントを並び替えます';
+const String sortReplyJaText = 'リプライを並び替えます';
+const String sortByLikeUidCountText = 'いいね順';
+const String sortByNewestFirstText = '新しい順';
+const String sortByOldestFirstText = '古い順';
+const String inputCommentText = 'コメントを入力';
+const String inputReplyText = 'リプライを入力';

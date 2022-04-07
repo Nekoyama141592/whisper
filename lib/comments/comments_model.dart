@@ -14,6 +14,7 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/domain/comment_like/comment_like.dart';
 // components
 import 'package:whisper/details/report_contents_list_view.dart';
@@ -48,7 +49,7 @@ class CommentsModel extends ChangeNotifier {
   Query<Map<String, dynamic>> getQuery ({ required Post whisperPost }) {
     final basicQuery = returnPostCommentsColRef(postCreatorUid: whisperPost.uid,postId: whisperPost.postId,).limit(oneTimeReadCount);
     switch(sortState) {
-      case SortState.byLikedUidCount:
+      case SortState.byLikeUidCount:
         final x = basicQuery.orderBy(likeCountFieldKey,descending: true);
       return x;
       case SortState.byNewestFirst:
@@ -85,7 +86,7 @@ class CommentsModel extends ChangeNotifier {
       if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
         showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
       } else {
-        voids.showBasicFlutterToast(context: context, msg: 'コメントは投稿主しかできません');
+        voids.showBasicFlutterToast(context: context, msg: cannotCommentMsg );
       }
     }
   }
@@ -118,7 +119,7 @@ class CommentsModel extends ChangeNotifier {
       comment = '';
       commentEditingController.text = '';
     };
-    voids.showCommentOrReplyDialogue(context: context, title: 'コメントを入力',textEditingController: commentEditingController, onChanged: (text) { comment = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
+    voids.showCommentOrReplyDialogue(context: context, title: inputCommentText,textEditingController: commentEditingController, onChanged: (text) { comment = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
   
@@ -269,24 +270,18 @@ class CommentsModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          title: Text('並び替え',style: TextStyle(fontWeight: FontWeight.bold)),
-          message: Text('コメントを並び替えます',style: TextStyle(fontWeight: FontWeight.bold)),
+          title:PositiveText(text: sortJaText),
+          message: PositiveText(text: sortCommentJaText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
-                if (sortState != SortState.byLikedUidCount) {
-                  sortState = SortState.byLikedUidCount;
+                if (sortState != SortState.byLikeUidCount) {
+                  sortState = SortState.byLikeUidCount;
                   await getCommentDocs(whisperPost: whisperPost);
                 }
               }, 
-              child: Text(
-                'いいね順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByLikeUidCountText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -296,13 +291,7 @@ class CommentsModel extends ChangeNotifier {
                   await getCommentDocs(whisperPost: whisperPost);
                 }
               }, 
-              child: Text(
-                '新しい順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByNewestFirstText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -312,25 +301,11 @@ class CommentsModel extends ChangeNotifier {
                   await getCommentDocs(whisperPost: whisperPost);
                 }
               }, 
-              child: Text(
-                '古い順',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByOldestFirstText),
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(innerContext);
-              }, 
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              onPressed: () => Navigator.pop(innerContext),
+              child: PositiveText(text: cancelText),
             ),
           ],
         );
@@ -340,7 +315,7 @@ class CommentsModel extends ChangeNotifier {
 
   Future<void> onRefresh({ required BuildContext context, required Post whisperPost}) async {
     switch(sortState) {
-      case SortState.byLikedUidCount:
+      case SortState.byLikeUidCount:
       break;
       case SortState.byNewestFirst:
       await voids.processNewDocs(basicDocType: basicDocType,query: getQuery(whisperPost: whisperPost), docs: commentDocs );
@@ -370,7 +345,7 @@ class CommentsModel extends ChangeNotifier {
       notifyListeners();
       await commentDoc.reference.delete();
     } else {
-      voids.showBasicFlutterToast(context: context, msg: 'あなたにはその権限がありません');
+      voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg );
     }
   }
   void toggleIsHidden({ required WhisperPostComment whisperPostComment }) {
