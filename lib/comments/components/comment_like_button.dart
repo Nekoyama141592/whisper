@@ -30,39 +30,28 @@ class CommentLikeButton extends StatelessWidget {
     final plusOneCount = likeCount + plusOne;
 
     return mainModel.likePostCommentIds.contains(whisperComment.postCommentId) ?
-    Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: defaultPadding(context: context)
-      ),
-      child: Row(
-        children: [
-          InkWell(
-            child: Icon(Icons.favorite,color: Colors.red),
-            onTap: () async => await commentsModel.unlike(whisperComment: whisperComment, mainModel: mainModel)
-          ),
-          SizedBox(width: defaultPadding(context: context)/2.0),
-          Text(
-            returnJaInt(count: plusOneCount),
-            style: TextStyle(color: Colors.red)
-          )
-        ],
-      ),
-    ) : Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: defaultPadding(context: context)/2.0
-      ),
-      child: Row(
-        children: [
-          InkWell(
-            child: Icon(Icons.favorite),
-            onTap: () async => await commentsModel.like(whisperComment: whisperComment, mainModel: mainModel),
-          ),
-          SizedBox(width: defaultPadding(context: context)/2.0),
-          Text(
-            returnJaInt(count: likeCount)
-          )
-        ],
-      ),
+    Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.favorite,color: Colors.red),
+          onTap: () async => await commentsModel.unlike(whisperComment: whisperComment, mainModel: mainModel)
+        ),
+        Text(
+          returnJaInt(count: plusOneCount),
+          style: TextStyle(color: Colors.red)
+        )
+      ],
+    ) : Row(
+      children: [
+        InkWell(
+          child: Icon(Icons.favorite),
+          onTap: () async => await commentsModel.like(whisperComment: whisperComment, mainModel: mainModel),
+        ),
+        SizedBox(width: defaultPadding(context: context)/2.0),
+        Text(
+          returnJaInt(count: likeCount)
+        )
+      ],
     );
   }
 

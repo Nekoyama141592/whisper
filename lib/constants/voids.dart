@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
@@ -343,6 +344,7 @@ Future<void> updateUserInfo({ required BuildContext context , required WhisperUs
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {
   context.showFlashBar(
     persistent: true,
+    backgroundColor: Theme.of(context).colorScheme.onPrimary,
     borderWidth: 3.0,
     behavior: FlashBehavior.fixed,
     forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
@@ -357,7 +359,7 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
         decoration: InputDecoration(
           suffixIcon: IconButton(onPressed: oncloseButtonPressed, icon: Icon(Icons.close)),
           hintText: '最大' + maxCommentOrReplyLength.toString() + '文字',
-          hintStyle: TextStyle(fontWeight: FontWeight.bold)
+          hintStyle: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).scaffoldBackgroundColor.withOpacity(cardOpacity))
         ),
       )
     ),

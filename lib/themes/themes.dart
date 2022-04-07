@@ -22,6 +22,7 @@ ThemeData lightThemeData(BuildContext context) {
     ).apply(bodyColor: kContentColorLightTheme),
     colorScheme: ColorScheme.light(
       primary: kPrimaryColor,
+      onPrimary: kContentColorLightTheme,
       secondary: kSecondaryColor,
       error: kErrorColor
     ),
@@ -52,6 +53,7 @@ ThemeData darkThemeData(BuildContext context){
     ).apply(bodyColor: kContentColorDarkTheme),
     colorScheme: ColorScheme.dark().copyWith(
       primary: kTertiaryColor.withOpacity(0.87),
+      onPrimary: kBackgroundColor,
       secondary: kQuaternaryColor,
       error: kErrorColor,
     ),
