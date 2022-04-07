@@ -15,3 +15,4 @@ const double notificationDiv = 1.30;
 const double defaultScore = 10000.0;
 const double likeScore = 100.0;
 const double bookmarkScore = 150.0;
+const double negativeScoreLimit = 80.0;

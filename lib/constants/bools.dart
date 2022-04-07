@@ -1,13 +1,17 @@
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/domain/reply/whipser_reply.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
+import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -31,32 +35,32 @@ bool newNotificationExists({ required List<CommentNotification> commentNotificat
   return x;
 }
 
-bool isValidReadPost({ required PostType postType ,required List<dynamic> muteUids, required List<dynamic> blockUids, required String uid, required List<dynamic> mutePostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
+bool isValidReadPost({ required Post whisperPost,required PostType postType ,required List<dynamic> muteUids, required List<dynamic> blockUids, required String uid, required List<dynamic> mutePostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   // post is DocumentSnapshot<Map<String,dynamic>> or Map<String,dynamic>
   switch(postType) {
     case PostType.bookmarks:
-    return true;
+    return isNotNegativePost(whisperPost: whisperPost);
 
     case PostType.feeds:
-    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc );
+    return isNotNegativePost(whisperPost: whisperPost) && basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc );
 
     case PostType.myProfile:
-    return true;
+    return isNotNegativePost(whisperPost: whisperPost);
 
     case PostType.postSearch:
-    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc );
+    return isNotNegativePost(whisperPost: whisperPost) && basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc );
 
     case PostType.recommenders:
     final now = DateTime.now();
     final DateTime range = now.subtract(Duration(days: 5));
     final Post post = fromMapToPost(postMap: doc.data()!);
-    return basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc ) && !mutePostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
+    return isNotNegativePost(whisperPost: whisperPost) && basicScanOfPost(mutesUids: muteUids, blocksUids: blockUids, uid: uid, mutesPostIds: mutePostIds, doc: doc ) && !mutePostIds.contains(post.postId) && (Post.fromJson(doc.data()!).createdAt as Timestamp).toDate().isAfter(range);
 
     case PostType.userShow:
-    return true;
+    return isNotNegativePost(whisperPost: whisperPost);
 
     case PostType.onePost:
-    return true;
+    return isNotNegativePost(whisperPost: whisperPost);
   }
 }
 bool isImageExist({ required Post post }) {
@@ -89,5 +93,34 @@ bool canShowAdvertisement({ required OfficialAdvertisement officialAdvertisement
       // strange
       return false;
     }
+  }
+}
+bool isNotNegativeComment({ required DocumentSnapshot<Map<String,dynamic>> commentDoc  }) {
+  final WhisperPostComment whisperComment =  WhisperPostComment.fromJson(commentDoc.data()!);
+  return whisperComment.commentNegativeScore < negativeScoreLimit || whisperComment.uid == firebaseAuthCurrentUser()!.uid;
+}
+bool isNotNegativeReply({ required DocumentSnapshot<Map<String,dynamic>> replyDoc  }) {
+  final WhisperReply whisperReply = WhisperReply.fromJson(replyDoc.data()!);
+  return whisperReply.replyNegativeScore < negativeScoreLimit || whisperReply.uid == firebaseAuthCurrentUser()!.uid;
+}
+bool isNotNegativePost({ required Post whisperPost  }) => whisperPost.titleNegativeScore < negativeScoreLimit || whisperPost.uid == firebaseAuthCurrentUser()!.uid;
+
+bool isNotNegativeUser({ required DocumentSnapshot<Map<String,dynamic>> userDoc}) {
+  final WhisperUser whisperUser = WhisperUser.fromJson(userDoc.data()!);
+  return whisperUser.userNameNegativeScore < negativeScoreLimit || whisperUser.uid == firebaseAuthCurrentUser()!.uid;
+} 
+
+bool isNotNegativeBasicContent({ required BasicDocType basicDocType,required DocumentSnapshot<Map<String,dynamic>> doc }) {
+  switch(basicDocType){
+    case BasicDocType.muteUser:
+    return true;
+    case BasicDocType.notification:
+    return true;
+    case BasicDocType.postComment:
+    return isNotNegativeComment(commentDoc: doc);
+    case BasicDocType.postCommentReply:
+    return isNotNegativeReply(replyDoc: doc);
+    case BasicDocType.searchedUser:
+    return isNotNegativeUser(userDoc: doc);
   }
 }

@@ -1,15 +1,24 @@
 import 'package:whisper/constants/strings.dart';
 
 enum CommentsState {isOpen, isLocked}
+
 enum SortState { byLikedUidCount, byNewestFirst,byOldestFirst }
+
 enum Gender { male, female, others, noAnswer }
+
 // use on firestore
 enum PostState { basic, repost}
+
 enum DmState {onlyFollowingAndFollowed}
+
 enum RecommendState {isRecommendable}
 // use on front
 enum PostType { bookmarks, feeds, myProfile, postSearch, recommenders, userShow ,onePost} 
+
 enum NotificationType { authNotification, postCommentNotification, postCommentReplyNotification,officialNotification, }
+
+enum BasicDocType { muteUser, notification,searchedUser,postComment,postCommentReply }
+
 dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
   final String notificationTypeString = json[notificationTypeMapKey];
   if (notificationTypeString == authNotificationType) {
@@ -22,7 +31,9 @@ dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
     return NotificationType.postCommentReplyNotification;
   }
 }
+
 enum TokenType { bookmarkPostCategory,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
+
 dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
   if (tokenTypeString == bookmarkPostCategoryTokenType) {

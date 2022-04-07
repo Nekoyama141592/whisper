@@ -212,7 +212,7 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
     docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final whisperPost = fromMapToPost(postMap: doc.data()!);
       final String uid = whisperPost.uid;
-      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc);
+      bool x = isValidReadPost(whisperPost: whisperPost ,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
       if (x) {
         posts.insert(0, doc);
         Uri song = Uri.parse(whisperPost.audioURL);
@@ -237,7 +237,7 @@ Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, req
     docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final whisperPost = fromMapToPost(postMap: doc.data()! );
       final String uid = whisperPost.uid;
-      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc);
+      bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
       if (x) {
         posts.add(doc);
         Uri song = Uri.parse(whisperPost.audioURL);
@@ -264,7 +264,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
     docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
       final whisperPost = fromMapToPost(postMap: doc.data()! );
       final String uid = whisperPost.uid;
-      bool x = isValidReadPost(postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc);
+      bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
       if (x) {
         posts.add(doc);
         Uri song = Uri.parse(whisperPost.audioURL);
@@ -279,23 +279,33 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
   }
 }
 
-Future<void> processNewDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
-  await query.limit(oneTimeReadCount).endBeforeDocument(docs.first).get().then((qshot) {
-    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) => docs.insert(0, doc) );
-  });
+Future<void> processNewDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+  await query.limit(oneTimeReadCount).endBeforeDocument(docs.first).get().then((qshot) => qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+    if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) {
+      docs.insert(0, doc); 
+    }
+  }));
 }
 
-Future<void> processBasicDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
-  await query.limit(oneTimeReadCount).get().then((qshot) {
-    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) => docs.add(doc) );
-  });
+Future<void> processBasicDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+  // use notifiations and mute users
+  await query.limit(oneTimeReadCount).get().then((qshot)=> qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+    if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) {
+      docs.add(doc);
+    }
+  }));
 }
 
-Future<void> processOldDocs({ required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+Future<void> processOldDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
+  // use notifiations and mute users
   await query.limit(oneTimeReadCount).startAfterDocument(docs.last).get().then((qshot) {
     final queryDocs = qshot.docs;
     queryDocs.reversed;
-    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) => docs.add(doc));
+    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+      if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) {
+        docs.add(doc);
+      }
+    });
   });
 }
 

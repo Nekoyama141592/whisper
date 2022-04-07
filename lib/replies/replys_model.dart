@@ -59,6 +59,8 @@ class RepliesModel extends ChangeNotifier {
   String indexPostCommentId = '';
   // hide
   List<String> isUnHiddenPostCommentReplyIds = [];
+  // enum
+  final BasicDocType basicDocType = BasicDocType.postCommentReply;
 
   Future<void> init({ required BuildContext context, required MainModel mainModel, required Post whisperPost,required WhisperPostComment whisperPostComment,required CommentsOrReplysModel commentsOrReplysModel }) async {
     refreshController = RefreshController(initialRefresh: false);
@@ -200,7 +202,7 @@ class RepliesModel extends ChangeNotifier {
 
   Future<void> getReplyDocs({ required WhisperPostComment whisperPostComment }) async {
     postCommentReplyDocs = [];
-    await voids.processBasicDocs(query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
+    await voids.processBasicDocs(basicDocType: basicDocType,query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
   }
 
   Future<void> onReload({ required WhisperPostComment whisperPostComment }) async {
@@ -209,12 +211,12 @@ class RepliesModel extends ChangeNotifier {
     endLoading();
   }
 
-  Future<void> onRefresh({ required WhisperPostComment whisperPostComment}) async {
+  Future<void> onRefresh({ required WhisperPostComment whisperPostComment }) async {
     switch(sortState) {
       case SortState.byLikedUidCount:
       break;
       case SortState.byNewestFirst:
-      await voids.processNewDocs(query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
+      await voids.processNewDocs(basicDocType: basicDocType,query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
       break;
       case SortState.byOldestFirst:
       break;
@@ -223,8 +225,8 @@ class RepliesModel extends ChangeNotifier {
     refreshController.refreshCompleted();
   }
 
-  Future<void> onLoading({ required WhisperPostComment whisperPostComment}) async {
-    await voids.processBasicDocs(query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
+  Future<void> onLoading({ required WhisperPostComment whisperPostComment }) async {
+    await voids.processOldDocs(basicDocType: basicDocType,query: getQuery(whisperPostComment: whisperPostComment), docs: postCommentReplyDocs );
     notifyListeners();
     refreshController.loadComplete();
   }

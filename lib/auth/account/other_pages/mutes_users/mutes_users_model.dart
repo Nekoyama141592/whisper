@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+// constants
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:whisper/constants/strings.dart';
-// constants
 import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
@@ -26,6 +27,8 @@ class MutesUsersModel extends ChangeNotifier {
   List<String> muteUids = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  // enum
+  final BasicDocType basicDocType = BasicDocType.muteUser;
 
   Future<void> init({ required MainModel mainModel }) async {
     startLoading();
@@ -64,7 +67,7 @@ class MutesUsersModel extends ChangeNotifier {
       List<String> max10MuteUids = bool ? muteUids.sublist(userDocsLength,userDocsLength + tenCount) : muteUids.sublist(userDocsLength,muteUids.length);
       final query = returnUsersColRef().where(uidFieldKey,whereIn: max10MuteUids);
       if (max10MuteUids.isNotEmpty) {
-        voids.processBasicDocs(query: query, docs: userDocs );
+        voids.processBasicDocs(basicDocType: basicDocType,query: query, docs: userDocs );
       }
     }
   }

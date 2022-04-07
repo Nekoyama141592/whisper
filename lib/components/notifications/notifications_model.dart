@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // domain
@@ -35,6 +36,8 @@ class NotificationsModel extends ChangeNotifier {
   // read
   List<String> readPostCommentNotificationIds = [];
   List<String> readPostCommentReplyNotificationIds = [];
+  // enum
+  final BasicDocType basicDocType = BasicDocType.notification;
   
   NotificationsModel() {
     init();
@@ -72,17 +75,11 @@ class NotificationsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getNewNotifications() async {
-    await voids.processNewDocs(query: query, docs: notifications );
-  }
+  Future<void> getNewNotifications() async => await voids.processNewDocs(basicDocType: basicDocType,query: query, docs: notifications );
 
-  Future<void> getNotifications() async {
-    await voids.processBasicDocs(query: query, docs: notifications);
-  }
+  Future<void> getNotifications() async => await voids.processBasicDocs(basicDocType: basicDocType,query: query, docs: notifications);
 
-  Future<void> getOldNotifications() async {
-    await voids.processOldDocs(query: query, docs: notifications );
-  }
+  Future<void> getOldNotifications() async => await voids.processOldDocs(basicDocType: basicDocType,query: query, docs: notifications );
 
   Future<void> onCommentNotificationPressed({ required BuildContext context ,required MainModel mainModel , required OnePostModel onePostModel ,required OneCommentModel oneCommentModel, required  CommentNotification commentNotification }) async {
     commentNotification.isRead = true;

@@ -58,10 +58,8 @@ class CommentsModel extends ChangeNotifier {
   String indexPostId = '';
   // hidden
   List<String> isUnHiddenPostCommentIds = [];
-
-  void reload() {
-    notifyListeners();
-  }
+  // enum
+  final BasicDocType basicDocType = BasicDocType.postComment;
 
   Future<void> init({ required BuildContext context, required AudioPlayer audioPlayer, required ValueNotifier<Post?> whisperPostNotifier, required MainModel mainModel,required Post whisperPost,required CommentsOrReplysModel commentsOrReplysModel }) async {
     refreshController = RefreshController(initialRefresh: false);
@@ -71,12 +69,6 @@ class CommentsModel extends ChangeNotifier {
       indexPostId = postId;
       await getCommentDocs(whisperPost: whisperPost);
     }
-  }
-
-  Future<void> getCommentDocs({ required Post whisperPost }) async {
-    commentDocs = [];
-    await voids.processBasicDocs(docs: commentDocs,query: getQuery(whisperPost: whisperPost));
-    notifyListeners();
   }
 
   void onFloatingActionButtonPressed({ required BuildContext context, required Post whisperPost, required TextEditingController commentEditingController, required AudioPlayer audioPlayer, required MainModel mainModel }) {
@@ -345,7 +337,7 @@ class CommentsModel extends ChangeNotifier {
       case SortState.byLikedUidCount:
       break;
       case SortState.byNewestFirst:
-      await voids.processNewDocs(query: getQuery(whisperPost: whisperPost), docs: commentDocs );
+      await voids.processNewDocs(basicDocType: basicDocType,query: getQuery(whisperPost: whisperPost), docs: commentDocs );
       break;
       case SortState.byOldestFirst:
       break;
@@ -354,11 +346,18 @@ class CommentsModel extends ChangeNotifier {
     refreshController.refreshCompleted();
   }
 
+  Future<void> getCommentDocs({ required Post whisperPost }) async {
+    commentDocs = [];
+    await voids.processBasicDocs(basicDocType: basicDocType,docs: commentDocs,query: getQuery(whisperPost: whisperPost));
+    notifyListeners();
+  }
+
   Future<void> onLoading({ required Post whisperPost}) async {
-    await voids.processOldDocs(query: getQuery(whisperPost: whisperPost), docs: commentDocs );
+    await voids.processOldDocs(basicDocType: basicDocType,query: getQuery(whisperPost: whisperPost), docs: commentDocs );
     notifyListeners();
     refreshController.loadComplete();
   }
+
   Future<void> deleteMyComment({ required BuildContext context,required int i,required MainModel mainModel,}) async {
     final x = commentDocs[i];
     if (WhisperPostComment.fromJson(x.data()!).uid == mainModel.currentWhisperUser.uid ) {

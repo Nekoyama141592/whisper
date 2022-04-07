@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/lists.dart';
-// constants
+import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/others.dart';
 
@@ -16,6 +17,8 @@ class UserSearchModel extends ChangeNotifier {
 
   String searchTerm = '';
   bool isLoading = false;
+  // enum
+  final BasicDocType basicDocType = BasicDocType.searchedUser;
   
   List<DocumentSnapshot<Map<String,dynamic>>> results = [];
   void startLoading() {
@@ -35,7 +38,7 @@ class UserSearchModel extends ChangeNotifier {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
       final Query<Map<String,dynamic>> query = returnUserSearchQuery(searchWords: searchWords);
-      await processBasicDocs(query: query, docs: results);
+      await processBasicDocs(basicDocType: basicDocType,query: query, docs: results);
       if (searchTerm.length == uidLength) {
         final x = await returnUserDocRef(uid: searchTerm ).get();
         if (x.exists == true) {
