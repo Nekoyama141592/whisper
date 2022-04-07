@@ -96,13 +96,14 @@ class CommentsModel extends ChangeNotifier {
             voids.showBasicFlutterToast(context: context, msg: maxCommentOrReplyMsg );
             controller.dismiss();
           } else {
+            await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
+            // after makeComment reset comment
             comment = '';
             commentEditingController.text = '';
             if (commentDocs.isNotEmpty) {
               voids.showBasicFlutterToast(context: context, msg: pleaseScrollMsg );
             }
             controller.dismiss();
-            await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
           }
         },
         icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),

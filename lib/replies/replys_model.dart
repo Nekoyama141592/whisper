@@ -107,13 +107,14 @@ class RepliesModel extends ChangeNotifier {
             voids.showCustomFlutterToast(backgroundColor: toastColor, msg: maxCommentOrReplyMsg );
             controller.dismiss();
           } else {
+            await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
+            // after makeReply reset reply
             reply = '';
             replyEditingController.text = '';
             if (postCommentReplyDocs.isNotEmpty) {
               voids.showCustomFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg );
             }
             controller.dismiss();
-            await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
           }
         },
         icon: Icon(Icons.send, color: Theme.of(context).primaryColor ),
