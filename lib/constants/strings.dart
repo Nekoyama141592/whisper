@@ -203,7 +203,7 @@ const String pleaseInputTitleMsg = 'タイトルを入力してください';
 const String cannotCommentMsg = 'コメントは投稿主しかできません';
 const String cannotReplyMsg = 'あなたはこのコメントに返信できません';
 const String dontHaveRightMsg = 'あなたにその権限はありません';
-const String reflectReplyChangesJsMsg = 'いいねボタンや目のボタンを押すと反映されます';
+const String reflectChangesJaMsg = 'いいねボタンや目のボタンを押すと反映されます';
 // Id
 const String configIdString = 'config';
 // title

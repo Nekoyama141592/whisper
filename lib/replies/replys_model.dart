@@ -430,7 +430,7 @@ class RepliesModel extends ChangeNotifier {
   }
 
   Future<void> reflectChanges({ required BuildContext context }) async {
-    await voids.showBasicFlutterToast(context: context, msg: reflectReplyChangesJsMsg);
+    await voids.showBasicFlutterToast(context: context, msg: reflectChangesJaMsg);
   }
 
 }
