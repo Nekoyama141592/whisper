@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // model
@@ -38,12 +39,10 @@ class BookmarkButton extends ConsumerWidget {
               Icons.bookmark,
               color: Theme.of(context).highlightColor,
             ),
-            onTap: () async {
-              await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories );
-            }),
-          SizedBox(width: 5.0),
+            onTap: () async => await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories )
+          ),
           if(currentWhisperUser.uid == whisperPost.uid) Text(
-            bookmarksCount >= 10000 ? (bookmarksCount/1000.floor()/10).toString() + '万' :  bookmarksCount.toString(),
+            returnJaInt(count: bookmarksCount),
             style: TextStyle(color: Theme.of(context).highlightColor)
           )
         ],
@@ -52,13 +51,10 @@ class BookmarkButton extends ConsumerWidget {
         children: [
           InkWell(
             child: Icon(Icons.bookmark_border),
-            onTap: () async {
-              await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories );
-            }, 
+            onTap: () async => await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories )
           ),
-          SizedBox(width: 5.0),
           if(currentWhisperUser.uid == whisperPost.uid) Text(
-            bookmarksCount >= 10000 ? (bookmarksCount/1000.floor()/10).toString() + '万' :  bookmarksCount.toString(),
+            returnJaInt(count: bookmarksCount)
           )
         ],
       );
@@ -70,14 +66,11 @@ class BookmarkButton extends ConsumerWidget {
           Icons.bookmark,
           color: Theme.of(context).highlightColor,
         ),
-        onTap: () async {
-          await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories);
-        })
+        onTap: () async => await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories),
+      )
       : InkWell(
         child: Icon(Icons.bookmark_border),
-        onTap: () async {
-          await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories );
-        }, 
+        onTap: () async => await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories )
       );
     }
   }

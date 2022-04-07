@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 // model
@@ -39,13 +40,11 @@ class LikeButton extends ConsumerWidget {
                 Icons.favorite,
                 color: Colors.red
               ),
-              onTap: () async {
-                await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel);
-              },
+              onTap: () async => await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel)
             ),
             SizedBox(width: defaultPadding(context: context)/2.0),
             Text(
-              likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+              returnJaInt(count: likeCount),
               style: TextStyle(color: Colors.red)
             )
           ],
@@ -54,13 +53,11 @@ class LikeButton extends ConsumerWidget {
           children: [
             InkWell(
               child: Icon(Icons.favorite),
-              onTap: () async {
-                await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel);
-              },
+              onTap: () async => await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel)
             ),
             SizedBox(width: defaultPadding(context: context)/2.0),
             Text(
-              likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+              returnJaInt(count: likeCount)
             )
           ],
         ),

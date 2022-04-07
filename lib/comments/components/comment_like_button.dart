@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
+import 'package:whisper/constants/strings.dart';
+// domain
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -40,7 +42,7 @@ class CommentLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+            returnJaInt(count: likeCount),
             style: TextStyle(color: Colors.red)
           )
         ],
@@ -59,7 +61,7 @@ class CommentLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+            returnJaInt(count: likeCount)
           )
         ],
       ),

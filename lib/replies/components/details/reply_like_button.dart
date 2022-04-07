@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/domain/reply/whipser_reply.dart';
 // model
 import 'package:whisper/main_model.dart';
@@ -41,7 +42,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+            returnJaInt(count: likeCount),
             style: TextStyle(color: Colors.red)
           )
         ],
@@ -60,7 +61,7 @@ class ReplyLikeButton extends StatelessWidget {
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
-            likeCount >= 10000 ? (likeCount/1000.floor()/10).toString() + '万' :  likeCount.toString(),
+            returnJaInt(count: likeCount)
           )
         ],
       ),

@@ -19,6 +19,8 @@ String returnStoragePostImageName() => 'postImageStorage' + hyphenString + retur
 
 String returnStoragePostName() => 'postStorage' + hyphenString + returnUuid4()+ postExtension;
 
+String returnJaInt({ required int count }) => count >= 10000 ? (count/1000.floor()/10).toString() + '万' :  count.toString();
+
 String returnPostId({ required UserMeta userMeta }) => 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
 
 String returnOfficialAdvertisementImpressionId({ required String uid }) => 'officialAdvertisementImpression' + hyphenString + uid + hyphenString + returnUuid4();
