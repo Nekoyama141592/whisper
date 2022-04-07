@@ -210,7 +210,8 @@ const String configIdString = 'config';
 const String reportTitle = '問題を報告してください';
 // text
 const String okText = 'OK';
-const String choiceModalText = '選択';
+const String decideModalMsg = '決定';
+const String sendModalMsg = '送信';
 const String cancelText = 'キャンセル';
 const String muteUserJaText = 'ユーザーをミュート';
 const String mutePostJaText = '投稿をミュート';

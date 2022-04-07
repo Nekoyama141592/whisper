@@ -106,7 +106,7 @@ class PostFutures extends ChangeNotifier {
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
-      child: PositiveText(text: choiceModalText)
+      child: PositiveText(text: decideModalMsg)
     );
   };
   voids.showFlashDialogue(context: context, content: content, titleText: 'どのリストにブックマークしますか？',positiveActionBuilder: positiveActionBuilder);
@@ -266,7 +266,7 @@ class PostFutures extends ChangeNotifier {
           await mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
-        child: Text(choiceModalText, style: textStyle(context: context), )
+        child: PositiveText(text: sendModalMsg)
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

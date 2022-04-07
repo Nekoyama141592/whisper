@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/widgets.dart';
 // constants
 import 'constants/tab_bar_elements.dart';
 // components
@@ -32,7 +33,7 @@ class NotificationsPage extends StatelessWidget {
       length: tabBarElements.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Whisper'),
+          title: whiteBoldText(text: 'Notifications'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular( defaultPadding(context: context) )
