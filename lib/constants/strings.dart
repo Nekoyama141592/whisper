@@ -177,7 +177,7 @@ const String postCountFieldKey = 'postCount';
 // path
 const String postImagesPathKey = 'postImages';
 const String userImagesPathKey = 'userImages';
-const String postPathKey = 'posts';
+const String postsPathKey = 'posts';
 // mapKey
 const String isReadMapKey = 'isRead';
 const String tokenTypeMapKey = 'tokenType'; // lib/constants/enums.dart

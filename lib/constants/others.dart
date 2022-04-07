@@ -44,7 +44,7 @@ Reference returnPostImagePostRef({ required MainModel mainModel, required String
 
 Reference returnPostImageChildRef({ required MainModel mainModel, required String postImageName,required String postId }) => returnPostImagePostRef(mainModel: mainModel,postId: postId).child(postImageName);
 
-Reference returnPostParentRef({ required MainModel mainModel }) => FirebaseStorage.instance.ref().child(postPathKey).child(mainModel.currentWhisperUser.uid);
+Reference returnPostParentRef({ required MainModel mainModel }) => FirebaseStorage.instance.ref().child(postsPathKey).child(mainModel.currentWhisperUser.uid);
 
 Reference returnPostChildRef({ required MainModel mainModel, required String storagePostName }) => returnPostParentRef(mainModel: mainModel).child(storagePostName);
 
