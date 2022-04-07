@@ -188,66 +188,66 @@ class SignupModel extends ChangeNotifier {
     await returnTokenDocRef(uid: uid, tokenId: bookmarkPostCategoryId ).set(bookmarkPostCategory.toJson());
   }
 
-  void showGenderCupertinoActionSheet(BuildContext context) {
+  void showGenderCupertinoActionSheet({ required BuildContext context}) {
     showCupertinoModalPopup(
       context: context, 
-      builder: (context) {
+      builder: (innerContext) {
         return CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
               child: Text(
                 '男性',
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
                 ),
               ),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.male);
                 displayGenderNotifier.value = '男性';
-                Navigator.pop(context);
+                Navigator.pop(innerContext);
               }, 
             ),
             CupertinoActionSheetAction(
               child: Text(
                 '女性',
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
                 ),
               ),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.female);
                 displayGenderNotifier.value = '女性';
-                Navigator.pop(context);
+                Navigator.pop(innerContext);
               }, 
             ),
             CupertinoActionSheetAction(
               child: Text(
                 'その他',
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
                 ),
               ),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.others);
                 displayGenderNotifier.value = 'その他';
-                Navigator.pop(context);
+                Navigator.pop(innerContext);
               }, 
             ),
             CupertinoActionSheetAction(
               child: Text(
                 '無回答',
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
                 ),
               ),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.noAnswer);
                 displayGenderNotifier.value = '無回答';
-                Navigator.pop(context);
+                Navigator.pop(innerContext);
               }, 
             )
           ],

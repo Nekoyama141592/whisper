@@ -69,7 +69,7 @@ class AddUserInfoPage extends StatelessWidget {
                             widthRate: buttonWidthRate, 
                             fontSize: defaultHeaderTextSize(context: context),
                             press: () {
-                              signupModel.showGenderCupertinoActionSheet(context);
+                              signupModel.showGenderCupertinoActionSheet(context: context);
                             }, 
                             textColor: Colors.white, 
                             buttonColor: Theme.of(context).primaryColor

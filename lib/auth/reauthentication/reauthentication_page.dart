@@ -58,7 +58,7 @@ class ReauthenticationPage extends StatelessWidget {
               text: '認証する', 
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
-              press: () async { await accountModel.reauthenticateWithCredential(context: context,currentUser: currentUser, mainModel: mainModel); }, 
+              press: () async => await accountModel.reauthenticateWithCredential(context: context,currentUser: currentUser, mainModel: mainModel),
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary,
             ),

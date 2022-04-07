@@ -1,6 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 
@@ -13,7 +14,7 @@ class AlreadyHaveAnAccount extends StatelessWidget{
   Widget build(BuildContext context) {
     return Padding(
       padding:  EdgeInsets.symmetric(
-        vertical: 25
+        vertical: defaultPadding(context: context)
       ),
       child: Center(
         child: RichText(
@@ -30,7 +31,7 @@ class AlreadyHaveAnAccount extends StatelessWidget{
                 text: 'ログイン',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 18,
+                  fontSize: defaultHeaderTextSize(context: context),
                   fontWeight: FontWeight.bold
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {

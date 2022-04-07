@@ -27,27 +27,21 @@ class VerifyPasswordResetPage extends ConsumerWidget {
               hintText: 'email', 
               icon: Icons.email, 
               controller: emailInputController, 
-              onChanged:  (text) {
-                verifyPasswordResetModel.email = text;
-              },
+              onChanged:  (text) => verifyPasswordResetModel.email = text,
               onCloseButtonPressed: () {
                 emailInputController.text = '';
                 verifyPasswordResetModel.email = '';
               },
-              paste: (value) {
-                verifyPasswordResetModel.email = value;
-              },
+              paste: (value) => verifyPasswordResetModel.email = value,
             ),
           ),
-          SizedBox(height: 25.0,),
+          SizedBox(height: defaultPadding(context: context),),
           Center(
             child: RoundedButton(
               text: 'リセットメールを受け取る', 
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
-              press: () async {
-                await verifyPasswordResetModel.sendPasswordResetEmail(context);
-              }, 
+              press: () async => await verifyPasswordResetModel.sendPasswordResetEmail(context: context),
               textColor: Colors.white, 
               buttonColor: Theme.of(context).highlightColor
             ),

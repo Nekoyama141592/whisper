@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 
 final verifyPasswordResetProvider = ChangeNotifierProvider((ref) => VerifyPasswordResetModel());
 
@@ -10,12 +12,12 @@ class VerifyPasswordResetModel extends ChangeNotifier {
   
   String email = '';
 
-  Future sendPasswordResetEmail (context) async {
+  Future<void> sendPasswordResetEmail ({ required BuildContext context }) async {
     final instance = FirebaseAuth.instance;
     try{
       await instance.sendPasswordResetEmail(email: email);
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(email + 'にメールを送りました')));
+      voids.showBasicFlutterToast(context: context, msg: email + 'にメールを送りました');
     } on FirebaseAuthException catch(e) {
       print(e.toString());
       switch(e.code) {

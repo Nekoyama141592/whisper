@@ -32,9 +32,7 @@ class MutesUsersPage extends ConsumerWidget {
         Loading()
         : JudgeScreen(
           list: mutesUsersModel.userDocs,
-          reload: () async {
-            await mutesUsersModel.onReload();
-          },
+          reload: () async => await mutesUsersModel.onReload(),
           content: UserCards(userDocs: mutesUsersModel.userDocs, mainModel: mainModel),
         )
       ),

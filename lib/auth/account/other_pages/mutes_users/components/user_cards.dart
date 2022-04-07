@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/user_card.dart';
 // model
@@ -21,12 +22,10 @@ class UserCards extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(defaultPadding(context: context)),
       child: ListView.builder(
         itemCount: userDocs.length,
-        itemBuilder: (context,i) {
-          return UserCard(result: userDocs[i].data()!, mainModel: mainModel);
-        }
+        itemBuilder: (context,i) => UserCard(result: userDocs[i].data()!, mainModel: mainModel)
       ),
     );
   }

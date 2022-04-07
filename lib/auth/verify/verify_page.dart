@@ -21,6 +21,7 @@ class VerifyPage extends ConsumerWidget {
     final verifyModel = ref.watch(verifyProvider);
     final textStyle = TextStyle(fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold);
     String userEmail = verifyModel.currentUser!.email.toString();
+    
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(defaultPadding(context: context)),
@@ -50,9 +51,7 @@ class VerifyPage extends ConsumerWidget {
                 text: '始める', 
                 widthRate: 0.95, 
                 fontSize: defaultHeaderTextSize(context: context),
-                press: () async {
-                  await verifyModel.onButtonPressed(context: context);
-                }, 
+                press: () async => await verifyModel.onButtonPressed(context: context),
                 textColor: Colors.white,
                 buttonColor: Theme.of(context).highlightColor,
               ),

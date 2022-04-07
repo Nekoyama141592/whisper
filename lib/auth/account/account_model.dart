@@ -85,9 +85,7 @@ class AccountModel extends ChangeNotifier {
         actions: [
           CupertinoDialogAction(
             child: const Text(cancelText),
-            onPressed: () {
-              Navigator.pop(innerContext);
-            },
+            onPressed: () => Navigator.pop(innerContext)
           ),
           CupertinoDialogAction(
             child: Text(okText),
@@ -122,14 +120,12 @@ class AccountModel extends ChangeNotifier {
         actions: [
           CupertinoDialogAction(
             child: const Text(cancelText),
-            onPressed: () {
-              Navigator.pop(innerContext);
-            },
+            onPressed: () => Navigator.pop(innerContext)
           ),
           CupertinoDialogAction(
             child: Text(okText),
             isDestructiveAction: true,
-            onPressed: () async { voids.signOut(context: context,innerContext: innerContext ); }
+            onPressed: () async =>  voids.signOut(context: context,innerContext: innerContext )
           )
         ],
       );

@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:whisper/details/positive_text.dart';
 // constants
 import 'package:whisper/main_model.dart';
 import 'package:whisper/constants/ints.dart';
@@ -58,7 +59,7 @@ class AddPostModel extends ChangeNotifier {
   XFile? xFile;
   File? croppedFile;
   // commentsState
-  final commentsStateDisplayNameNotifier = ValueNotifier<String>('誰でもコメント可能');
+  final commentsStateDisplayNameNotifier = ValueNotifier<String>(commentsStateIsOpenText);
   CommentsState commentsState = CommentsState.isOpen;
   // link 
   final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
@@ -250,40 +251,40 @@ class AddPostModel extends ChangeNotifier {
       }
   }
 
-  void showCommentStatePopUp(BuildContext context) {
+  void showCommentStatePopUp({ required BuildContext context}) {
     showCupertinoModalPopup(
       context: context, 
-      builder: (BuildContext context) {
+      builder: (BuildContext innerContext) {
         return CupertinoActionSheet(
-          title: Text('コメントの状態'),
-          message: Text('コメントの状態を設定します'),
+          title: PositiveText(text: commentsStateText),
+          message: PositiveText(text: configCommentsStateText),
           actions: [
             CupertinoActionSheetAction(
               child: Text(
-                '誰でもコメント可能',
+                commentsStateIsOpenText,
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
                 ),
               ),
               onPressed: () {
                 commentsState = CommentsState.isOpen;
-                commentsStateDisplayNameNotifier.value = '誰でもコメント可能';
-                Navigator.pop(context);
+                commentsStateDisplayNameNotifier.value = commentsStateIsOpenText;
+                Navigator.pop(innerContext);
               },
             ),
             CupertinoActionSheetAction(
               child: Text(
-                '自分以外コメント不可能',
+                commentsStateIsLockedText,
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
                 ),
               ),
               onPressed: () {
                 commentsState = CommentsState.isLocked;
-                commentsStateDisplayNameNotifier.value = '自分以外コメント不可能';
-                Navigator.pop(context);
+                commentsStateDisplayNameNotifier.value = commentsStateIsLockedText;
+                Navigator.pop(innerContext);
               },
             ),
           ],

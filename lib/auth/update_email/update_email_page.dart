@@ -39,25 +39,19 @@ class UpdateEmailPage extends ConsumerWidget {
               hintText: '新しいメールアドレス', 
               icon: Icons.email, 
               controller: newEmailInputController, 
-              onChanged:  (text) {
-                updateEmailModel.newEmail = text;
-              },
+              onChanged:  (text) => updateEmailModel.newEmail = text,
               onCloseButtonPressed: () {
                 newEmailInputController.text = '';
                 updateEmailModel.newEmail = '';
               },
-              paste: (value) {
-                updateEmailModel.newEmail = value;
-              },
+              paste: (value) => updateEmailModel.newEmail = value
             ),
             SizedBox(height: defaultPadding(context: context),),
             RoundedButton(
               text: 'メールアドレスを認証', 
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
-              press: () async {
-                await updateEmailModel.verifyBeforeUpdateEmail(context);        
-              }, 
+              press: () async => await updateEmailModel.verifyBeforeUpdateEmail(context: context ),
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary,
             ),
@@ -74,9 +68,7 @@ class UpdateEmailPage extends ConsumerWidget {
                     TextSpan(
                       text: 'ログアウト',
                       style: TextStyle(color: Theme.of(context).highlightColor, fontWeight: FontWeight.bold, fontSize: defaultPadding(context: context) ),
-                      recognizer: TapGestureRecognizer()..onTap = () async {
-                        updateEmailModel.showSignOutDialog(context);
-                      },
+                      recognizer: TapGestureRecognizer()..onTap = () => updateEmailModel.showSignOutDialog(context: context)
                     ),
                     TextSpan(
                       text: 'してください',

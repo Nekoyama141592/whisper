@@ -229,3 +229,7 @@ const String sortByNewestFirstText = '新しい順';
 const String sortByOldestFirstText = '古い順';
 const String inputCommentText = 'コメントを入力';
 const String inputReplyText = 'リプライを入力';
+const String commentsStateText = 'コメントの状態';
+const String configCommentsStateText = 'コメントの状態を設定します';
+const String commentsStateIsOpenText = '誰でもコメント可能';
+const String commentsStateIsLockedText = '自分以外コメント不可能';

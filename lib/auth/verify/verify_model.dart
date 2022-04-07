@@ -26,15 +26,9 @@ class VerifyModel extends ChangeNotifier {
     currentUser!.sendEmailVerification();
   }
 
-  void setCurrentUser() {
-    currentUser = firebaseAuthCurrentUser();
-  }
+  void setCurrentUser() => currentUser = firebaseAuthCurrentUser();
 
-  Future<void>  setTimer({ required BuildContext context}) async {
-    timer = Timer.periodic(Duration(seconds: verifyMailIntervalSeconds), (timer) async {
-      await checkEmailVerified(context: context );
-    });
-  }
+  Future<void>  setTimer({ required BuildContext context}) async => timer = Timer.periodic(Duration(seconds: verifyMailIntervalSeconds), (timer) async => await checkEmailVerified(context: context ));
 
   Future<void> checkEmailVerified({ required BuildContext context}) async {
     setCurrentUser();

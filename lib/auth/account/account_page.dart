@@ -73,9 +73,7 @@ class AccountPage extends ConsumerWidget {
                     actions: [
                       CupertinoDialogAction(
                         child: const Text(cancelText),
-                        onPressed: () {
-                          Navigator.pop(innerContext);
-                        },
+                        onPressed: () => Navigator.pop(innerContext)
                       ),
                       CupertinoDialogAction(
                         child: Text(okText),
@@ -95,9 +93,7 @@ class AccountPage extends ConsumerWidget {
             ListTile(
               title: Text('ユーザーのリンクを編集'),
               trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                userLinksModel.initLinks(context: context, currentWhisperUser: mainModel.currentWhisperUser );
-              },
+              onTap: () => userLinksModel.initLinks(context: context, currentWhisperUser: mainModel.currentWhisperUser )
             ),
             ListTile(
               title: Text('固有のユーザー名'),
@@ -107,18 +103,12 @@ class AccountPage extends ConsumerWidget {
               ),
               trailing: InkWell(
                 child: Icon(Icons.copy),
-                onTap: () async {
-                  await FlutterClipboard.copy(mainModel.currentWhisperUser.uid).then((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('固有のユーザー名をコピーしました')));
-                  });
-                },
+                onTap: () async => await FlutterClipboard.copy(mainModel.currentWhisperUser.uid).then((_) => voids.showBasicFlutterToast(context: context, msg: '固有のユーザー名をコピーしました'))
               ),
             ),
             ListTile(
               title: Text('ログアウト'),
-              onTap: () {
-                accountModel.showSignOutDialog(context: context);
-              },
+              onTap: () => accountModel.showSignOutDialog(context: context)
             ),
           ],
         ),

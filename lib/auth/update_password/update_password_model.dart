@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
+import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/lists.dart';
 
 final updatePasswordProvider = ChangeNotifierProvider(
@@ -18,21 +19,21 @@ class UpdatePasswordModel extends ChangeNotifier {
   Future onUpdateButtonPressed({ required BuildContext context }) async {
     if (newPassword == confirmPassword) {
       if (newPassword.isEmpty && confirmPassword.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('フォームに新しいパスワードを入力してください')));
+        voids.showBasicFlutterToast(context: context, msg: 'フォームに新しいパスワードを入力してください');
       } else if (commonPasswords.contains(newPassword)){
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('弱いパスワードです。変更してください')));
+        voids.showBasicFlutterToast(context: context, msg: '弱いパスワードです。変更してください');
       } else {
         await updatePassword(context: context);
       }
     } else {
       if (newPassword.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('新しいパスワードを入力してください')));
+        voids.showBasicFlutterToast(context: context, msg: '新しいパスワードを入力してください');
       }
       if (confirmPassword.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('確認用パスワードを入力してください')));
+        voids.showBasicFlutterToast(context: context, msg: '確認用パスワードを入力してください');
       }
       if (newPassword.isNotEmpty && confirmPassword.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('二つのパスワードが異なります')));
+        voids.showBasicFlutterToast(context: context, msg: '二つのパスワードが異なります');
       }
     }
   }
@@ -44,16 +45,14 @@ class UpdatePasswordModel extends ChangeNotifier {
       await user!.updatePassword(newPassword);
       Navigator.pop(context);
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('パスワードが更新されました'))
-      );
+      voids.showBasicFlutterToast(context: context, msg: 'パスワードが更新されました');
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
         case 'weak-password':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードの強度が十分ではありません')));
+        voids.showBasicFlutterToast(context: context, msg: 'パスワードの強度が十分ではありません');
         break;
         case 'requires-recent-login':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('再認証が行われていません')));
+        voids.showBasicFlutterToast(context: context, msg: '再認証が行われていません');
         break;
       }
     }

@@ -17,17 +17,13 @@ class UpdateEmailModel extends ChangeNotifier {
 
   String newEmail = "";
 
-  Future verifyBeforeUpdateEmail(BuildContext context) async {
+  Future verifyBeforeUpdateEmail({ required BuildContext context}) async {
     final instance = FirebaseAuth.instance;
     final User? user = instance.currentUser;
-    try{
-      await user!.verifyBeforeUpdateEmail(newEmail);
-    } catch(e) {
-      print(e.toString());
-    }
+    await user!.verifyBeforeUpdateEmail(newEmail);
   }
 
-  void showSignOutDialog(BuildContext context) {
+  void showSignOutDialog({ required BuildContext context}) {
     final String title = 'ログアウト';
     final String content = 'ログアウトしますか?';
     final builder = (innerContext) {
@@ -44,7 +40,7 @@ class UpdateEmailModel extends ChangeNotifier {
           CupertinoDialogAction(
             child: Text(okText),
             isDestructiveAction: true,
-            onPressed: () async { await voids.signOut(context: context, innerContext: innerContext); }
+            onPressed: () async => await voids.signOut(context: context, innerContext: innerContext)
           ),
         ],
       );

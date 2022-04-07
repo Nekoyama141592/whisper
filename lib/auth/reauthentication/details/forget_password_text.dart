@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/doubles.dart';
+// constants
+import 'package:whisper/constants/voids.dart' as voids;
 
 class ForgetPasswordText extends StatelessWidget {
   
@@ -13,7 +16,7 @@ class ForgetPasswordText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:  EdgeInsets.symmetric(
-        vertical: 5
+        vertical: defaultPadding(context: context)
       ),
       child: Center(
         child: TextButton(
@@ -21,14 +24,14 @@ class ForgetPasswordText extends StatelessWidget {
             final currentUser = FirebaseAuth.instance.currentUser;
             final String email = currentUser!.email!;
             await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(email + 'にメールを送信しました')));
+            voids.showBasicFlutterToast(context: context, msg: email + 'にメールを送信しました');
           },
           child: Text(
             'パスワードを忘れた場合',
             style: TextStyle(
               color: Theme.of(context).highlightColor,
               fontWeight: FontWeight.bold,
-              fontSize: 18
+              fontSize: defaultHeaderTextSize(context: context)
             ),
           )
         ),
