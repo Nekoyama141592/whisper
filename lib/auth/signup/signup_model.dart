@@ -90,7 +90,7 @@ class SignupModel extends ChangeNotifier {
     if (commonPasswords.contains(password)) {
       voids.showBasicFlutterToast(context: context, msg: 'ありふれたパスワードです。変更してください' );
     } else if (userName.length > maxSearchLength ) {
-       voids.maxSearchLengthAlert(context: context,isUserName: true);
+      voids.maxSearchLengthAlert(context: context,isUserName: true);
     }else {
       try{
         UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,);
@@ -184,7 +184,7 @@ class SignupModel extends ChangeNotifier {
     );
     final String bookmarkPostCategoryId = returnTokenId( userMeta: userMeta, tokenType: TokenType.bookmarkPostCategory );
     final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(uid: uid,categoryName: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostCategoryId, tokenType: bookmarkPostCategoryTokenType,imageURL: '' );
-    await FirebaseFirestore.instance.collection(userMetaFieldKey).doc(uid).set(userMeta.toJson());
+    await returnUserMetaDocRef(uid: uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkPostCategoryId ).set(bookmarkPostCategory.toJson());
   }
 
