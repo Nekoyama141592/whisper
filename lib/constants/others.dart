@@ -167,7 +167,7 @@ DocumentReference<Map<String,dynamic>> returnPostReportDocRef({ required Documen
 
 DocumentReference<Map<String,dynamic>> returnPostCommentReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postCommentDoc,required String postCommentReportId }) => postCommentDoc.reference.collection(postCommentReportsColRefName).doc(postCommentReportId);
 
-DocumentReference<Map<String,dynamic>> returnPostCommentReplyReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc,required String postCommentReplyReportId }) => postCommentReplyDoc.reference.collection(postCommentReportsColRefName).doc(postCommentReplyReportId);
+DocumentReference<Map<String,dynamic>> returnPostCommentReplyReportDocRef({ required DocumentSnapshot<Map<String,dynamic>> postCommentReplyDoc,required String postCommentReplyReportId }) => postCommentReplyDoc.reference.collection(postCommentReplyReportsColRefName).doc(postCommentReplyReportId);
 
 DocumentReference<Map<String,dynamic>> returnPostMuteDocRef({ required DocumentSnapshot<Map<String,dynamic>> postDoc,required UserMeta userMeta }) => postDoc.reference.collection(postMutesColRefName).doc(userMeta.uid) ;
 
