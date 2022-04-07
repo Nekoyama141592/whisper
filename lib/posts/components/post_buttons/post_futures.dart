@@ -77,7 +77,7 @@ class PostFutures extends ChangeNotifier {
               final BookmarkPostCategory bookmarkPostLabel = bookmarkPostLabels[i];
               return ListTile(
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
-                title: Text(bookmarkPostLabel.categoryName),
+                title: Text(bookmarkPostLabel.categoryName,style: TextStyle(fontWeight: FontWeight.bold),),
                 onTap: () => mainModel.bookmarkPostCategoryTokenIdNotifier.value = bookmarkPostLabel.tokenId,
               );
             }
@@ -89,7 +89,7 @@ class PostFutures extends ChangeNotifier {
     return TextButton(
       onPressed: () async {
         if (mainModel.bookmarkPostCategoryTokenIdNotifier.value.isEmpty) {
-          voids.showBasicFlutterToast(context: context, msg: 'カテゴリーを選択して下さい');
+          await voids.showBasicFlutterToast(context: context, msg: 'カテゴリーを選択して下さい');
         } else {
           // process UI
           final Timestamp now = Timestamp.now();

@@ -33,7 +33,7 @@ class Home extends ConsumerWidget {
       length: tabBarElements.length, 
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Whisper'),
+          title: Text('Whisper',style: TextStyle(color: Colors.white), ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(defaultPadding(context: context))

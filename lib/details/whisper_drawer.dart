@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/widgets.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
@@ -25,25 +26,20 @@ class WhisperDrawer extends StatelessWidget {
       child: ListView(
         children: [
           ListTile(
-            title: Text('アカウント'),
-            onTap: () {
-              routes.toAccountPage(context, mainModel);
-            },
+            title: boldText(text: 'アカウント'),
+            onTap: () => routes.toAccountPage(context, mainModel)
           ),
-         
           ListTile(
-            title: Text('テーマ変更'),
+            title: boldText(text: 'テーマ変更'),
             trailing: CupertinoSwitch(
               value: themeModel.isDarkTheme, 
-              onChanged: (value) { themeModel.setIsDartTheme(value); },
+              onChanged: (value) => themeModel.setIsDartTheme(value),
             ),
           ),
           
           ListTile(
-            title: Text('NFTowners'),
-            onTap: () {
-              routes.toNFTownersPage(context);
-            },
+            title: boldText(text: 'NFTowners'),
+            onTap: () => routes.toNFTownersPage(context),
           ),
           
         ],

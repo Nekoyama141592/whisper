@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/widgets.dart';
 // model
 // import 'package:whisper/nft_owners/nft_owners_model.dart';
 
@@ -19,7 +20,7 @@ class NFTownersPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('NFT所有者様方'),
+        title: whiteBoldText(text: 'NFT所有者様方'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context))

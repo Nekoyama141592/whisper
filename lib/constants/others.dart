@@ -76,6 +76,10 @@ BlockUser fromMapToBlocksIpv6AndUid({ required Map<String,dynamic> map }) => Blo
 
 TextStyle textStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
 
+TextStyle whiteBoldStyle() => TextStyle(fontWeight: FontWeight.bold,color: Colors.white, );
+
+TextStyle boldStyle() => TextStyle(fontWeight: FontWeight.bold );
+
 TextStyle cancelStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
 
 User? firebaseAuthCurrentUser() => FirebaseAuth.instance.currentUser;

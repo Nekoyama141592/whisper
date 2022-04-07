@@ -9,6 +9,7 @@ import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/links/user_links/user_links_model.dart';
 // model
 import 'account_model.dart';
@@ -32,12 +33,12 @@ class AccountPage extends ConsumerWidget {
     return ScaffoldMessenger(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Account'),
+          title: whiteBoldText(text: 'Account')
         ),
         body: Column(
           children: [
             ListTile(
-              title: Text(accountModel.currentUser!.email! + "(変更する)"),
+              title: boldText(text: accountModel.currentUser!.email! + "(変更する)"),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.updateEmail;
@@ -45,7 +46,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: Text('パスワード変更'),
+              title: boldText(text: 'パスワード変更'),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.updatePassword;
@@ -53,7 +54,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
              ListTile(
-              title: Text('アカウント削除の手順をふむ'),
+              title: boldText(text: 'アカウント削除の手順をふむ'),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.deleteUser;
@@ -61,7 +62,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: Text('ミュートしているユーザー'),
+              title: boldText(text: 'ミュートしているユーザー'),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 final String title = '注意';
@@ -91,12 +92,12 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: Text('ユーザーのリンクを編集'),
+              title: boldText(text: 'ユーザーのリンクを編集'),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => userLinksModel.initLinks(context: context, currentWhisperUser: mainModel.currentWhisperUser )
             ),
             ListTile(
-              title: Text('固有のユーザー名'),
+              title: boldText(text: '固有のユーザー名'),
               subtitle: Text(
                 mainModel.currentWhisperUser.uid,
                 style: TextStyle(color: Theme.of(context).focusColor),
@@ -107,7 +108,7 @@ class AccountPage extends ConsumerWidget {
               ),
             ),
             ListTile(
-              title: Text('ログアウト'),
+              title: boldText(text: 'ログアウト'),
               onTap: () => accountModel.showSignOutDialog(context: context)
             ),
           ],

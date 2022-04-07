@@ -34,14 +34,11 @@ class NotificationIcon extends ConsumerWidget {
       builder: ( context,snapshot ) {
         bool isNotificationExists = (snapshot.data == null) ? false : snapshot.data!.docs.isNotEmpty;
         return InkWell(
-          onTap: () {
-            routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, notificationsModel: notificationsModel,);
-          },
+          onTap: () => routes.toNotificationsPage(context: context, mainModel: mainModel, themeModel: themeModel, notificationsModel: notificationsModel,),
           child: 
-          
           Stack(
             children: [
-              Icon(Icons.notifications),
+              Icon(Icons.notifications,color: Colors.white, ),
               isNotificationExists ?
               Positioned(
                 right: 0,

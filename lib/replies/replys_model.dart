@@ -147,6 +147,7 @@ class RepliesModel extends ChangeNotifier {
                 if (sortState != SortState.byLikeUidCount) {
                   sortState = SortState.byLikeUidCount;
                   await getReplyDocs(whisperPostComment: whisperPostComment);
+                  await reflectChanges(context: context);
                 }
               }, 
               child: PositiveText(text: sortByLikeUidCountText),
@@ -157,6 +158,7 @@ class RepliesModel extends ChangeNotifier {
                 if (sortState != SortState.byNewestFirst) {
                   sortState = SortState.byNewestFirst;
                   await getReplyDocs(whisperPostComment: whisperPostComment);
+                  await reflectChanges(context: context);
                 }
               }, 
               child: PositiveText(text: sortByNewestFirstText),
@@ -167,6 +169,7 @@ class RepliesModel extends ChangeNotifier {
                 if (sortState != SortState.byOldestFirst) {
                   sortState = SortState.byOldestFirst;
                   await getReplyDocs(whisperPostComment: whisperPostComment);
+                  await reflectChanges(context: context);
                 }
               }, 
               child: PositiveText(text: sortByOldestFirstText),
@@ -354,7 +357,7 @@ class RepliesModel extends ChangeNotifier {
       notifyListeners();
       await replyDoc.reference.delete();
     } else {
-      voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg );
+      await voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg );
     }
   }
   
@@ -424,6 +427,10 @@ class RepliesModel extends ChangeNotifier {
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+  }
+
+  Future<void> reflectChanges({ required BuildContext context }) async {
+    await voids.showBasicFlutterToast(context: context, msg: reflectReplyChangesJsMsg);
   }
 
 }
