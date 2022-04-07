@@ -115,7 +115,7 @@ class ReplyCard extends ConsumerWidget {
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await commentsOrReplysModel.muteUser(context: context, mainModel: mainModel, passiveUid: whisperReply.uid);
+                          await commentsOrReplysModel.muteUser(context: context, mainModel: mainModel, passiveUid: whisperReply.uid,docs: repliesModel.postCommentReplyDocs );
                         }, child: PositiveText(text: muteUserJaText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);

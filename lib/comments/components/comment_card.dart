@@ -119,7 +119,7 @@ class CommentCard extends ConsumerWidget {
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid, );
+                          await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid,docs: commentsModel.commentDocs );
                         }, child: PositiveText(text: muteUserJaText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);

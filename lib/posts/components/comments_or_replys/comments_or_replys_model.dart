@@ -19,7 +19,7 @@ final commentsOrReplysProvider = ChangeNotifierProvider(
 
 class CommentsOrReplysModel extends ChangeNotifier {
   
-  Future<void> muteUser({ required BuildContext context,required MainModel mainModel, required String passiveUid,}) async {
+  Future<void> muteUser({ required BuildContext context,required MainModel mainModel, required String passiveUid,required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
     if (mainModel.muteUids.contains(passiveUid) == false) {
       // process set
       final Timestamp now = Timestamp.now();
@@ -28,6 +28,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
       // processUI
       mainModel.muteUsers.add(muteUser);
       mainModel.muteUids.add(muteUser.passiveUid);
+      docs.removeWhere(((element) =>element[uidMapKey] == passiveUid));
       notifyListeners();
       await showBasicFlutterToast(context: context,msg: muteUserMsg);
       // process backend
