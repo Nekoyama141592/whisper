@@ -33,6 +33,7 @@ class CommentsOrReplysModel extends ChangeNotifier {
       docs.removeWhere(((element) =>element[uidMapKey] == passiveUid));
       notifyListeners();
       await showBasicFlutterToast(context: context,msg: muteUserMsg);
+      await showBasicFlutterToast(context: context, msg: reflectChangesJaMsg );
       // process backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
       final UserMute userMute = UserMute(createdAt: now, muterUid: activeUid, mutedUid: passiveUid );
