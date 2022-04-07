@@ -36,9 +36,7 @@ class CommentLikeButton extends StatelessWidget {
         children: [
           InkWell(
             child: Icon(Icons.favorite,color: Colors.red),
-            onTap: () async {
-              await commentsModel.unlike(whisperComment: whisperComment, mainModel: mainModel);
-            },
+            onTap: () async => await commentsModel.unlike(whisperComment: whisperComment, mainModel: mainModel)
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
@@ -55,9 +53,7 @@ class CommentLikeButton extends StatelessWidget {
         children: [
           InkWell(
             child: Icon(Icons.favorite),
-            onTap: () async {
-              await commentsModel.like(whisperComment: whisperComment, mainModel: mainModel);
-            },
+            onTap: () async => await commentsModel.like(whisperComment: whisperComment, mainModel: mainModel),
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(

@@ -36,9 +36,7 @@ class ReplyLikeButton extends StatelessWidget {
               Icons.favorite,
               color: Colors.red
             ),
-            onTap: () async {
-              replysModel.unlike(whisperReply: whisperReply, mainModel: mainModel);
-            },
+            onTap: () async => await replysModel.unlike(whisperReply: whisperReply, mainModel: mainModel)
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
@@ -55,9 +53,7 @@ class ReplyLikeButton extends StatelessWidget {
         children: [
           InkWell(
             child: Icon(Icons.favorite),
-            onTap: () async {
-              await replysModel.like(whisperReply: whisperReply, mainModel: mainModel);
-            }
+            onTap: () async => await replysModel.like(whisperReply: whisperReply, mainModel: mainModel),
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
           Text(
