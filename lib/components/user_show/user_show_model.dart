@@ -1,7 +1,6 @@
 // dart
 import 'dart:io';
 // material
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
@@ -17,16 +16,18 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/domain/post/post.dart';
 // domain
-import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/follower/follower.dart';
 import 'package:whisper/domain/following/following.dart';
-import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// components
+import 'package:whisper/details/positive_text.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
@@ -116,10 +117,6 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void reload() {
-    notifyListeners();
-  }
-
   Future<void> onRefresh() async {
     await getNewUserShowPosts();
     refreshController.refreshCompleted();
@@ -157,14 +154,12 @@ class UserShowModel extends ChangeNotifier {
     await voids.processBasicPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser,), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
   }
 
-  Future<void> getOldUserShowPosts() async {
-    await voids.processOldPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser,), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
-  }
+  Future<void> getOldUserShowPosts() async => await voids.processOldPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser,), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
 
   Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     xFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xFile != null) { await cropImage(); }
+    if (xFile != null) await cropImage(); 
     notifyListeners();
   }
 
@@ -172,7 +167,7 @@ class UserShowModel extends ChangeNotifier {
     isCropped = false;
     croppedFile = null;
     croppedFile = await returnCroppedFile(xFile: xFile);
-    if (croppedFile != null) { isCropped = true; }
+    if (croppedFile != null) isCropped = true;
   }
 
   void seek(Duration position) {
@@ -206,20 +201,14 @@ class UserShowModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          message: Text('行う操作を選択',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: boldText(text: selectOperationJaText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(innerContext);
                 routes.toPostSearchPage(context: context, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
               }, 
-              child: Text(
-                '検索',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: searchJaText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -229,13 +218,7 @@ class UserShowModel extends ChangeNotifier {
                   await onReload();
                 }
               }, 
-              child: Text(
-                'いいね順に並び替え',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByLikeUidCountText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -245,13 +228,7 @@ class UserShowModel extends ChangeNotifier {
                   await onReload();
                 }
               }, 
-              child: Text(
-                '新しい順に並び替え',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByNewestFirstText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -261,23 +238,11 @@ class UserShowModel extends ChangeNotifier {
                   await onReload();
                 }
               }, 
-              child: Text(
-                '古い順に並び替え',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByOldestFirstText),
             ),
             CupertinoActionSheetAction(
-              onPressed: () { Navigator.pop(innerContext); }, 
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              onPressed: () => Navigator.pop(innerContext),
+              child: PositiveText(text: cancelText),
             ),
           ],
         );
@@ -287,7 +252,7 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> follow({ required BuildContext context,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
   if (mainModel.followingUids.length >= maxFollowCount) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Limit' + maxFollowCount.toString() + 'Following' )));
+    voids.showBasicFlutterToast(context: context, msg: limitFollowingJaMsg );
   } else {
     // process set
     final Timestamp now = Timestamp.now();
@@ -304,30 +269,26 @@ class UserShowModel extends ChangeNotifier {
     notifyListeners();
     // process backend
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
-    await createFollower(userMeta: userMeta, now: now, passiveUid: passiveUid);
+    final Follower follower = Follower(createdAt: now,followedUid: passiveUid,followerUid: userMeta.uid );
+    await returnFollowerDocRef(uid: passiveUid, followerUid: userMeta.uid ).set(follower.toJson());
   }
 }
 
-Future<void> createFollower({ required UserMeta userMeta,required Timestamp now,required String passiveUid }) async {
-  final Follower follower = Follower(createdAt: now,followedUid: passiveUid,followerUid: userMeta.uid );
-  await returnFollowerDocRef(uid: passiveUid, followerUid: userMeta.uid ).set(follower.toJson());
-}
-
-Future<void> unfollow({ required MainModel mainModel,required WhisperUser passiveWhisperUser }) async {
-  // process set
-  final userMeta = mainModel.userMeta;
-  final activeUid = userMeta.uid;
-  final passiveUid = passiveWhisperUser.uid;
-  final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
-  // processUI
-  mainModel.following.remove(deleteFollowingToken);
-  mainModel.followingUids.remove(passiveUid);
-  mainModel.currentWhisperUser.followingCount += minusOne;
-  passiveWhisperUser.followerCount += minusOne;
-  notifyListeners();
-  // process backend
-  await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();
-  await returnFollowerDocRef(uid: passiveUid, followerUid: activeUid ).delete();
-}
+  Future<void> unfollow({ required MainModel mainModel,required WhisperUser passiveWhisperUser }) async {
+    // process set
+    final userMeta = mainModel.userMeta;
+    final activeUid = userMeta.uid;
+    final passiveUid = passiveWhisperUser.uid;
+    final deleteFollowingToken = mainModel.following.where((element) => element.passiveUid == passiveUid).first;
+    // processUI
+    mainModel.following.remove(deleteFollowingToken);
+    mainModel.followingUids.remove(passiveUid);
+    mainModel.currentWhisperUser.followingCount += minusOne;
+    passiveWhisperUser.followerCount += minusOne;
+    notifyListeners();
+    // process backend
+    await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();
+    await returnFollowerDocRef(uid: passiveUid, followerUid: activeUid ).delete();
+  }
 
 }

@@ -423,7 +423,7 @@ class RepliesModel extends ChangeNotifier {
           await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply,replyDoc: replyDoc,);
           await returnPostCommentReplyReportDocRef(postCommentReplyDoc: replyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
         }, 
-        child: PositiveText(text: sendModalMsg)
+        child: PositiveText(text: sendModalJaText)
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

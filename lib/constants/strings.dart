@@ -204,14 +204,15 @@ const String cannotCommentMsg = 'コメントは投稿主しかできません';
 const String cannotReplyMsg = 'あなたはこのコメントに返信できません';
 const String dontHaveRightMsg = 'あなたにその権限はありません';
 const String reflectChangesJaMsg = 'いいねボタンや目のボタンを押すと反映されます';
+final String limitFollowingJaMsg = 'フォロー数は' + maxFollowCount.toString() + 'が限界です';
 // Id
 const String configIdString = 'config';
 // title
 const String reportTitle = '問題を報告してください';
 // text
 const String okText = 'OK';
-const String decideModalMsg = '決定';
-const String sendModalMsg = '送信';
+const String decideModalJaText = '決定';
+const String sendModalJaText = '送信';
 const String cancelText = 'キャンセル';
 const String muteUserJaText = 'ユーザーをミュート';
 const String mutePostJaText = '投稿をミュート';
@@ -226,12 +227,14 @@ const String deleteReplyJaText = '自分のリプライを完全に削除';
 const String sortJaText = '並び替え';
 const String sortCommentJaText = 'コメントを並び替えます';
 const String sortReplyJaText = 'リプライを並び替えます';
-const String sortByLikeUidCountText = 'いいね順';
-const String sortByNewestFirstText = '新しい順';
-const String sortByOldestFirstText = '古い順';
+const String sortByLikeUidCountText = 'いいね順に並び替え';
+const String sortByNewestFirstText = '新しい順に並び替え';
+const String sortByOldestFirstText = '古い順に並び替え';
 const String inputCommentText = 'コメントを入力';
 const String inputReplyText = 'リプライを入力';
 const String commentsStateText = 'コメントの状態';
 const String configCommentsStateText = 'コメントの状態を設定します';
 const String commentsStateIsOpenText = '誰でもコメント可能';
 const String commentsStateIsLockedText = '自分以外コメント不可能';
+const String selectOperationJaText = '行う操作を選択';
+const String searchJaText = '検索';

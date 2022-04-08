@@ -1,7 +1,6 @@
 // dart
 import 'dart:io';
 // material
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,6 +16,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/domain/post/post.dart';
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
@@ -24,6 +24,8 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
+// components
+import 'package:whisper/details/positive_text.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
@@ -109,13 +111,7 @@ class MyProfileModel extends ChangeNotifier {
     audioPlayer.seek(position);
   }
 
-  Future<void> setCurrentUserDoc() async {
-    currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
-  }
-
-  void reload() {
-    notifyListeners();
-  }
+  Future<void> setCurrentUserDoc() async => currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(FirebaseAuth.instance.currentUser!.uid).get();
 
   Future onRefresh() async {
     await getNewMyProfilePosts();
@@ -153,9 +149,7 @@ class MyProfileModel extends ChangeNotifier {
     await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
   }
 
-  Future<void> getOldMyProfilePosts() async {
-    await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
-  }
+  Future<void> getOldMyProfilePosts() async => await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
 
   void onEditButtonPressed() {
     isEditing = true;
@@ -177,7 +171,7 @@ class MyProfileModel extends ChangeNotifier {
   Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     xFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xFile != null) { await cropImage(); }
+    if (xFile != null) await cropImage();
     notifyListeners();
   }
 
@@ -185,7 +179,7 @@ class MyProfileModel extends ChangeNotifier {
     isCropped = false;
     croppedFile = null;
     croppedFile = await returnCroppedFile(xFile: xFile);
-    if (croppedFile != null) { isCropped = true; }
+    if (croppedFile != null) isCropped = true;
   }
 
   void onCancelButtonPressed() {
@@ -197,81 +191,48 @@ class MyProfileModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          message: Text('行う操作を選択',style: TextStyle(fontWeight: FontWeight.bold)),
+          message: boldText(text: selectOperationJaText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(innerContext);
                 routes.toPostSearchPage(context: context, passiveWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
               }, 
-              child: Text(
-                '検索',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: searchJaText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byLikeUidCount) {
                   sortState = SortState.byLikeUidCount;
-                  print(sortState.toString());
                   await onReload();
                 }
               }, 
-              child: Text(
-                'いいね順に並び替え',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByLikeUidCountText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byNewestFirst) {
                   sortState = SortState.byNewestFirst;
-                  print(sortState.toString());
                   await onReload();
                 }
               }, 
-              child: Text(
-                '新しい順に並び替え',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByNewestFirstText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byOldestFirst) {
                   sortState = SortState.byOldestFirst;
-                  print(sortState.toString());
                   await onReload();
                 }
               }, 
-              child: Text(
-                '古い順に並び替え',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              child: PositiveText(text: sortByOldestFirstText),
             ),
             CupertinoActionSheetAction(
-              onPressed: () { Navigator.pop(innerContext); }, 
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).highlightColor,
-                ) 
-              )
+              onPressed: () => Navigator.pop(innerContext),
+              child: PositiveText(text: cancelText),
             ),
           ],
         );
