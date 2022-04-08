@@ -305,15 +305,7 @@ class UserShowModel extends ChangeNotifier {
     // process backend
     await returnTokenDocRef(uid: activeUid, tokenId: tokenId).set(following.toJson());
     await createFollower(userMeta: userMeta, now: now, passiveUid: passiveUid);
-    await updateFollowingCountOfCurrentWhisperUser(currentWhisperUser: mainModel.currentWhisperUser, now: now);
   }
-}
-
-Future<void> updateFollowingCountOfCurrentWhisperUser({ required WhisperUser currentWhisperUser,required Timestamp now }) async {
-  await returnUserDocRef(uid: currentWhisperUser.uid).update({
-    followingCountFieldKey: currentWhisperUser.followingCount,
-    updatedAtFieldKey: now,
-  });
 }
 
 Future<void> createFollower({ required UserMeta userMeta,required Timestamp now,required String passiveUid }) async {
@@ -336,7 +328,6 @@ Future<void> unfollow({ required MainModel mainModel,required WhisperUser passiv
   // process backend
   await returnTokenDocRef(uid: activeUid, tokenId: deleteFollowingToken.tokenId ).delete();
   await returnFollowerDocRef(uid: passiveUid, followerUid: activeUid ).delete();
-  await updateFollowingCountOfCurrentWhisperUser(currentWhisperUser: mainModel.currentWhisperUser, now: Timestamp.now() );
 }
 
 }
