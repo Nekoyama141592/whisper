@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/l10n/l10n.dart';
 
 class ForgetPasswordText extends StatelessWidget {
   
@@ -13,6 +15,7 @@ class ForgetPasswordText extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
+    final L10n l10n = returnL10n(context: context)!;
     return Padding(
       padding:  EdgeInsets.symmetric(
         vertical: defaultPadding(context: context)
@@ -26,7 +29,7 @@ class ForgetPasswordText extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                text: 'パスワードを忘れた場合',
+                text: l10n.forgetPassword,
                 style: TextStyle(
                   color: Theme.of(context).highlightColor,
                   fontSize: defaultHeaderTextSize(context: context)

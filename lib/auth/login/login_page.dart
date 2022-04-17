@@ -6,7 +6,9 @@ import 'package:flutter_svg/svg.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/details/loading.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
@@ -15,6 +17,7 @@ import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_password_field.dart';
 // models
 import 'package:whisper/auth/login/login_model.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class LoginPage extends ConsumerWidget {
 
@@ -28,6 +31,7 @@ class LoginPage extends ConsumerWidget {
     final emailInputController = TextEditingController(text: loginModel.email);
     final passwordInputController = TextEditingController(text: loginModel.password,);
     final size = MediaQuery.of(context).size;
+    final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: loginModel.isLoading ?
@@ -63,7 +67,7 @@ class LoginPage extends ConsumerWidget {
                   horizontal: defaultPadding(context: context),
                   vertical: defaultPadding(context: context)/2.0,
                 ),
-                child: Text("ログイン", style: TextStyle(color: Colors.white, fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold)),
+                child: whiteBoldText(text: l10n.signIn )
               ),
               SizedBox(height: defaultPadding(context: context) ),
               Expanded(
@@ -83,29 +87,21 @@ class LoginPage extends ConsumerWidget {
                           height: size.height * 0.30,
                         ),
                         RoundedInputField(
-                          hintText: "Email",
+                          hintText: l10n.email,
                           icon: Icons.person,
                           controller: emailInputController,
-                          onChanged:  (text) {
-                            loginModel.email = text;
-                          },
+                          onChanged:  (text) => loginModel.email = text,
                           onCloseButtonPressed: () {
                             emailInputController.text = '';
                             loginModel.email = '';
                           },
-                          paste: (value) {
-                            loginModel.email = value;
-                          },
+                          paste: (value) => loginModel.email = value,
                         ),
                         RoundedPasswordField(
-                          hintText: 'Password', 
+                          hintText: l10n.password, 
                           controller: passwordInputController, 
-                          onChanged: (text) {
-                            loginModel.password = text;
-                          },
-                          paste: (value) {
-                            loginModel.password = value;
-                          },
+                          onChanged: (text) => loginModel.password = text,
+                          paste: (value) => loginModel.password = value,
                         ),
                         SizedBox(height: defaultPadding(context: context) ),
                         Center(
@@ -113,9 +109,7 @@ class LoginPage extends ConsumerWidget {
                             text: 'ログイン',
                             widthRate: 0.8,
                             fontSize: defaultHeaderTextSize(context: context),
-                            press: () async {
-                              await loginModel.login(context);
-                            },
+                            press: () async => await loginModel.login(context: context ),
                             textColor: Colors.white,
                             buttonColor: kQuaternaryColor
                           ),

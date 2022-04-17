@@ -7,10 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_model.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/widgets.dart';
+import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/links/user_links/user_links_model.dart';
 // model
 import 'account_model.dart';
@@ -29,18 +31,19 @@ class AccountPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final accountModel = ref.watch(accountProvider);
+    final L10n l10n = returnL10n(context: context)!;
     final UserLinksModel userLinksModel = ref.watch(userLinksProvider);
     final MuteUsersModel muteUsersModel  = ref.watch(muteUsersProvider);
 
     return ScaffoldMessenger(
       child: Scaffold(
         appBar: AppBar(
-          title: whiteBoldText(text: 'Account')
+          title: whiteBoldText(text: l10n.account)
         ),
         body: Column(
           children: [
             ListTile(
-              title: boldText(text: accountModel.currentUser!.email! + "(変更する)"),
+              title: boldText(text: accountModel.currentUser!.email!),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.updateEmail;
@@ -48,7 +51,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: boldText(text: 'パスワード変更'),
+              title: boldText(text: l10n.resetPassword),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.updatePassword;
@@ -56,7 +59,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
              ListTile(
-              title: boldText(text: 'アカウント削除の手順をふむ'),
+              title: boldText(text: l10n.deleteUserProcess),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.deleteUser;
@@ -64,11 +67,11 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: boldText(text: 'ミュートしているユーザー'),
+              title: boldText(text: l10n.muteUsers),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
-                final String title = '注意';
-                final String content = 'ミュートしているユーザーが表示されます';
+                final String title = l10n.alert;
+                final String content = l10n.muteUsersAlert;
                 final builder = (innerContext) {
                   return CupertinoAlertDialog(
                     title: Text(title),
@@ -95,12 +98,12 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: boldText(text: 'ユーザーのリンクを編集'),
+              title: boldText(text: l10n.editUserLinks),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => userLinksModel.initLinks(context: context, currentWhisperUser: mainModel.currentWhisperUser )
             ),
             ListTile(
-              title: boldText(text: '固有のユーザー名'),
+              title: boldText(text: l10n.uid),
               subtitle: Text(
                 mainModel.currentWhisperUser.uid,
                 style: TextStyle(color: Theme.of(context).focusColor),
@@ -111,7 +114,7 @@ class AccountPage extends ConsumerWidget {
               ),
             ),
             ListTile(
-              title: boldText(text: 'ログアウト'),
+              title: boldText(text: l10n.logout),
               onTap: () => accountModel.showSignOutDialog(context: context)
             ),
           ],

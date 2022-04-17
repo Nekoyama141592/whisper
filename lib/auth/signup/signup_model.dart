@@ -25,6 +25,7 @@ import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dar
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 final signupProvider = ChangeNotifierProvider(
   (ref) => SignupModel()
@@ -102,22 +103,23 @@ class SignupModel extends ChangeNotifier {
         await createUserMeta(uid: uid);
         routes.toVerifyPage(context);
       } on FirebaseAuthException catch(e) {
+        final L10n l10n = returnL10n(context: context)!;
         final String errorCode = e.code;
         switch(errorCode) {
           case 'invalid-email':
-          voids.showBasicFlutterToast(context: context, msg: 'そのemailは相応しくありません');
+          voids.showBasicFlutterToast(context: context, msg: l10n.invalidEmail);
           break;
           case 'user-disabled':
-          voids.showBasicFlutterToast(context: context, msg: 'そのemailは無効化されています');
+          voids.showBasicFlutterToast(context: context, msg: l10n.userDisabled);
           break;
           case 'user-not-found':
-          voids.showBasicFlutterToast(context: context, msg: 'そのemailに対するユーザーが見つかりません' );
+          voids.showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
           break;
           case 'wrong-password':
-          voids.showBasicFlutterToast(context: context, msg: 'passwordが違います');
+          voids.showBasicFlutterToast(context: context, msg: l10n.wrongPassword);
           break;
           case 'too-many-requests':
-          voids.showBasicFlutterToast(context: context, msg: 'ログインの試行回数が制限を超えました' );
+          voids.showBasicFlutterToast(context: context, msg: l10n.tooManyRequests );
           break;
         }
       }

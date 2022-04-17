@@ -6,7 +6,10 @@ import 'package:flutter_svg/svg.dart';
 // model
 import 'package:whisper/auth/verify/verify_model.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/details/rounded_button.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class VerifyPage extends ConsumerWidget {
 
@@ -19,8 +22,8 @@ class VerifyPage extends ConsumerWidget {
 
     final size = MediaQuery.of(context).size;
     final verifyModel = ref.watch(verifyProvider);
-    final textStyle = TextStyle(fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold);
     String userEmail = verifyModel.currentUser!.email.toString();
+    final L10n l10n = returnL10n(context: context)!;
     
     return Scaffold(
       body: Padding(
@@ -36,17 +39,14 @@ class VerifyPage extends ConsumerWidget {
                   height: size.height * 0.30,
                 ),
               ),
-              SizedBox(height: size.height * 0.05),
+              SizedBox(height: defaultPadding(context: context)),
               Text(
                 userEmail + 'にメールを送信しました。ご確認下さい。',
                 style: textStyle
               ),
-              SizedBox(height: size.height * 0.05),
-              Text(
-                '送信されたメールのリンクを押したら以下のボタンを押してください',
-                style: textStyle,
-              ),
-              SizedBox(height: size.height * 0.05),
+              SizedBox(height: defaultPadding(context: context)),
+              boldText(text: l10n.startWhisper),
+              SizedBox(height: defaultPadding(context: context)),
               RoundedButton(
                 text: '始める', 
                 widthRate: 0.95, 

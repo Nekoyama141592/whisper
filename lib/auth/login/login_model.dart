@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whisper/constants/others.dart';
 
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/voids.dart';
+import 'package:whisper/l10n/l10n.dart';
 final loginProvider = ChangeNotifierProvider(
   (ref) => LoginModel()
 );
@@ -30,23 +32,24 @@ class LoginModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future login(context) async {
+  Future<void> login({ required BuildContext context}) async {
+    final L10n l10n = returnL10n(context: context)!;
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       routes.toMyApp(context);
     } on FirebaseAuthException catch(e) {
       switch(e.code) {
         case 'invalid-email':
-        showBasicFlutterToast(context: context, msg: 'そのメールアドレスは不適です' );
+        showBasicFlutterToast(context: context, msg: l10n.invalidEmail );
         break;
         case 'user-disabled':
-        showBasicFlutterToast(context: context, msg: 'そのメールアドレスは無効化されています' );
+        showBasicFlutterToast(context: context, msg: l10n.userDisabled );
         break;
         case 'user-not-found':
-        showBasicFlutterToast(context: context, msg: 'そのメールアドレスを持つユーザーが見つかりません');
+        showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
         break;
         case 'wrong-password':
-        showBasicFlutterToast(context: context, msg: 'パスワードが違います' );
+        showBasicFlutterToast(context: context, msg: l10n.wrongPassword );
         break;
       }
     } 

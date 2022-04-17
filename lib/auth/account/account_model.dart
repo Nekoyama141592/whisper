@@ -11,6 +11,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 // models
 import 'package:whisper/main_model.dart';
 
@@ -63,12 +64,13 @@ class AccountModel extends ChangeNotifier {
         break;
       }
     } on FirebaseAuthException catch(e) {
+      final L10n l10n = returnL10n(context: context)!;
       switch(e.code) {
         case 'invalid-email':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('そのメールアドレスは不敵です')));
+        voids.showBasicFlutterToast(context: context, msg: l10n.invalidEmail );
         break;
         case 'wrong-password':
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('パスワードが違います')));
+        voids.showBasicFlutterToast(context: context, msg: l10n.wrongPassword);
         break;
       }
     }
@@ -76,8 +78,9 @@ class AccountModel extends ChangeNotifier {
 
   void showDeleteUserDialog({ required BuildContext context, required MainModel mainModel }) {
     final currentWhisperUser = mainModel.currentWhisperUser;
-    final String title = 'ユーザー削除';
-    final String content = '一度削除したら、復元はできません。本当に削除しますか？';
+    final L10n l10n = returnL10n(context: context)!;
+    final String title = l10n.deleteUser;
+    final String content = l10n.deleteUserAlert;
     final builder = (innerContext) {
       return CupertinoAlertDialog(
         title: Text(title),
@@ -93,7 +96,7 @@ class AccountModel extends ChangeNotifier {
             onPressed: () async {
               if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
                 Navigator.pop(innerContext);
-                routes.toIsFinishedPage(context: context,title: 'ユーザーを消去しました',text: 'ユーザーも投稿もコメントも削除されました。お疲れ様でした');
+                routes.toIsFinishedPage(context: context,title: l10n.deletedUser,text: l10n.deletedUserText);
                 await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
               }
             },
@@ -110,9 +113,10 @@ class AccountModel extends ChangeNotifier {
     });
   }
 
-  void showSignOutDialog({required BuildContext context}) {
-    final String title = 'ログアウト';
-    final String content = 'ログアウトしますか?';
+  void showSignOutDialog({ required BuildContext context }) {
+    final L10n l10n = returnL10n(context: context)!;
+    final String title = l10n.logout;
+    final String content = l10n.logoutAlert;
     final builder = (innerContext) {
       return CupertinoAlertDialog(
         title: Text(title),

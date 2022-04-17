@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/l10n/l10n.dart';
 
 class AlreadyHaveAnAccount extends StatelessWidget{
 
@@ -12,6 +14,7 @@ class AlreadyHaveAnAccount extends StatelessWidget{
   }) : super(key: key);
 
   Widget build(BuildContext context) {
+    final L10n l10n = returnL10n(context: context)!;
     return Padding(
       padding:  EdgeInsets.symmetric(
         vertical: defaultPadding(context: context)
@@ -22,13 +25,13 @@ class AlreadyHaveAnAccount extends StatelessWidget{
             style: TextStyle(color: Colors.black),
             children: [
               TextSpan(
-                text: 'すでにアカウントをお持ちですか？',
+                text: l10n.alreadyHaveAccount,
                 style: TextStyle(
                   color: Theme.of(context).focusColor,
                 )
               ),
               TextSpan(
-                text: 'ログイン',
+                text: l10n.signIn,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: defaultHeaderTextSize(context: context),

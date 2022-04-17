@@ -14,6 +14,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/widgets.dart';
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -78,9 +79,10 @@ class MuteUsersModel extends ChangeNotifier {
     voids.showCupertinoDialogue(
       context: context, 
       builder: (innerContext) {
+        final L10n l10n = returnL10n(context: context)!;
         return CupertinoAlertDialog(
-          title: boldText(text: '警告'),
-          content: Text('このユーザーのミュートを解除しますか？'),
+          title: boldText(text: l10n.alert),
+          content: boldText(text: l10n.unMuteUserMsg),
           actions: [
           CupertinoDialogAction(
             child: const Text(cancelText),

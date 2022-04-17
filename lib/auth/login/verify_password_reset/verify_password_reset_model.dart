@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/l10n/l10n.dart';
 
 final verifyPasswordResetProvider = ChangeNotifierProvider((ref) => VerifyPasswordResetModel());
 
@@ -14,6 +16,7 @@ class VerifyPasswordResetModel extends ChangeNotifier {
 
   Future<void> sendPasswordResetEmail ({ required BuildContext context }) async {
     final instance = FirebaseAuth.instance;
+    final L10n l10n = returnL10n(context: context)!;
     try{
       await instance.sendPasswordResetEmail(email: email);
       Navigator.pop(context);
@@ -22,25 +25,10 @@ class VerifyPasswordResetModel extends ChangeNotifier {
       print(e.toString());
       switch(e.code) {
         case 'auth/invalid-email':
-        print('メールアドレスが有効ではありません');
-        break;
-        case 'auth/missing-android-pkg-name':
-        print('auth/missing-android-pkg-name');
-        break;
-        case 'auth/missing-continue-uri':
-        print('リクエストには、継続するURLが必要です');
-        break;
-        case 'auth/missing-ios-bundle-id':
-        print('iOS Bundle IDを提供する必要があります');
-        break;
-        case 'auth/invalid-continue-uri':
-        print('リクエストで指定された継続URLが無効です。');
-        break;
-        case 'auth/unauthorized-continue-uri':
-        print('Firebaseコンソールでドメインをホワイトリストに登録してください');
+        voids.showBasicFlutterToast(context: context, msg: l10n.authInvalidEmail);
         break;
         case 'auth/user-not-found':
-        print('メールアドレスに対応するユーザーがいないです');
+        voids.showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
         break;
       } 
     } 

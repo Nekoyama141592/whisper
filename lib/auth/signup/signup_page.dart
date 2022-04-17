@@ -7,6 +7,8 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/voids.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/circle_image.dart';
@@ -82,15 +84,13 @@ class SignupPage extends ConsumerWidget {
                                 children: [
                                   InkWell(
                                     child: Icon(Icons.image,size: defaultHeaderTextSize(context: context) * 5),
-                                    onTap: () async {
-                                      await signupModel.showImagePicker();
-                                    },
+                                    onTap: () async => await signupModel.showImagePicker()
                                   ),
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                       vertical: defaultPadding(context: context)
                                     ),
-                                    child: Text('上のアイコンをタップして写真を選択',style: TextStyle(fontWeight: FontWeight.bold),),
+                                    child: boldText(text: l10n.chooseImage)
                                   )
                                 ],
                               ),
@@ -98,44 +98,38 @@ class SignupPage extends ConsumerWidget {
                           ],
                         ),
                         RoundedInputField(
-                          hintText: "Email",
+                          hintText: l10n.email,
                           icon: Icons.person,
                           controller: emailInputController,
-                          onChanged:  (text) {
-                            signupModel.email = text;
-                          },
+                          onChanged:  (text) => signupModel.email = text,
                           onCloseButtonPressed: () {
                             emailInputController.text = '';
                             signupModel.email = '';
                           },
-                          paste: (value) {
-                            signupModel.email = value;
-                          },
+                          paste: (value) => signupModel.email = value,
                         ),
                         RoundedPasswordField(
-                          hintText: "password",
+                          hintText: l10n.password,
                           controller: passwordInputController,
-                          onChanged:  (text) {
-                            signupModel.password = text;
-                          },
-                          paste: (value) {
-                            signupModel.password = value;
-                          },
+                          onChanged:  (text) => signupModel.password = text,
+                          paste: (value) => signupModel.password = value,
                         ),
                         
                         SizedBox(height: defaultPadding(context: context) ),
                         Center(
                           child: RoundedButton(
-                            text: '次へ',
+                            text: l10n.next,
                             widthRate: 0.8,
                             fontSize: defaultHeaderTextSize(context: context),
-                            press: () {
-                              if (signupModel.croppedFile == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('写真を選択してください')));
-                              } else {
-                                routes.toAddUserInfoPage(context, signupModel);
-                              }
-                            },
+                            // press: () {
+                            //   if (signupModel.croppedFile == null) {
+                            //     showBasicFlutterToast(context: context, msg: l10n.pleaseChooseImage);
+                            //   } else {
+                            //     routes.toAddUserInfoPage(context, signupModel);
+                            //   }
+                            // },
+                            press: () => signupModel.croppedFile == null ? 
+                              showBasicFlutterToast(context: context, msg: l10n.pleaseChooseImage) : routes.toAddUserInfoPage(context, signupModel),
                             textColor: Colors.white,
                             buttonColor: kSecondaryColor,
                           ),
