@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/posts/components/details/square_post_image.dart';
 import 'package:whisper/posts/components/post_buttons/post_buttons.dart';
@@ -85,7 +86,7 @@ class PostShowPage extends ConsumerWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      vertical: height/64.0
+                      vertical: defaultPadding(context: context)
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -109,11 +110,11 @@ class PostShowPage extends ConsumerWidget {
                         children: [
                           SquarePostImage(whisperPost: whisperPost),
                           CurrentSongUserName(whisperPost: whisperPost,mainModel: mainModel, ),
-                          SizedBox(height: height/64.0),
+                          SizedBox(height: defaultPadding(context: context)),
                           CurrentSongTitle(whisperPost: whisperPost,),
-                          SizedBox(height: height/64.0),
+                          SizedBox(height: defaultPadding(context: context)),
                           PostButtons(whisperPost: whisperPost, postType: postType, toCommentsPage: toCommentsPage, toEditingMode: toEditingMode,mainModel: mainModel, editPostInfoModel: editPostInfoModel),
-                          SizedBox(height: height/64.0),
+                          SizedBox(height: defaultPadding(context: context)),
                           AudioStateDesign(
                             speedNotifier: speedNotifier,
                             speedControll: speedControll,

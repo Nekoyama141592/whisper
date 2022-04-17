@@ -30,10 +30,7 @@ class RoundedPasswordField extends ConsumerWidget {
     final model = ref.watch(roundedPasswordFieldProvider);
     return TextFieldContainer(
       child: InkWell(
-        onLongPress: () {
-          FlutterClipboard.paste()
-          .then( paste );
-        },
+        onLongPress: () async => await FlutterClipboard.paste().then( paste ),
         child: TextField(
           style: TextStyle(
             color: Colors.black,
@@ -52,7 +49,7 @@ class RoundedPasswordField extends ConsumerWidget {
               color: Colors.black,
             ),
             suffixIcon: InkWell(
-              onTap: () { model.toggleIsObscure(); }, 
+              onTap: () => model.toggleIsObscure(),
               child: Icon(model.isObscure ? Icons.visibility_off : Icons.visibility,color: Colors.black, )
             ),
             border: InputBorder.none

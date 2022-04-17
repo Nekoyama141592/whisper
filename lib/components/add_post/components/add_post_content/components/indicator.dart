@@ -1,5 +1,7 @@
 // material
 import 'package:flutter/material.dart';
+// constants
+import 'package:whisper/constants/doubles.dart';
 
 class Indicator extends StatelessWidget {
   @override
@@ -9,7 +11,7 @@ class Indicator extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context: context) ),
           child: LinearProgressIndicator(),
         )
       ],

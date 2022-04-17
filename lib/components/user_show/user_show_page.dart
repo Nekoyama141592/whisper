@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 // constants
 import 'package:whisper/constants/bools.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -34,30 +35,16 @@ class UserShowPage extends ConsumerWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: false,
-      body: isDisplayShowPage(isBlocked: userShowModel.isBlocked, mainModel: mainModel) ?
-      Column(
-        children: [
-          Text('コンテンツを表示できません',style: TextStyle(fontWeight: FontWeight.bold,fontSize: height/16.0 ),),
-          SizedBox(height: height/10.0,),
-          Text('あなたはこのユーザーをミュート、ブロック'),
-          SizedBox(height: height/10.0,),
-          Text('もしくは相手にブロックされています')
-        ],
-      )
-      : userShowModel.isLoading ?
+      body: userShowModel.isLoading ?
       Loading() : 
       Container(
         child: userShowModel.isEditing ?
         SafeArea(
           child: EditProfileScreen(
-            onCancelButtonPressed: () { userShowModel.onCancelButtonPressed(); },
-            onSaveButtonPressed: () async {
-              await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel,);
-            },
-            showImagePicker: () async { await userShowModel.showImagePicker(); },
-            onUserNameChanged: (text) {
-              userShowModel.userName = text;
-            },
+            onCancelButtonPressed: () => userShowModel.onCancelButtonPressed(),
+            onSaveButtonPressed: () async => await userShowModel.onSaveButtonPressed(context: context, updateWhisperUser: userShowModel.passiveWhisperUser, mainModel: mainModel,),
+            showImagePicker: () async => await userShowModel.showImagePicker(),
+            onUserNameChanged: (text) => userShowModel.userName = text,
             bioController: TextEditingController(text: userShowModel.passiveWhisperUser.bio ),
             userNameController: TextEditingController(text: userShowModel.passiveWhisperUser.userName ),
             croppedFile: userShowModel.croppedFile,
@@ -69,23 +56,17 @@ class UserShowPage extends ConsumerWidget {
         : GradientScreen(
           top: SizedBox.shrink(), 
           header: UserShowHeader(
-            onEditButtonPressed: () {
-              userShowModel.onEditButtonPressed();
-            },
-            onMenuPressed: () {
-              userShowModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel );
-            },
+            onEditButtonPressed: () => userShowModel.onEditButtonPressed(),
+            onMenuPressed: () =>userShowModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel ),
             passiveWhisperUser: userShowModel.passiveWhisperUser,
             backArrow: InkWell(
               child: Icon(Icons.arrow_back),
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: () => Navigator.pop(context),
             ),
             mainModel: mainModel, 
           ),
           content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
-          circular: height/16.0
+          circular: defaultPadding(context: context)
         ),
       )
     );

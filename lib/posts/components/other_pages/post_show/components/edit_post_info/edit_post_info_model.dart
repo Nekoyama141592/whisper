@@ -14,6 +14,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/voids.dart';
 import 'package:whisper/domain/post_update_log/post_update_log.dart';
+import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/main_model.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
@@ -67,6 +68,7 @@ class EditPostInfoModel extends ChangeNotifier {
   }
 
   Future<void> updatePostInfo({ required Post whisperPost , required MainModel mainModel, required BuildContext context }) async {
+    final L10n l10n = returnL10n(context: context)!;
     if (title.length > maxSearchLength ) {
       maxSearchLengthAlert(context: context, isUserName: false );
     } else if (whisperLinksNotifier.value.length > maxLinksLength) {
@@ -89,16 +91,17 @@ class EditPostInfoModel extends ChangeNotifier {
         title = '';
         whisperLinksNotifier.value = [];
       } catch(e) {
-        showBasicFlutterToast(context: context, msg: 'なんらかのエラーが発生しました');
+        showBasicFlutterToast(context: context, msg: l10n.someError);
       }
     }
   }
 
   void init({ required BuildContext context ,required List<Map<String,dynamic>> linkMaps  }) {
+    final L10n l10n = returnL10n(context: context)!;
     Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(
       whisperLinksNotifier: whisperLinksNotifier,
-      onRoundedButtonPressed: () { Navigator.pop(context); },
-      roundedButtonText: '決定',
+      onRoundedButtonPressed: () => Navigator.pop(context),
+      roundedButtonText: l10n.decide
     ) ));
     whisperLinksNotifier.value = [];
     whisperLinksNotifier.value = linkMaps.map((e) => fromMapToWhisperLink(whisperLink: e) ).toList();

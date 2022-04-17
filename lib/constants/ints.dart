@@ -8,6 +8,7 @@ const int verifyMailIntervalSeconds = 5;
 const int toastSeconds = 4;
 const int dialogueMilliSeconds = 500;
 const int updateDelayMilliSeconds = 1000;
+const int maxPostMilliSeconds = 60000;
 // Do not change
 const int nGramIndex = 2;
 const int plusOne = 1;

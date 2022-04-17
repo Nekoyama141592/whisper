@@ -30,6 +30,7 @@ class LikeButton extends ConsumerWidget {
     if (postType != PostType.postSearch) {
 
       final likeCount = whisperPost.likeCount;
+      final plusOneCount = likeCount + 1;
       return
       Container(
         child: mainModel.likePostIds.contains(whisperPost.postId) ?
@@ -44,7 +45,7 @@ class LikeButton extends ConsumerWidget {
             ),
             SizedBox(width: defaultPadding(context: context)/2.0),
             Text(
-              returnJaInt(count: likeCount),
+              returnJaInt(count: plusOneCount),
               style: TextStyle(color: Colors.red)
             )
           ],
@@ -71,15 +72,11 @@ class LikeButton extends ConsumerWidget {
             Icons.favorite,
             color: Colors.red
           ),
-          onTap: () async {
-            await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel);
-          },
+          onTap: () async => await postFuturesModel.unlike(whisperPost: whisperPost, mainModel: mainModel),
         ) 
         : InkWell(
           child: Icon(Icons.favorite),
-          onTap: () async {
-            await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel);
-          },
+          onTap: () async => await postFuturesModel.like(whisperPost: whisperPost, mainModel: mainModel)
         ),
         
       );

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/widgets.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 // import 'package:whisper/nft_owners/nft_owners_model.dart';
 
@@ -17,10 +20,10 @@ class NFTownersPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     // final nftOwnersModel = ref.watch(nftownersProvider);
-
+    final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldText(text: 'NFT所有者様方'),
+        title: whiteBoldText(text: l10n.nftOwners),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context))
@@ -49,7 +52,7 @@ class NFTownersPage extends ConsumerWidget {
       //     ),
       //   ),
       body: Center(
-        child: Text('Coming Soon!!',style: TextStyle(fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold ), ),
+        child: boldText(text: comingSoonText)
       ),
     );
   }

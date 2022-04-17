@@ -14,6 +14,7 @@ import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
+import 'package:whisper/l10n/l10n.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/one_post/one_post_model.dart';
@@ -87,16 +88,13 @@ class NotificationsModel extends ChangeNotifier {
     final thisElement = notifications.where((element) => element.id == commentNotification.notificationId ).toList().first;
     final i = notifications.indexOf(thisElement);
     notifications[i].data()![isReadMapKey] = true;
+    final L10n l10n = returnL10n(context: context)!;
     bool postExists = await onePostModel.init(postId: commentNotification.postId, postDocRef: commentNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
     if (postExists) {
       bool commentExists = await oneCommentModel.init(postCommentId: commentNotification.postCommentId, postCommentDocRef: commentNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
-      if (commentExists) {
-        routes.toOneCommentPage(context: context, mainModel: mainModel);
-      } else {
-        voids.showBasicFlutterToast(context: context, msg: 'そのコメントは削除されています');
-      }
+      commentExists ? routes.toOneCommentPage(context: context, mainModel: mainModel) : voids.showBasicFlutterToast(context: context, msg: l10n.noCommentMsg);
     } else {
-      voids.showBasicFlutterToast(context: context, msg: '元の投稿が削除されています');
+      voids.showBasicFlutterToast(context: context, msg: l10n.noPostMsg );
     }
     notifyListeners();
     await returnNotificationDocRef(uid: firebaseAuthCurrentUser()!.uid, notificationId: commentNotification.notificationId ).update(commentNotification.toJson());
@@ -108,16 +106,13 @@ class NotificationsModel extends ChangeNotifier {
     final thisElement = notifications.where((element) => element.id == replyNotification.notificationId ).toList().first;
     final i = notifications.indexOf(thisElement);
     notifications[i].data()![isReadMapKey] = true;
+    final L10n l10n = returnL10n(context: context)!;
     bool postExists = await onePostModel.init(postId: replyNotification.postId, postDocRef: replyNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
     if (postExists) {
       bool commentExists = await oneCommentModel.init(postCommentId: replyNotification.postCommentId, postCommentDocRef: replyNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
-      if (commentExists) {
-        routes.toOneCommentPage(context: context, mainModel: mainModel);
-      } else {
-        voids.showBasicFlutterToast(context: context, msg: 'そのコメントは削除されています');
-      }
+      commentExists ? routes.toOneCommentPage(context: context, mainModel: mainModel) : voids.showBasicFlutterToast(context: context, msg: l10n.noCommentMsg);
     } else {
-      voids.showBasicFlutterToast(context: context, msg: '元の投稿が削除されています');
+      voids.showBasicFlutterToast(context: context, msg: l10n.noPostMsg );
     }
     notifyListeners();
     await returnNotificationDocRef(uid: firebaseAuthCurrentUser()!.uid, notificationId: replyNotification.notificationId ).update(replyNotification.toJson());

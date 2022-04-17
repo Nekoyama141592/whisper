@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/retry_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/arrow_forward_button.dart';
 import 'package:whisper/components/add_post/components/add_post_content/components/indicator.dart';
+import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_window.dart';
 import 'package:whisper/components/add_post/components/add_post_content/components/recording_time.dart';
 // notifier
@@ -40,7 +42,7 @@ class AddPostContent extends StatelessWidget {
     );
     final size = MediaQuery.of(context).size;
     final height = size.height;
-
+    final L10n l10n = returnL10n(context: context)!;
     final Widget onePostAudioWindow = OnePostAudioWindow(
       route: null,
       progressNotifier: addPostModel.progressNotifier, 
@@ -114,18 +116,18 @@ class AddPostContent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RetryButton(addPostModel,'やりなおす'),
-                  ArrowForwardButton(addPostModel: addPostModel, mainModel: mainModel, text: '次へ')
+                  RetryButton(addPostModel: addPostModel, text: l10n.reset ),
+                  ArrowForwardButton(addPostModel: addPostModel, mainModel: mainModel, text: l10n.next )
                 ],
               )
-              : RetryButton(addPostModel,'次の投稿を行う'),
-              RecordingTime(addPostModel,value != AddPostState.recorded ? height/12.0 : height/24.0 ),
+              : RetryButton(addPostModel: addPostModel, text: l10n.nextPost),
+              RecordingTime(addPostModel: addPostModel, fontSize: value != AddPostState.recorded ? height/12.0 : height/24.0),
             
               value == AddPostState.recorded ?
               Column(
                 children: [
                   RoundedInputField(
-                    hintText: "タイトル", 
+                    hintText: l10n.title, 
                     icon: Icons.graphic_eq, 
                     controller: postTitleController, 
                     onChanged:  (text) => addPostModel.postTitleNotifier.value = text,

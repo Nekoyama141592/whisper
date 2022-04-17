@@ -5,7 +5,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/others.dart';
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/details/comments_or_replys_header.dart';

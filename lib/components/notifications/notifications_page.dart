@@ -42,9 +42,7 @@ class NotificationsPage extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.keyboard_arrow_down),
-              onPressed: (){
-                Navigator.pop(context);
-              }, 
+              onPressed: () => Navigator.pop(context)
             )
           ],
           bottom: TabBar(

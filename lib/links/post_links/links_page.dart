@@ -1,11 +1,14 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class LinksPage extends StatelessWidget {
 
@@ -22,7 +25,7 @@ class LinksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -63,7 +66,7 @@ class LinksPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('ラベル'),
+                            Text(l10n.label),
                             TextFormField(
                               decoration: InputDecoration(
                                 suffixIcon: InkWell(
@@ -72,22 +75,18 @@ class LinksPage extends StatelessWidget {
                                     voids.onDeleteLinkButtonPressed(whisperLinksNotifier: whisperLinksNotifier, i: i);
                                   },
                                 ),
-                                hintText: '例)公式サイト'
+                                hintText: l10n.linkExample
                               ),
                               controller: labelEditingController,
-                              onChanged: (text) {
-                                whisperLink.label = text;
-                              },
+                              onChanged: (text) => whisperLink.label = text
                             ),
-                            Text('URL'),
+                            Text(urlText),
                             TextFormField(
                               decoration: InputDecoration(
-                                hintText: 'https://'
+                                hintText: httpsText
                               ),
                               controller: linkEditingController,
-                              onChanged: (text) {
-                                whisperLink.url = text;
-                              },
+                              onChanged: (text) => whisperLink.url = text
                             ),
                           ],
                         ),

@@ -21,6 +21,7 @@ class TimestampDisplay extends StatelessWidget {
     final createdAtMonth = createdAtDate.month.toString();
     final createdAtDay = createdAtDate.day.toString();
     final createdAtHour = createdAtDate.hour.toString();
-    return Text(createdAtYear + "/" + createdAtMonth + "/" + createdAtDay + " " + createdAtHour + "時台に投稿");
+    final createdAtMin = createdAtDate.minute.toString();
+    return Text(createdAtYear + "/" + createdAtMonth + "/" + createdAtDay + " " + createdAtHour + ":" + createdAtMin);
   }
 }

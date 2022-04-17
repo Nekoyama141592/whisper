@@ -26,9 +26,7 @@ class CommentNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CommentNotification> commentNotifications = notificationsModel.notifications.where((element) => CommentNotification.fromJson(element.data()!).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()!) ).toList();
-    final reload = () async {
-      await notificationsModel.onReload();
-    };
+    final reload = () async => await notificationsModel.onReload();
     return notificationsModel.isLoading ?
     SizedBox.shrink()
     : Container(
@@ -39,12 +37,8 @@ class CommentNotifications extends StatelessWidget {
         enablePullDown: true,
         enablePullUp: true,
         header: WaterDropHeader(),
-        onRefresh: () async {
-          notificationsModel.onRefresh();
-        },
-        onLoading: () async {
-          notificationsModel.onLoading();
-        },
+        onRefresh: () async => await notificationsModel.onRefresh(),
+        onLoading: () async => await notificationsModel.onLoading(),
         child: ListView.builder(
           itemCount: commentNotifications.length,
           itemBuilder: (BuildContext context, int i) {

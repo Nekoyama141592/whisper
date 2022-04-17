@@ -30,10 +30,7 @@ class RoundedInputField extends StatelessWidget {
 
     return TextFieldContainer(
       child: InkWell(
-        onLongPress: () async {
-          await FlutterClipboard.paste()
-          .then( paste );
-        },
+        onLongPress: () async => await FlutterClipboard.paste().then( paste ),
         child: TextFormField(
           style: TextStyle(
             color: Colors.black,

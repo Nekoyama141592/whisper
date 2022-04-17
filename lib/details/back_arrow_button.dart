@@ -13,9 +13,7 @@ class BackArrowButton extends StatelessWidget {
         children: [
           InkWell(
             child: Icon(Icons.arrow_back),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Navigator.pop(context)
           ),
         ],
       ),

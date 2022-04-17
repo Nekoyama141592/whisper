@@ -5,9 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/components/user_show/components/other_pages/show_bio/show_bio_model.dart';
 // constants
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/details/rounded_button.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -31,10 +34,11 @@ class ShowDescriptionPage extends ConsumerWidget {
     );
     final bioController = TextEditingController(text: passiveWhisperUser.bio);
     final ShowBioModel showBioModel = ref.watch(showBioProvider);
+    final L10n l10n = returnL10n(context: context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('自己紹介'),
+        title: whiteBoldText(text: l10n.bio),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context) )
@@ -57,7 +61,7 @@ class ShowDescriptionPage extends ConsumerWidget {
               style: textStyle
             ),
             Center(
-              child: RoundedButton(text: '更新', fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, press: () async {
+              child: RoundedButton(text: l10n.update, fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, press: () async {
                 await showBioModel.updateBio(context: context, updateWhisperUser: mainModel.currentWhisperUser);
               }, textColor: Colors.white, buttonColor: Theme.of(context).highlightColor ),
             ),

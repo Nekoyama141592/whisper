@@ -1,5 +1,8 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class NoRight extends StatelessWidget {
 
@@ -9,10 +12,11 @@ class NoRight extends StatelessWidget {
   
   @override  
   Widget build(BuildContext context) {
+    final L10n l10n = returnL10n(context: context)!;
     return Column(
       children: [
         Center(
-          child: Text('You don`t have right to access this page'),
+          child: boldText(text: l10n.noRight),
         )
       ],
     );

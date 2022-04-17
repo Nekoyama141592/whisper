@@ -20,7 +20,7 @@ class CommentsOrReplysHeader extends StatelessWidget {
         children: [
           InkWell(
             child: Icon(Icons.arrow_back,size: defaultPadding(context: context) * 2,),
-            onTap: () { Navigator.pop(context); },
+            onTap: () => Navigator.pop(context),
           ),
           Expanded(child: SizedBox()),
           InkWell(

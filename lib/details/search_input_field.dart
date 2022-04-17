@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/text_field_container.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class SearchInputField extends StatelessWidget {
 
@@ -26,6 +29,7 @@ class SearchInputField extends StatelessWidget {
   @override 
   
   Widget build(BuildContext context) {
+    final L10n l10n = returnL10n(context: context)!;
     return TextFieldContainer(
       child:InkWell(
         onLongPress: onLongPress,
@@ -46,9 +50,9 @@ class SearchInputField extends StatelessWidget {
             ),
             suffixIcon: TextButton(
               onPressed: search, 
-              child: Text('検索',style: TextStyle(color: kTertiaryColor,fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2,fontWeight: FontWeight.bold),),
+              child: Text(l10n.search,style: TextStyle(color: kTertiaryColor,fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2,fontWeight: FontWeight.bold),),
             ),
-            hintText: 'Search...',
+            hintText: searchText,
             hintStyle: TextStyle(color: Colors.black.withOpacity(0.6),fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ),
             border: InputBorder.none
           ),

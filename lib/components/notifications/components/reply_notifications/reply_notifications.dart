@@ -27,9 +27,7 @@ class ReplyNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final List<ReplyNotification> replyNotifications = notificationsModel.notifications.where((element) => ReplyNotification.fromJson(element.data()!).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()!) ).toList();
-        final reload = () async {
-      await notificationsModel.onReload();
-    };
+    final reload = () async => await notificationsModel.onReload();
     return notificationsModel.isLoading ?
     SizedBox.shrink()
     : Container(
@@ -40,12 +38,8 @@ class ReplyNotifications extends StatelessWidget {
         enablePullDown: true,
         enablePullUp: true,
         header: WaterDropHeader(),
-        onRefresh: () async {
-          notificationsModel.onRefresh();
-        },
-        onLoading: () async {
-          notificationsModel.onLoading();
-        },
+        onRefresh: () async => await notificationsModel.onRefresh(),
+        onLoading: () async => await notificationsModel.onLoading(),
         child: ListView.builder(
           itemCount: replyNotifications.length,
           itemBuilder: (BuildContext context, int i) {

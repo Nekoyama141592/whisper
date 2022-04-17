@@ -25,6 +25,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/widgets.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
@@ -32,6 +33,7 @@ import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/user_update_log/user_update_log.dart';
 import 'package:whisper/domain/user_meta_update_log/user_meta_update_log.dart';
+import 'package:whisper/l10n/l10n.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -45,8 +47,9 @@ import 'package:whisper/posts/components/other_pages/post_show/components/edit_p
  
 Future<void> signOut({required BuildContext context, required BuildContext innerContext }) async {
   await FirebaseAuth.instance.signOut();
+  final L10n l10n = returnL10n(context: context)!;
   Navigator.pop(innerContext);
-  routes.toIsFinishedPage(context: context, title: 'ログアウトしました', text: 'お疲れ様でした');
+  routes.toIsFinishedPage(context: context, title: l10n.logout, text: l10n.thanksMsg );
 }
 
 void showCupertinoDialogue({required BuildContext context, required Widget Function(BuildContext) builder }) {
@@ -393,12 +396,13 @@ Future<void> putImage({ required Reference imageRef,required File file }) async 
 Future<void> putPost({ required Reference postRef,required File postFile }) async => await postRef.putFile(postFile,postMetadata);
 
 Future<void> showLinkDialogue({ required BuildContext context, required String link }) async {
+  final L10n l10n = returnL10n(context: context)!;
   if ( await canLaunch(link)) {
     showCupertinoDialog(
       context: context, 
       builder: (innerContext) {
         return CupertinoAlertDialog(
-          title: Text('ページ遷移'),
+          title: boldText(text: l10n.pageTransition),
           content: RichText(
             text: TextSpan(
               children: [
@@ -409,18 +413,12 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
                     fontWeight: FontWeight.bold
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () async {
+                    final L10n l10n = returnL10n(context: context)!;
                     await FlutterClipboard.copy(link).then((_) {
-                      showBasicFlutterToast(context: context, msg: 'リンクをコピーしました');
+                      showBasicFlutterToast(context: context, msg: l10n.linkCopied);
                     });
                   },
                 ),
-                TextSpan(
-                  text: 'に移動します。',
-                  style: TextStyle(
-                    color: Theme.of(context).focusColor,
-                    fontWeight: FontWeight.bold,
-                  )
-                )
               ]
             )
           ),
@@ -430,7 +428,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
               onPressed: () => Navigator.pop(innerContext)
             ),
             CupertinoDialogAction(
-              child: const Text('実行'),
+              child: const Text(okText),
               isDestructiveAction: true,
               onPressed: () async {
                 Navigator.pop(innerContext);
@@ -443,7 +441,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
       }
     );
   } else {
-    showBasicFlutterToast(context: context, msg: 'このURLは無効です' );
+    showBasicFlutterToast(context: context, msg: l10n.invalidLink );
   }
 }
 
@@ -495,11 +493,8 @@ void alertMaxBioLength({ required BuildContext context, }) => showBasicFlutterTo
 void alertMaxCommentOrReplyLength({ required BuildContext context }) => showBasicFlutterToast(context: context, msg: maxCommentOrReplyLength.toString() + '以内にしてください');
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    showBasicFlutterToast(context: context, msg: '無効なURLです' );
-  }
+  final L10n l10n = returnL10n(context: context)!;
+  await canLaunch(url) ? await launch(url) : showBasicFlutterToast(context: context, msg: l10n.invalidLink );
 }
 
 Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {

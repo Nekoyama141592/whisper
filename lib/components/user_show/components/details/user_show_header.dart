@@ -2,14 +2,12 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/follow_or_edit_button.dart';
 import 'package:whisper/components/user_show/components/details/link_button.dart';
-// constants
-import 'package:whisper/constants/routes.dart' as routes;
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 // other_pages
@@ -38,7 +36,6 @@ class UserShowHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref ) {
 
     final followerCount = passiveWhisperUser.followerCount;
-    final PostSearchModel postSearchModel = ref.watch(postSearchProvider);
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -116,7 +113,7 @@ class UserShowHeader extends ConsumerWidget {
                 ),
                 SizedBox(width: defaultPadding(context: context),),
                 Text(
-                  followerCount >= 10000 ? (followerCount/1000.floor()/10).toString() + '万follower' : followerCount.toString() + 'follower',
+                  returnJaInt(count: followerCount),
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

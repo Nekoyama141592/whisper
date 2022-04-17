@@ -30,6 +30,7 @@ import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dar
 import 'package:whisper/details/report_contents_list_view.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/user_mute/user_mute.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model 
 import 'package:whisper/main_model.dart';
 
@@ -66,6 +67,7 @@ class PostFutures extends ChangeNotifier {
 
 
   Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkPostLabels }) async {
+    final L10n l10n = returnL10n(context: context)!;
     final Widget content = Container(
       height: flashDialogueHeight(context: context),
       child: ValueListenableBuilder<String>(
@@ -89,7 +91,7 @@ class PostFutures extends ChangeNotifier {
     return TextButton(
       onPressed: () async {
         if (mainModel.bookmarkPostCategoryTokenIdNotifier.value.isEmpty) {
-          await voids.showBasicFlutterToast(context: context, msg: 'カテゴリーを選択して下さい');
+          await voids.showBasicFlutterToast(context: context, msg: l10n.chooseCategory );
         } else {
           // process UI
           final Timestamp now = Timestamp.now();
@@ -109,7 +111,7 @@ class PostFutures extends ChangeNotifier {
       child: PositiveText(text: decideModalJaText)
     );
   };
-  voids.showFlashDialogue(context: context, content: content, titleText: 'どのリストにブックマークしますか？',positiveActionBuilder: positiveActionBuilder);
+  voids.showFlashDialogue(context: context, content: content, titleText: l10n.whichCategory,positiveActionBuilder: positiveActionBuilder);
   }
 
   Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
@@ -192,8 +194,9 @@ class PostFutures extends ChangeNotifier {
 
   Future<void> deletePost({ required BuildContext innerContext, required AudioPlayer audioPlayer,required Post whisperPost,required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
     Navigator.pop(innerContext);
+    final L10n l10n = returnL10n(context: innerContext)!;
     if (mainModel.currentUser!.uid != whisperPost.uid) {
-      voids.showBasicFlutterToast(context: innerContext, msg: 'あなたにはその権限がありません');
+      voids.showBasicFlutterToast(context: innerContext, msg: l10n.noRight);
     } else {
       // process UI
       final x = posts[i];
@@ -211,8 +214,9 @@ class PostFutures extends ChangeNotifier {
   }
 
   void onPostDeleteButtonPressed({ required BuildContext context, required AudioPlayer audioPlayer,required Post whisperPost,required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) {
-    final title = '投稿削除';
-    final content = '一度削除したら、復元はできません。本当に削除しますか？';
+    final L10n l10n = returnL10n(context: context)!;
+    final title = l10n.deletePost;
+    final content = l10n.deletePostAlert;
     final builder = (innerContext) {
       return CupertinoAlertDialog(
         title: Text(title),

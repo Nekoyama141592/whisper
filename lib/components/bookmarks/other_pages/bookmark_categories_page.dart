@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flash/flash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/components/bookmarks/bookmarks_page.dart';
+import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/strings.dart';
 // constants
 import 'package:whisper/constants/voids.dart' as voids;
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/details/gradient_screen.dart';
+import 'package:whisper/details/positive_text.dart';
 // domain
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/bookmarks/bookmarks_model.dart';
@@ -28,7 +33,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
 
     final bookmarksModel = ref.watch(bookmarksProvider);
     final height = MediaQuery.of(context).size.height;
-
+    final L10n l10n = returnL10n(context: context)!;
     return bookmarksModel.isBookmarkMode ?
     BookmarksPage(mainModel: mainModel, bookmarksModel: bookmarksModel) : 
     Scaffold(
@@ -39,16 +44,14 @@ class BookmarkCategoriesPage extends ConsumerWidget {
           final TextEditingController textEditingController = TextEditingController(text: bookmarksModel.newLabel);
           final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
             return TextButton(
-              onPressed: () async {
-                await bookmarksModel.addBookmarkPostLabel(mainModel: mainModel, context: context, flashController: controller);
-              }, 
-              child: Text('OK',style: textStyle(context: context),)
+              onPressed: () async=> await bookmarksModel.addBookmarkPostLabel(mainModel: mainModel, context: context, flashController: controller),
+              child: PositiveText(text: okText)
             );
           };
           final Widget content = TextFormField(
             controller: textEditingController,
             decoration: InputDecoration(
-              hintText: '例)面白い人',
+              hintText: l10n.categoryExample,
               suffixIcon: InkWell(
                 child: Icon(Icons.close),
                 onTap: () {
@@ -57,25 +60,16 @@ class BookmarkCategoriesPage extends ConsumerWidget {
                 },
               )
             ),
-            onChanged: (text) {
-              bookmarksModel.newLabel = text;
-            },
+            onChanged: (text) => bookmarksModel.newLabel = text,
           );
-          voids.showFlashDialogue(context: context, content: content, titleText: '新規追加', positiveActionBuilder: positiveActionBuilder);
+          voids.showFlashDialogue(context: context, content: content, titleText: l10n.addCategory, positiveActionBuilder: positiveActionBuilder);
         },
       ),
       body: GradientScreen(
           top: SizedBox.shrink(), 
           header: Padding(
-          padding: EdgeInsets.all(height/32.0),
-          child: Text(
-            'リストを選択',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: height/32.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          padding: EdgeInsets.all(defaultPadding(context: context)),
+          child: whiteBoldText(text: l10n.chooseCategory ),
         ),
         circular: height/32.0,
         content: ListView.builder(
@@ -90,16 +84,14 @@ class BookmarkCategoriesPage extends ConsumerWidget {
                   final TextEditingController labelEditingController = TextEditingController(text: bookmarkLabel.categoryName);
                   final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
                     return TextButton(
-                      onPressed: () async {
-                        await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostCategory: bookmarkLabel, userMeta: mainModel.userMeta );
-                      }, 
-                      child: Text('OK',style: textStyle(context: context),)
+                      onPressed: () async => await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostCategory: bookmarkLabel, userMeta: mainModel.userMeta ),
+                      child: PositiveText(text: okText)
                     );
                   };
                   final Widget content = TextFormField(
                     controller: labelEditingController,
                     decoration: InputDecoration(
-                      hintText: '例)面白い人',
+                      hintText: l10n.categoryExample,
                       suffixIcon: InkWell(
                         child: Icon(Icons.close),
                         onTap: () {
@@ -112,13 +104,11 @@ class BookmarkCategoriesPage extends ConsumerWidget {
                       bookmarksModel.editLabel = text;
                     },
                   );
-                  voids.showFlashDialogue(context: context, content: content, titleText: 'ラベルを編集', positiveActionBuilder: positiveActionBuilder);
+                  voids.showFlashDialogue(context: context, content: content, titleText: l10n.editCategory, positiveActionBuilder: positiveActionBuilder);
                 },
               ),
-              title: Text(bookmarkLabel.categoryName,style: TextStyle(fontSize: height/32.0,fontWeight: FontWeight.bold ),),
-              onTap: () async {
-                await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel);
-              },
+              title: boldText(text: bookmarkLabel.categoryName),
+              onTap: () async => await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel)
             );
           }
         ) 

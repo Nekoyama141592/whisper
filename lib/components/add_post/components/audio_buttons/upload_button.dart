@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/l10n/l10n.dart';
 //model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
@@ -20,9 +22,10 @@ class UploadButton extends StatelessWidget {
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context) {
+    final L10n l10n = returnL10n(context: context)!;
     return 
     AudioButton(
-      description:  '公開する',
+      description: l10n.upload,
       icon: Icon(
         Icons.upload_file,
         color: Theme.of(context).highlightColor,

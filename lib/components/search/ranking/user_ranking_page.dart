@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 // package
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/details/user_card.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/search/ranking/user_ranking_model.dart';
@@ -27,6 +30,7 @@ class UserRankingPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, WidgetRef ref) {
     final userRankingModel = ref.watch(userRankingProvider);
+    final L10n l10n = returnL10n(context: context)!;
     return GradientScreen(
         top: SizedBox.shrink(), 
         header: Padding(
@@ -40,7 +44,7 @@ class UserRankingPage extends ConsumerWidget {
             ),
           ),
         ),
-      circular: 35.0,
+      circular: defaultPadding(context: context),
       content: userRankingModel.isLoading ?
       SizedBox.shrink()
       : SmartRefresher(
@@ -60,7 +64,7 @@ class UserRankingPage extends ConsumerWidget {
               final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
               return mainModel.muteUids.contains(whisperUser.uid) || mainModel.blockUids.contains(whisperUser.uid) ?
               ListTile(
-                title: Text('非表示'),
+                title: boldText(text: l10n.hidden),
                 leading: Icon(Icons.block),
               )
               : UserCard(result: userDoc.data()!, mainModel: mainModel);

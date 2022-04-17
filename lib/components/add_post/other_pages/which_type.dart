@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
+import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/voids.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/gradient_screen.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
@@ -55,6 +60,7 @@ class Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final L10n l10n = returnL10n(context: context)!;
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Padding(
@@ -74,35 +80,21 @@ class Content extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   vertical: defaultPadding(context: context),
                 ),
-                child: Text(
-                  'Which type?',
-                  style: TextStyle(
-                    fontSize: defaultHeaderTextSize(context: context),
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
+                child: boldText(text: whichTypeText),
               ),
               RoundedButton(
-                text: '広告の投稿',
+                text: l10n.postingOfAdvertisements,
                 widthRate: 0.8,
                 fontSize: defaultHeaderTextSize(context: context),
-                press: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('実装予定です！')
-                    )
-                  );
-                }, 
+                press: () => showBasicFlutterToast(context: context, msg: l10n.scheduledToBeMounted ),
                 textColor: Colors.black, 
                 buttonColor: Theme.of(context).colorScheme.secondary
               ),
               RoundedButton(
-                text: '普通の投稿', 
+                text: l10n.commonPost,
                 widthRate: 0.8,
                 fontSize: defaultHeaderTextSize(context: context),
-                press: () {
-                  routes.toAddPostPage(context: context, addPostModel: addPostModel, mainModel: mainModel);
-                }, 
+                press: () => routes.toAddPostPage(context: context, addPostModel: addPostModel, mainModel: mainModel),
                 textColor: Colors.white, 
                 buttonColor: Theme.of(context).highlightColor
               ),

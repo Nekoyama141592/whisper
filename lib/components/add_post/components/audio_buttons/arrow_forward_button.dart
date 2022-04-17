@@ -33,13 +33,8 @@ class ArrowForwardButton extends StatelessWidget {
         color: Theme.of(context).highlightColor,
         size: addPostIconSize(context: context),
       ),
-      press: (){
-        if (addPostModel.postTitleNotifier.value.isEmpty) {
-          showBasicFlutterToast(context: context, msg:pleaseInputTitleMsg );
-        } else {
-          routes.toPickPostImagePage(context: context, addPostModel: addPostModel, mainModel: mainModel);
-        }
-      }
+      press: () =>  addPostModel.postTitleNotifier.value.isEmpty ? 
+        showBasicFlutterToast(context: context, msg:pleaseInputTitleMsg ) : routes.toPickPostImagePage(context: context, addPostModel: addPostModel, mainModel: mainModel),
     );
   }
 }

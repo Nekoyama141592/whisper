@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
+import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/components/user_show/components/details/user_show_header.dart';
@@ -31,16 +32,10 @@ class MyProfilePage extends ConsumerWidget {
     return SafeArea(
       child: myProfileModel.isEditing ?
       EditProfileScreen(
-        onCancelButtonPressed: () { myProfileModel.onCancelButtonPressed(); },
-        onSaveButtonPressed: () async {
-          await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, );
-        }, 
-        showImagePicker: () async {
-          await myProfileModel.showImagePicker();
-        },
-        onUserNameChanged: (text) {
-          myProfileModel.userName = text;
-        }, 
+        onCancelButtonPressed: () => myProfileModel.onCancelButtonPressed(),
+        onSaveButtonPressed: () async => await myProfileModel.onSaveButtonPressed(context: context, updateWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, ),
+        showImagePicker: () async => await myProfileModel.showImagePicker(),
+        onUserNameChanged: (text) => myProfileModel.userName = text,
         bioController: TextEditingController(text:  currentWhisperUser.bio),
         userNameController: TextEditingController(text: currentWhisperUser.userName),
         croppedFile: myProfileModel.croppedFile,
@@ -51,15 +46,13 @@ class MyProfilePage extends ConsumerWidget {
       : GradientScreen(
         top: SizedBox.shrink(), 
         header: UserShowHeader(
-          onEditButtonPressed: () {
-            myProfileModel.onEditButtonPressed();
-          },
+          onEditButtonPressed: () => myProfileModel.onEditButtonPressed(),
           onMenuPressed: () { myProfileModel.onMenuPressed(context: context, mainModel: mainModel, postSearchModel: postSearchModel); },
           passiveWhisperUser: mainModel.currentWhisperUser,
           backArrow: SizedBox.shrink(), 
           mainModel: mainModel, 
         ), 
-        circular: MediaQuery.of(context).size.height/16.0,
+        circular: defaultPadding(context: context),
         content: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
       )
     );

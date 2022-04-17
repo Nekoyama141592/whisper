@@ -6,8 +6,10 @@ import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/voids.dart';
 // domain
 import 'package:whisper/domain/nft_owner/nft_owner.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class NFTownerCard extends StatelessWidget {
 
@@ -26,6 +28,7 @@ class NFTownerCard extends StatelessWidget {
       fontSize: text2Size,
       fontWeight: FontWeight.bold
     );
+    final L10n l10n = returnL10n(context: context)!;
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -61,11 +64,7 @@ class NFTownerCard extends StatelessWidget {
                   child: Icon(Icons.link,size: text2Size* 1.5,),
                   onTap: () async {
                     final String link = nftOwner.link;
-                    if ( await canLaunch(link) ) {
-                      await launch(link);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('このURLは無効です')));
-                    }
+                    await canLaunch(link) ? await launch(link) : showBasicFlutterToast(context: context, msg: l10n.invalidLink );
                   },
                 )
               ],

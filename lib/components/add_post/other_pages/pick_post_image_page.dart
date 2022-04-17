@@ -1,11 +1,13 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/comments_state_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/add_link_button.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/add_post/add_post_model.dart';
@@ -24,12 +26,14 @@ class PickPostImagePage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final length = size.width * 0.6;
+    final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text('image'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(16.0)
+            bottom: Radius.circular(defaultPadding(context: context))
           )
         ),
       ),
@@ -42,8 +46,8 @@ class PickPostImagePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: size.width * 0.6,
-                    width: size.width * 0.6,
+                    height: length,
+                    width: length,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Theme.of(context).highlightColor
@@ -55,12 +59,10 @@ class PickPostImagePage extends StatelessWidget {
                     height: size.height * 0.05,
                   ),
                   RoundedButton(
-                    text: value ? '写真を変更する' :'写真を追加(任意)', 
+                    text: value ? l10n.editImage : l10n.addImage, 
                     widthRate: 0.95,
                     fontSize: defaultHeaderTextSize(context: context),
-                    press: () async {
-                      await addPostModel.showImagePicker();
-                    }, 
+                    press: () async => await addPostModel.showImagePicker(),
                     textColor: Colors.white, 
                     buttonColor: value ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondary
                   ),

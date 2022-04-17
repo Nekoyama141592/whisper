@@ -12,6 +12,7 @@ import 'package:whisper/constants/voids.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/user_update_log_no_batch/user_update_log_no_batch.dart';
+import 'package:whisper/l10n/l10n.dart';
 // pages
 import 'package:whisper/links/post_links/links_page.dart';
 
@@ -33,9 +34,10 @@ class UserLinksModel extends ChangeNotifier {
       alertMaxLinksLength(context: context);
     } else {
       final result = whisperLinksNotifier.value.map((e) => e.toJson()).toList();
+      final L10n l10n = returnL10n(context: context)!;
       // (updateWhisperUser.links != result) always return true
       updateWhisperUser.links = result;
-      showBasicFlutterToast(context: context, msg: '更新しました!!!');
+      showBasicFlutterToast(context: context, msg: l10n.updatedMsg);
       await Future.delayed(Duration(milliseconds: updateDelayMilliSeconds ));
       Navigator.pop(context);
       final UserUpdateLogNoBatch userUpdateLogNoBatch = UserUpdateLogNoBatch(bio: updateWhisperUser.bio,dmState: updateWhisperUser.dmState, isKeyAccount: updateWhisperUser.isKeyAccount, links: updateWhisperUser.links, updatedAt: Timestamp.now(), uid: updateWhisperUser.uid,walletAddresses: updateWhisperUser.walletAddresses);

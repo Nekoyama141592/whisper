@@ -1,7 +1,11 @@
 // material
 import 'package:flutter/material.dart';
+import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';
+import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/main_model.dart';
 // model
 import 'add_post_model.dart';
@@ -22,6 +26,7 @@ class AddPostPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.height;
+    final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       body: GradientScreen(
         top: Row(
@@ -31,25 +36,17 @@ class AddPostPage extends StatelessWidget {
               child: IconButton(
                 color: Theme.of(context).focusColor,
                 icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                }, 
+                onPressed: () => Navigator.pop(context)
               ),
             ),
           ],
         ),
         header: Padding(
           padding: EdgeInsets.all(height/75.0),
-          child: Text(
-            '投稿する',
-            style: TextStyle(
-              fontSize: height/25.0,
-              fontWeight: FontWeight.bold
-            )
-          ),
+          child: boldText(text: l10n.makePost),
         ),
         content: AddPostContent(addPostModel: addPostModel, mainModel: mainModel),
-        circular: height/32.0,
+        circular: defaultPadding(context: context),
       ),
     );
   }

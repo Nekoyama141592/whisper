@@ -112,7 +112,7 @@ class AddPostModel extends ChangeNotifier {
 
   void seek(Duration position) => audioPlayer.seek(position);
 
-  Future startRecording({ required BuildContext context, required MainModel mainModel }) async {
+  Future<void> startRecording({ required BuildContext context, required MainModel mainModel }) async {
     audioRecorder = Record();
     bool hasRecordingPermission = await audioRecorder.hasPermission();
     if (hasRecordingPermission == true) {
@@ -241,14 +241,9 @@ class AddPostModel extends ChangeNotifier {
       ).toJson();
       // process UI
       mainModel.currentWhisperUser.postCount += plusOne;
-      try {
-        // await FirebaseFirestore.instance.collection(postsFieldKey).doc(postId).set(postMap);
-        await returnPostDocRef(postCreatorUid: currentWhisperUser.uid, postId: postId).set(postMap);
-        addPostStateNotifier.value = AddPostState.uploaded;
-        await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
-      } catch(e) {
-        print(e.toString());
-      }
+      await returnPostDocRef(postCreatorUid: currentWhisperUser.uid, postId: postId).set(postMap);
+      addPostStateNotifier.value = AddPostState.uploaded;
+      await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
   }
 
   void showCommentStatePopUp({ required BuildContext context}) {

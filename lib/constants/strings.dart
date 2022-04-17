@@ -211,6 +211,13 @@ const String configIdString = 'config';
 const String reportTitle = '問題を報告してください';
 // text
 const String okText = 'OK';
+const String loadingText = 'Loading';
+const String nothingText = 'Nothing';
+const String searchText = 'Search...';
+const String urlText = 'URL';
+const String httpsText = 'https://';
+const String comingSoonText = 'Coming Soon!';
+const String whichTypeText = 'Which Type?';
 const String decideModalJaText = '決定';
 const String sendModalJaText = '送信';
 const String cancelText = 'キャンセル';

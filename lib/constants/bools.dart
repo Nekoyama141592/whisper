@@ -12,20 +12,12 @@ import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-// model
-import 'package:whisper/main_model.dart';
 
 bool isDisplayUidFromMap({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid,}) => ( !mutesUids.contains(uid) && !blocksUids.contains(uid) );
 
 bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> blocksUids, required String uid, required List<dynamic> mutesPostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
   final Post post = fromMapToPost(postMap: doc.data()!);
   return isDisplayUidFromMap(mutesUids: mutesUids, blocksUids: blocksUids, uid: uid,) && !mutesPostIds.contains(post.postId);
-}
-
-bool isDisplayShowPage({ required bool isBlocked, required MainModel mainModel }) {
-  // use on display user show page
-  final String myUid = mainModel.currentWhisperUser.uid;
-  return ( !mainModel.muteUids.contains(myUid) && mainModel.blockUids.contains(myUid)  );
 }
 
 bool newNotificationExists({ required List<CommentNotification> commentNotifications,required List<ReplyNotification> replyNotifications }) {

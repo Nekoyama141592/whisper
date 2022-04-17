@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_svg/svg.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/widgets.dart';
 
 class Loading extends StatelessWidget {
 
@@ -27,7 +29,7 @@ class Loading extends StatelessWidget {
           Center(
             child: Padding(
               padding: EdgeInsets.all(defaultPadding(context: context)),
-              child: Text('Loading',style: TextStyle(fontSize: defaultHeaderTextSize(context: context)),),
+              child: boldText(text: loadingText)
             ),
           ),
           Center(child: CircularProgressIndicator())

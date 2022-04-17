@@ -22,9 +22,7 @@ class LinkButton extends StatelessWidget {
     final List<WhisperLink> whisperLinks = passiveWhisperUser.links.map((element) => fromMapToWhisperLink(whisperLink: element) ).toList();
 
     return InkWell(
-      onTap: () {
-       voids.showLinkCupertinoModalPopup(context: context, whisperLinks: whisperLinks);
-      },
+      onTap: () => voids.showLinkCupertinoModalPopup(context: context, whisperLinks: whisperLinks),
       child: Icon(Icons.link),
     );
      

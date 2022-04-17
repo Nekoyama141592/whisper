@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // components
 import 'package:whisper/components/search/constants/tab_bar_elements.dart';
+import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/details/whisper_drawer.dart';
 // pages
 import 'package:whisper/components/search/user_search/user_search_page.dart';
@@ -27,7 +28,7 @@ class SearchPage extends StatelessWidget {
       length: tabBarElements.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Search'),
+          title: whiteBoldText(text: 'Search'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(30)

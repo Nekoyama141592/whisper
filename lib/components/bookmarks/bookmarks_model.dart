@@ -18,6 +18,7 @@ import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
+import 'package:whisper/l10n/l10n.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -147,7 +148,8 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostCategory bookmarkPostCategory,required UserMeta userMeta}) async {
     if (editLabel.isEmpty) {
-      voids.showBasicFlutterToast(context: context, msg: '空欄は不適です');
+      final L10n l10n = returnL10n(context: context)!;
+      voids.showBasicFlutterToast(context: context, msg: l10n.emptyIsInvalid);
     } else if (editLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
@@ -164,7 +166,8 @@ class BookmarksModel extends ChangeNotifier {
 
   Future<void> addBookmarkPostLabel({ required MainModel mainModel, required BuildContext context,required FlashController flashController, }) async {
     if (newLabel.isEmpty) {
-      voids.showBasicFlutterToast(context: context, msg: '空欄は不適です');
+      final L10n l10n = returnL10n(context: context)!;
+      voids.showBasicFlutterToast(context: context, msg: l10n.emptyIsInvalid);
     } else if (newLabel.length > maxSearchLength) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {

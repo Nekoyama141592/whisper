@@ -22,9 +22,7 @@ class RedirectToUrlButton extends StatelessWidget {
     final List<WhisperLink> whisperLinks = whisperPost.links.map((element) => fromMapToWhisperLink(whisperLink: element) ).toList();
 
     return InkWell(
-      onTap: () async {
-        voids.showLinkCupertinoModalPopup(context: context, whisperLinks: whisperLinks);
-      },
+      onTap: () async => voids.showLinkCupertinoModalPopup(context: context, whisperLinks: whisperLinks),
       child: Icon(Icons.link),
     );
      

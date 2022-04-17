@@ -42,13 +42,13 @@ class VerifyPage extends ConsumerWidget {
               SizedBox(height: defaultPadding(context: context)),
               Text(
                 userEmail + 'にメールを送信しました。ご確認下さい。',
-                style: textStyle
+                style: textStyle(context: context)
               ),
               SizedBox(height: defaultPadding(context: context)),
-              boldText(text: l10n.startWhisper),
+              boldText(text: l10n.emailVerified),
               SizedBox(height: defaultPadding(context: context)),
               RoundedButton(
-                text: '始める', 
+                text: l10n.start, 
                 widthRate: 0.95, 
                 fontSize: defaultHeaderTextSize(context: context),
                 press: () async => await verifyModel.onButtonPressed(context: context),

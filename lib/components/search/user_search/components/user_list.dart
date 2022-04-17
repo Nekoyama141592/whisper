@@ -42,14 +42,10 @@ class UserList extends StatelessWidget {
             userSearchModel.searchTerm = '';
             searchController.text = '';
           },
-          onLongPress: () async { await FlutterClipboard.paste().then((value) { userSearchModel.searchTerm = value; }); },
-          onChanged: (text) {
-            userSearchModel.searchTerm = text;
-          },
+          onLongPress: () async => await FlutterClipboard.paste().then((value) { userSearchModel.searchTerm = value; }),
+          onChanged: (text) => userSearchModel.searchTerm = text,
           controller: searchController, 
-          search: () async {
-            await userSearchModel.operation(context: context, mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids);
-          }
+          search: () async => await userSearchModel.operation(context: context, mutesUids: mainModel.muteUids, blocksUids: mainModel.blockUids)
         ),
         Expanded(
           child: ListView.builder(

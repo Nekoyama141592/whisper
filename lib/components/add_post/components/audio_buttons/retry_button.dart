@@ -9,7 +9,7 @@ import 'package:whisper/components/add_post/add_post_model.dart';
 
 class RetryButton extends StatelessWidget {
 
-  RetryButton(this.addPostModel,this.text);
+  RetryButton({ Key? key,required this.addPostModel, required this.text}) : super(key: key);
   final AddPostModel addPostModel;
   final String text;
   @override  
