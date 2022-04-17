@@ -25,6 +25,8 @@ import 'package:whisper/components/my_profile/my_profile_page.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
+// locaization
+import 'package:whisper/l10n/l10n.dart';
 
 Future<void> main() async {
   // // await dotenv.load(fileName: '.env',);
@@ -52,6 +54,8 @@ class MyApp extends ConsumerWidget {
     final themeModel = ref.watch(themeProvider);
     return MaterialApp(
       title: 'Whisper',
+      localizationsDelegates: L10n.localizationsDelegates,
+      supportedLocales: L10n.supportedLocales,
       debugShowCheckedModeBanner: false,
       theme: themeModel.isDarkTheme ? darkThemeData(context) : lightThemeData(context),
       home: currentUser == null ? 
