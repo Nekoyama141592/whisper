@@ -1,0 +1,3 @@
+NSCameraUsageDescription = "Use images captured by the camera as icons";
+NSPhotoLibraryUsageDescription = "Use image as icon";
+NSMicrophoneUsageDescription = "Recorded audio will be used for the post";

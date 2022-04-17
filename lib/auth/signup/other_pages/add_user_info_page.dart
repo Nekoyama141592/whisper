@@ -43,16 +43,12 @@ class AddUserInfoPage extends StatelessWidget {
               hintText: 'ニックネーム', 
               icon: Icons.person, 
               controller: userNameController, 
-              onChanged: (text) {
-                signupModel.userName = text;
-              },
+              onChanged: (text) => signupModel.userName = text,
               onCloseButtonPressed: () {
                 userNameController.text = '';
                 signupModel.userName = '';
               },
-              paste: (value) {
-                signupModel.userName = value;
-              },
+              paste: (value) => signupModel.userName = value,
             ),
             Padding(
               padding: EdgeInsets.all(defaultPadding(context: context) ),
@@ -68,9 +64,7 @@ class AddUserInfoPage extends StatelessWidget {
                             text: '性別', 
                             widthRate: buttonWidthRate, 
                             fontSize: defaultHeaderTextSize(context: context),
-                            press: () {
-                              signupModel.showGenderCupertinoActionSheet(context: context);
-                            }, 
+                            press: () => signupModel.showGenderCupertinoActionSheet(context: context),
                             textColor: Colors.white, 
                             buttonColor: Theme.of(context).primaryColor
                           ),
@@ -92,15 +86,12 @@ class AddUserInfoPage extends StatelessWidget {
                     return InkWell(
                       child: isChecked ?
                       Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
-                      onTap: () {
-                        signupModel.toggleIsChecked();
-                      },
+                      onTap: () => signupModel.toggleIsChecked()
                     );
                   }
                 ),
-                TextButton(onPressed: () {
-                  voids.defaultLaungh(context: context, url: tosURL );
-                }, child: Text(
+                TextButton(onPressed: () => voids.defaultLaungh(context: context, url: tosURL )
+                , child: Text(
                   '利用規約',
                   style: TextStyle(
                     color: Theme.of(context).highlightColor,
@@ -108,9 +99,8 @@ class AddUserInfoPage extends StatelessWidget {
                   ),
                 )),
                 Text('と'),
-                TextButton(onPressed: () {
-                  voids.defaultLaungh(context: context, url: privacyURL );
-                }, child: Text(
+                TextButton(onPressed: () => voids.defaultLaungh(context: context, url: privacyURL )
+                , child: Text(
                   'プライバシーポリシー',
                   style: TextStyle(
                     color: Theme.of(context).highlightColor,
@@ -126,7 +116,7 @@ class AddUserInfoPage extends StatelessWidget {
               fontSize: defaultHeaderTextSize(context: context),
               press: () async {
                 if (signupModel.userName.isEmpty || signupModel.gender.isEmpty || !signupModel.isCheckedNotifier.value) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('入力が完了していません。ご確認ください。')));
+                  voids.showBasicFlutterToast(context: context, msg: '入力が完了していません。ご確認ください。');
                 } else {
                   await signupModel.signup(context);
                 }

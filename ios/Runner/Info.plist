@@ -35,11 +35,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>カメラで撮影した画像をアイコンで使用します</string>
+	<string>Use images captured by the camera as icons</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>録音した音声は投稿に使用します</string>
+	<string>Recorded audio will be used for the post</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>画像をアイコンで使用します</string>
+	<string>Use image as icon</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

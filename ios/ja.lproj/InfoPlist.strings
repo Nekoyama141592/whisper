@@ -1,0 +1,3 @@
+NSCameraUsageDescription = "カメラで撮影した画像をアイコンで使用します";
+NSPhotoLibraryUsageDescription = "画像をアイコンで使用します";
+NSMicrophoneUsageDescription = "録音した音声は投稿に使用します";

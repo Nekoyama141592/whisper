@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
@@ -27,7 +28,7 @@ class SignupPage extends ConsumerWidget {
     final signupModel = ref.watch(signupProvider);
     final emailInputController = TextEditingController(text: signupModel.email);
     final passwordInputController = TextEditingController(text: signupModel.password);
-
+    final l10n = returnL10n(context: context);
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: SafeArea(
@@ -54,7 +55,7 @@ class SignupPage extends ConsumerWidget {
                   horizontal: defaultPadding(context: context),
                   vertical: defaultPadding(context: context)
                 ),
-                child: Text("新規登録", style: TextStyle(color: Colors.white, fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold)),
+                child: Text(l10n!.signUp, style: TextStyle(color: Colors.white, fontSize: defaultHeaderTextSize(context: context),fontWeight: FontWeight.bold)),
               ),
               SizedBox(height: defaultPadding(context: context) ),
               Expanded(
