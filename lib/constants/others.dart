@@ -26,6 +26,7 @@ import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -207,3 +208,5 @@ Query<Map<String,dynamic>> returnUserSearchQuery({ required List<String> searchW
   });
   return query;
 }
+// localize
+L10n? returnL10n({ required BuildContext context }) => L10n.of(context);

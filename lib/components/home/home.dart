@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/components/home/constants/tab_bar_elements.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/notification_icon.dart';
 import 'package:whisper/details/whisper_drawer.dart';
@@ -28,12 +29,12 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref ) {
-
+    final l10n = returnL10n(context: context);
     return DefaultTabController(
       length: tabBarElements.length, 
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Whisper',style: TextStyle(color: Colors.white), ),
+          title: Text(l10n!.whisper,style: TextStyle(color: Colors.white), ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(defaultPadding(context: context))
