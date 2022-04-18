@@ -33,14 +33,8 @@ class WhichType extends ConsumerWidget {
     GradientScreen(
       top: SizedBox.shrink(),
       header: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Text(
-          'WhichType',
-          style: TextStyle(
-            fontSize: defaultHeaderTextSize(context: context),
-            fontWeight: FontWeight.bold
-          ),
-        ),
+        padding: EdgeInsets.all(defaultPadding(context: context)),
+        child: boldText(text: 'WhichType'),
       ),
       content: Content(mainModel: mainModel, addPostModel: addPostModel),
       circular: defaultHeaderTextSize(context: context),

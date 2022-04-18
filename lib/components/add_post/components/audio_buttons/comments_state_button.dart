@@ -26,7 +26,7 @@ class CommentsStateButton extends StatelessWidget {
         return AudioButton(
           description: commentsStateDisplayName, 
           icon: Icon(Icons.comment,color: Theme.of(context).focusColor,size: addPostIconSize(context: context), ),
-          press: () { addPostModel.showCommentStatePopUp(context: context); },
+          press: () => addPostModel.showCommentStatePopUp(context: context),
         );
       }
     );

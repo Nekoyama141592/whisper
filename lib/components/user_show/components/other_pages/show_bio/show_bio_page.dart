@@ -28,10 +28,6 @@ class ShowDescriptionPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,WidgetRef ref) {
     
-    final textStyle = TextStyle(
-      fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2,
-      fontWeight: FontWeight.bold
-    );
     final bioController = TextEditingController(text: passiveWhisperUser.bio);
     final ShowBioModel showBioModel = ref.watch(showBioProvider);
     final L10n l10n = returnL10n(context: context)!;
@@ -58,12 +54,12 @@ class ShowDescriptionPage extends ConsumerWidget {
               onChanged: (text) {
                 showBioModel.bio = text;
               },
-              style: textStyle
+              style: boldStyle()
             ),
             Center(
-              child: RoundedButton(text: l10n.update, fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, press: () async {
-                await showBioModel.updateBio(context: context, updateWhisperUser: mainModel.currentWhisperUser);
-              }, textColor: Colors.white, buttonColor: Theme.of(context).highlightColor ),
+              child: RoundedButton(text: l10n.update, fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, 
+              press: () async => await showBioModel.updateBio(context: context, updateWhisperUser: mainModel.currentWhisperUser)
+              , textColor: Colors.white, buttonColor: Theme.of(context).highlightColor ),
             ),
             SizedBox()
           ],
@@ -72,7 +68,7 @@ class ShowDescriptionPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(passiveWhisperUser.bio,style: textStyle)
+              boldText(text: passiveWhisperUser.bio)
             ],
           ),
         ),

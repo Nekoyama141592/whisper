@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/components/user_show/components/other_pages/post_search/post_search_model.dart';
 // constants
-import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/doubles.dart';
 // components
 import 'package:whisper/details/gradient_screen.dart';

@@ -34,15 +34,8 @@ class UserRankingPage extends ConsumerWidget {
     return GradientScreen(
         top: SizedBox.shrink(), 
         header: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            'User Ranking',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          padding: EdgeInsets.all(defaultPadding(context: context)),
+          child: whiteBoldText(text: 'User Ranking'),
         ),
       circular: defaultPadding(context: context),
       content: userRankingModel.isLoading ?
@@ -52,10 +45,10 @@ class UserRankingPage extends ConsumerWidget {
         enablePullDown: false,
         enablePullUp: true,
         header: WaterDropHeader(),
-        onLoading: () async { await userRankingModel.onLoading(); },
+        onLoading: () async => await userRankingModel.onLoading(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16.0
+          padding: EdgeInsets.symmetric(
+            vertical: defaultPadding(context: context)
           ),
           child: ListView.builder(
             itemCount: userRankingModel.userDocs.length,

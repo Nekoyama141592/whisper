@@ -106,7 +106,7 @@ class LoginPage extends ConsumerWidget {
                         SizedBox(height: defaultPadding(context: context) ),
                         Center(
                           child: RoundedButton(
-                            text: 'ログイン',
+                            text: l10n.signIn,
                             widthRate: 0.8,
                             fontSize: defaultHeaderTextSize(context: context),
                             press: () async => await loginModel.login(context: context ),

@@ -21,9 +21,7 @@ class WhisperBottomNavigationbar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: buttonNavigationBarElements,
       currentIndex: model.currentIndex,
-      onTap: (index) {
-        model.onTabTapped(index);
-      },
+      onTap: (index) => model.onTabTapped(index)
     );
   }
 }

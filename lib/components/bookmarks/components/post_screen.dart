@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/gradient_screen.dart';
@@ -51,21 +52,12 @@ class PostScreen extends ConsumerWidget {
                 bookmarksModel.back();
               },
             ),
-            Text(
-              'BookMarks',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: defaultHeaderTextSize(context: context),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+           whiteBoldText(text: 'BookMarks')
           ],
         ),
       ),
       content: postDocs.isEmpty ?
-      Nothing(reload: () async { 
-        await bookmarksModel.onReload(mainModel: mainModel, );
-      })
+      Nothing(reload: () async => await bookmarksModel.onReload(mainModel: mainModel, ))
       : Padding(
         padding: EdgeInsets.only(
           top: defaultPadding(context: context),
