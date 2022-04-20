@@ -104,15 +104,15 @@ class PostCards extends StatelessWidget {
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await postFutures.muteUser(context: context, audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, muteUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, whisperPost:whisperPost, mainModel: mainModel);
-                        }, child: PositiveText(text: muteUserJaText) ),
+                        }, child: PositiveText(text: muteUserText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc,afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts);
-                        }, child: PositiveText(text: mutePostJaText) ),
+                        }, child: PositiveText(text: mutePostText) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
                           postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts);
-                        }, child: PositiveText(text: reportPostJaText) ),
+                        }, child: PositiveText(text: reportPostText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ],
                     );

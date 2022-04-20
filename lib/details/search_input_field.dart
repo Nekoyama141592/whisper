@@ -52,7 +52,7 @@ class SearchInputField extends StatelessWidget {
               onPressed: search, 
               child: Text(l10n.search,style: TextStyle(color: kTertiaryColor,fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2,fontWeight: FontWeight.bold),),
             ),
-            hintText: searchText,
+            hintText: searchFieldText,
             hintStyle: TextStyle(color: Colors.black.withOpacity(0.6),fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ),
             border: InputBorder.none
           ),

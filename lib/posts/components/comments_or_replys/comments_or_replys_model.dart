@@ -11,6 +11,7 @@ import 'package:whisper/constants/strings.dart';
 // domain
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/user_mute/user_mute.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model 
 import 'package:whisper/main_model.dart';
 
@@ -26,14 +27,15 @@ class CommentsOrReplysModel extends ChangeNotifier {
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
       final String activeUid = mainModel.userMeta.uid;
+      final L10n l10n = returnL10n(context: context)!;
       final MuteUser muteUser = MuteUser(activeUid: activeUid, passiveUid: passiveUid, createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
       // processUI
       mainModel.muteUsers.add(muteUser);
       mainModel.muteUids.add(muteUser.passiveUid);
       docs.removeWhere(((element) =>element[uidMapKey] == passiveUid));
       notifyListeners();
-      await showBasicFlutterToast(context: context,msg: muteUserMsg);
-      await showBasicFlutterToast(context: context, msg: reflectChangesJaMsg );
+      await showBasicFlutterToast(context: context,msg: l10n.muteUserMsg);
+      await showBasicFlutterToast(context: context, msg: reflectChangesMsg );
       // process backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
       final UserMute userMute = UserMute(createdAt: now, muterUid: activeUid, mutedUid: passiveUid );

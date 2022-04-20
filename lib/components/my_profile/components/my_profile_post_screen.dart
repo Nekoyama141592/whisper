@@ -81,15 +81,15 @@ class MyProfilePostScreen extends ConsumerWidget {
                     CupertinoActionSheetAction(onPressed: () async {
                       Navigator.pop(innerContext);
                       await postFutures.muteUser(context: context, audioPlayer: myProfileModel.audioPlayer, afterUris: myProfileModel.afterUris, muteUids: mainModel.muteUids, i: i, results: myProfileModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
-                    }, child: PositiveText(text: muteUserJaText) ),
+                    }, child: PositiveText(text: muteUserText) ),
                     CupertinoActionSheetAction(onPressed: () async {
                       Navigator.pop(innerContext);
                       await postFutures.mutePost(context: context, mainModel: mainModel, i: i,postDoc: postDoc ,afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.posts);
-                    }, child: PositiveText(text: mutePostJaText) ),
+                    }, child: PositiveText(text: mutePostText) ),
                     CupertinoActionSheetAction(onPressed: () {
                       Navigator.pop(innerContext);
                       postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: myProfileModel.afterUris, audioPlayer: myProfileModel.audioPlayer, results: myProfileModel.posts);
-                    }, child: PositiveText(text: reportPostJaText) ),
+                    }, child: PositiveText(text: reportPostText) ),
                     CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                   ],
                 );

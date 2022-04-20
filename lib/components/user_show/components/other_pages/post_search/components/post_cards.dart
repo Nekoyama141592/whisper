@@ -81,15 +81,15 @@ class PostCards extends ConsumerWidget {
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await postFutures.muteUser(context: context, audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
-                        }, child: PositiveText(text: muteUserJaText) ),
+                        }, child: PositiveText(text: muteUserText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
-                        }, child: PositiveText(text: mutePostJaText) ),
+                        }, child: PositiveText(text: mutePostText) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
                           postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
-                        }, child: PositiveText(text: reportPostJaText) ),
+                        }, child: PositiveText(text: reportPostText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ],
                     );

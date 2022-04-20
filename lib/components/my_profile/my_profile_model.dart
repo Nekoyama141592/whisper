@@ -191,14 +191,14 @@ class MyProfileModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          message: boldText(text: selectOperationJaText),
+          message: boldText(text: selectOperationText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(innerContext);
                 routes.toPostSearchPage(context: context, passiveWhisperUser: mainModel.currentWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
               }, 
-              child: PositiveText(text: searchJaText),
+              child: PositiveText(text: searchText),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {

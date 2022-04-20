@@ -140,8 +140,8 @@ class RepliesModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          title: PositiveText(text: sortJaText),
-          message: PositiveText(text: sortReplyJaText),
+          title: PositiveText(text: sortText),
+          message: PositiveText(text: sortReplyText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -425,14 +425,14 @@ class RepliesModel extends ChangeNotifier {
           await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply,replyDoc: replyDoc,);
           await returnPostCommentReplyReportDocRef(postCommentReplyDoc: replyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
         }, 
-        child: PositiveText(text: sendModalJaText)
+        child: PositiveText(text: sendModalText)
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
   }
 
   Future<void> reflectChanges({ required BuildContext context }) async {
-    await voids.showBasicFlutterToast(context: context, msg: reflectChangesJaMsg);
+    await voids.showBasicFlutterToast(context: context, msg: reflectChangesMsg);
   }
 
 }

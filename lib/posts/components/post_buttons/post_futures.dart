@@ -108,7 +108,7 @@ class PostFutures extends ChangeNotifier {
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
-      child: PositiveText(text: decideModalJaText)
+      child: PositiveText(text: decideModalText)
     );
   };
   voids.showFlashDialogue(context: context, content: content, titleText: l10n.whichCategory,positiveActionBuilder: positiveActionBuilder);
@@ -174,13 +174,14 @@ class PostFutures extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final UserMeta userMeta = mainModel.userMeta;
     final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.muteUser );
+    final L10n l10n = returnL10n(context: context)!;
     final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser()!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
     // process Ui
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(whisperPost.uid);
     await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
-    await voids.showBasicFlutterToast(context: context,msg: muteUserMsg);
+    await voids.showBasicFlutterToast(context: context,msg: l10n.muteUserMsg);
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
     final UserMute userMute = UserMute(createdAt: now, muterUid: userMeta.uid, mutedUid: passiveUid );
@@ -270,7 +271,7 @@ class PostFutures extends ChangeNotifier {
           await mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
-        child: PositiveText(text: sendModalJaText)
+        child: PositiveText(text: sendModalText)
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

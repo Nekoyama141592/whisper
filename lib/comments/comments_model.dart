@@ -272,8 +272,8 @@ class CommentsModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          title:PositiveText(text: sortJaText),
-          message: PositiveText(text: sortCommentJaText),
+          title:PositiveText(text: sortText),
+          message: PositiveText(text: sortCommentText),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -411,7 +411,7 @@ class CommentsModel extends ChangeNotifier {
           await muteComment(context: context, mainModel: mainModel, whisperComment: whisperComment,commentDoc: commentDoc );
           await returnPostCommentReportDocRef(postCommentDoc: commentDoc, postCommentReportId: postCommentReportId).set(postCommentReport.toJson());
         }, 
-        child: PositiveText(text: sendModalJaText)
+        child: PositiveText(text: sendModalText)
       );
     };
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);

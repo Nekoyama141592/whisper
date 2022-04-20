@@ -113,22 +113,22 @@ class CommentCard extends ConsumerWidget {
                           CupertinoActionSheetAction(onPressed: () async {
                             Navigator.pop(innerContext);
                             await commentsModel.deleteMyComment(context: context, commentDoc: commentDoc, mainModel: mainModel);
-                          }, child: PositiveText(text: deleteCommentJaText )),
+                          }, child: PositiveText(text: deleteCommentText )),
                           CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                         ]
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid,docs: commentsModel.commentDocs );
-                        }, child: PositiveText(text: muteUserJaText) ),
+                        }, child: PositiveText(text: muteUserText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment,commentDoc: commentDoc );
-                        }, child: PositiveText(text: muteCommentJaText) ),
+                        }, child: PositiveText(text: muteCommentText) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           commentsModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc);
-                        }, child: PositiveText(text: reportCommentJaText) ),
+                        }, child: PositiveText(text: reportCommentText) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
                       ],
                     );
