@@ -174,14 +174,13 @@ class PostFutures extends ChangeNotifier {
     final Timestamp now = Timestamp.now();
     final UserMeta userMeta = mainModel.userMeta;
     final String tokenId = returnTokenId(userMeta: userMeta, tokenType: TokenType.muteUser );
-    final L10n l10n = returnL10n(context: context)!;
     final MuteUser muteUser = MuteUser(activeUid: firebaseAuthCurrentUser()!.uid,createdAt: now,passiveUid: passiveUid,tokenId: tokenId, tokenType: muteUserTokenType );
     // process Ui
     mainModel.muteUsers.add(muteUser);
     mainModel.muteUids.add(whisperPost.uid);
     await removeTheUsersPost(results: results, passiveUid: passiveUid, afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
-    await voids.showBasicFlutterToast(context: context,msg: l10n.muteUserMsg);
+    await voids.showBasicFlutterToast(context: context,msg: muteUserMsg(context: context));
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
     final UserMute userMute = UserMute(createdAt: now, muterUid: userMeta.uid, mutedUid: passiveUid );

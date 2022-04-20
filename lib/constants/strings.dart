@@ -1,8 +1,10 @@
 // constants
+import 'package:flutter/material.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 // packages
 import 'package:uuid/uuid.dart';
+import 'package:whisper/constants/others.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
 
@@ -188,6 +190,7 @@ const String privacyURL = 'https://whisper-web.herokuapp.com/privacy';
 const String complianceURL = 'https://whisper-web.herokuapp.com/compliance';
 const String tosURL = 'https://whisper-web.herokuapp.com/tos';
 // msg
+String muteUserMsg({ required BuildContext context }) => returnL10n(context: context)!.muteUserMsg;
 const String mutePostMsg = 'この投稿をミュートしました';
 const String mutePostCommentMsg = 'このコメントをミュートしました';
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';

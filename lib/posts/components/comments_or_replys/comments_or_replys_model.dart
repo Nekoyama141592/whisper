@@ -27,14 +27,13 @@ class CommentsOrReplysModel extends ChangeNotifier {
       final Timestamp now = Timestamp.now();
       final String tokenId = returnTokenId( userMeta: mainModel.userMeta, tokenType: TokenType.muteUser );
       final String activeUid = mainModel.userMeta.uid;
-      final L10n l10n = returnL10n(context: context)!;
       final MuteUser muteUser = MuteUser(activeUid: activeUid, passiveUid: passiveUid, createdAt: now,tokenId: tokenId, tokenType: muteUserTokenType );
       // processUI
       mainModel.muteUsers.add(muteUser);
       mainModel.muteUids.add(muteUser.passiveUid);
       docs.removeWhere(((element) =>element[uidMapKey] == passiveUid));
       notifyListeners();
-      await showBasicFlutterToast(context: context,msg: l10n.muteUserMsg);
+      await showBasicFlutterToast(context: context,msg: muteUserMsg(context: context));
       await showBasicFlutterToast(context: context, msg: reflectChangesMsg );
       // process backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteUser.toJson());
