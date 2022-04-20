@@ -386,7 +386,7 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
     negativeActionBuilder: (context, controller, _) {
       return TextButton(
         onPressed: () async => await controller.dismiss(),
-        child: Text(cancelText,style: cancelStyle(context: context)),
+        child: Text(cancelText(context: context),style: cancelStyle(context: context)),
       );
     },
     positiveActionBuilder: positiveActionBuilder,
@@ -422,7 +422,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
           ),
           actions: [
             CupertinoDialogAction(
-              child: const Text(cancelText),
+              child: Text(cancelText(context: context)),
               onPressed: () => Navigator.pop(innerContext)
             ),
             CupertinoDialogAction(
@@ -453,7 +453,7 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
           onPressed: () => showLinkDialogue(context: context, link: whisperLink.url )
         ) ).toList();
         actions.add(CupertinoActionSheetAction(
-          child: PositiveText(text: cancelText),
+          child: PositiveText(text: cancelText(context: context)),
           onPressed: () => Navigator.pop(innerContext),
         ));
         return CupertinoActionSheet(

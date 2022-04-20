@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:whisper/details/positive_text.dart';
+import 'package:whisper/l10n/l10n.dart';
 // constants
 import 'package:whisper/main_model.dart';
 import 'package:whisper/constants/ints.dart';
@@ -59,7 +60,7 @@ class AddPostModel extends ChangeNotifier {
   XFile? xFile;
   File? croppedFile;
   // commentsState
-  final commentsStateDisplayNameNotifier = ValueNotifier<String>(commentsStateIsOpenText);
+  final commentsStateDisplayNameNotifier = ValueNotifier<String>('');
   CommentsState commentsState = CommentsState.isOpen;
   // link 
   final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
@@ -153,7 +154,7 @@ class AddPostModel extends ChangeNotifier {
 
   Future<void> onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
     if (postTitleNotifier.value.isEmpty) {
-      voids.showBasicFlutterToast(context: context, msg: pleaseInputTitleMsg );
+      voids.showBasicFlutterToast(context: context, msg: pleaseInputTitleMsg(context: context) );
     } else if (postTitleNotifier.value.length > maxSearchLength ) {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
@@ -251,12 +252,12 @@ class AddPostModel extends ChangeNotifier {
       context: context, 
       builder: (BuildContext innerContext) {
         return CupertinoActionSheet(
-          title: PositiveText(text: commentsStateText),
-          message: PositiveText(text: configCommentsStateText),
+          title: PositiveText(text: commentsStateText(context: context)),
+          message: PositiveText(text: configCommentsStateText(context: context)),
           actions: [
             CupertinoActionSheetAction(
               child: Text(
-                commentsStateIsOpenText,
+                commentsStateIsOpenText(context: context),
                 style: TextStyle(
                   color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
@@ -264,13 +265,13 @@ class AddPostModel extends ChangeNotifier {
               ),
               onPressed: () {
                 commentsState = CommentsState.isOpen;
-                commentsStateDisplayNameNotifier.value = commentsStateIsOpenText;
+                commentsStateDisplayNameNotifier.value = commentsStateIsOpenText(context: context);
                 Navigator.pop(innerContext);
               },
             ),
             CupertinoActionSheetAction(
               child: Text(
-                commentsStateIsLockedText,
+                commentsStateIsLockedText(context: context),
                 style: TextStyle(
                   color: Theme.of(innerContext).highlightColor,
                   fontWeight: FontWeight.bold
@@ -278,7 +279,7 @@ class AddPostModel extends ChangeNotifier {
               ),
               onPressed: () {
                 commentsState = CommentsState.isLocked;
-                commentsStateDisplayNameNotifier.value = commentsStateIsLockedText;
+                commentsStateDisplayNameNotifier.value = commentsStateIsLockedText(context: context);
                 Navigator.pop(innerContext);
               },
             ),
@@ -289,7 +290,8 @@ class AddPostModel extends ChangeNotifier {
   }
 
   void initLinks({ required BuildContext context }) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier,roundedButtonText: '決定',onRoundedButtonPressed: () { Navigator.pop(context); }, ) ));
+    final L10n l10n = returnL10n(context: context)!;
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LinksPage(whisperLinksNotifier: whisperLinksNotifier,roundedButtonText: l10n.decide,onRoundedButtonPressed: () => Navigator.pop(context), ) ));
     whisperLinksNotifier.value = [];
     notifyListeners();
   }

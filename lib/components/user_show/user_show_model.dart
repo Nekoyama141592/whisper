@@ -202,14 +202,14 @@ class UserShowModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          message: boldText(text: selectOperationText),
+          message: boldText(text: selectOperationText(context: context)),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(innerContext);
                 routes.toPostSearchPage(context: context, passiveWhisperUser: passiveWhisperUser, mainModel: mainModel, postSearchModel: postSearchModel);
               }, 
-              child: PositiveText(text: searchText),
+              child: PositiveText(text: search(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -219,7 +219,7 @@ class UserShowModel extends ChangeNotifier {
                   await onReload();
                 }
               }, 
-              child: PositiveText(text: sortByLikeUidCountText),
+              child: PositiveText(text: sortByLikeUidCountText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -229,7 +229,7 @@ class UserShowModel extends ChangeNotifier {
                   await onReload();
                 }
               }, 
-              child: PositiveText(text: sortByNewestFirstText),
+              child: PositiveText(text: sortByNewestFirstText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -239,11 +239,11 @@ class UserShowModel extends ChangeNotifier {
                   await onReload();
                 }
               }, 
-              child: PositiveText(text: sortByOldestFirstText),
+              child: PositiveText(text: sortByOldestFirstText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(innerContext),
-              child: PositiveText(text: cancelText),
+              child: PositiveText(text: cancelText(context: context)),
             ),
           ],
         );

@@ -98,7 +98,7 @@ class RepliesModel extends ChangeNotifier {
     if (whisperComment.uid == currentWhisperUser.uid || whisperPost.uid == currentWhisperUser.uid || whisperComment.uid == whisperPost.uid) {
       showMakeReplyInputFlashBar(context: context, whisperPost: whisperPost, replyEditingController: replyEditingController, mainModel: mainModel, whisperComment: whisperComment);
     } else {
-      voids.showBasicFlutterToast(context: context, msg: cannotReplyMsg);
+      voids.showBasicFlutterToast(context: context, msg: cannotReplyMsg(context: context));
     }
   }
 
@@ -109,7 +109,7 @@ class RepliesModel extends ChangeNotifier {
         onPressed: () async {
           final L10n l10n = returnL10n(context: context)!;
           if (reply.isEmpty) {
-            voids.showCustomFlutterToast(backgroundColor: toastColor, msg: emptyMsg );
+            voids.showCustomFlutterToast(backgroundColor: toastColor, msg: emptyMsg(context: context) );
             controller.dismiss();
           } else if (reply.length > maxCommentOrReplyLength) {
             voids.showCustomFlutterToast(backgroundColor: toastColor, msg: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()) );
@@ -120,7 +120,7 @@ class RepliesModel extends ChangeNotifier {
             reply = '';
             replyEditingController.text = '';
             if (postCommentReplyDocs.isNotEmpty) {
-              voids.showCustomFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg );
+              voids.showCustomFlutterToast(backgroundColor: toastColor, msg: pleaseScrollMsg(context: context) );
             }
             controller.dismiss();
           }
@@ -132,7 +132,7 @@ class RepliesModel extends ChangeNotifier {
       reply = '';
       replyEditingController.text = '';
     };
-    voids.showCommentOrReplyDialogue(context: context, title: inputReplyText, textEditingController: replyEditingController, onChanged: (text) { reply = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
+    voids.showCommentOrReplyDialogue(context: context, title: inputReplyText(context: context), textEditingController: replyEditingController, onChanged: (text) { reply = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
   void showSortDialogue({ required BuildContext context, required WhisperPostComment whisperPostComment}) {
@@ -140,8 +140,8 @@ class RepliesModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          title: PositiveText(text: sortText),
-          message: PositiveText(text: sortReplyText),
+          title: PositiveText(text: sortText(context: context)),
+          message: PositiveText(text: sortReplyText(context: context)),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -152,7 +152,7 @@ class RepliesModel extends ChangeNotifier {
                   await reflectChanges(context: context);
                 }
               }, 
-              child: PositiveText(text: sortByLikeUidCountText),
+              child: PositiveText(text: sortByLikeUidCountText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -163,7 +163,7 @@ class RepliesModel extends ChangeNotifier {
                   await reflectChanges(context: context);
                 }
               }, 
-              child: PositiveText(text: sortByNewestFirstText),
+              child: PositiveText(text: sortByNewestFirstText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -174,11 +174,11 @@ class RepliesModel extends ChangeNotifier {
                   await reflectChanges(context: context);
                 }
               }, 
-              child: PositiveText(text: sortByOldestFirstText),
+              child: PositiveText(text: sortByOldestFirstText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(innerContext),
-              child: PositiveText(text: cancelText),
+              child: PositiveText(text: cancelText(context: context)),
             ),
           ],
         );
@@ -359,7 +359,7 @@ class RepliesModel extends ChangeNotifier {
       notifyListeners();
       await replyDoc.reference.delete();
     } else {
-      await voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg );
+      await voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg(context: context) );
     }
   }
   
@@ -385,7 +385,7 @@ class RepliesModel extends ChangeNotifier {
       mainModel.mutePostCommentReplys.add(muteReply);
       postCommentReplyDocs.remove(replyDoc);
       notifyListeners();
-      await voids.showCustomFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg);
+      await voids.showCustomFlutterToast(backgroundColor: Theme.of(context).colorScheme.secondary,msg: mutePostCommentReplyMsg(context: context));
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteReply.toJson());
       final ReplyMute replyMute = ReplyMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentReplyCreatorUid: whisperReply.uid, postCommentReplyId: whisperReply.postCommentReplyId, postCommentReplyDocRef: postCommentReplyDocRef);
@@ -421,18 +421,18 @@ class RepliesModel extends ChangeNotifier {
             replySentiment: whisperReply.replySentiment
           );
           await (controller as FlashController).dismiss();
-          await voids.showCustomFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentReplyMsg );
+          await voids.showCustomFlutterToast(backgroundColor: Theme.of(context).highlightColor,msg: reportPostCommentReplyMsg(context: context) );
           await muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply,replyDoc: replyDoc,);
           await returnPostCommentReplyReportDocRef(postCommentReplyDoc: replyDoc, postCommentReplyReportId: postCommentReplyReportId).set(postCommentReplyReport.toJson());
         }, 
-        child: PositiveText(text: sendModalText)
+        child: PositiveText(text: sendModalText(context: context))
       );
     };
-    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle(context: context), positiveActionBuilder: positiveActionBuilder);
   }
 
   Future<void> reflectChanges({ required BuildContext context }) async {
-    await voids.showBasicFlutterToast(context: context, msg: reflectChangesMsg);
+    await voids.showBasicFlutterToast(context: context, msg: reflectChangesMsg(context: context));
   }
 
 }

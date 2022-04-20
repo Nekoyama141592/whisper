@@ -66,7 +66,7 @@ class EditProfileScreen extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: onCancelButtonPressed,
-                  child: boldText(text: cancelText),
+                  child: boldText(text: cancelText(context: context)),
                 ),
                 Expanded(child: SizedBox()),
                 RoundedButton(

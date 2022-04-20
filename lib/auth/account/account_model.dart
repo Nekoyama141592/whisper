@@ -86,7 +86,7 @@ class AccountModel extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelText),
+            child: Text(cancelText(context: context)),
             onPressed: () => Navigator.pop(innerContext)
           ),
           CupertinoDialogAction(
@@ -122,7 +122,7 @@ class AccountModel extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelText),
+            child: Text(cancelText(context: context)),
             onPressed: () => Navigator.pop(innerContext)
           ),
           CupertinoDialogAction(

@@ -109,23 +109,23 @@ class ReplyCard extends ConsumerWidget {
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await repliesModel.deleteMyReply(context: context, replyDoc: replyDoc, mainModel: mainModel) ;
-                        }, child: PositiveText(text: deleteReplyText) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        }, child: PositiveText(text: deleteReplyText(context: context)) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                       ]
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsOrReplysModel.muteUser(context: context, mainModel: mainModel, passiveUid: whisperReply.uid,docs: repliesModel.postCommentReplyDocs );
-                        }, child: PositiveText(text: muteUserText) ),
+                        }, child: PositiveText(text: muteUserText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await repliesModel.muteReply(context: context, mainModel: mainModel, whisperReply: whisperReply,replyDoc: replyDoc );
-                        }, child: PositiveText(text: muteReplyText) ),
+                        }, child: PositiveText(text: muteReplyText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
                           repliesModel.reportReply(context: context, mainModel: mainModel, whisperReply: whisperReply, replyDoc: replyDoc);
-                        }, child: PositiveText(text: reportReplyText) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        }, child: PositiveText(text: reportReplyText(context: context)) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                       ],
                     );
                   },

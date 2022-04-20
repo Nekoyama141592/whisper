@@ -5,6 +5,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/widgets.dart';
+import 'package:whisper/details/positive_text.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/l10n/l10n.dart';
@@ -54,13 +55,7 @@ class EditPostInfoScreen extends StatelessWidget {
                         editPostInfoModel.reload();
                         showBasicFlutterToast(context: context, msg: l10n.cancelEditPostInfo );
                       }, 
-                      child: Text(
-                        cancelText,
-                        style: TextStyle(
-                          color: Theme.of(context).focusColor,
-                          fontSize: defaultHeaderTextSize(context: context)
-                        ),
-                      ),
+                      child: PositiveText(text: cancelText(context: context)),
                     ),
                     Expanded(child: SizedBox()),
                     RoundedButton(

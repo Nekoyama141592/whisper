@@ -108,7 +108,7 @@ class PostFutures extends ChangeNotifier {
           await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
-      child: PositiveText(text: decideModalText)
+      child: PositiveText(text: decideModalText(context: context))
     );
   };
   voids.showFlashDialogue(context: context, content: content, titleText: l10n.whichCategory,positiveActionBuilder: positiveActionBuilder);
@@ -161,7 +161,7 @@ class PostFutures extends ChangeNotifier {
     results.removeWhere((result) => fromMapToPost(postMap: result.data()!).postId == whisperPost.postId );
     await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
-    await voids.showBasicFlutterToast(context: context,msg: mutePostMsg);
+    await voids.showBasicFlutterToast(context: context,msg: mutePostMsg(context: context));
     // process Backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(mutePost.toJson());
     final PostMute postMute = PostMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCreatorUid: whisperPost.postId, postDocRef: postDoc.reference, postId: postId);
@@ -223,7 +223,7 @@ class PostFutures extends ChangeNotifier {
         content: Text(content),
         actions: [
           CupertinoDialogAction(
-            child: const Text(cancelText),
+            child: Text(cancelText(context: context)),
             onPressed: () => Navigator.pop(innerContext),
           ),
           CupertinoDialogAction(
@@ -266,14 +266,14 @@ class PostFutures extends ChangeNotifier {
             reportContent: returnReportContentString(selectedReportContents: selectedReportContentsNotifier.value),
           );
           await (controller as FlashController).dismiss();
-          await voids.showBasicFlutterToast(context: context,msg: reportPostMsg);
+          await voids.showBasicFlutterToast(context: context,msg: reportPostMsg(context: context));
           await mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: afterUris, audioPlayer: audioPlayer, results: results);
           await returnPostReportDocRef(postDoc: postDoc,postReportId: postReportId ).set(postReport.toJson());
         }, 
-        child: PositiveText(text: sendModalText)
+        child: PositiveText(text: sendModalText(context: context))
       );
     };
-    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle(context: context), positiveActionBuilder: positiveActionBuilder);
   }
 }
 

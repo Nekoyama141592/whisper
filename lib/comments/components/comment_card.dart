@@ -113,23 +113,23 @@ class CommentCard extends ConsumerWidget {
                           CupertinoActionSheetAction(onPressed: () async {
                             Navigator.pop(innerContext);
                             await commentsModel.deleteMyComment(context: context, commentDoc: commentDoc, mainModel: mainModel);
-                          }, child: PositiveText(text: deleteCommentText )),
-                          CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                          }, child: PositiveText(text: deleteCommentText(context: context) )),
+                          CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                         ]
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsOrReplysModel.muteUser(context: context,mainModel: mainModel,passiveUid: whisperPostComment.uid,docs: commentsModel.commentDocs );
-                        }, child: PositiveText(text: muteUserText) ),
+                        }, child: PositiveText(text: muteUserText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await commentsModel.muteComment(context: context,mainModel: mainModel,whisperComment: whisperPostComment,commentDoc: commentDoc );
-                        }, child: PositiveText(text: muteCommentText) ),
+                        }, child: PositiveText(text: muteCommentText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           commentsModel.reportComment(context: context, mainModel: mainModel, whisperComment: whisperPostComment, commentDoc: commentDoc);
-                        }, child: PositiveText(text: reportCommentText) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        }, child: PositiveText(text: reportCommentText(context: context)) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                       ],
                     );
                   },

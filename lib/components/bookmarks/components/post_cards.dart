@@ -95,23 +95,23 @@ class PostCards extends StatelessWidget {
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
                           postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPost: whisperPost, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.posts, mainModel: mainModel, i: i);
-                        }, child: PositiveText(text: deletePostText) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        }, child: PositiveText(text: deletePostText(context: context)) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                       ]
                       : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await postFutures.muteUser(context: context, audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, muteUids: mainModel.muteUids, i: i, results: bookmarksModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
-                        }, child: PositiveText(text: muteUserText) ),
+                        }, child: PositiveText(text: muteUserText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
                           await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts);
-                        }, child: PositiveText(text: mutePostText) ),
+                        }, child: PositiveText(text: mutePostText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
                           postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts);
-                        }, child: PositiveText(text: reportPostText) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText) ),
+                        }, child: PositiveText(text: reportPostText(context: context)) ),
+                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                       ],
                     );
                   },

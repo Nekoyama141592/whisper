@@ -84,7 +84,7 @@ class MuteUsersModel extends ChangeNotifier {
           content: boldText(text: l10n.unMuteUserMsg),
           actions: [
           CupertinoDialogAction(
-            child: const Text(cancelText),
+            child: Text(cancelText(context: context)),
             onPressed: () => Navigator.pop(innerContext),
           ),
           CupertinoDialogAction(

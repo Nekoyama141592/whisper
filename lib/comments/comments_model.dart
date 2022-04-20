@@ -87,7 +87,7 @@ class CommentsModel extends ChangeNotifier {
       if (whisperPost.uid == mainModel.currentWhisperUser.uid ) {
         showMakeCommentInputFlashBar(context: context, whisperPost: whisperPost, commentEditingController: commentEditingController, mainModel: mainModel);
       } else {
-        voids.showBasicFlutterToast(context: context, msg: cannotCommentMsg );
+        voids.showBasicFlutterToast(context: context, msg: cannotCommentMsg(context: context) );
       }
     }
   }
@@ -98,7 +98,7 @@ class CommentsModel extends ChangeNotifier {
         onPressed: () async {
           final L10n l10n = returnL10n(context: context)!;
           if (commentEditingController.text.isEmpty) {
-            voids.showBasicFlutterToast(context: context, msg: emptyMsg );
+            voids.showBasicFlutterToast(context: context, msg: emptyMsg(context: context) );
             controller.dismiss();
           } else if (commentEditingController.text.length > maxCommentOrReplyLength){
             voids.showBasicFlutterToast(context: context, msg: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()) );
@@ -109,7 +109,7 @@ class CommentsModel extends ChangeNotifier {
             comment = '';
             commentEditingController.text = '';
             if (commentDocs.isNotEmpty) {
-              voids.showBasicFlutterToast(context: context, msg: pleaseScrollMsg );
+              voids.showBasicFlutterToast(context: context, msg: pleaseScrollMsg(context: context) );
             }
             controller.dismiss();
           }
@@ -121,7 +121,7 @@ class CommentsModel extends ChangeNotifier {
       comment = '';
       commentEditingController.text = '';
     };
-    voids.showCommentOrReplyDialogue(context: context, title: inputCommentText,textEditingController: commentEditingController, onChanged: (text) { comment = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
+    voids.showCommentOrReplyDialogue(context: context, title: inputCommentText(context: context),textEditingController: commentEditingController, onChanged: (text) { comment = text; }, oncloseButtonPressed: oncloseButtonPressed,send: send);
   }
 
   
@@ -272,8 +272,8 @@ class CommentsModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          title:PositiveText(text: sortText),
-          message: PositiveText(text: sortCommentText),
+          title:PositiveText(text: sortText(context: context)),
+          message: PositiveText(text: sortCommentText(context: context)),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -283,7 +283,7 @@ class CommentsModel extends ChangeNotifier {
                   await getCommentDocs(whisperPost: whisperPost);
                 }
               }, 
-              child: PositiveText(text: sortByLikeUidCountText),
+              child: PositiveText(text: sortByLikeUidCountText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -293,7 +293,7 @@ class CommentsModel extends ChangeNotifier {
                   await getCommentDocs(whisperPost: whisperPost);
                 }
               }, 
-              child: PositiveText(text: sortByNewestFirstText),
+              child: PositiveText(text: sortByNewestFirstText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () async {
@@ -303,11 +303,11 @@ class CommentsModel extends ChangeNotifier {
                   await getCommentDocs(whisperPost: whisperPost);
                 }
               }, 
-              child: PositiveText(text: sortByOldestFirstText),
+              child: PositiveText(text: sortByOldestFirstText(context: context)),
             ),
             CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(innerContext),
-              child: PositiveText(text: cancelText),
+              child: PositiveText(text: cancelText(context: context)),
             ),
           ],
         );
@@ -347,7 +347,7 @@ class CommentsModel extends ChangeNotifier {
       notifyListeners();
       await commentDoc.reference.delete();
     } else {
-      voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg );
+      voids.showBasicFlutterToast(context: context, msg: dontHaveRightMsg(context: context) );
     }
   }
   void toggleIsHidden({ required WhisperPostComment whisperPostComment }) {
@@ -373,7 +373,7 @@ class CommentsModel extends ChangeNotifier {
       mainModel.mutePostComments.add(muteComment);
       commentDocs.remove(commentDoc);
       notifyListeners();
-      await voids.showBasicFlutterToast(context: context,msg: mutePostCommentMsg);
+      await voids.showBasicFlutterToast(context: context,msg: mutePostCommentMsg(context: context));
       // process Backend
       await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: tokenId).set(muteComment.toJson());
       final CommentMute commentMute = CommentMute(activeUid: mainModel.userMeta.uid, createdAt: now, postCommentId: postCommentId, postId: whisperComment.postId, postCommentCreatorUid: whisperComment.uid, postCommentDocRef: postCommentDocRef);
@@ -407,14 +407,14 @@ class CommentsModel extends ChangeNotifier {
             postId: whisperComment.postId,
           );
           await (controller as FlashController).dismiss();
-          await voids.showBasicFlutterToast(context: context,msg: reportPostCommentMsg );
+          await voids.showBasicFlutterToast(context: context,msg: reportPostCommentMsg(context: context) );
           await muteComment(context: context, mainModel: mainModel, whisperComment: whisperComment,commentDoc: commentDoc );
           await returnPostCommentReportDocRef(postCommentDoc: commentDoc, postCommentReportId: postCommentReportId).set(postCommentReport.toJson());
         }, 
-        child: PositiveText(text: sendModalText)
+        child: PositiveText(text: sendModalText(context: context))
       );
     };
-    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle, positiveActionBuilder: positiveActionBuilder);
+    voids.showFlashDialogue(context: context, content: content, titleText: reportTitle(context: context), positiveActionBuilder: positiveActionBuilder);
   }
 
 }
