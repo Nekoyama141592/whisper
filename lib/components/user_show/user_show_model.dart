@@ -22,6 +22,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/follower/follower.dart';
 import 'package:whisper/domain/following/following.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
@@ -252,7 +253,8 @@ class UserShowModel extends ChangeNotifier {
 
   Future<void> follow({ required BuildContext context,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
   if (mainModel.followingUids.length >= maxFollowCount) {
-    voids.showBasicFlutterToast(context: context, msg: limitFollowingJaMsg );
+    final L10n l10n = returnL10n(context: context)!;
+    voids.showBasicFlutterToast(context: context, msg: l10n.followingLimitMsg(maxFollowCount.toString()) );
   } else {
     // process set
     final Timestamp now = Timestamp.now();

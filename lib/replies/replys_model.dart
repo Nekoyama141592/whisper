@@ -29,6 +29,7 @@ import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/post_comment_reply_report/post_comment_reply_report.dart';
 // states
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
@@ -106,11 +107,12 @@ class RepliesModel extends ChangeNotifier {
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
+          final L10n l10n = returnL10n(context: context)!;
           if (reply.isEmpty) {
             voids.showCustomFlutterToast(backgroundColor: toastColor, msg: emptyMsg );
             controller.dismiss();
           } else if (reply.length > maxCommentOrReplyLength) {
-            voids.showCustomFlutterToast(backgroundColor: toastColor, msg: maxCommentOrReplyMsg );
+            voids.showCustomFlutterToast(backgroundColor: toastColor, msg: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()) );
             controller.dismiss();
           } else {
             await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);

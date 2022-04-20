@@ -29,6 +29,7 @@ import 'package:whisper/domain/comment_mute/comment_mute.dart';
 import 'package:whisper/domain/post_comment_report/post_comment_report.dart';
 // states
 import 'package:whisper/constants/enums.dart';
+import 'package:whisper/l10n/l10n.dart';
 // models
 import 'package:whisper/main_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
@@ -95,11 +96,12 @@ class CommentsModel extends ChangeNotifier {
     final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send = (context, controller, _) {
       return IconButton(
         onPressed: () async {
+          final L10n l10n = returnL10n(context: context)!;
           if (commentEditingController.text.isEmpty) {
             voids.showBasicFlutterToast(context: context, msg: emptyMsg );
             controller.dismiss();
           } else if (commentEditingController.text.length > maxCommentOrReplyLength){
-            voids.showBasicFlutterToast(context: context, msg: maxCommentOrReplyMsg );
+            voids.showBasicFlutterToast(context: context, msg: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()) );
             controller.dismiss();
           } else {
             await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);

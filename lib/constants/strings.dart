@@ -194,7 +194,6 @@ const String mutePostCommentMsg = 'このコメントをミュートしました
 const String mutePostCommentReplyMsg = 'このリプライをミュートしました';
 const String emptyMsg = 'キャンセルされました';
 const String pleaseScrollMsg = '上にスクロールすると表示されます';
-final String maxCommentOrReplyMsg = maxCommentOrReplyLength.toString() + '以下でお願いします'; 
 const String reportPostMsg = '投稿をを報告しました';
 const String reportUserMsg = 'ユーザーを報告しました';
 const String reportPostCommentMsg = 'コメントを報告しました';
@@ -204,7 +203,6 @@ const String cannotCommentMsg = 'コメントは投稿主しかできません';
 const String cannotReplyMsg = 'あなたはこのコメントに返信できません';
 const String dontHaveRightMsg = 'あなたにその権限はありません';
 const String reflectChangesJaMsg = 'いいねボタンや目のボタンを押すと反映されます';
-final String limitFollowingJaMsg = 'フォロー数は' + maxFollowCount.toString() + 'が限界です';
 // Id
 const String configIdString = 'config';
 // title
