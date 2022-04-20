@@ -1,5 +1,8 @@
 // constants
+import 'package:flutter/material.dart';
 import 'package:whisper/constants/ints.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 const List<String> commonPasswords = [
   '12345',
@@ -33,37 +36,40 @@ const List<String> commonPasswords = [
   'qwertyui'
 ];
 const List<String> notUseOnField = ['.','[',']','*','`'];
-const List<String> reportContents = [
-  '性的行為を含む',
-  'ヌード',
-  '性的行為を連想させる',
-  '未成年者に関するコンテンツ',
-  'タイトルまたは説明の表現が不適切',
-  '暴力行為',
-  '未成年の暴力',
-  '動物の虐待',
-  '差別や暴力の助長',
-  '弱者に対する攻撃',
-  '自分に対する嫌がらせ',
-  '他のユーザーに対する嫌がらせ',
-  '薬物乱用のコンテンツ',
-  '自殺または自傷行為',
-  'その他の危険な行為',
-  '児童虐待',
-  'テロリズムの助長',
-  'スパム',
-  '医薬品関係の内容',
-  '誤解を招く説明',
-  '誤解を招く写真',
-  '詐欺、または不正行為',
-  '著作権の問題',
-  'プライバシーの問題',
-  '商標権侵害',
-  '名誉毀損',
-  '偽造品',
-  'その他の法的問題',
-  'アイコンが性的または暴力的'
+List<String> reportContents({ required BuildContext context }) {
+  final L10n l10n = returnL10n(context: context)!;
+  return
+  [
+  l10n.containingSexualActs,
+  l10n.nudity,
+  l10n.suggestiveOfSexualActivity,
+  l10n.contentConcerningMinors,
+  l10n.inappropriateWordingInTitleOrDescription,
+  l10n.violentActs,
+  l10n.crueltyToAnimals,
+  l10n.discriminationOrPromotionOfViolence,
+  l10n.attacksOnVulnerablePeople,
+  l10n.harassmentAgainstYourself,
+  l10n.harassmentOfOtherUsers,
+  l10n.substanceAbuseContent,
+  l10n.suicideOrSelfHarm,
+  l10n.otherDangerousBehaviour,
+  l10n.childAbuse,
+  l10n.promotionOfTerrorism,
+  l10n.spam,
+  l10n.pharmaceuticalRelatedContent,
+  l10n.misleadingDescriptions,
+  l10n.misleadingPictures,
+  l10n.fraudOrDishonesty,
+  l10n.copyrightIssues,
+  l10n.privacyIssues,
+  l10n.trademarkInfringement,
+  l10n.defamation,
+  l10n.counterfeitGoods,
+  l10n.otherLegalIssues,
+  l10n.sexualOrViolentIcons
 ];
+}
 List<String> returnSearchWords({ required String searchTerm }) {
   List<String> afterSplit =  searchTerm.split('');
   afterSplit.removeWhere((element) => notUseOnField.contains(element) );

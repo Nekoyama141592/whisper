@@ -12,6 +12,7 @@ class ReportContentsListView extends StatelessWidget {
   final ValueNotifier<List<String>> selectedReportContentsNotifier;
   @override 
   Widget build(BuildContext context) {
+    final reportContents = returnReportContents(context: context);
     return Container(
       height: flashDialogueHeight(context: context),
       child: ValueListenableBuilder<List<String>>(
