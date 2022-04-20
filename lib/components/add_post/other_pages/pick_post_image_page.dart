@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
@@ -30,7 +31,7 @@ class PickPostImagePage extends StatelessWidget {
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text('image'),
+        title: whiteBoldText(text: 'Image'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context))

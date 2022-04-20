@@ -9,6 +9,7 @@ import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/others.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 final searchProvider = ChangeNotifierProvider(
   (ref) => UserSearchModel()
@@ -33,7 +34,9 @@ class UserSearchModel extends ChangeNotifier {
 
   Future<void> operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
     if (searchTerm.length > maxSearchLength ) {
-      showBasicFlutterToast(context: context, msg: maxSearchLength.toString() + '文字未満で検索してください' );
+      final x = maxSearchLength.toString();
+      final L10n l10n = returnL10n(context: context)!;
+      showBasicFlutterToast(context: context, msg: l10n.searchLimitMsg(x) );
     } else if (searchTerm.isNotEmpty) {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);

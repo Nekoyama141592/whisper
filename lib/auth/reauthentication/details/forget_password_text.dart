@@ -27,7 +27,7 @@ class ForgetPasswordText extends StatelessWidget {
             final currentUser = FirebaseAuth.instance.currentUser;
             final String email = currentUser!.email!;
             await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-            voids.showBasicFlutterToast(context: context, msg: email + 'にメールを送信しました');
+            voids.showBasicFlutterToast(context: context, msg: l10n.sendedEmail(email));
           },
           child: Text(
             l10n.forgetPassword,

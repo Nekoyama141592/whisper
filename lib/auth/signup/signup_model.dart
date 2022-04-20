@@ -21,6 +21,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
+import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
@@ -87,9 +88,10 @@ class SignupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signup(BuildContext context) async {
+  Future<void> signup({ required BuildContext context}) async {
+    final L10n l10n = returnL10n(context: context)!;
     if (commonPasswords.contains(password)) {
-      voids.showBasicFlutterToast(context: context, msg: 'ありふれたパスワードです。変更してください' );
+      voids.showBasicFlutterToast(context: context, msg: l10n.commonPassword );
     } else if (userName.length > maxSearchLength ) {
       voids.maxSearchLengthAlert(context: context,isUserName: true);
     }else {
@@ -191,64 +193,45 @@ class SignupModel extends ChangeNotifier {
   }
 
   void showGenderCupertinoActionSheet({ required BuildContext context}) {
+    final L10n l10n = returnL10n(context: context)!;
     showCupertinoModalPopup(
       context: context, 
       builder: (innerContext) {
+        final String male = l10n.male;
+        final String female = l10n.female;
+        final String others = l10n.others;
+        final String noAnswer = l10n.noAnswer;
         return CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
-              child: Text(
-                '男性',
-                style: TextStyle(
-                  color: Theme.of(innerContext).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
+              child: PositiveText(text: male ),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.male);
-                displayGenderNotifier.value = '男性';
+                displayGenderNotifier.value = male;
                 Navigator.pop(innerContext);
               }, 
             ),
             CupertinoActionSheetAction(
-              child: Text(
-                '女性',
-                style: TextStyle(
-                  color: Theme.of(innerContext).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
+              child: PositiveText(text: female),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.female);
-                displayGenderNotifier.value = '女性';
+                displayGenderNotifier.value = female;
                 Navigator.pop(innerContext);
               }, 
             ),
             CupertinoActionSheetAction(
-              child: Text(
-                'その他',
-                style: TextStyle(
-                  color: Theme.of(innerContext).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
+              child: PositiveText(text: others),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.others);
-                displayGenderNotifier.value = 'その他';
+                displayGenderNotifier.value = others;
                 Navigator.pop(innerContext);
               }, 
             ),
             CupertinoActionSheetAction(
-              child: Text(
-                '無回答',
-                style: TextStyle(
-                  color: Theme.of(innerContext).highlightColor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
+              child: PositiveText(text: noAnswer),
               onPressed: () {
                 gender = returnGenderString(gender: Gender.noAnswer);
-                displayGenderNotifier.value = '無回答';
+                displayGenderNotifier.value = noAnswer;
                 Navigator.pop(innerContext);
               }, 
             )

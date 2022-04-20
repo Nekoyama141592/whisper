@@ -15,6 +15,7 @@ import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/main_model.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
@@ -74,8 +75,9 @@ class PostSearchModel extends ChangeNotifier{
   }
 
   Future<void> search({ required BuildContext context ,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
+    final L10n l10n = returnL10n(context: context)!;
     if (searchTerm.length > maxSearchLength ) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( maxSearchLength.toString() + '文字未満で検索してください')));
+      showBasicFlutterToast(context: context, msg: l10n.searchLimitMsg(maxSearchLength.toString()) );
     } else if (searchTerm.isNotEmpty) {
       startLoading();
       results = [];

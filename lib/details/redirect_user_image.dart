@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/l10n/l10n.dart';
 // components
 import 'user_image.dart';
 // constants
@@ -34,12 +36,13 @@ class RedirectUserImage extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {
     final userShowModel = ref.watch(userShowProvider);
+    final L10n l10n = returnL10n(context: context)!;
     return InkWell(
       onTap: () async {
         if (userShowModel.passiveUid != passiveUid) {
           final DocumentSnapshot<Map<String,dynamic>> givePassiveUserDoc = passiveUid == mainModel.currentWhisperUser.uid ? mainModel.currentUserDoc : await FirebaseFirestore.instance.collection(usersFieldKey).doc(passiveUid).get();
           if (givePassiveUserDoc.exists == false) {
-            voids.showBasicFlutterToast(context: context, msg: 'ユーザーが取得できませんでした');
+            voids.showBasicFlutterToast(context: context, msg: l10n.cannotGetUser );
           } else {
             routes.toUserShowPage(context: context, mainModel: mainModel );
             await userShowModel.init( passiveUserDoc:givePassiveUserDoc,givePrefs: mainModel.prefs);
@@ -51,7 +54,7 @@ class RedirectUserImage extends ConsumerWidget {
       onLongPress: mainModel.currentWhisperUser.isAdmin ?
       () async {
         await FlutterClipboard.copy(passiveUid);
-        voids.showBasicFlutterToast(context: context, msg: 'Uidをコピーしました');
+        voids.showBasicFlutterToast(context: context, msg: l10n.copiedUid );
       } : null,
       child: UserImage(padding: padding, length: length, userImageURL: userImageURL,uid: passiveUid,mainModel: mainModel, )
     );

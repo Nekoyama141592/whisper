@@ -6,6 +6,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:whisper/constants/ints.dart';
 // model
 import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/constants/widgets.dart';
 
 class RecordingTime extends StatelessWidget {
   @override 
@@ -29,13 +30,7 @@ class RecordingTime extends StatelessWidget {
         );
         return Column(
           children: [
-            Text(
-              displayTime,
-              style: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold
-              ),
-            ),
+            boldText(text: displayTime),
             Text('(Max 1:00)',style: TextStyle(fontSize: fontSize!/2.5,),)
           ],
         );

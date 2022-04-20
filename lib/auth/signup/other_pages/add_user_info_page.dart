@@ -100,7 +100,7 @@ class AddUserInfoPage extends StatelessWidget {
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
               press: () async => signupModel.userName.isEmpty || signupModel.gender.isEmpty || !signupModel.isCheckedNotifier.value ?
-                voids.showBasicFlutterToast(context: context, msg: l10n.inputNotCompleted ) : await signupModel.signup(context),
+                voids.showBasicFlutterToast(context: context, msg: l10n.inputNotCompleted ) : await signupModel.signup(context: context),
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary
             ),

@@ -345,6 +345,7 @@ Future<void> updateUserInfo({ required BuildContext context , required WhisperUs
 }
 
 void showCommentOrReplyDialogue({ required BuildContext context, required String title,required TextEditingController textEditingController, required void Function(String)? onChanged,required void Function()? oncloseButtonPressed ,required Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? send }) {
+  final L10n l10n = returnL10n(context: context)!;
   context.showFlashBar(
     persistent: true,
     backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -360,8 +361,8 @@ void showCommentOrReplyDialogue({ required BuildContext context, required String
         onChanged: onChanged,
         maxLines: maxLine,
         decoration: InputDecoration(
-          suffixIcon: IconButton(onPressed: oncloseButtonPressed, icon: Icon(Icons.close)),
-          hintText: '最大' + maxCommentOrReplyLength.toString() + '文字',
+          suffixIcon: InkWell(onTap: oncloseButtonPressed, child: Icon(Icons.close)),
+          hintText: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()),
           hintStyle: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).scaffoldBackgroundColor.withOpacity(cardOpacity))
         ),
       )
@@ -408,10 +409,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
               children: [
                 TextSpan(
                   text: link,
-                  style: TextStyle(
-                    color: Theme.of(context).highlightColor,
-                    fontWeight: FontWeight.bold
-                  ),
+                  style: textStyle(context: context),
                   recognizer: TapGestureRecognizer()..onTap = () async {
                     final L10n l10n = returnL10n(context: context)!;
                     await FlutterClipboard.copy(link).then((_) {
@@ -479,18 +477,15 @@ void onDeleteLinkButtonPressed({ required ValueNotifier<List<WhisperLink>> whisp
 }
 
 void maxSearchLengthAlert ({ required BuildContext context,required bool isUserName }) {
-  if (isUserName == true) {
-    showBasicFlutterToast(context: context, msg: 'ユーザー名は' + maxSearchLength.toString() + '文字以内にしてください' );
-  } else {
-    showBasicFlutterToast(context: context, msg: maxSearchLength.toString() + '文字以内にしてください' );
-  }
+  final L10n l10n = returnL10n(context: context)!;
+  showBasicFlutterToast(context: context, msg: l10n.userNameLimit(maxSearchLength.toString()));
 } 
 
-void alertMaxLinksLength({ required BuildContext context, }) => showBasicFlutterToast(context: context, msg: 'リンクは' + maxLinksLength.toString() + '個以内にしてください' );
+void alertMaxLinksLength({ required BuildContext context, }) => showBasicFlutterToast(context: context, msg: returnL10n(context: context)!.linkLimit(maxLinksLength.toString()) );
 
-void alertMaxBioLength({ required BuildContext context, }) => showBasicFlutterToast(context: context, msg: '自己紹介は' + maxBioOrDescriptionLength.toString() + '文字以内にしてください' );
+void alertMaxBioLength({ required BuildContext context, }) => showBasicFlutterToast(context: context, msg: returnL10n(context: context)!.bioOrDescriptionLimit(maxBioOrDescriptionLength.toString()) );
 
-void alertMaxCommentOrReplyLength({ required BuildContext context }) => showBasicFlutterToast(context: context, msg: maxCommentOrReplyLength.toString() + '以内にしてください');
+void alertMaxCommentOrReplyLength({ required BuildContext context }) => showBasicFlutterToast(context: context, msg: returnL10n(context: context)!.commentOrReplyLimit(maxCommentOrReplyLength.toString()));
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {
   final L10n l10n = returnL10n(context: context)!;

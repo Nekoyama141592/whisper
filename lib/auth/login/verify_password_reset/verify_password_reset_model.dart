@@ -20,7 +20,7 @@ class VerifyPasswordResetModel extends ChangeNotifier {
     try{
       await instance.sendPasswordResetEmail(email: email);
       Navigator.pop(context);
-      voids.showBasicFlutterToast(context: context, msg: email + 'にメールを送りました');
+      voids.showBasicFlutterToast(context: context, msg: l10n.sendedEmail(email));
     } on FirebaseAuthException catch(e) {
       print(e.toString());
       switch(e.code) {

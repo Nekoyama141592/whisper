@@ -8,6 +8,7 @@ import 'package:whisper/auth/verify/verify_model.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/widgets.dart';
+import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/l10n/l10n.dart';
 
@@ -40,10 +41,7 @@ class VerifyPage extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: defaultPadding(context: context)),
-              Text(
-                userEmail + 'にメールを送信しました。ご確認下さい。',
-                style: textStyle(context: context)
-              ),
+              PositiveText(text: l10n.pleaseVerifyEmail(userEmail)),
               SizedBox(height: defaultPadding(context: context)),
               boldText(text: l10n.emailVerified),
               SizedBox(height: defaultPadding(context: context)),
