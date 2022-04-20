@@ -36,7 +36,7 @@ const List<String> commonPasswords = [
   'qwertyui'
 ];
 const List<String> notUseOnField = ['.','[',']','*','`'];
-List<String> reportContents({ required BuildContext context }) {
+List<String> returnReportContents({ required BuildContext context }) {
   final L10n l10n = returnL10n(context: context)!;
   return
   [
