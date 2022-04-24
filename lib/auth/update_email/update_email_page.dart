@@ -31,7 +31,7 @@ class UpdateEmailPage extends ConsumerWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldText(text: l10n.updateEmail)
+        title: whiteBoldHeaderText(context: context, text: l10n.updateEmail)
       ),
       body: Center(
         child: Column(

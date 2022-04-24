@@ -29,7 +29,7 @@ class MutesUsersPage extends ConsumerWidget {
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldText(text: l10n.muteUsers)
+        title: whiteBoldHeaderText(context: context, text: l10n.muteUsers)
       ),
       body: mutesUsersModel.isLoading ?
       Loading()

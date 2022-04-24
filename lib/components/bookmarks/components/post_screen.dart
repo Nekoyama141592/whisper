@@ -52,7 +52,7 @@ class PostScreen extends ConsumerWidget {
                 bookmarksModel.back();
               },
             ),
-           whiteBoldText(text: 'BookMarks')
+           whiteBoldHeaderText(context: context,text: 'BookMarks')
           ],
         ),
       ),

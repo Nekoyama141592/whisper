@@ -35,7 +35,7 @@ class UserRankingPage extends ConsumerWidget {
         top: SizedBox.shrink(), 
         header: Padding(
           padding: EdgeInsets.all(defaultPadding(context: context)),
-          child: whiteBoldText(text: 'User Ranking'),
+          child: whiteBoldHeaderText(context: context, text: 'User Ranking'),
         ),
       circular: defaultPadding(context: context),
       content: userRankingModel.isLoading ?

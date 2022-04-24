@@ -75,13 +75,17 @@ MuteUser fromMapToMutesIpv6AndUid({ required Map<String,dynamic> map }) => MuteU
 
 BlockUser fromMapToBlocksIpv6AndUid({ required Map<String,dynamic> map }) => BlockUser.fromJson(map);
 
-TextStyle textStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
+TextStyle boldStyle() => TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis );
+
+TextStyle boldHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) );
+
+TextStyle focusHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
+
+TextStyle highlightHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
 
 TextStyle whiteBoldStyle() => TextStyle(fontWeight: FontWeight.bold,color: Colors.white,overflow: TextOverflow.ellipsis );
 
-TextStyle boldStyle() => TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis );
-
-TextStyle cancelStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
+TextStyle whiteBoldHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold,color: Colors.white,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) );
 
 User? firebaseAuthCurrentUser() => FirebaseAuth.instance.currentUser;
 

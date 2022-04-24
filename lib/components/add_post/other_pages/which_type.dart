@@ -34,7 +34,7 @@ class WhichType extends ConsumerWidget {
       top: SizedBox.shrink(),
       header: Padding(
         padding: EdgeInsets.all(defaultPadding(context: context)),
-        child: boldText(text: 'WhichType'),
+        child: whiteBoldHeaderText(context: context,text: 'WhichType'),
       ),
       content: Content(mainModel: mainModel, addPostModel: addPostModel),
       circular: defaultHeaderTextSize(context: context),

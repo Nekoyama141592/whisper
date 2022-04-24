@@ -38,7 +38,7 @@ class AccountPage extends ConsumerWidget {
     return ScaffoldMessenger(
       child: Scaffold(
         appBar: AppBar(
-          title: whiteBoldText(text: l10n.account)
+          title: whiteBoldHeaderText(context: context, text: l10n.account)
         ),
         body: Column(
           children: [

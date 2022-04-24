@@ -34,7 +34,7 @@ class ShowDescriptionPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldText(text: l10n.bio),
+        title: whiteBoldHeaderText(context: context, text: l10n.bio),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context) )

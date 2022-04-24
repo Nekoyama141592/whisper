@@ -386,7 +386,7 @@ void showFlashDialogue({ required BuildContext context,required Widget content, 
     negativeActionBuilder: (context, controller, _) {
       return TextButton(
         onPressed: () async => await controller.dismiss(),
-        child: Text(cancelText(context: context),style: cancelStyle(context: context)),
+        child: focusHeaderText(context: context, text: cancelText(context: context))
       );
     },
     positiveActionBuilder: positiveActionBuilder,
@@ -409,7 +409,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
               children: [
                 TextSpan(
                   text: link,
-                  style: textStyle(context: context),
+                  style: highlightHeaderStyle(context: context),
                   recognizer: TapGestureRecognizer()..onTap = () async {
                     final L10n l10n = returnL10n(context: context)!;
                     await FlutterClipboard.copy(link).then((_) {
@@ -449,7 +449,7 @@ void showLinkCupertinoModalPopup({ required BuildContext context,required List<W
       builder: (innerContext) {
         final List<Widget> actions = 
         whisperLinks.map((whisperLink) => CupertinoActionSheetAction(
-          child: Text(whisperLink.label,style: textStyle(context: context),),
+          child: PositiveText(text: whisperLink.label),
           onPressed: () => showLinkDialogue(context: context, link: whisperLink.url )
         ) ).toList();
         actions.add(CupertinoActionSheetAction(

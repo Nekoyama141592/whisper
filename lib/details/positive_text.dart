@@ -14,6 +14,6 @@ class PositiveText extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return Text(text,style: textStyle(context: context),);
+    return Text(text,style: highlightHeaderStyle(context: context),);
   }
 }

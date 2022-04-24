@@ -29,7 +29,7 @@ class Loading extends StatelessWidget {
           Center(
             child: Padding(
               padding: EdgeInsets.all(defaultPadding(context: context)),
-              child: boldText(text: loadingText)
+              child: boldHeaderText(context: context,text: loadingText)
             ),
           ),
           Center(child: CircularProgressIndicator())
