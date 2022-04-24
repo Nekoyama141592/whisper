@@ -115,8 +115,8 @@ class RepliesModel extends ChangeNotifier {
             voids.showCustomFlutterToast(backgroundColor: toastColor, msg: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()) );
             controller.dismiss();
           } else {
-            await makeReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
-            // after makeReply reset reply
+            await createReply(whisperPost: whisperPost, mainModel: mainModel, whisperComment: whisperComment);
+            // after createReply reset reply
             reply = '';
             replyEditingController.text = '';
             if (postCommentReplyDocs.isNotEmpty) {
@@ -217,21 +217,21 @@ class RepliesModel extends ChangeNotifier {
     refreshController.loadComplete();
   }
 
-  Future makeReply({ required Post whisperPost,required MainModel mainModel, required WhisperPostComment whisperComment}) async {
+  Future<void> createReply({ required Post whisperPost,required MainModel mainModel, required WhisperPostComment whisperComment}) async {
     final commentId = whisperComment.postCommentId ;
     final currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final String postCommentReplyId = generatePostCommentReplyId(uid: mainModel.userMeta.uid);
-    final WhisperReply newWhisperReply = makeWhisperReply(postCommentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
+    final WhisperReply newWhisperReply = createWhisperReply(postCommentId: commentId, currentWhisperUser: currentWhisperUser, whisperPost: whisperPost, now: now, replyId: postCommentReplyId );
     await returnPostCommentReplyDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId, postCommentReplyId: postCommentReplyId ).set(newWhisperReply.toJson());
     await voids.createUserMetaUpdateLog(mainModel: mainModel);
     // notification
     if (whisperComment.uid != currentWhisperUser.uid) {
-      await makeReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
+      await createReplyNotification(elementId: commentId, mainModel: mainModel, whisperComment: whisperComment, newWhisperReply: newWhisperReply);
     }
   }
 
-  WhisperReply makeWhisperReply({ required String postCommentId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
+  WhisperReply createWhisperReply({ required String postCommentId,required  WhisperUser currentWhisperUser, required Post whisperPost, required Timestamp now, required String replyId}) {
     final WhisperReply whisperReply = WhisperReply(
       accountName: currentWhisperUser.accountName,
       createdAt: now,
@@ -270,7 +270,7 @@ class RepliesModel extends ChangeNotifier {
     return whisperReply;
   }
 
-  Future<void> makeReplyNotification({ required String elementId, required MainModel mainModel, required WhisperPostComment whisperComment, required WhisperReply newWhisperReply }) async {
+  Future<void> createReplyNotification({ required String elementId, required MainModel mainModel, required WhisperPostComment whisperComment, required WhisperReply newWhisperReply }) async {
     final currentWhisperUser = mainModel.currentWhisperUser;
     final String notificationId = returnNotificationId(notificationType: NotificationType.postCommentReplyNotification );
     final comment = whisperComment.comment;

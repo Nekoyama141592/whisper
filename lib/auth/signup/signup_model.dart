@@ -100,7 +100,7 @@ class SignupModel extends ChangeNotifier {
         final String uid = user!.uid;
         final String storageImageName = strings.returnStorageUserImageName();
         final String imageURL = await voids.uploadUserImageAndGetURL(uid: uid, croppedFile: croppedFile,storageImageName: storageImageName );
-        await addUserToFireStore(uid: uid, imageURL: imageURL,);
+        await createUser(uid: uid, imageURL: imageURL,);
         await createUserMeta(uid: uid);
         routes.toVerifyPage(context);
       } on FirebaseAuthException catch(e) {
@@ -127,7 +127,7 @@ class SignupModel extends ChangeNotifier {
     }
   }
   
-  Future<void> addUserToFireStore({ required String uid, required String imageURL, }) async {
+  Future<void> createUser({ required String uid, required String imageURL, }) async {
     final List<String> searchWords = returnSearchWords(searchTerm: userName);
     final Timestamp now = Timestamp.now();
     Map<String,dynamic> whisperUserMap = WhisperUser(

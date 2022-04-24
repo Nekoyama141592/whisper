@@ -104,8 +104,8 @@ class CommentsModel extends ChangeNotifier {
             voids.showBasicFlutterToast(context: context, msg: l10n.commentOrReplyLimit(maxCommentOrReplyLength.toString()) );
             controller.dismiss();
           } else {
-            await makeComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
-            // after makeComment reset comment
+            await createComment(context: context, whisperPost: whisperPost, mainModel: mainModel);
+            // after createComment reset comment
             comment = '';
             commentEditingController.text = '';
             if (commentDocs.isNotEmpty) {
@@ -125,20 +125,20 @@ class CommentsModel extends ChangeNotifier {
   }
 
   
-  Future<void> makeComment({ required BuildContext context, required Post whisperPost, required MainModel mainModel }) async {
-    final commentMap = makeCommentMap(mainModel: mainModel, whisperPost: whisperPost);
+  Future<void> createComment({ required BuildContext context, required Post whisperPost, required MainModel mainModel }) async {
+    final commentMap = createCommentMap(mainModel: mainModel, whisperPost: whisperPost);
     final WhisperPostComment whisperComment = WhisperPostComment.fromJson(commentMap);
     await returnPostCommentDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, postCommentId: whisperComment.postCommentId).set(whisperComment.toJson());
     await voids.createUserMetaUpdateLog(mainModel: mainModel);
     // notification
     if (whisperPost.uid != mainModel.currentWhisperUser.uid ) {
       final Timestamp now = Timestamp.now();
-      await makeCommentNotification( mainModel: mainModel, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
+      await createCommentNotification( mainModel: mainModel, whisperComment: whisperComment,whisperPost: whisperPost, now: now );
     }
   }
 
 
-  Map<String,dynamic> makeCommentMap({ required MainModel mainModel, required Post whisperPost }) {
+  Map<String,dynamic> createCommentMap({ required MainModel mainModel, required Post whisperPost }) {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
     final WhisperPostComment whisperComment = WhisperPostComment(
@@ -179,7 +179,7 @@ class CommentsModel extends ChangeNotifier {
     return commentMap;
   }
 
-  Future<void> makeCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperPostComment whisperComment, required Timestamp now }) async {
+  Future<void> createCommentNotification({ required Post whisperPost, required MainModel mainModel, required WhisperPostComment whisperComment, required Timestamp now }) async {
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     final String notificationId = returnNotificationId(notificationType: NotificationType.postCommentNotification);
     try{

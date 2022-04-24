@@ -168,7 +168,7 @@ class AddPostModel extends ChangeNotifier {
       final String storagePostName = returnStoragePostName();
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
       // post firestore
-      await addPostToFirebase(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId,storagePostName: storagePostName );
+      await createPost(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId,storagePostName: storagePostName );
       postTitleNotifier.value = '';
       croppedFile = null;
       isCroppedNotifier.value = false;
@@ -184,7 +184,7 @@ class AddPostModel extends ChangeNotifier {
     return downloadURL;
   }
   
-  Future<void> addPostToFirebase({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId,required String storagePostName}) async {
+  Future<void> createPost({ required BuildContext context, required MainModel mainModel, required String imageURL, required String audioURL,required String postId,required String storagePostName}) async {
     // process set
     final WhisperUser currentWhisperUser = mainModel.currentWhisperUser;
     final Timestamp now = Timestamp.now();
