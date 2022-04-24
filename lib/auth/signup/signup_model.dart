@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:io';
 // material
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 // packages
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:whisper/constants/ints.dart';
@@ -171,7 +170,7 @@ class SignupModel extends ChangeNotifier {
       walletAddresses: [],
       walletConnected: false
     ).toJson();
-    await FirebaseFirestore.instance.collection(usersFieldKey).doc(uid).set(whisperUserMap);
+    await returnUserDocRef(uid: uid).set(whisperUserMap);
   }
 
   Future<void> createUserMeta({ required String uid }) async {

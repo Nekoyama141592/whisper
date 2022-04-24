@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
-// constants
 import 'package:whisper/constants/routes.dart' as routes;
 
 final verifyProvider = ChangeNotifierProvider(
