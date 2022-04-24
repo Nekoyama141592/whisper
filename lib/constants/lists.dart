@@ -67,7 +67,7 @@ List<String> returnReportContents({ required BuildContext context }) {
   l10n.defamation,
   l10n.counterfeitGoods,
   l10n.otherLegalIssues,
-  l10n.sexualOrViolentIcons
+  l10n.sexualOrViolentIcon
 ];
 }
 List<String> returnSearchWords({ required String searchTerm }) {

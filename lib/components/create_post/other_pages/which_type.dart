@@ -80,7 +80,7 @@ class Content extends StatelessWidget {
                 text: l10n.postingOfAdvertisements,
                 widthRate: 0.8,
                 fontSize: defaultHeaderTextSize(context: context),
-                press: () => showBasicFlutterToast(context: context, msg: l10n.scheduledToBeMounted ),
+                press: () => showBasicFlutterToast(context: context, msg: l10n.toBeImplemented ),
                 textColor: Colors.black, 
                 buttonColor: Theme.of(context).colorScheme.secondary
               ),

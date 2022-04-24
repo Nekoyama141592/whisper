@@ -90,7 +90,7 @@ class SignupPage extends ConsumerWidget {
                                     padding: EdgeInsets.symmetric(
                                       vertical: defaultPadding(context: context)
                                     ),
-                                    child: boldText(text: l10n.chooseImage)
+                                    child: boldText(text: l10n.selectImage)
                                   )
                                 ],
                               ),
@@ -129,7 +129,7 @@ class SignupPage extends ConsumerWidget {
                             //   }
                             // },
                             press: () => signupModel.croppedFile == null ? 
-                              showBasicFlutterToast(context: context, msg: l10n.pleaseChooseImage) : routes.toAddUserInfoPage(context, signupModel),
+                              showBasicFlutterToast(context: context, msg: l10n.pleaseSelectImage) : routes.toAddUserInfoPage(context, signupModel),
                             textColor: Colors.white,
                             buttonColor: kSecondaryColor,
                           ),

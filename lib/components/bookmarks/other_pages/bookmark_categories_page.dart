@@ -69,7 +69,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
           top: SizedBox.shrink(), 
           header: Padding(
           padding: EdgeInsets.all(defaultPadding(context: context)),
-          child: whiteBoldHeaderText(context: context,text: l10n.chooseCategory ),
+          child: whiteBoldHeaderText(context: context,text: l10n.selectCategory ),
         ),
         circular: height/32.0,
         content: ListView.builder(

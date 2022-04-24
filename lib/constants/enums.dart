@@ -4,7 +4,7 @@ enum CommentsState {isOpen, isLocked}
 
 enum SortState { byLikeUidCount, byNewestFirst,byOldestFirst }
 
-enum Gender { male, female, others, noAnswer }
+enum Gender { male, female, others, noResponse }
 
 // use on firestore
 enum PostState { basic, repost}

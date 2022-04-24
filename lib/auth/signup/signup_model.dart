@@ -199,7 +199,7 @@ class SignupModel extends ChangeNotifier {
         final String male = l10n.male;
         final String female = l10n.female;
         final String others = l10n.others;
-        final String noAnswer = l10n.noAnswer;
+        final String noAnswer = l10n.noResponse;
         return CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
@@ -229,7 +229,7 @@ class SignupModel extends ChangeNotifier {
             CupertinoActionSheetAction(
               child: PositiveText(text: noAnswer),
               onPressed: () {
-                gender = returnGenderString(gender: Gender.noAnswer);
+                gender = returnGenderString(gender: Gender.noResponse);
                 displayGenderNotifier.value = noAnswer;
                 Navigator.pop(innerContext);
               }, 

@@ -91,7 +91,7 @@ class PostFutures extends ChangeNotifier {
     return TextButton(
       onPressed: () async {
         if (mainModel.bookmarkPostCategoryTokenIdNotifier.value.isEmpty) {
-          await voids.showBasicFlutterToast(context: context, msg: l10n.chooseCategory );
+          await voids.showBasicFlutterToast(context: context, msg: l10n.selectCategory );
         } else {
           // process UI
           final Timestamp now = Timestamp.now();
