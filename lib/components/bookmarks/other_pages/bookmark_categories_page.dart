@@ -62,7 +62,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
             ),
             onChanged: (text) => bookmarksModel.newLabel = text,
           );
-          voids.showFlashDialogue(context: context, content: content, titleText: l10n.addCategory, positiveActionBuilder: positiveActionBuilder);
+          voids.showFlashDialogue(context: context, content: content, titleText: l10n.createCategory, positiveActionBuilder: positiveActionBuilder);
         },
       ),
       body: GradientScreen(
