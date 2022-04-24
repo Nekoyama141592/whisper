@@ -20,7 +20,7 @@ import 'package:whisper/components/home/home.dart';
 import 'auth/signup/signup_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/components/search/search_page.dart';
-import 'package:whisper/components/add_post/other_pages/which_type.dart';
+import 'package:whisper/components/create_post/other_pages/which_type.dart';
 import 'package:whisper/components/my_profile/my_profile_page.dart';
 // models
 import 'package:whisper/main_model.dart';

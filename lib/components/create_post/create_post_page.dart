@@ -8,19 +8,19 @@ import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/main_model.dart';
 // model
-import 'add_post_model.dart';
-import 'package:whisper/components/add_post/components/add_post_content/add_post_content.dart';
+import 'create_post_model.dart';
+import 'package:whisper/components/create_post/components/components/create_post_content.dart';
 
-class AddPostPage extends StatelessWidget {
+class CreatePostPage extends StatelessWidget {
 
-  AddPostPage({
+  CreatePostPage({
     Key? key,
     required this.mainModel,
     required this.addPostModel
   }) : super(key: key);
 
   final MainModel mainModel;
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   
   @override  
   Widget build(BuildContext context) {

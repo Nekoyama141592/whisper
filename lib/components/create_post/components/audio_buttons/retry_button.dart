@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/doubles.dart';
 // components
-import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/audio_button.dart';
 // model
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 
 class RetryButton extends StatelessWidget {
 
   RetryButton({ Key? key,required this.addPostModel, required this.text}) : super(key: key);
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   final String text;
   @override  
   Widget build(BuildContext context) {

@@ -32,16 +32,16 @@ import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/progress_notifier.dart';
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
+import 'package:whisper/components/create_post/components/notifiers/create_post_state_notifier.dart';
 // pages
 import 'package:whisper/links/post_links/links_page.dart';
 
 final addPostProvider = ChangeNotifierProvider(
-  (ref) => AddPostModel()
+  (ref) => CreatePostModel()
 );
 
 
-class AddPostModel extends ChangeNotifier {
+class CreatePostModel extends ChangeNotifier {
   
   final postTitleNotifier = ValueNotifier<String>('');
   late AudioPlayer audioPlayer;
@@ -52,7 +52,7 @@ class AddPostModel extends ChangeNotifier {
   // notifiers
   final progressNotifier = ProgressNotifier();
   final playButtonNotifier = PlayButtonNotifier();
-  final addPostStateNotifier = AddPostStateNotifier();
+  final addPostStateNotifier = CreatePostStateNotifier();
   final isCroppedNotifier = ValueNotifier<bool>(false);
   // timer
   final stopWatchTimer = StopWatchTimer();
@@ -64,15 +64,15 @@ class AddPostModel extends ChangeNotifier {
   CommentsState commentsState = CommentsState.isOpen;
   // link 
   final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
-  AddPostModel() {
+  CreatePostModel() {
     init();
   }
 
   void init() => audioPlayer = AudioPlayer();
 
-  void startLoading() => addPostStateNotifier.value = AddPostState.uploading;
+  void startLoading() => addPostStateNotifier.value = CreatePostState.uploading;
 
-  void endLoading() => addPostStateNotifier.value = AddPostState.uploaded;
+  void endLoading() => addPostStateNotifier.value = CreatePostState.uploaded;
 
   Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
@@ -126,15 +126,15 @@ class AddPostModel extends ChangeNotifier {
   }
 
   Future<void> onRecordButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
-    if (!(addPostStateNotifier.value == AddPostState.recording)) {
+    if (!(addPostStateNotifier.value == CreatePostState.recording)) {
       await startRecording(context: context,mainModel: mainModel);
-      addPostStateNotifier.value = AddPostState.recording;
+      addPostStateNotifier.value = CreatePostState.recording;
     } else {
       audioRecorder.stop();
       stopMeasure();
       await setAudio( filePath:filePath);
       audioFile = File(filePath);
-      addPostStateNotifier.value = AddPostState.recorded;
+      addPostStateNotifier.value = CreatePostState.recorded;
       voids.listenForStatesForAddPostModel(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier);
     }
   }
@@ -149,7 +149,7 @@ class AddPostModel extends ChangeNotifier {
 
   void onRecordAgainButtonPressed() {
     postTitleNotifier.value = '';
-    addPostStateNotifier.value = AddPostState.initialValue;
+    addPostStateNotifier.value = CreatePostState.initialValue;
   }
 
   Future<void> onUploadButtonPressed({ required BuildContext context, required MainModel mainModel }) async {
@@ -243,7 +243,7 @@ class AddPostModel extends ChangeNotifier {
       // process UI
       mainModel.currentWhisperUser.postCount += plusOne;
       await returnPostDocRef(postCreatorUid: currentWhisperUser.uid, postId: postId).set(postMap);
-      addPostStateNotifier.value = AddPostState.uploaded;
+      addPostStateNotifier.value = CreatePostState.uploaded;
       await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
   }
 

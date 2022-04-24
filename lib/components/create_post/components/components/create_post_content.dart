@@ -6,18 +6,18 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/rounded_input_field.dart';
-import 'package:whisper/components/add_post/components/audio_buttons/record_button.dart';
-import 'package:whisper/components/add_post/components/audio_buttons/retry_button.dart';
-import 'package:whisper/components/add_post/components/audio_buttons/arrow_forward_button.dart';
-import 'package:whisper/components/add_post/components/add_post_content/components/indicator.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/record_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/retry_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/arrow_forward_button.dart';
+import 'package:whisper/components/create_post/components/components/details/indicator.dart';
 import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/posts/components/one_post_audio_window/one_post_audio_window.dart';
-import 'package:whisper/components/add_post/components/add_post_content/components/recording_time.dart';
+import 'package:whisper/components/create_post/components/components/details/recording_time.dart';
 // notifier
-import 'package:whisper/components/add_post/components/notifiers/add_post_state_notifier.dart';
+import 'package:whisper/components/create_post/components/notifiers/create_post_state_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 
 class AddPostContent extends StatelessWidget {
 
@@ -27,7 +27,7 @@ class AddPostContent extends StatelessWidget {
     required this.mainModel,
   }) : super(key: key);
 
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   final MainModel mainModel;
 
   @override
@@ -67,7 +67,7 @@ class AddPostContent extends StatelessWidget {
       mainModel: mainModel,
     );
     return 
-    ValueListenableBuilder<AddPostState>(
+    ValueListenableBuilder<CreatePostState>(
       valueListenable: addPostModel.addPostStateNotifier,
       builder: (_,value,__) {
         return SingleChildScrollView(
@@ -77,7 +77,7 @@ class AddPostContent extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
               ),
-              value == AddPostState.uploaded ?
+              value == CreatePostState.uploaded ?
               Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: height/75.0
@@ -97,22 +97,22 @@ class AddPostContent extends StatelessWidget {
                 child: SvgPicture.asset(
                   'assets/svgs/recording-bro.svg',
                   height: 
-                  value != AddPostState.recorded && value != AddPostState.uploaded ?
+                  value != CreatePostState.recorded && value != CreatePostState.uploaded ?
                   size.height * 0.4
                   : size.height * 0.2,
                 ),
               ),
               
-              value == AddPostState.uploading ?
+              value == CreatePostState.uploading ?
               Indicator()
-              : value != AddPostState.recorded && value != AddPostState.uploaded ?
+              : value != CreatePostState.recorded && value != CreatePostState.uploaded ?
               Column(
                 children: [
                   RecordButton(mainModel: mainModel, addPostModel: addPostModel)
                 ],
               )
               
-              : value != AddPostState.uploaded ?
+              : value != CreatePostState.uploaded ?
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -121,9 +121,9 @@ class AddPostContent extends StatelessWidget {
                 ],
               )
               : RetryButton(addPostModel: addPostModel, text: l10n.nextPost),
-              RecordingTime(addPostModel: addPostModel, fontSize: value != AddPostState.recorded ? height/12.0 : height/24.0),
+              RecordingTime(addPostModel: addPostModel, fontSize: value != CreatePostState.recorded ? height/12.0 : height/24.0),
             
-              value == AddPostState.recorded ?
+              value == CreatePostState.recorded ?
               Column(
                 children: [
                   RoundedInputField(
@@ -145,7 +145,7 @@ class AddPostContent extends StatelessWidget {
                   onePostAudioWindow
                 ],
               ): SizedBox(),
-              value == AddPostState.uploaded ?
+              value == CreatePostState.uploaded ?
               onePostAudioWindow : SizedBox.shrink()
             ],
           ),

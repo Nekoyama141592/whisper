@@ -16,7 +16,7 @@ import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 
 class WhichType extends ConsumerWidget {
 
@@ -50,7 +50,7 @@ class Content extends StatelessWidget {
   }) : super(key: key);
 
   final MainModel mainModel;
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

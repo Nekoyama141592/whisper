@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/doubles.dart';
 // components
-import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/audio_button.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/l10n/l10n.dart';
 //model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 
 class UploadButton extends StatelessWidget {
 
@@ -18,7 +18,7 @@ class UploadButton extends StatelessWidget {
     required this.mainModel,
   }) : super(key: key);
 
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context) {

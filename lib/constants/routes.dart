@@ -12,7 +12,7 @@ import 'package:whisper/auth/signup/signup_page.dart';
 import 'package:whisper/auth/verify/verify_page.dart';
 import 'package:whisper/auth/account/account_page.dart';
 import 'package:whisper/nft_owners/nft_owners_page.dart';
-import 'package:whisper/components/add_post/add_post_page.dart';
+import 'package:whisper/components/create_post/create_post_page.dart';
 import 'package:whisper/auth/is_finished/is_finished_page.dart';
 import 'package:whisper/auth/update_email/update_email_page.dart';
 import 'package:whisper/replies/replys_page.dart';
@@ -23,7 +23,7 @@ import 'package:whisper/auth/update_password/update_password_page.dart';
 import 'package:whisper/auth/signup/other_pages/add_user_info_page.dart';
 import 'package:whisper/auth/reauthentication/reauthentication_page.dart';
 import 'package:whisper/components/notifications/notifications_page.dart';
-import 'package:whisper/components/add_post/other_pages/pick_post_image_page.dart';
+import 'package:whisper/components/create_post/other_pages/pick_post_image_page.dart';
 import 'package:whisper/auth/account/other_pages/mutes_users/mutes_users_page.dart';
 import 'package:whisper/posts/components/other_pages/post_show/post_show_page.dart';
 import 'package:whisper/auth/login/verify_password_reset/verify_password_reset_page.dart';
@@ -42,7 +42,7 @@ import 'package:whisper/main_model.dart';
 import 'package:whisper/themes/themes_model.dart';
 import 'package:whisper/auth/signup/signup_model.dart';
 import 'package:whisper/auth/account/account_model.dart';
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 import 'package:whisper/components/notifications/notifications_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
@@ -94,11 +94,11 @@ void toNotificationsPage({ required BuildContext context, required MainModel mai
   Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel,notificationsModel: notificationsModel,) ));
 }
 
-void toAddPostPage ({ required BuildContext context, required AddPostModel addPostModel, required MainModel mainModel }) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage(mainModel: mainModel, addPostModel: addPostModel) ));
+void toAddPostPage ({ required BuildContext context, required CreatePostModel addPostModel, required MainModel mainModel }) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePostPage(mainModel: mainModel, addPostModel: addPostModel) ));
 }
 
-void toPickPostImagePage({ required BuildContext context, required AddPostModel addPostModel, required MainModel mainModel }) {
+void toPickPostImagePage({ required BuildContext context, required CreatePostModel addPostModel, required MainModel mainModel }) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => PickPostImagePage(addPostModel: addPostModel, mainModel: mainModel,) ));
 }
 

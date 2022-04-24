@@ -1,7 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // components
-import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/audio_button.dart';
 // constants
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/doubles.dart';
@@ -9,7 +9,7 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 class ArrowForwardButton extends StatelessWidget {
 
   ArrowForwardButton({
@@ -19,7 +19,7 @@ class ArrowForwardButton extends StatelessWidget {
     required this.text,
     
   }) : super(key: key);
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   final MainModel mainModel;
   final String text;
   

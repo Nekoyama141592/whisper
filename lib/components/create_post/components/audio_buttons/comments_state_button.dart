@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:whisper/constants/doubles.dart';
 // components
-import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/audio_button.dart';
 //model
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 
 class CommentsStateButton extends StatelessWidget {
 
@@ -14,7 +14,7 @@ class CommentsStateButton extends StatelessWidget {
     required this.addPostModel
   }) : super(key: key);
 
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
 
   @override 
   Widget build(BuildContext context) {

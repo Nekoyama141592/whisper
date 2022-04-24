@@ -1,9 +1,9 @@
 // material
 import 'package:flutter/material.dart';
 // components
-import 'package:whisper/components/add_post/components/audio_buttons/audio_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/audio_button.dart';
 // model
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
@@ -16,7 +16,7 @@ class AddLinkButton extends StatelessWidget {
     required this.addPostModel
   }) : super(key: key);
 
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
 
   @override 
   

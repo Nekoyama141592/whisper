@@ -5,13 +5,13 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/rounded_button.dart';
-import 'package:whisper/components/add_post/components/audio_buttons/upload_button.dart';
-import 'package:whisper/components/add_post/components/audio_buttons/comments_state_button.dart';
-import 'package:whisper/components/add_post/components/audio_buttons/add_link_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/upload_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/comments_state_button.dart';
+import 'package:whisper/components/create_post/components/audio_buttons/add_link_button.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/add_post/add_post_model.dart';
+import 'package:whisper/components/create_post/create_post_model.dart';
 
 class PickPostImagePage extends StatelessWidget {
   
@@ -21,7 +21,7 @@ class PickPostImagePage extends StatelessWidget {
     required this.mainModel
   }) : super(key: key);
 
-  final AddPostModel addPostModel;
+  final CreatePostModel addPostModel;
   final MainModel mainModel;
   
   @override 
