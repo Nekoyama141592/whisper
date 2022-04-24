@@ -1,11 +1,14 @@
 // material
 import 'package:flutter/material.dart';
+// constants
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/ints.dart';
-// constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
 // domain
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
+// l10n
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/comments/comments_model.dart';
@@ -28,7 +31,7 @@ class CommentLikeButton extends StatelessWidget {
     
     final likeCount = whisperComment.likeCount;
     final plusOneCount = likeCount + plusOne;
-
+    final L10n l10n = returnL10n(context: context)!;
     return mainModel.likePostCommentIds.contains(whisperComment.postCommentId) ?
     Row(
       children: [
@@ -36,10 +39,7 @@ class CommentLikeButton extends StatelessWidget {
           child: Icon(Icons.favorite,color: Colors.red),
           onTap: () async => await commentsModel.unlike(whisperComment: whisperComment, mainModel: mainModel)
         ),
-        Text(
-          returnJaInt(count: plusOneCount),
-          style: TextStyle(color: Colors.red)
-        )
+        likeText(text: l10n.count(plusOneCount))
       ],
     ) : Row(
       children: [
@@ -48,9 +48,7 @@ class CommentLikeButton extends StatelessWidget {
           onTap: () async => await commentsModel.like(whisperComment: whisperComment, mainModel: mainModel),
         ),
         SizedBox(width: defaultPadding(context: context)/2.0),
-        Text(
-          returnJaInt(count: likeCount)
-        )
+        Text(l10n.count(likeCount))
       ],
     );
   }

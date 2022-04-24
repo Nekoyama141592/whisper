@@ -87,6 +87,8 @@ TextStyle whiteBoldStyle() => TextStyle(fontWeight: FontWeight.bold,color: Color
 
 TextStyle whiteBoldHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold,color: Colors.white,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) );
 
+TextStyle likeStyle() => TextStyle(color: Colors.red);
+
 User? firebaseAuthCurrentUser() => FirebaseAuth.instance.currentUser;
 
 // ref

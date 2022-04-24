@@ -240,7 +240,6 @@ class CommentsModel extends ChangeNotifier {
     // processUi
     mainModel.likePostCommentIds.add(postCommentId);
     mainModel.likePostComments.add(likeComment);
-    whisperComment.likeCount += plusOne;
     notifyListeners();
     // process back
     await addLikeSubCol(whisperComment: whisperComment,activeUid: activeUid ,now: now);
@@ -260,7 +259,6 @@ class CommentsModel extends ChangeNotifier {
     // process UI
     mainModel.likePostCommentIds.remove(commentId);
     mainModel.likePostComments.remove(deleteLikeComment);
-    whisperComment.likeCount += minusOne;
     notifyListeners();
     // backend
     await returnPostCommentLikeDocRef(postCreatorUid: whisperComment.passiveUid, postId: whisperComment.postId, activeUid: mainModel.userMeta.uid,postCommentId: whisperComment.postCommentId).delete();

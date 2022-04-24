@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 // components
 import 'package:whisper/details/user_image.dart';
 import 'package:whisper/components/user_show/components/details/follow_or_edit_button.dart';
 import 'package:whisper/components/user_show/components/details/link_button.dart';
 // domain
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
+// l10n
+import 'package:whisper/l10n/l10n.dart';
 // other_pages
 import 'package:whisper/components/user_show/components/other_pages/show_bio/show_bio_page.dart';
 // models
@@ -36,6 +38,7 @@ class UserShowHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref ) {
 
     final followerCount = passiveWhisperUser.followerCount;
+    final L10n l10n = returnL10n(context: context)!;
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -113,7 +116,7 @@ class UserShowHeader extends ConsumerWidget {
                 ),
                 SizedBox(width: defaultPadding(context: context),),
                 Text(
-                  returnJaInt(count: followerCount),
+                  l10n.count(followerCount),
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

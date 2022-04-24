@@ -1,9 +1,14 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/doubles.dart';
+// constants
 import 'package:whisper/constants/ints.dart';
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/constants/widgets.dart';
+// domain
 import 'package:whisper/domain/reply/whipser_reply.dart';
+// l10n
+import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/replies/replys_model.dart';
@@ -25,6 +30,7 @@ class ReplyLikeButton extends StatelessWidget {
 
     final likeCount = whisperReply.likeCount;
     final plusOneCount = likeCount + plusOne;
+    final L10n l10n = returnL10n(context: context)!;
 
     return mainModel.likePostCommentReplyIds.contains(whisperReply.postCommentReplyId) ?
     Padding(
@@ -41,10 +47,7 @@ class ReplyLikeButton extends StatelessWidget {
             onTap: () async => await replysModel.unlike(whisperReply: whisperReply, mainModel: mainModel)
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
-          Text(
-            returnJaInt(count: plusOneCount),
-            style: TextStyle(color: Colors.red)
-          )
+          likeText(text: l10n.count(plusOneCount))
         ],
       ),
     ) : Padding(
@@ -58,9 +61,7 @@ class ReplyLikeButton extends StatelessWidget {
             onTap: () async => await replysModel.like(whisperReply: whisperReply, mainModel: mainModel),
           ),
           SizedBox(width: defaultPadding(context: context)/2.0),
-          Text(
-            returnJaInt(count: likeCount)
-          )
+          Text(l10n.count(likeCount))
         ],
       ),
     );

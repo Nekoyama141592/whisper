@@ -45,7 +45,6 @@ class PostFutures extends ChangeNotifier {
     final List<String> likePostIds = mainModel.likePostIds;
     // process UI
     likePostIds.add(postId);
-    whisperPost.likeCount += plusOne;
     notifyListeners();
     // backend
     await addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
@@ -100,7 +99,6 @@ class PostFutures extends ChangeNotifier {
           final String uid = mainModel.userMeta.uid;
           mainModel.bookmarksPostIds.add(bookmarkPost.postId);
           mainModel.bookmarkPosts.add(bookmarkPost);
-          whisperPost.bookmarkCount += plusOne;
           notifyListeners();
           await (controller as FlashController ).dismiss();
           // backend
@@ -128,7 +126,6 @@ class PostFutures extends ChangeNotifier {
     // processUI
     mainModel.bookmarksPostIds.remove(postId);
     mainModel.bookmarkPosts.remove(indexDeleteToken);
-    whisperPost.bookmarkCount += minusOne;
     notifyListeners();
     // backend
     await returnTokenDocRef(uid: mainModel.userMeta.uid, tokenId: indexDeleteToken.tokenId ).delete();
@@ -141,7 +138,6 @@ class PostFutures extends ChangeNotifier {
     // process UI
     mainModel.likePostIds.remove(postId);
     mainModel.likePosts.remove(deleteLikePostToken);
-    whisperPost.likeCount += minusOne;
     notifyListeners();
     // backend
     await returnPostLikeDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: mainModel.userMeta.uid ).delete();
