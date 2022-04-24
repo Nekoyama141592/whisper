@@ -80,7 +80,7 @@ class MuteUsersModel extends ChangeNotifier {
       builder: (innerContext) {
         final L10n l10n = returnL10n(context: context)!;
         return CupertinoAlertDialog(
-          title: boldText(text: l10n.alert),
+          title: boldText(text: l10n.warning),
           content: boldText(text: l10n.unMuteUserMsg),
           actions: [
           CupertinoDialogAction(

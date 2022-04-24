@@ -70,7 +70,7 @@ class AccountPage extends ConsumerWidget {
               title: boldText(text: l10n.muteUsers),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
-                final String title = l10n.alert;
+                final String title = l10n.warning;
                 final String content = l10n.muteUsersAlert;
                 final builder = (innerContext) {
                   return CupertinoAlertDialog(
