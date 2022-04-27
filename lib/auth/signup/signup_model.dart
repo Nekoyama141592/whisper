@@ -20,7 +20,6 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/lists.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart' as strings;
-import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 // domain
 import 'package:whisper/domain/user_meta/user_meta.dart';
@@ -40,7 +39,6 @@ class SignupModel extends ChangeNotifier {
   String email = "";
   String password = "";
   bool isObscure = true;
-  String gender = "";
   final displayGenderNotifier = ValueNotifier<String>('');
   // Checkbox
   final isCheckedNotifier = ValueNotifier<bool>(false);
@@ -93,7 +91,9 @@ class SignupModel extends ChangeNotifier {
       voids.showBasicFlutterToast(context: context, msg: l10n.commonPassword );
     } else if (userName.length > maxSearchLength ) {
       voids.maxSearchLengthAlert(context: context,isUserName: true);
-    }else {
+    } else if (userName.isEmpty || !isCheckedNotifier.value || croppedFile == null) {
+      voids.showBasicFlutterToast(context: context, msg: l10n.inputNotCompleted );
+    } else {
       try{
         UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password,);
         User? user = result.user;
@@ -179,7 +179,7 @@ class SignupModel extends ChangeNotifier {
     final UserMeta userMeta = UserMeta(
       createdAt: now,
       email: email,
-      gender: gender,
+      gender: '',
       ipv6: ipv6,
       totalAsset: initialAsset,
       uid: uid,
@@ -189,55 +189,6 @@ class SignupModel extends ChangeNotifier {
     final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(uid: uid,categoryName: unNamedString,createdAt: now,updatedAt: now,tokenId: bookmarkPostCategoryId, tokenType: bookmarkPostCategoryTokenType,imageURL: '' );
     await returnUserMetaDocRef(uid: uid).set(userMeta.toJson());
     await returnTokenDocRef(uid: uid, tokenId: bookmarkPostCategoryId ).set(bookmarkPostCategory.toJson());
-  }
-
-  void showGenderCupertinoActionSheet({ required BuildContext context}) {
-    final L10n l10n = returnL10n(context: context)!;
-    showCupertinoModalPopup(
-      context: context, 
-      builder: (innerContext) {
-        final String male = l10n.male;
-        final String female = l10n.female;
-        final String others = l10n.others;
-        final String noAnswer = l10n.noResponse;
-        return CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              child: PositiveText(text: male ),
-              onPressed: () {
-                gender = returnGenderString(gender: Gender.male);
-                displayGenderNotifier.value = male;
-                Navigator.pop(innerContext);
-              }, 
-            ),
-            CupertinoActionSheetAction(
-              child: PositiveText(text: female),
-              onPressed: () {
-                gender = returnGenderString(gender: Gender.female);
-                displayGenderNotifier.value = female;
-                Navigator.pop(innerContext);
-              }, 
-            ),
-            CupertinoActionSheetAction(
-              child: PositiveText(text: others),
-              onPressed: () {
-                gender = returnGenderString(gender: Gender.others);
-                displayGenderNotifier.value = others;
-                Navigator.pop(innerContext);
-              }, 
-            ),
-            CupertinoActionSheetAction(
-              child: PositiveText(text: noAnswer),
-              onPressed: () {
-                gender = returnGenderString(gender: Gender.noResponse);
-                displayGenderNotifier.value = noAnswer;
-                Navigator.pop(innerContext);
-              }, 
-            )
-          ],
-        );
-      }
-    );
   }
 
 }

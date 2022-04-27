@@ -53,28 +53,6 @@ class AddUserInfoPage extends StatelessWidget {
               },
               paste: (value) => signupModel.userName = value,
             ),
-            Padding(
-              padding: EdgeInsets.all(defaultPadding(context: context) ),
-              child: ValueListenableBuilder<String>(
-                valueListenable: signupModel.displayGenderNotifier,
-                builder: (_,gender,__) {
-                  return Column(
-                    children: [
-                      RoundedButton(
-                        text: l10n.gender, 
-                        widthRate: buttonWidthRate, 
-                        fontSize: defaultHeaderTextSize(context: context),
-                        press: () => signupModel.showGenderCupertinoActionSheet(context: context),
-                        textColor: Colors.white, 
-                        buttonColor: Theme.of(context).primaryColor
-                      ),
-                      SizedBox(height: defaultPadding(context: context) ),
-                      if(gender.isNotEmpty) Text(gender,style: boldStyle(),)
-                    ],
-                  );
-                }
-              ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -111,8 +89,7 @@ class AddUserInfoPage extends StatelessWidget {
               text: l10n.signUp,
               widthRate: 0.95, 
               fontSize: defaultHeaderTextSize(context: context),
-              press: () async => signupModel.userName.isEmpty || signupModel.gender.isEmpty || !signupModel.isCheckedNotifier.value ?
-                voids.showBasicFlutterToast(context: context, msg: l10n.inputNotCompleted ) : await signupModel.signup(context: context),
+              press: () async => await signupModel.signup(context: context),
               textColor: Colors.white, 
               buttonColor: Theme.of(context).colorScheme.secondary
             ),
