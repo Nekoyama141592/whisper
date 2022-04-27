@@ -89,6 +89,7 @@ TextStyle whiteBoldHeaderStyle({ required BuildContext context }) => TextStyle(f
 
 TextStyle likeStyle() => TextStyle(color: Colors.red);
 
+TextStyle highlightStyle({ required BuildContext context }) => TextStyle(color: Theme.of(context).highlightColor );
 User? firebaseAuthCurrentUser() => FirebaseAuth.instance.currentUser;
 
 // ref

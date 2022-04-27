@@ -1,15 +1,17 @@
 // material
 import 'package:flutter/material.dart';
-import 'package:whisper/constants/others.dart';
+import 'package:flutter/gestures.dart';
 // constants
-import 'package:whisper/constants/strings.dart';
+import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/doubles.dart';
+import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-// model
-import 'package:whisper/auth/signup/signup_model.dart';
-import 'package:whisper/details/positive_text.dart';
+// components
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/details/rounded_input_field.dart';
+// models
+import 'package:whisper/auth/signup/signup_model.dart';
+// l10n
 import 'package:whisper/l10n/l10n.dart';
 
 class AddUserInfoPage extends StatelessWidget {
@@ -24,7 +26,7 @@ class AddUserInfoPage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     final userNameController = TextEditingController(text: signupModel.userName);
-    final buttonWidthRate = 0.30;
+    final buttonWidthRate = 0.50;
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       body: SafeArea(
@@ -53,26 +55,24 @@ class AddUserInfoPage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(defaultPadding(context: context) ),
-              child: Center(
-                child: ValueListenableBuilder<String>(
-                  valueListenable: signupModel.displayGenderNotifier,
-                  builder: (_,gender,__) {
-                    return Column(
-                      children: [
-                        RoundedButton(
-                          text: l10n.gender, 
-                          widthRate: buttonWidthRate, 
-                          fontSize: defaultHeaderTextSize(context: context),
-                          press: () => signupModel.showGenderCupertinoActionSheet(context: context),
-                          textColor: Colors.white, 
-                          buttonColor: Theme.of(context).primaryColor
-                        ),
-                        SizedBox(height: defaultPadding(context: context) ),
-                        if(gender.isNotEmpty) Text(gender,style: TextStyle(fontWeight: FontWeight.bold),)
-                      ],
-                    );
-                  }
-                ),
+              child: ValueListenableBuilder<String>(
+                valueListenable: signupModel.displayGenderNotifier,
+                builder: (_,gender,__) {
+                  return Column(
+                    children: [
+                      RoundedButton(
+                        text: l10n.gender, 
+                        widthRate: buttonWidthRate, 
+                        fontSize: defaultHeaderTextSize(context: context),
+                        press: () => signupModel.showGenderCupertinoActionSheet(context: context),
+                        textColor: Colors.white, 
+                        buttonColor: Theme.of(context).primaryColor
+                      ),
+                      SizedBox(height: defaultPadding(context: context) ),
+                      if(gender.isNotEmpty) Text(gender,style: boldStyle(),)
+                    ],
+                  );
+                }
               ),
             ),
             Row(
@@ -87,12 +87,24 @@ class AddUserInfoPage extends StatelessWidget {
                     );
                   }
                 ),
-                TextButton(onPressed: () => voids.defaultLaungh(context: context, url: tosURL ), 
-                child: PositiveText(text: l10n.tos) ),
-                Text(l10n.and),
-                TextButton(onPressed: () => voids.defaultLaungh(context: context, url: privacyURL ), 
-                child: PositiveText(text: l10n.privacyPolicy),),
-                Text(l10n.agree)
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: l10n.tos,
+                        style: highlightStyle(context: context),
+                        recognizer: TapGestureRecognizer()..onTap = () async => await voids.defaultLaungh(context: context, url: tosURL)
+                      ),
+                      TextSpan(text: l10n.and),
+                      TextSpan(
+                        text: l10n.privacyPolicy,
+                        style: highlightStyle(context: context),
+                        recognizer: TapGestureRecognizer()..onTap = () async => await voids.defaultLaungh(context: context, url: privacyURL)
+                      ),
+                      TextSpan(text: l10n.accept),
+                    ]
+                  ),
+                )
               ],
             ),
             RoundedButton(
