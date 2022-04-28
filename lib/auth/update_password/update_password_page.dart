@@ -34,7 +34,7 @@ class UpdatePasswordPage extends ConsumerWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldHeaderText(context: context, text: l10n.updatePassword)
+        title: whiteBoldEllipsisHeaderText(context: context, text: l10n.updatePassword)
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

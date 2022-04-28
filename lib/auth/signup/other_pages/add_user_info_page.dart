@@ -73,13 +73,13 @@ class AddUserInfoPage extends StatelessWidget {
                         style: highlightDiv2Style(context: context),
                         recognizer: TapGestureRecognizer()..onTap = () async => await voids.defaultLaungh(context: context, url: tosURL)
                       ),
-                      TextSpan(text: l10n.and,style: div2Style(context: context) ),
+                      TextSpan(text: l10n.and,style: div2EllipsisStyle(context: context) ),
                       TextSpan(
                         text: l10n.privacyPolicy,
                         style: highlightDiv2Style(context: context),
                         recognizer: TapGestureRecognizer()..onTap = () async => await voids.defaultLaungh(context: context, url: privacyURL)
                       ),
-                      TextSpan(text: l10n.accept,style: div2Style(context: context) ),
+                      TextSpan(text: l10n.accept,style: div2EllipsisStyle(context: context) ),
                     ]
                   ),
                 )

@@ -34,7 +34,7 @@ class ShowDescriptionPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldHeaderText(context: context, text: l10n.bio),
+        title: whiteBoldEllipsisHeaderText(context: context, text: l10n.bio),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context) )
@@ -54,7 +54,7 @@ class ShowDescriptionPage extends ConsumerWidget {
               onChanged: (text) {
                 showBioModel.bio = text;
               },
-              style: boldStyle()
+              style: boldEllipsisStyle()
             ),
             Center(
               child: RoundedButton(text: l10n.update, fontSize: defaultHeaderTextSize(context: context), widthRate: 0.95, 
@@ -68,7 +68,7 @@ class ShowDescriptionPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              boldText(text: passiveWhisperUser.bio)
+              boldEllipsisText(text: passiveWhisperUser.bio)
             ],
           ),
         ),

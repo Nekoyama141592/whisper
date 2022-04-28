@@ -106,9 +106,9 @@ class EditPostInfoScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: height/64.0 ),
-                boldText(text: l10n.title),
+                boldEllipsisText(text: l10n.title),
                 TextFormField(
-                  style: boldStyle(),
+                  style: boldEllipsisStyle(),
                   keyboardType: TextInputType.text,
                   controller: postTitleController,
                   onChanged: (text) => editPostInfoModel.title = text,

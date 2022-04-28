@@ -29,11 +29,11 @@ class WhisperDrawer extends StatelessWidget {
       child: ListView(
         children: [
           ListTile(
-            title: boldText(text: l10n.account),
+            title: boldEllipsisText(text: l10n.account),
             onTap: () => routes.toAccountPage(context, mainModel)
           ),
           ListTile(
-            title: boldText(text: l10n.themeChange),
+            title: boldEllipsisText(text: l10n.themeChange),
             trailing: CupertinoSwitch(
               value: themeModel.isDarkTheme, 
               onChanged: (value) => themeModel.setIsDartTheme(value),
@@ -41,7 +41,7 @@ class WhisperDrawer extends StatelessWidget {
           ),
           
           ListTile(
-            title: boldText(text: l10n.nftOwners),
+            title: boldEllipsisText(text: l10n.nftOwners),
             onTap: () => routes.toNFTownersPage(context),
           ),
           

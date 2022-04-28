@@ -16,7 +16,7 @@ class NoRight extends StatelessWidget {
     return Column(
       children: [
         Center(
-          child: boldHeaderText(context: context, text: l10n.noRight),
+          child: boldEllipsisHeaderText(context: context, text: l10n.noRight),
         )
       ],
     );

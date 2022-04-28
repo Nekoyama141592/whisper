@@ -23,7 +23,7 @@ class NFTownersPage extends ConsumerWidget {
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldHeaderText(context: context,text: l10n.nftOwners),
+        title: whiteBoldEllipsisHeaderText(context: context,text: l10n.nftOwners),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context))
@@ -52,7 +52,7 @@ class NFTownersPage extends ConsumerWidget {
       //     ),
       //   ),
       body: Center(
-        child: boldHeaderText(context: context, text: comingSoonText)
+        child: boldEllipsisHeaderText(context: context, text: comingSoonText)
       ),
     );
   }

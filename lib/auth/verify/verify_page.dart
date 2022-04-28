@@ -29,33 +29,31 @@ class VerifyPage extends ConsumerWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(defaultPadding(context: context)),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: defaultPadding(context: context)),
-                child: SvgPicture.asset(
-                  'assets/svgs/key-pana.svg',
-                  height: size.height * 0.30,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: defaultPadding(context: context)),
+              child: SvgPicture.asset(
+                'assets/svgs/key-pana.svg',
+                height: size.height * 0.30,
               ),
-              SizedBox(height: defaultPadding(context: context)),
-              PositiveText(text: l10n.pleaseVerifyEmail(userEmail)),
-              SizedBox(height: defaultPadding(context: context)),
-              boldText(text: l10n.emailVerified),
-              SizedBox(height: defaultPadding(context: context)),
-              RoundedButton(
-                text: l10n.start, 
-                widthRate: 0.95, 
-                fontSize: defaultHeaderTextSize(context: context),
-                press: () async => await verifyModel.onButtonPressed(context: context),
-                textColor: Colors.white,
-                buttonColor: Theme.of(context).highlightColor,
-              ),
-              
-            ],
-          ),
+            ),
+            SizedBox(height: defaultPadding(context: context)),
+            boldText(text: l10n.pleaseVerifyEmail(userEmail)),
+            SizedBox(height: defaultPadding(context: context)),
+            boldText(text: l10n.emailVerified),
+            SizedBox(height: defaultPadding(context: context)),
+            RoundedButton(
+              text: l10n.start, 
+              widthRate: 0.95, 
+              fontSize: defaultHeaderTextSize(context: context),
+              press: () async => await verifyModel.onButtonPressed(context: context),
+              textColor: Colors.white,
+              buttonColor: Theme.of(context).highlightColor,
+            ),
+            
+          ],
         ),
       ),
     );

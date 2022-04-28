@@ -43,7 +43,7 @@ class CreatePostPage extends StatelessWidget {
         ),
         header: Padding(
           padding: EdgeInsets.all(height/75.0),
-          child: boldText(text: l10n.makePost),
+          child: boldEllipsisText(text: l10n.makePost),
         ),
         content: AddPostContent(addPostModel: addPostModel, mainModel: mainModel),
         circular: defaultPadding(context: context),

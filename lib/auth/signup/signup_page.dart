@@ -90,7 +90,7 @@ class SignupPage extends ConsumerWidget {
                                     padding: EdgeInsets.symmetric(
                                       vertical: defaultPadding(context: context)
                                     ),
-                                    child: boldText(text: l10n.selectImage)
+                                    child: boldEllipsisText(text: l10n.selectImage)
                                   )
                                 ],
                               ),

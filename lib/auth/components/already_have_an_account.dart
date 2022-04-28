@@ -24,7 +24,7 @@ class AlreadyHaveAnAccount extends StatelessWidget{
           text: TextSpan(
             style: TextStyle(color: Colors.black),
             children: [
-              TextSpan(text: l10n.alreadyHaveAccount,style: focusStyle(context: context) ),
+              TextSpan(text: l10n.alreadyHaveAccount,style: focusEllipsisStyle(context: context) ),
               TextSpan(
                 text: l10n.signIn,
                 style: boldSecondaryStyle(context: context),

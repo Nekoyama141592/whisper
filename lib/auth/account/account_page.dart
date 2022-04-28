@@ -38,12 +38,12 @@ class AccountPage extends ConsumerWidget {
     return ScaffoldMessenger(
       child: Scaffold(
         appBar: AppBar(
-          title: whiteBoldHeaderText(context: context, text: l10n.account)
+          title: whiteBoldEllipsisHeaderText(context: context, text: l10n.account)
         ),
         body: Column(
           children: [
             ListTile(
-              title: boldText(text: accountModel.currentUser!.email!),
+              title: boldEllipsisText(text: accountModel.currentUser!.email!),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.updateEmail;
@@ -51,7 +51,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: boldText(text: l10n.resetPassword),
+              title: boldEllipsisText(text: l10n.resetPassword),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.updatePassword;
@@ -59,7 +59,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
              ListTile(
-              title: boldText(text: l10n.deleteUserProcess),
+              title: boldEllipsisText(text: l10n.deleteUserProcess),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 accountModel.whichState = WhichState.deleteUser;
@@ -67,7 +67,7 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: boldText(text: l10n.muteUsers),
+              title: boldEllipsisText(text: l10n.muteUsers),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 final String title = l10n.warning;
@@ -98,12 +98,12 @@ class AccountPage extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: boldText(text: l10n.editUserLinks),
+              title: boldEllipsisText(text: l10n.editUserLinks),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => userLinksModel.initLinks(context: context, currentWhisperUser: mainModel.currentWhisperUser )
             ),
             ListTile(
-              title: boldText(text: l10n.uid),
+              title: boldEllipsisText(text: l10n.uid),
               subtitle: Text(
                 mainModel.currentWhisperUser.uid,
                 style: TextStyle(color: Theme.of(context).focusColor),
@@ -114,7 +114,7 @@ class AccountPage extends ConsumerWidget {
               ),
             ),
             ListTile(
-              title: boldText(text: l10n.logout),
+              title: boldEllipsisText(text: l10n.logout),
               onTap: () => accountModel.showSignOutDialog(context: context)
             ),
           ],

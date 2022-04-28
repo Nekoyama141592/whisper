@@ -69,7 +69,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
           top: SizedBox.shrink(), 
           header: Padding(
           padding: EdgeInsets.all(defaultPadding(context: context)),
-          child: whiteBoldHeaderText(context: context,text: l10n.selectCategory ),
+          child: whiteBoldEllipsisHeaderText(context: context,text: l10n.selectCategory ),
         ),
         circular: height/32.0,
         content: ListView.builder(
@@ -107,7 +107,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
                   voids.showFlashDialogue(context: context, content: content, titleText: l10n.editCategory, positiveActionBuilder: positiveActionBuilder);
                 },
               ),
-              title: boldText(text: bookmarkLabel.categoryName),
+              title: boldEllipsisText(text: bookmarkLabel.categoryName),
               onTap: () async => await bookmarksModel.init(context: context, mainModel: mainModel, bookmarkLabel: bookmarkLabel)
             );
           }

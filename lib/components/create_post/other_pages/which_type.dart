@@ -34,7 +34,7 @@ class WhichType extends ConsumerWidget {
       top: SizedBox.shrink(),
       header: Padding(
         padding: EdgeInsets.all(defaultPadding(context: context)),
-        child: whiteBoldHeaderText(context: context,text: 'WhichType'),
+        child: whiteBoldEllipsisHeaderText(context: context,text: 'WhichType'),
       ),
       content: Content(mainModel: mainModel, addPostModel: addPostModel),
       circular: defaultHeaderTextSize(context: context),
@@ -74,7 +74,7 @@ class Content extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   vertical: defaultPadding(context: context),
                 ),
-                child: boldText(text: whichTypeText),
+                child: boldEllipsisText(text: whichTypeText),
               ),
               RoundedButton(
                 text: l10n.postingOfAdvertisements,

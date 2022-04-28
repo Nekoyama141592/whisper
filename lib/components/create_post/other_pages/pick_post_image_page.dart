@@ -31,7 +31,7 @@ class PickPostImagePage extends StatelessWidget {
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldHeaderText(context: context,text: 'Image'),
+        title: whiteBoldEllipsisHeaderText(context: context,text: 'Image'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(defaultPadding(context: context))

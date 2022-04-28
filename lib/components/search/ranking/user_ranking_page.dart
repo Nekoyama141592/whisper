@@ -35,7 +35,7 @@ class UserRankingPage extends ConsumerWidget {
         top: SizedBox.shrink(), 
         header: Padding(
           padding: EdgeInsets.all(defaultPadding(context: context)),
-          child: whiteBoldHeaderText(context: context, text: 'User Ranking'),
+          child: whiteBoldEllipsisHeaderText(context: context, text: 'User Ranking'),
         ),
       circular: defaultPadding(context: context),
       content: userRankingModel.isLoading ?
@@ -57,7 +57,7 @@ class UserRankingPage extends ConsumerWidget {
               final WhisperUser whisperUser = fromMapToWhisperUser(userMap: userDoc.data()!);
               return mainModel.muteUids.contains(whisperUser.uid) || mainModel.blockUids.contains(whisperUser.uid) ?
               ListTile(
-                title: boldText(text: l10n.hidden),
+                title: boldEllipsisText(text: l10n.hidden),
                 leading: Icon(Icons.block),
               )
               : UserCard(result: userDoc.data()!, mainModel: mainModel);

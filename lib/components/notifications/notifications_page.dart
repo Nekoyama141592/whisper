@@ -33,7 +33,7 @@ class NotificationsPage extends StatelessWidget {
       length: tabBarElements.length,
       child: Scaffold(
         appBar: AppBar(
-          title: whiteBoldHeaderText(context: context, text: 'Notifications'),
+          title: whiteBoldEllipsisHeaderText(context: context, text: 'Notifications'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular( defaultPadding(context: context) )

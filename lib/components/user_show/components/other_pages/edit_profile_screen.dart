@@ -66,7 +66,7 @@ class EditProfileScreen extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: onCancelButtonPressed,
-                  child: boldText(text: cancelText(context: context)),
+                  child: boldEllipsisText(text: cancelText(context: context)),
                 ),
                 Expanded(child: SizedBox()),
                 RoundedButton(
@@ -84,7 +84,7 @@ class EditProfileScreen extends StatelessWidget {
               child: isCropped ?  CircleImage(length: height/12.0, image: FileImage(croppedFile!) ) : UserImage(userImageURL: mainModel.currentWhisperUser.userImageURL, length: defaultPadding(context: context) * 3.0, padding: defaultPadding(context: context),uid: mainModel.currentWhisperUser.uid,mainModel: mainModel, ),
               onTap: showImagePicker,
             ),
-            boldText(text: l10n.name),
+            boldEllipsisText(text: l10n.name),
             TextFormField(
               keyboardType: TextInputType.text,
               controller: userNameController,

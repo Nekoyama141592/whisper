@@ -202,7 +202,7 @@ class UserShowModel extends ChangeNotifier {
       context: context, 
       builder: (innerContext) {
         return CupertinoActionSheet(
-          message: boldText(text: selectOperationText(context: context)),
+          message: boldEllipsisText(text: selectOperationText(context: context)),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {

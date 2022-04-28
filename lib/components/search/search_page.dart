@@ -28,7 +28,7 @@ class SearchPage extends StatelessWidget {
       length: tabBarElements.length,
       child: Scaffold(
         appBar: AppBar(
-          title: whiteBoldHeaderText(context: context,text: 'Search'),
+          title: whiteBoldEllipsisHeaderText(context: context,text: 'Search'),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(30)

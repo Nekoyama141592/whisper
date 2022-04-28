@@ -30,7 +30,7 @@ class RecordingTime extends StatelessWidget {
         );
         return Column(
           children: [
-            boldText(text: displayTime),
+            boldEllipsisText(text: displayTime),
             Text('(Max 1:00)',style: TextStyle(fontSize: fontSize!/2.5,),)
           ],
         );

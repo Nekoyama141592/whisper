@@ -67,7 +67,7 @@ class LoginPage extends ConsumerWidget {
                   horizontal: defaultPadding(context: context),
                   vertical: defaultPadding(context: context)/2.0,
                 ),
-                child: whiteBoldHeaderText(context: context, text: l10n.signIn)
+                child: whiteBoldEllipsisHeaderText(context: context, text: l10n.signIn)
               ),
               SizedBox(height: defaultPadding(context: context) ),
               Expanded(

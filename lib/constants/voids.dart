@@ -403,7 +403,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
       context: context, 
       builder: (innerContext) {
         return CupertinoAlertDialog(
-          title: boldText(text: l10n.pageTransition),
+          title: boldEllipsisText(text: l10n.pageTransition),
           content: RichText(
             text: TextSpan(
               children: [

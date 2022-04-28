@@ -21,7 +21,7 @@ class VerifyPasswordResetPage extends ConsumerWidget {
     final emailInputController = TextEditingController(text: verifyPasswordResetModel.email);
     return Scaffold(
       appBar: AppBar(
-        title: whiteBoldHeaderText(context: context, text: l10n.verifyResetPassword)
+        title: whiteBoldEllipsisHeaderText(context: context, text: l10n.verifyResetPassword)
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

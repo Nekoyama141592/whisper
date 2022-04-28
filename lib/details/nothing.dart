@@ -35,7 +35,7 @@ class Nothing extends StatelessWidget {
             ),
           ),
           Center(
-            child: boldHeaderText(context: context, text: nothingText),
+            child: boldEllipsisHeaderText(context: context, text: nothingText),
           ),
           RoundedButton(text: l10n.reload, widthRate: 0.95, fontSize: defaultHeaderTextSize(context: context),press: reload, textColor: Colors.white, buttonColor: Theme.of(context).highlightColor)
         ],
