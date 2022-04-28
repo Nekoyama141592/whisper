@@ -79,6 +79,8 @@ TextStyle boldStyle() => TextStyle(fontWeight: FontWeight.bold,overflow: TextOve
 
 TextStyle boldHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) );
 
+TextStyle boldSecondaryStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.secondary );
+
 TextStyle focusHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).focusColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);
 
 TextStyle highlightHeaderStyle({ required BuildContext context }) => TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).highlightColor, fontSize: defaultHeaderTextSize(context: context)/cardTextDiv2 ,overflow: TextOverflow.ellipsis);

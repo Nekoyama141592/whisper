@@ -31,12 +31,10 @@ class ForgetPasswordText extends StatelessWidget {
               TextSpan(
                 text: l10n.forgetPassword,
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Theme.of(context).primaryColor,
                   fontSize: defaultHeaderTextSize(context: context)
                 ),
-                recognizer: TapGestureRecognizer()..onTap = () {
-                  routes.toVerifyPasswordResetPage(context);
-                }
+                recognizer: TapGestureRecognizer()..onTap = () => routes.toVerifyPasswordResetPage(context),
               )
             ]
           )

@@ -24,22 +24,11 @@ class AlreadyHaveAnAccount extends StatelessWidget{
           text: TextSpan(
             style: TextStyle(color: Colors.black),
             children: [
-              TextSpan(
-                text: l10n.alreadyHaveAccount,
-                style: TextStyle(
-                  color: Theme.of(context).focusColor,
-                )
-              ),
+              TextSpan(text: l10n.alreadyHaveAccount),
               TextSpan(
                 text: l10n.signIn,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: defaultHeaderTextSize(context: context),
-                  fontWeight: FontWeight.bold
-                ),
-                recognizer: TapGestureRecognizer()..onTap = () {
-                  routes.toLoginpage(context);
-                }
+                style: boldSecondaryStyle(context: context),
+                recognizer: TapGestureRecognizer()..onTap = () => routes.toLoginpage(context)
               )
             ]
           )
