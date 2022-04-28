@@ -13,6 +13,7 @@
 ios/Runner/GoogleService-Info-dev.plist
 ios/Runner/GoogleService-Info-prod.plist
 ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
 android/app/src/config/dev/google-services.json
 android/app/src/config/prod/google-services.json
 lib/l10n/l10n.dart
