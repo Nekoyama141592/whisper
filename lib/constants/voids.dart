@@ -409,7 +409,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
               children: [
                 TextSpan(
                   text: link,
-                  style: highlightHeaderStyle(context: context),
+                  style: highlightDiv2Style(context: context),
                   recognizer: TapGestureRecognizer()..onTap = () async {
                     final L10n l10n = returnL10n(context: context)!;
                     await FlutterClipboard.copy(link).then((_) {
