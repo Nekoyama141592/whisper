@@ -91,7 +91,7 @@ class SignupModel extends ChangeNotifier {
       voids.showBasicFlutterToast(context: context, msg: l10n.commonPassword );
     } else if (userName.length > maxSearchLength ) {
       voids.maxSearchLengthAlert(context: context,isUserName: true);
-    } else if (userName.isEmpty || !isCheckedNotifier.value || croppedFile == null) {
+    } else if (userName.isEmpty || !isCheckedNotifier.value) {
       voids.showBasicFlutterToast(context: context, msg: l10n.inputNotCompleted );
     } else {
       try{

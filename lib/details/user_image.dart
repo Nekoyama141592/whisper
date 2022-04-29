@@ -24,7 +24,15 @@ class UserImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(padding),
-      child: CircleImage(
+      child: userImageURL.isEmpty ?
+      Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).highlightColor),
+          shape: BoxShape.circle
+        ),
+        child: Icon(Icons.person,size: length,)
+      ) : 
+      CircleImage(
         length: length, 
         image: NetworkImage(
           mainModel.currentWhisperUser.uid == uid ? mainModel.currentWhisperUser.userImageURL : userImageURL

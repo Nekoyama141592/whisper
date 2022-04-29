@@ -121,8 +121,7 @@ class SignupPage extends ConsumerWidget {
                             text: l10n.next,
                             widthRate: 0.8,
                             fontSize: defaultHeaderTextSize(context: context),
-                            press: () => signupModel.croppedFile == null ? 
-                              showBasicFlutterToast(context: context, msg: l10n.pleaseSelectImage) : routes.toAddUserInfoPage(context, signupModel),
+                            press: () => routes.toAddUserInfoPage(context, signupModel),
                             textColor: Colors.white,
                             buttonColor: kSecondaryColor,
                           ),
