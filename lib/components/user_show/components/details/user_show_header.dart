@@ -106,7 +106,9 @@ class UserShowHeader extends ConsumerWidget {
               children: [
                 Text(
                   // mainModel.followingUids contains myUid because of lib/main_model.dart
-                  mainModel.currentWhisperUser.uid == passiveWhisperUser.uid ?  (mainModel.followingUids.length - 1).toString() + 'following' : passiveWhisperUser.followingCount.toString() + 'following',
+                  mainModel.currentWhisperUser.uid == passiveWhisperUser.uid ?  
+                  l10n.count(mainModel.followingUids.length - 1).toString() + 'following' : 
+                  l10n.count(passiveWhisperUser.followingCount) + 'following',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -116,7 +118,7 @@ class UserShowHeader extends ConsumerWidget {
                 ),
                 SizedBox(width: defaultPadding(context: context),),
                 Text(
-                  l10n.count(followerCount),
+                  l10n.count(followerCount) + "followers",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
