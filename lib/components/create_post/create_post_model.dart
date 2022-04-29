@@ -167,13 +167,13 @@ class CreatePostModel extends ChangeNotifier {
       // post
       final String storagePostName = returnStoragePostName();
       final audioURL = await getPostUrl(context: context, storagePostName: storagePostName, mainModel: mainModel, postId: postId);
-      // post firestore
+      await voids.createUserMetaUpdateLog(mainModel: mainModel);
+      // なぜかRuleに引っかかるけど、正常に作成される。これより下にFirebaseの処理は入れないこと。
       await createPost(context: context, mainModel: mainModel, imageURL: imageURL, audioURL: audioURL, postId: postId,storagePostName: storagePostName );
       postTitleNotifier.value = '';
       croppedFile = null;
       isCroppedNotifier.value = false;
       endLoading();
-      await voids.createUserMetaUpdateLog(mainModel: mainModel);
     }
   }
 
