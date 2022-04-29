@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // package
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 // model
@@ -14,6 +15,7 @@ class RecordingTime extends StatelessWidget {
   final CreatePostModel addPostModel;
   final double? fontSize;
   Widget build(BuildContext context) {
+    final TextStyle recordingTimeStyle = TextStyle(fontSize: defaultHeaderTextSize(context: context) * 2.0,fontWeight: FontWeight.bold );
     return StreamBuilder<int?>(
       stream: addPostModel.stopWatchTimer.rawTime,
       initialData: addPostModel.stopWatchTimer.rawTime.value,
@@ -30,7 +32,7 @@ class RecordingTime extends StatelessWidget {
         );
         return Column(
           children: [
-            boldEllipsisText(text: displayTime),
+            Text(displayTime,style: recordingTimeStyle, ),
             Text('(Max 1:00)',style: TextStyle(fontSize: fontSize!/2.5,),)
           ],
         );

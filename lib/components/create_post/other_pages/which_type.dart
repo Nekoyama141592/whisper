@@ -74,7 +74,7 @@ class Content extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   vertical: defaultPadding(context: context),
                 ),
-                child: boldEllipsisText(text: whichTypeText),
+                child: boldEllipsisHeaderText(context: context,text: whichTypeText),
               ),
               RoundedButton(
                 text: l10n.postingOfAdvertisements,

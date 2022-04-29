@@ -19,9 +19,9 @@ import 'package:whisper/components/create_post/components/notifiers/create_post_
 import 'package:whisper/main_model.dart';
 import 'package:whisper/components/create_post/create_post_model.dart';
 
-class AddPostContent extends StatelessWidget {
+class CreatePostContent extends StatelessWidget {
 
-  const AddPostContent({
+  const CreatePostContent({
     Key? key,
     required this.addPostModel,
     required this.mainModel,
