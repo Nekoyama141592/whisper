@@ -75,7 +75,7 @@ class PickPostImagePage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          CommentsStateButton(addPostModel: addPostModel),
+                          CommentsStateButton(createPostModel: addPostModel),
                           AddLinkButton(addPostModel: addPostModel),
                         ],
                       ),

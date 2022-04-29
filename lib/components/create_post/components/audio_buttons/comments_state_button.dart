@@ -6,27 +6,29 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/components/create_post/components/audio_buttons/audio_button.dart';
 //model
 import 'package:whisper/components/create_post/create_post_model.dart';
+import 'package:whisper/constants/others.dart';
+import 'package:whisper/l10n/l10n.dart';
 
 class CommentsStateButton extends StatelessWidget {
 
   const CommentsStateButton({
     Key? key,
-    required this.addPostModel
+    required this.createPostModel
   }) : super(key: key);
 
-  final CreatePostModel addPostModel;
+  final CreatePostModel createPostModel;
 
   @override 
   Widget build(BuildContext context) {
-    
+    final L10n l10n = returnL10n(context: context)!;
     return ValueListenableBuilder<String>(
-      valueListenable: addPostModel.commentsStateDisplayNameNotifier,
+      valueListenable: createPostModel.commentsStateDisplayNameNotifier,
       builder: (_,commentsStateDisplayName,__) {
         
         return AudioButton(
-          description: commentsStateDisplayName, 
+          description: commentsStateDisplayName.isEmpty ? l10n.commentsStateIsOpenText : commentsStateDisplayName, 
           icon: Icon(Icons.comment,color: Theme.of(context).focusColor,size: addPostIconSize(context: context), ),
-          press: () => addPostModel.showCommentStatePopUp(context: context),
+          press: () => createPostModel.showCommentStatePopUp(context: context),
         );
       }
     );
