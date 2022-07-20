@@ -9,8 +9,8 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/routes.dart' as routes;
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/themes/themes_model.dart';
-import 'package:whisper/components/notifications/notifications_model.dart';
+import 'package:whisper/models/themes/themes_model.dart';
+import 'package:whisper/models/main/notifications_model.dart';
 
 class NotificationIcon extends ConsumerWidget {
 

@@ -14,7 +14,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/components/user_show/user_show_model.dart';
+import 'package:whisper/models/main/user_show_model.dart';
 
 class RedirectUserImage extends ConsumerWidget {
   

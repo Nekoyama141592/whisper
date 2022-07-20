@@ -8,7 +8,7 @@ import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/themes/themes_model.dart';
+import 'package:whisper/models/themes/themes_model.dart';
 
 class WhisperDrawer extends StatelessWidget {
   

@@ -11,7 +11,7 @@ import 'package:whisper/posts/components/post_buttons/components/comment_button.
 import 'package:whisper/posts/components/post_buttons/components/redirect_to_url_button.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
 
 class PostButtons extends StatelessWidget {
 

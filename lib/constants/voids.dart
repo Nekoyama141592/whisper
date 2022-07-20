@@ -42,7 +42,7 @@ import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 import 'package:whisper/details/positive_text.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/posts/components/other_pages/post_show/components/edit_post_info/edit_post_info_model.dart';
+import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
 
  
 Future<void> signOut({required BuildContext context, required BuildContext innerContext }) async {

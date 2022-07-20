@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/auth/components/rounded_password_field/rounded_password_field_model.dart';
+import 'package:whisper/models/auth/rounded_password_field_model.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/doubles.dart';
