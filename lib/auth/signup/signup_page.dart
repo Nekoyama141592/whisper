@@ -7,7 +7,6 @@ import 'package:whisper/constants/colors.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/routes.dart' as routes;
-import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/widgets.dart';
 // components
 import 'package:whisper/details/loading.dart';
