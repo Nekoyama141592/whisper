@@ -61,8 +61,8 @@ class Home extends ConsumerWidget {
         ),
         body: TabBarView(
           children: [
+            RecommendersPage(mainModel: mainModel ),
             FeedsPage(mainModel: mainModel ),
-            RecommendersPage(mainModel: mainModel )
           ],
         ),
         

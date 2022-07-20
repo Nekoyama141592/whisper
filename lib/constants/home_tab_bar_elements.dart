@@ -4,6 +4,6 @@ class HomeTabBarElements {
 }
 
 final List<HomeTabBarElements>  tabBarElements= [
+  HomeTabBarElements('recommenders'),
   HomeTabBarElements('follow'),
-  HomeTabBarElements('recommenders')
 ];
