@@ -83,7 +83,7 @@ class CreatePostContent extends StatelessWidget {
                   vertical: height/75.0
                 ),
                 child: Text(
-                  '投稿お疲れ様です！',
+                  l10n.thanksForPosting,
                   style: TextStyle(
                     fontSize: height/30.0,
                     fontWeight: FontWeight.bold
