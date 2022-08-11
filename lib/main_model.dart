@@ -84,6 +84,8 @@ class MainModel extends ChangeNotifier {
   List<Watchlist> watchlists = [];
   // following
   List<Following> following = [];
+  // distributeTokenに関与しない
+  List<MuteUser> newMuteUserTokens = [];
   // bookmarkLabel
   final bookmarkPostCategoryTokenIdNotifier = ValueNotifier<String>('');
   // feeds
@@ -114,8 +116,6 @@ class MainModel extends ChangeNotifier {
   final speedNotifier = ValueNotifier<double>(1.0);
   // enum
   final PostType postType = PostType.feeds;
-  // test
-  List<DocumentSnapshot<Map<String,dynamic>>> testDocs = [];
 
   MainModel() {
     init();
@@ -127,8 +127,7 @@ class MainModel extends ChangeNotifier {
     await setCurrentUser();
     audioPlayer = AudioPlayer();
     followingUids.add(userMeta.uid);
-    final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
-    distributeTokens(tokensQshot: tokensQshot);
+    await distributeTokens();
     await getFeeds();
     await voids.setSpeed(speedNotifier: speedNotifier, prefs: prefs, audioPlayer: audioPlayer);
     voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
@@ -153,9 +152,13 @@ class MainModel extends ChangeNotifier {
     userMeta = UserMeta.fromJson(userMetaDoc.data()!);
   }
 
-  void distributeTokens({ required QuerySnapshot<Map<String, dynamic>> tokensQshot }) {
-    testDocs = tokensQshot.docs;
-    tokensQshot.docs.forEach((DocumentSnapshot<Map<String, dynamic>> tokenDoc) {
+  Future<void> distributeTokens() async {
+    final tokensQshot = await returnTokensColRef(uid: userMeta.uid).get();
+    final tokenDocs = tokensQshot.docs;
+    // 新しい順に並び替えている
+    // 古い順に並び替えたければ、aとbを逆にする
+    tokenDocs.sort((a,b) => (b[createdAtFieldKey] as Timestamp).compareTo(a[createdAtFieldKey]));
+    tokenDocs.forEach((DocumentSnapshot<Map<String, dynamic>> tokenDoc) {
       final Map<String,dynamic> tokenMap = tokenDoc.data()!;
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap);
       switch(tokenType) {

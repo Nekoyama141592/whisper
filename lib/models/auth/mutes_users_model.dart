@@ -24,29 +24,26 @@ final muteUsersProvider = ChangeNotifierProvider(
 class MuteUsersModel extends ChangeNotifier {
 
   // basic
-  bool isLoading = false;
   List<DocumentSnapshot<Map<String,dynamic>>> userDocs = [];
   List<String> muteUids = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // enum
   final BasicDocType basicDocType = BasicDocType.muteUser;
+  // query
+  Query<Map<String,dynamic>> returnQuery({required List<String> max10MuteUids}) {
+    return returnUsersColRef().where(uidFieldKey,whereIn: max10MuteUids).orderBy(createdAtFieldKey,descending: true);
+  }
 
   Future<void> init({ required MainModel mainModel }) async {
-    startLoading();
     final List<MuteUser> muteUsers = mainModel.muteUsers;
     muteUids = muteUsers.map((muteUser) => muteUser.passiveUid).toList();
     await processMuteUsers();
-    endLoading();
   }
 
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
+  Future<void> onRefresh({required MainModel mainModel}) async {
+    refreshController.refreshCompleted();
+    await processNewMuteUsers(mainModel: mainModel);
     notifyListeners();
   }
 
@@ -57,9 +54,8 @@ class MuteUsersModel extends ChangeNotifier {
   }
 
   Future<void> onReload() async {
-    startLoading();
     await processMuteUsers();
-    endLoading();
+    notifyListeners();
   }
 
   Future<void> processMuteUsers() async {
@@ -67,11 +63,32 @@ class MuteUsersModel extends ChangeNotifier {
       final bool = (muteUids.length - userDocs.length) > 10;
       final userDocsLength = userDocs.length;
       List<String> max10MuteUids = bool ? muteUids.sublist(userDocsLength,userDocsLength + tenCount) : muteUids.sublist(userDocsLength,muteUids.length);
-      final query = returnUsersColRef().where(uidFieldKey,whereIn: max10MuteUids);
+      final query = returnQuery(max10MuteUids: max10MuteUids);
       if (max10MuteUids.isNotEmpty) {
         voids.processBasicDocs(basicDocType: basicDocType,query: query, docs: userDocs );
       }
     }
+  }
+
+  Future<void> processNewMuteUsers({required MainModel mainModel}) async {
+    final newMuteUserTokens = mainModel.newMuteUserTokens;
+    // newMuteUidsがprocess()でのmuteUidsにあたり、usedMuteUidsがmuteUserDocsにあたる
+    final List<String> newMuteUids = newMuteUserTokens.map((e) => e.passiveUid).toList();
+    // 新しくミュートしたのが10人以上の場合
+    final List<String> max10MuteUids = newMuteUids.length > 10 ?
+    newMuteUids.sublist(0,tenCount) // 10より大きかったら10だけ取り出す
+    : newMuteUids;                  // 10より小さかったらそのまま使用
+    if (max10MuteUids.isNotEmpty) {
+      final qshot = await returnQuery(max10MuteUids: max10MuteUids).get();
+      final reversed = qshot.docs.reversed.toList();
+      for (final muteUserDoc in reversed) {
+        userDocs.insert(0, muteUserDoc);
+        // muteUserDocsに加えたということは、もう新しくない。新しいやつから省く。
+        final deleteNewMuteUserToken = mainModel.newMuteUserTokens.where((element) => element.passiveUid == muteUserDoc.id).toList().first;
+        mainModel.newMuteUserTokens.remove(deleteNewMuteUserToken);// 使用した分を削除 
+      }
+    }
+    notifyListeners();
   }
 
   void unMuteUser({ required BuildContext context,required String passiveUid, required MainModel mainModel }) {

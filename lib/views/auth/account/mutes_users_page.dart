@@ -25,18 +25,23 @@ class MutesUsersPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context,WidgetRef ref) {
 
-    final mutesUsersModel = ref.watch(muteUsersProvider);
+    final muteUsersModel = ref.watch(muteUsersProvider);
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       appBar: AppBar(
         title: whiteBoldEllipsisHeaderText(context: context, text: l10n.muteUsers)
       ),
-      body: mutesUsersModel.isLoading ?
-      Loading()
-      : JudgeScreen(
-        list: mutesUsersModel.userDocs,
-        reload: () async => await mutesUsersModel.onReload(),
-        content: UserCards(userDocs: mutesUsersModel.userDocs, mainModel: mainModel,muteUsersModel: mutesUsersModel,),
+      body: JudgeScreen(
+        list: muteUsersModel.userDocs,
+        reload: () async => await muteUsersModel.onReload(),
+        content: UserCards(
+          userDocs: muteUsersModel.userDocs, 
+          mainModel: mainModel,
+          muteUsersModel: muteUsersModel,
+          onLoading: () async => await muteUsersModel.onLoading(),
+          onRefresh: () async => await muteUsersModel.onRefresh(mainModel: mainModel),
+          refreshController: muteUsersModel.refreshController,
+        ),
       )
     );
   }
