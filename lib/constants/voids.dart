@@ -9,12 +9,12 @@ import 'package:flash/flash.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
@@ -398,7 +398,7 @@ Future<void> putPost({ required Reference postRef,required File postFile }) asyn
 
 Future<void> showLinkDialogue({ required BuildContext context, required String link }) async {
   final L10n l10n = returnL10n(context: context)!;
-  if ( await canLaunch(link)) {
+  if ( await canLaunchUrlString(link)) {
     showCupertinoDialog(
       context: context, 
       builder: (innerContext) {
@@ -431,7 +431,7 @@ Future<void> showLinkDialogue({ required BuildContext context, required String l
               onPressed: () async {
                 Navigator.pop(innerContext);
                 await Future.delayed(Duration(seconds: 1));
-                await launch(link);
+                await launchUrlString(link);
               },
             )
           ],
@@ -489,7 +489,7 @@ void alertMaxCommentOrReplyLength({ required BuildContext context }) => showBasi
 
 Future<void> defaultLaungh({ required BuildContext context,required String url }) async {
   final L10n l10n = returnL10n(context: context)!;
-  await canLaunch(url) ? await launch(url) : showBasicFlutterToast(context: context, msg: l10n.invalidLink );
+  await canLaunchUrlString(url) ? await launchUrlString(url) : showBasicFlutterToast(context: context, msg: l10n.invalidLink );
 }
 
 Future<void> createUserMetaUpdateLog({ required MainModel mainModel}) async {

@@ -69,8 +69,6 @@ class PostShowPage extends ConsumerWidget {
   @override 
   Widget build(BuildContext context, WidgetRef ref) {
     final editPostInfoModel = ref.watch(editPostInfoProvider);
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

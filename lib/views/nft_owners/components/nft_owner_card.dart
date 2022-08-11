@@ -1,7 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // packages
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/colors.dart';
@@ -64,7 +64,7 @@ class NFTownerCard extends StatelessWidget {
                   child: Icon(Icons.link,size: text2Size* 1.5,),
                   onTap: () async {
                     final String link = nftOwner.link;
-                    await canLaunch(link) ? await launch(link) : showBasicFlutterToast(context: context, msg: l10n.invalidLink );
+                    await canLaunchUrlString(link) ? await launchUrlString(link) : showBasicFlutterToast(context: context, msg: l10n.invalidLink );
                   },
                 )
               ],

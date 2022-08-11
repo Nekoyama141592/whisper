@@ -7,7 +7,6 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/ints.dart';
 // model
 import 'package:whisper/models/main/create_post_model.dart';
-import 'package:whisper/constants/widgets.dart';
 
 class RecordingTime extends StatelessWidget {
   @override 

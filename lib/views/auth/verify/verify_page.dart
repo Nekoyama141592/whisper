@@ -8,7 +8,6 @@ import 'package:whisper/models/auth/verify_model.dart';
 import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/widgets.dart';
-import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/details/rounded_button.dart';
 import 'package:whisper/l10n/l10n.dart';
 
