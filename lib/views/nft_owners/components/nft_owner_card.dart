@@ -51,7 +51,7 @@ class NFTownerCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  'number' + nftOwner.number.toString(),
+                  'number${nftOwner.number.toString()}',
                   style: text2
                 ),
                 SizedBox(width: defaultPadding(context: context)/2.0),
