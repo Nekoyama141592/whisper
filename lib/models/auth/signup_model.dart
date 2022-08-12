@@ -107,20 +107,32 @@ class SignupModel extends ChangeNotifier {
         final L10n l10n = returnL10n(context: context)!;
         final String errorCode = e.code;
         switch(errorCode) {
+          // case 'invalid-email':
+          // voids.showBasicFlutterToast(context: context, msg: l10n.invalidEmail);
+          // break;
+          // case 'user-disabled':
+          // voids.showBasicFlutterToast(context: context, msg: l10n.userDisabled);
+          // break;
+          // case 'user-not-found':
+          // voids.showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
+          // break;
+          // case 'wrong-password':
+          // voids.showBasicFlutterToast(context: context, msg: l10n.wrongPassword);
+          // break;
+          // case 'too-many-requests':
+          // voids.showBasicFlutterToast(context: context, msg: l10n.tooManyRequests );
+          // break;
+          case 'email-already-in-use':
+            await voids.showBasicFlutterToast(context: context, msg: l10n.emailAlreadyInUse);
+          break;
           case 'invalid-email':
-          voids.showBasicFlutterToast(context: context, msg: l10n.invalidEmail);
+            await voids.showBasicFlutterToast(context: context, msg: l10n.invalidEmail);
           break;
-          case 'user-disabled':
-          voids.showBasicFlutterToast(context: context, msg: l10n.userDisabled);
+          case 'operation-not-allowed':
+            debugPrint(l10n.firebaseAuthEmailOperationNotAllowed);
           break;
-          case 'user-not-found':
-          voids.showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
-          break;
-          case 'wrong-password':
-          voids.showBasicFlutterToast(context: context, msg: l10n.wrongPassword);
-          break;
-          case 'too-many-requests':
-          voids.showBasicFlutterToast(context: context, msg: l10n.tooManyRequests );
+          case 'weak-password':
+            await voids.showBasicFlutterToast(context: context, msg: l10n.weakPasswordMsg);
           break;
         }
       }
