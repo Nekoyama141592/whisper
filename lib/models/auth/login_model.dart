@@ -38,20 +38,22 @@ class LoginModel extends ChangeNotifier {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       routes.toMyApp(context);
     } on FirebaseAuthException catch(e) {
+      String msg = "";
       switch(e.code) {
         case 'invalid-email':
-        showBasicFlutterToast(context: context, msg: l10n.invalidEmail );
+          msg = l10n.invalidEmail;
         break;
         case 'user-disabled':
-        showBasicFlutterToast(context: context, msg: l10n.userDisabled );
+          msg = l10n.userDisabled;
         break;
         case 'user-not-found':
-        showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
+          msg = l10n.authUserNotFound;
         break;
         case 'wrong-password':
-        showBasicFlutterToast(context: context, msg: l10n.wrongPassword );
+          msg = l10n.wrongPassword;
         break;
       }
+      showBasicFlutterToast(context: context, msg: msg);
     } 
   }
   

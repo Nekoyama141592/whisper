@@ -27,16 +27,7 @@ enum WhichState {
 
 class AccountModel extends ChangeNotifier {
   
-  User? currentUser;
-
-  AccountModel() {
-    init();
-  }
-
-  void init() {
-    currentUser = FirebaseAuth.instance.currentUser;
-    notifyListeners();
-  }
+  User? currentUser= FirebaseAuth.instance.currentUser;
 
   WhichState whichState = WhichState.initialValue;
   String password = '';
@@ -80,30 +71,32 @@ class AccountModel extends ChangeNotifier {
     final L10n l10n = returnL10n(context: context)!;
     final String title = l10n.deleteUser;
     final String content = l10n.deleteUserAlert;
-    final builder = (innerContext) {
-      return CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(cancelText(context: context)),
-            onPressed: () => Navigator.pop(innerContext)
-          ),
-          CupertinoDialogAction(
-            child: Text(okText),
-            isDestructiveAction: true,
-            onPressed: () async {
-              if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
-                Navigator.pop(innerContext);
-                routes.toIsFinishedPage(context: context,title: l10n.deletedUser,text: l10n.deletedUserText);
-                await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
-              }
-            },
-          ),
-        ],
-      );
-    };
-    voids.showCupertinoDialogue(context: context,builder: builder );
+    voids.showCupertinoDialogue(
+      context: context,
+      builder: (innerContext) {
+        return CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            CupertinoDialogAction(
+              child: Text(cancelText(context: context)),
+              onPressed: () => Navigator.pop(innerContext)
+            ),
+            CupertinoDialogAction(
+              child: Text(okText),
+              isDestructiveAction: true,
+              onPressed: () async {
+                if (currentUser!.uid == mainModel.currentWhisperUser.uid) {
+                  Navigator.pop(innerContext);
+                  routes.toIsFinishedPage(context: context,title: l10n.deletedUser,text: l10n.deletedUserText);
+                  await deleteUserFromFireStoreAndFirebaseAuth(context: context, currentWhisperUser: currentWhisperUser);
+                }
+              },
+            ),
+          ],
+        );
+      }
+    );
   }
 
   Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {

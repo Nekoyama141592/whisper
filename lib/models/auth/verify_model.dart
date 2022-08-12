@@ -15,23 +15,18 @@ final verifyProvider = ChangeNotifierProvider(
 );
 
 class VerifyModel extends ChangeNotifier {
-  User? currentUser;
+  User? currentUser = firebaseAuthCurrentUser();
   late Timer timer;
 
   VerifyModel() {
     init();
   }
-  void init() {
-    setCurrentUser();
-    currentUser!.sendEmailVerification();
-  }
-
-  void setCurrentUser() => currentUser = firebaseAuthCurrentUser();
+  void init() => currentUser!.sendEmailVerification();
 
   Future<void>  setTimer({ required BuildContext context}) async => timer = Timer.periodic(Duration(seconds: verifyMailIntervalSeconds), (timer) async => await checkEmailVerified(context: context ));
 
   Future<void> checkEmailVerified({ required BuildContext context}) async {
-    setCurrentUser();
+    currentUser = firebaseAuthCurrentUser();
     await currentUser!.reload();
     if (currentUser!.emailVerified) {
       timer.cancel();
