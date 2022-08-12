@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // package
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whisper/details/judge_screen.dart';
 // components
 import 'components/post_cards.dart';
 import 'package:whisper/details/loading.dart';
@@ -67,15 +66,11 @@ class PostSearchPage extends ConsumerWidget {
               ),
             ),
             if (searchModel.results.isEmpty) SizedBox(height: size.height * 0.16,),
-            JudgeScreen(
-              list: postSearchModel.results, 
-              content: PostCards(
-                passiveWhisperUser: passiveWhisperUser,
-                results: searchModel.results,
-                mainModel: mainModel,
-                postSearchModel: postSearchModel,
-              ), 
-              reload: () async => await postSearchModel.onReload(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser),
+            PostCards(
+              passiveWhisperUser: passiveWhisperUser,
+              results: searchModel.results,
+              mainModel: mainModel,
+              postSearchModel: postSearchModel,
             ),
           ],
         )

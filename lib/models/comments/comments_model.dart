@@ -74,7 +74,7 @@ class CommentsModel extends ChangeNotifier {
     final String postId = whisperPost.postId;
     if (indexPostId != postId) {
       indexPostId = postId;
-      await getCommentDocs(whisperPost: whisperPost);
+      await onReload(whisperPost: whisperPost);
     }
   }
 
@@ -278,7 +278,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byLikeUidCount) {
                   sortState = SortState.byLikeUidCount;
-                  await getCommentDocs(whisperPost: whisperPost);
+                  await onReload(whisperPost: whisperPost);
                 }
               }, 
               child: PositiveText(text: sortByLikeUidCountText(context: context)),
@@ -288,7 +288,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byNewestFirst) {
                   sortState = SortState.byNewestFirst;
-                  await getCommentDocs(whisperPost: whisperPost);
+                  await onReload(whisperPost: whisperPost);
                 }
               }, 
               child: PositiveText(text: sortByNewestFirstText(context: context)),
@@ -298,7 +298,7 @@ class CommentsModel extends ChangeNotifier {
                 Navigator.pop(innerContext);
                 if (sortState != SortState.byOldestFirst) {
                   sortState = SortState.byOldestFirst;
-                  await getCommentDocs(whisperPost: whisperPost);
+                  await onReload(whisperPost: whisperPost);
                 }
               }, 
               child: PositiveText(text: sortByOldestFirstText(context: context)),
@@ -327,7 +327,7 @@ class CommentsModel extends ChangeNotifier {
     refreshController.refreshCompleted();
   }
 
-  Future<void> getCommentDocs({ required Post whisperPost }) async {
+  Future<void> onReload({ required Post whisperPost }) async {
     commentDocs = [];
     await voids.processBasicDocs(basicDocType: basicDocType,docs: commentDocs,query: getQuery(whisperPost: whisperPost));
     notifyListeners();

@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // components
+import 'package:whisper/details/refresh_screen.dart';
 import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
@@ -63,16 +64,35 @@ class PostCards extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
+    final subWidget = ValueListenableBuilder<Post?>(
+      valueListenable: mainModel.currentWhisperPostNotifier,
+      builder: (_,whisperPost,__) {
+        return AudioWindow(
+          route: route, 
+          progressNotifier: progressNotifier, 
+          seek: seek, 
+          whisperPost: whisperPost!,
+          playButtonNotifier: playButtonNotifier, 
+          play: play, 
+          pause: pause, 
+          isFirstSongNotifier: isFirstSongNotifier,
+          onPreviousSongButtonPressed: onPreviousSongButtonPressed,
+          isLastSongNotifier: isLastSongNotifier,
+          onNextSongButtonPressed: onNextSongButtonPressed,
+          mainModel: mainModel,
+        );
+      }
+    );
     return Column(
       children: [
         Expanded(
-          child: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropHeader(),
-            controller: refreshController,
-            onRefresh: onRefresh,
-            onLoading: onLoading,
+          child: RefreshScreen(
+          isEmpty: mainModel.posts.isEmpty,
+          subWidget: subWidget,
+          controller: mainModel.refreshController,
+          onRefresh: () async => await mainModel.onRefresh(),
+          onReload: () async => await mainModel.onReload(),
+          onLoading: () async => await mainModel.onLoading(),
             child: ListView.builder(
               itemCount: postDocs.length,
               itemBuilder: (BuildContext context, int i) {
@@ -120,25 +140,7 @@ class PostCards extends StatelessWidget {
             ),
           ),
         ),
-        ValueListenableBuilder<Post?>(
-          valueListenable: mainModel.currentWhisperPostNotifier,
-          builder: (_,whisperPost,__) {
-            return AudioWindow(
-              route: route, 
-              progressNotifier: progressNotifier, 
-              seek: seek, 
-              whisperPost: whisperPost!,
-              playButtonNotifier: playButtonNotifier, 
-              play: play, 
-              pause: pause, 
-              isFirstSongNotifier: isFirstSongNotifier,
-              onPreviousSongButtonPressed: onPreviousSongButtonPressed,
-              isLastSongNotifier: isLastSongNotifier,
-              onNextSongButtonPressed: onNextSongButtonPressed,
-              mainModel: mainModel,
-            );
-          }
-        )
+        
       ],
     );
   }

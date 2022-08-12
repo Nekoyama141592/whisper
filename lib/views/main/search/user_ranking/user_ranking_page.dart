@@ -2,13 +2,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // package
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/widgets.dart';
 // components
+import 'package:whisper/details/refresh_screen.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/details/user_card.dart';
 // domain
@@ -38,14 +38,15 @@ class UserRankingPage extends ConsumerWidget {
           child: whiteBoldEllipsisHeaderText(context: context, text: 'User Ranking'),
         ),
       circular: defaultPadding(context: context),
-      content: userRankingModel.isLoading ?
-      SizedBox.shrink()
-      : SmartRefresher(
+      child: RefreshScreen(
+        isEmpty: userRankingModel.userDocs.isEmpty,
+        subWidget: SizedBox.shrink(),
         controller: userRankingModel.refreshController,
-        enablePullDown: false,
-        enablePullUp: true,
-        header: WaterDropHeader(),
+        // TODO: onRefresh: () async => await userRankingModel.onRefresh(),
+        // TODO: onReload: () async => await userRankingModel.onReload(),
         onLoading: () async => await userRankingModel.onLoading(),
+        onRefresh: () {},
+        onReload: () {},
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: defaultPadding(context: context)

@@ -62,7 +62,7 @@ class UserShowPage extends ConsumerWidget {
             ),
             mainModel: mainModel, 
           ),
-          content: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
+          child: UserShowPostScreen(userShowModel: userShowModel,mainModel: mainModel),
           circular: defaultPadding(context: context)
         ),
       )

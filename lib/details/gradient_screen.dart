@@ -7,13 +7,13 @@ class GradientScreen extends StatelessWidget {
     Key? key,
     required this.top,
     required this.header,
-    required this.content,
+    required this.child,
     required this.circular
   }) : super(key: key);
   
   final Widget top;
   final Widget header;
-  final Widget content;
+  final Widget child;
   final double circular;
 
   @override  
@@ -46,7 +46,7 @@ class GradientScreen extends StatelessWidget {
                     topRight: Radius.circular(circular)
                   )
                 ),
-                child: content,
+                child: child,
               )
             ) 
           ]

@@ -53,7 +53,7 @@ class MyProfilePage extends ConsumerWidget {
           mainModel: mainModel, 
         ), 
         circular: defaultPadding(context: context),
-        content: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
+        child: MyProfilePostScreen(myProfileModel: myProfileModel, mainModel: mainModel), 
       )
     );
   }

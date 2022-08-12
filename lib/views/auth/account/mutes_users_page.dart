@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/widgets.dart';
 // components
-import 'package:whisper/details/loading.dart';
-import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/views/auth/account/components/user_cards.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
@@ -31,17 +29,14 @@ class MutesUsersPage extends ConsumerWidget {
       appBar: AppBar(
         title: whiteBoldEllipsisHeaderText(context: context, text: l10n.muteUsers)
       ),
-      body: JudgeScreen(
-        list: muteUsersModel.userDocs,
-        reload: () async => await muteUsersModel.onReload(),
-        content: UserCards(
-          userDocs: muteUsersModel.userDocs, 
-          mainModel: mainModel,
-          muteUsersModel: muteUsersModel,
-          onLoading: () async => await muteUsersModel.onLoading(),
-          onRefresh: () async => await muteUsersModel.onRefresh(mainModel: mainModel),
-          refreshController: muteUsersModel.refreshController,
-        ),
+      body: UserCards(
+        userDocs: muteUsersModel.userDocs, 
+        mainModel: mainModel,
+        muteUsersModel: muteUsersModel,
+        onLoading: () async => await muteUsersModel.onLoading(),
+        onReload: () async => await muteUsersModel.onReload(),
+        onRefresh: () async => await muteUsersModel.onRefresh(mainModel: mainModel),
+        refreshController: muteUsersModel.refreshController,
       )
     );
   }

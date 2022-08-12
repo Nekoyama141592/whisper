@@ -36,7 +36,7 @@ class WhichType extends ConsumerWidget {
         padding: EdgeInsets.all(defaultPadding(context: context)),
         child: whiteBoldEllipsisHeaderText(context: context,text: 'WhichType'),
       ),
-      content: Content(mainModel: mainModel, addPostModel: addPostModel),
+      child: Content(mainModel: mainModel, addPostModel: addPostModel),
       circular: defaultHeaderTextSize(context: context),
     );
   }

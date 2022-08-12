@@ -18,6 +18,7 @@ class UserCards extends StatelessWidget {
     Key? key,
     required this.refreshController,
     required this.onRefresh,
+    required this.onReload,
     required this.onLoading,
     required this.userDocs,
     required this.mainModel,
@@ -27,6 +28,7 @@ class UserCards extends StatelessWidget {
    // refresh
   final RefreshController refreshController;
   final void Function()? onRefresh;
+  final void Function()? onReload;
   final void Function()? onLoading;
   final List<DocumentSnapshot<Map<String,dynamic>>> userDocs;
   final MainModel mainModel;
@@ -37,9 +39,11 @@ class UserCards extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(defaultPadding(context: context)),
       child: RefreshScreen(
+        onReload: onReload,
         onRefresh: onRefresh, 
         onLoading: onLoading, 
-        refreshController: refreshController, 
+        isEmpty: userDocs.isEmpty,
+        controller: refreshController, 
         subWidget: SizedBox.shrink(),
         child: ListView.builder(
           itemCount: userDocs.length,

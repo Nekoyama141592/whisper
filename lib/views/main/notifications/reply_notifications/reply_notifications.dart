@@ -1,10 +1,8 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/strings.dart';
-// packages
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 // component
-import 'package:whisper/details/nothing.dart';
+import 'package:whisper/details/refresh_screen.dart';
 import 'package:whisper/views/main/notifications/reply_notifications/components/reply_notification_card.dart';
 // domain
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
@@ -27,26 +25,19 @@ class ReplyNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final List<ReplyNotification> replyNotifications = notificationsModel.notifications.where((element) => ReplyNotification.fromJson(element.data()!).notificationType == replyNotificationType ).map((e) => ReplyNotification.fromJson(e.data()!) ).toList();
-    final reload = () async => await notificationsModel.onReload();
-    return notificationsModel.isLoading ?
-    SizedBox.shrink()
-    : Container(
-      child: replyNotifications.isEmpty ?
-      Nothing(reload: reload)
-      : SmartRefresher(
-        controller: notificationsModel.replyRefreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(),
-        onRefresh: () async => await notificationsModel.onRefresh(),
-        onLoading: () async => await notificationsModel.onLoading(),
-        child: ListView.builder(
-          itemCount: replyNotifications.length,
-          itemBuilder: (BuildContext context, int i) {
-            final ReplyNotification replyNotification = replyNotifications[i];
-            return ReplyNotificationCard(mainModel: mainModel, replyNotification: replyNotification, notificationsModel: notificationsModel);
-          }
-        ),
+    return RefreshScreen(
+      isEmpty: replyNotifications.isEmpty,
+      subWidget: SizedBox.shrink(),
+      controller: notificationsModel.replyRefreshController,
+      onRefresh: () async => await notificationsModel.onRefresh(),
+      onReload: () async => await notificationsModel.onReload(),
+      onLoading: () async => await notificationsModel.onLoading(),
+      child: ListView.builder(
+        itemCount: replyNotifications.length,
+        itemBuilder: (BuildContext context, int i) {
+          final ReplyNotification replyNotification = replyNotifications[i];
+          return ReplyNotificationCard(mainModel: mainModel, replyNotification: replyNotification, notificationsModel: notificationsModel);
+        }
       ),
     );
   }

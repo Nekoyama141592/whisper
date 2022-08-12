@@ -1,10 +1,8 @@
 // material
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/strings.dart';
-// packages
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
-import 'package:whisper/details/nothing.dart';
+import 'package:whisper/details/refresh_screen.dart';
 import 'package:whisper/views/main/notifications/comment_notifications/components/comment_notification_card.dart';
 // domain
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
@@ -26,26 +24,19 @@ class CommentNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CommentNotification> commentNotifications = notificationsModel.notifications.where((element) => CommentNotification.fromJson(element.data()!).notificationType == commentNotificationType ).map((e) => CommentNotification.fromJson(e.data()!) ).toList();
-    final reload = () async => await notificationsModel.onReload();
-    return notificationsModel.isLoading ?
-    SizedBox.shrink()
-    : Container(
-      child: commentNotifications.isEmpty ?
-      Nothing(reload: reload)
-      : SmartRefresher(
-        controller: notificationsModel.commentRefreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(),
-        onRefresh: () async => await notificationsModel.onRefresh(),
-        onLoading: () async => await notificationsModel.onLoading(),
-        child: ListView.builder(
-          itemCount: commentNotifications.length,
-          itemBuilder: (BuildContext context, int i) {
-            final CommentNotification notification = commentNotifications[i];
-            return CommentNotificationCard(commentNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel, );
-          }
-        ),
+    return RefreshScreen(
+      isEmpty: commentNotifications.isEmpty,
+      subWidget: SizedBox.shrink(),
+      controller: notificationsModel.commentRefreshController,
+      onRefresh: () async => await notificationsModel.onRefresh(),
+      onReload: () async => await notificationsModel.onReload(),
+      onLoading: () async => await notificationsModel.onLoading(),
+      child: ListView.builder(
+        itemCount: commentNotifications.length,
+        itemBuilder: (BuildContext context, int i) {
+          final CommentNotification notification = commentNotifications[i];
+          return CommentNotificationCard(commentNotification: notification, mainModel: mainModel,notificationsModel: notificationsModel, );
+        }
       ),
     );
   }

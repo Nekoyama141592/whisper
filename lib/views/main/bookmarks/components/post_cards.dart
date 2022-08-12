@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
 // components
+import 'package:whisper/details/refresh_screen.dart';
 import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/posts/components/details/post_card.dart';
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
@@ -64,83 +65,78 @@ class PostCards extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: SmartRefresher(
-            // enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropHeader(),
-            controller: refreshController,
-            // onRefresh: onRefresh,
-            onLoading: onLoading,
-            child: ListView.builder(
-              itemCount: postDocs.length,
-              itemBuilder: (BuildContext context, int i) {
-                final postDoc = postDocs[i];
-                final Map<String,dynamic> post = postDoc.data() as Map<String,dynamic>;
-                final Post whisperPost = Post.fromJson(post);
-                return 
-                PostCard(
-                  postDoc: postDoc,
-                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPost: whisperPost, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.posts, mainModel: mainModel, i: i); },
-                  initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, i: i),
-                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, muteUids: mainModel.muteUids, i: i, results: bookmarksModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel),
-                  mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts ),
-                  reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts ),
-                  reportPostButtonBuilder:  (innerContext) {
-                    return CupertinoActionSheet(
-                      actions: whisperPost.uid == mainModel.userMeta.uid ?
-                      [  
-                        CupertinoActionSheetAction(onPressed: () {
-                          Navigator.pop(innerContext);
-                          postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPost: whisperPost, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.posts, mainModel: mainModel, i: i);
-                        }, child: PositiveText(text: deletePostText(context: context)) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
-                      ]
-                      : [
-                        CupertinoActionSheetAction(onPressed: () async {
-                          Navigator.pop(innerContext);
-                          await postFutures.muteUser(context: context, audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, muteUids: mainModel.muteUids, i: i, results: bookmarksModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
-                        }, child: PositiveText(text: muteUserText(context: context)) ),
-                        CupertinoActionSheetAction(onPressed: () async {
-                          Navigator.pop(innerContext);
-                          await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts);
-                        }, child: PositiveText(text: mutePostText(context: context)) ),
-                        CupertinoActionSheetAction(onPressed: () {
-                          Navigator.pop(innerContext);
-                          postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts);
-                        }, child: PositiveText(text: reportPostText(context: context)) ),
-                        CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
-                      ],
-                    );
-                  },
-                  mainModel: mainModel,
-                );
-              }
-            ),
-          ),
-        ),
-        ValueListenableBuilder<Post?>(
-          valueListenable: bookmarksModel.currentWhisperPostNotifier,
-          builder: (_,whisperPost,__) {
-            return AudioWindow(
-              route: route, 
-              progressNotifier: progressNotifier, 
-              seek: seek, 
-              whisperPost: whisperPost!,
-              playButtonNotifier: playButtonNotifier, 
-              play: play, 
-              pause: pause, 
-              isFirstSongNotifier: isFirstSongNotifier,
-              onPreviousSongButtonPressed: onPreviousSongButtonPressed,
-              isLastSongNotifier: isLastSongNotifier,
-              onNextSongButtonPressed: onNextSongButtonPressed,
-              mainModel: mainModel,
-            );
-          }
-        )
-      ],
+    final subWidget = ValueListenableBuilder<Post?>(
+      valueListenable: bookmarksModel.currentWhisperPostNotifier,
+      builder: (_,whisperPost,__) {
+        return AudioWindow(
+          route: route, 
+          progressNotifier: progressNotifier, 
+          seek: seek, 
+          whisperPost: whisperPost!,
+          playButtonNotifier: playButtonNotifier, 
+          play: play, 
+          pause: pause, 
+          isFirstSongNotifier: isFirstSongNotifier,
+          onPreviousSongButtonPressed: onPreviousSongButtonPressed,
+          isLastSongNotifier: isLastSongNotifier,
+          onNextSongButtonPressed: onNextSongButtonPressed,
+          mainModel: mainModel,
+        );
+      }
+    );
+    return RefreshScreen(
+      isEmpty: bookmarksModel.posts.isEmpty,
+      subWidget: subWidget,
+      controller: bookmarksModel.refreshController,
+      // TODO: onRefresh: () async => await bookmarksModel.onRefresh(),
+      onRefresh: () {},
+      onReload: () async => await bookmarksModel.onReload(mainModel: mainModel),
+      onLoading: () async => await bookmarksModel.onLoading(),
+      child: ListView.builder(
+        itemCount: postDocs.length,
+        itemBuilder: (BuildContext context, int i) {
+          final postDoc = postDocs[i];
+          final Map<String,dynamic> post = postDoc.data() as Map<String,dynamic>;
+          final Post whisperPost = Post.fromJson(post);
+          return 
+          PostCard(
+            postDoc: postDoc,
+            onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPost: whisperPost, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.posts, mainModel: mainModel, i: i); },
+            initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, i: i),
+            muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, muteUids: mainModel.muteUids, i: i, results: bookmarksModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel),
+            mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts ),
+            reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts ),
+            reportPostButtonBuilder:  (innerContext) {
+              return CupertinoActionSheet(
+                actions: whisperPost.uid == mainModel.userMeta.uid ?
+                [  
+                  CupertinoActionSheetAction(onPressed: () {
+                    Navigator.pop(innerContext);
+                    postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPost: whisperPost, afterUris: bookmarksModel.afterUris, posts: bookmarksModel.posts, mainModel: mainModel, i: i);
+                  }, child: PositiveText(text: deletePostText(context: context)) ),
+                  CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
+                ]
+                : [
+                  CupertinoActionSheetAction(onPressed: () async {
+                    Navigator.pop(innerContext);
+                    await postFutures.muteUser(context: context, audioPlayer: bookmarksModel.audioPlayer, afterUris: bookmarksModel.afterUris, muteUids: mainModel.muteUids, i: i, results: bookmarksModel.posts, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
+                  }, child: PositiveText(text: muteUserText(context: context)) ),
+                  CupertinoActionSheetAction(onPressed: () async {
+                    Navigator.pop(innerContext);
+                    await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts);
+                  }, child: PositiveText(text: mutePostText(context: context)) ),
+                  CupertinoActionSheetAction(onPressed: () {
+                    Navigator.pop(innerContext);
+                    postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: bookmarksModel.afterUris, audioPlayer: bookmarksModel.audioPlayer, results: bookmarksModel.posts);
+                  }, child: PositiveText(text: reportPostText(context: context)) ),
+                  CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
+                ],
+              );
+            },
+            mainModel: mainModel,
+          );
+        }
+      ),
     );
   }
 }

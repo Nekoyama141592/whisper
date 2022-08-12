@@ -37,7 +37,7 @@ class IsFinishedPage extends StatelessWidget {
           ),
         ),
         circular: defaultPadding(context: context),
-        content: SizedBox(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: EdgeInsets.symmetric(

@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
-import 'package:whisper/details/judge_screen.dart';
 import 'package:whisper/details/loading.dart';
 import 'package:whisper/views/main/home/feeds/components/post_cards.dart';
 // model
@@ -39,50 +38,46 @@ class FeedsPage extends ConsumerWidget {
 
     return isLoading ?
     Loading()
-    : JudgeScreen(
-      list: postDocs,
-      reload: () async => await mainModel.onReload(),
-      content: PostCards(
-        postDocs: postDocs, 
-        postFutures: postFutures,
-        route: () {
-          routes.toPostShowPage(
-            context: context,
-            speedNotifier: mainModel.speedNotifier,
-            speedControll:  () async => await voids.speedControll(audioPlayer: mainModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: mainModel.speedNotifier),
-            currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
-            progressNotifier: mainModel.progressNotifier, 
-            seek: mainModel.seek, 
-            repeatButtonNotifier: mainModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: mainModel.audioPlayer, repeatButtonNotifier: mainModel.repeatButtonNotifier),
-            isFirstSongNotifier: mainModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer),
-            playButtonNotifier: mainModel.playButtonNotifier, 
-            play: () => voids.play(audioPlayer: mainModel.audioPlayer),
-            pause: () => voids.pause(audioPlayer: mainModel.audioPlayer),
-            isLastSongNotifier: mainModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer),
-            toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: mainModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
-            toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel),
-            postType: mainModel.postType,
-            mainModel: mainModel
-          ); 
-        }, 
-        progressNotifier: mainModel.progressNotifier,
-        seek: mainModel.seek,
-        currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
-        playButtonNotifier: mainModel.playButtonNotifier,
-        play: () => voids.play(audioPlayer: mainModel.audioPlayer),
-        pause: () => voids.pause(audioPlayer: mainModel.audioPlayer),
-        refreshController: mainModel.refreshController,
-        onRefresh: () async => await mainModel.onRefresh(),
-        onLoading: () async => await mainModel.onLoading(),
-        isFirstSongNotifier: mainModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer),
-        isLastSongNotifier: mainModel.isLastSongNotifier,
-        onNextSongButtonPressed: () =>voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer),
-        mainModel: mainModel,
-      )
+    : PostCards(
+      postDocs: postDocs, 
+      postFutures: postFutures,
+      route: () {
+        routes.toPostShowPage(
+          context: context,
+          speedNotifier: mainModel.speedNotifier,
+          speedControll:  () async => await voids.speedControll(audioPlayer: mainModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: mainModel.speedNotifier),
+          currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
+          progressNotifier: mainModel.progressNotifier, 
+          seek: mainModel.seek, 
+          repeatButtonNotifier: mainModel.repeatButtonNotifier, 
+          onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: mainModel.audioPlayer, repeatButtonNotifier: mainModel.repeatButtonNotifier),
+          isFirstSongNotifier: mainModel.isFirstSongNotifier, 
+          onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer),
+          playButtonNotifier: mainModel.playButtonNotifier, 
+          play: () => voids.play(audioPlayer: mainModel.audioPlayer),
+          pause: () => voids.pause(audioPlayer: mainModel.audioPlayer),
+          isLastSongNotifier: mainModel.isLastSongNotifier, 
+          onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer),
+          toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: mainModel.audioPlayer, whisperPostNotifier: mainModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: mainModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
+          toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: mainModel.audioPlayer, editPostInfoModel: editPostInfoModel),
+          postType: mainModel.postType,
+          mainModel: mainModel
+        ); 
+      }, 
+      progressNotifier: mainModel.progressNotifier,
+      seek: mainModel.seek,
+      currentWhisperPostNotifier: mainModel.currentWhisperPostNotifier,
+      playButtonNotifier: mainModel.playButtonNotifier,
+      play: () => voids.play(audioPlayer: mainModel.audioPlayer),
+      pause: () => voids.pause(audioPlayer: mainModel.audioPlayer),
+      refreshController: mainModel.refreshController,
+      onRefresh: () async => await mainModel.onRefresh(),
+      onLoading: () async => await mainModel.onLoading(),
+      isFirstSongNotifier: mainModel.isFirstSongNotifier,
+      onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: mainModel.audioPlayer),
+      isLastSongNotifier: mainModel.isLastSongNotifier,
+      onNextSongButtonPressed: () =>voids.onNextSongButtonPressed(audioPlayer: mainModel.audioPlayer),
+      mainModel: mainModel,
     );
   }
 

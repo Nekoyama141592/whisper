@@ -1,8 +1,5 @@
 // material
 import 'package:flutter/material.dart';
-// package
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 // components
 import 'package:whisper/posts/components/audio_window/audio_window.dart';
 // domain
@@ -17,7 +14,6 @@ class PostCards extends StatelessWidget {
 
   const PostCards({
     Key? key,
-    required this.postDocs,
     required this.route,
     required this.progressNotifier,
     required this.seek,
@@ -25,9 +21,6 @@ class PostCards extends StatelessWidget {
     required this.playButtonNotifier,
     required this.play,
     required this.pause,
-    required this.refreshController,
-    required this.onRefresh,
-    required this.onLoading,
     required this.isFirstSongNotifier,
     required this.onPreviousSongButtonPressed,
     required this.isLastSongNotifier,
@@ -37,7 +30,6 @@ class PostCards extends StatelessWidget {
   }) : super(key: key);
 
  
-  final List<DocumentSnapshot> postDocs;
   final void Function()? route;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;
@@ -45,10 +37,6 @@ class PostCards extends StatelessWidget {
   final PlayButtonNotifier playButtonNotifier;
   final void Function()? play;
   final void Function()? pause;
-  // refresh
-  final RefreshController refreshController;
-  final void Function()? onRefresh;
-  final void Function()? onLoading;
   final ValueNotifier<bool> isFirstSongNotifier;
   final void Function()? onPreviousSongButtonPressed;
   final ValueNotifier<bool> isLastSongNotifier;

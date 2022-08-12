@@ -56,7 +56,7 @@ class PostScreen extends ConsumerWidget {
           ],
         ),
       ),
-      content: postDocs.isEmpty ?
+      child: postDocs.isEmpty ?
       Nothing(reload: () async => await bookmarksModel.onReload(mainModel: mainModel, ))
       : Padding(
         padding: EdgeInsets.only(

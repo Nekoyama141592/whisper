@@ -72,7 +72,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
           child: whiteBoldEllipsisHeaderText(context: context,text: l10n.selectCategory ),
         ),
         circular: height/32.0,
-        content: ListView.builder(
+        child: ListView.builder(
           itemCount: mainModel.bookmarkPostCategories.length,
           itemBuilder: (BuildContext context, int i) {
             final BookmarkPostCategory bookmarkLabel = mainModel.bookmarkPostCategories[i];
