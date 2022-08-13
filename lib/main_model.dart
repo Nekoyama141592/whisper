@@ -75,7 +75,7 @@ class MainModel extends ChangeNotifier {
   List<String> mutePostCommentIds = [];
   List<MutePost> mutePosts = [];
   List<String> mutePostIds = [];
-  // block(使用されていな)
+  // block(使用されていない)
   List<BlockUser> blockUsers = [];
   List<String> blockUids = [];
   // searchHistory

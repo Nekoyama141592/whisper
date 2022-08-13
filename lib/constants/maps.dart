@@ -1,7 +1,7 @@
 Map<String,dynamic> returnSearchToken({ required List<String> searchWords }) {
-  Map<String,dynamic> tokenToSearch = {};
+  Map<String,dynamic> searchToken = {};
   searchWords.forEach((word) {
-    tokenToSearch[word] = true;
+    searchToken[word] = true;
   });
-  return tokenToSearch;
+  return searchToken;
 }
