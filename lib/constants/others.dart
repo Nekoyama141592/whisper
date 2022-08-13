@@ -209,18 +209,9 @@ Future<File?> returnCroppedFile ({ required XFile? xFile }) async {
   );
   return result;
 }
-Query<Map<String,dynamic>> returnPostSearchQuery({ required String postCreatorUid ,required List<String> searchWords }) {
-  Query<Map<String,dynamic>> query = returnPostsColRef(postCreatorUid: postCreatorUid).limit(oneTimeReadCount);
-  searchWords.forEach((word) {
-    query = query.where(searchTokenFieldKey + '.' + word,isEqualTo: true);
-  });
-  return query;
-}
-Query<Map<String,dynamic>> returnUserSearchQuery({ required List<String> searchWords }) {
-  Query<Map<String,dynamic>> query = returnUsersColRef().limit(oneTimeReadCount);
-  searchWords.forEach((word) {
-    query = query.where(searchTokenFieldKey + '.' + word,isEqualTo: true);
-  });
+Query<Map<String,dynamic>> returnSearchQuery({ required CollectionReference<Map<String, dynamic>> colRef,required List<String> searchWords }) {
+  Query<Map<String,dynamic>> query = colRef.limit(oneTimeReadCount);
+  for (final word in searchWords) query = query.where("$searchTokenFieldKey.$word",isEqualTo: true);
   return query;
 }
 // localize

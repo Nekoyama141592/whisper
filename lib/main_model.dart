@@ -158,8 +158,8 @@ class MainModel extends ChangeNotifier {
     // 新しい順に並び替えている
     // 古い順に並び替えたければ、aとbを逆にする
     tokenDocs.sort((a,b) => (b[createdAtFieldKey] as Timestamp).compareTo(a[createdAtFieldKey]));
-    tokenDocs.forEach((DocumentSnapshot<Map<String, dynamic>> tokenDoc) {
-      final Map<String,dynamic> tokenMap = tokenDoc.data()!;
+    for (final tokenDoc in tokenDocs) {
+      final Map<String,dynamic> tokenMap = tokenDoc.data();
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap);
       switch(tokenType) {
         case TokenType.blockUser:
@@ -230,7 +230,7 @@ class MainModel extends ChangeNotifier {
           watchlists.add(watchlist);
         break;
       }
-    });
+    }
   }
   // feeds
 
@@ -268,7 +268,7 @@ class MainModel extends ChangeNotifier {
 
   Future<void> getNewFeeds() async {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
-    timelinesQshot.docs.reversed.forEach((element) { timelineDocs.insert(0, element); });
+    for (final doc in timelinesQshot.docs) timelineDocs.insert(0, doc);
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
       await voids.processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutesPostIds: mutePostIds);
     }
@@ -285,9 +285,7 @@ class MainModel extends ChangeNotifier {
 
   Future<void> getOldFeeds() async {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
-    timelinesQshot.docs.forEach((element) { 
-      timelineDocs.add(element); 
-    });
+    for (final doc in timelinesQshot.docs) timelineDocs.add(doc);
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
       await voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutePostIds: mutePostIds);
     }

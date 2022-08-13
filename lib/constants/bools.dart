@@ -22,8 +22,8 @@ bool basicScanOfPost({required List<dynamic> mutesUids, required List<dynamic> b
 
 bool newNotificationExists({ required List<CommentNotification> commentNotifications,required List<ReplyNotification> replyNotifications }) {
   bool x = false;
-  replyNotifications.forEach((replyNotification) { if (replyNotification.isRead == false) { x = true; } });
-  commentNotifications.forEach((commentNotification) { if (commentNotification.isRead == false) { x = true; } });
+  for (final replyNotification in replyNotifications) if (replyNotification.isRead == false) x = true;
+  for (final commentNotification in replyNotifications) if (commentNotification.isRead == false) x = true;
   return x;
 }
 
@@ -57,11 +57,7 @@ bool isValidReadPost({ required Post whisperPost,required PostType postType ,req
 }
 bool isImageExist({ required Post post }) {
   bool isImageExist = false;
-  post.imageURLs.forEach((element) { 
-    if (element.isNotEmpty) {
-      isImageExist = true;
-    }
-  });
+  for (final element in post.imageURLs) if (element.isNotEmpty) isImageExist = true;
   return isImageExist;
 }
 bool canShowAdvertisement({ required OfficialAdvertisement officialAdvertisement }) {

@@ -82,7 +82,7 @@ class PostSearchModel extends ChangeNotifier{
       startLoading();
       results = [];
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
-      final Query<Map<String,dynamic>> query = returnPostSearchQuery(postCreatorUid: passiveWhisperUser.uid,searchWords: searchWords);
+      final Query<Map<String,dynamic>> query = returnSearchQuery(colRef: returnPostsColRef(postCreatorUid: passiveWhisperUser.uid),searchWords: searchWords);
       await processBasicPosts(query: query, posts: results, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
       if (isFirstSearch == false) {
         voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);

@@ -40,7 +40,7 @@ class UserSearchModel extends ChangeNotifier {
     } else if (searchTerm.isNotEmpty) {
       startLoading();
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
-      final Query<Map<String,dynamic>> query = returnUserSearchQuery(searchWords: searchWords);
+      final Query<Map<String,dynamic>> query = returnSearchQuery(colRef: returnUsersColRef(), searchWords: searchWords);
       await processBasicDocs(basicDocType: basicDocType,query: query, docs: results);
       if (searchTerm.length == uidLength) {
         final x = await returnUserDocRef(uid: searchTerm ).get();

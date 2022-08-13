@@ -110,8 +110,8 @@ class RecommendersModel extends ChangeNotifier {
     final List<TokenType> userTokenTypes = [TokenType.readPost,TokenType.blockUser,TokenType.muteUser,TokenType.mutePost];
     final List<String> tokenTypeStrings = userTokenTypes.map((e) => returnTokenTypeString(tokenType: e) ).toList();
     final qshot = await returnTokensColRef(uid: firebaseAuthCurrentUser()!.uid).where(tokenTypeFieldKey,whereIn: tokenTypeStrings).get();
-    qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final Map<String,dynamic> tokenMap = doc.data()!;
+    for (final doc in qshot.docs) {
+      final Map<String,dynamic> tokenMap = doc.data();
       final TokenType tokenType = jsonToTokenType(tokenMap: tokenMap );
       if (tokenType == TokenType.readPost) {
         final ReadPost readPost = ReadPost.fromJson(tokenMap);
@@ -128,7 +128,7 @@ class RecommendersModel extends ChangeNotifier {
         final MutePost mutePost = MutePost.fromJson(tokenMap);
         mutePostIds.add(mutePost.postId);
       }
-    });
+    }
   }
   
   Future<void> onRefresh() async {

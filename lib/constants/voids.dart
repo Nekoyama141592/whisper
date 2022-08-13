@@ -213,8 +213,8 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
     // because of insert
     docs.reversed;
     // Insert at the top
-    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final whisperPost = fromMapToPost(postMap: doc.data()!);
+    for (final doc in docs) {
+      final whisperPost = fromMapToPost(postMap: doc.data());
       final String uid = whisperPost.uid;
       bool x = isValidReadPost(whisperPost: whisperPost ,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
       if (x) {
@@ -223,7 +223,7 @@ Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, requi
         UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
         afterUris.insert(0, source);
       }
-    });
+    }
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist);
@@ -238,8 +238,8 @@ Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, req
     docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
   }
   if (docs.isNotEmpty) {
-    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final whisperPost = fromMapToPost(postMap: doc.data()! );
+    for (final doc in docs) {
+      final whisperPost = fromMapToPost(postMap: doc.data() );
       final String uid = whisperPost.uid;
       bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
       if (x) {
@@ -248,7 +248,7 @@ Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, req
         UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
         afterUris.add(source);
       }
-    });
+    }
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist);
@@ -265,8 +265,8 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
     docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
   }
   if (docs.isNotEmpty) {
-    docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      final whisperPost = fromMapToPost(postMap: doc.data()! );
+    for (final doc in docs) {
+      final whisperPost = fromMapToPost(postMap: doc.data() );
       final String uid = whisperPost.uid;
       bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
       if (x) {
@@ -275,7 +275,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
         UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
         afterUris.add(source);
       }
-    });
+    }
     if (afterUris.isNotEmpty) {
       ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
       await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
@@ -284,33 +284,29 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, requi
 }
 
 Future<void> processNewDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
-  await query.limit(oneTimeReadCount).endBeforeDocument(docs.first).get().then((qshot) => qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
+  final qshot = await query.limit(oneTimeReadCount).endBeforeDocument(docs.first).get();
+  for (final doc in qshot.docs) {
     if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) {
       docs.insert(0, doc); 
     }
-  }));
+  }
 }
 
 Future<void> processBasicDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
   // use notifiations and mute users
-  await query.limit(oneTimeReadCount).get().then((qshot)=> qshot.docs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-    if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) {
-      docs.add(doc);
-    }
-  }));
+  final qshot = await query.limit(oneTimeReadCount).get();
+  for (final doc in qshot.docs) {
+    if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) docs.add(doc);
+  }
 }
 
 Future<void> processOldDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
   // use notifiations and mute users
-  await query.limit(oneTimeReadCount).startAfterDocument(docs.last).get().then((qshot) {
-    final queryDocs = qshot.docs;
-    queryDocs.reversed;
-    queryDocs.forEach((DocumentSnapshot<Map<String,dynamic>> doc) {
-      if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) {
-        docs.add(doc);
-      }
-    });
-  });
+  final qshot = await query.limit(oneTimeReadCount).startAfterDocument(docs.last).get();
+  final reversed = qshot.docs.reversed.toList();
+  for (final doc in reversed) {
+    if (isNotNegativeBasicContent(basicDocType: basicDocType,doc: doc)) docs.add(doc);
+  }
 }
 
 Future<String> uploadUserImageAndGetURL({ required String uid, required File? croppedFile, required String storageImageName }) async {
@@ -320,7 +316,7 @@ Future<String> uploadUserImageAndGetURL({ required String uid, required File? cr
     final Reference storageRef = returnUserImageChildRef(uid: uid, storageImageName: storageImageName);
     await putImage(imageRef: storageRef, file: croppedFile! );
     getDownloadURL = await storageRef.getDownloadURL();
-  } catch(e) { print(e.toString()); }
+  } catch(e) { debugPrint(e.toString()); }
   return getDownloadURL;
 }
 
