@@ -21,7 +21,7 @@ class VerifyModel extends ChangeNotifier {
   VerifyModel() {
     init();
   }
-  void init() => currentUser!.sendEmailVerification();
+  Future<void> init() async => await currentUser!.sendEmailVerification();
 
   Future<void>  setTimer({ required BuildContext context}) async => timer = Timer.periodic(Duration(seconds: verifyMailIntervalSeconds), (timer) async => await checkEmailVerified(context: context ));
 

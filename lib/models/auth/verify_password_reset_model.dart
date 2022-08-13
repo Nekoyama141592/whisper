@@ -20,17 +20,18 @@ class VerifyPasswordResetModel extends ChangeNotifier {
     try{
       await instance.sendPasswordResetEmail(email: email);
       Navigator.pop(context);
-      voids.showBasicFlutterToast(context: context, msg: l10n.sendedEmail(email));
+      await voids.showBasicFlutterToast(context: context, msg: l10n.sendedEmail(email));
     } on FirebaseAuthException catch(e) {
-      print(e.toString());
+      String msg = "";
       switch(e.code) {
         case 'auth/invalid-email':
-        voids.showBasicFlutterToast(context: context, msg: l10n.authInvalidEmail);
+          msg = l10n.authInvalidEmail;
         break;
         case 'auth/user-not-found':
-        voids.showBasicFlutterToast(context: context, msg: l10n.authUserNotFound );
+          msg = l10n.authUserNotFound;
         break;
       } 
+      await voids.showBasicFlutterToast(context: context, msg: msg);
     } 
   }
 }
