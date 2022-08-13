@@ -32,7 +32,7 @@ class UserSearchModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> operation({ required BuildContext context ,required List<dynamic> mutesUids, required List<dynamic> blocksUids}) async {
+  Future<void> operation({ required BuildContext context ,required List<String> mutesUids, required List<String> blocksUids}) async {
     if (searchTerm.length > maxSearchLength ) {
       final x = maxSearchLength.toString();
       final L10n l10n = returnL10n(context: context)!;
