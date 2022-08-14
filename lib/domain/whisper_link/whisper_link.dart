@@ -2,7 +2,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'whisper_link.g.dart';
-
+// これはfreezedにしなくて良い
 @JsonSerializable()
 class WhisperLink {
   WhisperLink({
@@ -11,10 +11,7 @@ class WhisperLink {
     required this.label,
     required this.url,
   });
-  String description;
-  String imageURL;
-  String label;
-  String url;
+  String description, imageURL, label, url;
 
   factory WhisperLink.fromJson(Map<String,dynamic> json) => _$WhisperLinkFromJson(json);
 

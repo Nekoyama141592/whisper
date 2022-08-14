@@ -28,9 +28,7 @@ class LinksPage extends StatelessWidget {
     final L10n l10n = returnL10n(context: context)!;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          voids.onAddLinkButtonPressed(whisperLinksNotifier: whisperLinksNotifier);
-        },
+        onPressed: () =>voids.onAddLinkButtonPressed(whisperLinksNotifier: whisperLinksNotifier),
         child: Icon(Icons.new_label),
       ),
       body: ValueListenableBuilder<List<WhisperLink>>(
