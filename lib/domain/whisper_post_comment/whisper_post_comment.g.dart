@@ -6,13 +6,12 @@ part of 'whisper_post_comment.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WhisperPostComment _$WhisperPostCommentFromJson(Map<String, dynamic> json) =>
-    WhisperPostComment(
+_$_Timeline _$$_TimelineFromJson(Map<String, dynamic> json) => _$_Timeline(
       accountName: json['accountName'] as String,
       comment: json['comment'] as String,
       commentLanguageCode: json['commentLanguageCode'] as String,
-      commentNegativeScore: (json['commentNegativeScore'] as num).toDouble(),
       commentPositiveScore: (json['commentPositiveScore'] as num).toDouble(),
+      commentNegativeScore: (json['commentNegativeScore'] as num).toDouble(),
       commentSentiment: json['commentSentiment'] as String,
       createdAt: json['createdAt'],
       followerCount: json['followerCount'] as int,
@@ -43,7 +42,7 @@ WhisperPostComment _$WhisperPostCommentFromJson(Map<String, dynamic> json) =>
       userNameSentiment: json['userNameSentiment'] as String,
     );
 
-Map<String, dynamic> _$WhisperPostCommentToJson(WhisperPostComment instance) =>
+Map<String, dynamic> _$$_TimelineToJson(_$_Timeline instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
       'comment': instance.comment,

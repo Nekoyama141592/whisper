@@ -1,78 +1,43 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'whisper_post_comment.freezed.dart';
 part 'whisper_post_comment.g.dart';
 
-@JsonSerializable()
-class WhisperPostComment {
-  WhisperPostComment({
-    required this.accountName,
-    required this.comment,
-    required this.commentLanguageCode,
-    required this.commentNegativeScore,
-    required this.commentPositiveScore,
-    required this.commentSentiment,
-    required this.createdAt,
-    required this.followerCount,
-    required this.isHidden,
-    required this.isNFTicon,
-    required this.isOfficial,
-    required this.isPinned,
-    required this.likeCount,
-    required this.masterReplied,
-    required this.mainWalletAddress,
-    required this.muteCount,
-    required this.nftIconInfo,
-    required this.passiveUid,
-    required this.postCommentId,
-    required this.postId,
-    required this.postCommentReplyCount,
-    required this.reportCount,
-    required this.score,
-    required this.uid,
-    required this.updatedAt,
-    required this.userImageURL,
-    required this.userImageNegativeScore,
-    required this.userName,
-    required this.userNameLanguageCode,
-    required this.userNameNegativeScore,
-    required this.userNamePositiveScore,
-    required this.userNameSentiment,
-  });
-  final String accountName;
-  final String comment;
-  final String commentLanguageCode;
-  final double commentPositiveScore;
-  final double commentNegativeScore;
-  final String commentSentiment;
-  final dynamic createdAt;
-  final int followerCount;
-  final bool isHidden;
-  final bool isNFTicon;
-  final bool isOfficial;
-  bool isPinned;
-  int likeCount;
-  final bool masterReplied;
-  final String mainWalletAddress;
-  final int muteCount;
-  final Map<String,dynamic> nftIconInfo;
-  final String passiveUid;
-  final String postCommentId;
-  final String postId;
-  final int postCommentReplyCount;
-  final int reportCount;
-  final double score;
-  final String uid;
-  final dynamic updatedAt;
-  final String userImageURL;
-  final double userImageNegativeScore;
-  final String userName;
-  final String userNameLanguageCode;
-  final double userNameNegativeScore;
-  final double userNamePositiveScore;
-  final String userNameSentiment;
-
-  factory WhisperPostComment.fromJson(Map<String,dynamic> json) => _$WhisperPostCommentFromJson(json);
-
-  Map<String,dynamic> toJson() => _$WhisperPostCommentToJson(this);
+@freezed
+abstract class WhisperPostComment with _$WhisperPostComment {
+ const factory WhisperPostComment({
+    required String accountName,
+    required String comment,
+    required String commentLanguageCode,
+    required double commentPositiveScore,
+    required double commentNegativeScore,
+    required String commentSentiment,
+    required dynamic createdAt,
+    required int followerCount,
+    required bool isHidden,
+    required bool isNFTicon,
+    required bool isOfficial,
+    required bool isPinned,
+    required int likeCount,
+    required bool masterReplied,
+    required String mainWalletAddress,
+    required int muteCount,
+    required Map<String,dynamic> nftIconInfo,
+    required String passiveUid,
+    required String postCommentId,
+    required String postId,
+    required int postCommentReplyCount,
+    required int reportCount,
+    required double score,
+    required String uid,
+    required dynamic updatedAt,
+    required String userImageURL,
+    required double userImageNegativeScore,
+    required String userName,
+    required String userNameLanguageCode,
+    required double userNameNegativeScore,
+    required double userNamePositiveScore,
+    required String userNameSentiment,
+  }) = _Timeline;
+ factory WhisperPostComment.fromJson(Map<String, dynamic> json) => _$WhisperPostCommentFromJson(json);
 }
