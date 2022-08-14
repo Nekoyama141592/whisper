@@ -1,45 +1,26 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'post_update_log.freezed.dart';
 part 'post_update_log.g.dart';
 
-@JsonSerializable()
-class PostUpdateLog {
-  PostUpdateLog({
-    required this.commentsState,
-    required this.country,
-    required this.description,
-    required this.genre,
-    required this.hashTags,
-    required this.imageURLs,
-    required this.isPinned,
-    required this.links,
-    required this.postState,
-    required this.postId,
-    required this.tagAccountNames,
-    required this.searchToken,
-    required this.title,
-    required this.uid,
-    required this.updatedAt
-  });
-  
-  String commentsState;
-  final String country;
-  String description;
-  String genre;
-  List<String> hashTags;
-  List<String> imageURLs;
-  bool isPinned;
-  List<Map<String,dynamic>> links;
-  String postState;
-  String postId;
-  List<String> tagAccountNames;
-  Map<String,dynamic> searchToken;
-  String title;
-  final String uid;
-  dynamic updatedAt;
-  
-  factory PostUpdateLog.fromJson(Map<String,dynamic> json) => _$PostUpdateLogFromJson(json);
-
-  Map<String,dynamic> toJson() => _$PostUpdateLogToJson(this);
+@freezed
+abstract class PostUpdateLog with _$PostUpdateLog {
+ const factory PostUpdateLog({
+    required String commentsState,
+    required String country,
+    required String description,
+    required String genre,
+    required List<String> hashTags,
+    required List<String> imageURLs,
+    required bool isPinned,
+    required List<Map<String,dynamic>> links,
+    required String postState,
+    required String postId,
+    required List<String> tagAccountNames,
+    required Map<String,dynamic> searchToken,
+    required String title,
+    required String uid,
+    required dynamic updatedAt,
+  }) = _PostUpdateLog;
+ factory PostUpdateLog.fromJson(Map<String, dynamic> json) => _$PostUpdateLogFromJson(json);
 }

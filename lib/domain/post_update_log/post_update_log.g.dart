@@ -6,8 +6,8 @@ part of 'post_update_log.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostUpdateLog _$PostUpdateLogFromJson(Map<String, dynamic> json) =>
-    PostUpdateLog(
+_$_PostUpdateLog _$$_PostUpdateLogFromJson(Map<String, dynamic> json) =>
+    _$_PostUpdateLog(
       commentsState: json['commentsState'] as String,
       country: json['country'] as String,
       description: json['description'] as String,
@@ -31,7 +31,7 @@ PostUpdateLog _$PostUpdateLogFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'],
     );
 
-Map<String, dynamic> _$PostUpdateLogToJson(PostUpdateLog instance) =>
+Map<String, dynamic> _$$_PostUpdateLogToJson(_$_PostUpdateLog instance) =>
     <String, dynamic>{
       'commentsState': instance.commentsState,
       'country': instance.country,
