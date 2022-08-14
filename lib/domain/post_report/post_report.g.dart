@@ -6,7 +6,8 @@ part of 'post_report.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostReport _$PostReportFromJson(Map<String, dynamic> json) => PostReport(
+_$_PostReport _$$_PostReportFromJson(Map<String, dynamic> json) =>
+    _$_PostReport(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       others: json['others'] as String,
@@ -17,13 +18,13 @@ PostReport _$PostReportFromJson(Map<String, dynamic> json) => PostReport(
       postId: json['postId'] as String,
       postReportId: json['postReportId'] as String,
       postTitle: json['postTitle'] as String,
-      postTitleLanguageCode: json['postTitleLanguageCode'],
+      postTitleLanguageCode: json['postTitleLanguageCode'] as String,
       postTitleNegativeScore: json['postTitleNegativeScore'] as num,
       postTitlePositiveScore: json['postTitlePositiveScore'] as num,
       postTitleSentiment: json['postTitleSentiment'] as String,
     );
 
-Map<String, dynamic> _$PostReportToJson(PostReport instance) =>
+Map<String, dynamic> _$$_PostReportToJson(_$_PostReport instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,

@@ -1,43 +1,25 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'post_report.freezed.dart';
 part 'post_report.g.dart';
 
-@JsonSerializable()
-class PostReport {
-  PostReport({
-    required this.activeUid,
-    required this.createdAt,
-    required this.others,
-    required this.reportContent,
-    required this.postCreatorUid,
-    required this.passiveUserName,
-    required this.postDocRef,
-    required this.postId,
-    required this.postReportId,
-    required this.postTitle,
-    required this.postTitleLanguageCode,
-    required this.postTitleNegativeScore,
-    required this.postTitlePositiveScore,
-    required this.postTitleSentiment,
-  });
-  
-  final String activeUid;
-  final dynamic createdAt;
-  final String others;
-  final String reportContent;
-  final String postCreatorUid;
-  final String passiveUserName;
-  final dynamic postDocRef;
-  final String postId;
-  final String postReportId;
-  String postTitle;
-  final postTitleLanguageCode;
-  final num postTitleNegativeScore;
-  final num postTitlePositiveScore;
-  final String postTitleSentiment;
-
-  factory PostReport.fromJson(Map<String,dynamic> json) => _$PostReportFromJson(json);
-
-  Map<String,dynamic> toJson() => _$PostReportToJson(this);
+@freezed
+abstract class PostReport with _$PostReport {
+ const factory PostReport({
+    required String activeUid,
+    required dynamic createdAt,
+    required String others,
+    required String reportContent,
+    required String postCreatorUid,
+    required String passiveUserName,
+    required dynamic postDocRef,
+    required String postId,
+    required String postReportId,
+    required String postTitle,
+    required String postTitleLanguageCode,
+    required num postTitleNegativeScore,
+    required num postTitlePositiveScore,
+    required String postTitleSentiment,
+  }) = _PostReport;
+ factory PostReport.fromJson(Map<String, dynamic> json) => _$PostReportFromJson(json);
 }
