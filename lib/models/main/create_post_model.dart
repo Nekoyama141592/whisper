@@ -244,7 +244,6 @@ class CreatePostModel extends ChangeNotifier {
       mainModel.currentWhisperUser.postCount += plusOne;
       await returnPostDocRef(postCreatorUid: currentWhisperUser.uid, postId: postId).set(postMap);
       addPostStateNotifier.value = CreatePostState.uploaded;
-      await returnUserDocRef(uid: mainModel.currentWhisperUser.uid).update({ postCountFieldKey: mainModel.currentWhisperUser.postCount, });
   }
 
   void showCommentStatePopUp({ required BuildContext context}) {
