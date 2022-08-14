@@ -1,28 +1,18 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'bookmark_post_category.freezed.dart';
 part 'bookmark_post_category.g.dart';
 
-@JsonSerializable()
-class BookmarkPostCategory {
-  BookmarkPostCategory({
-    required this.createdAt,
-    required this.categoryName,
-    required this.tokenId,
-    required this.tokenType,
-    required this.imageURL,
-    required this.uid,
-    required this.updatedAt
-  });
-  
-  final dynamic createdAt;
-  String categoryName;
-  final String tokenId;
-  final String tokenType;
-  String imageURL;
-  final String uid;
-  final dynamic updatedAt;
-
-  factory BookmarkPostCategory.fromJson(Map<String,dynamic> json) => _$BookmarkPostCategoryFromJson(json);
-
-  Map<String,dynamic> toJson() => _$BookmarkPostCategoryToJson(this);
+@freezed
+abstract class BookmarkPostCategory with _$BookmarkPostCategory {
+ const factory BookmarkPostCategory({
+    required dynamic createdAt,
+    required String categoryName,
+    required String tokenId,
+    required String tokenType,
+    required String imageURL,
+    required String uid,
+    required dynamic updatedAt,
+  }) = _BookmarkPostCategory;
+ factory BookmarkPostCategory.fromJson(Map<String, dynamic> json) => _$BookmarkPostCategoryFromJson(json);
 }

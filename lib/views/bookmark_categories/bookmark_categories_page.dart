@@ -84,7 +84,7 @@ class BookmarkCategoriesPage extends ConsumerWidget {
                   final TextEditingController labelEditingController = TextEditingController(text: bookmarkLabel.categoryName);
                   final Widget Function(BuildContext, FlashController<Object?>, void Function(void Function()))? positiveActionBuilder = (context,controller,_) {
                     return TextButton(
-                      onPressed: () async => await bookmarksModel.onUpdateLabelButtonPressed(context: context,flashController: controller, bookmarkPostCategory: bookmarkLabel, userMeta: mainModel.userMeta ),
+                      onPressed: () async => await bookmarksModel.onUpdateLabelButtonPressed(context: context, flashController: controller, mainModel: mainModel, i: i),
                       child: PositiveText(text: okText)
                     );
                   };

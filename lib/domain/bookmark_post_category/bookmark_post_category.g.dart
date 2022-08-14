@@ -6,9 +6,9 @@ part of 'bookmark_post_category.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BookmarkPostCategory _$BookmarkPostCategoryFromJson(
+_$_BookmarkPostCategory _$$_BookmarkPostCategoryFromJson(
         Map<String, dynamic> json) =>
-    BookmarkPostCategory(
+    _$_BookmarkPostCategory(
       createdAt: json['createdAt'],
       categoryName: json['categoryName'] as String,
       tokenId: json['tokenId'] as String,
@@ -18,8 +18,8 @@ BookmarkPostCategory _$BookmarkPostCategoryFromJson(
       updatedAt: json['updatedAt'],
     );
 
-Map<String, dynamic> _$BookmarkPostCategoryToJson(
-        BookmarkPostCategory instance) =>
+Map<String, dynamic> _$$_BookmarkPostCategoryToJson(
+        _$_BookmarkPostCategory instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
       'categoryName': instance.categoryName,

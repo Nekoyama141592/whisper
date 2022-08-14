@@ -146,7 +146,8 @@ class BookmarksModel extends ChangeNotifier {
     }
   }
 
-  Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required BookmarkPostCategory bookmarkPostCategory,required UserMeta userMeta}) async {
+  Future<void> onUpdateLabelButtonPressed({ required BuildContext context  ,required FlashController flashController,required MainModel mainModel,required int i}) async {
+    final userMeta = mainModel.userMeta;
     if (editLabel.isEmpty) {
       final L10n l10n = returnL10n(context: context)!;
       voids.showBasicFlutterToast(context: context, msg: l10n.emptyIsInvalid);
@@ -154,7 +155,8 @@ class BookmarksModel extends ChangeNotifier {
       voids.maxSearchLengthAlert(context: context, isUserName: false );
     } else {
       // process set
-      bookmarkPostCategory.categoryName = editLabel;
+      final bookmarkPostCategory = mainModel.bookmarkPostCategories[i];
+      mainModel.bookmarkPostCategories[i] = bookmarkPostCategory.copyWith(categoryName: editLabel);
       // process UI
       flashController.dismiss();
       notifyListeners();
@@ -174,8 +176,8 @@ class BookmarksModel extends ChangeNotifier {
       // process set
       final now = Timestamp.now();
       final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.bookmarkPostCategory );
-      final BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(createdAt: now,updatedAt: now,tokenType: bookmarkPostCategoryTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,categoryName: newLabel);
-      bookmarkPostCategory.categoryName = newLabel;
+      BookmarkPostCategory bookmarkPostCategory = BookmarkPostCategory(createdAt: now,updatedAt: now,tokenType: bookmarkPostCategoryTokenType,imageURL: '',uid: mainModel.userMeta.uid,tokenId: tokenId,categoryName: newLabel);
+      bookmarkPostCategory = bookmarkPostCategory.copyWith(categoryName: newLabel);
       // process Ui
       mainModel.bookmarkPostCategories.add(bookmarkPostCategory);
       flashController.dismiss();
