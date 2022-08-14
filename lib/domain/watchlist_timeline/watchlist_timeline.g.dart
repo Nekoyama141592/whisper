@@ -6,8 +6,8 @@ part of 'watchlist_timeline.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WatchlistTimeline _$WatchlistTimelineFromJson(Map<String, dynamic> json) =>
-    WatchlistTimeline(
+_$_WatchlistTimeline _$$_WatchlistTimelineFromJson(Map<String, dynamic> json) =>
+    _$_WatchlistTimeline(
       createdAt: json['createdAt'],
       postCreatorUid: json['postCreatorUid'] as String,
       isRead: json['isRead'] as bool,
@@ -16,7 +16,8 @@ WatchlistTimeline _$WatchlistTimelineFromJson(Map<String, dynamic> json) =>
       watchlistId: json['watchlistId'] as String,
     );
 
-Map<String, dynamic> _$WatchlistTimelineToJson(WatchlistTimeline instance) =>
+Map<String, dynamic> _$$_WatchlistTimelineToJson(
+        _$_WatchlistTimeline instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt,
       'postCreatorUid': instance.postCreatorUid,
