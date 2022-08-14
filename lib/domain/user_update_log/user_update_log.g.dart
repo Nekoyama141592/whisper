@@ -6,19 +6,18 @@ part of 'user_update_log.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserUpdateLog _$UserUpdateLogFromJson(Map<String, dynamic> json) =>
-    UserUpdateLog(
+_$_Timeline _$$_TimelineFromJson(Map<String, dynamic> json) => _$_Timeline(
       accountName: json['accountName'] as String,
       mainWalletAddress: json['mainWalletAddress'] as String,
       recommendState: json['recommendState'] as String,
       searchToken: json['searchToken'] as Map<String, dynamic>,
       uid: json['uid'] as String,
-      userName: json['userName'] as String,
       updatedAt: json['updatedAt'],
+      userName: json['userName'] as String,
       userImageURL: json['userImageURL'] as String,
     );
 
-Map<String, dynamic> _$UserUpdateLogToJson(UserUpdateLog instance) =>
+Map<String, dynamic> _$$_TimelineToJson(_$_Timeline instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
       'mainWalletAddress': instance.mainWalletAddress,

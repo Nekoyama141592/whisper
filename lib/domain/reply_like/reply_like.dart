@@ -1,25 +1,16 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'reply_like.freezed.dart';
 part 'reply_like.g.dart';
 
-@JsonSerializable()
-class ReplyLike {
-  ReplyLike({
-    required this.activeUid,
-    required this.createdAt,
-    required this.postCommentReplyCreatorUid,
-    required this.postCommentReplyId,
-    required this.postCommentReplyDocRef
-  });
-  
-  final String activeUid;
-  final dynamic createdAt;
-  final String postCommentReplyCreatorUid;
-  final String postCommentReplyId;
-  final dynamic postCommentReplyDocRef;
-
-  factory ReplyLike.fromJson(Map<String,dynamic> json) => _$ReplyLikeFromJson(json);
-
-  Map<String,dynamic> toJson() => _$ReplyLikeToJson(this);
+@freezed
+abstract class ReplyLike with _$ReplyLike {
+ const factory ReplyLike({
+    required String activeUid,
+    required dynamic createdAt,
+    required String postCommentReplyCreatorUid,
+    required String postCommentReplyId,
+    required dynamic postCommentReplyDocRef,
+  }) = _ReplyLike;
+ factory ReplyLike.fromJson(Map<String, dynamic> json) => _$ReplyLikeFromJson(json);
 }

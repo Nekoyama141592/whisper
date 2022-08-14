@@ -1,27 +1,17 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'mute_comment.freezed.dart';
 part 'mute_comment.g.dart';
 
-@JsonSerializable()
-class MuteComment {
-  MuteComment({
-    required this.activeUid,
-    required this.createdAt,
-    required this.postCommentId,
-    required this.tokenId,
-    required this.tokenType,
-    required this.postCommentDocRef
-  });
-  
-  final String activeUid;
-  final dynamic createdAt;
-  final String postCommentId;
-  final String tokenId;
-  final String tokenType;
-  final dynamic postCommentDocRef;
-
-  factory MuteComment.fromJson(Map<String,dynamic> json) => _$MuteCommentFromJson(json);
-
-  Map<String,dynamic> toJson() => _$MuteCommentToJson(this);
+@freezed
+abstract class MuteComment with _$MuteComment {
+ const factory MuteComment({
+    required String activeUid,
+    required dynamic createdAt,
+    required String postCommentId,
+    required String tokenId,
+    required String tokenType,
+    required dynamic postCommentDocRef,
+  }) = _MuteComment;
+ factory MuteComment.fromJson(Map<String, dynamic> json) => _$MuteCommentFromJson(json);
 }

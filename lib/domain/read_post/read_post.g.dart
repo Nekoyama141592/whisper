@@ -6,7 +6,7 @@ part of 'read_post.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReadPost _$ReadPostFromJson(Map<String, dynamic> json) => ReadPost(
+_$_ReadPost _$$_ReadPostFromJson(Map<String, dynamic> json) => _$_ReadPost(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postId: json['postId'] as String,
@@ -15,7 +15,8 @@ ReadPost _$ReadPostFromJson(Map<String, dynamic> json) => ReadPost(
       passiveUid: json['passiveUid'] as String,
     );
 
-Map<String, dynamic> _$ReadPostToJson(ReadPost instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ReadPostToJson(_$_ReadPost instance) =>
+    <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
       'postId': instance.postId,

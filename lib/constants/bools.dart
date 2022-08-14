@@ -7,7 +7,7 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/domain/official_advertisement/official_advertisement.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/reply/whipser_reply.dart';
+import 'package:whisper/domain/whisper_reply/whipser_reply.dart';
 import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/domain/comment_notification/comment_notification.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';

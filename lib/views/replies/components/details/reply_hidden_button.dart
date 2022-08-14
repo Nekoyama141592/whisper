@@ -1,7 +1,7 @@
 // material
 import 'package:flutter/material.dart';
 // domain
-import 'package:whisper/domain/reply/whipser_reply.dart';
+import 'package:whisper/domain/whisper_reply/whipser_reply.dart';
 // models
 import 'package:whisper/models/replies/replies_model.dart';
 

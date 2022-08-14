@@ -6,7 +6,8 @@ part of 'mute_comment.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MuteComment _$MuteCommentFromJson(Map<String, dynamic> json) => MuteComment(
+_$_MuteComment _$$_MuteCommentFromJson(Map<String, dynamic> json) =>
+    _$_MuteComment(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postCommentId: json['postCommentId'] as String,
@@ -15,7 +16,7 @@ MuteComment _$MuteCommentFromJson(Map<String, dynamic> json) => MuteComment(
       postCommentDocRef: json['postCommentDocRef'],
     );
 
-Map<String, dynamic> _$MuteCommentToJson(MuteComment instance) =>
+Map<String, dynamic> _$$_MuteCommentToJson(_$_MuteComment instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,

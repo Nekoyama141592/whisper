@@ -1,25 +1,16 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'mute_user.freezed.dart';
 part 'mute_user.g.dart';
 
-@JsonSerializable()
-class MuteUser {
-  MuteUser({
-    required this.activeUid,
-    required this.createdAt,
-    required this.tokenId,
-    required this.tokenType,
-    required this.passiveUid
-  });
-  
-  final String activeUid;
-  final dynamic createdAt;
-  final String tokenId;
-  final String tokenType;
-  final String passiveUid;
-
-  factory MuteUser.fromJson(Map<String,dynamic> json) => _$MuteUserFromJson(json);
-
-  Map<String,dynamic> toJson() => _$MuteUserToJson(this);
+@freezed
+abstract class MuteUser with _$MuteUser {
+ const factory MuteUser({
+    required String activeUid,
+    required dynamic createdAt,
+    required String tokenId,
+    required String tokenType,
+    required String passiveUid,
+  }) = _MuteUser;
+ factory MuteUser.fromJson(Map<String, dynamic> json) => _$MuteUserFromJson(json);
 }

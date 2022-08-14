@@ -1,47 +1,27 @@
-// packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'post_comment_reply_report.freezed.dart';
 part 'post_comment_reply_report.g.dart';
 
-@JsonSerializable()
-class PostCommentReplyReport {
-  PostCommentReplyReport({
-    required this.activeUid,
-    required this.createdAt,
-    required this.others,
-    required this.reportContent,
-    required this.passiveUid,
-    required this.passiveUserName,
-    required this.postCommentId,
-    required this.postCommentReplyId,
-    required this.postCommentReplyDocRef,
-    required this.postCreatorUid,
-    required this.postId,
-    required this.reply,
-    required this.replyLanguageCode,
-    required this.replyNegativeScore,
-    required this.replyPositiveScore,
-    required this.replySentiment,
-  });
-  
-  final String activeUid;
-  final dynamic createdAt;
-  final String others;
-  final String reportContent;
-  final String passiveUid;
-  final String passiveUserName;
-  final String postCommentId;
-  final String postCommentReplyId;
-  final dynamic postCommentReplyDocRef;
-  final String postCreatorUid;
-  final String postId;
-  final String reply;
-  final String replyLanguageCode;
-  final num replyNegativeScore;
-  final num replyPositiveScore;
-  final String replySentiment;
-
-  factory PostCommentReplyReport.fromJson(Map<String,dynamic> json) => _$PostCommentReplyReportFromJson(json);
-
-  Map<String,dynamic> toJson() => _$PostCommentReplyReportToJson(this);
+@freezed
+abstract class PostCommentReplyReport with _$PostCommentReplyReport {
+ const factory PostCommentReplyReport({
+    required String activeUid,
+    required dynamic createdAt,
+    required String others,
+    required String reportContent,
+    required String passiveUid,
+    required String passiveUserName,
+    required String postCommentId,
+    required String postCommentReplyId,
+    required dynamic postCommentReplyDocRef,
+    required String postCreatorUid,
+    required String postId,
+    required String reply,
+    required String replyLanguageCode,
+    required num replyNegativeScore,
+    required num replyPositiveScore,
+    required String replySentiment,
+  }) = _PostCommentReplyReport;
+ factory PostCommentReplyReport.fromJson(Map<String, dynamic> json) => _$PostCommentReplyReportFromJson(json);
 }

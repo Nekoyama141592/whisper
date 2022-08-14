@@ -6,7 +6,8 @@ part of 'post_bookmark.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostBookmark _$PostBookmarkFromJson(Map<String, dynamic> json) => PostBookmark(
+_$_PostBookmark _$$_PostBookmarkFromJson(Map<String, dynamic> json) =>
+    _$_PostBookmark(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postCreatorUid: json['postCreatorUid'] as String,
@@ -14,7 +15,7 @@ PostBookmark _$PostBookmarkFromJson(Map<String, dynamic> json) => PostBookmark(
       postId: json['postId'] as String,
     );
 
-Map<String, dynamic> _$PostBookmarkToJson(PostBookmark instance) =>
+Map<String, dynamic> _$$_PostBookmarkToJson(_$_PostBookmark instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,

@@ -6,8 +6,8 @@ part of 'user_meta_update_log.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserMetaUpdateLog _$UserMetaUpdateLogFromJson(Map<String, dynamic> json) =>
-    UserMetaUpdateLog(
+_$_UserMetaUpdateLog _$$_UserMetaUpdateLogFromJson(Map<String, dynamic> json) =>
+    _$_UserMetaUpdateLog(
       email: json['email'] as String,
       gender: json['gender'] as String,
       ipv6: json['ipv6'] as String,
@@ -15,7 +15,8 @@ UserMetaUpdateLog _$UserMetaUpdateLogFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'],
     );
 
-Map<String, dynamic> _$UserMetaUpdateLogToJson(UserMetaUpdateLog instance) =>
+Map<String, dynamic> _$$_UserMetaUpdateLogToJson(
+        _$_UserMetaUpdateLog instance) =>
     <String, dynamic>{
       'email': instance.email,
       'gender': instance.gender,

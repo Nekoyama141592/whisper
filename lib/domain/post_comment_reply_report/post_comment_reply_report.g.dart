@@ -6,9 +6,9 @@ part of 'post_comment_reply_report.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostCommentReplyReport _$PostCommentReplyReportFromJson(
+_$_PostCommentReplyReport _$$_PostCommentReplyReportFromJson(
         Map<String, dynamic> json) =>
-    PostCommentReplyReport(
+    _$_PostCommentReplyReport(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       others: json['others'] as String,
@@ -27,8 +27,8 @@ PostCommentReplyReport _$PostCommentReplyReportFromJson(
       replySentiment: json['replySentiment'] as String,
     );
 
-Map<String, dynamic> _$PostCommentReplyReportToJson(
-        PostCommentReplyReport instance) =>
+Map<String, dynamic> _$$_PostCommentReplyReportToJson(
+        _$_PostCommentReplyReport instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,

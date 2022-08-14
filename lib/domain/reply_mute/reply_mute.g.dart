@@ -6,7 +6,7 @@ part of 'reply_mute.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReplyMute _$ReplyMuteFromJson(Map<String, dynamic> json) => ReplyMute(
+_$_ReplyMute _$$_ReplyMuteFromJson(Map<String, dynamic> json) => _$_ReplyMute(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postCommentReplyCreatorUid: json['postCommentReplyCreatorUid'] as String,
@@ -14,7 +14,8 @@ ReplyMute _$ReplyMuteFromJson(Map<String, dynamic> json) => ReplyMute(
       postCommentReplyDocRef: json['postCommentReplyDocRef'],
     );
 
-Map<String, dynamic> _$ReplyMuteToJson(ReplyMute instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ReplyMuteToJson(_$_ReplyMute instance) =>
+    <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
       'postCommentReplyCreatorUid': instance.postCommentReplyCreatorUid,

@@ -6,13 +6,14 @@ part of 'user_mute.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserMute _$UserMuteFromJson(Map<String, dynamic> json) => UserMute(
+_$_UserMute _$$_UserMuteFromJson(Map<String, dynamic> json) => _$_UserMute(
       createdAt: json['createdAt'],
-      muterUid: json['muterUid'] as String,
       mutedUid: json['mutedUid'] as String,
+      muterUid: json['muterUid'] as String,
     );
 
-Map<String, dynamic> _$UserMuteToJson(UserMute instance) => <String, dynamic>{
+Map<String, dynamic> _$$_UserMuteToJson(_$_UserMute instance) =>
+    <String, dynamic>{
       'createdAt': instance.createdAt,
       'mutedUid': instance.mutedUid,
       'muterUid': instance.muterUid,

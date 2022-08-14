@@ -6,7 +6,7 @@ part of 'nft_owner.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NFTOwner _$NFTOwnerFromJson(Map<String, dynamic> json) => NFTOwner(
+_$_NFTOwner _$$_NFTOwnerFromJson(Map<String, dynamic> json) => _$_NFTOwner(
       createdAt: json['createdAt'],
       lastEthPrice: (json['lastEthPrice'] as num).toDouble(),
       lastUsdPrice: (json['lastUsdPrice'] as num).toDouble(),
@@ -18,7 +18,8 @@ NFTOwner _$NFTOwnerFromJson(Map<String, dynamic> json) => NFTOwner(
       userImageURL: json['userImageURL'] as String,
     );
 
-Map<String, dynamic> _$NFTOwnerToJson(NFTOwner instance) => <String, dynamic>{
+Map<String, dynamic> _$$_NFTOwnerToJson(_$_NFTOwner instance) =>
+    <String, dynamic>{
       'createdAt': instance.createdAt,
       'lastEthPrice': instance.lastEthPrice,
       'lastUsdPrice': instance.lastUsdPrice,

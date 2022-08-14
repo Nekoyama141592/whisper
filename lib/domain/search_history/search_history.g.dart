@@ -6,8 +6,8 @@ part of 'search_history.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
-    SearchHistory(
+_$_SearchHistory _$$_SearchHistoryFromJson(Map<String, dynamic> json) =>
+    _$_SearchHistory(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       searchTerm: json['searchTerm'] as String,
@@ -15,7 +15,7 @@ SearchHistory _$SearchHistoryFromJson(Map<String, dynamic> json) =>
       tokenType: json['tokenType'] as String,
     );
 
-Map<String, dynamic> _$SearchHistoryToJson(SearchHistory instance) =>
+Map<String, dynamic> _$$_SearchHistoryToJson(_$_SearchHistory instance) =>
     <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,

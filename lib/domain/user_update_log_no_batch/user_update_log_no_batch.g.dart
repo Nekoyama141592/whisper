@@ -6,9 +6,9 @@ part of 'user_update_log_no_batch.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserUpdateLogNoBatch _$UserUpdateLogNoBatchFromJson(
+_$_UserUpdateLogNoBatch _$$_UserUpdateLogNoBatchFromJson(
         Map<String, dynamic> json) =>
-    UserUpdateLogNoBatch(
+    _$_UserUpdateLogNoBatch(
       bio: json['bio'] as String,
       dmState: json['dmState'] as String,
       isKeyAccount: json['isKeyAccount'] as bool,
@@ -22,8 +22,8 @@ UserUpdateLogNoBatch _$UserUpdateLogNoBatchFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$UserUpdateLogNoBatchToJson(
-        UserUpdateLogNoBatch instance) =>
+Map<String, dynamic> _$$_UserUpdateLogNoBatchToJson(
+        _$_UserUpdateLogNoBatch instance) =>
     <String, dynamic>{
       'bio': instance.bio,
       'dmState': instance.dmState,

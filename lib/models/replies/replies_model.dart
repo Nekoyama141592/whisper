@@ -18,7 +18,7 @@ import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/details/report_contents_list_view.dart';
 // domain
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/reply/whipser_reply.dart';
+import 'package:whisper/domain/whisper_reply/whipser_reply.dart';
 import 'package:whisper/domain/reply_like/reply_like.dart';
 import 'package:whisper/domain/likeReply/like_reply.dart';
 import 'package:whisper/domain/mute_reply/mute_reply.dart';

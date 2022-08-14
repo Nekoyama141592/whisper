@@ -6,19 +6,20 @@ part of 'watchlist.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Watchlist _$WatchlistFromJson(Map<String, dynamic> json) => Watchlist(
+_$_Watchlist _$$_WatchlistFromJson(Map<String, dynamic> json) => _$_Watchlist(
       createdAt: json['createdAt'],
       label: json['label'] as String,
+      myUid: json['myUid'] as String,
+      tokenType: json['tokenType'] as String,
       watchlistId: json['watchlistId'] as String,
       tokenId: json['tokenId'] as String,
       uids: (json['uids'] as List<dynamic>).map((e) => e as String).toList(),
-      myUid: json['myUid'] as String,
-      tokenType: json['tokenType'] as String,
       updatedAt: json['updatedAt'],
       watchlistRef: json['watchlistRef'],
     );
 
-Map<String, dynamic> _$WatchlistToJson(Watchlist instance) => <String, dynamic>{
+Map<String, dynamic> _$$_WatchlistToJson(_$_Watchlist instance) =>
+    <String, dynamic>{
       'createdAt': instance.createdAt,
       'label': instance.label,
       'myUid': instance.myUid,

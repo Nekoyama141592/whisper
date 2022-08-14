@@ -6,7 +6,7 @@ part of 'mute_post.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MutePost _$MutePostFromJson(Map<String, dynamic> json) => MutePost(
+_$_MutePost _$$_MutePostFromJson(Map<String, dynamic> json) => _$_MutePost(
       activeUid: json['activeUid'] as String,
       createdAt: json['createdAt'],
       postId: json['postId'] as String,
@@ -15,7 +15,8 @@ MutePost _$MutePostFromJson(Map<String, dynamic> json) => MutePost(
       passiveUid: json['passiveUid'] as String,
     );
 
-Map<String, dynamic> _$MutePostToJson(MutePost instance) => <String, dynamic>{
+Map<String, dynamic> _$$_MutePostToJson(_$_MutePost instance) =>
+    <String, dynamic>{
       'activeUid': instance.activeUid,
       'createdAt': instance.createdAt,
       'postId': instance.postId,
