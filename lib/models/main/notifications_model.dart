@@ -92,9 +92,9 @@ class NotificationsModel extends ChangeNotifier {
     bool postExists = await onePostModel.init(postId: commentNotification.postId, postDocRef: commentNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
     if (postExists) {
       bool commentExists = await oneCommentModel.init(postCommentId: commentNotification.postCommentId, postCommentDocRef: commentNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
-      commentExists ? routes.toOneCommentPage(context: context, mainModel: mainModel) : voids.showBasicFlutterToast(context: context, msg: l10n.noCommentMsg);
+      commentExists ? routes.toOneCommentPage(context: context, mainModel: mainModel) : await voids.showBasicFlutterToast(context: context, msg: l10n.noCommentMsg);
     } else {
-      voids.showBasicFlutterToast(context: context, msg: l10n.noPostMsg );
+      await voids.showBasicFlutterToast(context: context, msg: l10n.noPostMsg );
     }
     notifyListeners();
     await returnNotificationDocRef(uid: firebaseAuthCurrentUser()!.uid, notificationId: commentNotification.notificationId ).update(commentNotification.toJson());
@@ -110,9 +110,9 @@ class NotificationsModel extends ChangeNotifier {
     bool postExists = await onePostModel.init(postId: replyNotification.postId, postDocRef: replyNotification.postDocRef as DocumentReference<Map<String,dynamic>> );
     if (postExists) {
       bool commentExists = await oneCommentModel.init(postCommentId: replyNotification.postCommentId, postCommentDocRef: replyNotification.postCommentDocRef as DocumentReference<Map<String,dynamic>> );
-      commentExists ? routes.toOneCommentPage(context: context, mainModel: mainModel) : voids.showBasicFlutterToast(context: context, msg: l10n.noCommentMsg);
+      commentExists ? routes.toOneCommentPage(context: context, mainModel: mainModel) : await voids.showBasicFlutterToast(context: context, msg: l10n.noCommentMsg);
     } else {
-      voids.showBasicFlutterToast(context: context, msg: l10n.noPostMsg );
+      await voids.showBasicFlutterToast(context: context, msg: l10n.noPostMsg );
     }
     notifyListeners();
     await returnNotificationDocRef(uid: firebaseAuthCurrentUser()!.uid, notificationId: replyNotification.notificationId ).update(replyNotification.toJson());
