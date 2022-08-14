@@ -6,7 +6,7 @@ part of 'user_meta.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
+_$_UserMeta _$$_UserMetaFromJson(Map<String, dynamic> json) => _$_UserMeta(
       createdAt: json['createdAt'],
       email: json['email'] as String,
       gender: json['gender'] as String,
@@ -16,7 +16,8 @@ UserMeta _$UserMetaFromJson(Map<String, dynamic> json) => UserMeta(
       updatedAt: json['updatedAt'],
     );
 
-Map<String, dynamic> _$UserMetaToJson(UserMeta instance) => <String, dynamic>{
+Map<String, dynamic> _$$_UserMetaToJson(_$_UserMeta instance) =>
+    <String, dynamic>{
       'createdAt': instance.createdAt,
       'email': instance.email,
       'gender': instance.gender,
