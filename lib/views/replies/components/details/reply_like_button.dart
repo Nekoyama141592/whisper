@@ -6,7 +6,7 @@ import 'package:whisper/constants/doubles.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/widgets.dart';
 // domain
-import 'package:whisper/domain/whisper_reply/whipser_reply.dart';
+import 'package:whisper/domain/whisper_reply/whisper_reply.dart';
 // l10n
 import 'package:whisper/l10n/l10n.dart';
 // model

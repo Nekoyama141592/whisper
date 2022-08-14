@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'whipser_reply.dart';
+part of 'whisper_reply.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-WhisperReply _$WhisperReplyFromJson(Map<String, dynamic> json) => WhisperReply(
+_$_WhisperReply _$$_WhisperReplyFromJson(Map<String, dynamic> json) =>
+    _$_WhisperReply(
       accountName: json['accountName'] as String,
       createdAt: json['createdAt'],
-      postCommentId: json['postCommentId'] as String,
       followerCount: json['followerCount'] as int,
       isHidden: json['isHidden'] as bool,
       isNFTicon: json['isNFTicon'] as bool,
@@ -26,6 +26,7 @@ WhisperReply _$WhisperReplyFromJson(Map<String, dynamic> json) => WhisperReply(
       replyNegativeScore: (json['replyNegativeScore'] as num).toDouble(),
       replyPositiveScore: (json['replyPositiveScore'] as num).toDouble(),
       replySentiment: json['replySentiment'] as String,
+      postCommentId: json['postCommentId'] as String,
       postCommentReplyId: json['postCommentReplyId'] as String,
       postCreatorUid: json['postCreatorUid'] as String,
       postDocRef: json['postDocRef'],
@@ -43,7 +44,7 @@ WhisperReply _$WhisperReplyFromJson(Map<String, dynamic> json) => WhisperReply(
       userNameSentiment: json['userNameSentiment'] as String,
     );
 
-Map<String, dynamic> _$WhisperReplyToJson(WhisperReply instance) =>
+Map<String, dynamic> _$$_WhisperReplyToJson(_$_WhisperReply instance) =>
     <String, dynamic>{
       'accountName': instance.accountName,
       'createdAt': instance.createdAt,

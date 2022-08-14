@@ -17,7 +17,7 @@ import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dar
 // domain
 import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/nft_owner/nft_owner.dart';
-import 'package:whisper/domain/whisper_reply/whipser_reply.dart';
+import 'package:whisper/domain/whisper_reply/whisper_reply.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_post_comment/whisper_post_comment.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
