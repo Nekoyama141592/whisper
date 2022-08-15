@@ -17,7 +17,6 @@ import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 // domain
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 import 'package:whisper/domain/post/post.dart';
-import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/l10n/l10n.dart';
 // notifiers
 import 'package:whisper/posts/notifiers/play_button_notifier.dart';
