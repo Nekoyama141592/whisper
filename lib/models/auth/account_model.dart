@@ -100,7 +100,8 @@ class AccountModel extends ChangeNotifier {
   }
 
   Future<void> deleteUserFromFireStoreAndFirebaseAuth({ required BuildContext context, required WhisperUser currentWhisperUser}) async {
-    await returnUserMetaDocRef(uid: currentWhisperUser.uid).delete().then((_) async {
+    await returnUserMetaDocRef(uid: currentWhisperUser.uid).delete()
+    .then((_) async {
       await currentUser!.delete();  
     });
   }
