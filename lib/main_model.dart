@@ -95,10 +95,8 @@ class MainModel extends PostsModel {
     return returnPostsColGroupQuery().where(postIdFieldKey,whereIn: max10TimelinePostIds).limit(tenCount);
   }
   List<DocumentSnapshot<Map<String,dynamic>>> timelineDocs = [];
-  // enum
-  final PostType postType = PostType.feeds;
 
-  MainModel() {
+  MainModel() : super(postType: PostType.feeds){
     init();
   }
   
@@ -237,7 +235,7 @@ class MainModel extends PostsModel {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).endBeforeDocument(timelineDocs.first).limit(tenCount).get();
     for (final doc in timelinesQshot.docs) timelineDocs.insert(0, doc);
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      await voids.processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutesPostIds: mutePostIds);
+      await processNewPosts(query: getQuery(timelinesQshot: timelinesQshot), muteUids: muteUids, blockUids: blockUids,mutesPostIds: mutePostIds);
     }
   }
 
@@ -246,7 +244,7 @@ class MainModel extends PostsModel {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).limit(tenCount).get();
     timelineDocs = timelinesQshot.docs;
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      await voids.processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
+      await processBasicPosts(query: getQuery(timelinesQshot: timelinesQshot), muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
     }
   }
 
@@ -254,7 +252,7 @@ class MainModel extends PostsModel {
     final timelinesQshot = await returnTimelinesColRef(uid: userMeta.uid).orderBy(createdAtFieldKey,descending: true).startAfterDocument(timelineDocs.last).limit(tenCount).get();
     for (final doc in timelinesQshot.docs) timelineDocs.add(doc);
     if (followingUids.isNotEmpty && timelineDocs.isNotEmpty) {
-      await voids.processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids,mutePostIds: mutePostIds);
+      await processOldPosts(query: getQuery(timelinesQshot: timelinesQshot), muteUids: muteUids, blockUids: blockUids,mutePostIds: mutePostIds);
     }
   }
 
