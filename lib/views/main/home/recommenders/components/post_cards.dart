@@ -18,7 +18,6 @@ import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/main/recommenders_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 
 class PostCards extends StatelessWidget {
 
@@ -42,7 +41,6 @@ class PostCards extends StatelessWidget {
     required this.onNextSongButtonPressed,
     required this.mainModel,
     required this.recommendersModel,
-    required this.postFutures
   }) : super(key: key);
 
  
@@ -65,7 +63,6 @@ class PostCards extends StatelessWidget {
   final void Function()? onNextSongButtonPressed;
   final MainModel mainModel;
   final RecommendersModel recommendersModel;
-  final PostsModel postFutures;
 
   @override 
   Widget build(BuildContext context) {
@@ -103,33 +100,33 @@ class PostCards extends StatelessWidget {
           return 
           PostCard(
             postDoc: postDoc,
-            onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPost:whisperPost, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i); },
-            initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i),
-            muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, muteUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, whisperPost:whisperPost, mainModel: mainModel),
-            mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts ),
-            reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts ),
+            onDeleteButtonPressed: () => recommendersModel.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPost:whisperPost, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i),
+            initAudioPlayer: () async => await recommendersModel.initAudioPlayer(audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, i: i),
+            muteUser: () async => await recommendersModel.muteUser(context: context,audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, muteUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, whisperPost:whisperPost, mainModel: mainModel),
+            mutePost: () async => await recommendersModel.mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts ),
+            reportPost: () => recommendersModel.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts ),
             reportPostButtonBuilder:  (innerContext) {
               return CupertinoActionSheet(
                 actions: whisperPost.uid == mainModel.userMeta.uid ?
                 [  
                   CupertinoActionSheetAction(onPressed: () {
                     Navigator.pop(innerContext);
-                    postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer,whisperPost:whisperPost, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i);
+                    recommendersModel.onPostDeleteButtonPressed(context: context, audioPlayer: recommendersModel.audioPlayer,whisperPost:whisperPost, afterUris: recommendersModel.afterUris, posts: recommendersModel.posts, mainModel: mainModel, i: i);
                   }, child: PositiveText(text: deletePostText(context: context)) ),
                   CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                 ]
                 : [
                   CupertinoActionSheetAction(onPressed: () async {
                     Navigator.pop(innerContext);
-                    await postFutures.muteUser(context: context, audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, muteUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, whisperPost:whisperPost, mainModel: mainModel);
+                    await recommendersModel.muteUser(context: context, audioPlayer: recommendersModel.audioPlayer, afterUris: recommendersModel.afterUris, muteUids: mainModel.muteUids, i: i, results: recommendersModel.posts, muteUsers: mainModel.muteUsers, whisperPost:whisperPost, mainModel: mainModel);
                   }, child: PositiveText(text: muteUserText(context: context)) ),
                   CupertinoActionSheetAction(onPressed: () async {
                     Navigator.pop(innerContext);
-                    await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc,afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts);
+                    await recommendersModel.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc,afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts);
                   }, child: PositiveText(text: mutePostText(context: context)) ),
                   CupertinoActionSheetAction(onPressed: () {
                     Navigator.pop(innerContext);
-                    postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts);
+                    recommendersModel.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: recommendersModel.afterUris, audioPlayer: recommendersModel.audioPlayer, results: recommendersModel.posts);
                   }, child: PositiveText(text: reportPostText(context: context)) ),
                   CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                 ],

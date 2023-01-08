@@ -16,7 +16,6 @@ import 'package:whisper/models/main/bookmarks_model.dart';
 import 'package:whisper/models/comments/comments_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 
 class PostScreen extends ConsumerWidget {
   
@@ -34,7 +33,6 @@ class PostScreen extends ConsumerWidget {
 
     final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider); 
     final CommentsModel commentsModel = ref.watch(commentsProvider);
-    final PostsModel postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
 
     final postDocs = bookmarksModel.posts;
@@ -63,7 +61,6 @@ class PostScreen extends ConsumerWidget {
         ),
         child: PostCards(
           postDocs: postDocs, 
-          postFutures: postFutures,
           route: () {
           routes.toPostShowPage(
             context: context,

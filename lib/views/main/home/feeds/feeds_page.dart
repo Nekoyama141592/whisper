@@ -10,7 +10,6 @@ import 'package:whisper/views/main/home/feeds/components/post_cards.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/comments/comments_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
 
@@ -30,16 +29,13 @@ class FeedsPage extends ConsumerWidget {
     final CommentsModel commentsModel = ref.watch(commentsProvider);
     final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
-    final PostsModel postFutures = ref.watch(postsFeaturesProvider);
-
     final isLoading = mainModel.isFeedLoading;
     final postDocs = mainModel.posts;
 
     return isLoading ?
     Loading()
     : PostCards(
-      postDocs: postDocs, 
-      postFutures: postFutures,
+      postDocs: postDocs,
       route: () {
         routes.toPostShowPage(
           context: context,

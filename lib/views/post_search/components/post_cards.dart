@@ -17,7 +17,6 @@ import 'package:whisper/domain/post/post.dart';
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/comments/comments_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 import 'package:whisper/models/post_search/post_search_model.dart';
 import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
 
@@ -41,7 +40,6 @@ class PostCards extends ConsumerWidget {
     
     final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
     final CommentsModel commentsModel = ref.watch(commentsProvider);
-    final PostsModel postFutures = ref.watch(postsFeaturesProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
 
     return
@@ -61,33 +59,33 @@ class PostCards extends ConsumerWidget {
                 return 
                 PostCard(
                   postDoc: postDoc,
-                  onDeleteButtonPressed: () { postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPost: whisperPost, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i); },
-                  initAudioPlayer: () async => await postFutures.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i),
-                  muteUser: () async => await postFutures.muteUser(context: context,audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel),
-                  mutePost: () async => await postFutures.mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
-                  reportPost: () => postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
+                  onDeleteButtonPressed: () => postSearchModel.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPost: whisperPost, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i),
+                  initAudioPlayer: () async => await postSearchModel.initAudioPlayer(audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, i: i),
+                  muteUser: () async => await postSearchModel.muteUser(context: context,audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel),
+                  mutePost: () async => await postSearchModel.mutePost(context: context,mainModel: mainModel, i: i, postDoc: postDoc, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
+                  reportPost: () => postSearchModel.reportPost(context: context, mainModel: mainModel, i: i, post: Post.fromJson(post), afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results ),
                   reportPostButtonBuilder:  (innerContext) {
                     return CupertinoActionSheet(
                       actions: whisperPost.uid == mainModel.userMeta.uid ?
                         [  
                           CupertinoActionSheetAction(onPressed: () {
                             Navigator.pop(innerContext);
-                            postFutures.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPost: whisperPost, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i);
+                            postSearchModel.onPostDeleteButtonPressed(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPost: whisperPost, afterUris: postSearchModel.afterUris, posts: postSearchModel.results, mainModel: mainModel, i: i);
                           }, child: PositiveText(text: deletePostText(context: context)) ),
                           CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                         ]
                         : [
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await postFutures.muteUser(context: context, audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
+                          await postSearchModel.muteUser(context: context, audioPlayer: postSearchModel.audioPlayer, afterUris: postSearchModel.afterUris, muteUids: mainModel.muteUids, i: i, results: postSearchModel.results, muteUsers: mainModel.muteUsers, whisperPost: whisperPost, mainModel: mainModel);
                         }, child: PositiveText(text: muteUserText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () async {
                           Navigator.pop(innerContext);
-                          await postFutures.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
+                          await postSearchModel.mutePost(context: context, mainModel: mainModel, i: i, postDoc: postDoc, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
                         }, child: PositiveText(text: mutePostText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () {
                           Navigator.pop(innerContext);
-                          postFutures.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
+                          postSearchModel.reportPost(context: context, mainModel: mainModel, i: i, post: whisperPost, afterUris: postSearchModel.afterUris, audioPlayer: postSearchModel.audioPlayer, results: postSearchModel.results);
                         }, child: PositiveText(text: reportPostText(context: context)) ),
                         CupertinoActionSheetAction(onPressed: () => Navigator.pop(innerContext), child: PositiveText(text: cancelText(context: context)) ),
                       ],

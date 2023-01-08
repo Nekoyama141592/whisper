@@ -12,7 +12,6 @@ import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_m
 import '../../../../models/main/recommenders_model.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/comments/comments_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
 
 class RecommendersPage extends ConsumerWidget {
@@ -30,13 +29,11 @@ class RecommendersPage extends ConsumerWidget {
     final CommentsModel commentsModel = ref.watch(commentsProvider);
     final EditPostInfoModel editPostInfoModel = ref.watch(editPostInfoProvider);
     final CommentsOrReplysModel commentsOrReplysModel = ref.watch(commentsOrReplysProvider);
-    final PostsModel postFutures = ref.watch(postsFeaturesProvider);
 
     return recommendersModel.isLoading ?
     Loading()
     : PostCards(
-      postDocs: recommendersModel.posts, 
-      postFutures: postFutures,
+      postDocs: recommendersModel.posts,
       route: () {
         routes.toPostShowPage(
           context: context,
