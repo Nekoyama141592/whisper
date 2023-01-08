@@ -306,7 +306,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
     likePostIds.add(postId);
     notifyListeners();
     // backend
-    await addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    await _addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
     // create likePostToken
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
@@ -316,7 +316,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
     mainModel.likePosts.add(likePost);
   }
 
-  Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+  static Future<void> _addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final Timestamp now = Timestamp.now();
     final DocumentReference<Map<String,dynamic>> postDocRef = returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId);
     final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId, postCreatorUid: whisperPost.uid,postDocRef: postDocRef );
@@ -363,7 +363,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
           await (controller as FlashController ).dismiss();
           // backend
           await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
-          await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+          await _addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
       child: PositiveText(text: decideModalText(context: context))
@@ -372,7 +372,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
   voids.showFlashDialogue(context: context, content: content, titleText: l10n.whichCategory,positiveActionBuilder: positiveActionBuilder);
   }
 
-  Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+  Future<void> _addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
     final DocumentReference<Map<String,dynamic>> postDocRef = returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId);

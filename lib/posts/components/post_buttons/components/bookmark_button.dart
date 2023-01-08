@@ -12,6 +12,7 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
+import 'package:whisper/models/posts/post_futures_model.dart';
 
 class BookmarkButton extends ConsumerWidget {
   
@@ -27,7 +28,7 @@ class BookmarkButton extends ConsumerWidget {
   final MainModel mainModel;
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
-    
+    final PostFuturesModel postFuturesModel = ref.watch(postFeaturesProvider);
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (postType != PostType.postSearch ) {
       final bookmarksCount = whisperPost.bookmarkCount;
@@ -42,7 +43,7 @@ class BookmarkButton extends ConsumerWidget {
               Icons.bookmark,
               color: Theme.of(context).highlightColor,
             ),
-            onTap: () async => await postsModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories )
+            onTap: () async => await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories )
           ),
           if(currentWhisperUser.uid == whisperPost.uid) Text(
             l10n.count(plusOneCount),
@@ -54,7 +55,7 @@ class BookmarkButton extends ConsumerWidget {
         children: [
           InkWell(
             child: Icon(Icons.bookmark_border),
-            onTap: () async => await postsModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories )
+            onTap: () async => await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories )
           ),
           if(currentWhisperUser.uid == whisperPost.uid) Text(l10n.count(bookmarksCount))
         ],
@@ -67,11 +68,11 @@ class BookmarkButton extends ConsumerWidget {
           Icons.bookmark,
           color: Theme.of(context).highlightColor,
         ),
-        onTap: () async => await postsModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories),
+        onTap: () async => await postFuturesModel.unbookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkCategories: mainModel.bookmarkPostCategories),
       )
       : InkWell(
         child: Icon(Icons.bookmark_border),
-        onTap: () async => await postsModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories )
+        onTap: () async => await postFuturesModel.bookmark(context: context, whisperPost: whisperPost, mainModel: mainModel, bookmarkPostLabels: mainModel.bookmarkPostCategories )
       );
     }
   }
