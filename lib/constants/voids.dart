@@ -8,7 +8,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flash/flash.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:dart_ipify/dart_ipify.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
