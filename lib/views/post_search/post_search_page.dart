@@ -65,10 +65,10 @@ class PostSearchPage extends ConsumerWidget {
                 search: () async => await postSearchModel.search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser),
               ),
             ),
-            if (searchModel.results.isEmpty) SizedBox(height: size.height * 0.16,),
+            if (searchModel.posts.isEmpty) SizedBox(height: size.height * 0.16,),
             PostCards(
               passiveWhisperUser: passiveWhisperUser,
-              results: searchModel.results,
+              results: searchModel.posts,
               mainModel: mainModel,
               postSearchModel: postSearchModel,
             ),

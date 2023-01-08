@@ -13,7 +13,6 @@ import 'package:whisper/constants/voids.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/main_model.dart';
@@ -26,7 +25,6 @@ class PostSearchModel extends PostsModel {
 
   String searchTerm = '';
   bool isFirstSearch = false;
-  List<DocumentSnapshot<Map<String,dynamic>>> results = [];
   // enum
   final PostType postType = PostType.postSearch;
 
@@ -51,10 +49,10 @@ class PostSearchModel extends PostsModel {
       showBasicFlutterToast(context: context, msg: l10n.searchLimitMsg(maxSearchLength.toString()) );
     } else if (searchTerm.isNotEmpty) {
       startLoading();
-      results = [];
+      posts = [];
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
       final Query<Map<String,dynamic>> query = returnSearchQuery(colRef: returnPostsColRef(postCreatorUid: passiveWhisperUser.uid),searchWords: searchWords);
-      await processBasicPosts(query: query, posts: results, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
+      await processBasicPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
       if (isFirstSearch == false) {
         super.listenForStates();
         isFirstSearch = true;

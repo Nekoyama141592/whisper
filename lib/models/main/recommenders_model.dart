@@ -17,10 +17,6 @@ import 'package:whisper/domain/read_post/read_post.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/block_user/block_user.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 final recommendersProvider = ChangeNotifierProvider(
   (ref) => RecommendersModel()

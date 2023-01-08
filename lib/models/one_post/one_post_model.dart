@@ -41,7 +41,7 @@ class OnePostModel extends PostsModel {
       UriAudioSource audioSource = AudioSource.uri(song,tag: post );
       audioPlayer = AudioPlayer();
       await audioPlayer.setAudioSource(audioSource);
-      super.listenForStates();
+      listenForStates();
     }
     endLoading();
     return onePostDoc.exists;

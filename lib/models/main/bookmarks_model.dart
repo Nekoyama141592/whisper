@@ -49,9 +49,9 @@ class BookmarksModel extends PostsModel {
       setBookmarksPostIds(mainModel: mainModel, );
       await processBookmark();
       prefs = mainModel.prefs;
-      await super.setSpeed();
+      await setSpeed();
       if (isInitFinished == false) {
-        super.listenForStates();
+        listenForStates();
         isInitFinished = true;
       }
       endLoading();

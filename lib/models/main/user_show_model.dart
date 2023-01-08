@@ -39,7 +39,7 @@ class UserShowModel extends PostsModel {
   // enums
   final PostType postType = PostType.userShow;
   SortState sortState = SortState.byNewestFirst;
-  Query<Map<String, dynamic>> getQuery ({ required WhisperUser passiveWhisperUser }) {
+  Query<Map<String, dynamic>> getQuery () {
     final basicQuery = returnPostsColRef(postCreatorUid: passiveWhisperUser.uid).limit(oneTimeReadCount);
     switch(sortState) {
       case SortState.byLikeUidCount:
@@ -119,7 +119,7 @@ class UserShowModel extends PostsModel {
       case SortState.byLikeUidCount:
       break;
       case SortState.byNewestFirst:
-      await voids.processNewPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser,), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
       break;
       case SortState.byOldestFirst:
       break;
@@ -130,10 +130,10 @@ class UserShowModel extends PostsModel {
   Future<void> getPosts() async {
     posts = [];
     afterUris = [];
-    await voids.processBasicPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser,), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+    await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
   }
 
-  Future<void> getOldUserShowPosts() async => await voids.processOldPosts(query: getQuery( passiveWhisperUser: passiveWhisperUser,), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+  Future<void> getOldUserShowPosts() async => await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
 
   Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();
