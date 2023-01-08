@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/lists.dart';
@@ -13,39 +14,19 @@ import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/bools.dart';
 import 'package:whisper/constants/voids.dart' as voids;
-import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/l10n/l10n.dart';
 import 'package:whisper/main_model.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 final postSearchProvider = ChangeNotifierProvider(
   (ref) => PostSearchModel()
 );
 
-class PostSearchModel extends ChangeNotifier{
+class PostSearchModel extends PostsModel {
 
   String searchTerm = '';
-  bool isLoading = false;
   bool isFirstSearch = false;
-   // just_audio
-  late AudioPlayer audioPlayer;
-  List<AudioSource> afterUris = [];
   List<DocumentSnapshot<Map<String,dynamic>>> results = [];
-   // notifiers
-  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  // speed
-  late SharedPreferences prefs;
-  final speedNotifier = ValueNotifier<double>(1.0);
   // enum
   final PostType postType = PostType.postSearch;
 
@@ -56,17 +37,7 @@ class PostSearchModel extends ChangeNotifier{
   Future<void> init() async {
     audioPlayer = AudioPlayer();
     prefs = await SharedPreferences.getInstance();
-    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
-  }
-
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
+    await super.setSpeed();
   }
 
   bool isValidReadPost({ required Map<String,dynamic> map, required List<dynamic> mutesUids, required List<dynamic> blocksUids, required List<dynamic> mutesPostIds}) {
@@ -85,7 +56,7 @@ class PostSearchModel extends ChangeNotifier{
       final Query<Map<String,dynamic>> query = returnSearchQuery(colRef: returnPostsColRef(postCreatorUid: passiveWhisperUser.uid),searchWords: searchWords);
       await processBasicPosts(query: query, posts: results, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
       if (isFirstSearch == false) {
-        voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+        super.listenForStates();
         isFirstSearch = true;
       }
       endLoading();
@@ -95,12 +66,7 @@ class PostSearchModel extends ChangeNotifier{
   Future<void> onReload({ required BuildContext context ,required MainModel mainModel, required WhisperUser passiveWhisperUser }) async {
     startLoading();
     await search(context: context, mainModel: mainModel, passiveWhisperUser: passiveWhisperUser);
-    
     endLoading();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
   }
 
 }

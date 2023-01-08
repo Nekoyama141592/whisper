@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 // packages
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:whisper/views/bookmark_categories/bookmark_categories_page.dart';
@@ -29,7 +28,6 @@ import 'package:whisper/models/themes/themes_model.dart';
 import 'package:whisper/l10n/l10n.dart';
 
 Future<void> main() async {
-  // // await dotenv.load(fileName: '.env',);
   // // await JustAudioBackground.init(
   // //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
   // //   androidNotificationChannelName: 'Audio playback',

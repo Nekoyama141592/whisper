@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
@@ -19,22 +20,9 @@ final onePostProvider = ChangeNotifierProvider(
   (ref) => OnePostModel()
 );
 
-class OnePostModel extends ChangeNotifier {
+class OnePostModel extends PostsModel {
   
-  // basic
-  bool isLoading = false;
   final PostType postType = PostType.onePost;
-  // notifiers
-  late AudioPlayer audioPlayer;
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  final speedNotifier = ValueNotifier<double>(1.0);
-  // just_audio
-  List<AudioSource> afterUris = [];
   // post
   late DocumentSnapshot<Map<String,dynamic>> onePostDoc;
   List<DocumentSnapshot<Map<String,dynamic>>> onePostDocList = [];
@@ -53,25 +41,9 @@ class OnePostModel extends ChangeNotifier {
       UriAudioSource audioSource = AudioSource.uri(song,tag: post );
       audioPlayer = AudioPlayer();
       await audioPlayer.setAudioSource(audioSource);
-      voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+      super.listenForStates();
     }
     endLoading();
     return onePostDoc.exists;
   }
-
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
-  }
-
-  
 }

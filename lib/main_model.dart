@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
@@ -42,11 +43,7 @@ final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
 );
 
-class MainModel extends ChangeNotifier {
-
-  // basic
-  bool isLoading = false;
-  late SharedPreferences prefs;
+class MainModel extends PostsModel {
   // user
   User? currentUser;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
@@ -97,23 +94,7 @@ class MainModel extends ChangeNotifier {
     }
     return returnPostsColGroupQuery().where(postIdFieldKey,whereIn: max10TimelinePostIds).limit(tenCount);
   }
-  // notifiers
-  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  // just_audio
-  late AudioPlayer audioPlayer;
-  List<AudioSource> afterUris = [];
-  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
   List<DocumentSnapshot<Map<String,dynamic>>> timelineDocs = [];
-  // refresh
-  RefreshController refreshController = RefreshController(initialRefresh: false);
-  // speed
-  final speedNotifier = ValueNotifier<double>(1.0);
   // enum
   final PostType postType = PostType.feeds;
 
@@ -129,19 +110,9 @@ class MainModel extends ChangeNotifier {
     followingUids.add(userMeta.uid);
     await distributeTokens();
     await getFeeds();
-    await voids.setSpeed(speedNotifier: speedNotifier, prefs: prefs, audioPlayer: audioPlayer);
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    await super.setSpeed();
+    super.listenForStates();
     endLoading();
-  }
-
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
   }
 
   Future<void> setCurrentUser() async {
@@ -242,10 +213,6 @@ class MainModel extends ChangeNotifier {
   void endFeedLoading() {
     isFeedLoading = false;
     notifyListeners();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
   }
 
   Future<void> onRefresh() async {

@@ -10,6 +10,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
@@ -34,9 +35,8 @@ final myProfileProvider = ChangeNotifierProvider(
   (ref) => MyProfileModel()
 );
 
-class MyProfileModel extends ChangeNotifier {
+class MyProfileModel extends PostsModel {
 
-  bool isLoading = false;
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
   // enums
   final PostType postType = PostType.myProfile;
@@ -55,21 +55,6 @@ class MyProfileModel extends ChangeNotifier {
       return x;
     }
   }
-  // notifiers
-  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  // just_audio
-  late AudioPlayer audioPlayer;
-  List<AudioSource> afterUris = [];
-  // cloudFirestore
-  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
-  // refresh
-  late RefreshController refreshController;
   // Edit profile
   bool isEditing = false;
   String userName = '';
@@ -77,9 +62,6 @@ class MyProfileModel extends ChangeNotifier {
   bool isCropped = false;
   XFile? xFile;
   File? croppedFile;
-  // speed
-  late SharedPreferences prefs;
-  final speedNotifier = ValueNotifier<double>(1.0);
 
   MyProfileModel() {
     init();
@@ -92,23 +74,9 @@ class MyProfileModel extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
     await setCurrentUserDoc();
     await getPosts();
-    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    await super.setSpeed();
+    super.listenForStates();
     endLoading();
-  }
-
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
   }
 
   Future<void> setCurrentUserDoc() async => currentUserDoc = await FirebaseFirestore.instance.collection(usersFieldKey).doc(FirebaseAuth.instance.currentUser!.uid).get();

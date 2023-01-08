@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/positive_text.dart';
@@ -108,21 +107,21 @@ class PostCards extends ConsumerWidget {
                     postType: postSearchModel.postType,
                     context: context,
                     speedNotifier: postSearchModel.speedNotifier,
-                    speedControll:  () async => await voids.speedControll(audioPlayer: postSearchModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: postSearchModel.speedNotifier),
+                    speedControll:  () async => await postSearchModel.speedControll(),
                     currentWhisperPostNotifier: postSearchModel.currentWhisperPostNotifier, 
                     progressNotifier: postSearchModel.progressNotifier, 
                     seek: postSearchModel.seek, 
                     repeatButtonNotifier: postSearchModel.repeatButtonNotifier, 
-                    onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: postSearchModel.audioPlayer, repeatButtonNotifier: postSearchModel.repeatButtonNotifier),
+                    onRepeatButtonPressed:  () => postSearchModel.onRepeatButtonPressed(),
                     isFirstSongNotifier: postSearchModel.isFirstSongNotifier, 
-                    onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
+                    onPreviousSongButtonPressed:  () => postSearchModel.onPreviousSongButtonPressed(),
                     playButtonNotifier: postSearchModel.playButtonNotifier, 
-                    play: () => voids.play(audioPlayer: postSearchModel.audioPlayer),
-                    pause: () => voids.pause(audioPlayer: postSearchModel.audioPlayer),
+                    play: () => postSearchModel.play(),
+                    pause: () => postSearchModel.pause(),
                     isLastSongNotifier: postSearchModel.isLastSongNotifier, 
-                    onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
+                    onNextSongButtonPressed:  () => postSearchModel.onNextSongButtonPressed(),
                     toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: postSearchModel.audioPlayer, whisperPostNotifier: postSearchModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: postSearchModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
-                    toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: postSearchModel.audioPlayer, editPostInfoModel: editPostInfoModel),
+                    toEditingMode:  () => postSearchModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel),
                     mainModel: mainModel
                   ); 
                 }, 
@@ -130,12 +129,12 @@ class PostCards extends ConsumerWidget {
                 seek: postSearchModel.seek,
                 whisperPost: whisperPost!,
                 playButtonNotifier: postSearchModel.playButtonNotifier,
-                play: () => voids.play(audioPlayer: postSearchModel.audioPlayer),
-                pause: () => voids.pause(audioPlayer: postSearchModel.audioPlayer),
+                play: () => postSearchModel.play(),
+                pause: () => postSearchModel.pause(),
                 isFirstSongNotifier: postSearchModel.isFirstSongNotifier,
-                onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
+                onPreviousSongButtonPressed: () => postSearchModel.onPreviousSongButtonPressed(),
                 isLastSongNotifier: postSearchModel.isLastSongNotifier,
-                onNextSongButtonPressed: () => voids.onNextSongButtonPressed(audioPlayer: postSearchModel.audioPlayer),
+                onNextSongButtonPressed: () => postSearchModel.onNextSongButtonPressed(),
                 mainModel: mainModel,
               );
             }

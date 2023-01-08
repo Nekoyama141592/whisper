@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // package
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // constants
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/loading.dart';
@@ -42,21 +41,21 @@ class RecommendersPage extends ConsumerWidget {
         routes.toPostShowPage(
           context: context,
           speedNotifier: recommendersModel.speedNotifier,
-          speedControll:  () async => await voids.speedControll(audioPlayer: recommendersModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: recommendersModel.speedNotifier),
+          speedControll:  () async => await recommendersModel.speedControll(),
           currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier, 
           progressNotifier: recommendersModel.progressNotifier, 
           seek: recommendersModel.seek, 
           repeatButtonNotifier: recommendersModel.repeatButtonNotifier, 
-          onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: recommendersModel.audioPlayer, repeatButtonNotifier: recommendersModel.repeatButtonNotifier),
+          onRepeatButtonPressed:  () => recommendersModel.onRepeatButtonPressed(),
           isFirstSongNotifier: recommendersModel.isFirstSongNotifier, 
-          onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer),
+          onPreviousSongButtonPressed:  () => recommendersModel.onPreviousSongButtonPressed(),
           playButtonNotifier: recommendersModel.playButtonNotifier, 
-          play: () => voids.play(audioPlayer: recommendersModel.audioPlayer),
-          pause: () => voids.pause(audioPlayer: recommendersModel.audioPlayer),
+          play: () => recommendersModel.play(),
+          pause: () => recommendersModel.pause(),
           isLastSongNotifier: recommendersModel.isLastSongNotifier, 
-          onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer),
+          onNextSongButtonPressed:  () => recommendersModel.onNextSongButtonPressed(),
           toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: recommendersModel.audioPlayer, whisperPostNotifier: recommendersModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: recommendersModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
-          toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: recommendersModel.audioPlayer, editPostInfoModel: editPostInfoModel),
+          toEditingMode:  () => recommendersModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel),
           postType: recommendersModel.postType,
           mainModel: mainModel
         ); 
@@ -65,16 +64,16 @@ class RecommendersPage extends ConsumerWidget {
       seek: recommendersModel.seek,
       currentWhisperPostNotifier: recommendersModel.currentWhisperPostNotifier,
       playButtonNotifier: recommendersModel.playButtonNotifier,
-      play: () => voids.play(audioPlayer: recommendersModel.audioPlayer),
-      pause: () => voids.pause(audioPlayer: recommendersModel.audioPlayer),
+      play: () => recommendersModel.play(),
+      pause: () => recommendersModel.pause(),
       refreshController: recommendersModel.refreshController,
       onRefresh: () async => await recommendersModel.onRefresh(),
       onReload: () async => await recommendersModel.onReload(),
       onLoading: () async => await recommendersModel.onLoading(),
       isFirstSongNotifier: recommendersModel.isFirstSongNotifier,
-      onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: recommendersModel.audioPlayer),
+      onPreviousSongButtonPressed: () => recommendersModel.onPreviousSongButtonPressed(),
       isLastSongNotifier: recommendersModel.isLastSongNotifier,
-      onNextSongButtonPressed: () => voids.onNextSongButtonPressed(audioPlayer: recommendersModel.audioPlayer),
+      onNextSongButtonPressed: () => recommendersModel.onNextSongButtonPressed(),
       mainModel: mainModel,
       recommendersModel: recommendersModel,
     );

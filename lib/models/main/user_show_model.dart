@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
@@ -17,16 +18,11 @@ import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/widgets.dart';
-import 'package:whisper/domain/post/post.dart';
 // domain
 import 'package:whisper/domain/follower/follower.dart';
 import 'package:whisper/domain/following/following.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/l10n/l10n.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // components
 import 'package:whisper/details/positive_text.dart';
 // model
@@ -37,7 +33,7 @@ final userShowProvider = ChangeNotifierProvider(
   (ref) => UserShowModel()
 );
 
-class UserShowModel extends ChangeNotifier {
+class UserShowModel extends PostsModel {
   
   late WhisperUser passiveWhisperUser;
   // enums
@@ -59,21 +55,6 @@ class UserShowModel extends ChangeNotifier {
   }
   String passiveUid = '';
   bool isLoading = false;
-  // notifiers
-  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  // just_audio
-  late AudioPlayer audioPlayer;
-  List<AudioSource> afterUris = [];
-  // cloudFirestore
-  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
-  // refresh
-  RefreshController refreshController = RefreshController(initialRefresh: false);
   // Edit profile
   bool isEditing = false;
   String userName = '';
@@ -83,9 +64,6 @@ class UserShowModel extends ChangeNotifier {
   File? croppedFile;
   // block
   bool isBlocked = false;
-  // speed
-  late SharedPreferences prefs;
-  final speedNotifier = ValueNotifier<double>(1.0);
 
   Future<void> init({ required DocumentSnapshot<Map<String,dynamic>> passiveUserDoc, required SharedPreferences givePrefs}) async {
     startLoading();
@@ -96,8 +74,8 @@ class UserShowModel extends ChangeNotifier {
       passiveUid = passiveUserDoc.id;
       prefs = givePrefs;
       await getPosts();
-      await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
-      voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+      await super.setSpeed();
+      super.listenForStates();
     }
     endLoading();
   }
@@ -169,10 +147,6 @@ class UserShowModel extends ChangeNotifier {
     croppedFile = null;
     croppedFile = await returnCroppedFile(xFile: xFile);
     if (croppedFile != null) isCropped = true;
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
   }
 
   void onEditButtonPressed() {

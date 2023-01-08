@@ -5,8 +5,7 @@ import 'package:flash/flash.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
@@ -16,12 +15,7 @@ import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 // domain
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
-import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/l10n/l10n.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // model
 import 'package:whisper/main_model.dart';
 
@@ -29,28 +23,9 @@ final bookmarksProvider = ChangeNotifierProvider(
   (ref) => BookmarksModel()
 );
 
-class BookmarksModel extends ChangeNotifier {
-  
-  bool isLoading = false;
-  // notifiers
-  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  // just_audio
-  late AudioPlayer audioPlayer;
-  List<AudioSource> afterUris = [];
+class BookmarksModel extends PostsModel {
   // cloudFirestore
   List<String> bookmarkPostIds = [];
-  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
-  // refresh
-  RefreshController refreshController = RefreshController(initialRefresh: false);
-  // speed
-  late SharedPreferences prefs;
-  final speedNotifier = ValueNotifier<double>(1.0);
   // enums
   final PostType postType = PostType.bookmarks;
   // init
@@ -74,27 +49,13 @@ class BookmarksModel extends ChangeNotifier {
       setBookmarksPostIds(mainModel: mainModel, );
       await processBookmark();
       prefs = mainModel.prefs;
-      await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
+      await super.setSpeed();
       if (isInitFinished == false) {
-        voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+        super.listenForStates();
         isInitFinished = true;
       }
       endLoading();
     }
-  }
-
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
   }
 
   void back() {

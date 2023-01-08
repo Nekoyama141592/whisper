@@ -9,7 +9,6 @@ import 'package:whisper/details/nothing.dart';
 import 'package:whisper/details/gradient_screen.dart';
 import 'package:whisper/views/main/bookmarks/components/post_cards.dart';
 // constants
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // model
 import 'package:whisper/main_model.dart';
@@ -69,21 +68,21 @@ class PostScreen extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: bookmarksModel.speedNotifier,
-            speedControll:  () async => await voids.speedControll(audioPlayer: bookmarksModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: bookmarksModel.speedNotifier),
+            speedControll:  () async => await bookmarksModel.speedControll(),
             currentWhisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, 
             progressNotifier: bookmarksModel.progressNotifier, 
             seek: bookmarksModel.seek, 
             repeatButtonNotifier: bookmarksModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: bookmarksModel.audioPlayer, repeatButtonNotifier: bookmarksModel.repeatButtonNotifier),
+            onRepeatButtonPressed:  () => bookmarksModel.onRepeatButtonPressed(),
             isFirstSongNotifier: bookmarksModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
+            onPreviousSongButtonPressed:  () => bookmarksModel.onPreviousSongButtonPressed(),
             playButtonNotifier: bookmarksModel.playButtonNotifier, 
-            play: () => voids.play(audioPlayer: bookmarksModel.audioPlayer),
-            pause: () => voids.pause(audioPlayer: bookmarksModel.audioPlayer),
+            play: () => bookmarksModel.play(),
+            pause: () => bookmarksModel.pause(),
             isLastSongNotifier: bookmarksModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
+            onNextSongButtonPressed:  () => bookmarksModel.onNextSongButtonPressed(),
             toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: bookmarksModel.audioPlayer, whisperPostNotifier: bookmarksModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: bookmarksModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
-            toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: bookmarksModel.audioPlayer, editPostInfoModel: editPostInfoModel),
+            toEditingMode:  () => bookmarksModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel),
             postType: bookmarksModel.postType,
             mainModel: mainModel
           ); 
@@ -92,14 +91,14 @@ class PostScreen extends ConsumerWidget {
         seek: bookmarksModel.seek,
         currentWhisperPostNotifier: bookmarksModel.currentWhisperPostNotifier,
         playButtonNotifier: bookmarksModel.playButtonNotifier,
-        play: () => voids.play(audioPlayer: bookmarksModel.audioPlayer),
-        pause: () => voids.pause(audioPlayer: bookmarksModel.audioPlayer),
+        play: () => bookmarksModel.play(),
+        pause: () => bookmarksModel.pause(),
         refreshController: bookmarksModel.refreshController,
         onLoading: () async => await bookmarksModel.onLoading(),
         isFirstSongNotifier: bookmarksModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
+        onPreviousSongButtonPressed: () => bookmarksModel.onPreviousSongButtonPressed(),
         isLastSongNotifier: bookmarksModel.isLastSongNotifier,
-        onNextSongButtonPressed: () => voids.onNextSongButtonPressed(audioPlayer: bookmarksModel.audioPlayer),
+        onNextSongButtonPressed: () => bookmarksModel.onNextSongButtonPressed(),
           mainModel: mainModel,
           bookmarksModel: bookmarksModel,
         ),

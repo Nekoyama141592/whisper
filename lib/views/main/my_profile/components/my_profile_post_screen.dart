@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 // components
 import 'package:whisper/details/positive_text.dart';
@@ -50,21 +49,21 @@ class MyProfilePostScreen extends ConsumerWidget {
           routes.toPostShowPage(
             context: context,
             speedNotifier: myProfileModel.speedNotifier,
-            speedControll:  () async => await voids.speedControll(audioPlayer: myProfileModel.audioPlayer, prefs: mainModel.prefs,speedNotifier: myProfileModel.speedNotifier),
+            speedControll:  () async => await myProfileModel.speedControll(),
             currentWhisperPostNotifier: myProfileModel.currentWhisperPostNotifier, 
             progressNotifier: myProfileModel.progressNotifier, 
             seek: myProfileModel.seek, 
             repeatButtonNotifier: myProfileModel.repeatButtonNotifier, 
-            onRepeatButtonPressed:  () => voids.onRepeatButtonPressed(audioPlayer: myProfileModel.audioPlayer, repeatButtonNotifier: myProfileModel.repeatButtonNotifier),
+            onRepeatButtonPressed:  () => myProfileModel.onRepeatButtonPressed(),
             isFirstSongNotifier: myProfileModel.isFirstSongNotifier, 
-            onPreviousSongButtonPressed:  () => voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer),
+            onPreviousSongButtonPressed:  () => myProfileModel.onPreviousSongButtonPressed(),
             playButtonNotifier: myProfileModel.playButtonNotifier, 
-            play: () => voids.play(audioPlayer: myProfileModel.audioPlayer),
-            pause: () => voids.pause(audioPlayer: myProfileModel.audioPlayer),
+            play: () => myProfileModel.play(),
+            pause: () => myProfileModel.pause(),
             isLastSongNotifier: myProfileModel.isLastSongNotifier, 
-            onNextSongButtonPressed:  () => voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer),
+            onNextSongButtonPressed:  () => myProfileModel.onNextSongButtonPressed(),
             toCommentsPage:  () async => await commentsModel.init(context: context, audioPlayer: myProfileModel.audioPlayer, whisperPostNotifier: myProfileModel.currentWhisperPostNotifier, mainModel: mainModel, whisperPost: myProfileModel.currentWhisperPostNotifier.value!,commentsOrReplysModel: commentsOrReplysModel ),
-            toEditingMode:  () => voids.toEditPostInfoMode(audioPlayer: myProfileModel.audioPlayer, editPostInfoModel: editPostInfoModel),
+            toEditingMode:  () => myProfileModel.toEditPostInfoMode(editPostInfoModel: editPostInfoModel),
             postType: myProfileModel.postType,
             mainModel: mainModel
           ); 
@@ -73,12 +72,12 @@ class MyProfilePostScreen extends ConsumerWidget {
         seek: myProfileModel.seek,
         currentWhisperPostNotifier: myProfileModel.currentWhisperPostNotifier,
         playButtonNotifier: myProfileModel.playButtonNotifier,
-        play: () => voids.play(audioPlayer: myProfileModel.audioPlayer),
-        pause: () => voids.pause(audioPlayer: myProfileModel.audioPlayer),
+        play: () => myProfileModel.play(),
+        pause: () => myProfileModel.pause(),
         isFirstSongNotifier: myProfileModel.isFirstSongNotifier,
-        onPreviousSongButtonPressed: () => voids.onPreviousSongButtonPressed(audioPlayer: myProfileModel.audioPlayer),
+        onPreviousSongButtonPressed: () => myProfileModel.onPreviousSongButtonPressed(),
         isLastSongNotifier: myProfileModel.isLastSongNotifier,
-        onNextSongButtonPressed: () => voids.onNextSongButtonPressed(audioPlayer: myProfileModel.audioPlayer),
+        onNextSongButtonPressed: () => myProfileModel.onNextSongButtonPressed(),
         mainModel: mainModel,
         posts: RefreshScreen(
           isEmpty: myProfileModel.posts.isEmpty,

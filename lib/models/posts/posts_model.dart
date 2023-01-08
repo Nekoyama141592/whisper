@@ -155,7 +155,7 @@ class PostsModel extends ChangeNotifier {
     mainModel.mutePostIds.add(postId);
     mainModel.mutePosts.add(mutePost);
     results.removeWhere((result) => fromMapToPost(postMap: result.data()!).postId == whisperPost.postId );
-    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+    await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
     notifyListeners();
     await voids.showBasicFlutterToast(context: context,msg: mutePostMsg(context: context));
     // process Backend
@@ -185,7 +185,7 @@ class PostsModel extends ChangeNotifier {
 
   Future<void> removeTheUsersPost({ required List<DocumentSnapshot<Map<String,dynamic>>> results,required String passiveUid, required List<AudioSource> afterUris, required AudioPlayer audioPlayer,required int i}) async {
     results.removeWhere((result) => fromMapToPost(postMap: result.data()!).uid == passiveUid);
-    await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+    await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
   }
 
   Future<void> deletePost({ required BuildContext innerContext, required AudioPlayer audioPlayer,required Post whisperPost,required List<AudioSource> afterUris, required List<DocumentSnapshot<Map<String,dynamic>>> posts,required MainModel mainModel, required int i}) async {
@@ -198,7 +198,7 @@ class PostsModel extends ChangeNotifier {
       final x = posts[i];
       posts.remove(x);
       mainModel.currentWhisperUser.postCount += minusOne;
-      await voids.resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
+      await resetAudioPlayer(afterUris: afterUris, audioPlayer: audioPlayer, i: i);
       // process backend
       await x.reference.delete();
       await returnRefFromPost(post: whisperPost).delete();
@@ -272,4 +272,12 @@ class PostsModel extends ChangeNotifier {
     voids.showFlashDialogue(context: context, content: content, titleText: reportTitle(context: context), positiveActionBuilder: positiveActionBuilder);
   }
 }
-
+Future<void> resetAudioPlayer({ required List<AudioSource> afterUris, required AudioPlayer audioPlayer, required int i }) async {
+  // Abstractions in post_futures.dart cause Range errors.
+  AudioSource source = afterUris[i];
+  afterUris.remove(source);
+  if (afterUris.isNotEmpty) {
+    ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+    await audioPlayer.setAudioSource(playlist,initialIndex: i == 0 ? i :  i - 1);
+  } 
+}

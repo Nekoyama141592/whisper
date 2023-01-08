@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 import 'package:whisper/details/positive_text.dart';
 import 'package:whisper/l10n/l10n.dart';
 // constants
@@ -41,17 +42,13 @@ final addPostProvider = ChangeNotifierProvider(
 );
 
 
-class CreatePostModel extends ChangeNotifier {
+class CreatePostModel extends PostsModel {
   
   final postTitleNotifier = ValueNotifier<String>('');
   late AudioPlayer audioPlayer;
   String filePath = "";
   late File audioFile;
   late Record audioRecorder;
-
-  // notifiers
-  final progressNotifier = ProgressNotifier();
-  final playButtonNotifier = PlayButtonNotifier();
   final addPostStateNotifier = CreatePostStateNotifier();
   final isCroppedNotifier = ValueNotifier<bool>(false);
   // timer
@@ -101,18 +98,6 @@ class CreatePostModel extends ChangeNotifier {
   
   Future setAudio({ required String filePath}) async => await audioPlayer.setFilePath(filePath);
 
-  void play() {
-    audioPlayer.play();
-    notifyListeners();
-  }
-
-  void pause() {
-    audioPlayer.pause();
-    notifyListeners();
-  }
-
-  void seek(Duration position) => audioPlayer.seek(position);
-
   Future<void> startRecording({ required BuildContext context, required MainModel mainModel }) async {
     audioRecorder = Record();
     bool hasRecordingPermission = await audioRecorder.hasPermission();
@@ -135,7 +120,7 @@ class CreatePostModel extends ChangeNotifier {
       await setAudio( filePath:filePath);
       audioFile = File(filePath);
       addPostStateNotifier.value = CreatePostState.recorded;
-      voids.listenForStatesForAddPostModel(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier);
+      super.listenForStates();
     }
   }
 

@@ -1,13 +1,10 @@
-// material
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 // packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
@@ -28,10 +25,7 @@ import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 final recommendersProvider = ChangeNotifierProvider(
   (ref) => RecommendersModel()
 );
-class RecommendersModel extends ChangeNotifier {
-
-  // basic
-  bool isLoading = false;
+class RecommendersModel extends PostsModel {
   // user
   User? currentUser;
   Query<Map<String, dynamic>> getQuery() {
@@ -43,22 +37,7 @@ class RecommendersModel extends ChangeNotifier {
     .orderBy(scoreFieldKey, descending: true)
     .limit(oneTimeReadCount);
     return x;
-  }
-  // notifiers
-  final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
-  final progressNotifier = ProgressNotifier();
-  final repeatButtonNotifier = RepeatButtonNotifier();
-  final isFirstSongNotifier = ValueNotifier<bool>(true);
-  final playButtonNotifier = PlayButtonNotifier();
-  final isLastSongNotifier = ValueNotifier<bool>(true);
-  final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  
-  late AudioPlayer audioPlayer;
-  List<AudioSource> afterUris = [];
-  // cloudFirestore
-  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
-  // block and mutes
-  late SharedPreferences prefs;
+  }  
   // mute
   List<MuteUser> muteUsers = [];
   List<String> muteUids = [];
@@ -66,10 +45,6 @@ class RecommendersModel extends ChangeNotifier {
   List<BlockUser> blockUsers = [];
   List<String> blockUids = [];
   List<String> readPostIds = [];
-  // refresh
-  RefreshController refreshController = RefreshController(initialRefresh: false);
-  // speed
-  final speedNotifier = ValueNotifier<double>(1.0);
   // enum
   final PostType postType = PostType.recommenders;
   
@@ -83,27 +58,13 @@ class RecommendersModel extends ChangeNotifier {
     setCurrentUser();
     prefs = await SharedPreferences.getInstance();
     await getRecommenders();
-    await voids.setSpeed(audioPlayer: audioPlayer,prefs: prefs,speedNotifier: speedNotifier);
-    voids.listenForStates(audioPlayer: audioPlayer, playButtonNotifier: playButtonNotifier, progressNotifier: progressNotifier, currentWhisperPostNotifier: currentWhisperPostNotifier, isShuffleModeEnabledNotifier: isShuffleModeEnabledNotifier, isFirstSongNotifier: isFirstSongNotifier, isLastSongNotifier: isLastSongNotifier);
+    await super.setSpeed();
+    super.listenForStates();
     endLoading();
-  }
-
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
   }
 
   void setCurrentUser() {
     currentUser = FirebaseAuth.instance.currentUser;
-  }
-
-  void seek(Duration position) {
-    audioPlayer.seek(position);
   }
 
   Future<void> distributeTokens() async {
