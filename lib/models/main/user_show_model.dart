@@ -34,10 +34,8 @@ final userShowProvider = ChangeNotifierProvider(
 );
 
 class UserShowModel extends PostsModel {
-  
+  UserShowModel() : super(postType: PostType.userShow);
   late WhisperUser passiveWhisperUser;
-  // enums
-  final PostType postType = PostType.userShow;
   SortState sortState = SortState.byNewestFirst;
   Query<Map<String, dynamic>> getQuery () {
     final basicQuery = returnPostsColRef(postCreatorUid: passiveWhisperUser.uid).limit(oneTimeReadCount);
@@ -54,7 +52,6 @@ class UserShowModel extends PostsModel {
     }
   }
   String passiveUid = '';
-  bool isLoading = false;
   // Edit profile
   bool isEditing = false;
   String userName = '';
@@ -86,16 +83,6 @@ class UserShowModel extends PostsModel {
     routes.toUserShowPage(context: context, mainModel: mainModel);
   }
 
-  void startLoading() {
-    isLoading = true;
-    notifyListeners();
-  }
-
-  void endLoading() {
-    isLoading = false;
-    notifyListeners();
-  }
-
   Future<void> onRefresh() async {
     await getNewUserShowPosts();
     refreshController.refreshCompleted();
@@ -119,7 +106,7 @@ class UserShowModel extends PostsModel {
       case SortState.byLikeUidCount:
       break;
       case SortState.byNewestFirst:
-      await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      await processNewPosts(query: getQuery(), muteUids: [], blockUids: [], mutesPostIds: []);
       break;
       case SortState.byOldestFirst:
       break;
@@ -130,10 +117,10 @@ class UserShowModel extends PostsModel {
   Future<void> getPosts() async {
     posts = [];
     afterUris = [];
-    await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+    await processBasicPosts(query: getQuery(), muteUids: [], blockUids: [], mutePostIds: []);
   }
 
-  Future<void> getOldUserShowPosts() async => await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+  Future<void> getOldUserShowPosts() async => await processOldPosts(query: getQuery(), muteUids: [], blockUids: [], mutePostIds: []);
 
   Future<void> showImagePicker() async {
     final ImagePicker _picker = ImagePicker();

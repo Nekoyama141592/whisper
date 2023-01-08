@@ -44,6 +44,11 @@ import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/user_mute/user_mute.dart';
 
 abstract class PostsModel extends ChangeNotifier {
+  PostsModel({
+    required this.postType
+  });
+  final PostType postType;
+
   bool isLoading = false;
   // notifiers
   final currentWhisperPostNotifier = ValueNotifier<Post?>(null);
@@ -72,6 +77,86 @@ abstract class PostsModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+  Future<void> processNewPosts({required Query<Map<String, dynamic>> query,required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
+  final qshot = await query.endBeforeDocument(posts.first).get();
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
+    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
+  }
+  if (docs.isNotEmpty) {
+    // because of insert
+    docs.reversed;
+    // Insert at the top
+    for (final doc in docs) {
+      final whisperPost = fromMapToPost(postMap: doc.data());
+      final String uid = whisperPost.uid;
+      bool x = isValidReadPost(whisperPost: whisperPost ,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
+      if (x) {
+        posts.insert(0, doc);
+        Uri song = Uri.parse(whisperPost.audioURL);
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
+        afterUris.insert(0, source);
+      }
+    }
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist);
+    }
+  }
+}
+
+Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query,required List<String> muteUids, required List<String> blockUids, required List<String> mutePostIds }) async {
+  final qshot = await query.get();
+  final docs = qshot.docs;
+  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
+    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
+  }
+  if (docs.isNotEmpty) {
+    for (final doc in docs) {
+      final whisperPost = fromMapToPost(postMap: doc.data() );
+      final String uid = whisperPost.uid;
+      bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
+      if (x) {
+        posts.add(doc);
+        Uri song = Uri.parse(whisperPost.audioURL);
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
+        afterUris.add(source);
+      }
+    }
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist);
+    }
+  }
+}
+
+Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,required List<String> muteUids, required  List<String> blockUids , required List<String> mutePostIds }) async {
+  final bool useWhereIn = (postType == PostType.feeds || postType == PostType.bookmarks);
+  final qshot = useWhereIn ? await query.get() : await query.startAfterDocument(posts.last).get();
+  final int lastIndex = posts.lastIndexOf(posts.last);
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
+  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
+    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
+  }
+  if (docs.isNotEmpty) {
+    for (final doc in docs) {
+      final whisperPost = fromMapToPost(postMap: doc.data() );
+      final String uid = whisperPost.uid;
+      bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
+      if (x) {
+        posts.add(doc);
+        Uri song = Uri.parse(whisperPost.audioURL);
+        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
+        afterUris.add(source);
+      }
+    }
+    if (afterUris.isNotEmpty) {
+      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
+      await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
+    }
+  }
+}
+
 
   Future<void> setSpeed() async {
     speedNotifier.value = prefs.getDouble(speedPrefsKey) ?? 1.0;
@@ -239,17 +324,18 @@ abstract class PostsModel extends ChangeNotifier {
   }
 
 
-  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkPostLabels }) async {
+  Future<void> bookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel }) async {
     final L10n l10n = returnL10n(context: context)!;
+    final bookmarkPostCategories = mainModel.bookmarkPostCategories;
     final Widget content = Container(
       height: flashDialogueHeight(context: context),
       child: ValueListenableBuilder<String>(
         valueListenable: mainModel.bookmarkPostCategoryTokenIdNotifier,
         builder: (_,bookmarkPostLabelId,__) {
           return ListView.builder(
-            itemCount: bookmarkPostLabels.length,
+            itemCount: bookmarkPostCategories.length,
             itemBuilder: (BuildContext context, int i) {
-              final BookmarkPostCategory bookmarkPostLabel = bookmarkPostLabels[i];
+              final BookmarkPostCategory bookmarkPostLabel = bookmarkPostCategories[i];
               return ListTile(
                 leading: bookmarkPostLabelId == bookmarkPostLabel.tokenId ? Icon(Icons.check) : SizedBox.shrink(),
                 title: Text(bookmarkPostLabel.categoryName,style: TextStyle(fontWeight: FontWeight.bold),),
@@ -294,7 +380,7 @@ abstract class PostsModel extends ChangeNotifier {
     await returnPostBookmarkDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId, activeUid: activeUid).set(postBookmark.toJson());
   }
 
-  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkCategories }) async {
+  Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, }) async {
     final postId = whisperPost.postId;
     final indexDeleteToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
     // processUI

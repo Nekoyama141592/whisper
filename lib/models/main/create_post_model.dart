@@ -61,7 +61,7 @@ class CreatePostModel extends PostsModel {
   CommentsState commentsState = CommentsState.isOpen;
   // link 
   final whisperLinksNotifier = ValueNotifier<List<WhisperLink>>([]);
-  CreatePostModel() {
+  CreatePostModel() : super(postType: PostType.createPost){
     init();
   }
 

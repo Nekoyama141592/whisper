@@ -13,7 +13,7 @@ enum DmState {onlyFollowingAndFollowed}
 
 enum RecommendState {isRecommendable}
 // use on front
-enum PostType { bookmarks, feeds, myProfile, postSearch, recommenders, userShow ,onePost} 
+enum PostType { bookmarks, createPost,feeds, myProfile, postSearch, recommenders, userShow ,onePost} 
 
 enum NotificationType { authNotification, postCommentNotification, postCommentReplyNotification,officialNotification, }
 

@@ -28,7 +28,6 @@ bool newNotificationExists({ required List<CommentNotification> commentNotificat
 }
 
 bool isValidReadPost({ required Post whisperPost,required PostType postType ,required List<dynamic> muteUids, required List<dynamic> blockUids, required String uid, required List<dynamic> mutePostIds, required DocumentSnapshot<Map<String,dynamic>> doc }) {
-  // post is DocumentSnapshot<Map<String,dynamic>> or Map<String,dynamic>
   switch(postType) {
     case PostType.bookmarks:
     return isNotNegativePost(whisperPost: whisperPost);
@@ -53,6 +52,9 @@ bool isValidReadPost({ required Post whisperPost,required PostType postType ,req
 
     case PostType.onePost:
     return isNotNegativePost(whisperPost: whisperPost);
+    
+    case PostType.createPost:
+    return true;
   }
 }
 bool isImageExist({ required Post post }) {

@@ -14,7 +14,6 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 
 class LikeButton extends ConsumerWidget {
   
@@ -30,7 +29,6 @@ class LikeButton extends ConsumerWidget {
   
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
-    final postFuturesModel = ref.watch(postsFeaturesProvider);
     if (postType != PostType.postSearch) {
 
       final likeCount = whisperPost.likeCount;

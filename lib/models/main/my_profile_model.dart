@@ -16,15 +16,10 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/constants/widgets.dart';
 import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // components
 import 'package:whisper/details/positive_text.dart';
 // model
@@ -38,8 +33,6 @@ final myProfileProvider = ChangeNotifierProvider(
 class MyProfileModel extends PostsModel {
 
   late DocumentSnapshot<Map<String,dynamic>> currentUserDoc;
-  // enums
-  final PostType postType = PostType.myProfile;
   SortState sortState = SortState.byNewestFirst;
   Query<Map<String, dynamic>> getQuery () {
     final basicQuery = returnPostsColRef(postCreatorUid: firebaseAuthCurrentUser()!.uid).limit(oneTimeReadCount);
@@ -63,7 +56,7 @@ class MyProfileModel extends PostsModel {
   XFile? xFile;
   File? croppedFile;
 
-  MyProfileModel() {
+  MyProfileModel() : super(postType: PostType.myProfile) {
     init();
   }
 
@@ -103,7 +96,7 @@ class MyProfileModel extends PostsModel {
       case SortState.byLikeUidCount:
       break;
       case SortState.byNewestFirst:
-      await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutesPostIds: []);
+      await processNewPosts(query: getQuery(), muteUids: [], blockUids: [], mutesPostIds: []);
       break;
       case SortState.byOldestFirst:
       break;
@@ -114,10 +107,10 @@ class MyProfileModel extends PostsModel {
   Future<void> getPosts() async {
     posts = [];
     afterUris = [];
-    await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+    await processBasicPosts(query: getQuery(), muteUids: [], blockUids: [], mutePostIds: []);
   }
 
-  Future<void> getOldMyProfilePosts() async => await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+  Future<void> getOldMyProfilePosts() async => await processOldPosts(query: getQuery(), muteUids: [], blockUids: [], mutePostIds: []);
 
   void onEditButtonPressed() {
     isEditing = true;

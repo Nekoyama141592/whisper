@@ -24,10 +24,9 @@ final bookmarksProvider = ChangeNotifierProvider(
 );
 
 class BookmarksModel extends PostsModel {
+  BookmarksModel() : super(postType: PostType.bookmarks);
   // cloudFirestore
   List<String> bookmarkPostIds = [];
-  // enums
-  final PostType postType = PostType.bookmarks;
   // init
   bool isInitFinished = false;
   String indexBookmarkPostLabelId = '';
@@ -36,7 +35,6 @@ class BookmarksModel extends PostsModel {
   String editLabel = '';
   // new
   String newLabel = '';
-  
   Future<void> init({required BuildContext context ,required MainModel mainModel,required BookmarkPostCategory bookmarkLabel }) async {
     isBookmarkMode = true;
     notifyListeners();
@@ -90,7 +88,7 @@ class BookmarksModel extends PostsModel {
       List<String> max10BookmarkPostIds = bool ? bookmarkPostIds.sublist(postsLength,postsLength + tenCount ) : bookmarkPostIds.sublist(postsLength,bookmarkPostIds.length);
       if (max10BookmarkPostIds.isNotEmpty) {
         final query = returnPostsColGroupQuery().where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount);
-        await voids.processBasicPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+        await processBasicPosts(query: query, muteUids: [], blockUids: [], mutePostIds: []);
       }
     }
   }
@@ -101,7 +99,7 @@ class BookmarksModel extends PostsModel {
       List<String> max10BookmarkPostIds = bool ? bookmarkPostIds.sublist(postsLength,postsLength + tenCount ) : bookmarkPostIds.sublist(postsLength,bookmarkPostIds.length);
       if (max10BookmarkPostIds.isNotEmpty) {
         final query = returnPostsColGroupQuery().where(postIdFieldKey,whereIn: max10BookmarkPostIds).limit(tenCount);
-        await voids.processOldPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: [], blockUids: [], mutePostIds: []);
+        await processOldPosts(query: query, muteUids: [], blockUids: [], mutePostIds: []);
       }
     }
   }

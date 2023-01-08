@@ -25,10 +25,8 @@ class PostSearchModel extends PostsModel {
 
   String searchTerm = '';
   bool isFirstSearch = false;
-  // enum
-  final PostType postType = PostType.postSearch;
 
-  PostSearchModel() {
+  PostSearchModel() : super(postType: PostType.postSearch) {
     init();
   }
 
@@ -52,7 +50,7 @@ class PostSearchModel extends PostsModel {
       posts = [];
       final List<String> searchWords = returnSearchWords(searchTerm: searchTerm);
       final Query<Map<String,dynamic>> query = returnSearchQuery(colRef: returnPostsColRef(postCreatorUid: passiveWhisperUser.uid),searchWords: searchWords);
-      await processBasicPosts(query: query, posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
+      await processBasicPosts(query: query, muteUids: mainModel.muteUids, blockUids: mainModel.blockUids, mutePostIds: mainModel.mutePostIds);
       if (isFirstSearch == false) {
         super.listenForStates();
         isFirstSearch = true;

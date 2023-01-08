@@ -8,21 +8,15 @@ import 'package:whisper/abstract_models/posts_model.dart';
 // constants
 import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/others.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/post/post.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 
 final onePostProvider = ChangeNotifierProvider(
   (ref) => OnePostModel()
 );
 
 class OnePostModel extends PostsModel {
-  
-  final PostType postType = PostType.onePost;
+  OnePostModel() : super(postType: PostType.onePost);
   // post
   late DocumentSnapshot<Map<String,dynamic>> onePostDoc;
   List<DocumentSnapshot<Map<String,dynamic>>> onePostDocList = [];

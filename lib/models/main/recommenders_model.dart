@@ -10,7 +10,6 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/others.dart';
 import 'package:whisper/constants/strings.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 import 'package:whisper/domain/post/post.dart';
 // domain
 import 'package:whisper/domain/read_post/read_post.dart';
@@ -41,10 +40,8 @@ class RecommendersModel extends PostsModel {
   List<BlockUser> blockUsers = [];
   List<String> blockUids = [];
   List<String> readPostIds = [];
-  // enum
-  final PostType postType = PostType.recommenders;
   
-  RecommendersModel() {
+  RecommendersModel() : super(postType: PostType.recommenders){
     init();
   }
 
@@ -107,17 +104,17 @@ class RecommendersModel extends PostsModel {
   }
 
   Future<void> getNewRecommenders() async {
-    await voids.processNewPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
+    await processNewPosts(query: getQuery(), muteUids: muteUids, blockUids: blockUids, mutesPostIds: mutePostIds);
     postDocDescending();
   }
 
   Future<void> getRecommenders() async {
-    await voids.processBasicPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
+    await processBasicPosts(query: getQuery(), muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
     postDocDescending();
   }
 
   Future<void> getOldRecommenders() async {
-    await voids.processOldPosts(query: getQuery(), posts: posts, afterUris: afterUris, audioPlayer: audioPlayer, postType: postType, muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
+    await processOldPosts(query: getQuery(), muteUids: muteUids, blockUids: blockUids, mutePostIds: mutePostIds);
     postDocDescending();
   }
 

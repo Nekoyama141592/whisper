@@ -12,7 +12,6 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/l10n/l10n.dart';
 // model
 import 'package:whisper/main_model.dart';
-import 'package:whisper/models/posts/posts_model.dart';
 
 class BookmarkButton extends ConsumerWidget {
   
@@ -29,7 +28,6 @@ class BookmarkButton extends ConsumerWidget {
   @override  
   Widget build(BuildContext context, WidgetRef ref) {
     
-    final postsModel = ref.watch(postsFeaturesProvider);
     final currentWhisperUser = mainModel.currentWhisperUser;
     if (postType != PostType.postSearch ) {
       final bookmarksCount = whisperPost.bookmarkCount;

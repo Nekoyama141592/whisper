@@ -13,7 +13,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:whisper/constants/doubles.dart';
 // constants
@@ -34,15 +33,10 @@ import 'package:whisper/domain/whisper_link/whisper_link.dart';
 import 'package:whisper/domain/user_update_log/user_update_log.dart';
 import 'package:whisper/domain/user_meta_update_log/user_meta_update_log.dart';
 import 'package:whisper/l10n/l10n.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
 // components
 import 'package:whisper/details/positive_text.dart';
 // models
 import 'package:whisper/main_model.dart';
-import 'package:whisper/models/edit_post_info/edit_post_info_model.dart';
 
  
 Future<void> signOut({required BuildContext context, required BuildContext innerContext }) async {
@@ -57,86 +51,6 @@ void showCupertinoDialogue({required BuildContext context, required Widget Funct
     context: context, 
     builder: builder
   );
-}
-
-Future<void> processNewPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutesPostIds }) async {
-  final qshot = await query.endBeforeDocument(posts.first).get();
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
-    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
-  }
-  if (docs.isNotEmpty) {
-    // because of insert
-    docs.reversed;
-    // Insert at the top
-    for (final doc in docs) {
-      final whisperPost = fromMapToPost(postMap: doc.data());
-      final String uid = whisperPost.uid;
-      bool x = isValidReadPost(whisperPost: whisperPost ,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutesPostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
-      if (x) {
-        posts.insert(0, doc);
-        Uri song = Uri.parse(whisperPost.audioURL);
-        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
-        afterUris.insert(0, source);
-      }
-    }
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist);
-    }
-  }
-}
-
-Future<void> processBasicPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType ,required List<String> muteUids, required List<String> blockUids, required List<String> mutePostIds }) async {
-  final qshot = await query.get();
-  final docs = qshot.docs;
-  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
-    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
-  }
-  if (docs.isNotEmpty) {
-    for (final doc in docs) {
-      final whisperPost = fromMapToPost(postMap: doc.data() );
-      final String uid = whisperPost.uid;
-      bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
-      if (x) {
-        posts.add(doc);
-        Uri song = Uri.parse(whisperPost.audioURL);
-        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
-        afterUris.add(source);
-      }
-    }
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist);
-    }
-  }
-}
-
-Future<void> processOldPosts({ required Query<Map<String, dynamic>> query, required List<DocumentSnapshot<Map<String,dynamic>>> posts , required List<AudioSource> afterUris , required AudioPlayer audioPlayer, required PostType postType , required List<String> muteUids, required  List<String> blockUids , required List<String> mutePostIds }) async {
-  final bool useWhereIn = (postType == PostType.feeds || postType == PostType.bookmarks);
-  final qshot = useWhereIn ? await query.get() : await query.startAfterDocument(posts.last).get();
-  final int lastIndex = posts.lastIndexOf(posts.last);
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = qshot.docs;
-  if (postType == PostType.bookmarks || postType == PostType.feeds || postType == PostType.postSearch) {
-    docs.sort((a,b) => (Post.fromJson(b.data()).createdAt as Timestamp).compareTo( Post.fromJson(a.data()).createdAt as Timestamp ));
-  }
-  if (docs.isNotEmpty) {
-    for (final doc in docs) {
-      final whisperPost = fromMapToPost(postMap: doc.data() );
-      final String uid = whisperPost.uid;
-      bool x = isValidReadPost(whisperPost: whisperPost,postType: postType, muteUids: muteUids, blockUids: blockUids, uid: uid, mutePostIds: mutePostIds, doc: doc) && isNotNegativePost(whisperPost: whisperPost);
-      if (x) {
-        posts.add(doc);
-        Uri song = Uri.parse(whisperPost.audioURL);
-        UriAudioSource source = AudioSource.uri(song, tag: whisperPost );
-        afterUris.add(source);
-      }
-    }
-    if (afterUris.isNotEmpty) {
-      ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: afterUris);
-      await audioPlayer.setAudioSource(playlist,initialIndex: lastIndex);
-    }
-  }
 }
 
 Future<void> processNewDocs({ required BasicDocType basicDocType,required Query<Map<String,dynamic>> query , required List<DocumentSnapshot<Map<String,dynamic>>> docs }) async {
