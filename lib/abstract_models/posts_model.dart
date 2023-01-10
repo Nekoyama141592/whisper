@@ -300,7 +300,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
     });
   }
 
-    Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required DocumentSnapshot<Map<String,dynamic>> postDoc, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
+  Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required DocumentSnapshot<Map<String,dynamic>> postDoc, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
     // process set
     final Post whisperPost = fromMapToPost(postMap: postDoc.data()!);
     final String postId = whisperPost.postId;
