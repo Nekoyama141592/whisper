@@ -14,7 +14,7 @@ import 'package:whisper/domain/comment_notification/comment_notification.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/one_post/one_post_model.dart';
 import 'package:whisper/models/one_comment/one_comment_model.dart';
-import 'package:whisper/models/main/notifications_model.dart';
+import 'package:whisper/models/main/notifications/comment_notifications_model.dart';
 
 class CommentNotificationCard extends ConsumerWidget {
 
@@ -22,12 +22,12 @@ class CommentNotificationCard extends ConsumerWidget {
     Key? key,
     required this.mainModel,
     required this.commentNotification,
-    required this.notificationsModel,
+    required this.commentNotificationsModel,
   }) : super(key: key);
 
   final MainModel mainModel;
   final CommentNotification commentNotification;
-  final NotificationsModel notificationsModel;
+  final CommentNotificationsModel commentNotificationsModel;
 
 
   @override
@@ -61,10 +61,10 @@ class CommentNotificationCard extends ConsumerWidget {
           ),
           ListTile(
             title: Text(commentNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
-            tileColor: notificationsModel.readPostCommentNotificationIds.contains(commentNotification.notificationId) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
+            tileColor: commentNotificationsModel.isReadNotification(commentNotification.notificationId) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
             leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUid: commentNotification.activeUid,mainModel: mainModel,),
             subtitle: Text(commentNotification.comment,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context), ),),
-            onTap: () async => await notificationsModel.onCommentNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, commentNotification: commentNotification),
+            onTap: () async => await commentNotificationsModel.onCardPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, commentNotification: commentNotification),
           )
         ],
       ),

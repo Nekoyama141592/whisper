@@ -17,7 +17,7 @@ enum PostType { bookmarks, createPost,feeds, myProfile, postSearch, recommenders
 
 enum NotificationType { authNotification, postCommentNotification, postCommentReplyNotification,officialNotification, }
 
-enum BasicDocType { muteUser, notification,searchedUser,postComment,postCommentReply }
+enum BasicDocType { commentNotification,muteUser,postComment,postCommentReply,replyNotification,searchedUser }
 
 dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
   final String notificationTypeString = json[notificationTypeMapKey];

@@ -14,7 +14,7 @@ import 'package:whisper/domain/reply_notification/reply_notification.dart';
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/one_post/one_post_model.dart';
 import 'package:whisper/models/one_comment/one_comment_model.dart';
-import 'package:whisper/models/main/notifications_model.dart';
+import 'package:whisper/models/main/notifications/reply_notifications_model.dart';
 
 class ReplyNotificationCard extends ConsumerWidget {
 
@@ -22,12 +22,12 @@ class ReplyNotificationCard extends ConsumerWidget {
     Key? key,
     required this.mainModel,
     required this.replyNotification,
-    required this.notificationsModel
+    required this.replyNotificationsModel
   }) : super(key: key);
 
   final MainModel mainModel;
   final ReplyNotification replyNotification;
-  final NotificationsModel notificationsModel;
+  final ReplyNotificationsModel replyNotificationsModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,10 +60,10 @@ class ReplyNotificationCard extends ConsumerWidget {
           ),
           ListTile(
             title: Text(replyNotification.userName,style: TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
-            tileColor: notificationsModel.readPostCommentReplyNotificationIds.contains(replyNotification.notificationId) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
+            tileColor: replyNotificationsModel.isReadNotification(replyNotification.notificationId) ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).highlightColor.withOpacity(notificationCardOpacity),
             leading: RedirectUserImage(userImageURL: userImageURL, length: length, padding: padding,passiveUid: replyNotification.activeUid,mainModel: mainModel,),
             subtitle: Text(replyNotification.reply,style: TextStyle(color: Theme.of(context).focusColor,overflow: TextOverflow.ellipsis,fontSize: defaultHeaderTextSize(context: context) ),),
-            onTap: () async => await notificationsModel.onReplyNotificationPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification),
+            onTap: () async => await replyNotificationsModel.onCardPressed(context: context, mainModel: mainModel, onePostModel: onePostModel, oneCommentModel: oneCommentModel, replyNotification: replyNotification),
           )
         ],
       ),

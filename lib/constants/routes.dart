@@ -43,7 +43,6 @@ import 'package:whisper/models/themes/themes_model.dart';
 import 'package:whisper/models/auth/signup_model.dart';
 import 'package:whisper/models/auth/account_model.dart';
 import 'package:whisper/models/main/create_post_model.dart';
-import 'package:whisper/models/main/notifications_model.dart';
 import 'package:whisper/posts/components/comments_or_replys/comments_or_replys_model.dart';
 
 void toMyApp(context) {
@@ -90,8 +89,8 @@ void toAccountPage(context,MainModel mainModel) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage(mainModel: mainModel,)));
 }
 
-void toNotificationsPage({ required BuildContext context, required MainModel mainModel, required ThemeModel themeModel, required NotificationsModel notificationsModel,}) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel,notificationsModel: notificationsModel,) ));
+void toNotificationsPage({ required BuildContext context, required MainModel mainModel, required ThemeModel themeModel}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage(mainModel: mainModel, themeModel: themeModel) ));
 }
 
 void toAddPostPage ({ required BuildContext context, required CreatePostModel addPostModel, required MainModel mainModel }) {

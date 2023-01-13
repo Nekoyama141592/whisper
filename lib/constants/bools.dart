@@ -104,7 +104,9 @@ bool isNotNegativeBasicContent({ required BasicDocType basicDocType,required Doc
   switch(basicDocType){
     case BasicDocType.muteUser:
     return true;
-    case BasicDocType.notification:
+    case BasicDocType.commentNotification:
+    return true;
+    case BasicDocType.replyNotification:
     return true;
     case BasicDocType.postComment:
     return isNotNegativeComment(commentDoc: doc);

@@ -25,7 +25,6 @@ import 'package:whisper/constants/routes.dart' as routes;
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/widgets.dart';
 // domain
-import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';

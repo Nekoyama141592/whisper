@@ -12,7 +12,6 @@ import 'package:whisper/views/main/notifications/comment_notifications/comment_n
 // model
 import 'package:whisper/main_model.dart';
 import 'package:whisper/models/themes/themes_model.dart';
-import 'package:whisper/models/main/notifications_model.dart';
 
 class NotificationsPage extends StatelessWidget {
 
@@ -20,12 +19,10 @@ class NotificationsPage extends StatelessWidget {
     Key? key,
     required this.mainModel,
     required this.themeModel,
-    required this.notificationsModel,
   });
 
   final MainModel mainModel;
   final ThemeModel themeModel;
-  final NotificationsModel notificationsModel;
 
   @override  
   Widget build(BuildContext context) {
@@ -60,8 +57,8 @@ class NotificationsPage extends StatelessWidget {
         body: 
         TabBarView(
           children: [
-            CommentNotifications( mainModel: mainModel,notificationsModel: notificationsModel, ),
-            ReplyNotifications(mainModel: mainModel, notificationsModel: notificationsModel, )
+            CommentNotifications( mainModel: mainModel),
+            ReplyNotifications(mainModel: mainModel)
           ]
         )
       ),
