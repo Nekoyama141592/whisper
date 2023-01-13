@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:just_audio/just_audio.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +12,6 @@ import 'package:whisper/constants/enums.dart';
 import 'package:whisper/constants/ints.dart';
 import 'package:whisper/constants/strings.dart';
 import 'package:whisper/constants/others.dart';
-import 'package:whisper/constants/voids.dart' as voids;
 // domain
 import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
 import 'package:whisper/domain/following/following.dart';
@@ -32,12 +30,6 @@ import 'package:whisper/domain/watchlist/watchlist.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 import 'package:whisper/domain/timeline/timeline.dart';
-// notifiers
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/repeat_button_notifier.dart';
-// domain
-import 'package:whisper/domain/post/post.dart';
 
 final mainProvider = ChangeNotifierProvider(
   (ref) => MainModel()
