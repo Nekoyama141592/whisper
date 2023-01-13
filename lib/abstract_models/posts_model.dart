@@ -55,7 +55,7 @@ abstract class PostsModel extends ChangeNotifier {
   AudioPlayer audioPlayer = AudioPlayer();
   List<AudioSource> afterUris = [];
   // cloudFirestore
-  List<DocumentSnapshot<Map<String,dynamic>>> posts = [];
+  List<QueryDocumentSnapshot<Map<String,dynamic>>> posts = [];
   // refresh
   RefreshController refreshController = RefreshController(initialRefresh: false);
   // speed
@@ -294,9 +294,9 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
     });
   }
 
-  Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required DocumentSnapshot<Map<String,dynamic>> postDoc, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) async {
+  Future<void> mutePost({ required BuildContext context ,required MainModel mainModel, required int i, required QueryDocumentSnapshot<Map<String,dynamic>> postDoc, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<QueryDocumentSnapshot<Map<String,dynamic>>> results}) async {
     // process set
-    final Post whisperPost = fromMapToPost(postMap: postDoc.data()!);
+    final Post whisperPost = fromMapToPost(postMap: postDoc.data());
     final String postId = whisperPost.postId;
     final Timestamp now = Timestamp.now();
     final String tokenId = returnTokenId(userMeta: mainModel.userMeta, tokenType: TokenType.mutePost );
@@ -304,7 +304,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
     // process UI
     mainModel.mutePostIds.add(postId);
     mainModel.mutePosts.add(mutePost);
-    results.removeWhere((result) => fromMapToPost(postMap: result.data()!).postId == whisperPost.postId );
+    results.removeWhere((result) => fromMapToPost(postMap: result.data()).postId == whisperPost.postId );
     await resetAudioPlayer(i: i);
     notifyListeners();
     await voids.showBasicFlutterToast(context: context,msg: mutePostMsg(context: context));
@@ -387,7 +387,7 @@ Future<void> processOldPosts({ required Query<Map<String, dynamic>> query,requir
     await audioPlayer.setAudioSource(playlist,initialIndex: i);
   }
 
-  void reportPost({ required BuildContext context, required MainModel mainModel, required int i, required Post post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<DocumentSnapshot<Map<String,dynamic>>> results}) {
+  void reportPost({ required BuildContext context, required MainModel mainModel, required int i, required Post post, required List<AudioSource> afterUris, required AudioPlayer audioPlayer , required List<QueryDocumentSnapshot<Map<String,dynamic>>> results}) {
     final postDoc = results[i];
     final selectedReportContentsNotifier = ValueNotifier<List<String>>([]);
     final String postReportId = generatePostReportId();

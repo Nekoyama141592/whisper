@@ -31,7 +31,7 @@ class PostCards extends ConsumerWidget {
   }) : super(key: key);
 
   final WhisperUser passiveWhisperUser;
-  final List<DocumentSnapshot<Map<String,dynamic>>> results;
+  final List<QueryDocumentSnapshot<Map<String,dynamic>>> results;
   final MainModel mainModel;
   final PostSearchModel postSearchModel;
   
@@ -54,7 +54,7 @@ class PostCards extends ConsumerWidget {
               itemCount: results.length,
               itemBuilder: (BuildContext context, int i) {
                 final postDoc = results[i];
-                final Map<String,dynamic> post = postDoc.data()!;
+                final Map<String,dynamic> post = postDoc.data();
                 final Post whisperPost = Post.fromJson(post);
                 return 
                 PostCard(

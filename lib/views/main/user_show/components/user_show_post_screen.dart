@@ -87,7 +87,7 @@ class UserShowPostScreen extends ConsumerWidget {
             itemCount: postDocs.length,
             itemBuilder: (BuildContext context, int i) {
               final postDoc = postDocs[i];
-              final Post whisperPost = Post.fromJson(postDoc.data()!);
+              final Post whisperPost = Post.fromJson(postDoc.data());
               return 
               PostCard(
                 postDoc: postDoc,

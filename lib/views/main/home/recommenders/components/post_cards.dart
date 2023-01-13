@@ -44,7 +44,7 @@ class PostCards extends StatelessWidget {
   }) : super(key: key);
 
  
-  final List<DocumentSnapshot<Map<String,dynamic>>> postDocs;
+  final List<QueryDocumentSnapshot<Map<String,dynamic>>> postDocs;
   final void Function()? route;
   final ProgressNotifier progressNotifier;
   final void Function(Duration)? seek;

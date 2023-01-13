@@ -120,8 +120,8 @@ class RecommendersModel extends PostsModel {
 
   void postDocDescending() {
     posts.sort((a,b) {
-      final Timestamp aCreatedAt = Post.fromJson(a.data()!).createdAt as Timestamp;
-      final Timestamp bCreatedAt = Post.fromJson(b.data()!).createdAt as Timestamp;
+      final Timestamp aCreatedAt = Post.fromJson(a.data()).createdAt as Timestamp;
+      final Timestamp bCreatedAt = Post.fromJson(b.data()).createdAt as Timestamp;
       return bCreatedAt.compareTo(aCreatedAt);
     });
   }
