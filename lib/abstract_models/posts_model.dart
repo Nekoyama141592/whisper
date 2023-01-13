@@ -27,17 +27,11 @@ import 'package:whisper/main_model.dart';
 import 'package:flutter/material.dart';
 // packages
 import 'package:flash/flash.dart';
-import 'package:whisper/constants/doubles.dart';
 // domain
-import 'package:whisper/domain/like_post/like_post.dart';
-import 'package:whisper/domain/post_like/post_like.dart';
 import 'package:whisper/domain/mute_user/mute_user.dart';
 import 'package:whisper/domain/mute_post/mute_post.dart';
 import 'package:whisper/domain/post_mute/post_mute.dart';
 import 'package:whisper/domain/post_report/post_report.dart';
-import 'package:whisper/domain/bookmark_post/bookmark_post.dart';
-import 'package:whisper/domain/post_bookmark/post_bookmark.dart';
-import 'package:whisper/domain/bookmark_post_category/bookmark_post_category.dart';
 // components
 import 'package:whisper/details/report_contents_list_view.dart';
 import 'package:whisper/domain/user_meta/user_meta.dart';
