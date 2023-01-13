@@ -79,41 +79,41 @@ String generatePostCommentReplyReportId() => 'postCommentReplyReport' + hyphenSt
 const String speedPrefsKey = 'speed';
 const String isDarkThemePrefsKey = 'isDarkTheme';
 // tokenTypes
-final String blockUserTokenType = returnTokenTypeString(tokenType: TokenType.blockUser);
+const String blockUserTokenType = "blockUser";
 
-final String bookmarkPostCategoryTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPostCategory);
+const String bookmarkPostCategoryTokenType = "bookmarkPostCategory";
 
-final String bookmarkPostTokenType = returnTokenTypeString(tokenType: TokenType.bookmarkPost);
+const String bookmarkPostTokenType = "bookmarkPost";
 
-final String followingTokenType = returnTokenTypeString(tokenType: TokenType.following);
+const String followingTokenType = "following";
 
-final String likePostTokenType = returnTokenTypeString(tokenType: TokenType.likePost);
+const String likePostTokenType = "likePost";
 
-final String likePostCommentTokenType = returnTokenTypeString(tokenType: TokenType.likePostComment);
+const String likePostCommentTokenType = "likePostComment";
 
-final String watchlistTokenType = returnTokenTypeString(tokenType: TokenType.watchlist);
+const String watchlistTokenType = "watchlist";
 
-final String mutePostCommentTokenType = returnTokenTypeString(tokenType: TokenType.mutePostComment);
+const String mutePostCommentTokenType = "mutePostComment";
 
-final String mutePostTokenType = returnTokenTypeString(tokenType: TokenType.mutePost);
+const String mutePostTokenType = "mutePost";
 
-final String mutePostCommentReplyTokenType = returnTokenTypeString(tokenType: TokenType.mutePostCommentReply);
+const String mutePostCommentReplyTokenType = "mutePostCommentReply";
 
-final String muteUserTokenType = returnTokenTypeString(tokenType: TokenType.muteUser);
+const String muteUserTokenType = "muteUser";
 
-final String likePostCommentReplyTokenType = returnTokenTypeString(tokenType: TokenType.likePostCommentReply);
+const String likePostCommentReplyTokenType = "likePostCommentReply";
 
-final String searchHistoryTokenType = returnTokenTypeString(tokenType: TokenType.searchHistory);
+const String searchHistoryTokenType = "searchHistory";
 
-final String readPostTokenType = returnTokenTypeString(tokenType: TokenType.readPost);
+const String readPostTokenType = "readPost";
 // tokenType(notification)
-final String authNotificationType = returnNotificationTypeString(notificationType: NotificationType.authNotification);
+const String authNotificationType = "authNotification";
 
-final String officialNotificationType = returnNotificationTypeString(notificationType: NotificationType.officialNotification);
+const String officialNotificationType = "officialNotification";
 
-final String commentNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentNotification);
+const String commentNotificationType = "postCommentNotification";
 
-final String replyNotificationType = returnNotificationTypeString(notificationType: NotificationType.postCommentReplyNotification );
+const String replyNotificationType = "postCommentReplyNotification";
 // colRefName
 const String usersColRefName = 'users';
 const String userMutesColRefName = 'userMutes';

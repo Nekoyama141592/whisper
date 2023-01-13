@@ -19,50 +19,41 @@ enum NotificationType { authNotification, postCommentNotification, postCommentRe
 
 enum BasicDocType { commentNotification,muteUser,postComment,postCommentReply,replyNotification,searchedUser }
 
-dynamic jsonToNotificationType({ required Map<String,dynamic> json }) {
+NotificationType jsonToNotificationType({ required Map<String,dynamic> json }) {
   final String notificationTypeString = json[notificationTypeMapKey];
-  if (notificationTypeString == authNotificationType) {
+  switch(notificationTypeString) {
+    case authNotificationType:
     return NotificationType.authNotification;
-  } else if (notificationTypeString == officialNotificationType) {
+    case officialNotificationType:
     return NotificationType.officialNotification;
-  } else if (notificationTypeString == commentNotificationType) {
+    case commentNotificationType:
     return NotificationType.postCommentNotification;
-  } else if (notificationTypeString == replyNotificationType) {
+    case replyNotificationType:
     return NotificationType.postCommentReplyNotification;
+    default:
+    return NotificationType.authNotification;
   }
 }
 
 enum TokenType { bookmarkPostCategory,bookmarkPost,following,likePost,likePostComment,likePostCommentReply,searchHistory,readPost,watchlist,blockUser,mutePostComment,mutePost,mutePostCommentReply,muteUser }
 
-dynamic jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
+TokenType jsonToTokenType({ required Map<String,dynamic> tokenMap}) {
   final String tokenTypeString = tokenMap[tokenTypeMapKey];
-  if (tokenTypeString == bookmarkPostCategoryTokenType) {
-    return TokenType.bookmarkPostCategory;
-  } else if(tokenTypeString == followingTokenType) {
-    return TokenType.following;
-  } else if (tokenTypeString == likePostTokenType) {
-    return TokenType.likePost;
-  } else if (tokenTypeString == likePostCommentTokenType) {
-    return TokenType.likePostComment;
-  } else if (tokenTypeString == likePostCommentReplyTokenType) {
-    return TokenType.likePostCommentReply;
-  } else if (tokenTypeString == searchHistoryTokenType) {
-    return TokenType.searchHistory;
-  } else if (tokenTypeString == readPostTokenType) {
-    return TokenType.readPost;
-  } else if (tokenTypeString == watchlistTokenType) {
-    return TokenType.watchlist;
-  } else if (tokenTypeString == blockUserTokenType) {
-    return TokenType.blockUser;
-  } else if (tokenTypeString == mutePostCommentTokenType) {
-    return TokenType.mutePostComment;
-  } else if (tokenTypeString == mutePostTokenType) {
-    return TokenType.mutePost;
-  } else if (tokenTypeString == mutePostCommentReplyTokenType) {
-    return TokenType.mutePostCommentReply;
-  } else if (tokenTypeString == muteUserTokenType) {
-    return TokenType.muteUser;
-  } else if (tokenTypeString == bookmarkPostTokenType) {
-    return TokenType.bookmarkPost;
+  switch(tokenTypeString) {
+    case bookmarkPostCategoryTokenType: return TokenType.bookmarkPostCategory;
+    case followingTokenType: return TokenType.following;
+    case likePostTokenType: return TokenType.likePost;
+    case likePostCommentTokenType: return TokenType.likePostComment;
+    case likePostCommentReplyTokenType: return TokenType.likePostCommentReply;
+    case searchHistoryTokenType: return TokenType.searchHistory;
+    case readPostTokenType: return TokenType.readPost;
+    case watchlistTokenType: return TokenType.watchlist;
+    case blockUserTokenType: return TokenType.blockUser;
+    case mutePostCommentTokenType: return TokenType.mutePostComment;
+    case mutePostTokenType: return TokenType.mutePost;
+    case mutePostCommentReplyTokenType: return TokenType.mutePostCommentReply;
+    case muteUserTokenType: return TokenType.muteUser;
+    case bookmarkPostTokenType: return TokenType.bookmarkPost;
+    default: return TokenType.bookmarkPostCategory;
   }
 }
