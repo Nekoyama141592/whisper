@@ -31,8 +31,6 @@ import 'package:whisper/domain/post/post.dart';
 import 'package:whisper/domain/whisper_user/whisper_user.dart';
 import 'package:whisper/domain/whisper_link/whisper_link.dart';
 // notifiers
-import 'package:whisper/posts/notifiers/progress_notifier.dart';
-import 'package:whisper/posts/notifiers/play_button_notifier.dart';
 import 'package:whisper/notifiers/create_post_state_notifier.dart';
 // pages
 import 'package:whisper/views/post_links/links_page.dart';

@@ -88,7 +88,7 @@ class MyProfilePostScreen extends ConsumerWidget {
             itemCount: postDocs.length,
             itemBuilder: (BuildContext context, int i) {
               final postDoc = postDocs[i];
-              final Map<String,dynamic> post = postDoc.data() as Map<String,dynamic>;
+              final Map<String,dynamic> post = postDoc.data();
               final Post whisperPost = Post.fromJson(post);
               return 
               PostCard(

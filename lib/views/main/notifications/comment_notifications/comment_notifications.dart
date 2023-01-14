@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 // packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// common
-import 'package:whisper/constants/strings.dart';
 // components
 import 'package:whisper/details/refresh_screen.dart';
 import 'package:whisper/views/main/notifications/comment_notifications/components/comment_notification_card.dart';
