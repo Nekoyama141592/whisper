@@ -36,7 +36,7 @@ class PostFuturesModel extends ChangeNotifier {
     likePostIds.add(postId);
     notifyListeners();
     // backend
-    await addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
+    await _addLikeSubCol(whisperPost: whisperPost, mainModel: mainModel);
     // create likePostToken
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
@@ -46,7 +46,7 @@ class PostFuturesModel extends ChangeNotifier {
     mainModel.likePosts.add(likePost);
   }
 
-  Future<void> addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+  Future<void> _addLikeSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final Timestamp now = Timestamp.now();
     final DocumentReference<Map<String,dynamic>> postDocRef = returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId);
     final PostLike postLike = PostLike(activeUid: mainModel.userMeta.uid, createdAt: now, postId: whisperPost.postId, postCreatorUid: whisperPost.uid,postDocRef: postDocRef );
@@ -92,7 +92,7 @@ class PostFuturesModel extends ChangeNotifier {
           await (controller as FlashController ).dismiss();
           // backend
           await returnTokenDocRef(uid: uid, tokenId: tokenId).set(bookmarkPost.toJson());
-          await addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
+          await _addBookmarkSubCol(whisperPost: whisperPost, mainModel: mainModel);
         }
       }, 
       child: PositiveText(text: decideModalText(context: context))
@@ -101,7 +101,7 @@ class PostFuturesModel extends ChangeNotifier {
   voids.showFlashDialogue(context: context, content: content, titleText: l10n.whichCategory,positiveActionBuilder: positiveActionBuilder);
   }
 
-  Future<void> addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
+  Future<void> _addBookmarkSubCol({ required Post whisperPost, required MainModel mainModel }) async {
     final String activeUid = mainModel.userMeta.uid;
     final Timestamp now = Timestamp.now();
     final DocumentReference<Map<String,dynamic>> postDocRef = returnPostDocRef(postCreatorUid: whisperPost.uid, postId: whisperPost.postId);
@@ -111,7 +111,7 @@ class PostFuturesModel extends ChangeNotifier {
 
   Future<void> unbookmark({ required BuildContext context ,required Post whisperPost, required MainModel mainModel, required List<BookmarkPostCategory> bookmarkCategories }) async {
     final postId = whisperPost.postId;
-    final indexDeleteToken = mainModel.bookmarkPosts.where((element) => element.postId == whisperPost.postId).toList().first;
+    final indexDeleteToken = mainModel.bookmarkPosts.firstWhere((element) => element.postId == whisperPost.postId);
     // processUI
     mainModel.bookmarksPostIds.remove(postId);
     mainModel.bookmarkPosts.remove(indexDeleteToken);
@@ -123,7 +123,7 @@ class PostFuturesModel extends ChangeNotifier {
 
    Future<void> unlike({ required Post whisperPost, required MainModel mainModel }) async {
     final postId = whisperPost.postId; 
-    final deleteLikePostToken = mainModel.likePosts.where((element) => element.postId == whisperPost.postId).toList().first;
+    final deleteLikePostToken = mainModel.likePosts.firstWhere((element) => element.postId == whisperPost.postId);
     // process UI
     mainModel.likePostIds.remove(postId);
     mainModel.likePosts.remove(deleteLikePostToken);

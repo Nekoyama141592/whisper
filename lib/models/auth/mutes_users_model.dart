@@ -38,27 +38,27 @@ class MuteUsersModel extends ChangeNotifier {
   Future<void> init({ required MainModel mainModel }) async {
     final List<MuteUser> muteUsers = mainModel.muteUsers;
     muteUids = muteUsers.map((muteUser) => muteUser.passiveUid).toList();
-    await processMuteUsers();
+    await _processMuteUsers();
   }
 
   Future<void> onRefresh({required MainModel mainModel}) async {
     refreshController.refreshCompleted();
-    await processNewMuteUsers(mainModel: mainModel);
+    await _processNewMuteUsers(mainModel: mainModel);
     notifyListeners();
   }
 
   Future<void> onLoading() async {
-    await processMuteUsers();
+    await _processMuteUsers();
     refreshController.loadComplete();
     notifyListeners();
   }
 
   Future<void> onReload() async {
-    await processMuteUsers();
+    await _processMuteUsers();
     notifyListeners();
   }
 
-  Future<void> processMuteUsers() async {
+  Future<void> _processMuteUsers() async {
     if (muteUids.length > userDocs.length) {
       final bool = (muteUids.length - userDocs.length) > 10;
       final userDocsLength = userDocs.length;
@@ -70,7 +70,7 @@ class MuteUsersModel extends ChangeNotifier {
     }
   }
 
-  Future<void> processNewMuteUsers({required MainModel mainModel}) async {
+  Future<void> _processNewMuteUsers({required MainModel mainModel}) async {
     final newMuteUserTokens = mainModel.newMuteUserTokens;
     // newMuteUidsがprocess()でのmuteUidsにあたり、usedMuteUidsがmuteUserDocsにあたる
     final List<String> newMuteUids = newMuteUserTokens.map((e) => e.passiveUid).toList();
@@ -110,7 +110,7 @@ class MuteUsersModel extends ChangeNotifier {
             onPressed: () async {
               Navigator.pop(innerContext);
               final currentWhisperUser = mainModel.currentWhisperUser;
-              final deleteMuteUserToken = mainModel.muteUsers.where((element) => element.passiveUid == passiveUid ).toList().first;
+              final deleteMuteUserToken = mainModel.muteUsers.firstWhere((element) => element.passiveUid == passiveUid );
               // front mute_users_model
               muteUids.remove(passiveUid);
               userDocs.removeWhere((element) => element.id == passiveUid );
