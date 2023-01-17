@@ -14,13 +14,6 @@ const int nGramIndex = 2;
 const int plusOne = 1;
 const int minusOne = -1;
 const int tenCount = 10;
-const int tokenTypeStartIndex = 10;
-const int notificationTypeStartIndex = 17;
-const int dmStateStartIndex = 8;
-const int recommendStateStartIndex = 15;
-const int postStateStartIndex = 10;
-const int commentsStateStartIndex = 14;
-const int genderStartIndex = 7;
 // length
 const int maxSearchLength = 32;
 const int maxBioOrDescriptionLength = 1000;

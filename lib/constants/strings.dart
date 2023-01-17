@@ -1,7 +1,6 @@
 // constants
 import 'package:flutter/material.dart';
 import 'package:whisper/constants/enums.dart';
-import 'package:whisper/constants/ints.dart';
 // packages
 import 'package:uuid/uuid.dart';
 import 'package:whisper/constants/others.dart';
@@ -21,8 +20,6 @@ String returnStoragePostImageName() => 'postImageStorage' + hyphenString + retur
 
 String returnStoragePostName() => 'postStorage' + hyphenString + returnUuid4()+ postExtension;
 
-// String returnJaInt({ required int count }) => count >= 10000 ? (count/1000.floor()/10).toString() + '万' :  count.toString();
-
 String returnPostId({ required UserMeta userMeta }) => 'post' + hyphenString + userMeta.uid + hyphenString + returnUuid4();
 
 String returnOfficialAdvertisementImpressionId({ required String uid }) => 'officialAdvertisementImpression' + hyphenString + uid + hyphenString + returnUuid4();
@@ -31,21 +28,21 @@ String returnUuid4() => Uuid().v4();
 
 String returnTokenId({required UserMeta userMeta,required TokenType tokenType }) => returnTokenTypeString(tokenType: tokenType) + hyphenString + userMeta.uid + returnUuid4();
 
-String returnTokenTypeString({ required TokenType tokenType } ) => tokenType.toString().substring(tokenTypeStartIndex);
+String returnTokenTypeString({ required TokenType tokenType } ) => tokenType.name;
 
 String returnNotificationId({ required NotificationType notificationType}) => returnNotificationTypeString(notificationType: notificationType) + hyphenString + returnUuid4();
 
-String returnNotificationTypeString({ required NotificationType notificationType }) => notificationType.toString().substring(notificationTypeStartIndex);
+String returnNotificationTypeString({ required NotificationType notificationType }) => notificationType.name;
 
-String returnDmStateString({ required DmState dmState }) => dmState.toString().substring(dmStateStartIndex);
+String returnDmStateString({ required DmState dmState }) => dmState.name;
 
-String returnRecommendStateString ({ required RecommendState recommendState }) => recommendState.toString().substring(recommendStateStartIndex);
+String returnRecommendStateString ({ required RecommendState recommendState }) => recommendState.name;
 
-String returnPostStateString ({ required PostState postState }) => postState.toString().substring(postStateStartIndex);
+String returnPostStateString ({ required PostState postState }) => postState.name;
 
-String returnCommentsStateString ({ required CommentsState commentsState }) => commentsState.toString().substring(commentsStateStartIndex);
+String returnCommentsStateString ({ required CommentsState commentsState }) => commentsState.name;
 
-String returnGenderString({ required Gender gender }) => gender.toString().substring(genderStartIndex);
+String returnGenderString({ required Gender gender }) => gender.name;
 
 String returnReportContentString({ required List<String> selectedReportContents }) {
   String reportContentString = '';
