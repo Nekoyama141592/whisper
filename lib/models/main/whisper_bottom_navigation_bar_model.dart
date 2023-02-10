@@ -29,7 +29,6 @@ class WhisperBottomNavigationbarModel extends ChangeNotifier {
   }
 
   void onTabTapped(int i) {
-    currentIndex = i;
     pageController.animateToPage(
       i, 
       duration: Duration(milliseconds: 300), 
