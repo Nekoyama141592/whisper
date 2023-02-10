@@ -26,9 +26,11 @@ class Home extends ConsumerWidget {
   
   final MainModel mainModel;
   final ThemeModel themeModel;
+
   void initState() {
     super.createState();
   }
+
   @override
   Widget build(BuildContext context,WidgetRef ref ) {
     return DefaultTabController(
@@ -49,11 +51,7 @@ class Home extends ConsumerWidget {
           ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
-            tabs: tabBarElements.map((tabBarElement) {
-              return Tab(
-                text: tabBarElement.title
-              );
-            }).toList()
+            tabs: tabBarElements.map((tabBarElement) => Tab(text: tabBarElement.title)).toList()
           ),
         ),
         
