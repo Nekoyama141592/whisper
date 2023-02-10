@@ -26,7 +26,9 @@ class Home extends ConsumerWidget {
   
   final MainModel mainModel;
   final ThemeModel themeModel;
-
+  void initState() {
+    super.createState();
+  }
   @override
   Widget build(BuildContext context,WidgetRef ref ) {
     return DefaultTabController(
