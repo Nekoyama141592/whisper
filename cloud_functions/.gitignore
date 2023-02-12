@@ -7,7 +7,7 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
-cloud_functions/functions/index.js
+functions/index.js
 # Firebase cache
 .firebase/
 
